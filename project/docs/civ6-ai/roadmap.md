@@ -1,13 +1,20 @@
 # CSC AI roadmap
 
-**2.1 customer-first planning,16 November — implemented/offline-qualified.**
+**2.1 customer-first planning,16 November — live reception/execution observed.**
 Reverse the generated gameplay partner graph from customer→Quarter→Base/Spec.
 Require concrete owned Quarter/material footprints, including triangles, and
 current customer eligibility. Each supplier city/Quarter type contributes once;
 shared materials may support multiple types. Best ordinary customer adjacency
 must be retained; contributions8–16 utility sum to a32-point cap. No Quarter bid,
-research unlock or spare future Quarter slot is needed. Native reception and
-ordinary-game follow-through are next; no game launched for this implementation.
+research unlock or spare future Quarter slot is needed. Completed250 records
+2481 write windows and21 foundations on previously offered targets (13 with
+same-native-choice-turn writes).21 Quarter foundations all have Base/+3+;
+six have both materials. Active8 Storekeepers/2 Innkeepers/2 Sacristans, no
+Dockmasters. Next: joint Harbor/Quarter footprints, including after Quarter
+foundation. Open coast pairs are+1; the strict best-ordinary-adjacency customer
+gate rejects Dumbarton0 versus3. Good coastal Pasargadae35 loses adjacent water
+to Fishing Town54; both Harbors are two tiles away. No new policy or run started.
+[Full250/coast results](../research/mods/csc-ai-customer-first-continents-20261116.md).
 [Mechanism, diagnostics and tests](../research/mods/csc-ai-customer-first-planning-20261116.md).
 
 **2.1,16 November — data-driven native customer adjacency repaired.**
@@ -31,7 +38,7 @@ Commercial Hub/Harbor co-location around existing Quarters before increasing
 producer bids. SQL all-stage adjacency remains active; Stage3 Service value and
 targeted Stage3 building guidance remain separate coverage work.
 
-**Latest natural250 result —1.4/1.6/1.8,15 November:**23 foundations, all Base/+3+,
+**Preceding natural250 result —1.4/1.6/1.8,15 November:**23 foundations, all Base/+3+,
 10 at+4+, five both materials;63/63 native comparisons match. **1.5** has two
 fresh-world purchases followed by Tailors foundations (12/39-turn delays).
 At250: eight Storekeepers and two Sacristans; native audit records793 chain-turns.

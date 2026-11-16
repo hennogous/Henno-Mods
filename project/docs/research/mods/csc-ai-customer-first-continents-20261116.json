@@ -1,0 +1,5573 @@
+{
+  "map_seed": 22051116,
+  "game_seed": 32251116,
+  "source_commit": "19e29a42",
+  "ce_commit": "2d200ef",
+  "artifact_root": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-first-continents-20261116",
+  "endpoint": 250,
+  "original_ai": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "closures": {
+    "continents250-01": {
+      "verified": true,
+      "native_exit_code": 0,
+      "owners_absent": true,
+      "preferences_verified": true,
+      "package_callback_completed": true
+    },
+    "coast250-01": {
+      "verified": true,
+      "native_exit_code": 0,
+      "owners_absent": true,
+      "preferences_verified": true,
+      "package_callback_completed": true
+    },
+    "coast250-02": {
+      "verified": true,
+      "native_exit_code": 0,
+      "owners_absent": true,
+      "preferences_verified": true,
+      "package_callback_completed": true
+    },
+    "coast250-policy-01": {
+      "verified": true,
+      "native_exit_code": 0,
+      "owners_absent": true,
+      "preferences_verified": true,
+      "package_callback_completed": true
+    }
+  },
+  "quality": {
+    "BAKERS": {
+      "foundations": 14,
+      "at_least3": 14,
+      "at_least4": 6,
+      "base": 14,
+      "spec": 2,
+      "both": 2,
+      "distinct_geometry_qualified_candidates": 412,
+      "distinct_positive_offers": 117
+    },
+    "TAILORS": {
+      "foundations": 7,
+      "at_least3": 7,
+      "at_least4": 2,
+      "base": 7,
+      "spec": 4,
+      "both": 4,
+      "distinct_geometry_qualified_candidates": 236,
+      "distinct_positive_offers": 59
+    }
+  },
+  "native_best": {
+    "comparisons": 88,
+    "exact_bid_matches": 88
+  },
+  "endpoint_quarters": {
+    "BAKERS": {
+      "placed": 14,
+      "complete": 14,
+      "river": 7,
+      "base": 14,
+      "spec": 2,
+      "both": 2,
+      "base_improved": 11,
+      "spec_improved": 2,
+      "both_improved": 1,
+      "sales": 13,
+      "sales_outside_center": 7,
+      "raw_customer_geometry_any": 13,
+      "customer_any_footprint": 13,
+      "customer_any_completed": 13,
+      "customer_completion_unknown": 0,
+      "customer_host_state_recorded": 13,
+      "base_customer_any": 13,
+      "base_customer_any_footprint": 13,
+      "both_customer_any": 2,
+      "both_customer_any_footprint": 2,
+      "base_improved_customer_any": 10,
+      "base_improved_customer_any_footprint": 10,
+      "producer2": 14,
+      "producer2_working": 13,
+      "customer2": 13,
+      "customer2_without_building": 3,
+      "customer2_with_building": 10,
+      "customer2_working": 10,
+      "mapped_customer2": 13,
+      "mapped_customer2_completed": 13,
+      "mapped_customer2_with_working_building": 10,
+      "mapped_customer2_without_working_building": 3,
+      "mapped_customer2_completed_without_working_building": 3,
+      "base_customer2": 13,
+      "base_customer2_footprint": 13,
+      "base_improved_customer2_working": 8,
+      "service2_property": 8,
+      "stage2_physical": 8,
+      "producer3": 14,
+      "producer3_working": 12,
+      "customer3": 2,
+      "customer3_without_building": 0,
+      "customer3_with_building": 2,
+      "customer3_working": 2,
+      "mapped_customer3": 2,
+      "mapped_customer3_completed": 2,
+      "mapped_customer3_with_working_building": 2,
+      "mapped_customer3_without_working_building": 0,
+      "mapped_customer3_completed_without_working_building": 0,
+      "service3_property": 2,
+      "producer4": 11,
+      "producer4_working": 10,
+      "customer4": 1,
+      "customer4_without_building": 0,
+      "customer4_with_building": 1,
+      "customer4_working": 1,
+      "mapped_customer4": 1,
+      "mapped_customer4_completed": 1,
+      "mapped_customer4_with_working_building": 1,
+      "mapped_customer4_without_working_building": 0,
+      "mapped_customer4_completed_without_working_building": 0,
+      "service4_property": 0,
+      "unique_customer2": 13,
+      "unique_customer2_with_building": 10,
+      "unique_customer2_working": 10,
+      "unique_customer3": 2,
+      "unique_customer3_with_building": 2,
+      "unique_customer3_working": 2,
+      "unique_customer4": 1,
+      "unique_customer4_with_building": 1,
+      "unique_customer4_working": 1,
+      "service2_buildings": 9,
+      "service3_buildings": 2,
+      "service4_buildings": 0
+    },
+    "TAILORS": {
+      "placed": 8,
+      "complete": 8,
+      "river": 4,
+      "base": 7,
+      "spec": 4,
+      "both": 4,
+      "base_improved": 7,
+      "spec_improved": 3,
+      "both_improved": 3,
+      "sales": 5,
+      "sales_outside_center": 5,
+      "raw_customer_geometry_any": 5,
+      "customer_any_footprint": 5,
+      "customer_any_completed": 5,
+      "customer_completion_unknown": 0,
+      "customer_host_state_recorded": 5,
+      "base_customer_any": 5,
+      "base_customer_any_footprint": 5,
+      "both_customer_any": 3,
+      "both_customer_any_footprint": 3,
+      "base_improved_customer_any": 5,
+      "base_improved_customer_any_footprint": 5,
+      "producer2": 8,
+      "producer2_working": 7,
+      "customer2": 0,
+      "customer2_without_building": 0,
+      "customer2_with_building": 0,
+      "customer2_working": 0,
+      "mapped_customer2": 0,
+      "mapped_customer2_completed": 0,
+      "mapped_customer2_with_working_building": 0,
+      "mapped_customer2_without_working_building": 0,
+      "mapped_customer2_completed_without_working_building": 0,
+      "base_customer2": 0,
+      "base_customer2_footprint": 0,
+      "base_improved_customer2_working": 0,
+      "service2_property": 0,
+      "stage2_physical": 0,
+      "producer3": 5,
+      "producer3_working": 4,
+      "customer3": 4,
+      "customer3_without_building": 0,
+      "customer3_with_building": 4,
+      "customer3_working": 4,
+      "mapped_customer3": 4,
+      "mapped_customer3_completed": 4,
+      "mapped_customer3_with_working_building": 4,
+      "mapped_customer3_without_working_building": 0,
+      "mapped_customer3_completed_without_working_building": 0,
+      "service3_property": 2,
+      "producer4": 3,
+      "producer4_working": 3,
+      "customer4": 3,
+      "customer4_without_building": 1,
+      "customer4_with_building": 2,
+      "customer4_working": 2,
+      "mapped_customer4": 2,
+      "mapped_customer4_completed": 2,
+      "mapped_customer4_with_working_building": 2,
+      "mapped_customer4_without_working_building": 0,
+      "mapped_customer4_completed_without_working_building": 0,
+      "service4_property": 0,
+      "unique_customer3": 5,
+      "unique_customer3_with_building": 5,
+      "unique_customer3_working": 4,
+      "unique_customer4": 3,
+      "unique_customer4_with_building": 2,
+      "unique_customer4_working": 2,
+      "service2_buildings": 0,
+      "service3_buildings": 3,
+      "service4_buildings": 0
+    }
+  },
+  "services_active_property_markers": {
+    "Storekeeper": 8,
+    "Innkeeper": 2,
+    "Dockmaster": 0,
+    "Sacristan": 2,
+    "Groundskeeper": 0,
+    "RideTechnician": 0,
+    "StageManager": 0,
+    "BalletDancer": 0,
+    "MusicalActor": 0,
+    "OperaSinger": 0
+  },
+  "storekeeper": {
+    "sampled_turns": 248,
+    "unsampled": [],
+    "chain_turns": 879,
+    "sources": [
+      {
+        "player": 2,
+        "city": 262147,
+        "quarter": 1048591,
+        "turns": 159,
+        "active_ranges": [
+          [
+            91,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      },
+      {
+        "player": 3,
+        "city": 262147,
+        "quarter": 786443,
+        "turns": 154,
+        "active_ranges": [
+          [
+            96,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      },
+      {
+        "player": 3,
+        "city": 524295,
+        "quarter": 2687013,
+        "turns": 91,
+        "active_ranges": [
+          [
+            151,
+            155
+          ],
+          [
+            164,
+            249
+          ]
+        ],
+        "inactive_after_first": [
+          [
+            156,
+            163
+          ]
+        ]
+      },
+      {
+        "player": 3,
+        "city": 655369,
+        "quarter": 3407919,
+        "turns": 70,
+        "active_ranges": [
+          [
+            180,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      },
+      {
+        "player": 4,
+        "city": 655368,
+        "quarter": 3080233,
+        "turns": 41,
+        "active_ranges": [
+          [
+            187,
+            227
+          ]
+        ],
+        "inactive_after_first": [
+          [
+            228,
+            249
+          ]
+        ]
+      },
+      {
+        "player": 4,
+        "city": 786442,
+        "quarter": 5111879,
+        "turns": 34,
+        "active_ranges": [
+          [
+            216,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      },
+      {
+        "player": 5,
+        "city": 65536,
+        "quarter": 1179664,
+        "turns": 165,
+        "active_ranges": [
+          [
+            85,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      },
+      {
+        "player": 5,
+        "city": 262147,
+        "quarter": 1966107,
+        "turns": 139,
+        "active_ranges": [
+          [
+            111,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      },
+      {
+        "player": 5,
+        "city": 655367,
+        "quarter": 5242952,
+        "turns": 26,
+        "active_ranges": [
+          [
+            224,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      }
+    ],
+    "ambiguous": []
+  },
+  "future_customer": {
+    "proposals": 3302,
+    "unique_targets": 228,
+    "multi_supplier_proposals": 445,
+    "max_suppliers": 3,
+    "max_delta_utility": 26.0,
+    "capped_proposals": 0,
+    "receipt_count": 2950,
+    "receipts_staged": 2950,
+    "receipt_attempts": 2540,
+    "receipt_writes": 2481,
+    "receipts_site_wins": 108,
+    "receipts_city_selections": 914,
+    "failed_write_reasons": {
+      "2": 59
+    }
+  },
+  "customer_foundation_joins": [
+    {
+      "player": 2,
+      "city": 131073,
+      "district": "DISTRICT_HARBOR",
+      "plot": 2319,
+      "foundation": 48,
+      "last_offer": 48,
+      "native_choice_turn": 47,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 5,
+      "city": 196610,
+      "district": "DISTRICT_RURALCOMMUNITYA",
+      "plot": 710,
+      "foundation": 48,
+      "last_offer": 48,
+      "native_choice_turn": 45,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 2,
+      "city": 65536,
+      "district": "DISTRICT_RURALCOMMUNITYC",
+      "plot": 2245,
+      "foundation": 54,
+      "last_offer": 46,
+      "native_choice_turn": 38,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 2,
+      "city": 131073,
+      "district": "DISTRICT_HOLY_SITE",
+      "plot": 2464,
+      "foundation": 61,
+      "last_offer": 55,
+      "native_choice_turn": 54,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 3,
+      "city": 327684,
+      "district": "DISTRICT_HARBOR",
+      "plot": 2344,
+      "foundation": 75,
+      "last_offer": 75,
+      "native_choice_turn": 69,
+      "receipt_write_same_choice_turn": false
+    },
+    {
+      "player": 2,
+      "city": 196610,
+      "district": "DISTRICT_RURALCOMMUNITYA",
+      "plot": 2242,
+      "foundation": 84,
+      "last_offer": 84,
+      "native_choice_turn": 72,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 3,
+      "city": 196610,
+      "district": "DISTRICT_COREEXPANSIONB",
+      "plot": 1828,
+      "foundation": 99,
+      "last_offer": 99,
+      "native_choice_turn": 93,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 5,
+      "city": 262147,
+      "district": "DISTRICT_RURALCOMMUNITYB",
+      "plot": 714,
+      "foundation": 102,
+      "last_offer": 102,
+      "native_choice_turn": 101,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 5,
+      "city": 393221,
+      "district": "DISTRICT_HARBOR",
+      "plot": 869,
+      "foundation": 102,
+      "last_offer": 102,
+      "native_choice_turn": 101,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 5,
+      "city": 327684,
+      "district": "DISTRICT_RURALCOMMUNITYA",
+      "plot": 1376,
+      "foundation": 109,
+      "last_offer": 85,
+      "native_choice_turn": 108,
+      "receipt_write_same_choice_turn": false
+    },
+    {
+      "player": 4,
+      "city": 327684,
+      "district": "DISTRICT_COREEXPANSIONA",
+      "plot": 2456,
+      "foundation": 110,
+      "last_offer": 110,
+      "native_choice_turn": 107,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 5,
+      "city": 458758,
+      "district": "DISTRICT_RURALCOMMUNITYA",
+      "plot": 941,
+      "foundation": 112,
+      "last_offer": 112,
+      "native_choice_turn": 110,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 5,
+      "city": 262147,
+      "district": "DISTRICT_COMMERCIAL_HUB",
+      "plot": 936,
+      "foundation": 113,
+      "last_offer": 107,
+      "native_choice_turn": 110,
+      "receipt_write_same_choice_turn": false
+    },
+    {
+      "player": 5,
+      "city": 131073,
+      "district": "DISTRICT_RURALCOMMUNITYB",
+      "plot": 1308,
+      "foundation": 129,
+      "last_offer": 129,
+      "native_choice_turn": 128,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 3,
+      "city": 196610,
+      "district": "DISTRICT_COREEXPANSIONA",
+      "plot": 1755,
+      "foundation": 139,
+      "last_offer": 139,
+      "native_choice_turn": 136,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 3,
+      "city": 65536,
+      "district": "DISTRICT_THEATER",
+      "plot": 2124,
+      "foundation": 151,
+      "last_offer": 89,
+      "native_choice_turn": 150,
+      "receipt_write_same_choice_turn": false
+    },
+    {
+      "player": 2,
+      "city": 262147,
+      "district": "DISTRICT_COMMERCIAL_HUB",
+      "plot": 1651,
+      "foundation": 158,
+      "last_offer": 72,
+      "native_choice_turn": 153,
+      "receipt_write_same_choice_turn": false
+    },
+    {
+      "player": 5,
+      "city": 196610,
+      "district": "DISTRICT_THEATER",
+      "plot": 859,
+      "foundation": 190,
+      "last_offer": 190,
+      "native_choice_turn": null,
+      "receipt_write_same_choice_turn": false
+    },
+    {
+      "player": 1,
+      "city": 524295,
+      "district": "DISTRICT_RURALCOMMUNITYA",
+      "plot": 2772,
+      "foundation": 211,
+      "last_offer": 211,
+      "native_choice_turn": 210,
+      "receipt_write_same_choice_turn": true
+    },
+    {
+      "player": 5,
+      "city": 720905,
+      "district": "DISTRICT_THEATER",
+      "plot": 507,
+      "foundation": 218,
+      "last_offer": 218,
+      "native_choice_turn": null,
+      "receipt_write_same_choice_turn": false
+    },
+    {
+      "player": 3,
+      "city": 655369,
+      "district": "DISTRICT_COREEXPANSIONB",
+      "plot": 2500,
+      "foundation": 244,
+      "last_offer": 190,
+      "native_choice_turn": 243,
+      "receipt_write_same_choice_turn": false
+    }
+  ],
+  "finances": {
+    "paid": 141,
+    "gold": 13733.0,
+    "debit_deltas_match": 141,
+    "later_owner_confirmed": 141,
+    "quarter_site_payments": 2,
+    "later_adjacent_material_payments": 1,
+    "targeted_checks": 217,
+    "targeted_pass": 49,
+    "category_fail_with_enough_treasury": 130,
+    "quarter_choices": 91,
+    "quarter_frontier_choices": 2,
+    "choice_totals_read": 2367,
+    "choice_totals": 2367,
+    "max_plot_fund": 150.0,
+    "ownership_followups": [],
+    "weights": [
+      [
+        3,
+        4,
+        1,
+        1
+      ]
+    ]
+  },
+  "material_losses": [
+    {
+      "kind": "MATERIAL_STATE",
+      "base": true,
+      "city": 327684,
+      "compatible": false,
+      "district": -1,
+      "improvement": "NONE",
+      "improvementIndex": -1,
+      "lastBase": false,
+      "lastSpec": true,
+      "lastWorkingBase": true,
+      "lastWorkingSpec": true,
+      "lostBase": false,
+      "lostSpec": false,
+      "lostWorking": true,
+      "materialPlot": 2458,
+      "origin": "modded",
+      "owner": 4,
+      "pillaged": false,
+      "player": 4,
+      "previousImprovement": "IMPROVEMENT_FARM",
+      "previousOwner": 4,
+      "previousResource": "RESOURCE_SORGHUM",
+      "previousWorking": true,
+      "quarter": "BAKERS",
+      "quarterPlot": 2457,
+      "resource": "RESOURCE_SORGHUM",
+      "resourceIndex": 89,
+      "revealed": true,
+      "sequence": 211313,
+      "source": "poll",
+      "spec": false,
+      "turn": 222,
+      "visible": true,
+      "working": false
+    },
+    {
+      "kind": "MATERIAL_STATE",
+      "base": false,
+      "city": 720905,
+      "compatible": false,
+      "district": -1,
+      "improvement": "NONE",
+      "improvementIndex": -1,
+      "lastBase": false,
+      "lastSpec": false,
+      "lastWorkingBase": false,
+      "lastWorkingSpec": true,
+      "lostBase": false,
+      "lostSpec": false,
+      "lostWorking": true,
+      "materialPlot": 2903,
+      "origin": "vanilla",
+      "owner": 4,
+      "pillaged": false,
+      "player": 4,
+      "previousImprovement": "IMPROVEMENT_PLANTATION",
+      "previousOwner": 4,
+      "previousResource": "RESOURCE_SILK",
+      "previousWorking": true,
+      "quarter": "TAILORS",
+      "quarterPlot": 2830,
+      "resource": "RESOURCE_SILK",
+      "resourceIndex": 25,
+      "revealed": true,
+      "sequence": 219837,
+      "source": "poll",
+      "spec": true,
+      "turn": 228,
+      "visible": true,
+      "working": false
+    },
+    {
+      "kind": "MATERIAL_STATE",
+      "base": true,
+      "city": 655368,
+      "compatible": false,
+      "district": -1,
+      "improvement": "NONE",
+      "improvementIndex": -1,
+      "lastBase": false,
+      "lastSpec": true,
+      "lastWorkingBase": true,
+      "lastWorkingSpec": true,
+      "lostBase": false,
+      "lostSpec": false,
+      "lostWorking": true,
+      "materialPlot": 3049,
+      "origin": "modded",
+      "owner": 4,
+      "pillaged": false,
+      "player": 4,
+      "previousImprovement": "IMPROVEMENT_FARM",
+      "previousOwner": 4,
+      "previousResource": "RESOURCE_BARLEY",
+      "previousWorking": true,
+      "quarter": "BAKERS",
+      "quarterPlot": 3124,
+      "resource": "RESOURCE_BARLEY",
+      "resourceIndex": 87,
+      "revealed": true,
+      "sequence": 219850,
+      "source": "poll",
+      "spec": false,
+      "turn": 228,
+      "visible": true,
+      "working": false
+    },
+    {
+      "kind": "MATERIAL_STATE",
+      "base": true,
+      "city": 65536,
+      "compatible": true,
+      "district": -1,
+      "improvement": "IMPROVEMENT_FARM",
+      "improvementIndex": 1,
+      "lastBase": false,
+      "lastSpec": true,
+      "lastWorkingBase": false,
+      "lastWorkingSpec": true,
+      "lostBase": false,
+      "lostSpec": false,
+      "lostWorking": true,
+      "materialPlot": 1231,
+      "origin": "vanilla",
+      "owner": 5,
+      "pillaged": true,
+      "player": 5,
+      "previousImprovement": "IMPROVEMENT_FARM",
+      "previousOwner": 5,
+      "previousResource": "RESOURCE_WHEAT",
+      "previousWorking": true,
+      "quarter": "BAKERS",
+      "quarterPlot": 1156,
+      "resource": "RESOURCE_WHEAT",
+      "resourceIndex": 9,
+      "revealed": true,
+      "sequence": 251728,
+      "source": "poll",
+      "spec": false,
+      "turn": 249,
+      "visible": true,
+      "working": false
+    }
+  ],
+  "usable_material_exhaustions": [
+    {
+      "player": 4,
+      "quarterPlot": 1934,
+      "turn": 128,
+      "role": "base",
+      "previous": 1,
+      "current": 0,
+      "source": "ImprovementRemovedFromMap"
+    },
+    {
+      "player": 4,
+      "quarterPlot": 2457,
+      "turn": 222,
+      "role": "baseWorking",
+      "previous": 1,
+      "current": 0,
+      "source": "poll"
+    },
+    {
+      "player": 4,
+      "quarterPlot": 2830,
+      "turn": 228,
+      "role": "specWorking",
+      "previous": 1,
+      "current": 0,
+      "source": "poll"
+    },
+    {
+      "player": 4,
+      "quarterPlot": 3124,
+      "turn": 228,
+      "role": "baseWorking",
+      "previous": 1,
+      "current": 0,
+      "source": "poll"
+    }
+  ],
+  "relationship_order": {
+    "neighbourFirst": 23,
+    "quarterFirst": 15
+  },
+  "providers_adjacent": 8,
+  "trend": [
+    {
+      "turn": 25,
+      "quarters": {
+        "BAKERS": {
+          "service2_buildings": 0,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "service2_buildings": 0,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 456.84765625,
+        "production": 57.88671875,
+        "gross_gold": 53.79296875,
+        "maintenance": 8.0,
+        "population": 17.0,
+        "net_gold": 45.79296875,
+        "food": 19.0,
+        "cities": 8,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 162.578125,
+          "gross_gold": 8.3984375,
+          "maintenance": 3.0,
+          "net_gold": 5.3984375,
+          "cities": 1,
+          "population": 4.0,
+          "production": 14.3984375,
+          "food": 3.0
+        },
+        "2": {
+          "reserve": 69.76953125,
+          "gross_gold": 13.19921875,
+          "maintenance": 2.0,
+          "net_gold": 11.19921875,
+          "cities": 2,
+          "population": 5.0,
+          "production": 17.6953125,
+          "food": 4.0
+        },
+        "3": {
+          "reserve": 27.5703125,
+          "gross_gold": 11.796875,
+          "maintenance": 1.0,
+          "net_gold": 10.796875,
+          "cities": 2,
+          "population": 2.0,
+          "production": 9.296875,
+          "food": 3.0
+        },
+        "4": {
+          "reserve": 81.9765625,
+          "gross_gold": 7.19921875,
+          "maintenance": 1.0,
+          "net_gold": 6.19921875,
+          "cities": 1,
+          "population": 3.0,
+          "production": 6.0,
+          "food": 3.0
+        },
+        "5": {
+          "reserve": 114.953125,
+          "gross_gold": 13.19921875,
+          "maintenance": 1.0,
+          "net_gold": 12.19921875,
+          "cities": 2,
+          "population": 3.0,
+          "production": 10.49609375,
+          "food": 6.0
+        }
+      },
+      "service_buildings": {}
+    },
+    {
+      "turn": 50,
+      "quarters": {
+        "BAKERS": {
+          "placed": 1,
+          "complete": 1,
+          "river": 1,
+          "base": 1,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "both_improved": 0,
+          "sales": 0,
+          "sales_outside_center": 0,
+          "raw_customer_geometry_any": 0,
+          "customer_any_footprint": 0,
+          "customer_any_completed": 0,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 0,
+          "base_customer_any": 0,
+          "base_customer_any_footprint": 0,
+          "both_customer_any": 0,
+          "both_customer_any_footprint": 0,
+          "base_improved_customer_any": 0,
+          "base_improved_customer_any_footprint": 0,
+          "producer2": 0,
+          "producer2_working": 0,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 0,
+          "producer3_working": 0,
+          "customer3": 0,
+          "customer3_without_building": 0,
+          "customer3_with_building": 0,
+          "customer3_working": 0,
+          "mapped_customer3": 0,
+          "mapped_customer3_completed": 0,
+          "mapped_customer3_with_working_building": 0,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 0,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 0,
+          "customer4_without_building": 0,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "service2_buildings": 0,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "river": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 2,
+          "spec_improved": 1,
+          "both_improved": 1,
+          "sales": 2,
+          "sales_outside_center": 2,
+          "raw_customer_geometry_any": 2,
+          "customer_any_footprint": 2,
+          "customer_any_completed": 2,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 2,
+          "base_customer_any": 2,
+          "base_customer_any_footprint": 2,
+          "both_customer_any": 1,
+          "both_customer_any_footprint": 1,
+          "base_improved_customer_any": 2,
+          "base_improved_customer_any_footprint": 2,
+          "producer2": 0,
+          "producer2_working": 0,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 0,
+          "producer3_working": 0,
+          "customer3": 2,
+          "customer3_without_building": 1,
+          "customer3_with_building": 1,
+          "customer3_working": 1,
+          "mapped_customer3": 2,
+          "mapped_customer3_completed": 2,
+          "mapped_customer3_with_working_building": 1,
+          "mapped_customer3_without_working_building": 1,
+          "mapped_customer3_completed_without_working_building": 1,
+          "service3_property": 0,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 0,
+          "customer4_without_building": 0,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 2,
+          "unique_customer3_with_building": 1,
+          "unique_customer3_working": 1,
+          "service2_buildings": 0,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 537.12890625,
+        "production": 167.6796875,
+        "gross_gold": 119.3828125,
+        "maintenance": 35.0,
+        "population": 54.0,
+        "net_gold": 84.3828125,
+        "food": 45.0,
+        "cities": 15,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 140.03125,
+          "gross_gold": 11.99609375,
+          "maintenance": 5.0,
+          "net_gold": 6.99609375,
+          "cities": 2,
+          "population": 8.0,
+          "production": 26.3984375,
+          "food": 5.0
+        },
+        "2": {
+          "reserve": 110.6015625,
+          "gross_gold": 36.59765625,
+          "maintenance": 12.0,
+          "net_gold": 24.59765625,
+          "cities": 4,
+          "population": 17.0,
+          "production": 50.390625,
+          "food": 16.0
+        },
+        "3": {
+          "reserve": 48.27734375,
+          "gross_gold": 14.99609375,
+          "maintenance": 3.0,
+          "net_gold": 11.99609375,
+          "cities": 3,
+          "population": 8.0,
+          "production": 34.39453125,
+          "food": 6.0
+        },
+        "4": {
+          "reserve": 33.625,
+          "gross_gold": 14.19921875,
+          "maintenance": 4.0,
+          "net_gold": 10.19921875,
+          "cities": 2,
+          "population": 8.0,
+          "production": 15.3984375,
+          "food": 4.0
+        },
+        "5": {
+          "reserve": 204.59375,
+          "gross_gold": 41.59375,
+          "maintenance": 11.0,
+          "net_gold": 30.59375,
+          "cities": 4,
+          "population": 13.0,
+          "production": 41.09765625,
+          "food": 14.0
+        }
+      },
+      "service_buildings": {}
+    },
+    {
+      "turn": 75,
+      "quarters": {
+        "BAKERS": {
+          "placed": 3,
+          "complete": 3,
+          "river": 1,
+          "base": 3,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "both_improved": 0,
+          "sales": 2,
+          "sales_outside_center": 0,
+          "raw_customer_geometry_any": 2,
+          "customer_any_footprint": 2,
+          "customer_any_completed": 2,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 2,
+          "base_customer_any": 2,
+          "base_customer_any_footprint": 2,
+          "both_customer_any": 0,
+          "both_customer_any_footprint": 0,
+          "base_improved_customer_any": 1,
+          "base_improved_customer_any_footprint": 1,
+          "producer2": 1,
+          "producer2_working": 1,
+          "customer2": 2,
+          "customer2_without_building": 1,
+          "customer2_with_building": 1,
+          "customer2_working": 1,
+          "mapped_customer2": 2,
+          "mapped_customer2_completed": 2,
+          "mapped_customer2_with_working_building": 1,
+          "mapped_customer2_without_working_building": 1,
+          "mapped_customer2_completed_without_working_building": 1,
+          "base_customer2": 2,
+          "base_customer2_footprint": 2,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 0,
+          "producer3_working": 0,
+          "customer3": 0,
+          "customer3_without_building": 0,
+          "customer3_with_building": 0,
+          "customer3_working": 0,
+          "mapped_customer3": 0,
+          "mapped_customer3_completed": 0,
+          "mapped_customer3_with_working_building": 0,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 0,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 0,
+          "customer4_without_building": 0,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer2": 2,
+          "unique_customer2_with_building": 1,
+          "unique_customer2_working": 1,
+          "service2_buildings": 0,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "river": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 2,
+          "spec_improved": 1,
+          "both_improved": 1,
+          "sales": 2,
+          "sales_outside_center": 2,
+          "raw_customer_geometry_any": 2,
+          "customer_any_footprint": 2,
+          "customer_any_completed": 2,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 2,
+          "base_customer_any": 2,
+          "base_customer_any_footprint": 2,
+          "both_customer_any": 1,
+          "both_customer_any_footprint": 1,
+          "base_improved_customer_any": 2,
+          "base_improved_customer_any_footprint": 2,
+          "producer2": 0,
+          "producer2_working": 0,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 0,
+          "producer3_working": 0,
+          "customer3": 2,
+          "customer3_without_building": 0,
+          "customer3_with_building": 2,
+          "customer3_working": 2,
+          "mapped_customer3": 2,
+          "mapped_customer3_completed": 2,
+          "mapped_customer3_with_working_building": 2,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 0,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 0,
+          "customer4_without_building": 0,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 2,
+          "unique_customer3_with_building": 2,
+          "unique_customer3_working": 2,
+          "service2_buildings": 0,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 509.640625,
+        "production": 275.26953125,
+        "gross_gold": 240.56640625,
+        "maintenance": 122.0,
+        "population": 112.0,
+        "net_gold": 118.56640625,
+        "food": 88.0,
+        "cities": 21,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 46.24609375,
+          "gross_gold": 25.59375,
+          "maintenance": 24.0,
+          "net_gold": 1.59375,
+          "cities": 3,
+          "population": 16.0,
+          "production": 45.296875,
+          "food": 11.0
+        },
+        "2": {
+          "reserve": 147.98828125,
+          "gross_gold": 82.09375,
+          "maintenance": 37.0,
+          "net_gold": 45.09375,
+          "cities": 4,
+          "population": 30.0,
+          "production": 61.09765625,
+          "food": 21.0
+        },
+        "3": {
+          "reserve": 80.61328125,
+          "gross_gold": 47.98828125,
+          "maintenance": 28.0,
+          "net_gold": 19.98828125,
+          "cities": 5,
+          "population": 20.0,
+          "production": 59.9921875,
+          "food": 14.0
+        },
+        "4": {
+          "reserve": 67.94921875,
+          "gross_gold": 23.49609375,
+          "maintenance": 10.0,
+          "net_gold": 13.49609375,
+          "cities": 3,
+          "population": 14.0,
+          "production": 21.296875,
+          "food": 13.0
+        },
+        "5": {
+          "reserve": 166.84375,
+          "gross_gold": 61.39453125,
+          "maintenance": 23.0,
+          "net_gold": 38.39453125,
+          "cities": 6,
+          "population": 32.0,
+          "production": 87.5859375,
+          "food": 29.0
+        }
+      },
+      "service_buildings": {}
+    },
+    {
+      "turn": 100,
+      "quarters": {
+        "BAKERS": {
+          "placed": 5,
+          "complete": 5,
+          "river": 3,
+          "base": 5,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 4,
+          "spec_improved": 0,
+          "both_improved": 0,
+          "sales": 4,
+          "sales_outside_center": 1,
+          "raw_customer_geometry_any": 4,
+          "customer_any_footprint": 4,
+          "customer_any_completed": 4,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 4,
+          "base_customer_any": 4,
+          "base_customer_any_footprint": 4,
+          "both_customer_any": 0,
+          "both_customer_any_footprint": 0,
+          "base_improved_customer_any": 3,
+          "base_improved_customer_any_footprint": 3,
+          "producer2": 4,
+          "producer2_working": 4,
+          "customer2": 4,
+          "customer2_without_building": 1,
+          "customer2_with_building": 3,
+          "customer2_working": 3,
+          "mapped_customer2": 4,
+          "mapped_customer2_completed": 4,
+          "mapped_customer2_with_working_building": 3,
+          "mapped_customer2_without_working_building": 1,
+          "mapped_customer2_completed_without_working_building": 1,
+          "base_customer2": 4,
+          "base_customer2_footprint": 4,
+          "base_improved_customer2_working": 3,
+          "service2_property": 3,
+          "stage2_physical": 3,
+          "producer3": 2,
+          "producer3_working": 2,
+          "customer3": 0,
+          "customer3_without_building": 0,
+          "customer3_with_building": 0,
+          "customer3_working": 0,
+          "mapped_customer3": 0,
+          "mapped_customer3_completed": 0,
+          "mapped_customer3_with_working_building": 0,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 0,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 1,
+          "mapped_customer4_completed_without_working_building": 1,
+          "service4_property": 0,
+          "unique_customer2": 4,
+          "unique_customer2_with_building": 3,
+          "unique_customer2_working": 3,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 3,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "river": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 2,
+          "spec_improved": 1,
+          "both_improved": 1,
+          "sales": 2,
+          "sales_outside_center": 2,
+          "raw_customer_geometry_any": 2,
+          "customer_any_footprint": 2,
+          "customer_any_completed": 2,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 2,
+          "base_customer_any": 2,
+          "base_customer_any_footprint": 2,
+          "both_customer_any": 1,
+          "both_customer_any_footprint": 1,
+          "base_improved_customer_any": 2,
+          "base_improved_customer_any_footprint": 2,
+          "producer2": 0,
+          "producer2_working": 0,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 0,
+          "producer3_working": 0,
+          "customer3": 2,
+          "customer3_without_building": 0,
+          "customer3_with_building": 2,
+          "customer3_working": 1,
+          "mapped_customer3": 2,
+          "mapped_customer3_completed": 2,
+          "mapped_customer3_with_working_building": 1,
+          "mapped_customer3_without_working_building": 1,
+          "mapped_customer3_completed_without_working_building": 1,
+          "service3_property": 0,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 2,
+          "unique_customer3_with_building": 2,
+          "unique_customer3_working": 1,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 0,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 717.58984375,
+        "production": 476.41796875,
+        "gross_gold": 465.60546875,
+        "maintenance": 247.0,
+        "population": 194.0,
+        "net_gold": 218.60546875,
+        "food": 151.0,
+        "cities": 28,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 273.0234375,
+          "gross_gold": 80.59375,
+          "maintenance": 40.0,
+          "net_gold": 40.59375,
+          "cities": 5,
+          "population": 26.0,
+          "production": 64.75,
+          "food": 21.0
+        },
+        "2": {
+          "reserve": 142.31640625,
+          "gross_gold": 156.7890625,
+          "maintenance": 67.0,
+          "net_gold": 89.7890625,
+          "cities": 5,
+          "population": 48.0,
+          "production": 97.29296875,
+          "food": 43.0
+        },
+        "3": {
+          "reserve": 53.421875,
+          "gross_gold": 78.23828125,
+          "maintenance": 61.0,
+          "net_gold": 17.23828125,
+          "cities": 6,
+          "population": 34.0,
+          "production": 99.58984375,
+          "food": 19.0
+        },
+        "4": {
+          "reserve": 62.05078125,
+          "gross_gold": 58.79296875,
+          "maintenance": 29.0,
+          "net_gold": 29.79296875,
+          "cities": 5,
+          "population": 35.0,
+          "production": 75.59375,
+          "food": 38.0
+        },
+        "5": {
+          "reserve": 186.77734375,
+          "gross_gold": 91.19140625,
+          "maintenance": 50.0,
+          "net_gold": 41.19140625,
+          "cities": 7,
+          "population": 51.0,
+          "production": 139.19140625,
+          "food": 30.0
+        }
+      },
+      "service_buildings": {
+        "BUILDING_CSC_BAKERS_STAGE_2_SERVICE": 3
+      }
+    },
+    {
+      "turn": 125,
+      "quarters": {
+        "BAKERS": {
+          "placed": 7,
+          "complete": 7,
+          "river": 4,
+          "base": 7,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 5,
+          "spec_improved": 1,
+          "both_improved": 0,
+          "sales": 6,
+          "sales_outside_center": 2,
+          "raw_customer_geometry_any": 6,
+          "customer_any_footprint": 6,
+          "customer_any_completed": 6,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 6,
+          "base_customer_any": 6,
+          "base_customer_any_footprint": 6,
+          "both_customer_any": 1,
+          "both_customer_any_footprint": 1,
+          "base_improved_customer_any": 4,
+          "base_improved_customer_any_footprint": 4,
+          "producer2": 6,
+          "producer2_working": 6,
+          "customer2": 6,
+          "customer2_without_building": 1,
+          "customer2_with_building": 5,
+          "customer2_working": 5,
+          "mapped_customer2": 6,
+          "mapped_customer2_completed": 6,
+          "mapped_customer2_with_working_building": 5,
+          "mapped_customer2_without_working_building": 1,
+          "mapped_customer2_completed_without_working_building": 1,
+          "base_customer2": 6,
+          "base_customer2_footprint": 6,
+          "base_improved_customer2_working": 4,
+          "service2_property": 4,
+          "stage2_physical": 4,
+          "producer3": 4,
+          "producer3_working": 4,
+          "customer3": 0,
+          "customer3_without_building": 0,
+          "customer3_with_building": 0,
+          "customer3_working": 0,
+          "mapped_customer3": 0,
+          "mapped_customer3_completed": 0,
+          "mapped_customer3_with_working_building": 0,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 0,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 1,
+          "mapped_customer4_completed_without_working_building": 1,
+          "service4_property": 0,
+          "unique_customer2": 6,
+          "unique_customer2_with_building": 5,
+          "unique_customer2_working": 5,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 4,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 4,
+          "complete": 4,
+          "river": 2,
+          "base": 4,
+          "spec": 3,
+          "both": 3,
+          "base_improved": 4,
+          "spec_improved": 2,
+          "both_improved": 2,
+          "sales": 3,
+          "sales_outside_center": 3,
+          "raw_customer_geometry_any": 3,
+          "customer_any_footprint": 3,
+          "customer_any_completed": 3,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 3,
+          "base_customer_any": 3,
+          "base_customer_any_footprint": 3,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 3,
+          "base_improved_customer_any_footprint": 3,
+          "producer2": 3,
+          "producer2_working": 3,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 1,
+          "producer3_working": 1,
+          "customer3": 3,
+          "customer3_without_building": 0,
+          "customer3_with_building": 3,
+          "customer3_working": 3,
+          "mapped_customer3": 3,
+          "mapped_customer3_completed": 3,
+          "mapped_customer3_with_working_building": 3,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 1,
+          "producer4": 0,
+          "producer4_working": 0,
+          "customer4": 0,
+          "customer4_without_building": 0,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 4,
+          "unique_customer3_with_building": 3,
+          "unique_customer3_working": 3,
+          "service2_buildings": 0,
+          "service3_buildings": 1,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 1189.390625,
+        "production": 643.53515625,
+        "gross_gold": 1011.42578125,
+        "maintenance": 517.0,
+        "population": 270.0,
+        "net_gold": 494.42578125,
+        "food": 208.0,
+        "cities": 31,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 267.54296875,
+          "gross_gold": 117.7890625,
+          "maintenance": 61.0,
+          "net_gold": 56.7890625,
+          "cities": 5,
+          "population": 37.0,
+          "production": 92.47265625,
+          "food": 23.0
+        },
+        "2": {
+          "reserve": 283.55078125,
+          "gross_gold": 324.09765625,
+          "maintenance": 133.0,
+          "net_gold": 191.09765625,
+          "cities": 6,
+          "population": 63.0,
+          "production": 108.4921875,
+          "food": 50.0
+        },
+        "3": {
+          "reserve": 303.20703125,
+          "gross_gold": 171.48828125,
+          "maintenance": 93.0,
+          "net_gold": 78.48828125,
+          "cities": 8,
+          "population": 53.0,
+          "production": 134.98828125,
+          "food": 44.0
+        },
+        "4": {
+          "reserve": 34.34765625,
+          "gross_gold": 113.08984375,
+          "maintenance": 90.0,
+          "net_gold": 23.08984375,
+          "cities": 5,
+          "population": 50.0,
+          "production": 111.69140625,
+          "food": 47.0
+        },
+        "5": {
+          "reserve": 300.7421875,
+          "gross_gold": 284.9609375,
+          "maintenance": 140.0,
+          "net_gold": 144.9609375,
+          "cities": 7,
+          "population": 67.0,
+          "production": 195.890625,
+          "food": 44.0
+        }
+      },
+      "service_buildings": {
+        "BUILDING_CSC_TAILORS_STAGE_3_SERVICE": 1,
+        "BUILDING_CSC_BAKERS_STAGE_2_SERVICE": 4
+      }
+    },
+    {
+      "turn": 150,
+      "quarters": {
+        "BAKERS": {
+          "placed": 10,
+          "complete": 9,
+          "river": 5,
+          "base": 9,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 6,
+          "spec_improved": 1,
+          "both_improved": 0,
+          "sales": 8,
+          "sales_outside_center": 4,
+          "raw_customer_geometry_any": 8,
+          "customer_any_footprint": 8,
+          "customer_any_completed": 8,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 8,
+          "base_customer_any": 8,
+          "base_customer_any_footprint": 8,
+          "both_customer_any": 1,
+          "both_customer_any_footprint": 1,
+          "base_improved_customer_any": 5,
+          "base_improved_customer_any_footprint": 5,
+          "producer2": 9,
+          "producer2_working": 9,
+          "customer2": 8,
+          "customer2_without_building": 3,
+          "customer2_with_building": 5,
+          "customer2_working": 5,
+          "mapped_customer2": 8,
+          "mapped_customer2_completed": 8,
+          "mapped_customer2_with_working_building": 5,
+          "mapped_customer2_without_working_building": 3,
+          "mapped_customer2_completed_without_working_building": 3,
+          "base_customer2": 8,
+          "base_customer2_footprint": 8,
+          "base_improved_customer2_working": 4,
+          "service2_property": 4,
+          "stage2_physical": 4,
+          "producer3": 6,
+          "producer3_working": 6,
+          "customer3": 0,
+          "customer3_without_building": 0,
+          "customer3_with_building": 0,
+          "customer3_working": 0,
+          "mapped_customer3": 0,
+          "mapped_customer3_completed": 0,
+          "mapped_customer3_with_working_building": 0,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 0,
+          "producer4": 3,
+          "producer4_working": 3,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 1,
+          "mapped_customer4_completed_without_working_building": 1,
+          "service4_property": 0,
+          "unique_customer2": 8,
+          "unique_customer2_with_building": 5,
+          "unique_customer2_working": 5,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 4,
+          "service3_buildings": 0,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 5,
+          "complete": 5,
+          "river": 3,
+          "base": 5,
+          "spec": 3,
+          "both": 3,
+          "base_improved": 5,
+          "spec_improved": 3,
+          "both_improved": 3,
+          "sales": 4,
+          "sales_outside_center": 4,
+          "raw_customer_geometry_any": 4,
+          "customer_any_footprint": 4,
+          "customer_any_completed": 4,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 4,
+          "base_customer_any": 4,
+          "base_customer_any_footprint": 4,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 4,
+          "base_improved_customer_any_footprint": 4,
+          "producer2": 4,
+          "producer2_working": 4,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 3,
+          "producer3_working": 3,
+          "customer3": 3,
+          "customer3_without_building": 0,
+          "customer3_with_building": 3,
+          "customer3_working": 3,
+          "mapped_customer3": 3,
+          "mapped_customer3_completed": 3,
+          "mapped_customer3_with_working_building": 3,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 3,
+          "producer4": 1,
+          "producer4_working": 1,
+          "customer4": 0,
+          "customer4_without_building": 0,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 4,
+          "unique_customer3_with_building": 4,
+          "unique_customer3_working": 4,
+          "service2_buildings": 0,
+          "service3_buildings": 3,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 3945.88671875,
+        "production": 1050.875,
+        "gross_gold": 1549.05078125,
+        "maintenance": 771.0,
+        "population": 347.0,
+        "net_gold": 778.05078125,
+        "food": 334.0,
+        "cities": 33,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 589.48828125,
+          "gross_gold": 200.1015625,
+          "maintenance": 96.0,
+          "net_gold": 104.1015625,
+          "cities": 5,
+          "population": 48.0,
+          "production": 156.23046875,
+          "food": 45.0
+        },
+        "2": {
+          "reserve": 1312.22265625,
+          "gross_gold": 420.21875,
+          "maintenance": 147.0,
+          "net_gold": 273.21875,
+          "cities": 6,
+          "population": 77.0,
+          "production": 165.75,
+          "food": 60.0
+        },
+        "3": {
+          "reserve": 558.90234375,
+          "gross_gold": 228.8359375,
+          "maintenance": 171.0,
+          "net_gold": 57.8359375,
+          "cities": 8,
+          "population": 76.0,
+          "production": 246.08203125,
+          "food": 40.0
+        },
+        "4": {
+          "reserve": 128.3671875,
+          "gross_gold": 222.19140625,
+          "maintenance": 129.0,
+          "net_gold": 93.19140625,
+          "cities": 7,
+          "population": 55.0,
+          "production": 121.48828125,
+          "food": 65.0
+        },
+        "5": {
+          "reserve": 1356.90625,
+          "gross_gold": 477.703125,
+          "maintenance": 228.0,
+          "net_gold": 249.703125,
+          "cities": 7,
+          "population": 91.0,
+          "production": 361.32421875,
+          "food": 124.0
+        }
+      },
+      "service_buildings": {
+        "BUILDING_CSC_TAILORS_STAGE_3_SERVICE": 3,
+        "BUILDING_CSC_BAKERS_STAGE_2_SERVICE": 4
+      }
+    },
+    {
+      "turn": 175,
+      "quarters": {
+        "BAKERS": {
+          "placed": 12,
+          "complete": 11,
+          "river": 5,
+          "base": 11,
+          "spec": 2,
+          "both": 2,
+          "base_improved": 8,
+          "spec_improved": 2,
+          "both_improved": 0,
+          "sales": 10,
+          "sales_outside_center": 7,
+          "raw_customer_geometry_any": 10,
+          "customer_any_footprint": 10,
+          "customer_any_completed": 10,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 10,
+          "base_customer_any": 10,
+          "base_customer_any_footprint": 10,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 7,
+          "base_improved_customer_any_footprint": 7,
+          "producer2": 11,
+          "producer2_working": 11,
+          "customer2": 10,
+          "customer2_without_building": 5,
+          "customer2_with_building": 5,
+          "customer2_working": 5,
+          "mapped_customer2": 10,
+          "mapped_customer2_completed": 10,
+          "mapped_customer2_with_working_building": 5,
+          "mapped_customer2_without_working_building": 5,
+          "mapped_customer2_completed_without_working_building": 5,
+          "base_customer2": 10,
+          "base_customer2_footprint": 10,
+          "base_improved_customer2_working": 5,
+          "service2_property": 5,
+          "stage2_physical": 5,
+          "producer3": 7,
+          "producer3_working": 7,
+          "customer3": 2,
+          "customer3_without_building": 0,
+          "customer3_with_building": 2,
+          "customer3_working": 2,
+          "mapped_customer3": 2,
+          "mapped_customer3_completed": 2,
+          "mapped_customer3_with_working_building": 2,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 2,
+          "producer4": 5,
+          "producer4_working": 5,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 1,
+          "mapped_customer4_completed_without_working_building": 1,
+          "service4_property": 0,
+          "unique_customer2": 10,
+          "unique_customer2_with_building": 5,
+          "unique_customer2_working": 5,
+          "unique_customer3": 2,
+          "unique_customer3_with_building": 2,
+          "unique_customer3_working": 2,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 5,
+          "service3_buildings": 2,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 5,
+          "complete": 5,
+          "river": 3,
+          "base": 5,
+          "spec": 3,
+          "both": 3,
+          "base_improved": 5,
+          "spec_improved": 3,
+          "both_improved": 3,
+          "sales": 4,
+          "sales_outside_center": 4,
+          "raw_customer_geometry_any": 4,
+          "customer_any_footprint": 4,
+          "customer_any_completed": 4,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 4,
+          "base_customer_any": 4,
+          "base_customer_any_footprint": 4,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 4,
+          "base_improved_customer_any_footprint": 4,
+          "producer2": 5,
+          "producer2_working": 5,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 3,
+          "producer3_working": 3,
+          "customer3": 4,
+          "customer3_without_building": 0,
+          "customer3_with_building": 4,
+          "customer3_working": 4,
+          "mapped_customer3": 4,
+          "mapped_customer3_completed": 4,
+          "mapped_customer3_with_working_building": 4,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 3,
+          "producer4": 2,
+          "producer4_working": 2,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 0,
+          "mapped_customer4_completed": 0,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 5,
+          "unique_customer3_with_building": 5,
+          "unique_customer3_working": 5,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 0,
+          "service3_buildings": 3,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 4248.4453125,
+        "production": 1646.359375,
+        "gross_gold": 2755.546875,
+        "maintenance": 1274.0,
+        "population": 466.0,
+        "net_gold": 1481.546875,
+        "food": 360.3515625,
+        "cities": 41,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 1123.33203125,
+          "gross_gold": 335.53515625,
+          "maintenance": 174.0,
+          "net_gold": 161.53515625,
+          "cities": 6,
+          "population": 54.0,
+          "production": 230.98828125,
+          "food": 25.0
+        },
+        "2": {
+          "reserve": 1449.81640625,
+          "gross_gold": 641.59375,
+          "maintenance": 256.0,
+          "net_gold": 385.59375,
+          "cities": 6,
+          "population": 94.0,
+          "production": 310.3515625,
+          "food": 76.828125
+        },
+        "3": {
+          "reserve": 629.84375,
+          "gross_gold": 562.06640625,
+          "maintenance": 257.0,
+          "net_gold": 305.06640625,
+          "cities": 10,
+          "population": 96.0,
+          "production": 370.51171875,
+          "food": 69.5234375
+        },
+        "4": {
+          "reserve": 444.1875,
+          "gross_gold": 440.19140625,
+          "maintenance": 226.0,
+          "net_gold": 214.19140625,
+          "cities": 10,
+          "population": 93.0,
+          "production": 250.78515625,
+          "food": 77.0
+        },
+        "5": {
+          "reserve": 601.265625,
+          "gross_gold": 776.16015625,
+          "maintenance": 361.0,
+          "net_gold": 415.16015625,
+          "cities": 9,
+          "population": 129.0,
+          "production": 483.72265625,
+          "food": 112.0
+        }
+      },
+      "service_buildings": {
+        "BUILDING_CSC_TAILORS_STAGE_3_SERVICE": 3,
+        "BUILDING_CSC_BAKERS_STAGE_2_SERVICE": 5,
+        "BUILDING_CSC_BAKERS_STAGE_3_SERVICE": 2
+      }
+    },
+    {
+      "turn": 200,
+      "quarters": {
+        "BAKERS": {
+          "placed": 13,
+          "complete": 12,
+          "river": 5,
+          "base": 12,
+          "spec": 2,
+          "both": 2,
+          "base_improved": 10,
+          "spec_improved": 2,
+          "both_improved": 1,
+          "sales": 11,
+          "sales_outside_center": 7,
+          "raw_customer_geometry_any": 11,
+          "customer_any_footprint": 11,
+          "customer_any_completed": 11,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 11,
+          "base_customer_any": 11,
+          "base_customer_any_footprint": 11,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 9,
+          "base_improved_customer_any_footprint": 9,
+          "producer2": 12,
+          "producer2_working": 12,
+          "customer2": 11,
+          "customer2_without_building": 4,
+          "customer2_with_building": 7,
+          "customer2_working": 7,
+          "mapped_customer2": 11,
+          "mapped_customer2_completed": 11,
+          "mapped_customer2_with_working_building": 7,
+          "mapped_customer2_without_working_building": 4,
+          "mapped_customer2_completed_without_working_building": 4,
+          "base_customer2": 11,
+          "base_customer2_footprint": 11,
+          "base_improved_customer2_working": 7,
+          "service2_property": 7,
+          "stage2_physical": 7,
+          "producer3": 9,
+          "producer3_working": 9,
+          "customer3": 2,
+          "customer3_without_building": 0,
+          "customer3_with_building": 2,
+          "customer3_working": 2,
+          "mapped_customer3": 2,
+          "mapped_customer3_completed": 2,
+          "mapped_customer3_with_working_building": 2,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 2,
+          "producer4": 6,
+          "producer4_working": 6,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 1,
+          "mapped_customer4_completed_without_working_building": 1,
+          "service4_property": 0,
+          "unique_customer2": 11,
+          "unique_customer2_with_building": 7,
+          "unique_customer2_working": 7,
+          "unique_customer3": 2,
+          "unique_customer3_with_building": 2,
+          "unique_customer3_working": 2,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 7,
+          "service3_buildings": 2,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 6,
+          "complete": 6,
+          "river": 4,
+          "base": 6,
+          "spec": 3,
+          "both": 3,
+          "base_improved": 6,
+          "spec_improved": 3,
+          "both_improved": 3,
+          "sales": 4,
+          "sales_outside_center": 4,
+          "raw_customer_geometry_any": 4,
+          "customer_any_footprint": 4,
+          "customer_any_completed": 4,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 4,
+          "base_customer_any": 4,
+          "base_customer_any_footprint": 4,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 4,
+          "base_improved_customer_any_footprint": 4,
+          "producer2": 5,
+          "producer2_working": 5,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 3,
+          "producer3_working": 3,
+          "customer3": 4,
+          "customer3_without_building": 0,
+          "customer3_with_building": 4,
+          "customer3_working": 4,
+          "mapped_customer3": 4,
+          "mapped_customer3_completed": 4,
+          "mapped_customer3_with_working_building": 4,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 2,
+          "producer4": 2,
+          "producer4_working": 2,
+          "customer4": 2,
+          "customer4_without_building": 1,
+          "customer4_with_building": 1,
+          "customer4_working": 1,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 1,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 5,
+          "unique_customer3_with_building": 5,
+          "unique_customer3_working": 4,
+          "unique_customer4": 2,
+          "unique_customer4_with_building": 1,
+          "unique_customer4_working": 1,
+          "service2_buildings": 0,
+          "service3_buildings": 3,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 3696.75,
+        "production": 2408.13671875,
+        "gross_gold": 4259.88671875,
+        "maintenance": 2048.0,
+        "population": 565.0,
+        "net_gold": 2211.88671875,
+        "food": 411.5546875,
+        "cities": 43,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 854.1953125,
+          "gross_gold": 600.140625,
+          "maintenance": 231.0,
+          "net_gold": 369.140625,
+          "cities": 8,
+          "population": 73.0,
+          "production": 370.3046875,
+          "food": 89.0
+        },
+        "2": {
+          "reserve": 1445.87109375,
+          "gross_gold": 956.46484375,
+          "maintenance": 457.0,
+          "net_gold": 499.46484375,
+          "cities": 6,
+          "population": 103.0,
+          "production": 403.46484375,
+          "food": 72.9296875
+        },
+        "3": {
+          "reserve": 395.41796875,
+          "gross_gold": 1034.69140625,
+          "maintenance": 396.0,
+          "net_gold": 638.69140625,
+          "cities": 10,
+          "population": 126.0,
+          "production": 603.54296875,
+          "food": 103.625
+        },
+        "4": {
+          "reserve": 304.49609375,
+          "gross_gold": 603.046875,
+          "maintenance": 421.0,
+          "net_gold": 182.046875,
+          "cities": 10,
+          "population": 123.0,
+          "production": 445.77734375,
+          "food": 61.0
+        },
+        "5": {
+          "reserve": 696.76953125,
+          "gross_gold": 1065.54296875,
+          "maintenance": 543.0,
+          "net_gold": 522.54296875,
+          "cities": 9,
+          "population": 140.0,
+          "production": 585.046875,
+          "food": 85.0
+        }
+      },
+      "service_buildings": {
+        "BUILDING_CSC_TAILORS_STAGE_3_SERVICE": 3,
+        "BUILDING_CSC_BAKERS_STAGE_2_SERVICE": 7,
+        "BUILDING_CSC_BAKERS_STAGE_3_SERVICE": 2
+      }
+    },
+    {
+      "turn": 225,
+      "quarters": {
+        "BAKERS": {
+          "placed": 14,
+          "complete": 14,
+          "river": 7,
+          "base": 14,
+          "spec": 2,
+          "both": 2,
+          "base_improved": 11,
+          "spec_improved": 2,
+          "both_improved": 1,
+          "sales": 13,
+          "sales_outside_center": 7,
+          "raw_customer_geometry_any": 13,
+          "customer_any_footprint": 13,
+          "customer_any_completed": 13,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 13,
+          "base_customer_any": 13,
+          "base_customer_any_footprint": 13,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 10,
+          "base_improved_customer_any_footprint": 10,
+          "producer2": 14,
+          "producer2_working": 14,
+          "customer2": 13,
+          "customer2_without_building": 3,
+          "customer2_with_building": 10,
+          "customer2_working": 10,
+          "mapped_customer2": 13,
+          "mapped_customer2_completed": 13,
+          "mapped_customer2_with_working_building": 10,
+          "mapped_customer2_without_working_building": 3,
+          "mapped_customer2_completed_without_working_building": 3,
+          "base_customer2": 13,
+          "base_customer2_footprint": 13,
+          "base_improved_customer2_working": 9,
+          "service2_property": 9,
+          "stage2_physical": 9,
+          "producer3": 13,
+          "producer3_working": 12,
+          "customer3": 2,
+          "customer3_without_building": 0,
+          "customer3_with_building": 2,
+          "customer3_working": 2,
+          "mapped_customer3": 2,
+          "mapped_customer3_completed": 2,
+          "mapped_customer3_with_working_building": 2,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 2,
+          "producer4": 10,
+          "producer4_working": 10,
+          "customer4": 1,
+          "customer4_without_building": 1,
+          "customer4_with_building": 0,
+          "customer4_working": 0,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 0,
+          "mapped_customer4_without_working_building": 1,
+          "mapped_customer4_completed_without_working_building": 1,
+          "service4_property": 0,
+          "unique_customer2": 13,
+          "unique_customer2_with_building": 10,
+          "unique_customer2_working": 10,
+          "unique_customer3": 2,
+          "unique_customer3_with_building": 2,
+          "unique_customer3_working": 2,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 0,
+          "unique_customer4_working": 0,
+          "service2_buildings": 9,
+          "service3_buildings": 2,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 7,
+          "complete": 7,
+          "river": 4,
+          "base": 7,
+          "spec": 4,
+          "both": 4,
+          "base_improved": 7,
+          "spec_improved": 4,
+          "both_improved": 4,
+          "sales": 5,
+          "sales_outside_center": 5,
+          "raw_customer_geometry_any": 5,
+          "customer_any_footprint": 5,
+          "customer_any_completed": 5,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 5,
+          "base_customer_any": 5,
+          "base_customer_any_footprint": 5,
+          "both_customer_any": 3,
+          "both_customer_any_footprint": 3,
+          "base_improved_customer_any": 5,
+          "base_improved_customer_any_footprint": 5,
+          "producer2": 7,
+          "producer2_working": 7,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 4,
+          "producer3_working": 4,
+          "customer3": 4,
+          "customer3_without_building": 0,
+          "customer3_with_building": 4,
+          "customer3_working": 3,
+          "mapped_customer3": 4,
+          "mapped_customer3_completed": 4,
+          "mapped_customer3_with_working_building": 3,
+          "mapped_customer3_without_working_building": 1,
+          "mapped_customer3_completed_without_working_building": 1,
+          "service3_property": 2,
+          "producer4": 3,
+          "producer4_working": 3,
+          "customer4": 3,
+          "customer4_without_building": 1,
+          "customer4_with_building": 2,
+          "customer4_working": 2,
+          "mapped_customer4": 2,
+          "mapped_customer4_completed": 2,
+          "mapped_customer4_with_working_building": 2,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 5,
+          "unique_customer3_with_building": 5,
+          "unique_customer3_working": 3,
+          "unique_customer4": 3,
+          "unique_customer4_with_building": 2,
+          "unique_customer4_working": 2,
+          "service2_buildings": 0,
+          "service3_buildings": 3,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 3903.703125,
+        "production": 2630.38671875,
+        "gross_gold": 5206.1015625,
+        "maintenance": 3322.0,
+        "population": 677.0,
+        "net_gold": 1884.1015625,
+        "food": 407.3515625,
+        "cities": 49,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 881.26171875,
+          "gross_gold": 619.1875,
+          "maintenance": 475.0,
+          "net_gold": 144.1875,
+          "cities": 10,
+          "population": 108.0,
+          "production": 345.703125,
+          "food": 47.0
+        },
+        "2": {
+          "reserve": 871.38671875,
+          "gross_gold": 1133.15234375,
+          "maintenance": 614.0,
+          "net_gold": 519.15234375,
+          "cities": 6,
+          "population": 108.0,
+          "production": 386.9453125,
+          "food": 61.03125
+        },
+        "3": {
+          "reserve": 979.2890625,
+          "gross_gold": 1272.5078125,
+          "maintenance": 689.0,
+          "net_gold": 583.5078125,
+          "cities": 12,
+          "population": 158.0,
+          "production": 627.109375,
+          "food": 87.3203125
+        },
+        "4": {
+          "reserve": 358.72265625,
+          "gross_gold": 1070.06640625,
+          "maintenance": 709.0,
+          "net_gold": 361.06640625,
+          "cities": 11,
+          "population": 151.0,
+          "production": 655.62890625,
+          "food": 87.0
+        },
+        "5": {
+          "reserve": 813.04296875,
+          "gross_gold": 1111.1875,
+          "maintenance": 835.0,
+          "net_gold": 276.1875,
+          "cities": 10,
+          "population": 152.0,
+          "production": 615.0,
+          "food": 125.0
+        }
+      },
+      "service_buildings": {
+        "BUILDING_CSC_TAILORS_STAGE_3_SERVICE": 3,
+        "BUILDING_CSC_BAKERS_STAGE_2_SERVICE": 9,
+        "BUILDING_CSC_BAKERS_STAGE_3_SERVICE": 2
+      }
+    },
+    {
+      "turn": 250,
+      "quarters": {
+        "BAKERS": {
+          "placed": 14,
+          "complete": 14,
+          "river": 7,
+          "base": 14,
+          "spec": 2,
+          "both": 2,
+          "base_improved": 11,
+          "spec_improved": 2,
+          "both_improved": 1,
+          "sales": 13,
+          "sales_outside_center": 7,
+          "raw_customer_geometry_any": 13,
+          "customer_any_footprint": 13,
+          "customer_any_completed": 13,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 13,
+          "base_customer_any": 13,
+          "base_customer_any_footprint": 13,
+          "both_customer_any": 2,
+          "both_customer_any_footprint": 2,
+          "base_improved_customer_any": 10,
+          "base_improved_customer_any_footprint": 10,
+          "producer2": 14,
+          "producer2_working": 13,
+          "customer2": 13,
+          "customer2_without_building": 3,
+          "customer2_with_building": 10,
+          "customer2_working": 10,
+          "mapped_customer2": 13,
+          "mapped_customer2_completed": 13,
+          "mapped_customer2_with_working_building": 10,
+          "mapped_customer2_without_working_building": 3,
+          "mapped_customer2_completed_without_working_building": 3,
+          "base_customer2": 13,
+          "base_customer2_footprint": 13,
+          "base_improved_customer2_working": 8,
+          "service2_property": 8,
+          "stage2_physical": 8,
+          "producer3": 14,
+          "producer3_working": 12,
+          "customer3": 2,
+          "customer3_without_building": 0,
+          "customer3_with_building": 2,
+          "customer3_working": 2,
+          "mapped_customer3": 2,
+          "mapped_customer3_completed": 2,
+          "mapped_customer3_with_working_building": 2,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 2,
+          "producer4": 11,
+          "producer4_working": 10,
+          "customer4": 1,
+          "customer4_without_building": 0,
+          "customer4_with_building": 1,
+          "customer4_working": 1,
+          "mapped_customer4": 1,
+          "mapped_customer4_completed": 1,
+          "mapped_customer4_with_working_building": 1,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer2": 13,
+          "unique_customer2_with_building": 10,
+          "unique_customer2_working": 10,
+          "unique_customer3": 2,
+          "unique_customer3_with_building": 2,
+          "unique_customer3_working": 2,
+          "unique_customer4": 1,
+          "unique_customer4_with_building": 1,
+          "unique_customer4_working": 1,
+          "service2_buildings": 9,
+          "service3_buildings": 2,
+          "service4_buildings": 0
+        },
+        "TAILORS": {
+          "placed": 8,
+          "complete": 8,
+          "river": 4,
+          "base": 7,
+          "spec": 4,
+          "both": 4,
+          "base_improved": 7,
+          "spec_improved": 3,
+          "both_improved": 3,
+          "sales": 5,
+          "sales_outside_center": 5,
+          "raw_customer_geometry_any": 5,
+          "customer_any_footprint": 5,
+          "customer_any_completed": 5,
+          "customer_completion_unknown": 0,
+          "customer_host_state_recorded": 5,
+          "base_customer_any": 5,
+          "base_customer_any_footprint": 5,
+          "both_customer_any": 3,
+          "both_customer_any_footprint": 3,
+          "base_improved_customer_any": 5,
+          "base_improved_customer_any_footprint": 5,
+          "producer2": 8,
+          "producer2_working": 7,
+          "customer2": 0,
+          "customer2_without_building": 0,
+          "customer2_with_building": 0,
+          "customer2_working": 0,
+          "mapped_customer2": 0,
+          "mapped_customer2_completed": 0,
+          "mapped_customer2_with_working_building": 0,
+          "mapped_customer2_without_working_building": 0,
+          "mapped_customer2_completed_without_working_building": 0,
+          "base_customer2": 0,
+          "base_customer2_footprint": 0,
+          "base_improved_customer2_working": 0,
+          "service2_property": 0,
+          "stage2_physical": 0,
+          "producer3": 5,
+          "producer3_working": 4,
+          "customer3": 4,
+          "customer3_without_building": 0,
+          "customer3_with_building": 4,
+          "customer3_working": 4,
+          "mapped_customer3": 4,
+          "mapped_customer3_completed": 4,
+          "mapped_customer3_with_working_building": 4,
+          "mapped_customer3_without_working_building": 0,
+          "mapped_customer3_completed_without_working_building": 0,
+          "service3_property": 2,
+          "producer4": 3,
+          "producer4_working": 3,
+          "customer4": 3,
+          "customer4_without_building": 1,
+          "customer4_with_building": 2,
+          "customer4_working": 2,
+          "mapped_customer4": 2,
+          "mapped_customer4_completed": 2,
+          "mapped_customer4_with_working_building": 2,
+          "mapped_customer4_without_working_building": 0,
+          "mapped_customer4_completed_without_working_building": 0,
+          "service4_property": 0,
+          "unique_customer3": 5,
+          "unique_customer3_with_building": 5,
+          "unique_customer3_working": 4,
+          "unique_customer4": 3,
+          "unique_customer4_with_building": 2,
+          "unique_customer4_working": 2,
+          "service2_buildings": 0,
+          "service3_buildings": 3,
+          "service4_buildings": 0
+        }
+      },
+      "economy": {
+        "reserve": 5998.7421875,
+        "production": 2949.63671875,
+        "gross_gold": 6215.3671875,
+        "maintenance": 4254.0,
+        "population": 807.0,
+        "net_gold": 1961.3671875,
+        "food": 416.5546875,
+        "cities": 56,
+        "players": 5
+      },
+      "players": {
+        "1": {
+          "reserve": 1173.48828125,
+          "gross_gold": 759.96484375,
+          "maintenance": 539.0,
+          "net_gold": 220.96484375,
+          "cities": 10,
+          "population": 125.0,
+          "production": 357.984375,
+          "food": 56.0
+        },
+        "2": {
+          "reserve": 1724.21875,
+          "gross_gold": 1336.71484375,
+          "maintenance": 763.0,
+          "net_gold": 573.71484375,
+          "cities": 9,
+          "population": 135.0,
+          "production": 500.7109375,
+          "food": 71.234375
+        },
+        "3": {
+          "reserve": 1463.3359375,
+          "gross_gold": 1629.93359375,
+          "maintenance": 1035.0,
+          "net_gold": 594.93359375,
+          "cities": 14,
+          "population": 201.0,
+          "production": 780.16796875,
+          "food": 109.3203125
+        },
+        "4": {
+          "reserve": 225.09765625,
+          "gross_gold": 1148.875,
+          "maintenance": 771.0,
+          "net_gold": 377.875,
+          "cities": 11,
+          "population": 173.0,
+          "production": 640.37890625,
+          "food": 60.0
+        },
+        "5": {
+          "reserve": 1412.6015625,
+          "gross_gold": 1339.87890625,
+          "maintenance": 1146.0,
+          "net_gold": 193.87890625,
+          "cities": 12,
+          "population": 173.0,
+          "production": 670.39453125,
+          "food": 120.0
+        }
+      },
+      "service_buildings": {
+        "BUILDING_CSC_TAILORS_STAGE_3_SERVICE": 3,
+        "BUILDING_CSC_BAKERS_STAGE_2_SERVICE": 9,
+        "BUILDING_CSC_BAKERS_STAGE_3_SERVICE": 2
+      }
+    }
+  ],
+  "faults": [],
+  "coast": {
+    "total_tailors_base": 21,
+    "near_water": 13,
+    "near_sea": 11,
+    "lake_only": 2,
+    "near_sea_owned_by_original_ai": 9,
+    "ai_founded_tailors": 7,
+    "coastal_ai_founded_tailors": 1,
+    "adjacent_harbors": 0,
+    "candidates": [
+      {
+        "player": 5,
+        "city": 720905,
+        "name": "Dumbarton",
+        "quarter_plot": 434,
+        "base_plot": 360,
+        "harbor_plots": [
+          433
+        ],
+        "rating_with_local_mill": 1,
+        "quarter_currently_legal": true,
+        "harbor_currently_legal": true,
+        "harbor_gold": 0,
+        "best_harbor_gold": 3,
+        "customer_first_utility": 0,
+        "reason": "Quarter below minimum 2; Harbor loses best-ordinary-adjacency gate"
+      },
+      {
+        "player": 5,
+        "city": 786442,
+        "name": "Selkirk",
+        "quarter_plot": 271,
+        "base_plot": 345,
+        "harbor_plots": [
+          197,
+          198
+        ],
+        "rating_with_local_mill": 1,
+        "quarter_currently_legal": false,
+        "harbor_currently_legal": false,
+        "used_slots": 1,
+        "allowed_slots": 1,
+        "reason": "Quarter below minimum 2; full present capacity and unowned Harbor water"
+      },
+      {
+        "player": 3,
+        "city": 851980,
+        "name": "Shaat",
+        "quarter_plot": 513,
+        "base_plot": 512,
+        "harbor_plots": [
+          586
+        ],
+        "lake": true,
+        "rating_with_local_mill": 1,
+        "reason": "Lake rather than sea coast; Quarter below minimum 2 and water unowned"
+      }
+    ],
+    "pasargadae": {
+      "player": 2,
+      "city": 65536,
+      "quarter_plot": 2244,
+      "quarter_foundation": 35,
+      "base_plot": 2317,
+      "adjacent_fishing_town_plot": 2245,
+      "fishing_town_foundation": 54,
+      "ray_harbor_plot": 2319,
+      "ray_harbor_foundation": 48,
+      "own_harbor_plot": 2171,
+      "own_harbor_foundation": 67,
+      "harbor_distance": 2,
+      "other_adjacent_water_plot": 2318,
+      "other_water_assigned_to": "Ray"
+    }
+  },
+  "district_construction": {
+    "DISTRICT_AERODROME": {
+      "foundations": 10,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 9,
+      "matched_prior_native_Q8": {
+        "n": 10,
+        "minimum": 146618,
+        "median": 582154.0,
+        "mean": 512207.5,
+        "maximum": 857505
+      },
+      "native_choice_total_Q8": {
+        "n": 10,
+        "minimum": 146618,
+        "median": 582154.0,
+        "mean": 512207.5,
+        "maximum": 857505
+      },
+      "native_choice_age_turns": {
+        "n": 10,
+        "minimum": 1,
+        "median": 3.0,
+        "mean": 3.9,
+        "maximum": 10
+      },
+      "native_placement_total_Q8": {
+        "n": 10,
+        "minimum": 148851,
+        "median": 653803.5,
+        "mean": 588889.6,
+        "maximum": 962544
+      },
+      "native_placement_status": {
+        "read": 10
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 10
+    },
+    "DISTRICT_AQUEDUCT": {
+      "foundations": 2,
+      "requires_population": false,
+      "definition_cost": 36,
+      "completions": 2,
+      "matched_prior_native_Q8": {
+        "n": 2,
+        "minimum": 53923,
+        "median": 280492.0,
+        "mean": 280492,
+        "maximum": 507061
+      },
+      "native_choice_total_Q8": {
+        "n": 2,
+        "minimum": 53923,
+        "median": 280492.0,
+        "mean": 280492,
+        "maximum": 507061
+      },
+      "native_choice_age_turns": {
+        "n": 2,
+        "minimum": 10,
+        "median": 11.5,
+        "mean": 11.5,
+        "maximum": 13
+      },
+      "native_placement_total_Q8": {
+        "n": 2,
+        "minimum": 88111,
+        "median": 309137.5,
+        "mean": 309137.5,
+        "maximum": 530164
+      },
+      "native_placement_status": {
+        "read": 2
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 2
+    },
+    "DISTRICT_CAMPUS": {
+      "foundations": 30,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 28,
+      "matched_prior_native_Q8": {
+        "n": 30,
+        "minimum": 31268,
+        "median": 483295.0,
+        "mean": 533266.5333333333,
+        "maximum": 1139465
+      },
+      "native_choice_total_Q8": {
+        "n": 30,
+        "minimum": 31268,
+        "median": 483295.0,
+        "mean": 533266.5333333333,
+        "maximum": 1139465
+      },
+      "native_choice_age_turns": {
+        "n": 30,
+        "minimum": 1,
+        "median": 1.5,
+        "mean": 2.433333333333333,
+        "maximum": 9
+      },
+      "native_placement_total_Q8": {
+        "n": 30,
+        "minimum": 64143,
+        "median": 549984.0,
+        "mean": 565646.5333333333,
+        "maximum": 1150905
+      },
+      "native_placement_status": {
+        "read": 30
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 30,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 30,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 30,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 30,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 30,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 30,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 30,
+          "minimum": 0,
+          "median": 2.0,
+          "mean": 1.8666666666666667,
+          "maximum": 4
+        }
+      },
+      "UI_event_adjacency_joined": 30
+    },
+    "DISTRICT_CANAL": {
+      "foundations": 2,
+      "requires_population": false,
+      "definition_cost": 81,
+      "completions": 1,
+      "matched_prior_native_Q8": {
+        "n": 2,
+        "minimum": 453061,
+        "median": 543806.0,
+        "mean": 543806,
+        "maximum": 634551
+      },
+      "native_choice_total_Q8": {
+        "n": 2,
+        "minimum": 453061,
+        "median": 543806.0,
+        "mean": 543806,
+        "maximum": 634551
+      },
+      "native_choice_age_turns": {
+        "n": 2,
+        "minimum": 4,
+        "median": 4.5,
+        "mean": 4.5,
+        "maximum": 5
+      },
+      "native_placement_total_Q8": {
+        "n": 2,
+        "minimum": 356023,
+        "median": 450700.0,
+        "mean": 450700,
+        "maximum": 545377
+      },
+      "native_placement_status": {
+        "read": 2
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 2
+    },
+    "DISTRICT_CITY_CENTER": {
+      "foundations": 49,
+      "requires_population": false,
+      "definition_cost": 54,
+      "completions": 49,
+      "matched_prior_native_Q8": {
+        "n": 0,
+        "minimum": null,
+        "median": null,
+        "mean": null,
+        "maximum": null
+      },
+      "native_choice_total_Q8": {
+        "n": 0,
+        "minimum": null,
+        "median": null,
+        "mean": null,
+        "maximum": null
+      },
+      "native_choice_age_turns": {
+        "n": 0,
+        "minimum": null,
+        "median": null,
+        "mean": null,
+        "maximum": null
+      },
+      "native_placement_total_Q8": {
+        "n": 0,
+        "minimum": null,
+        "median": null,
+        "mean": null,
+        "maximum": null
+      },
+      "native_placement_status": {
+        "no_entry": 49
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 49,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 49,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 49,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 49,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 49,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 49,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 49,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 49
+    },
+    "DISTRICT_COMMERCIAL_HUB": {
+      "foundations": 19,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 18,
+      "matched_prior_native_Q8": {
+        "n": 19,
+        "minimum": 159525,
+        "median": 488699,
+        "mean": 479876.1052631579,
+        "maximum": 868457
+      },
+      "native_choice_total_Q8": {
+        "n": 19,
+        "minimum": 159525,
+        "median": 488699,
+        "mean": 479876.1052631579,
+        "maximum": 868457
+      },
+      "native_choice_age_turns": {
+        "n": 19,
+        "minimum": 1,
+        "median": 3,
+        "mean": 3.0526315789473686,
+        "maximum": 7
+      },
+      "native_placement_total_Q8": {
+        "n": 19,
+        "minimum": 202308,
+        "median": 516638,
+        "mean": 519701.4736842105,
+        "maximum": 821686
+      },
+      "native_placement_status": {
+        "read": 19
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.21052631578947367,
+          "maximum": 2
+        },
+        "YIELD_CULTURE": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 19,
+          "minimum": 0,
+          "median": 2,
+          "mean": 2.1578947368421053,
+          "maximum": 5
+        },
+        "YIELD_PRODUCTION": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 19
+    },
+    "DISTRICT_COREEXPANSIONA": {
+      "foundations": 8,
+      "requires_population": false,
+      "definition_cost": 61,
+      "completions": 8,
+      "matched_prior_native_Q8": {
+        "n": 8,
+        "minimum": 147760,
+        "median": 286146.0,
+        "mean": 320818.625,
+        "maximum": 613186
+      },
+      "native_choice_total_Q8": {
+        "n": 8,
+        "minimum": 147760,
+        "median": 286146.0,
+        "mean": 320818.625,
+        "maximum": 613186
+      },
+      "native_choice_age_turns": {
+        "n": 8,
+        "minimum": 2,
+        "median": 3.0,
+        "mean": 3.875,
+        "maximum": 7
+      },
+      "native_placement_total_Q8": {
+        "n": 8,
+        "minimum": 193023,
+        "median": 294955.5,
+        "mean": 357699.375,
+        "maximum": 697072
+      },
+      "native_placement_status": {
+        "read": 8
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.375,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.25,
+          "maximum": 1
+        },
+        "YIELD_FOOD": {
+          "n": 8,
+          "minimum": 1,
+          "median": 2.0,
+          "mean": 1.875,
+          "maximum": 2
+        },
+        "YIELD_GOLD": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 8,
+          "minimum": 2,
+          "median": 3.0,
+          "mean": 3,
+          "maximum": 4
+        },
+        "YIELD_SCIENCE": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.125,
+          "maximum": 1
+        }
+      },
+      "UI_event_adjacency_joined": 8
+    },
+    "DISTRICT_COREEXPANSIONB": {
+      "foundations": 6,
+      "requires_population": false,
+      "definition_cost": 81,
+      "completions": 6,
+      "matched_prior_native_Q8": {
+        "n": 6,
+        "minimum": 254031,
+        "median": 417376.5,
+        "mean": 487571.5,
+        "maximum": 825951
+      },
+      "native_choice_total_Q8": {
+        "n": 6,
+        "minimum": 254031,
+        "median": 417376.5,
+        "mean": 487571.5,
+        "maximum": 825951
+      },
+      "native_choice_age_turns": {
+        "n": 6,
+        "minimum": 1,
+        "median": 3.0,
+        "mean": 3.1666666666666665,
+        "maximum": 6
+      },
+      "native_placement_total_Q8": {
+        "n": 6,
+        "minimum": 256980,
+        "median": 443499.0,
+        "mean": 504306.3333333333,
+        "maximum": 887095
+      },
+      "native_placement_status": {
+        "read": 6
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 6,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 6,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.3333333333333333,
+          "maximum": 2
+        },
+        "YIELD_FAITH": {
+          "n": 6,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 6,
+          "minimum": 2,
+          "median": 4.0,
+          "mean": 4,
+          "maximum": 6
+        },
+        "YIELD_GOLD": {
+          "n": 6,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.3333333333333333,
+          "maximum": 2
+        },
+        "YIELD_PRODUCTION": {
+          "n": 6,
+          "minimum": 3,
+          "median": 4.5,
+          "mean": 4.666666666666667,
+          "maximum": 6
+        },
+        "YIELD_SCIENCE": {
+          "n": 6,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 1,
+          "maximum": 4
+        }
+      },
+      "UI_event_adjacency_joined": 6
+    },
+    "DISTRICT_COREEXPANSIONC": {
+      "foundations": 2,
+      "requires_population": false,
+      "definition_cost": 101,
+      "completions": 2,
+      "matched_prior_native_Q8": {
+        "n": 2,
+        "minimum": 324193,
+        "median": 629734.5,
+        "mean": 629734.5,
+        "maximum": 935276
+      },
+      "native_choice_total_Q8": {
+        "n": 2,
+        "minimum": 324193,
+        "median": 629734.5,
+        "mean": 629734.5,
+        "maximum": 935276
+      },
+      "native_choice_age_turns": {
+        "n": 2,
+        "minimum": 2,
+        "median": 5.5,
+        "mean": 5.5,
+        "maximum": 9
+      },
+      "native_placement_total_Q8": {
+        "n": 2,
+        "minimum": 603159,
+        "median": 783120.5,
+        "mean": 783120.5,
+        "maximum": 963082
+      },
+      "native_placement_status": {
+        "read": 2
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.5,
+          "mean": 0.5,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 2,
+          "minimum": 6,
+          "median": 7.5,
+          "mean": 7.5,
+          "maximum": 9
+        },
+        "YIELD_GOLD": {
+          "n": 2,
+          "minimum": 0,
+          "median": 1.5,
+          "mean": 1.5,
+          "maximum": 3
+        },
+        "YIELD_PRODUCTION": {
+          "n": 2,
+          "minimum": 5,
+          "median": 5.5,
+          "mean": 5.5,
+          "maximum": 6
+        },
+        "YIELD_SCIENCE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 1.5,
+          "mean": 1.5,
+          "maximum": 3
+        }
+      },
+      "UI_event_adjacency_joined": 2
+    },
+    "DISTRICT_CSC_BAKERS_QUARTER": {
+      "foundations": 14,
+      "requires_population": true,
+      "definition_cost": 60,
+      "completions": 14,
+      "matched_prior_native_Q8": {
+        "n": 14,
+        "minimum": 61755,
+        "median": 260630.0,
+        "mean": 308193,
+        "maximum": 616387
+      },
+      "native_choice_total_Q8": {
+        "n": 14,
+        "minimum": 61755,
+        "median": 260630.0,
+        "mean": 308193,
+        "maximum": 616387
+      },
+      "native_choice_age_turns": {
+        "n": 14,
+        "minimum": 1,
+        "median": 2.0,
+        "mean": 3.4285714285714284,
+        "maximum": 21
+      },
+      "native_placement_total_Q8": {
+        "n": 14,
+        "minimum": 75764,
+        "median": 262697.5,
+        "mean": 313493.4285714286,
+        "maximum": 621021
+      },
+      "native_placement_status": {
+        "read": 14
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 14
+    },
+    "DISTRICT_CSC_TAILORS_QUARTER": {
+      "foundations": 7,
+      "requires_population": true,
+      "definition_cost": 60,
+      "completions": 7,
+      "matched_prior_native_Q8": {
+        "n": 7,
+        "minimum": 85941,
+        "median": 405054,
+        "mean": 418271.5714285714,
+        "maximum": 857379
+      },
+      "native_choice_total_Q8": {
+        "n": 7,
+        "minimum": 85941,
+        "median": 405054,
+        "mean": 418271.5714285714,
+        "maximum": 857379
+      },
+      "native_choice_age_turns": {
+        "n": 7,
+        "minimum": 1,
+        "median": 5,
+        "mean": 5.857142857142857,
+        "maximum": 10
+      },
+      "native_placement_total_Q8": {
+        "n": 7,
+        "minimum": 105701,
+        "median": 400975,
+        "mean": 400186.4285714286,
+        "maximum": 714385
+      },
+      "native_placement_status": {
+        "read": 7
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 7,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 7,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 7,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 7,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 7,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 7,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 7,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 7
+    },
+    "DISTRICT_DAM": {
+      "foundations": 4,
+      "requires_population": false,
+      "definition_cost": 81,
+      "completions": 4,
+      "matched_prior_native_Q8": {
+        "n": 4,
+        "minimum": 230603,
+        "median": 389833.0,
+        "mean": 437575,
+        "maximum": 740031
+      },
+      "native_choice_total_Q8": {
+        "n": 4,
+        "minimum": 230603,
+        "median": 389833.0,
+        "mean": 437575,
+        "maximum": 740031
+      },
+      "native_choice_age_turns": {
+        "n": 4,
+        "minimum": 1,
+        "median": 2.5,
+        "mean": 3,
+        "maximum": 6
+      },
+      "native_placement_total_Q8": {
+        "n": 4,
+        "minimum": 284458,
+        "median": 414282.0,
+        "mean": 451064,
+        "maximum": 691234
+      },
+      "native_placement_status": {
+        "read": 4
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 4
+    },
+    "DISTRICT_DIPLOMATIC_QUARTER": {
+      "foundations": 2,
+      "requires_population": true,
+      "definition_cost": 30,
+      "completions": 2,
+      "matched_prior_native_Q8": {
+        "n": 2,
+        "minimum": 84529,
+        "median": 105453.0,
+        "mean": 105453,
+        "maximum": 126377
+      },
+      "native_choice_total_Q8": {
+        "n": 2,
+        "minimum": 84529,
+        "median": 105453.0,
+        "mean": 105453,
+        "maximum": 126377
+      },
+      "native_choice_age_turns": {
+        "n": 2,
+        "minimum": 1,
+        "median": 1.0,
+        "mean": 1,
+        "maximum": 1
+      },
+      "native_placement_total_Q8": {
+        "n": 2,
+        "minimum": 76065,
+        "median": 101221.0,
+        "mean": 101221,
+        "maximum": 126377
+      },
+      "native_placement_status": {
+        "read": 2
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 2,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 2
+    },
+    "DISTRICT_ENCAMPMENT": {
+      "foundations": 18,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 18,
+      "matched_prior_native_Q8": {
+        "n": 18,
+        "minimum": 90679,
+        "median": 684466.5,
+        "mean": 670779.2777777778,
+        "maximum": 1036615
+      },
+      "native_choice_total_Q8": {
+        "n": 18,
+        "minimum": 90679,
+        "median": 684466.5,
+        "mean": 670779.2777777778,
+        "maximum": 1036615
+      },
+      "native_choice_age_turns": {
+        "n": 18,
+        "minimum": 1,
+        "median": 2.0,
+        "mean": 3.1666666666666665,
+        "maximum": 13
+      },
+      "native_placement_total_Q8": {
+        "n": 18,
+        "minimum": 90679,
+        "median": 723060.0,
+        "mean": 726763.3333333334,
+        "maximum": 1132003
+      },
+      "native_placement_status": {
+        "read": 18
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 18,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 18,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 18,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 18,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 18,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 18,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 18,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 18
+    },
+    "DISTRICT_ENTERTAINMENT_COMPLEX": {
+      "foundations": 11,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 11,
+      "matched_prior_native_Q8": {
+        "n": 11,
+        "minimum": 188815,
+        "median": 396479,
+        "mean": 443679.54545454547,
+        "maximum": 877461
+      },
+      "native_choice_total_Q8": {
+        "n": 11,
+        "minimum": 188815,
+        "median": 396479,
+        "mean": 443679.54545454547,
+        "maximum": 877461
+      },
+      "native_choice_age_turns": {
+        "n": 11,
+        "minimum": 1,
+        "median": 2,
+        "mean": 4.2727272727272725,
+        "maximum": 16
+      },
+      "native_placement_total_Q8": {
+        "n": 11,
+        "minimum": -17598,
+        "median": 479109,
+        "mean": 467226.36363636365,
+        "maximum": 937026
+      },
+      "native_placement_status": {
+        "read": 11
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 11,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.09090909090909091,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 11,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 11,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 11,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 11,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 11,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 11,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 11
+    },
+    "DISTRICT_GOVERNMENT": {
+      "foundations": 4,
+      "requires_population": true,
+      "definition_cost": 30,
+      "completions": 4,
+      "matched_prior_native_Q8": {
+        "n": 4,
+        "minimum": 54181,
+        "median": 301580.0,
+        "mean": 297234.5,
+        "maximum": 531597
+      },
+      "native_choice_total_Q8": {
+        "n": 4,
+        "minimum": 54181,
+        "median": 301580.0,
+        "mean": 297234.5,
+        "maximum": 531597
+      },
+      "native_choice_age_turns": {
+        "n": 4,
+        "minimum": 1,
+        "median": 1.0,
+        "mean": 2,
+        "maximum": 5
+      },
+      "native_placement_total_Q8": {
+        "n": 4,
+        "minimum": 50442,
+        "median": 332413.0,
+        "mean": 322773.5,
+        "maximum": 575826
+      },
+      "native_placement_status": {
+        "read": 4
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 4,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 4
+    },
+    "DISTRICT_HARBOR": {
+      "foundations": 25,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 25,
+      "matched_prior_native_Q8": {
+        "n": 25,
+        "minimum": 102075,
+        "median": 345117,
+        "mean": 475470.08,
+        "maximum": 1140278
+      },
+      "native_choice_total_Q8": {
+        "n": 25,
+        "minimum": 102075,
+        "median": 345117,
+        "mean": 475470.08,
+        "maximum": 1140278
+      },
+      "native_choice_age_turns": {
+        "n": 25,
+        "minimum": 1,
+        "median": 3,
+        "mean": 3.44,
+        "maximum": 11
+      },
+      "native_placement_total_Q8": {
+        "n": 25,
+        "minimum": 77744,
+        "median": 432735,
+        "mean": 516985.12,
+        "maximum": 1266217
+      },
+      "native_placement_status": {
+        "read": 25
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 25,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 25,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 25,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 25,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 25,
+          "minimum": 0,
+          "median": 2,
+          "mean": 2.24,
+          "maximum": 5
+        },
+        "YIELD_PRODUCTION": {
+          "n": 25,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 25,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 25
+    },
+    "DISTRICT_HOLY_SITE": {
+      "foundations": 8,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 8,
+      "matched_prior_native_Q8": {
+        "n": 6,
+        "minimum": 27389,
+        "median": 91048.5,
+        "mean": 88849.66666666667,
+        "maximum": 159003
+      },
+      "native_choice_total_Q8": {
+        "n": 6,
+        "minimum": 27389,
+        "median": 91048.5,
+        "mean": 88849.66666666667,
+        "maximum": 159003
+      },
+      "native_choice_age_turns": {
+        "n": 6,
+        "minimum": 1,
+        "median": 8.5,
+        "mean": 8.166666666666666,
+        "maximum": 16
+      },
+      "native_placement_total_Q8": {
+        "n": 8,
+        "minimum": 43157,
+        "median": 97196.0,
+        "mean": 119753,
+        "maximum": 311220
+      },
+      "native_placement_status": {
+        "read": 8
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.125,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 8,
+          "minimum": 0,
+          "median": 1.0,
+          "mean": 0.75,
+          "maximum": 1
+        },
+        "YIELD_FOOD": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 8,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 8
+    },
+    "DISTRICT_INDUSTRIAL_ZONE": {
+      "foundations": 14,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 14,
+      "matched_prior_native_Q8": {
+        "n": 14,
+        "minimum": 107610,
+        "median": 455598.5,
+        "mean": 550450.7857142857,
+        "maximum": 1150935
+      },
+      "native_choice_total_Q8": {
+        "n": 14,
+        "minimum": 107610,
+        "median": 455598.5,
+        "mean": 550450.7857142857,
+        "maximum": 1150935
+      },
+      "native_choice_age_turns": {
+        "n": 14,
+        "minimum": 1,
+        "median": 2.0,
+        "mean": 3.357142857142857,
+        "maximum": 12
+      },
+      "native_placement_total_Q8": {
+        "n": 14,
+        "minimum": 56409,
+        "median": 556828.0,
+        "mean": 605419.6428571428,
+        "maximum": 1268759
+      },
+      "native_placement_status": {
+        "read": 14
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 14,
+          "minimum": 0,
+          "median": 1.0,
+          "mean": 1.5,
+          "maximum": 6
+        },
+        "YIELD_SCIENCE": {
+          "n": 14,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 14
+    },
+    "DISTRICT_NEIGHBORHOOD": {
+      "foundations": 20,
+      "requires_population": false,
+      "definition_cost": 54,
+      "completions": 17,
+      "matched_prior_native_Q8": {
+        "n": 20,
+        "minimum": 166254,
+        "median": 439958.0,
+        "mean": 404765.55,
+        "maximum": 673060
+      },
+      "native_choice_total_Q8": {
+        "n": 20,
+        "minimum": 166254,
+        "median": 439958.0,
+        "mean": 404765.55,
+        "maximum": 673060
+      },
+      "native_choice_age_turns": {
+        "n": 20,
+        "minimum": 1,
+        "median": 2.5,
+        "mean": 3.35,
+        "maximum": 12
+      },
+      "native_placement_total_Q8": {
+        "n": 20,
+        "minimum": -194399,
+        "median": 428396.0,
+        "mean": 380851.8,
+        "maximum": 594411
+      },
+      "native_placement_status": {
+        "read": 20
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 20,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 20
+    },
+    "DISTRICT_PRESERVE": {
+      "foundations": 1,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 1,
+      "matched_prior_native_Q8": {
+        "n": 1,
+        "minimum": 324688,
+        "median": 324688,
+        "mean": 324688,
+        "maximum": 324688
+      },
+      "native_choice_total_Q8": {
+        "n": 1,
+        "minimum": 324688,
+        "median": 324688,
+        "mean": 324688,
+        "maximum": 324688
+      },
+      "native_choice_age_turns": {
+        "n": 1,
+        "minimum": 3,
+        "median": 3,
+        "mean": 3,
+        "maximum": 3
+      },
+      "native_placement_total_Q8": {
+        "n": 1,
+        "minimum": 327846,
+        "median": 327846,
+        "mean": 327846,
+        "maximum": 327846
+      },
+      "native_placement_status": {
+        "read": 1
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 1,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 1,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 1,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 1,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 1,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 1,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 1,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 1
+    },
+    "DISTRICT_RURALCOMMUNITYA": {
+      "foundations": 22,
+      "requires_population": false,
+      "definition_cost": 31,
+      "completions": 22,
+      "matched_prior_native_Q8": {
+        "n": 22,
+        "minimum": 162441,
+        "median": 324680.0,
+        "mean": 400005.04545454547,
+        "maximum": 1127977
+      },
+      "native_choice_total_Q8": {
+        "n": 22,
+        "minimum": 162441,
+        "median": 324680.0,
+        "mean": 400005.04545454547,
+        "maximum": 1127977
+      },
+      "native_choice_age_turns": {
+        "n": 22,
+        "minimum": 1,
+        "median": 2.5,
+        "mean": 4.863636363636363,
+        "maximum": 15
+      },
+      "native_placement_total_Q8": {
+        "n": 22,
+        "minimum": 158342,
+        "median": 425060.0,
+        "mean": 516052.7727272727,
+        "maximum": 1307660
+      },
+      "native_placement_status": {
+        "read": 22
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 22,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.09090909090909091,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 22,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 22,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.09090909090909091,
+          "maximum": 1
+        },
+        "YIELD_FOOD": {
+          "n": 22,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 22,
+          "minimum": 0,
+          "median": 1.0,
+          "mean": 1.2727272727272727,
+          "maximum": 4
+        },
+        "YIELD_PRODUCTION": {
+          "n": 22,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.045454545454545456,
+          "maximum": 1
+        },
+        "YIELD_SCIENCE": {
+          "n": 22,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.13636363636363635,
+          "maximum": 1
+        }
+      },
+      "UI_event_adjacency_joined": 22
+    },
+    "DISTRICT_RURALCOMMUNITYB": {
+      "foundations": 10,
+      "requires_population": false,
+      "definition_cost": 31,
+      "completions": 10,
+      "matched_prior_native_Q8": {
+        "n": 10,
+        "minimum": 11610,
+        "median": 438182.0,
+        "mean": 483193.5,
+        "maximum": 974388
+      },
+      "native_choice_total_Q8": {
+        "n": 10,
+        "minimum": 11610,
+        "median": 438182.0,
+        "mean": 483193.5,
+        "maximum": 974388
+      },
+      "native_choice_age_turns": {
+        "n": 10,
+        "minimum": 1,
+        "median": 2.0,
+        "mean": 3.2,
+        "maximum": 10
+      },
+      "native_placement_total_Q8": {
+        "n": 10,
+        "minimum": 17067,
+        "median": 436349.0,
+        "mean": 475926.8,
+        "maximum": 928048
+      },
+      "native_placement_status": {
+        "read": 10
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.1,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 10,
+          "minimum": 0,
+          "median": 1.5,
+          "mean": 1.3,
+          "maximum": 3
+        },
+        "YIELD_PRODUCTION": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0.1,
+          "maximum": 1
+        }
+      },
+      "UI_event_adjacency_joined": 10
+    },
+    "DISTRICT_RURALCOMMUNITYC": {
+      "foundations": 9,
+      "requires_population": false,
+      "definition_cost": 31,
+      "completions": 9,
+      "matched_prior_native_Q8": {
+        "n": 9,
+        "minimum": 117079,
+        "median": 342003,
+        "mean": 385838,
+        "maximum": 961386
+      },
+      "native_choice_total_Q8": {
+        "n": 9,
+        "minimum": 117079,
+        "median": 342003,
+        "mean": 385838,
+        "maximum": 961386
+      },
+      "native_choice_age_turns": {
+        "n": 9,
+        "minimum": 1,
+        "median": 4,
+        "mean": 5,
+        "maximum": 16
+      },
+      "native_placement_total_Q8": {
+        "n": 9,
+        "minimum": 123794,
+        "median": 369178,
+        "mean": 402505.6666666667,
+        "maximum": 963427
+      },
+      "native_placement_status": {
+        "read": 9
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 9,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.1111111111111111,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 9,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 9,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.1111111111111111,
+          "maximum": 1
+        },
+        "YIELD_FOOD": {
+          "n": 9,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 9,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.3333333333333333,
+          "maximum": 1
+        },
+        "YIELD_PRODUCTION": {
+          "n": 9,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.1111111111111111,
+          "maximum": 1
+        },
+        "YIELD_SCIENCE": {
+          "n": 9,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.1111111111111111,
+          "maximum": 1
+        }
+      },
+      "UI_event_adjacency_joined": 9
+    },
+    "DISTRICT_SEOWON": {
+      "foundations": 5,
+      "requires_population": true,
+      "definition_cost": 27,
+      "completions": 5,
+      "matched_prior_native_Q8": {
+        "n": 5,
+        "minimum": 132851,
+        "median": 165871,
+        "mean": 292047,
+        "maximum": 713932
+      },
+      "native_choice_total_Q8": {
+        "n": 5,
+        "minimum": 132851,
+        "median": 165871,
+        "mean": 292047,
+        "maximum": 713932
+      },
+      "native_choice_age_turns": {
+        "n": 5,
+        "minimum": 1,
+        "median": 5,
+        "mean": 4.4,
+        "maximum": 9
+      },
+      "native_placement_total_Q8": {
+        "n": 5,
+        "minimum": 143150,
+        "median": 186501,
+        "mean": 325488.4,
+        "maximum": 814564
+      },
+      "native_placement_status": {
+        "read": 5
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 5,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 5,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 5,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 5,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 5,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 5,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 5,
+          "minimum": 3,
+          "median": 4,
+          "mean": 3.6,
+          "maximum": 4
+        }
+      },
+      "UI_event_adjacency_joined": 5
+    },
+    "DISTRICT_SPACEPORT": {
+      "foundations": 19,
+      "requires_population": false,
+      "definition_cost": 1800,
+      "completions": 18,
+      "matched_prior_native_Q8": {
+        "n": 18,
+        "minimum": 467098,
+        "median": 1976217.5,
+        "mean": 2063525.2222222222,
+        "maximum": 5039725
+      },
+      "native_choice_total_Q8": {
+        "n": 18,
+        "minimum": 467098,
+        "median": 1976217.5,
+        "mean": 2063525.2222222222,
+        "maximum": 5039725
+      },
+      "native_choice_age_turns": {
+        "n": 18,
+        "minimum": 1,
+        "median": 1.0,
+        "mean": 2.5555555555555554,
+        "maximum": 12
+      },
+      "native_placement_total_Q8": {
+        "n": 19,
+        "minimum": 636719,
+        "median": 2117572,
+        "mean": 2201561.052631579,
+        "maximum": 5746701
+      },
+      "native_placement_status": {
+        "read": 19
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 19,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 19
+    },
+    "DISTRICT_THEATER": {
+      "foundations": 41,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 40,
+      "matched_prior_native_Q8": {
+        "n": 35,
+        "minimum": 169586,
+        "median": 600827,
+        "mean": 582609.4571428571,
+        "maximum": 1033031
+      },
+      "native_choice_total_Q8": {
+        "n": 35,
+        "minimum": 169586,
+        "median": 600827,
+        "mean": 582609.4571428571,
+        "maximum": 1033031
+      },
+      "native_choice_age_turns": {
+        "n": 35,
+        "minimum": 1,
+        "median": 3,
+        "mean": 3.2857142857142856,
+        "maximum": 11
+      },
+      "native_placement_total_Q8": {
+        "n": 41,
+        "minimum": 166508,
+        "median": 708613,
+        "mean": 640524.2926829269,
+        "maximum": 1119359
+      },
+      "native_placement_status": {
+        "read": 41
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 41,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0.024390243902439025,
+          "maximum": 1
+        },
+        "YIELD_CULTURE": {
+          "n": 41,
+          "minimum": 0,
+          "median": 2,
+          "mean": 1.5365853658536586,
+          "maximum": 4
+        },
+        "YIELD_FAITH": {
+          "n": 41,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 41,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 41,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 41,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 41,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 41
+    },
+    "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+      "foundations": 10,
+      "requires_population": true,
+      "definition_cost": 54,
+      "completions": 10,
+      "matched_prior_native_Q8": {
+        "n": 10,
+        "minimum": 352276,
+        "median": 708322.0,
+        "mean": 768637.8,
+        "maximum": 1660953
+      },
+      "native_choice_total_Q8": {
+        "n": 10,
+        "minimum": 352276,
+        "median": 708322.0,
+        "mean": 768637.8,
+        "maximum": 1660953
+      },
+      "native_choice_age_turns": {
+        "n": 10,
+        "minimum": 2,
+        "median": 3.5,
+        "mean": 5,
+        "maximum": 11
+      },
+      "native_placement_total_Q8": {
+        "n": 10,
+        "minimum": 474729,
+        "median": 822902.0,
+        "mean": 891529.4,
+        "maximum": 1755220
+      },
+      "native_placement_status": {
+        "read": 10
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 10,
+          "minimum": 0,
+          "median": 0.0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 10
+    },
+    "DISTRICT_WONDER": {
+      "foundations": 55,
+      "requires_population": false,
+      "definition_cost": 0,
+      "completions": 55,
+      "matched_prior_native_Q8": {
+        "n": 0,
+        "minimum": null,
+        "median": null,
+        "mean": null,
+        "maximum": null
+      },
+      "native_choice_total_Q8": {
+        "n": 0,
+        "minimum": null,
+        "median": null,
+        "mean": null,
+        "maximum": null
+      },
+      "native_choice_age_turns": {
+        "n": 0,
+        "minimum": null,
+        "median": null,
+        "mean": null,
+        "maximum": null
+      },
+      "native_placement_total_Q8": {
+        "n": 55,
+        "minimum": -2559744,
+        "median": -2559744,
+        "mean": -2559744,
+        "maximum": -2559744
+      },
+      "native_placement_status": {
+        "read": 55
+      },
+      "exact_UI_event_adjacency_yields": {
+        "YIELD_CSC_AI_PLACEMENT": {
+          "n": 55,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_CULTURE": {
+          "n": 55,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FAITH": {
+          "n": 55,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_FOOD": {
+          "n": 55,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_GOLD": {
+          "n": 55,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_PRODUCTION": {
+          "n": 55,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        },
+        "YIELD_SCIENCE": {
+          "n": 55,
+          "minimum": 0,
+          "median": 0,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      "UI_event_adjacency_joined": 55
+    }
+  },
+  "district_count_scope": {
+    "all_foundations_including_centers_wonders_and_cl": 427,
+    "quarters": 21,
+    "non_quarter_excluding_centers_wonders": 302,
+    "base_game_district_objects_including_centers_wonders": 349,
+    "city_lights": 57
+  },
+  "ce_sha256": "1be0545b94b35adaf582df2d70e827ecdb8014ccf91b59c5cc9f9b72fdc06bfc",
+  "xp2_sha256": "092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f",
+  "censuses": [
+    {
+      "turn": 25,
+      "phase": "turn-start",
+      "rows": 19
+    },
+    {
+      "turn": 50,
+      "phase": "turn-start",
+      "rows": 42
+    },
+    {
+      "turn": 75,
+      "phase": "turn-start",
+      "rows": 63
+    },
+    {
+      "turn": 100,
+      "phase": "turn-start",
+      "rows": 96
+    },
+    {
+      "turn": 125,
+      "phase": "turn-start",
+      "rows": 137
+    },
+    {
+      "turn": 150,
+      "phase": "turn-start",
+      "rows": 184
+    },
+    {
+      "turn": 175,
+      "phase": "turn-start",
+      "rows": 229
+    },
+    {
+      "turn": 200,
+      "phase": "turn-start",
+      "rows": 249
+    },
+    {
+      "turn": 225,
+      "phase": "turn-start",
+      "rows": 284
+    },
+    {
+      "turn": 250,
+      "phase": "turn-start",
+      "rows": 297
+    }
+  ],
+  "checkpoint": {
+    "verified": true,
+    "turn": 250,
+    "sha256": "7469c5ce3873ba078ab78ecd793c736b2487fdff5938ba131a5f5dd8718f4cf8",
+    "size": 2952194
+  }
+}

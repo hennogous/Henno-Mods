@@ -3904,3 +3904,43 @@ Proposal/component/work logs join the existing CE customer receipt path; that
 and subsequent foundations/chains are the next measurement.
 
 [Implementation, diagnostics and limits](../research/mods/csc-ai-customer-first-planning-20261116.md).
+
+
+## AI-C197 — Customer guidance lands; coastal Tailors expose a joint-footprint gap
+
+16 November2026, **1.4/1.6/1.8,2.1**, stock AI, Small Continents Online250,
+CL/R2/Suk, seeds22051116/32251116. Main policy19e29a42; CE2d200ef binary
+SHA1be0545b; XP2 SHA092abfbb (full identities in report).21 foundations14B/7T
+all have Base/+3+; six have both classes;88/88 native Quarter-best observations
+match published bids.22 completed held at250 includes a captured Base-less
+Tailors. Native Storekeeper audit records879 chain-turns/nine sources; census
+active-property markers8 Storekeepers/2 Innkeepers/2 Sacristans, no Dockmaster
+or Stage4. Hidden buildings persist through lapses and must not substitute for
+active counts.
+
+AI-C196's route has2481 receipt windows with writes,108 with site wins.21
+customer/provider foundations use previously offered targets;13 have a positive
+receipt write at their recorded native-choice turn. Windows repeat candidates;
+these numbers describe different steps, not thousands of constructed districts.
+A fresh seed is not a matched estimate of the new adapter's causal effect.
+
+Read-only endpoint reloads (269 structural rows/zero elapsed turns) find11 of21
+Tailors Base deposits near sea via a land Quarter footprint, nine owned by AI.
+Owned open coast candidates at Dumbarton434 and Selkirk271 rate+1, below minimum2.
+Dumbarton's actual Harbor433 option recognizes Tailors434/Base1 but receives0
+preference: ordinary Gold0 loses to best3. Selkirk has unowned water/full current
+capacity. Shaat513 is a lake, correcting the initial broad coastal update.
+
+Only one of the seven AI-founded Tailors is coastal: Pasargadae2244 on35.
+It has improved Flax/working Workshop; Ray Harbor2319 (48) and own Harbor2171
+(67) are both two tiles away. Fishing Town2245 (54) occupies adjacent water;
+other adjacent water2318 belongs to Ray. Thus absent Dockmaster is a spatial
+customer connection problem even with working producer/materials. Existing SQL
+private adjacency is loaded; it does not reserve a specific Harbor footprint.
+The full historical losing Harbor matrix is absent, so no unique numerical
+cause is assigned to those Harbor selections. Next2.1 is coherent joint plans
+around existing Quarters, with Harbor-specific access and measured opportunity
+cost. Do not fix this case by merely increasing Lighthouse bids.
+
+All ten censuses verify; full game and three surveys close/restored exit0.
+No gameplay changes during analysis. [Results, compact data and provenance](../research/mods/csc-ai-customer-first-continents-20261116.md).

@@ -1,19 +1,26 @@
 # Current CSC AI status
 
-**Fresh customer-first Continents250 launched,16 November:** stock AI, Online,
-CL/R2/Suk; seeds22051116/32251116, main policy19e29a42. Shared controller checks
-every15minutes;25-turn censuses capture all six Services and placement/material/
-customer outcomes. Startup qualification pending. [Protocol](../research/mods/csc-ai-customer-first-continents-20261116.md).
+**Customer-first Continents250 completed,16 November —1.4/1.6/1.8 and2.1.**
+21 AI-founded Quarters (14B/7T), all Base/+3+, eight+4+, six both materials;
+88/88 native best comparisons match. Endpoint22 completed includes a captured
+Base-less Tailors. Active markers:8 Storekeepers,2 Innkeepers,2 Sacristans;
+Dockmaster/all Stage4 zero. Native Storekeeper audit879 chain-turns/nine sources.
+All ten censuses pass; game and three zero-turn surveys close/restored exit0.
+No active test game or upstream PR.
+[Results, coast diagnosis and comparison](../research/mods/csc-ai-customer-first-continents-20261116.md).
 
-**2.1 customer-first planning,16 November — implemented/offline-qualified.**
-Reverse the generated gameplay partner graph from customer→Quarter→Base/Spec.
-Require concrete owned Quarter/material footprints, including triangles, and
-current customer eligibility. Each supplier city/Quarter type contributes once;
-shared materials may support multiple types. Best ordinary customer adjacency
-must be retained; contributions8–16 utility sum to a32-point cap. No Quarter bid,
-research unlock or spare future Quarter slot is needed. Native reception and
-ordinary-game follow-through are next; no game launched for this implementation.
-[Mechanism, diagnostics and tests](../research/mods/csc-ai-customer-first-planning-20261116.md).
+**2.1 customer-first guidance lands.**2481 receipt windows contain score writes;
+21 customer/provider foundations use previously offered targets,13 with a write
+on the recorded native-choice turn. Contributions8–16 per supplier city/type,
+cap32; actual maximum26. Existing Quarter links still rely on native SQL.
+**Next gap:** joint Quarter/Harbor plans and preserved customer footprints.
+Dumbarton's open Tailors/Harbor pair rates+1; its Harbor0 ordinary Gold versus
+best3 causes our strict best-adjacency gate to withhold the preference. Selkirk
+also rates+1 with unowned water/full present capacity. Pasargadae builds a good
+coastal Tailors35, but Fishing Town54 occupies adjacent water and both Harbors
+are two tiles away. All seven new Tailors have working Workshop/improved Base;
+none has adjacent Harbor. This is spatial coordination before Lighthouse bids.
+[Implementation](../research/mods/csc-ai-customer-first-planning-20261116.md).
 
 **2.1 City Lights inspection,16 November:** its loaded SQL adds urban/rural
 preferences, AI-only Food/Gold adjacency, rural construction and urban economic

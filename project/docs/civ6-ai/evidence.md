@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [Customer-first Continents250: placements, all Services and coastal Tailors diagnosis —16 November2026](../research/mods/csc-ai-customer-first-continents-20261116.md)
+
 - [Customer-first planning: reverse gameplay mappings and concrete material layouts —16 November2026](../research/mods/csc-ai-customer-first-planning-20261116.md)
 
 - [City Lights AI preferences, adjacency and economic assistance —16 November2026](../research/mods/city-lights-ai-placement-20261116.md)

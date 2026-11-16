@@ -25,3 +25,34 @@ AI-C196 plusroadmap/status/architecture/siteplannerdocupdated. Preserveunrelated
 Finalreview: sharedmaterialpolicyandnativepartnerexistingdedupfixedpercity/type; slot6DPoracle40cases. P.ReadSuppliers nowrejectsunrelatedtagclassesBEFOREnativegeometrycalls. 90economy/Lua+31controller/observerchecksPASS; reportlinkschecked. No livegame. Scopedcommits/pushnext.
 
 NEW250requested. RootDesktop/Codex/csc-ai-customer-first-continents-20261116;frozen01acceptedgameplay+allcurrentAI/SQL;seeds22051116/32251116; stockAI/CL/R2/Suk,OnlinePrinceSmallContinents. ScheduledtaskCSC-AI-CustomerFirst-Continents-20261116,worker-status.json,outputcontinents250-01. Noforeignnativeprocesspreflight;upstreamCEunchanged. Shared15minchecks+25turncensuses. Runtimepinsstableuntilclose. Needqualifystartup thencontinuewatch15min,analysetill250,andcommit/pushreport.
+
+CHECK09:30–09:33UTC: gamepast129,125census7B4Tcomplete/allBase/4both,4Storekeepers1Sacristan. Nativefuture1113proposals/112sites/max26utility,1077customerreceipts967attempts963writesatthefirstsnapshot; latercountersincrease. Noerrors/hooksfaults. RememberwatchSITEincludesobserver0/minor9:filteroriginalAI1–5 anduniqueplots! Nextagentcheck~09:49UTC; noRuntimepinnedfilechanges.
+
+CHECK09:49–09:51UTC:controller190healthy,175census12B(11complete)5Tcomplete/allcompletedBase/5both;8B5TimprovedBase;5Store2Inn3Sacr,0Dock/Stage4. Nativefaultsnone. Next~10:07UTC. Source/runtimepinsunchanged.
+
+
+## Completed250 and coastal follow-up
+
+AI-C197/report csc-ai-customer-first-continents-20261116.md/json committed result:
+21 foundations14B7T allBase/+3,8+4,6both;88/88exact nativeQuarterbest. Endpoint22
+inclcapturedTailors1272p2 noBase/pillaged. Activeproperties8Store2Inn2Sacr,0Dock/
+Stage4; hiddenStore9/Sacr3. NativeStore879chain-turns9sources,4above100.
+Customer3302proposals228targets;2950staged/2540attempts/2481writewindows;21
+foundationspreviouslyoffered,13same-choice-turnpositivewrites. Max26 cap32.
+56cities807pop;perAI589.93Prod392.27netGold83.31foodsurplus. Differentseed/civs
+thanprevious793chain-turns/23foundations; don'tattributeeconomydifferencecausally.
+All10censusesPASS/fullgameclosed/restoredexit0. Noactivegame/PR.
+
+UseraskedwhyTailorsBasecoastnotyieldDock. Threezero-turnsharedcontrollersurveys
+coast250-01/coast250-02/coast250-policy-01 all269structurematch/closedexit0/prefs.
+21Base/11seanear/2lakeonly;9seanearownedAI. Only1/7newTailorscoastal;all7
+Workshop/improvedBase/noHarbor. Dumbartonp5city720905q434Base360Harbor433allowned/
+currentlylegal,butq+1below2;actualF/EpolicyHarbor0Goldvsbest3returns0preference.
+Selkirkq271Base345+1,waters197/198unowned,used1allowed1. Shaatq513Base512isLAKE,
+correctearliercoastwording;+1/water586unowned. NeverpositiveQuarteroffersforthese.
+Pasargadaep2city65536Tailors2244founded35Flax2317working;RayHarbor2319on48distance2;
+FishingTown2245on54adjacentwater;ownHarbor2171on67distance2. Otheradjwater2318assigned
+Ray. Jointfootprint/customercoordinationgap,notLighthousepriority. Historicalcomplete
+losingmatrixnotcaptured;don'tguessnumericcause. No policychange/newfullgame.
+Savedread-onlysurveydriver/queryinproject/tools/native_ai/late_placement;datedpolicy
+queryhardcodedIDsremainDesktopdiagnostic. PreserveunrelatedworkspaceWIP.

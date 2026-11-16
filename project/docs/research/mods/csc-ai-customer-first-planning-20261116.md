@@ -122,3 +122,13 @@ and the actual comparison/foundation in the next ordinary run. Record whether
 the future Quarter appears on a proposed footprint, its materials survive and
 the chain develops. Review work counters and controller timings in mature cities.
 Keep the already-qualified+1 SQL bonus for built Quarters unchanged.
+
+
+## Completed ordinary-game follow-through
+
+[Fresh Continents250 and coastal diagnosis](csc-ai-customer-first-continents-20261116.md)
+now records2481 native receipt windows with writes and21 customer/provider
+foundations on previously offered targets,13 with same-native-choice-turn writes.
+All21 Quarter foundations have Base/+3+, but no Dockmaster chain forms. The
+coastal survey identifies deliberate quality/ordinary-adjacency gates and
+Harbor/CL footprint coordination around an existing Tailors as the next gaps.

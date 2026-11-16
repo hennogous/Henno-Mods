@@ -1,3 +1,17 @@
+# CURRENT: customer-first250 complete; coastal Dockmaster gap located,16 November
+
+Read session_ai_customer_first_20261116.md and report csc-ai-customer-first-
+continents-20261116.md/json.21foundations14B7T allBase/+3,6both,88/88nativebest;
+endpoint22inclcapture.8Store2Inn2Sacr/0Dock;879nativeStorechain-turns.2481customer
+writewindows/21foundationspreviouslyoffered/13same-choice-turnwrites. All10censuses
+andfullgame+3zero-turncoastsurveysclosed/restoredexit0. Noactivegame/PR.
+Coast:11/21TailorsBasegeometricallyseanear,9AIowned. Dumbartonq434Base360Harbor433
+owned/legalbutq+1;Harbor0Goldvsbest3→preference0. Selkirkq271+1/waterunowned/fullslot.
+Shaatq513LAKE(correctearlycoastupdate). PasargadaeTailors2244on35,RayHarbor2319on48
+2hexesaway,FishingTown2245on54adjacent,ownHarbor2171on67also2away. All7newTailors
+Workshop/improvedBase/noadjHarbor. Next2.1:jointQuarter/Harborfootprints,postfoundation
+coordination,opportunitycostgate. No policychangeafterrun. UnrelatedWIPpreserved.
+
 # CURRENT: customer-first planner implemented; fresh250 requested,16 November
 
 Read session_ai_customer_first_20261116.md. MainCSC19e29a42 reverses nativegameplay
