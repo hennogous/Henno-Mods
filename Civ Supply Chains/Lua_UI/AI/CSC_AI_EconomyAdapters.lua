@@ -512,58 +512,164 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
     return {details=details,quote=quote,site=site}
 end
 
+function E.CustomerFirstPreference(option)
+    -- Preparation policy, not forecast income: 8 utility for an actual Base
+    -- deposit, +2 for each of at most two extra Base deposits, +4 for Spec.
+    -- Cap16 is deliberately below the former16..48 customer-layout preference.
+    -- Require the best measured ordinary adjacency before adding any bonus;
+    -- this cannot compensate for sacrificing native adjacency elsewhere.
+    -- Other native site costs/forecasts still compete with this small delta.
+    local base=option and tonumber(option.baseCount)
+    local spec=option and tonumber(option.specialtyCount)
+    local adjacency=option and tonumber(option.adjacency)
+    local best=option and tonumber(option.bestAdjacency)
+    if not base or not spec or not adjacency or not best
+        or base<1 or spec<0 or base%1~=0 or spec%1~=0
+        or adjacency~=adjacency or best~=best or math.abs(adjacency)==math.huge or math.abs(best)==math.huge
+        or adjacency+1e-6<best then return 0 end
+    return math.min(16,8+2*math.min(2,base-1)+(spec>0 and 4 or 0))
+end
+
+function E.CustomerFirstPlan(options,quarterClaims,customerClaims)
+    -- Match supplier (city,Quarter type) groups to distinct adjacent plots.
+    -- One group contributes once even if several sites fit; shared material
+    -- deposits do NOT consume a slot in this matching and may feed multiple
+    -- different Quarters. There are at most six adjacent Quarter footprints:
+    -- a64-state mask DP finds the best compatible combination without an
+    -- exponential search over Quarter types. All inputs are snapshot facts.
+    local groups,plotSet={},{}
+    for _,option in ipairs(options)do
+        local preference=E.CustomerFirstPreference(option)
+        if preference>0 and not customerClaims[option.quarterPlot]
+            and(not quarterClaims[option.quarterPlot]or quarterClaims[option.quarterPlot]==option.quarterDistrict)then
+            local key=option.quarterCity..':'..option.quarterDistrict
+            local group=groups[key]or{};groups[key]=group
+            group[#group+1]={option=option,preference=preference};plotSet[option.quarterPlot]=true
+        end
+    end
+    local plots,keys={},{}
+    for plot in pairs(plotSet)do plots[#plots+1]=plot end;table.sort(plots)
+    for key in pairs(groups)do keys[#keys+1]=key end;table.sort(keys)
+    if #plots>6 then return{preference=0,rawPreference=0,links={}}end -- malformed geometry: no invented match
+    local bits={};for i,plot in ipairs(plots)do bits[plot]=2^(i-1)end
+    local states={[0]={value=0}}
+    for _,key in ipairs(keys)do
+        local nextStates={};for mask,state in pairs(states)do nextStates[mask]=state end
+        local group=groups[key];table.sort(group,function(a,b)return a.option.quarterPlot<b.option.quarterPlot end)
+        for mask=0,2^#plots-1 do local state=states[mask]
+            if state then for _,choice in ipairs(group)do
+                local bit=bits[choice.option.quarterPlot]
+                if math.floor(mask/bit)%2==0 then
+                    local target=mask+bit;local value=state.value+choice.preference
+                    if not nextStates[target]or value>nextStates[target].value then
+                        nextStates[target]={value=value,previous=state,choice=choice}
+                    end
+                end
+            end end
+        end
+        states=nextStates
+    end
+    local best={value=0}
+    for mask=0,2^#plots-1 do local state=states[mask]
+        if state and state.value>best.value then best=state end
+    end
+    local links={};local state=best
+    while state.choice do
+        links[#links+1]={option=state.choice.option,preference=state.choice.preference};state=state.previous
+    end
+    table.sort(links,function(a,b)
+        local x,y=a.option,b.option
+        if x.quarterCity~=y.quarterCity then return x.quarterCity<y.quarterCity end
+        return x.quarterDistrict<y.quarterDistrict
+    end)
+    -- Speculative total cap32 utility is a conservative policy band, not
+    -- calibrated income. All legitimate contributions stay in diagnostics;
+    -- several future links cannot grow an unbounded production incentive.
+    return{preference=math.min(32,best.value),rawPreference=best.value,links=links}
+end
+
 function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
-    -- Prepare only each city/type's best economic Quarter proposal. All other
-    -- positive Quarter sites still compete normally. These customer deltas
-    -- are16..48 utility, checked against current native legal targets; future
-    -- geometry alone never publishes a construction offer. Greedy cross-plan
-    -- coordination keeps conflicting types off a shared footprint and protects
-    -- the proposed Quarter footprints. Nothing reserves land or grants a slot.
-    local best,plans={},{}
+    -- Customer-first planning is independent of a winning/unlocked Quarter
+    -- proposal. Aggregate once per customer footprint, with one contribution
+    -- per supplier city/type and a bounded total. Native ordinary adjacency
+    -- leads; the customer still competes with all normal production choices.
+    -- Cross-customer coordination is greedy, while each customer's supplier
+    -- matching is exact. No land/slot is reserved across publications. Current
+    -- capacity only pays for the customer; future growth can admit Quarters.
+    if not snapshot.CustomerFirstOptions then return {}end
+    local best,quarterClaims,customerClaims,nominated={},{},{},{}
     for _,entry in ipairs(quarterEntries)do if entry.economy then
         local key=entry.city..':'..entry.district
         if not best[key]or entry.finalQ8>best[key].finalQ8
             or entry.finalQ8==best[key].finalQ8 and entry.plot<best[key].plot then best[key]=entry end
     end end
-    for _,entry in pairs(best)do plans[#plans+1]=entry end
+    local plans={};for _,entry in pairs(best)do plans[#plans+1]=entry end
     table.sort(plans,function(a,b)
         if a.finalQ8~=b.finalQ8 then return a.finalQ8>b.finalQ8 end
         if a.city~=b.city then return a.city<b.city end
         return a.district<b.district
     end)
-    local occupied,nominated,remaining={},{},{}
-    for _,entry in ipairs(plans)do occupied[entry.plot]=true end
-    if snapshot.planState then for _,plan in pairs(snapshot.planState.plans)do occupied[plan.plot]=true end end
-    for _,entry in ipairs(plans)do for _,link in ipairs(entry.customerLayout or{})do
-        local key=link.city..':'..link.district
-        local city=snapshot.cities[link.city]and snapshot.cities[link.city].object
-        local definition=GameInfo.Districts[link.district]
-        if city and definition and not nominated[key]and not occupied[link.plot]and not protectedPlots[link.plot]then
+    for _,entry in ipairs(plans)do quarterClaims[entry.plot]=quarterClaims[entry.plot]or entry.district end
+    if snapshot.planState then for _,plan in pairs(snapshot.planState.plans)do quarterClaims[plan.plot]=plan.district end end
+    local grouped={}
+    for _,option in ipairs(snapshot.CustomerFirstOptions(protectedPlots))do
+        local key=option.city..':'..option.district..':'..option.plot
+        local group=grouped[key]or{city=option.city,district=option.district,plot=option.plot,
+            adjacency=option.adjacency,options={}}
+        grouped[key]=group;group.options[#group.options+1]=option
+    end
+    local candidates={}
+    for _,group in pairs(grouped)do
+        group.plan=E.CustomerFirstPlan(group.options,quarterClaims,customerClaims)
+        candidates[#candidates+1]=group
+    end
+    table.sort(candidates,function(a,b)
+        if a.plan.preference~=b.plan.preference then return a.plan.preference>b.plan.preference end
+        if a.adjacency~=b.adjacency then return a.adjacency>b.adjacency end
+        if a.city~=b.city then return a.city<b.city end
+        if a.district~=b.district then return a.district<b.district end
+        return a.plot<b.plot
+    end)
+    local remaining,offers={},{}
+    for _,candidate in ipairs(candidates)do
+        local key=candidate.city..':'..candidate.district
+        local city=snapshot.cities[candidate.city]and snapshot.cities[candidate.city].object
+        local definition=GameInfo.Districts[candidate.district]
+        if city and definition and not nominated[key]and not quarterClaims[candidate.plot]
+            and not customerClaims[candidate.plot]and not protectedPlots[candidate.plot]then
+            local plan=E.CustomerFirstPlan(candidate.options,quarterClaims,customerClaims)
             local exempt=definition.RequiresPopulation==false or definition.RequiresPopulation==0
-            if remaining[link.city]==nil then
+            if remaining[candidate.city]==nil then
                 local capacity=snapshot.DistrictCapacity(city)
-                remaining[link.city]=capacity and capacity.known and capacity.allowed-capacity.used or 0
+                remaining[candidate.city]=capacity and capacity.known and capacity.allowed-capacity.used or 0
             end
-            local reserve=link.city==entry.city and
-                (GameInfo.Districts[entry.district].RequiresPopulation~=false
-                and GameInfo.Districts[entry.district].RequiresPopulation~=0)and 1 or 0
-            if exempt or remaining[link.city]>reserve then
-                local legal=false
-                for _,index in ipairs(snapshot.ui.GetLegalDistrictTargets(snapshot.id,link.city,definition.Hash)or{})do
-                    if index==link.plot then legal=true;break end
-                end
-                if legal then
-                    nominated[key]={player=snapshot.id,city=link.city,district=link.district,plot=link.plot,
-                        delta=math.floor(link.preference*256+.5),customer=true,spatial=true}
-                    occupied[link.plot]=true
-                    if not exempt then remaining[link.city]=remaining[link.city]-1 end
+            if plan.preference>0 and(exempt or remaining[candidate.city]>0)then
+                local offer={player=snapshot.id,city=candidate.city,district=candidate.district,plot=candidate.plot,
+                    delta=plan.preference*256,customer=true,spatial=true,customerFirst=true,
+                    futureSuppliers=plan.links,rawPreferenceQ8=plan.rawPreference*256}
+                offers[#offers+1]=offer;nominated[key]=true;customerClaims[candidate.plot]=true
+                if not exempt then remaining[candidate.city]=remaining[candidate.city]-1 end
+                -- Proposal identities join ordinary CE customer receipts.
+                -- Component records preserve each legitimate shared-material
+                -- incentive separately from the capped aggregate packet bid.
+                print(string.format('CSC_AI_CUSTOMER_FUTURE_BID turn=%d player=%d city=%d district=%d plot=%d suppliers=%d rawQ8=%d deltaQ8=%d',
+                    Game.GetCurrentGameTurn(),snapshot.id,offer.city,offer.district,offer.plot,#plan.links,offer.rawPreferenceQ8,offer.delta))
+                for _,link in ipairs(plan.links)do local option=link.option
+                    quarterClaims[option.quarterPlot]=option.quarterDistrict
+                    print(string.format('CSC_AI_CUSTOMER_FUTURE_LINK turn=%d player=%d city=%d district=%d plot=%d quarterCity=%d quarterDistrict=%d quarterPlot=%d base=%d spec=%d basePlots=%s specPlots=%s ordinaryAdjacency=%.3f bestOrdinaryAdjacency=%.3f contributionQ8=%d',
+                        Game.GetCurrentGameTurn(),snapshot.id,offer.city,offer.district,offer.plot,
+                        option.quarterCity,option.quarterDistrict,option.quarterPlot,option.baseCount,option.specialtyCount,
+                        table.concat(option.basePlots,','),table.concat(option.specialtyPlots,','),
+                        option.adjacency,option.bestAdjacency,link.preference*256))
                 end
             end
         end
-    end end
-    local offers={}
-    for _,offer in pairs(nominated)do offers[#offers+1]=offer end
+    end
     table.sort(offers,function(a,b)if a.city~=b.city then return a.city<b.city end;return a.district<b.district end)
+    local work=snapshot.customerFirstWork or{}
+    print(string.format('CSC_AI_CUSTOMER_FUTURE_WORK turn=%d player=%d targets=%d quarterChecks=%d supplyReads=%d options=%d unknown=%d offers=%d',
+        Game.GetCurrentGameTurn(),snapshot.id,work.targets or 0,work.quarterChecks or 0,
+        work.supplyReads or 0,work.options or 0,work.unknown or 0,#offers))
     return offers
 end
 
@@ -737,7 +843,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     -- keeps packets small for future Quarters. Other district/material bids
     -- stay intact; no old additive Quarter score is mixed with whole values.
     for _,entry in ipairs(early)do if not managed[entry.district]then result[#result+1]=entry end end
-    if snapshot.CustomerOptions then
+    if snapshot.CustomerFirstOptions then
         for _,offer in ipairs(E.CustomerOffers(snapshot,result,protectedPlots))do result[#result+1]=offer end
     end
     E.ReportWithdrawals(snapshot,result,evaluations,scopes,previous or{})

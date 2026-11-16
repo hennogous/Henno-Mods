@@ -3,10 +3,46 @@
 -- consumes plain records; decision adapters never reinterpret these facts.
 -- Static catalogues persist for the session. Ownership, production, research,
 -- completion, supply and quotes never persist past this snapshot.
+-- The customer-first reader reverses the generated gameplay partner graph and
+-- exposes concrete customer/Quarter/material footprints to the policy adapter.
 CSC_AI_EconomyFacts={}
 local F=CSC_AI_EconomyFacts
 local INF=math.huge
 local catalogue
+local customerQuarterMap
+
+function F.CustomerQuarterMap()
+    -- Reverse the GENERATED native partner graph, not a second authored list.
+    -- CSC_AI_Connectors.sql unions gameplay transactions, sales/provider tags
+    -- and unique replacements. Its AdjacentDistrict identifies the supplier
+    -- Quarter; the standard district name identifies its Base/Spec class tags.
+    -- Cache definitions only for this game session. No graph/capability means
+    -- no speculative guidance; the ordinary native placement remains intact.
+    if customerQuarterMap then return customerQuarterMap end
+    if not GameInfo.District_Adjacencies or not GameInfo.Adjacency_YieldChanges
+        or not GameInfo.Districts then return {} end
+    local result,seen={},{}
+    for link in GameInfo.District_Adjacencies()do
+        local rule=GameInfo.Adjacency_YieldChanges[link.YieldChangeId]
+        local customer=GameInfo.Districts[link.DistrictType]
+        local quarter=rule and GameInfo.Districts[rule.AdjacentDistrict]
+        local key=quarter and quarter.DistrictType:match('^DISTRICT_CSC_(.+)_QUARTER$')
+        if key and customer and customer.DistrictType~='DISTRICT_CITY_CENTER'
+            and customer.DistrictType~='DISTRICT_WONDER'
+            and rule.YieldType=='YIELD_CSC_AI_PLACEMENT' and rule.YieldChange>0 then
+            local identity=customer.Index..':'..quarter.Index
+            if not seen[identity]then
+                seen[identity]=true
+                local row=result[customer.Index]or{definition=customer,quarters={}}
+                result[customer.Index]=row
+                row.quarters[#row.quarters+1]={key=key,district=quarter,
+                    base='CLASS_CSC_'..key..'_BASE',specialty='CLASS_CSC_'..key..'_SPEC'}
+            end
+        end
+    end
+    for _,row in pairs(result)do table.sort(row.quarters,function(a,b)return a.district.Index<b.district.Index end)end
+    customerQuarterMap=result;return result
+end
 local function numeric(value)return type(value)=='number'or type(value)=='integer'end
 local function finite(value)return numeric(value)and value==value and value>=0 and value<INF end
 local function number(object,name,...)
@@ -419,7 +455,7 @@ function F.New(player,placement,ui,context)
                 local sum=0
                 for _,kind in ipairs({'YIELD_FOOD','YIELD_PRODUCTION','YIELD_GOLD',
                     'YIELD_SCIENCE','YIELD_CULTURE','YIELD_FAITH'})do
-                    sum=sum+math.max(0,record.yields[kind]or 0)
+                    sum=sum+(record.yields[kind]or 0)
                 end
                 value=sum
             end
@@ -505,6 +541,116 @@ function F.New(player,placement,ui,context)
             end
         end
         spatialStats.options=spatialStats.options+#options
+        return options
+    end
+
+    function snapshot.CustomerFirstOptions(protectedPlots)
+        -- Start at CURRENT native customer targets, then walk one hex to an
+        -- empty Quarter footprint and one more to its tagged suppliers. Merely
+        -- finding a matching resource within radius two is insufficient: all
+        -- three distinct footprints must fit, including triangles where the
+        -- customer also touches the material. Research/population may grow
+        -- later; permanent actor exclusions and geometry must already allow
+        -- the Quarter. This pass neither purchases land nor reserves a slot.
+        -- Owned, revealed suppliers use the shared improvement-feasibility
+        -- reader, including locked but geometrically possible improvements.
+        -- Rebuild live facts each publication; cache each Quarter/site supply
+        -- and each customer/site adjacency through the central snapshot.
+        local options,potential={},{}
+        local types=customerTypes -- share actor/type masks with forward layouts
+        local work={targets=0,quarterChecks=0,supplyReads=0,options=0,unknown=0}
+        snapshot.customerFirstWork=work
+        local function futureTypes(city)
+            local id=city:GetID()
+            if types[id]==nil then types[id]=CSC_AI_FutureDistrictTypes
+                and CSC_AI_FutureDistrictTypes(pid,city)or false end
+            return types[id]
+        end
+        local function reserved(index)return snapshot.intentFootprints and snapshot.intentFootprints[index]end
+        local function quarterAt(plot,profile)
+            local key=plot:GetIndex()..':'..profile.district.Index
+            if potential[key]~=nil then return potential[key]or nil end
+            potential[key]=false;work.quarterChecks=work.quarterChecks+1
+            local city=plot:GetOwner()==pid and Cities.GetPlotPurchaseCity(plot)
+            local allowed=city and futureTypes(city)
+            if not city or not allowed or not allowed[profile.district.Index]
+                or plot:GetDistrictType()~=-1 or plot:GetResourceType()~=-1
+                or protectedPlots[plot:GetIndex()]or reserved(plot:GetIndex())
+                or not PlayersVisibility[pid]:IsRevealed(plot:GetX(),plot:GetY())
+                or Map.GetPlotDistance(city:GetX(),city:GetY(),plot:GetX(),plot:GetY())>3
+                or not plot:CanHaveDistrict(profile.district.Index,pid,city:GetID())then return nil end
+            local supply=snapshot.Supply(plot,profile);work.supplyReads=work.supplyReads+1
+            if not supply then return nil end
+            local row={quarterCity=city:GetID(),quarterDistrict=profile.district.Index,quarterPlot=plot:GetIndex(),
+                basePlots={},specialtyPlots={}}
+            -- A retained native district request may already be consuming a
+            -- deposit; do not sell that doomed material as a future supplier.
+            for _,material in ipairs(supply.base)do if not reserved(material.plot)then row.basePlots[#row.basePlots+1]=material.plot end end
+            for _,material in ipairs(supply.specialty)do if not reserved(material.plot)then row.specialtyPlots[#row.specialtyPlots+1]=material.plot end end
+            row.baseCount,row.specialtyCount=#row.basePlots,#row.specialtyPlots
+            if row.baseCount==0 then return nil end
+            table.sort(row.basePlots);table.sort(row.specialtyPlots)
+            potential[key]=row;return row
+        end
+        local graph=F.CustomerQuarterMap()
+        local districtIDs={};for id in pairs(graph)do districtIDs[#districtIDs+1]=id end;table.sort(districtIDs)
+        local cityIDs={};for id in pairs(snapshot.cities)do cityIDs[#cityIDs+1]=id end;table.sort(cityIDs)
+        if type(ui.GetLegalDistrictTargets)~='function'or not Map.GetPlotDistance then return options end
+        for _,id in ipairs(cityIDs)do
+            local city=snapshot.cities[id].object
+            local allowed=futureTypes(city)
+            for _,district in ipairs(districtIDs)do if allowed and allowed[district]then
+                local mapping=graph[district];local definition=mapping.definition
+                local ok,targets=pcall(ui.GetLegalDistrictTargets,pid,id,definition.Hash)
+                if not ok or type(targets)~='table'then work.unknown=work.unknown+1
+                else
+                    local legal,prospects={},{}
+                    for _,index in ipairs(targets)do
+                        local plot=Map.GetPlotByIndex(index)
+                        local owner=plot and plot:GetOwner()==pid and Cities.GetPlotPurchaseCity(plot)
+                        if owner and owner:GetID()==id and plot:GetDistrictType()==-1
+                            and plot:GetResourceType()==-1 and not protectedPlots[index]and not reserved(index)
+                            and PlayersVisibility[pid]:IsRevealed(plot:GetX(),plot:GetY())then
+                            legal[#legal+1]=plot;work.targets=work.targets+1
+                            local adjacent=Map.GetAdjacentPlots(plot:GetX(),plot:GetY())
+                            for _,profile in ipairs(mapping.quarters)do
+                                local suppliedCities,unknownSupplier={},false
+                                for _,near in ipairs(adjacent)do
+                                    if near:GetOwner()==pid and near:GetDistrictType()==profile.district.Index then
+                                        local supplier=Cities.GetPlotPurchaseCity(near)
+                                        if supplier then suppliedCities[supplier:GetID()]=true else unknownSupplier=true end
+                                    end
+                                end
+                                -- Existing-neighbour incentives already use native SQL.
+                                -- Suppress only that supplier city/type; another
+                                -- city's future Quarter is a separate real link.
+                                if not unknownSupplier then for _,near in ipairs(adjacent)do
+                                    local future=quarterAt(near,profile)
+                                    if future and not suppliedCities[future.quarterCity]then prospects[#prospects+1]={plot=plot,future=future}end
+                                end end
+                            end
+                        end
+                    end
+                    if #prospects>0 then
+                        -- Read native ordinary adjacency only when a material-
+                        -- backed layout exists. Unknown alternatives suppress
+                        -- the speculative offer rather than invent a best site.
+                        local best,known=-INF,true
+                        for _,plot in ipairs(legal)do
+                            local value=customerYield(city,plot,definition)
+                            if value==nil then known=false else best=math.max(best,value)end
+                        end
+                        if known then for _,prospect in ipairs(prospects)do
+                            local row={city=id,district=district,plot=prospect.plot:GetIndex(),
+                                adjacency=customerYield(city,prospect.plot,definition),bestAdjacency=best}
+                            for key,value in pairs(prospect.future)do row[key]=value end
+                            options[#options+1]=row
+                        end else work.unknown=work.unknown+1 end
+                    end
+                end
+            end end
+        end
+        work.options=#options
         return options
     end
 

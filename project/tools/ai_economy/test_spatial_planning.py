@@ -1,5 +1,7 @@
 """Exercise spatial choices and the actual main-mod publication boundaries."""
 from pathlib import Path
+import itertools
+import random
 import unittest
 from lupa.lua51 import LuaRuntime
 import test_boundaries as boundaries
@@ -96,44 +98,116 @@ local after=CSC_AI_EconomyModel.Forecast(site,price)
 assert(after.valueQ8==before.valueQ8 and after.adjacency==2 and #after.streams==1)
 ''')
 
-    def test_customer_offers_require_current_legal_targets_and_room_for_quarter(self):
+    def test_customer_first_offers_spend_current_slots_and_combine_distinct_supplier_types(self):
         vm = self.adapters()
         vm.execute('''
+Game={GetCurrentGameTurn=function()return 5 end}
 local E=CSC_AI_EconomyAdapters
-local city={GetID=function()return 1 end}
-GameInfo={Districts={[10]={RequiresPopulation=1},[20]={RequiresPopulation=1,Hash=200},
- [21]={RequiresPopulation=1,Hash=210}}}
-local free=1;local legal={5,6}
-local snapshot={id=1,cities={[1]={object=city}},
+GameInfo={Districts={[20]={RequiresPopulation=1},[21]={RequiresPopulation=0}}}
+local free=1
+local options={
+ {city=1,district=20,plot=5,quarterCity=1,quarterDistrict=10,quarterPlot=2,
+  baseCount=3,specialtyCount=1,basePlots={7,8,9},specialtyPlots={10},adjacency=2,bestAdjacency=2},
+ {city=1,district=20,plot=5,quarterCity=1,quarterDistrict=11,quarterPlot=3,
+  baseCount=1,specialtyCount=0,basePlots={7},specialtyPlots={},adjacency=2,bestAdjacency=2}}
+local snapshot={id=1,cities={[1]={object={}}},
  DistrictCapacity=function()return{known=true,used=0,allowed=free}end,
- ui={GetLegalDistrictTargets=function()return legal end}}
-local row={economy=true,city=1,district=10,plot=2,finalQ8=100,
- customerLayout={{city=1,district=20,plot=5,preference=32},
- {city=1,district=21,plot=6,preference=40}}}
+ CustomerFirstOptions=function()return options end}
+local offers=E.CustomerOffers(snapshot,{},{});
+assert(#offers==1 and offers[1].delta==24*256 and #offers[1].futureSuppliers==2)
+free=0;assert(#E.CustomerOffers(snapshot,{},{})==0)
+GameInfo.Districts[20].RequiresPopulation=0
+assert(#E.CustomerOffers(snapshot,{},{})==1)
+assert(#E.CustomerOffers(snapshot,{}, {[5]=true})==0)
+local row={economy=true,city=1,district=10,plot=5,finalQ8=100}
 assert(#E.CustomerOffers(snapshot,{row},{})==0)
-free=2;local offers=E.CustomerOffers(snapshot,{row},{})
-assert(#offers==1 and offers[1].delta==32*256)
-free=3;assert(#E.CustomerOffers(snapshot,{row},{})==2)
-legal={};assert(#E.CustomerOffers(snapshot,{row},{})==0)
-legal={5,6};assert(#E.CustomerOffers(snapshot,{row},{[5]=true,[6]=true})==0)
+snapshot.planState={plans={retained={plot=5,district=10}}}
+assert(#E.CustomerOffers(snapshot,{},{})==0)
 ''')
 
-    def test_cross_quarter_proposals_do_not_promote_conflicting_customer_types(self):
-        vm = self.adapters()
+    def test_customer_first_rejects_weaker_ordinary_adjacency_and_missing_material(self):
+        vm=self.adapters()
         vm.execute('''
 local E=CSC_AI_EconomyAdapters
-GameInfo={Districts={[10]={RequiresPopulation=1},[11]={RequiresPopulation=1},
- [20]={RequiresPopulation=1,Hash=200},[21]={RequiresPopulation=1,Hash=210}}}
-local snapshot={id=1,cities={[1]={object={}}},DistrictCapacity=function()return{known=true,used=0,allowed=6}end,
- ui={GetLegalDistrictTargets=function()return{5}end}}
-local rows={
- {economy=true,city=1,district=10,plot=2,finalQ8=100,customerLayout={{city=1,district=20,plot=5,preference=32}}},
- {economy=true,city=1,district=11,plot=3,finalQ8=200,customerLayout={{city=1,district=21,plot=5,preference=48}}}}
-local offers=E.CustomerOffers(snapshot,rows,{})
-assert(#offers==1 and offers[1].district==21)
-snapshot.planState={plans={retained={plot=5}}}
-assert(#E.CustomerOffers(snapshot,rows,{})==0)
+assert(E.CustomerFirstPreference({baseCount=1,specialtyCount=0,adjacency=2,bestAdjacency=2})==8)
+assert(E.CustomerFirstPreference({baseCount=1,specialtyCount=1,adjacency=2,bestAdjacency=2})==12)
+assert(E.CustomerFirstPreference({baseCount=30,specialtyCount=30,adjacency=2,bestAdjacency=2})==16)
+assert(E.CustomerFirstPreference({baseCount=30,specialtyCount=30,adjacency=2,bestAdjacency=3})==0)
+assert(E.CustomerFirstPreference({baseCount=0,specialtyCount=3,adjacency=4,bestAdjacency=4})==0)
+assert(E.CustomerFirstPreference({baseCount=1,specialtyCount=0,adjacency=0/0,bestAdjacency=2})==0)
 ''')
+
+    def test_customer_first_coordinated_nominations_keep_the_quarter_tile_free(self):
+        vm=self.adapters()
+        vm.execute('''
+Game={GetCurrentGameTurn=function()return 5 end}
+local E=CSC_AI_EconomyAdapters
+GameInfo={Districts={[20]={RequiresPopulation=1},[21]={RequiresPopulation=1}}}
+local function option(kind,plot,qplot,base)
+ return{city=1,district=kind,plot=plot,quarterCity=1,quarterDistrict=10,quarterPlot=qplot,
+ baseCount=base,specialtyCount=0,basePlots={8},specialtyPlots={},adjacency=2,bestAdjacency=2}
+end
+local options={option(20,5,2,3),option(21,2,3,1)}
+local snapshot={id=1,cities={[1]={object={}}},
+ DistrictCapacity=function()return{known=true,used=0,allowed=3}end,
+ CustomerFirstOptions=function()return options end}
+local offers=E.CustomerOffers(snapshot,{},{})
+assert(#offers==1 and offers[1].plot==5 and offers[1].futureSuppliers[1].option.quarterPlot==2)
+options={option(20,5,2,3),option(21,6,2,1)}
+assert(#E.CustomerOffers(snapshot,{},{})==2) -- two customers may share one future Quarter
+options={option(20,5,2,3),option(21,6,5,1)}
+assert(#E.CustomerOffers(snapshot,{},{})==1) -- future Q cannot cover the first customer
+''')
+
+    def test_supplier_city_and_quarter_type_deduplicate_but_shared_materials_can_stack(self):
+        vm=self.adapters()
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+local function option(city,kind,plot,base,spec)
+ return{city=7,district=20,plot=50,quarterCity=city,quarterDistrict=kind,quarterPlot=plot,
+ baseCount=base,specialtyCount=spec,basePlots={90},specialtyPlots={91},adjacency=3,bestAdjacency=3}
+end
+local rows={option(1,10,2,3,1),option(1,10,3,1,1),option(1,11,2,3,1)}
+local plan=E.CustomerFirstPlan(rows,{},{})
+assert(plan.rawPreference==28 and #plan.links==2) -- A uses3, leaving2 for B
+assert(plan.links[1].option.quarterPlot==3 and plan.links[2].option.quarterPlot==2)
+rows[#rows+1]=option(2,10,4,1,0) -- same Quarter type, different supplier city
+plan=E.CustomerFirstPlan(rows,{},{})
+assert(plan.rawPreference==36 and plan.preference==32 and #plan.links==3)
+-- All three chains can refer to the SAME actual material plots90/91.
+for _,link in ipairs(plan.links)do assert(link.option.basePlots[1]==90)end
+rows={option(1,10,2,3,1),option(1,10,3,3,1)}
+plan=E.CustomerFirstPlan(rows,{},{})
+assert(plan.preference==16 and #plan.links==1) -- alternative sites do not multiply a city/type
+rows={option(1,10,2,3,1),option(1,11,2,3,1)}
+plan=E.CustomerFirstPlan(rows,{},{})
+assert(plan.preference==16 and #plan.links==1) -- one footprint cannot host two Quarters
+''')
+
+    def test_supplier_matching_agrees_with_exhaustive_small_layouts(self):
+        vm=self.adapters()
+        choose=vm.globals().CSC_AI_EconomyAdapters.CustomerFirstPlan
+        rng=random.Random(20261116)
+        for _ in range(40):
+            rows,groups=[],[]
+            for group in range(4):
+                choices=[]
+                for plot in range(4):
+                    if rng.random()<.5:
+                        strong=rng.choice((False,True));value=16 if strong else 8
+                        choices.append((plot,value))
+                        rows.append(dict(quarterCity=group//2+1,quarterDistrict=group%2+10,
+                            quarterPlot=plot,baseCount=3 if strong else 1,specialtyCount=1 if strong else 0,
+                            adjacency=2,bestAdjacency=2))
+                groups.append([None]+choices)
+            oracle=0
+            for combination in itertools.product(*groups):
+                selected=[c for c in combination if c is not None]
+                if len({c[0]for c in selected})==len(selected):
+                    oracle=max(oracle,sum(c[1]for c in selected))
+            plan=choose(vm.table_from([vm.table_from(r)for r in rows]),vm.table(),vm.table())
+            self.assertEqual(plan.rawPreference,oracle)
+            self.assertEqual(plan.preference,min(32,oracle))
 
     def facts(self):
         vm = boundaries.Boundaries().facts_vm()
@@ -174,6 +248,10 @@ GameInfo.Districts={[36]={RequiresPopulation=1},[20]={RequiresPopulation=1,Hash=
 snapshot.CustomerOptions=function()return{{player=1,city=7,district=20,family='HUB',plot=4,
  adjacency=2,bestAdjacency=2,displacedAdjacency=0}}end
 snapshot.ui.GetLegalDistrictTargets=function()return{4}end
+snapshot.CustomerFirstOptions=function()return{{city=7,district=20,plot=4,
+ quarterCity=7,quarterDistrict=36,quarterPlot=3,baseCount=1,specialtyCount=0,
+ basePlots={5},specialtyPlots={},adjacency=2,bestAdjacency=2}}end
+Game={GetCurrentGameTurn=function()return 5 end}
 snapshot.DistrictCapacity=function()return{known=true,used=0,allowed=3,population=7,reason='ready'}end
 local entries,stats=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
 assert(#entries==4 and stats.final==3)
@@ -182,7 +260,7 @@ for i=1,3 do local row=entries[i]
  assert(row.adjacency==4 and row.economicQ8==row.plot*1000)
  assert(row.layoutPreferenceQ8==32*256 and row.customerLayout[1].plot==4)
 end
-assert(entries[4].customer and entries[4].plot==4 and entries[4].delta==32*256)
+assert(entries[4].customer and entries[4].plot==4 and entries[4].delta==8*256)
 ''')
 
     def test_frontier_gold_payback_uses_only_starting_gold_after_completion(self):

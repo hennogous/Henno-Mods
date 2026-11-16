@@ -135,17 +135,14 @@ local function materialOptions()
     if improvementsByResource then return improvementsByResource end
     local options = {}
     for row in GameInfo.Improvement_ValidResources() do
-        for _, profile in ipairs(P.StageTwoProfiles()) do
-            if CSC_Adjacency.HasTag(profile.base, row.ResourceType)
-                or CSC_Adjacency.HasTag(profile.specialty, row.ResourceType) then
-                local resource = GameInfo.Resources[row.ResourceType]
-                local improvement = GameInfo.Improvements[row.ImprovementType]
-                if resource and improvement then
-                    options[resource.Index] = options[resource.Index] or {}
-                    options[resource.Index][#options[resource.Index] + 1] = improvement.Index
-                end
-                break
-            end
+        -- Keep the loaded improvement vocabulary generic. ReadSuppliers filters
+        -- it by the caller's Base/Spec tags; customer-first planning can thus
+        -- discover a later Quarter without adding it to the Stage 2 policy list.
+        local resource = GameInfo.Resources[row.ResourceType]
+        local improvement = GameInfo.Improvements[row.ImprovementType]
+        if resource and improvement then
+            options[resource.Index] = options[resource.Index] or {}
+            options[resource.Index][#options[resource.Index] + 1] = improvement.Index
         end
     end
     improvementsByResource = options
@@ -172,7 +169,12 @@ function P.ReadSuppliers(player, quarter, profile)
     local supplies = {base = {}, specialty = {}}
     for _, plot in ipairs(Map.GetAdjacentPlots(quarter:GetX(), quarter:GetY())) do
         local resourceID = plot:GetResourceType()
-        if options[resourceID] and plot:GetOwner() == playerID and plot:GetDistrictType() == -1
+        local definition = resourceID >= 0 and GameInfo.Resources[resourceID]
+        local base = definition and CSC_Adjacency.HasTag(profile.base, definition.ResourceType)
+        local specialty = definition and CSC_Adjacency.HasTag(profile.specialty, definition.ResourceType)
+        -- The generic definition cache must not cause native geometry calls
+        -- for unrelated nearby resources on every Quarter/site publication.
+        if (base or specialty) and options[resourceID] and plot:GetOwner() == playerID and plot:GetDistrictType() == -1
             and PlayersVisibility[playerID]:IsRevealed(plot:GetX(), plot:GetY())
             and CSC_Adjacency.ResourceVisible(playerID, resourceID) then
             local current = plot:GetImprovementType()
@@ -192,10 +194,9 @@ function P.ReadSuppliers(player, quarter, profile)
                 end
             end
             if viable then
-                local resource = GameInfo.Resources[resourceID].ResourceType
-                local material = {plot = plot:GetIndex(), resource = resource, working = working, ready = ready}
-                if CSC_Adjacency.HasTag(profile.base, resource) then supplies.base[#supplies.base + 1] = material end
-                if CSC_Adjacency.HasTag(profile.specialty, resource) then supplies.specialty[#supplies.specialty + 1] = material end
+                local material = {plot = plot:GetIndex(), resource = definition.ResourceType, working = working, ready = ready}
+                if base then supplies.base[#supplies.base + 1] = material end
+                if specialty then supplies.specialty[#supplies.specialty + 1] = material end
             end
         end
     end
