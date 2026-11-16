@@ -39,7 +39,29 @@ Quarter suppresses imports immediately. Four route channels currently hardcoded
 gameplay/UI; migrate narrow sharedchannelcontract/pureevaluator preserving5bit
 wrap modulo32 and Bakers property-only vs Tailors intactbuilding+property gate.
 Specialists read observed worker counts and native citizen-yield definitions;
-new slots get zero workers, Service bonuses excluded. Current G3 not implemented.
+new slots get zero workers, Service bonuses excluded.
+
+G3 pure foundation now implemented in EconomyModel: newLedger/finishLedger,
+JointForecast(world,price), JointCustomerForecast(beforeWorld,afterWorld,price).
+Shared owner/city building clocks/costs/depths, pooledpopulation rounding with
+contributor metadata, explicit owner validation/conflicting sharedbuilding guards.
+Minimal+all-enabled seeds/two sweeps each, globalcustomer-node choices with
+immutableautomatic edges; max64chains/512evaluations returnsunavailable onbudget.
+Astra caught firstseedsharedcost trap and localedgepruningbug; fixed and11new
+regressions independently reviewed.113 economy +35transaction tests pass.
+Servicesexcluded/diagnosticOnly. LiveCustomerWorld/routes/staffing/adjacency and
+G4nativeoverlap remainopen. Do not label full G3complete or startG7gamesyet.
+Joint pooled streams intentionally have contributors rather than an arbitrary
+lastbuilding depth premium; allocation belongswithG4attribution/calibration.
+
+Route audit fromAstra: all4 suppliedsourceprops are nativebuilding-owned +1
+properties withBase>=1 (Bakery/Tailor) orBase+Spec>=1(Cafe/Fashion). Collection
+PLAYER_IMPROVEMENTS filteredadjacency+tags, noexplicitcivic/worker/inputhost/
+validresourcepair/Quarterfunction gate. Currentexportprop observedauthority;
+future supply should use returnselectoreligibility, not inputhost orServicegate.
+Source IDs andnativegate closure in Astra review and upcomingroutecatalogue.
+CitizenYieldChanges ordinary source rows: Bakery2Food;Cafe1Food1Culture;
+Tailor2Culture1Gold;Fashion1Culture2Gold. Goldintrinsic independentGoldtoggle.
 
 Unrelated large UI/art/Pedia/localization/Taxes WIP belongs to concurrent work.
 Stage manifest/project/tailors_assertions from HEAD with only material additions.

@@ -1,5 +1,13 @@
 # Current CSC AI status
 
+**G3,16 November — joint customer ledger foundation implemented.**
+One scheduler now shares building investments and city queues across affected
+Quarters, and pools population targets before rounding. Astra's review caught
+two shared-investment cases, now regression covered: jointly profitable producers
+and automatic links to a shared customer. Live world construction, observed
+routes/staffing, adjacency changes and native residual are the next dependencies.
+[Implementation and coverage](../research/mods/csc-joint-customer-ledger-20261116.md).
+
 **1.4 / 2.2,16 November — directional material model qualified.**
 Five relationships/45 Gold+M&C legs now drive native arguments, actual input
 hosts and AI income/protection. Gold/M&C graph parity and end-to-end ownership,

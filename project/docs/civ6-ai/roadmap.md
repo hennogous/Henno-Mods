@@ -9,8 +9,10 @@ Fixed/local exchanges now match all10,954 loaded CSC native effect rows;
 the directional material migration matches its Gold/M&C native fixtures and a
 bounded22-chain live model pass. Thirty live damage/repair observations now
 qualify the native graph and actual city payout; cached UI yields can lag.
-Next, finish the current-reader smoke; account for
-observed trade/staffing, aggregate all supplier chains for a proposed customer,
+The final current-reader smoke also passes. The pure joint ledger now shares
+customer investments/queues and rounds combined population targets; Astra's
+shared-investment corrections have regression coverage. Next, construct the live
+affected-world facts and account for observed trade/staffing and adjacency changes,
 and identify existing native CSC forecast contributions. Only then enable a
 customer residual adapter. Prospective Services stay deferred14.3. Scope stays
 Problems1 and2; no new building/Builder/research execution work in this pass.
