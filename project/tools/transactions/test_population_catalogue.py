@@ -200,7 +200,8 @@ class PopulationCatalogue(unittest.TestCase):
             for lgd in [False,True]:
                 with self.subTest(gold=gold,lgd=lgd):
                     db=compile_catalogue(gold=gold,lgd=lgd)
-                    actual=graph(db);key=f'{int(gold)}:{int(lgd)}'
+                    from population_catalogue_fixture import legacy_reference_graph
+                    actual=legacy_reference_graph(db);key=f'{int(gold)}:{int(lgd)}'
                     self.assertEqual(digest(actual),expected['graphs'][key]['sha256'])
                     self.assertEqual(sum(map(len,actual.values())),expected['graphs'][key]['rows'])
                     db.close()

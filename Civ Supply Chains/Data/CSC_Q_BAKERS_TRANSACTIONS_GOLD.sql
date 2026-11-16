@@ -153,3 +153,10 @@ VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_ORDINARY',   'REQSET_CS
         (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
         (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
         (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   );
+
+-- Gold route legs exist only when this gameplay companion is loaded.
+
+INSERT INTO CSC_TradeRoutePayoutBindings
+        (   ChannelId,         LegKey,          Recipient,       ModifierId   )
+VALUES  (   'BAKERS_BAKERY',   'EXPORT_GOLD',   'DESTINATION',   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD'   ),
+        (   'BAKERS_CAFE',     'EXPORT_GOLD',   'DESTINATION',   'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD'   );

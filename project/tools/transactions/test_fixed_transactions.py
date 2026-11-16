@@ -5,7 +5,7 @@ import sqlite3
 import unittest
 from lupa.lua51 import LuaRuntime
 
-from population_catalogue_fixture import ROOT,MOD,compile_catalogue,graph
+from population_catalogue_fixture import ROOT,MOD,compile_catalogue,graph,legacy_reference_graph
 from test_population_catalogue import digest,lua
 
 HERE=Path(__file__).resolve().parent
@@ -42,7 +42,7 @@ price=function(s,h)return s.amount*(h-s.ready)*256 end
         for gold in [False,True]:
             for uniques in [False,True]:
                 db=compile_catalogue(gold=gold,uniques=uniques)
-                actual=graph(db,'fixed');key=f'{int(gold)}:{int(uniques)}'
+                actual=legacy_reference_graph(db,'fixed');key=f'{int(gold)}:{int(uniques)}'
                 self.assertEqual(digest(actual),reference[key]['sha256'])
                 self.assertEqual(sum(map(len,actual.values())),reference[key]['rows'])
                 db.close()

@@ -48,6 +48,13 @@ separately from explicit SQL gates, and record which city actually works a plot.
 
 ## Native/customer slice
 
+17 November route slice: native SQL projection/shared kernel now drives the
+scanner/previews. The67-city zero-turn replay matches packets and all10,954
+native rows;43 route operation start times qualify. Route events, aggregate
+amenity counterfactual pricing and live affected-world integration remain G3
+work; no customer residual is enabled by this slice.
+[Evidence and exact preview changes](../research/mods/csc-observed-routes-20261117.md).
+
 The engine adds a shared city/type building subtotal to positive customer-site
 cells. Preserve that ordinary valuation and identify existing CSC contributions
 before adding a site-dependent residual. Keep native SQL placement preference1

@@ -1,92 +1,20 @@
--- ===========================================================================
--- Civ Supply Chains compatibility with Sukritact's Simple UI Adjustments
--- ===========================================================================
-
--- Explicit allowlist for moving CSC trade-route yield modifiers out of the
--- aggregate city-yield "from Modifiers" row. This table and its rows are UI
--- compatibility metadata and load only when Simple UI Adjustments is active.
--- Modifier names remain traceability metadata, never an inference rule.
+-- CSC compatibility with Sukritact's Simple UI Adjustments. Reclassify only
+-- actual origin-side route yield consumers from Modifiers to Outgoing Trade
+-- Routes; this presentation metadata changes neither payouts nor city totals.
+-- The late validated native read-model supplies partners, bits, yields and
+-- amounts, so this UI integration owns no second transaction definition.
 CREATE TABLE IF NOT EXISTS CSC_TradeRouteYieldPresentation
     (
-    EntryId         TEXT PRIMARY KEY NOT NULL,
-    QuarterKey      TEXT NOT NULL,
-    ModifierId      TEXT NOT NULL UNIQUE,
-    PropertyName    TEXT NOT NULL UNIQUE,
-    PropertyScope   TEXT NOT NULL,
-    YieldType       TEXT NOT NULL,
-    Amount          REAL NOT NULL,
-    DisplayBucket   TEXT NOT NULL
+    EntryId TEXT PRIMARY KEY NOT NULL,
+    QuarterKey TEXT NOT NULL,
+    ModifierId TEXT NOT NULL UNIQUE,
+    PropertyName TEXT NOT NULL,
+    PropertyScope TEXT NOT NULL,
+    YieldType TEXT NOT NULL,
+    Amount REAL NOT NULL,
+    DisplayBucket TEXT NOT NULL
     );
 
-INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
-    (
-        EntryId,
-        QuarterKey,
-        ModifierId,
-        PropertyName,
-        PropertyScope,
-        YieldType,
-        Amount,
-        DisplayBucket
-    )
-VALUES
-    (
-        'CSC_BAKERS_IMPORT_CONSUMER_FOOD',
-        'BAKERS',
-        'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',
-        'CSC_BAKERS_IMPORT_CONSUMER_ROUTE_BIT_1',
-        'CITY_CENTER_PLOT',
-        'YIELD_FOOD',
-        1,
-        'OUTGOING_TRADE_ROUTES'
-    ),
-    (
-        'CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
-        'BAKERS',
-        'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
-        'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE_BIT_1',
-        'CITY_CENTER_PLOT',
-        'YIELD_FOOD',
-        1,
-        'OUTGOING_TRADE_ROUTES'
-    ),
-    (
-        'CSC_TAILORS_IMPORT_CONSUMER_CULTURE',
-        'TAILORS',
-        'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',
-        'CSC_TAILORS_IMPORT_TAILOR_ROUTE_BIT_1',
-        'CITY_CENTER_PLOT',
-        'YIELD_CULTURE',
-        1,
-        'OUTGOING_TRADE_ROUTES'
-    );
-
-
-INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
-    (
-        EntryId,
-        QuarterKey,
-        ModifierId,
-        PropertyName,
-        PropertyScope,
-        YieldType,
-        Amount,
-        DisplayBucket
-    )
-VALUES
-    (
-        'CSC_TAILORS_IMPORT_SPECIALTY_CULTURE',
-        'TAILORS',
-        'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',
-        'CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE_BIT_1',
-        'CITY_CENTER_PLOT',
-        'YIELD_CULTURE',
-        1,
-        'OUTGOING_TRADE_ROUTES'
-    );
-
--- Match the per-route Food/Culture modifier bits exactly. The tooltip sums only active
--- flags, moving the already-paid total from Modifiers to Outgoing Trade Routes.
 INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
     (
         EntryId,
@@ -99,14 +27,13 @@ INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
         DisplayBucket
     )
 SELECT
-        EntryId || '_BIT_' || Bit,
-        QuarterKey,
-        ModifierId || '_BIT_' || Bit,
-        REPLACE(PropertyName, '_BIT_1', '_BIT_' || Bit),
-        PropertyScope,
-        YieldType,
-        Bit,
-        DisplayBucket
-FROM CSC_TradeRouteYieldPresentation CROSS JOIN CSC_RouteStackBits
-WHERE EntryId IN ('CSC_BAKERS_IMPORT_CONSUMER_FOOD', 'CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
-                  'CSC_TAILORS_IMPORT_CONSUMER_CULTURE', 'CSC_TAILORS_IMPORT_SPECIALTY_CULTURE');
+        'CSC_ROUTE_' || P.ChannelId || '_' || P.LegKey || '_BIT_' || P.Bit,
+        C.QuarterKey,
+        P.ModifierId,
+        C.ImportProperty || '_BIT_' || P.Bit,
+        'CITY_CENTER_PLOT',
+        P.YieldType,
+        P.Amount,
+        'OUTGOING_TRADE_ROUTES'
+FROM CSC_TradeRoutePayouts P JOIN CSC_TradeRouteChannels C USING (ChannelId)
+WHERE P.Recipient = 'ORIGIN' AND P.YieldType <> 'AMENITY';

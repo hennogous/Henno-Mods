@@ -422,3 +422,53 @@ VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'INPUT_ORDINARY',               'REQ
         (   'CSC_BAKERS_CAFE_SPEC',         'INPUT_ORDINARY',               'REQSET_CSC_ADJ_BAKERS_QUARTER',         'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
         (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
         (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   );
+
+-- Route channel partners and protocol fields. Native SQL above remains the
+-- payout authority; the late read-model reads every real modifier bit rather
+-- than copying a rate. Preserve the scanner's source-building asymmetry:
+-- Bakers uses supplied properties, Tailors also checks an intact producer.
+
+INSERT INTO CSC_TradeRouteChannels
+    (
+        ChannelId,
+        QuarterKey,
+        ProducerBuildingType,
+        SupplyModifierId,
+        RequireProducerBuilding,
+        ImportField,
+        ExportField,
+        ImportProperty,
+        ExportProperty
+    )
+VALUES
+    (
+        'BAKERS_BAKERY',
+        'BAKERS',
+        'BUILDING_CSC_BAKERS_BAKERY',
+        'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',
+        0,
+        'ImportConsumerRoute',
+        'ExportBakeryRoute',
+        'CSC_BAKERS_IMPORT_CONSUMER_ROUTE',
+        'CSC_BAKERS_EXPORT_BAKERY_ROUTE'
+    ),
+    (
+        'BAKERS_CAFE',
+        'BAKERS',
+        'BUILDING_CSC_BAKERS_CAFE',
+        'MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP',
+        0,
+        'ImportSpecialtyRoute',
+        'ExportCafeRoute',
+        'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',
+        'CSC_BAKERS_EXPORT_CAFE_ROUTE'
+    );
+
+INSERT INTO CSC_TradeRoutePayoutBindings
+        (   ChannelId,         LegKey,                Recipient,       ModifierId   )
+VALUES  (   'BAKERS_BAKERY',   'IMPORT_YIELD',        'ORIGIN',        'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD'   ),
+        (   'BAKERS_BAKERY',   'IMPORT_AMENITY',      'ORIGIN',        'MOD_CSC_BAKERS_IMPORT_CONSUMER_AMENITY'   ),
+        (   'BAKERS_BAKERY',   'EXPORT_PRODUCTION',   'DESTINATION',   'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION'   ),
+        (   'BAKERS_CAFE',     'IMPORT_YIELD',        'ORIGIN',        'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD'   ),
+        (   'BAKERS_CAFE',     'IMPORT_AMENITY',      'ORIGIN',        'MOD_CSC_BAKERS_IMPORT_SPECIALTY_AMENITY'   ),
+        (   'BAKERS_CAFE',     'EXPORT_PRODUCTION',   'DESTINATION',   'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION'   );

@@ -1,5 +1,11 @@
 # CSC AI roadmap
 
+**17 November G3 route dependency:** shared native-definition route arithmetic
+now qualifies on67 cities/43 actual routes, preserving all10,954 native rows.
+Connect it once per joint plan, with amenity totals priced relative to the
+current city baseline, before completing customer-world and native residual work.
+[Route evidence and preview changes](../research/mods/csc-observed-routes-20261117.md).
+
 **Active1.4 / 2.1: one gameplay/AI ordinary-economy contract.**
 Population Stage3/4 terms and partners are now gameplay-owned; native payouts,
 metadata and AI share them. The migration matches288 old-code worlds and a

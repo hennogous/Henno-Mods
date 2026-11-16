@@ -1,131 +1,30 @@
---=================================================================================================================
---  Civ Supply Chains - Better Trade Screen Preview Support
---=================================================================================================================
---  This file is intentionally small and rule-focused. Better Trade Screen already knows how to render
---  normal trade-route yields; CSC only needs to tell it which extra route effects our supply-chain
---  system would create for the currently previewed origin/destination city pair.
---
---  The live gameplay effects are still driven by CSC_TradeRouteInteractions.lua and SQL plot/city
---  properties. This helper is only for UI preview: it computes the same hypothetical route state before
---  the route exists, because active-route city properties cannot include a not-yet-created route.
---=================================================================================================================
-
-local DISTRICT_BAKERS_QUARTER = -1;
-if GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil then
-	DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index;
+-- Shared gameplay channel definitions -> nominal one-route UI amounts.
+-- Formatting stays in BTS. Eligibility and actual native payout bits are shared
+-- with the live scanner and AI; optional Gold is read from loaded bindings.
+include("CSC_TradeRouteCore")
+include("CSC_TradeRouteFacts")
+local R=CSC_TradeRouteCore
+local definitions,problem=R.ReadDefinitions(GameInfo)
+if not definitions then print('CSC_ROUTE_PREVIEW_UNAVAILABLE '..tostring(problem));return end
+local reader=CSC_TradeRouteFacts.New(GameInfo,definitions)
+local function cities(route)
+    if not route then return nil,nil end
+    local origin=Players[route.OriginCityPlayer]
+    local destination=Players[route.DestinationCityPlayer]
+    return reader.City(origin and origin:GetCities():FindID(route.OriginCityID)),
+        reader.City(destination and destination:GetCities():FindID(route.DestinationCityID))
 end
-local DISTRICT_TAILORS_QUARTER = -1;
-if GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"] ~= nil then
-	DISTRICT_TAILORS_QUARTER = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"].Index;
+function CSC_BTS_GetBakersTradeRouteState(route)
+    local origin,destination=cities(route)
+    return R.FamilyStates(definitions,origin,destination,'BAKERS')
 end
-
-local PROP_BAKERY_SUPPLIED = "CSC_BAKERS_BAKERY_SUPPLIED";
-local PROP_CAFE_SUPPLIED = "CSC_BAKERS_CAFE_SUPPLIED";
-local PROP_FASHION_HOUSE_SUPPLIED = "CSC_TAILORS_FASHION_HOUSE_SUPPLIED";
-local PROP_TAILOR_SUPPLIED = "CSC_TAILORS_TAILOR_SUPPLIED";
-
-local function CSC_BTS_IsPositiveProperty(owner, propertyName)
-	if owner == nil then return false; end
-
-	local value = owner:GetProperty(propertyName);
-	if value == nil then return false; end
-
-	return tonumber(value) ~= nil and tonumber(value) > 0;
+function CSC_BTS_GetTailorsTradeRouteState(route)
+    local origin,destination=cities(route)
+    return R.FamilyStates(definitions,origin,destination,'TAILORS')
 end
-
-local function CSC_BTS_CityHasFunctioningBakersQuarter(pCity)
-	if pCity == nil or DISTRICT_BAKERS_QUARTER < 0 then return false; end
-
-	local pDistricts = pCity:GetDistricts();
-	if pDistricts == nil then return false; end
-	if not pDistricts:HasDistrict(DISTRICT_BAKERS_QUARTER) then return false; end
-
-	if pDistricts.IsPillaged ~= nil then
-		return not pDistricts:IsPillaged(DISTRICT_BAKERS_QUARTER);
-	end
-
-	return true;
-end
-
-local function CSC_BTS_CityHasFunctioningTailorsQuarter(pCity)
-	if pCity == nil or DISTRICT_TAILORS_QUARTER < 0 then return false; end
-	local pDistricts = pCity:GetDistricts();
-	if pDistricts == nil or not pDistricts:HasDistrict(DISTRICT_TAILORS_QUARTER) then return false; end
-	if pDistricts.IsPillaged ~= nil then
-		return not pDistricts:IsPillaged(DISTRICT_TAILORS_QUARTER);
-	end
-	return true;
-end
-
-local function CSC_BTS_GetCity(iPlayerID, iCityID)
-	if iPlayerID == nil or iCityID == nil or iPlayerID < 0 then return nil; end
-
-	local pPlayer = Players[iPlayerID];
-	if pPlayer == nil then return nil; end
-
-	local pCities = pPlayer:GetCities();
-	if pCities == nil then return nil; end
-
-	return pCities:FindID(iCityID);
-end
-
--- Returns the two Bakers export channels for a hypothetical route:
---   bakeryRoute: supplied Bakery in the destination city exports consumer goods.
---   cafeRoute: supplied Cafe in the destination city exports specialty goods.
---
--- This mirrors CSC_GetBakersTradeRouteState in the route-state UI script, but stays available to BTS even
--- when that separate UI context has not loaded yet.
-function CSC_BTS_GetBakersTradeRouteState(routeInfo)
-	if routeInfo == nil then
-		return false, false;
-	end
-
-	local pOriginCity = CSC_BTS_GetCity(routeInfo.OriginCityPlayer, routeInfo.OriginCityID);
-	local pDestinationCity = CSC_BTS_GetCity(routeInfo.DestinationCityPlayer, routeInfo.DestinationCityID);
-	if pOriginCity == nil or pDestinationCity == nil then
-		return false, false;
-	end
-
-	-- CSC's fixed exchange is identical for domestic and international routes.
-	-- Native international route multipliers are handled before this additive
-	-- preview; they do not multiply CSC's city/building modifier payouts.
-
-	-- Origin cities with their own functioning Bakers' Quarter do not import Bakers goods by trade route.
-	if CSC_BTS_CityHasFunctioningBakersQuarter(pOriginCity) then
-		return false, false;
-	end
-
-	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_BAKERY_SUPPLIED),
-		CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_CAFE_SUPPLIED);
-end
-
-function CSC_BTS_GetTailorsTradeRouteState(routeInfo)
-	-- Tailors imports are independent of Bakers imports. Having one Quarter
-	-- suppresses only that industry's imports at the origin, not the other industry.
-	if routeInfo == nil then return false, false; end
-	local pOriginCity = CSC_BTS_GetCity(routeInfo.OriginCityPlayer, routeInfo.OriginCityID);
-	local pDestinationCity = CSC_BTS_GetCity(routeInfo.DestinationCityPlayer, routeInfo.DestinationCityID);
-	if pOriginCity == nil or pDestinationCity == nil then return false, false; end
-	if CSC_BTS_CityHasFunctioningTailorsQuarter(pOriginCity) then return false, false; end
-	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED),
-		CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_FASHION_HOUSE_SUPPLIED);
-end
-
-local function CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute, bFashionHouseRoute)
-	local amount = 0;
-	if bBakeryRoute then amount = amount + 1; end
-	if bCafeRoute then amount = amount + 1; end
-	if bTailorRoute then amount = amount + 1; end
-	if bFashionHouseRoute then amount = amount + 1; end
-	return amount;
-end
-
--- Exposed for the BTS chooser override, whose dedicated Amenity column is not part
--- of the normal GameInfo.Yields arrays returned by TradeSupport.
-function CSC_BTS_GetQuarterImportAmenityAmount(routeInfo)
-	local bBakeryRoute, bCafeRoute = CSC_BTS_GetBakersTradeRouteState(routeInfo);
-	local bTailorRoute, bFashionHouseRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
-	return CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute, bFashionHouseRoute);
+function CSC_BTS_GetQuarterImportAmenityAmount(route)
+    local origin,destination=cities(route)
+    return R.Nominal(definitions,origin,destination,'ORIGIN').AMENITY or 0
 end
 
 local function CSC_BTS_AppendTooltip(existingTooltip, newLine)
@@ -157,11 +56,12 @@ local function CSC_BTS_FormatSignedAmount(amount)
 		return "0";
 	end
 
+	local text=amount==math.floor(amount)and string.format('%.0f',amount)or tostring(amount);
 	if amount > 0 then
-		return "+" .. tostring(amount);
+		return "+" .. text;
 	end
 
-	return tostring(amount);
+	return text;
 end
 
 local function CSC_BTS_FormatQuarterYieldTooltip(amount, iconString, yieldName, directionName)
@@ -190,67 +90,31 @@ local function CSC_BTS_GetLastPositiveYieldIndex(yieldValues)
 	return FOOD_INDEX;
 end
 
--- Mutates BTS's normal yield arrays so its existing display, sorting, and overview logic can do the rest.
--- Amenities are not a BTS yield column, so the first implementation adds them to the last positive yield
--- tooltip. That keeps the aggregate tooltip ordered after yields without rewriting BTS' tooltip renderer.
-function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldTooltips, buildTooltip, target)
-	-- Work with this candidate route's eligibility, not accumulated live route
-	-- counts. Origin and destination arrays are separate calls for the same route.
-	if yieldValues == nil then return; end
-
-	local bBakeryRoute, bCafeRoute = CSC_BTS_GetBakersTradeRouteState(routeInfo);
-	local routeCount = 0;
-	if bBakeryRoute then routeCount = routeCount + 1; end
-	if bCafeRoute then routeCount = routeCount + 1; end
-	local bTailorRoute, bFashionHouseRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
-	local amenityAmount = CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute, bFashionHouseRoute);
-	local tailorsRouteCount = (bTailorRoute and 1 or 0) + (bFashionHouseRoute and 1 or 0);
-	if routeCount <= 0 and tailorsRouteCount <= 0 then return; end
-
-	if target == "Origin" then
-		if routeCount > 0 then
-			yieldValues[FOOD_INDEX] = (yieldValues[FOOD_INDEX] or 0) + routeCount;
-		end
-		if tailorsRouteCount > 0 then
-			yieldValues[CULTURE_INDEX] = (yieldValues[CULTURE_INDEX] or 0) + tailorsRouteCount;
-		end
-
-		if buildTooltip and yieldTooltips ~= nil then
-			if routeCount > 0 then
-				yieldTooltips[FOOD_INDEX] = CSC_BTS_PrependTooltip(
-					yieldTooltips[FOOD_INDEX],
-					CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Food]", "LOC_YIELD_FOOD_NAME", "imports")
-				);
-			end
-			if tailorsRouteCount > 0 then
-				yieldTooltips[CULTURE_INDEX] = CSC_BTS_PrependTooltip(
-					yieldTooltips[CULTURE_INDEX],
-					CSC_BTS_FormatQuarterYieldTooltip(tailorsRouteCount, "[ICON_Culture]", "LOC_YIELD_CULTURE_NAME", "imports")
-				);
-			end
-
-			local amenityTooltipIndex = CSC_BTS_GetLastPositiveYieldIndex(yieldValues);
-			yieldTooltips[amenityTooltipIndex] = CSC_BTS_AppendTooltip(
-				yieldTooltips[amenityTooltipIndex],
-				CSC_BTS_FormatQuarterAmenityTooltip(amenityAmount)
-			);
-		end
-	elseif target == "Destination" then
-		local exportAmount = routeCount + tailorsRouteCount;
-		yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + exportAmount;
-		yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + exportAmount;
-
-		if buildTooltip and yieldTooltips ~= nil then
-			yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
-				yieldTooltips[PRODUCTION_INDEX],
-				CSC_BTS_FormatQuarterYieldTooltip(exportAmount, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
-			);
-			yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
-				yieldTooltips[GOLD_INDEX],
-				CSC_BTS_FormatQuarterYieldTooltip(exportAmount, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
-			);
-		end
-	end
+-- The array indices are BTS's six standard UI columns, not another list
+-- of Quarter partners/rates. Nominal per-route display is separate from the
+-- complete before/after counter arithmetic used by AI forecasts.
+function CSC_BTS_ApplyBakersTradeRoutePreview(route,yields,tooltips,buildTooltip,target)
+    if not yields then return end
+    local origin,destination=cities(route)
+    local recipient=target=='Origin'and'ORIGIN'or'DESTINATION'
+    local amounts=R.Nominal(definitions,origin,destination,recipient)
+    local columns={
+        {FOOD_INDEX,'YIELD_FOOD','[ICON_Food]','LOC_YIELD_FOOD_NAME'},
+        {PRODUCTION_INDEX,'YIELD_PRODUCTION','[ICON_Production]','LOC_YIELD_PRODUCTION_NAME'},
+        {GOLD_INDEX,'YIELD_GOLD','[ICON_Gold]','LOC_YIELD_GOLD_NAME'},
+        {SCIENCE_INDEX,'YIELD_SCIENCE','[ICON_Science]','LOC_YIELD_SCIENCE_NAME'},
+        {CULTURE_INDEX,'YIELD_CULTURE','[ICON_Culture]','LOC_YIELD_CULTURE_NAME'},
+        {FAITH_INDEX,'YIELD_FAITH','[ICON_Faith]','LOC_YIELD_FAITH_NAME'}}
+    for _,column in ipairs(columns)do
+        local amount=amounts[column[2]]or 0
+        if amount~=0 then
+            yields[column[1]]=(yields[column[1]]or 0)+amount
+            if buildTooltip and tooltips then tooltips[column[1]]=CSC_BTS_PrependTooltip(tooltips[column[1]],
+                CSC_BTS_FormatQuarterYieldTooltip(amount,column[3],column[4],recipient=='ORIGIN'and'imports'or'exports'))end
+        end
+    end
+    if buildTooltip and tooltips and(amounts.AMENITY or 0)~=0 then
+        local index=CSC_BTS_GetLastPositiveYieldIndex(yields)
+        tooltips[index]=CSC_BTS_AppendTooltip(tooltips[index],CSC_BTS_FormatQuarterAmenityTooltip(amounts.AMENITY))
+    end
 end
-
---=================================================================================================================

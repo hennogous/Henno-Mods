@@ -5,6 +5,7 @@ Run with the existing isolated lupa dependency on PYTHONPATH. No game connection
 from pathlib import Path
 import re
 import unittest
+import sys
 from lupa import LuaRuntime
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -13,6 +14,14 @@ FIXTURES = Path(__file__).with_name('fixtures')
 
 
 def load(lua, name):
+    if name=='CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua':
+        sys.path.insert(0,str(ROOT/'project/tools/transactions'))
+        from population_catalogue_fixture import bind_population
+        bind_population(lua)
+    if name.startswith('TradeRoutes/')and lua.eval('CSC_TradeRouteCore == nil'):
+        sys.path.insert(0,str(ROOT/'project/tools/transactions'))
+        from route_fixture import bind
+        bind(lua)
     lua.execute(re.sub(r'\s*:\s*(?:number|table|string|boolean)\b', '',
                        (LUA / name).read_text(encoding='utf-8-sig')))
 

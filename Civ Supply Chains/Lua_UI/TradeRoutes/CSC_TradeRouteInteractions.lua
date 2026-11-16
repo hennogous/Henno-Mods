@@ -1,460 +1,98 @@
---=================================================================================================================
---=================================================================================================================
---	Civ Supply Chains - Trade Route Interactions
---=================================================================================================================
---=================================================================================================================
--- This file runs in the UI context. That matters because the UI context can inspect
--- trade route objects, but it should not directly mutate gameplay state. When this
--- script decides a city needs new route flags, it asks the gameplay script to write
--- those flags through PlayerOperations.EXECUTE_SCRIPT.
+-- Observed routes -> shared channel eligibility -> synchronized city counters.
+-- UI reads actual routes and publishes complete snapshots through the existing
+-- EXECUTE_SCRIPT receiver. Only that receiver changes gameplay properties.
+-- The same immutable observations are exposed read-only to the central AI model;
+-- its counterfactuals never become routes or property writes here.
+include("CSC_TradeRouteCore")
+include("CSC_TradeRouteFacts")
+local R=CSC_TradeRouteCore
+local definitions,problem=R.ReadDefinitions(GameInfo)
+if not definitions then print('CSC_ROUTE_CAPABILITY_UNAVAILABLE '..tostring(problem));return end
+local reader=CSC_TradeRouteFacts.New(GameInfo,definitions)
+local fields=R.Fields(definitions)
+local m_HasPendingRequests=false
+local m_RefreshRequested=false
+local observed
+local factsDirty=true
 
-local DISTRICT_BAKERS_QUARTER = -1;
-if GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil then
-	DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index;
+local function snapshot()
+    if not observed or factsDirty or observed.turn~=Game.GetCurrentGameTurn()then
+        local value,error=reader.Snapshot(PlayerManager.GetAlive(),Game.GetCurrentGameTurn())
+        if not value then print('CSC_ROUTE_FACTS_UNAVAILABLE '..tostring(error));return nil end
+        value.version=1;observed=value;factsDirty=false
+    end
+    return observed
 end
-local DISTRICT_TAILORS_QUARTER = -1;
-if GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"] ~= nil then
-	DISTRICT_TAILORS_QUARTER = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"].Index;
+ExposedMembers=ExposedMembers or{}
+ExposedMembers.CSC_TradeRoutes={GetFacts=snapshot}
+
+-- Compatibility exports used by existing route UI. Their family/stage mapping
+-- is read from gameplay definitions, including the original Bakers/Tailors
+-- supplied-property versus intact-producer distinction.
+function CSC_GetBakersTradeRouteState(origin,destination)
+    return R.FamilyStates(definitions,reader.City(origin),reader.City(destination),'BAKERS')
 end
-
--- Property vocabulary shared with SQL and the gameplay script.
--- CSC_HAS_BAKERS_QUARTER is a city-center plot property used as a general city flag.
--- The *_ROUTE properties are also city-center plot properties. SQL requirements read
--- them from the City Center modifiers and apply the actual yields/amenities.
-local PROP_HAS_BAKERS_QUARTER			= "CSC_HAS_BAKERS_QUARTER";
-
--- These two are city properties set by SQL modifiers on the Bakery/Cafe buildings.
--- They mirror the existing stage 3/4 supply gates, so trade exports use the same
--- "supplied building" logic as the local city effects.
-local PROP_BAKERY_SUPPLIED				= "CSC_BAKERS_BAKERY_SUPPLIED";
-local PROP_CAFE_SUPPLIED					= "CSC_BAKERS_CAFE_SUPPLIED";
-local PROP_FASHION_HOUSE_SUPPLIED = "CSC_TAILORS_FASHION_HOUSE_SUPPLIED";
-local PROP_TAILOR_SUPPLIED				= "CSC_TAILORS_TAILOR_SUPPLIED";
-
-local PROP_IMPORT_CONSUMER_ROUTE			= "CSC_BAKERS_IMPORT_CONSUMER_ROUTE";
-local PROP_IMPORT_SPECIALTY_ROUTE		= "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE";
-local PROP_EXPORT_BAKERY_ROUTE			= "CSC_BAKERS_EXPORT_BAKERY_ROUTE";
-local PROP_EXPORT_CAFE_ROUTE				= "CSC_BAKERS_EXPORT_CAFE_ROUTE";
-local PROP_IMPORT_TAILOR_ROUTE			= "CSC_TAILORS_IMPORT_TAILOR_ROUTE";
-local PROP_IMPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE";
-local PROP_EXPORT_TAILOR_ROUTE			= "CSC_TAILORS_EXPORT_TAILOR_ROUTE";
-local PROP_EXPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE";
-local ROUTE_STACK_BITS					= { 1, 2, 4, 8, 16 };
-local ROUTE_REVISION = "CSC_TRADE_ROUTE_REVISION";
-local m_HasPendingRequests = false;
-local m_RefreshRequested = false;
-
--- Only this machine's local player may submit an operation. In a network game
--- the current host submits ALL cities, including AI cities. Re-evaluate host
--- identity on every pass so a migrated host takes over without a saved lock.
-local function CSC_GetRouteAuthority()
-	local localPlayer = Game.GetLocalPlayer();
-	if localPlayer == nil or localPlayer < 0 then return nil; end
-	if GameConfiguration.IsNetworkMultiplayer() then
-		if Network.GetGameHostPlayerID() ~= localPlayer then return nil; end
-	end
-	return localPlayer;
+function CSC_GetTailorsTradeRouteState(origin,destination)
+    return R.FamilyStates(definitions,reader.City(origin),reader.City(destination),'TAILORS')
 end
 
-local function CSC_OrderedCities(player)
-	local cities = {};
-	for _, city in player:GetCities():Members() do cities[#cities+1] = city; end
-	table.sort(cities, function(a,b) return a:GetID() < b:GetID(); end);
-	return cities;
+local function authority()
+    local id=Game.GetLocalPlayer()
+    if id==nil or id<0 then return nil end
+    if GameConfiguration.IsNetworkMultiplayer()and Network.GetGameHostPlayerID()~=id then return nil end
+    return id
+end
+local function matches(state)
+    local plot=Map.GetPlot(state.CityX,state.CityY)
+    if not plot then return false end
+    for _,field in ipairs(fields)do
+        local value=state[field[1]]
+        if(plot:GetProperty(field[2])or 0)~=value then return false end
+        if field[3]then
+            for _,bit in ipairs({1,2,4,8,16})do
+                if(plot:GetProperty(field[2]..'_BIT_'..bit)or 0)~=math.floor(value/bit)%2 then return false end
+            end
+        end
+    end
+    return true
 end
 
-local function CSC_OrderedPlayers()
-	local players = {};
-	for _, player in ipairs(PlayerManager.GetAlive()) do players[#players+1] = player; end
-	table.sort(players, function(a,b) return a:GetID() < b:GetID(); end);
-	return players;
-end
-local BUILDING_BAKERY = GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"].Index or -1;
-local BUILDING_CAFE = GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"].Index or -1;
-local BUILDING_FASHION_HOUSE = GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"].Index or -1;
-local BUILDING_TAILOR = GameInfo.Buildings["BUILDING_CSC_TAILORS_TAILOR"] ~= nil and GameInfo.Buildings["BUILDING_CSC_TAILORS_TAILOR"].Index or -1;
-local CIVIC_MEDIEVAL_FAIRES = GameInfo.Civics["CIVIC_MEDIEVAL_FAIRES"] ~= nil and GameInfo.Civics["CIVIC_MEDIEVAL_FAIRES"].Index or -1;
-local CIVIC_URBANIZATION = GameInfo.Civics["CIVIC_URBANIZATION"] ~= nil and GameInfo.Civics["CIVIC_URBANIZATION"].Index or -1;
-
--- Civ properties are loose values: nil, numbers, sometimes strings depending on source.
--- Normalize them through one helper so the route logic only cares about "truthy and > 0".
-local function CSC_IsPositiveProperty(owner, propertyName)
-	if owner == nil then return false; end
-
-	local value = owner:GetProperty(propertyName);
-	if value == nil then return false; end
-
-	return tonumber(value) ~= nil and tonumber(value) > 0;
-end
-
-local function CSC_CityHasBuilding(pCity, iBuilding)
-	if pCity == nil or iBuilding == nil or iBuilding < 0 then return false; end
-
-	local pBuildings = pCity:GetBuildings();
-	if pBuildings == nil then return false; end
-	if not pBuildings:HasBuilding(iBuilding) then return false; end
-
-	if pBuildings.IsPillaged ~= nil then
-		return not pBuildings:IsPillaged(iBuilding);
-	end
-
-	return true;
-end
-
-local function CSC_PlayerHasCivic(iPlayerID, iCivic)
-	if iPlayerID == nil or iPlayerID < 0 or iCivic == nil or iCivic < 0 then return false; end
-
-	local pPlayer = Players[iPlayerID];
-	if pPlayer == nil then return false; end
-
-	local pCulture = pPlayer:GetCulture();
-	if pCulture == nil then return false; end
-
-	return pCulture:HasCivic(iCivic);
-end
-
--- A city with a built but pillaged Bakers' Quarter should not block imports.
--- The design phrase is "functioning Bakers' Quarter", so we check both existence
--- and pillage state when the API exposes that information.
-local function CSC_CityHasFunctioningBakersQuarter(pCity)
-	if pCity == nil or DISTRICT_BAKERS_QUARTER < 0 then return false; end
-
-	local pDistricts = pCity:GetDistricts();
-	if pDistricts == nil then return false; end
-	if not pDistricts:HasDistrict(DISTRICT_BAKERS_QUARTER) then return false; end
-
-	if pDistricts.IsPillaged ~= nil then
-		return not pDistricts:IsPillaged(DISTRICT_BAKERS_QUARTER);
-	end
-
-	return true;
-end
-
-local function CSC_CityHasFunctioningTailorsQuarter(pCity)
-	if pCity == nil or DISTRICT_TAILORS_QUARTER < 0 then return false; end
-	local pDistricts = pCity:GetDistricts();
-	if pDistricts == nil or not pDistricts:HasDistrict(DISTRICT_TAILORS_QUARTER) then return false; end
-	if pDistricts.IsPillaged ~= nil then
-		return not pDistricts:IsPillaged(DISTRICT_TAILORS_QUARTER);
-	end
-	return true;
-end
-
--- Central rule function for the Bakers route interaction.
--- Return values are:
---   1. Bakery route active: origin imports consumer goods; destination exports Bakery goods.
---   2. Cafe route active: origin imports specialty goods; destination exports Cafe goods.
---
--- Keeping this rule isolated is deliberate. If we later build a trade-route preview
--- override, that UI can call the same function instead of duplicating the design logic.
-function CSC_GetBakersTradeRouteState(pOriginCity, pDestinationCity)
-	if pOriginCity == nil or pDestinationCity == nil then
-		return false, false;
-	end
-
-	-- Ownership does not change CSC's exchange: domestic and international
-	-- routes pay the same fixed amount to their respective origin/destination.
-
-	if CSC_CityHasFunctioningBakersQuarter(pOriginCity) then
-		return false, false;
-	end
-
-	local bBakerySupplied = CSC_IsPositiveProperty(pDestinationCity, PROP_BAKERY_SUPPLIED);
-	local bCafeSupplied = CSC_IsPositiveProperty(pDestinationCity, PROP_CAFE_SUPPLIED);
-
-	return bBakerySupplied, bCafeSupplied;
-end
-
-function CSC_GetTailorsTradeRouteState(pOriginCity, pDestinationCity)
-	if pOriginCity == nil or pDestinationCity == nil then return false, false; end
-	if CSC_CityHasFunctioningTailorsQuarter(pOriginCity) then return false, false; end
-	return CSC_CityHasBuilding(pDestinationCity, BUILDING_TAILOR)
-		and CSC_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED),
-		CSC_CityHasBuilding(pDestinationCity, BUILDING_FASHION_HOUSE)
-		and CSC_IsPositiveProperty(pDestinationCity, PROP_FASHION_HOUSE_SUPPLIED);
-end
-
-local function CSC_GetCityStateKey(iPlayerID, iCityID)
-	-- City IDs are only unique within a player; captures and AI targets must not
-	-- collide with a local city that happens to have the same ID.
-	return tostring(iPlayerID) .. ":" .. tostring(iCityID);
-end
-
-local function CSC_GetRouteBitProperty(basePropertyName, bit)
-	return basePropertyName .. "_BIT_" .. tostring(bit);
-end
-
-local function CSC_GetRouteBitValue(routeCount, bit)
-	routeCount = tonumber(routeCount) or 0;
-	return math.floor(routeCount / bit) % 2;
-end
-
--- Local working state for one city during a refresh pass.
--- Everything starts at 0, then active routes turn specific flags on. At the end of
--- the pass, the state is sent to the gameplay context and written to the city-center plot.
-local function CSC_CreateBakersCityState(pCity)
-	return {
-		PlayerID = pCity:GetOwner(),
-		CityID = pCity:GetID(),
-		Revision = pCity:GetProperty(ROUTE_REVISION) or 0,
-		X = pCity:GetX(),
-		Y = pCity:GetY(),
-		HasBakersQuarter = CSC_CityHasFunctioningBakersQuarter(pCity) and 1 or 0,
-		ImportConsumerRoute = 0,
-		ImportSpecialtyRoute = 0,
-		ExportBakeryRoute = 0,
-		ExportCafeRoute = 0,
-		ImportTailorRoute = 0,
-		ImportFashionHouseRoute = 0,
-		ExportTailorRoute = 0,
-		ExportFashionHouseRoute = 0,
-		ExportBakeryRouteBits = {},
-		ExportCafeRouteBits = {},
-		ExportTailorRouteBits = {},
-		ExportFashionHouseRouteBits = {},
-	};
-end
-
--- Build a complete city table first, rather than updating cities while scanning.
--- This lets one route mark both its origin and destination in the same refresh pass.
-local function CSC_CollectBakersCityStates()
-	local cityStates = {};
-	local iCitiesSeen = 0;
-	local iCitiesWithBakersQuarter = 0;
-
-	for _, pPlayer in ipairs(CSC_OrderedPlayers()) do
-		local iPlayerID = pPlayer:GetID();
-		if pPlayer ~= nil then
-			local pCities = pPlayer:GetCities();
-			if pCities ~= nil then
-				for _, pCity in ipairs(CSC_OrderedCities(pPlayer)) do
-					local cityState = CSC_CreateBakersCityState(pCity);
-					iCitiesSeen = iCitiesSeen + 1;
-					if cityState.HasBakersQuarter > 0 then
-						iCitiesWithBakersQuarter = iCitiesWithBakersQuarter + 1;
-					end
-
-					cityStates[CSC_GetCityStateKey(iPlayerID, pCity:GetID())] = cityState;
-				end
-			end
-		end
-	end
-
-	return cityStates, iCitiesSeen, iCitiesWithBakersQuarter;
-end
-
-local function CSC_GetCityFromRoute(iPlayerID, iCityID)
-	if iPlayerID == nil or iCityID == nil or iPlayerID < 0 then return nil; end
-
-	local pPlayer = Players[iPlayerID];
-	if pPlayer == nil then return nil; end
-
-	local pCities = pPlayer:GetCities();
-	if pCities == nil then return nil; end
-
-	return pCities:FindID(iCityID);
-end
-
--- Convert one eligible active trade route into city counters.
--- Origin flags drive import Food/Amenity effects. Destination flags drive export
--- Production/Gold returns. Destination counters are important because multiple
--- origins can feed the same supplied Bakery/Cafe and each route should add a return.
-local function CSC_MarkBakersTradeRoute(cityStates, pOriginCity, pDestinationCity)
-	local bBakeryRoute, bCafeRoute = CSC_GetBakersTradeRouteState(pOriginCity, pDestinationCity);
-	local bTailorRoute, bFashionHouseRoute = CSC_GetTailorsTradeRouteState(pOriginCity, pDestinationCity);
-	if not bBakeryRoute and not bCafeRoute and not bTailorRoute and not bFashionHouseRoute then return; end
-
-	local originState = cityStates[CSC_GetCityStateKey(pOriginCity:GetOwner(), pOriginCity:GetID())];
-	local destinationState = cityStates[CSC_GetCityStateKey(pDestinationCity:GetOwner(), pDestinationCity:GetID())];
-	if originState == nil or destinationState == nil then return; end
-
-	if bBakeryRoute then
-		originState.ImportConsumerRoute = originState.ImportConsumerRoute + 1;
-		destinationState.ExportBakeryRoute = destinationState.ExportBakeryRoute + 1;
-	end
-
-	if bCafeRoute then
-		originState.ImportSpecialtyRoute = originState.ImportSpecialtyRoute + 1;
-		destinationState.ExportCafeRoute = destinationState.ExportCafeRoute + 1;
-	end
-
-	if bTailorRoute then
-		originState.ImportTailorRoute = originState.ImportTailorRoute + 1;
-		destinationState.ExportTailorRoute = destinationState.ExportTailorRoute + 1;
-	end
-	if bFashionHouseRoute then
-		originState.ImportFashionHouseRoute = originState.ImportFashionHouseRoute + 1;
-		destinationState.ExportFashionHouseRoute = destinationState.ExportFashionHouseRoute + 1;
-	end
-end
-
-local function CSC_ApplyBakersRouteBitState(cityState)
-	for _, bit in ipairs(ROUTE_STACK_BITS) do
-		cityState.ExportBakeryRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportBakeryRoute, bit);
-		cityState.ExportCafeRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportCafeRoute, bit);
-		cityState.ExportTailorRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportTailorRoute, bit);
-		cityState.ExportFashionHouseRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportFashionHouseRoute, bit);
-	end
-end
-
--- Civ exposes active route lists from the origin city's trade object. We scan all
--- players/cities to keep the cache correct for AI, hotseat, and non-local turn events.
-local function CSC_ScanBakersTradeRoutes(cityStates)
-	local iRoutesSeen = 0;
-	local iEligibleBakeryRoutes = 0;
-	local iEligibleCafeRoutes = 0;
-	local routeDebugLines = {};
-
-	for _, pPlayer in ipairs(CSC_OrderedPlayers()) do
-		local iPlayerID = pPlayer:GetID();
-		if pPlayer ~= nil then
-			local pCities = pPlayer:GetCities();
-			if pCities ~= nil then
-				for _, pOriginCity in ipairs(CSC_OrderedCities(pPlayer)) do
-					local pTrade = pOriginCity:GetTrade();
-					if pTrade ~= nil then
-						local outgoingRoutes = pTrade:GetOutgoingRoutes();
-						if outgoingRoutes ~= nil then
-							for _, route in ipairs(outgoingRoutes) do
-								local pDestinationCity = CSC_GetCityFromRoute(route.DestinationCityPlayer, route.DestinationCityID);
-								iRoutesSeen = iRoutesSeen + 1;
-
-								local bBakeryRoute, bCafeRoute = CSC_GetBakersTradeRouteState(pOriginCity, pDestinationCity);
-								if bBakeryRoute then iEligibleBakeryRoutes = iEligibleBakeryRoutes + 1; end
-								if bCafeRoute then iEligibleCafeRoutes = iEligibleCafeRoutes + 1; end
-
-								if pDestinationCity ~= nil then
-									table.insert(routeDebugLines, pOriginCity:GetName() .. " -> " .. pDestinationCity:GetName()
-										.. " | OriginHasBQ=" .. tostring(CSC_CityHasFunctioningBakersQuarter(pOriginCity))
-										.. ", DestBakery=" .. tostring(CSC_CityHasBuilding(pDestinationCity, BUILDING_BAKERY))
-										.. ", DestBakerySuppliedProp=" .. tostring(CSC_IsPositiveProperty(pDestinationCity, PROP_BAKERY_SUPPLIED))
-										.. ", OwnerHasMedievalFaires=" .. tostring(CSC_PlayerHasCivic(pDestinationCity:GetOwner(), CIVIC_MEDIEVAL_FAIRES))
-										.. ", DestCafe=" .. tostring(CSC_CityHasBuilding(pDestinationCity, BUILDING_CAFE))
-										.. ", DestCafeSuppliedProp=" .. tostring(CSC_IsPositiveProperty(pDestinationCity, PROP_CAFE_SUPPLIED))
-										.. ", OwnerHasUrbanization=" .. tostring(CSC_PlayerHasCivic(pDestinationCity:GetOwner(), CIVIC_URBANIZATION)));
-								end
-
-								CSC_MarkBakersTradeRoute(cityStates, pOriginCity, pDestinationCity);
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	return iRoutesSeen, iEligibleBakeryRoutes, iEligibleCafeRoutes, table.concat(routeDebugLines, " || ");
-end
-
--- Avoid sending an EXECUTE_SCRIPT operation when the plot already has the right values.
--- This keeps refresh events cheap and reduces unnecessary gameplay operations.
-local function CSC_CityStateMatchesPlotProperties(cityState)
-	local pPlot = Map.GetPlot(cityState.X, cityState.Y);
-	if pPlot == nil then return false; end
-	-- Import counts also pay per route. Check their derived bits so an existing
-	-- save with the right count but no import bits is reconciled on first refresh.
-	for _, entry in ipairs({
-		{PROP_IMPORT_CONSUMER_ROUTE, cityState.ImportConsumerRoute},
-		{PROP_IMPORT_SPECIALTY_ROUTE, cityState.ImportSpecialtyRoute},
-		{PROP_IMPORT_TAILOR_ROUTE, cityState.ImportTailorRoute},
-		{PROP_IMPORT_FASHION_HOUSE_ROUTE, cityState.ImportFashionHouseRoute},
-	}) do
-		for _, bit in ipairs(ROUTE_STACK_BITS) do
-			if (pPlot:GetProperty(CSC_GetRouteBitProperty(entry[1], bit)) or 0)
-				~= CSC_GetRouteBitValue(entry[2], bit) then return false; end
-		end
-	end
-
-	return (pPlot:GetProperty(PROP_HAS_BAKERS_QUARTER) or 0) == cityState.HasBakersQuarter
-		and (pPlot:GetProperty(PROP_IMPORT_CONSUMER_ROUTE) or 0) == cityState.ImportConsumerRoute
-		and (pPlot:GetProperty(PROP_IMPORT_SPECIALTY_ROUTE) or 0) == cityState.ImportSpecialtyRoute
-		and (pPlot:GetProperty(PROP_EXPORT_BAKERY_ROUTE) or 0) == cityState.ExportBakeryRoute
-		and (pPlot:GetProperty(PROP_EXPORT_CAFE_ROUTE) or 0) == cityState.ExportCafeRoute
-		and (pPlot:GetProperty(PROP_IMPORT_TAILOR_ROUTE) or 0) == cityState.ImportTailorRoute
-		and (pPlot:GetProperty(PROP_IMPORT_FASHION_HOUSE_ROUTE) or 0) == cityState.ImportFashionHouseRoute
-		and (pPlot:GetProperty(PROP_EXPORT_TAILOR_ROUTE) or 0) == cityState.ExportTailorRoute
-		and (pPlot:GetProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE) or 0) == cityState.ExportFashionHouseRoute
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 1)) or 0) == (cityState.ExportBakeryRouteBits[1] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 2)) or 0) == (cityState.ExportBakeryRouteBits[2] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 4)) or 0) == (cityState.ExportBakeryRouteBits[4] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 8)) or 0) == (cityState.ExportBakeryRouteBits[8] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 16)) or 0) == (cityState.ExportBakeryRouteBits[16] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 1)) or 0) == (cityState.ExportCafeRouteBits[1] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 2)) or 0) == (cityState.ExportCafeRouteBits[2] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 4)) or 0) == (cityState.ExportCafeRouteBits[4] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 8)) or 0) == (cityState.ExportCafeRouteBits[8] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 16)) or 0) == (cityState.ExportCafeRouteBits[16] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 1)) or 0) == (cityState.ExportTailorRouteBits[1] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 1)) or 0) == (cityState.ExportFashionHouseRouteBits[1] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 2)) or 0) == (cityState.ExportTailorRouteBits[2] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 2)) or 0) == (cityState.ExportFashionHouseRouteBits[2] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 4)) or 0) == (cityState.ExportTailorRouteBits[4] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 4)) or 0) == (cityState.ExportFashionHouseRouteBits[4] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 8)) or 0) == (cityState.ExportTailorRouteBits[8] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 8)) or 0) == (cityState.ExportFashionHouseRouteBits[8] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 16)) or 0) == (cityState.ExportTailorRouteBits[16] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 16)) or 0) == (cityState.ExportFashionHouseRouteBits[16] or 0);
-end
-
--- UI-to-gameplay bridge. The gameplay function name goes in OnStart; the remaining
--- parameters are passed through to CSC_SetBakersTradeRouteProperties in the gameplay script.
-local function CSC_RequestBakersCityState(cityState, senderID)
-	-- The authority submits as itself, with the target owner carried separately.
-	-- The saved revision lets gameplay reject a duplicate or superseded snapshot.
-	if cityState == nil or CSC_CityStateMatchesPlotProperties(cityState) then return; end
-
-	local parameters = {};
-	parameters.Version = 2;
-	parameters.Turn = Game.GetCurrentGameTurn();
-	parameters.CityPlayerID = cityState.PlayerID;
-	parameters.CityID = cityState.CityID;
-	parameters.Revision = cityState.Revision;
-	parameters.CityX = cityState.X;
-	parameters.CityY = cityState.Y;
-	parameters.HasBakersQuarter = cityState.HasBakersQuarter;
-	parameters.ImportConsumerRoute = cityState.ImportConsumerRoute;
-	parameters.ImportSpecialtyRoute = cityState.ImportSpecialtyRoute;
-	parameters.ExportBakeryRoute = cityState.ExportBakeryRoute;
-	parameters.ExportCafeRoute = cityState.ExportCafeRoute;
-	parameters.ImportTailorRoute = cityState.ImportTailorRoute;
-	parameters.ImportFashionHouseRoute = cityState.ImportFashionHouseRoute;
-	parameters.ExportTailorRoute = cityState.ExportTailorRoute;
-	parameters.ExportFashionHouseRoute = cityState.ExportFashionHouseRoute;
-	parameters.OnStart = "CSC_SetBakersTradeRouteProperties";
-
-	UI.RequestPlayerOperation(senderID, PlayerOperations.EXECUTE_SCRIPT, parameters);
-	m_HasPendingRequests = true;
-end
-
--- Full refresh pipeline:
---   1. collect every city and its live Bakers' Quarter status
---   2. scan active outgoing trade routes
---   3. write only changed city-center plot properties
--- Historical Bakers names cover the independent Bakers and Tailors channels.
--- The final step submits operations; only the synchronized gameplay receiver writes.
 function CSC_RefreshBakersTradeRouteProperties()
-	local senderID = CSC_GetRouteAuthority();
-	m_HasPendingRequests = false;
-	if senderID == nil then return; end
-	local cityStates = CSC_CollectBakersCityStates();
-	CSC_ScanBakersTradeRoutes(cityStates);
-
-	local ordered = {};
-	for _, cityState in pairs(cityStates) do ordered[#ordered+1] = cityState; end
-	table.sort(ordered, function(a,b)
-		if a.PlayerID ~= b.PlayerID then return a.PlayerID < b.PlayerID; end
-		return a.CityID < b.CityID;
-	end);
-	for _, cityState in ipairs(ordered) do
-		CSC_ApplyBakersRouteBitState(cityState);
-		CSC_RequestBakersCityState(cityState, senderID);
-	end
+    local sender=authority();m_HasPendingRequests=false
+    if sender==nil then return end
+    -- A refresh observes again after property/building/route events. All AI
+    -- readers in that publication can reuse this one bounded route/city scan.
+    observed=nil
+    local facts=snapshot();if not facts then return end
+    local counts,error=R.Accumulate(facts.routes,facts.cities,definitions)
+    if not counts then print('CSC_ROUTE_COUNTS_UNAVAILABLE '..tostring(error));return end
+    local keys={};for key in pairs(facts.cities)do keys[#keys+1]=key end
+    table.sort(keys,function(a,b)
+        local x,y=facts.cities[a],facts.cities[b]
+        return x.player<y.player or x.player==y.player and x.city<y.city
+    end)
+    for _,key in ipairs(keys)do
+        local city=facts.cities[key]
+        local state={Version=2,Turn=facts.turn,CityPlayerID=city.player,CityID=city.city,
+            Revision=city.revision,CityX=city.x,CityY=city.y,HasBakersQuarter=0,
+            OnStart='CSC_SetBakersTradeRouteProperties'}
+        for _,channel in ipairs(definitions.channels)do
+            local count=counts[key].channels[channel.id]
+            state[channel.importField]=count.ORIGIN;state[channel.exportField]=count.DESTINATION
+            if channel.quarter=='BAKERS'and city.quarters[channel.district]then state.HasBakersQuarter=1 end
+        end
+        if not matches(state)then
+            UI.RequestPlayerOperation(sender,PlayerOperations.EXECUTE_SCRIPT,state)
+            m_HasPendingRequests=true
+        end
+    end
 end
 
 local function CSC_OnBakersRouteRefreshEvent()
 	-- Coalesce property/building events until the next UI update. A snapshot
 	-- must not be assembled midway through a gameplay modifier/property batch.
 	m_RefreshRequested = true;
+    factsDirty=true;
 end
 
 -- Route changes are the important trigger, but several city/building/district events

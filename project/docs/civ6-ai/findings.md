@@ -1,5 +1,18 @@
 # CSC findings and evidence
 
+## AI-C206 — Shared route facts preserve native payouts and qualify actual windows
+
+17 November2026, G3. Four gameplay-authored channel/binding relationships project
+actual native supply gates and80 Gold-on/60 Gold-off payout bits. The scanner,
+network receiver, BTS, UnitPanel and SUIA share that read-model. A zero-turn replay
+matches67-city legacy packets,43/43 native trader start times and all10,954 native
+effect rows; closed/restored0. Foundation import blocking, Bakers/Tailors source
+gate differences and modulo32 payouts remain intact. Preview fixes cover Gold
+off and missing/pillaged receiving producers. Astra's stale-packet/new-operation
+duration defect is guarded and regression covered. AI integration must pool
+nonlinear amenity quotes relative to actual currently paid totals.
+[Mechanism, scope and remaining work](../research/mods/csc-observed-routes-20261117.md).
+
 Maintained Markdown. Preserve scope, evidence and superseded status when correcting a finding.
 
 Latest follow-through investigation: [AI-C177](#ai-c177); placement outcome: [AI-C176](#ai-c176).

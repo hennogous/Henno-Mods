@@ -120,6 +120,10 @@ class QuarterRouteTests(unittest.TestCase):
             if re.match(r'INSERT(?: OR IGNORE)? INTO \w+\s*\([^)]*\)\s*VALUES', statement):
                 c.executescript(statement)
         c.executescript(marker + block)
+        import sys
+        sys.path.insert(0,str(ROOT/'project/tools/transactions'))
+        from route_fixture import copy_read_model
+        copy_read_model(c)
         c.executescript((ROOT / 'Civ Supply Chains/ModSupport/ModSupport_SUIA.sql').read_text())
         for tier, channel in zip(('CONSUMER', 'SPECIALTY'), channels):
             for count in range(32):
@@ -132,7 +136,7 @@ class QuarterRouteTests(unittest.TestCase):
                         if expected_properties.get(args['PropertyName'], 0) >= int(args['PropertyMinimum']):
                             paid += int(c.execute("SELECT Value FROM ModifierArguments WHERE ModifierId=? AND Name='Amount'", (mod,)).fetchone()[0])
                     self.assertEqual(paid, count, (channel, effect, count))
-                displayed = sum(amount for prop,amount in c.execute("SELECT PropertyName,Amount FROM CSC_TradeRouteYieldPresentation WHERE EntryId LIKE ?", (f'CSC_{quarter}_IMPORT_{tier}_{yield_name}%',)) if expected_properties.get(prop,0)>0)
+                displayed = sum(amount for prop,amount in c.execute("SELECT PropertyName,Amount FROM CSC_TradeRouteYieldPresentation WHERE ModifierId LIKE ?", (f'MOD_CSC_{quarter}_IMPORT_{channel}_{yield_name}%',)) if expected_properties.get(prop,0)>0)
                 self.assertEqual(displayed, count)
 
 

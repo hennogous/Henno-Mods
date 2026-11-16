@@ -80,11 +80,12 @@ def run(args):
     plan=prepare(args.source,args.output,args.at,args.at,args.dependencies,read_only=True)
     require(not native_inventory(),'Preserve foreign Civ/Tuner session')
     out=plan.output;out.mkdir(parents=True)
-    paths=[MOD/'Data/CSC_BuildingTransactionSchema.sql']
+    paths=[MOD/'Data/CSC_BuildingTransactionSchema.sql',MOD/'Data/CSC_TradeRouteSchema.sql']
     for q in('BAKERS','TAILORS'):
         paths.extend([MOD/f'Data/CSC_Q_{q}_TRANSACTIONS.sql',MOD/f'Data/CSC_Q_{q}_TRANSACTIONS_GOLD.sql'])
     paths.extend([MOD/'Data/CSC_MaterialTransactionProcessor.sql',MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql',
-                  MOD/'Data/CSC_BuildingTransactionProcessor.sql',MOD/'Data/CSC_MaterialTransactions.sql'])
+                  MOD/'Data/CSC_BuildingTransactionProcessor.sql',MOD/'Data/CSC_MaterialTransactions.sql',
+                  MOD/'Data/CSC_TradeRouteProcessor.sql'])
     # Compare the complete loaded native rows for fixed aliases, including all
     # actual engine columns/defaults, rather than only the fixture's schema.
     # The source cache is read-only and was produced by the already qualified
@@ -113,6 +114,12 @@ def run(args):
     sql='\n'.join(read(p)for p in paths)
     reference=read(args.reference/GAMEPLAY)
     inputs=[*paths,MOD/GAMEPLAY,args.reference/GAMEPLAY,Path(__file__),Path(transaction_graph.__code__.co_filename)]
+    route_legacy=None
+    if getattr(args,'route_smoke',False):
+        from route_catalogue_probe import inputs as route_inputs
+        package=next(i for i in plan.packages if i['role']=='csc')
+        route_legacy=package['source']/'Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.lua'
+        inputs.extend(route_inputs(route_legacy))
     if args.reference_graph:inputs.append(args.reference_graph)
     pins={str(p.resolve()):sha(p)for p in inputs}
     code=survey(reference)
@@ -216,6 +223,9 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
         (out/'gameplay-equivalence.txt').write_text(result,encoding='utf-8')
         match=re.search(r'CSC_POPULATION_RESULT=([^\r\n]+)',result);require(match,'Missing gameplay result')
         proof=json.loads(match[1]);require(proof['verified']and proof['turn']==args.at,'Gameplay equivalence failed')
+        if route_legacy:
+            from route_catalogue_probe import run as route_probe
+            route_probe(c,out/'routes',route_legacy)
         if smoke:
             started=time.perf_counter()
             raw=c.cmd(smoke,'CSC_AI_BakersGameplay','material-model-smoke')
@@ -244,4 +254,5 @@ if __name__=='__main__':
     p.add_argument('--at',type=int,default=250)
     p.add_argument('--reference-graph',type=Path)
     p.add_argument('--model-smoke',action='store_true',help='Isolated current Facts/Model pass over actual saved-world chains; no bids')
+    p.add_argument('--route-smoke',action='store_true',help='Compare isolated original/current UI packets and read native trader operation clocks; no submitted operations')
     run(p.parse_args())

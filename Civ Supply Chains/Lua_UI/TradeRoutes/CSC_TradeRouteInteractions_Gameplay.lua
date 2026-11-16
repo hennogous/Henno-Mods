@@ -3,19 +3,12 @@
 -- on every peer through PlayerOperations.EXECUTE_SCRIPT, including AI targets.
 local REVISION = "CSC_TRADE_ROUTE_REVISION";
 local BITS = {1, 2, 4, 8, 16};
--- This fixed schema is also the mutation order. Bit flags are derived here rather
+-- This shared schema is also the mutation order. Bit flags are derived here rather
 -- than trusted as independent UI input. Counts retain the existing 5-bit encoding.
-local FIELDS = {
-    {"HasBakersQuarter", "CSC_HAS_BAKERS_QUARTER"},
-    {"ImportConsumerRoute", "CSC_BAKERS_IMPORT_CONSUMER_ROUTE", true},
-    {"ImportSpecialtyRoute", "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE", true},
-    {"ExportBakeryRoute", "CSC_BAKERS_EXPORT_BAKERY_ROUTE", true},
-    {"ExportCafeRoute", "CSC_BAKERS_EXPORT_CAFE_ROUTE", true},
-    {"ImportTailorRoute", "CSC_TAILORS_IMPORT_TAILOR_ROUTE", true},
-    {"ImportFashionHouseRoute", "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE", true},
-    {"ExportTailorRoute", "CSC_TAILORS_EXPORT_TAILOR_ROUTE", true},
-    {"ExportFashionHouseRoute", "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE", true},
-};
+include("CSC_TradeRouteCore");
+local definitions,problem=CSC_TradeRouteCore.ReadDefinitions(GameInfo);
+if not definitions then print('CSC_ROUTE_RECEIVER_UNAVAILABLE '..tostring(problem));return;end
+local FIELDS=CSC_TradeRouteCore.Fields(definitions);
 local function integer(value)
     return type(value) == "number" and value >= 0 and value <= 2147483647 and value == math.floor(value);
 end

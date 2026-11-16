@@ -1,4 +1,4 @@
-﻿-- ===========================================================================
+-- ===========================================================================
 --	Unit Panel Screen 
 -- ===========================================================================
 include( "InstanceManager" );
@@ -15,90 +15,35 @@ include("GameCapabilities");
 --	Civ Supply Chains trade-route unit panel support
 -- ===========================================================================
 -- The selected Trader panel renders active route yields from route.OriginYields.
--- CSC's Bakers import Food/Amenity effects are added by Lua/modifiers after the
+-- CSC's Quarter import yields/Amenities are added by Lua/modifiers after the
 -- route is created, so the base route object does not know about them. Keep this
--- block small and rule-focused: it mirrors the same eligibility gates used by
--- CSC_TradeRouteInteractions.lua and the Better Trade Screen preview support.
-local CSC_DISTRICT_BAKERS_QUARTER:number = -1;
-if GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil then
-	CSC_DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index;
+-- block small: the shared reader supplies gameplay's actual eligibility and
+-- nominal payout amounts, including the source-building and Gold-layer gates.
+-- CSC_ROUTE_SHARED_SUPPORT_BEGIN
+include("CSC_TradeRouteCore");
+include("CSC_TradeRouteFacts");
+local CSC_ROUTE_DEFINITIONS,CSC_ROUTE_PROBLEM=CSC_TradeRouteCore.ReadDefinitions(GameInfo);
+local CSC_ROUTE_READER=CSC_ROUTE_DEFINITIONS and CSC_TradeRouteFacts.New(GameInfo,CSC_ROUTE_DEFINITIONS);
+if not CSC_ROUTE_READER then print('CSC_ROUTE_UNIT_PREVIEW_UNAVAILABLE '..tostring(CSC_ROUTE_PROBLEM));end
+local CSC_UNIT_PANEL_YIELD_ORDER:table={"YIELD_FOOD","YIELD_PRODUCTION","YIELD_GOLD","YIELD_SCIENCE","YIELD_CULTURE","YIELD_FAITH"};
+function CSC_UnitPanel_GetBakersTradeRouteCount(origin:table,destination:table)
+    if not CSC_ROUTE_READER then return 0;end
+    local a,b=CSC_TradeRouteCore.FamilyStates(CSC_ROUTE_DEFINITIONS,
+        CSC_ROUTE_READER.City(origin),CSC_ROUTE_READER.City(destination),'BAKERS');
+    return(a and 1 or 0)+(b and 1 or 0);
 end
-local CSC_DISTRICT_TAILORS_QUARTER:number = -1;
-if GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"] ~= nil then
-	CSC_DISTRICT_TAILORS_QUARTER = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"].Index;
+function CSC_UnitPanel_GetTailorsTradeRouteCount(origin:table,destination:table)
+    if not CSC_ROUTE_READER then return 0;end
+    local a,b=CSC_TradeRouteCore.FamilyStates(CSC_ROUTE_DEFINITIONS,
+        CSC_ROUTE_READER.City(origin),CSC_ROUTE_READER.City(destination),'TAILORS');
+    return(a and 1 or 0)+(b and 1 or 0);
 end
-
-local CSC_PROP_BAKERY_SUPPLIED:string = "CSC_BAKERS_BAKERY_SUPPLIED";
-local CSC_PROP_CAFE_SUPPLIED:string = "CSC_BAKERS_CAFE_SUPPLIED";
-local CSC_PROP_FASHION_HOUSE_SUPPLIED:string = "CSC_TAILORS_FASHION_HOUSE_SUPPLIED";
-local CSC_PROP_TAILOR_SUPPLIED:string = "CSC_TAILORS_TAILOR_SUPPLIED";
-local CSC_UNIT_PANEL_YIELD_ORDER:table = {
-	"YIELD_FOOD",
-	"YIELD_PRODUCTION",
-	"YIELD_GOLD",
-	"YIELD_SCIENCE",
-	"YIELD_CULTURE",
-	"YIELD_FAITH",
-};
-
-function CSC_UnitPanel_IsPositiveProperty(owner:table, propertyName:string)
-	if owner == nil then return false; end
-
-	local value = owner:GetProperty(propertyName);
-	if value == nil then return false; end
-
-	return tonumber(value) ~= nil and tonumber(value) > 0;
+function CSC_UnitPanel_GetQuarterTradeRouteAmounts(origin:table,destination:table)
+    if not CSC_ROUTE_READER then return {};end
+    return CSC_TradeRouteCore.Nominal(CSC_ROUTE_DEFINITIONS,
+        CSC_ROUTE_READER.City(origin),CSC_ROUTE_READER.City(destination),'ORIGIN');
 end
-
-function CSC_UnitPanel_CityHasFunctioningBakersQuarter(pCity:table)
-	if pCity == nil or CSC_DISTRICT_BAKERS_QUARTER < 0 then return false; end
-
-	local pDistricts:table = pCity:GetDistricts();
-	if pDistricts == nil then return false; end
-	if not pDistricts:HasDistrict(CSC_DISTRICT_BAKERS_QUARTER) then return false; end
-
-	if pDistricts.IsPillaged ~= nil then
-		return not pDistricts:IsPillaged(CSC_DISTRICT_BAKERS_QUARTER);
-	end
-
-	return true;
-end
-
-function CSC_UnitPanel_GetBakersTradeRouteCount(pOriginCity:table, pDestinationCity:table)
-	-- Count eligible goods channels for this one active route. This is unrelated
-	-- to the city's accumulated import/export counters used by gameplay SQL.
-	if pOriginCity == nil or pDestinationCity == nil then return 0; end
-
-	-- Domestic and international routes receive the same fixed CSC import bonus.
-
-	-- Cities with their own functioning Bakers' Quarter do not import Bakers goods.
-	if CSC_UnitPanel_CityHasFunctioningBakersQuarter(pOriginCity) then return 0; end
-
-	local routeCount:number = 0;
-	if CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_BAKERY_SUPPLIED) then
-		routeCount = routeCount + 1;
-	end
-	if CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_CAFE_SUPPLIED) then
-		routeCount = routeCount + 1;
-	end
-
-	return routeCount;
-end
-
-function CSC_UnitPanel_GetTailorsTradeRouteCount(pOriginCity:table, pDestinationCity:table)
-	if pOriginCity == nil or pDestinationCity == nil then return 0; end
-	if CSC_DISTRICT_TAILORS_QUARTER >= 0 then
-		local pDistricts:table = pOriginCity:GetDistricts();
-		if pDistricts ~= nil and pDistricts:HasDistrict(CSC_DISTRICT_TAILORS_QUARTER) then
-			if pDistricts.IsPillaged == nil or not pDistricts:IsPillaged(CSC_DISTRICT_TAILORS_QUARTER) then
-				return 0;
-			end
-		end
-	end
-	return (CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_TAILOR_SUPPLIED) and 1 or 0)
-		+ (CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_FASHION_HOUSE_SUPPLIED) and 1 or 0);
-end
-
+-- CSC_ROUTE_SHARED_SUPPORT_END
 
 -- ===========================================================================
 --	CONSTANTS
@@ -1726,22 +1671,12 @@ function TradeUnitView( viewData:table )
 					if destinationPlayer ~= nil then
 						local destinationCities:table = destinationPlayer:GetCities();
 						local destinationCity:table = destinationCities:FindID(route.DestinationCityID);
-						local cscBakersRouteCount:number = CSC_UnitPanel_GetBakersTradeRouteCount(city, destinationCity);
-						if cscBakersRouteCount > 0 then
-							local foodYield:table = GameInfo.Yields["YIELD_FOOD"];
-							if foodYield ~= nil then
-								originYieldValues[foodYield.Index] = (originYieldValues[foodYield.Index] or 0) + cscBakersRouteCount;
-							end
-							cscAmenityAmount = cscBakersRouteCount;
-						end
-						local cscTailorsRouteCount:number = CSC_UnitPanel_GetTailorsTradeRouteCount(city, destinationCity);
-						if cscTailorsRouteCount > 0 then
-							local cultureYield:table = GameInfo.Yields["YIELD_CULTURE"];
-							if cultureYield ~= nil then
-								originYieldValues[cultureYield.Index] = (originYieldValues[cultureYield.Index] or 0) + cscTailorsRouteCount;
-							end
-							cscAmenityAmount = cscAmenityAmount + cscTailorsRouteCount;
-						end
+						local amounts:table=CSC_UnitPanel_GetQuarterTradeRouteAmounts(city,destinationCity);
+                        for yieldType,amount in pairs(amounts) do
+                            local definition:table=GameInfo.Yields[yieldType];
+                            if definition then originYieldValues[definition.Index]=(originYieldValues[definition.Index]or 0)+amount;end
+                        end
+                        cscAmenityAmount=amounts.AMENITY or 0;
 					end
 
 					for _, yieldType in ipairs(CSC_UNIT_PANEL_YIELD_ORDER) do

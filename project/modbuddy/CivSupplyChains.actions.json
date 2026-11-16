@@ -460,7 +460,8 @@
         },
         "files": [
           "Data/CSC_Q_ALL.sql",
-          "Data/CSC_BuildingTransactionSchema.sql"
+          "Data/CSC_BuildingTransactionSchema.sql",
+          "Data/CSC_TradeRouteSchema.sql"
         ]
       },
       {
@@ -1281,6 +1282,17 @@
         ]
       },
       {
+        "type": "ImportFiles",
+        "id": "CSC_TradeRouteShared",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/TradeRoutes/CSC_TradeRouteCore.lua",
+          "Lua_UI/TradeRoutes/CSC_TradeRouteFacts.lua"
+        ]
+      },
+      {
         "type": "AddGameplayScripts",
         "id": "CSC_TradeRouteInteractions_Gameplay",
         "properties": {
@@ -1305,7 +1317,7 @@
         "type": "UpdateDatabase",
         "id": "CSC_SUIA_YieldPresentationDatabase",
         "properties": {
-          "LoadOrder": "60000"
+          "LoadOrder": "9999001"
         },
         "criteria": [
           "SimpleUIAdjustmentsMod"
@@ -1585,6 +1597,16 @@
           "Data/CSC_MaterialTransactionProcessor.sql",
           "Data/CSC_FixedBuildingTransactionProcessor.sql",
           "Data/CSC_BuildingTransactionProcessor.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_TradeRouteProcessor",
+        "properties": {
+          "LoadOrder": "9999000"
+        },
+        "files": [
+          "Data/CSC_TradeRouteProcessor.sql"
         ]
       }
     ]

@@ -51,6 +51,16 @@ def material_aliases():
     return aliases
 
 
+def route_aliases():
+    aliases=set()
+    for q in ('BAKERS','TAILORS'):
+        for suffix in ('','_GOLD'):
+            for statement in statements((MOD/f'Data/CSC_Q_{q}_TRANSACTIONS{suffix}.sql').read_text()):
+                if re.match(r'INSERT INTO CSC_TradeRoute\w+\b',statement):
+                    aliases.update(re.findall(r"'(MOD_CSC_[A-Z0-9_]+)'",statement))
+    return aliases
+
+
 def compile_catalogue(*,gold=True,lgd=True,reference=None,uniques=False,mc=False):
     db=sqlite3.connect(':memory:');db.row_factory=sqlite3.Row
     db.executescript('''
@@ -60,7 +70,12 @@ CREATE TABLE Building_CitizenYieldChanges(BuildingType TEXT,YieldType TEXT,Yield
 CREATE TABLE ImprovementModifiers(ImprovementType TEXT, ModifierId TEXT, UNIQUE(ImprovementType,ModifierId));
 CREATE TABLE DistrictModifiers(DistrictType TEXT, ModifierId TEXT, UNIQUE(DistrictType,ModifierId));
 CREATE TABLE BuildingModifiers(BuildingType TEXT, ModifierId TEXT, UNIQUE(BuildingType,ModifierId));
-CREATE TABLE Modifiers(ModifierId TEXT PRIMARY KEY, ModifierType TEXT, OwnerRequirementSetId TEXT, SubjectRequirementSetId TEXT, RunOnce INTEGER DEFAULT 0, Permanent INTEGER DEFAULT 0, OwnerStackLimit INTEGER, SubjectStackLimit INTEGER);
+CREATE TABLE Modifiers(ModifierId TEXT PRIMARY KEY, ModifierType TEXT, OwnerRequirementSetId TEXT, SubjectRequirementSetId TEXT, RunOnce INTEGER DEFAULT 0, Permanent INTEGER DEFAULT 0, OwnerStackLimit INTEGER, SubjectStackLimit INTEGER, NewOnly INTEGER DEFAULT 0, Repeatable INTEGER DEFAULT 0);
+CREATE TABLE DynamicModifiers(ModifierType TEXT PRIMARY KEY,CollectionType TEXT,EffectType TEXT);
+INSERT INTO DynamicModifiers VALUES
+ ('MODIFIER_SINGLE_CITY_ADJUST_PROPERTY','COLLECTION_OWNER','EFFECT_ADJUST_CITY_PROPERTY'),
+ ('MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE','COLLECTION_OWNER','EFFECT_ADJUST_CITY_YIELD_CHANGE'),
+ ('MODIFIER_BUILDING_YIELD_CHANGE','COLLECTION_OWNER','EFFECT_ADJUST_BUILDING_YIELD_CHANGE');
 CREATE TABLE ModifierArguments(ModifierId TEXT,Name TEXT,Value TEXT,PRIMARY KEY(ModifierId,Name));
 CREATE TABLE RequirementSets(RequirementSetId TEXT PRIMARY KEY,RequirementSetType TEXT);
 CREATE TABLE RequirementSetRequirements(RequirementSetId TEXT,RequirementId TEXT,PRIMARY KEY(RequirementSetId,RequirementId));
@@ -81,9 +96,9 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
             db.execute('INSERT INTO BuildingReplaces VALUES(?,?)',('BUILDING_UNIQUE_'+name,'BUILDING_'+name))
     shared=(MOD/'Data/CSC_Q_ALL.sql').read_text(encoding='utf-8-sig')
     names={'CSC_QuarterFlowBuildings','CSC_QuarterCustomerBuildings','CSC_QuarterWonderSales','CSC_Stage3CustomerTransactions',
-        'CSC_ScaledAmountBits','CSC_Stage3RateBits','CSC_Stage4StackBits'}
+        'CSC_ScaledAmountBits','CSC_Stage3RateBits','CSC_Stage4StackBits','CSC_RouteStackBits'}
     for s in statements(shared):
-        if any(re.match(r'(?:CREATE TABLE IF NOT EXISTS|INSERT OR IGNORE INTO)\s+'+n+r'\b',s)for n in names):db.executescript(s)
+        if any(re.match(r'(?:CREATE TABLE IF NOT EXISTS|INSERT OR IGNORE INTO)\s+'+n+r'\b',s)for n in names)or re.match(r'INSERT(?: OR IGNORE)? INTO DynamicModifiers\b',s):db.executescript(s)
     source=Path(reference)if reference else MOD
     files=['Data/CSC_Q_BAKERS.sql','Data/CSC_Q_TAILORS.sql']
     if gold:files+=['Data/CSC_Q_BAKERS_GOLD.sql','Data/CSC_Q_TAILORS_GOLD.sql']
@@ -95,16 +110,22 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
     # Populate pre-existing consumers and their full requirements/attachments.
     # Mixed VALUES statements are retained whole, so the comparison includes
     # their neighboring definitions too rather than hiding an accidental edit.
-    aliases=fixed_aliases()|material_aliases()
+    aliases=fixed_aliases()|material_aliases()|route_aliases()
     for f in files:
-        for s in statements((source/f).read_text(encoding='utf-8-sig')):
+        text=(source/f).read_text(encoding='utf-8-sig')
+        imports=re.search(r'CREATE TEMP TABLE CSC_(?:Bakers|Tailors)ImportChannels\b',text)
+        for s in statements(text[:imports.start()]if imports else text):
             table=re.match(r'INSERT(?: OR IGNORE)? INTO (\w+)',s)
             if ('CSC_BakersStage4CultureBuildings'in s or
-                (table and table[1]in (NATIVE|{'ImprovementModifiers'}) and (matches_population(s)or any("'"+x+"'"in s for x in aliases)))or
+                (table and table[1]in (NATIVE|{'ImprovementModifiers'}) and (matches_population(s)
+                 or re.search(r'CSC_(?:BAKERS|TAILORS)_(?:IMPORT|EXPORT)_',s)
+                 or any("'"+x+"'"in s for x in aliases)))or
                 (table and table[1]in names|{'Building_CitizenYieldChanges'})):
                 db.executescript(s)
+        if imports:db.executescript(text[imports.start():])
     if not reference:
         db.executescript((MOD/'Data/CSC_BuildingTransactionSchema.sql').read_text())
+        db.executescript((MOD/'Data/CSC_TradeRouteSchema.sql').read_text())
         for q in ['BAKERS','TAILORS']:
             db.executescript((MOD/f'Data/CSC_Q_{q}_TRANSACTIONS.sql').read_text())
             if gold:db.executescript((MOD/f'Data/CSC_Q_{q}_TRANSACTIONS_GOLD.sql').read_text())
@@ -119,6 +140,7 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
         db.executescript((MOD/'Data/CSC_MaterialTransactionProcessor.sql').read_text())
         db.executescript((MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql').read_text())
         db.executescript((MOD/'Data/CSC_BuildingTransactionProcessor.sql').read_text())
+        db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
     return db
 
 
@@ -130,3 +152,38 @@ def graph(db,scope='population'):
         return matches_population(identity)if scope=='population'else identity in aliases
     tables=NATIVE|{'ImprovementModifiers'}if scope=='material'else NATIVE
     return {n:sorted([list(r)for r in db.execute('SELECT * FROM '+n)if include(n,r)],key=repr)for n in sorted(tables)}
+
+
+def legacy_reference_graph(db,scope='population'):
+    """Compare historical eight-column fixture hashes without rewriting evidence.
+
+    NewOnly/Repeatable were absent from the original reduced native schema. Assert
+    both are zero before projecting its original column order; raw graph() still
+    retains every native column for current comparisons and live qualification.
+    """
+    result=graph(db,scope)
+    columns=[r[1]for r in db.execute('PRAGMA table_info(Modifiers)')]
+    original=('ModifierId','ModifierType','OwnerRequirementSetId','SubjectRequirementSetId',
+              'RunOnce','Permanent','OwnerStackLimit','SubjectStackLimit')
+    for row in result['Modifiers']:
+        assert all(not row[columns.index(name)]for name in ('NewOnly','Repeatable'))
+    result['Modifiers']=[[row[columns.index(name)]for name in original]for row in result['Modifiers']]
+    return result
+
+
+def bind_population(vm):
+    """Supply the real catalogue to older game-object-only lifecycle fixtures."""
+    db=compile_catalogue()
+    for name in ('CSC_BuildingTransactions','CSC_BuildingTransactionYields'):
+        rows=[dict(r)for r in db.execute('SELECT * FROM '+name)]
+        records=vm.table_from([vm.table_from(row)for row in rows])
+        if name=='CSC_BuildingTransactions':
+            for i,row in enumerate(rows,1):records[row['TransactionId']]=records[i]
+        vm.globals().CSC_POPULATION_TEST_ROWS=records
+        vm.execute('''local rows=CSC_POPULATION_TEST_ROWS
+GameInfo['''+repr(name)+''']=setmetatable(rows,{__call=function()local i=0;return function()i=i+1;return rows[i]end end})''')
+    for row in db.execute('SELECT * FROM Buildings'):
+        definition=vm.globals().GameInfo.Buildings[row['BuildingType']]
+        if definition is not None:
+            definition.PrereqDistrict=row['PrereqDistrict'];definition.IsWonder=row['IsWonder']
+    db.close()

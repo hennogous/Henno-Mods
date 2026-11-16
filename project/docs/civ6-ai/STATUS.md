@@ -1,5 +1,15 @@
 # Current CSC AI status
 
+**G3,17 November — shared observed-route kernel qualified.**
+Gameplay scanner and route previews now read actual native payout/gate definitions.
+A zero-turn replay matches67-city legacy packets,43 actual route timers and the
+original10,954-row native graph; closed/restored exit0. Preview fixes cover Tailor
+producer damage and transaction Gold off. Astra caught a stale-packet/new-operation
+duration case, now guarded/regression covered. Next: connect route counterfactuals
+and combined amenity pricing to the shared ledger, then complete live customer
+worlds and native residual delivery. SQL preference1; Services remain deferred.
+[Definition authority, native trace and QA](../research/mods/csc-observed-routes-20261117.md).
+
 **G3,16 November — observed ordinary staffing qualified.**
 The model now reads native citizen-yield definitions and actual assignments,
 excluding Service rates and assumed future workers. Native trace separates

@@ -16,10 +16,16 @@ def source_lua(text):
 class InternationalTradeTests(unittest.TestCase):
     def setUp(self):
         self.lua = world()
+        import sys
+        sys.path.insert(0,str(ROOT/'project/tools/transactions'))
+        from route_fixture import bind
+        bind(self.lua)
         self.lua.execute('''
             seller.owner=1;
             localSeller=addCity(12,10);foreignOrigin=addCity(13,10);foreignOrigin.owner=1;
             function supply(c)
+                addBuilding(c,'BUILDING_CSC_BAKERS_BAKERY');
+                addBuilding(c,'BUILDING_CSC_BAKERS_CAFE');
                 addBuilding(c,'BUILDING_CSC_TAILORS_TAILOR');
                 addBuilding(c,'BUILDING_CSC_TAILORS_FASHION_HOUSE');
                 for _,key in ipairs({'CSC_BAKERS_BAKERY_SUPPLIED','CSC_BAKERS_CAFE_SUPPLIED',
@@ -124,6 +130,8 @@ class InternationalTradeTests(unittest.TestCase):
         lua.execute('CSC_RefreshBakersTradeRouteProperties();deliver()')
         c = sqlite3.connect(':memory:')
         c.executescript('CREATE TABLE CSC_RouteStackBits(Bit INTEGER);INSERT INTO CSC_RouteStackBits VALUES(2),(4),(8),(16);')
+        from route_fixture import copy_read_model
+        copy_read_model(c)
         c.executescript((ROOT / 'Civ Supply Chains/ModSupport/ModSupport_SUIA.sql').read_text())
         columns = [column[1] for column in c.execute('PRAGMA table_info(CSC_TradeRouteYieldPresentation)')]
         rows = [dict(zip(columns, row)) for row in c.execute('SELECT * FROM CSC_TradeRouteYieldPresentation')]

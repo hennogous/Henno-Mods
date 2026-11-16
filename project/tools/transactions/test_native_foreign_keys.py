@@ -17,6 +17,7 @@ def native_keys(db):
     schemas={
         'Modifiers':'''ModifierId TEXT PRIMARY KEY,ModifierType TEXT,OwnerRequirementSetId TEXT,SubjectRequirementSetId TEXT,
             RunOnce INTEGER DEFAULT 0,Permanent INTEGER DEFAULT 0,OwnerStackLimit INTEGER,SubjectStackLimit INTEGER,
+            NewOnly INTEGER DEFAULT 0,Repeatable INTEGER DEFAULT 0,
             FOREIGN KEY(OwnerRequirementSetId) REFERENCES RequirementSets(RequirementSetId) ON DELETE CASCADE ON UPDATE CASCADE,
             FOREIGN KEY(SubjectRequirementSetId) REFERENCES RequirementSets(RequirementSetId) ON DELETE CASCADE ON UPDATE CASCADE''',
         'ModifierArguments':'''ModifierId TEXT,Name TEXT,Value TEXT,PRIMARY KEY(ModifierId,Name),

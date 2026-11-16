@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,unittest,sqlite3
 from lupa.lua51 import LuaRuntime
-from population_catalogue_fixture import compile_catalogue,graph,MOD
+from population_catalogue_fixture import compile_catalogue,graph,MOD,legacy_reference_graph
 from test_population_catalogue import digest,lua
 
 HERE=Path(__file__).resolve().parent
@@ -41,7 +41,7 @@ class MaterialCatalogue(unittest.TestCase):
         for gold in(False,True):
             for mc in(False,True):
                 db=compile_catalogue(gold=gold,mc=mc,lgd=False)
-                actual=graph(db,'material');expected=reference[f'{int(gold)}:{int(mc)}']
+                actual=legacy_reference_graph(db,'material');expected=reference[f'{int(gold)}:{int(mc)}']
                 self.assertEqual(digest(actual),expected['sha256'])
                 self.assertEqual(sum(map(len,actual.values())),expected['rows']);db.close()
 

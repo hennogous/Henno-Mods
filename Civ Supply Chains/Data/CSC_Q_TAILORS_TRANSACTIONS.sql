@@ -336,3 +336,53 @@ VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'INPUT_ORDINARY',            
         (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'INPUT_ORDINARY',               'REQSET_CSC_ADJ_TAILORS_QUARTER',         'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
         (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
         (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   );
+
+-- Route channel partners and protocol fields. Native SQL above remains the
+-- payout authority; the late read-model reads every real modifier bit rather
+-- than copying a rate. Preserve the scanner's source-building asymmetry:
+-- Bakers uses supplied properties, Tailors also checks an intact producer.
+
+INSERT INTO CSC_TradeRouteChannels
+    (
+        ChannelId,
+        QuarterKey,
+        ProducerBuildingType,
+        SupplyModifierId,
+        RequireProducerBuilding,
+        ImportField,
+        ExportField,
+        ImportProperty,
+        ExportProperty
+    )
+VALUES
+    (
+        'TAILORS_TAILOR',
+        'TAILORS',
+        'BUILDING_CSC_TAILORS_TAILOR',
+        'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',
+        1,
+        'ImportTailorRoute',
+        'ExportTailorRoute',
+        'CSC_TAILORS_IMPORT_TAILOR_ROUTE',
+        'CSC_TAILORS_EXPORT_TAILOR_ROUTE'
+    ),
+    (
+        'TAILORS_FASHION_HOUSE',
+        'TAILORS',
+        'BUILDING_CSC_TAILORS_FASHION_HOUSE',
+        'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY',
+        1,
+        'ImportFashionHouseRoute',
+        'ExportFashionHouseRoute',
+        'CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',
+        'CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE'
+    );
+
+INSERT INTO CSC_TradeRoutePayoutBindings
+        (   ChannelId,                 LegKey,                Recipient,       ModifierId   )
+VALUES  (   'TAILORS_TAILOR',          'IMPORT_YIELD',        'ORIGIN',        'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE'   ),
+        (   'TAILORS_TAILOR',          'IMPORT_AMENITY',      'ORIGIN',        'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY'   ),
+        (   'TAILORS_TAILOR',          'EXPORT_PRODUCTION',   'DESTINATION',   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION'   ),
+        (   'TAILORS_FASHION_HOUSE',   'IMPORT_YIELD',        'ORIGIN',        'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE'   ),
+        (   'TAILORS_FASHION_HOUSE',   'IMPORT_AMENITY',      'ORIGIN',        'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_AMENITY'   ),
+        (   'TAILORS_FASHION_HOUSE',   'EXPORT_PRODUCTION',   'DESTINATION',   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION'   );
