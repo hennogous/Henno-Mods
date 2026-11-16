@@ -146,6 +146,24 @@ class SessionTests(unittest.TestCase):
             self.s.close(before_menu=fail,restore_preferences=Mock(),restore_package=package)
         self.r.cmd.assert_not_called();package.assert_not_called()
 
+    def test_cleanup_retries_only_readonly_discovery_after_transient_failure(self):
+        self.start()
+        self.s.discover = Mock(side_effect=[RuntimeError('No responsive tuner states'),
+                                           (4318, self.contexts), (4318, self.contexts)])
+        self.r.cmd.side_effect = self.exit_on_request
+        self.s.close(restore_preferences=lambda:None)
+        self.assertTrue(self.s.closed)
+        self.assertEqual(self.r.cmd.call_count, 1)  # Only the supported exit.
+        self.assertEqual(self.time, .5)
+
+    def test_cleanup_discovery_timeout_preserves_owner_and_packages(self):
+        self.start(); package = Mock(); preferences = Mock()
+        self.s.discover = Mock(side_effect=RuntimeError('No responsive tuner states'))
+        with self.assertRaises(TimeoutError):
+            self.s.close(restore_preferences=preferences, restore_package=package)
+        self.assertIsNone(self.owner.poll())
+        self.r.cmd.assert_not_called(); preferences.assert_not_called(); package.assert_not_called()
+
     def test_preference_mismatch_never_issues_exit_or_restores(self):
         self.start();package=Mock()
         def fail(): raise ValueError('prefs differ')

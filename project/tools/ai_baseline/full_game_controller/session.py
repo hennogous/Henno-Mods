@@ -159,7 +159,22 @@ class NativeSession:
             raise SessionError('Cannot clean up an unowned process')
         if self.owner.poll() is not None:
             raise SessionError('Native exited before preference restoration')
-        _, states = self.discover(required='MainMenu')
+        # LSQ can briefly time out after a burst of diagnostic reads. Reconcile
+        # the same held process with read-only discovery before reserving a menu
+        # operation; never turn a missing observation into a second exit request.
+        deadline = self.clock() + 180
+        while True:
+            if self.owner.poll() is not None:
+                raise SessionError('Native exited before preference restoration')
+            try:
+                _, states = self.discover(required='MainMenu')
+                if any(name in states for name in ('MainMenu', 'GameCore_Tuner', 'PlotInfo')):
+                    break
+            except (OSError, EOFError, RuntimeError):
+                pass
+            if self.clock() >= deadline:
+                raise TimeoutError('Cleanup discovery unavailable for the held native owner')
+            self.sleep(.5)
         if 'GameCore_Tuner' in states or 'PlotInfo' in states:
             self.issue_once('menu', 'Events.ExitToMainMenu();', 'PlotInfo')
         self.wait_context('MainMenu', 180)
