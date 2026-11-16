@@ -1,5 +1,10 @@
 # Current CSC AI status
 
+**Fresh customer-first Continents250 launched,16 November:** stock AI, Online,
+CL/R2/Suk; seeds22051116/32251116, main policy19e29a42. Shared controller checks
+every15minutes;25-turn censuses capture all six Services and placement/material/
+customer outcomes. Startup qualification pending. [Protocol](../research/mods/csc-ai-customer-first-continents-20261116.md).
+
 **2.1 customer-first planning,16 November — implemented/offline-qualified.**
 Reverse the generated gameplay partner graph from customer→Quarter→Base/Spec.
 Require concrete owned Quarter/material footprints, including triangles, and

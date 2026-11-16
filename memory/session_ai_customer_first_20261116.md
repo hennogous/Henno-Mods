@@ -23,3 +23,5 @@ RealDBreverse48/48;syntheticCLdefinitionremoval16/16. Finalsuitecount/doccommitp
 AI-C196 plusroadmap/status/architecture/siteplannerdocupdated. PreserveunrelatedWIP.
 
 Finalreview: sharedmaterialpolicyandnativepartnerexistingdedupfixedpercity/type; slot6DPoracle40cases. P.ReadSuppliers nowrejectsunrelatedtagclassesBEFOREnativegeometrycalls. 90economy/Lua+31controller/observerchecksPASS; reportlinkschecked. No livegame. Scopedcommits/pushnext.
+
+NEW250requested. RootDesktop/Codex/csc-ai-customer-first-continents-20261116;frozen01acceptedgameplay+allcurrentAI/SQL;seeds22051116/32251116; stockAI/CL/R2/Suk,OnlinePrinceSmallContinents. ScheduledtaskCSC-AI-CustomerFirst-Continents-20261116,worker-status.json,outputcontinents250-01. Noforeignnativeprocesspreflight;upstreamCEunchanged. Shared15minchecks+25turncensuses. Runtimepinsstableuntilclose. Needqualifystartup thencontinuewatch15min,analysetill250,andcommit/pushreport.
