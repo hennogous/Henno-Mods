@@ -14,6 +14,7 @@ from contextlib import closing
 import re
 import sqlite3
 import shutil
+import sys
 from types import SimpleNamespace
 import traceback
 import xml.etree.ElementTree as ET
@@ -29,6 +30,8 @@ from customer_connector_audit import audit as audit_customers
 from economy_savings_watch import EconomySavingsWatch
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0,str(HERE.parents[3]/'project/tools/transactions'))
+from population_catalogue_fixture import graph as transaction_graph
 RULE = 'CSC_AI_CUSTOMER_DISTRICT_COMMERCIAL_HUB__DISTRICT_CSC_BAKERS_QUARTER'
 SQL_PATH = 'Data/CSC_DIAG_CUSTOMER_STRENGTH.sql'
 CONNECTORS = HERE.parents[3]/'Civ Supply Chains/Data/CSC_AI_Connectors.sql'
@@ -126,7 +129,7 @@ def run(args):
         source=str(plan.source), checkpoint=plan.checkpoint, start=args.at, through=args.through,
         targets=targets, gameplay_edits=False, main_lua_policy_unchanged=True, shared_stage3_sql_repair=True,
         connector_generator_sha256=sha(CONNECTORS), source_commit='de174092'))
-    scripts = [Path(__file__), HERE/'economy_savings_watch.py', HERE/'economy_savings_watch.js',
+    scripts = [Path(__file__), Path(transaction_graph.__code__.co_filename), HERE/'economy_savings_watch.py', HERE/'economy_savings_watch.js',
                HERE/'full_game_census.lua', HERE/'planning_observer.lua', HERE/'district_adjacency_watch.lua',
                HERE/'customer_connector_audit.py', CONNECTORS]
     pins = {str(p.resolve()): sha(p) for p in scripts}
@@ -187,6 +190,10 @@ def run(args):
         qualify_database(db, args.amount)
         with closing(sqlite3.connect((plan.user_root/'Cache/DebugGameplay.sqlite').as_uri()+'?mode=ro',uri=True)) as loaded:
             coverage=audit_customers(loaded)
+            # Original-package native baseline for cross-cutting gameplay
+            # migrations. Capture all CSC effect rows, including Services and
+            # shared requirements; a fixed-only closure misses cascading damage.
+            write_json(out/'all-csc-native-graph.json',transaction_graph(loaded,'all_csc'))
         write_json(out/'loaded-customer-coverage.json',coverage)
         require(not(coverage['missing']or coverage['unexpected']or coverage['duplicates']),
                 'Loaded customer graph does not match gameplay definitions')

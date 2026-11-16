@@ -180,7 +180,7 @@ class PopulationCatalogue(unittest.TestCase):
                     db.executescript((MOD/'Data/CSC_BuildingTransactionProcessor.sql').read_text())
                 db.close()
         db=compile_catalogue()
-        for mutation in ["UPDATE CSC_BuildingTransactions SET QuantityKind='FIXED'",
+        for mutation in ["UPDATE CSC_BuildingTransactions SET QuantityKind='UNKNOWN_KIND'",
             "UPDATE CSC_BuildingTransactions SET SpatialRule='SAME_QUARTER'",
             "UPDATE CSC_BuildingTransactionYields SET AmountPerUnit=.5"]:
             with self.assertRaises(sqlite3.IntegrityError):db.execute(mutation)
@@ -217,8 +217,8 @@ class PopulationCatalogue(unittest.TestCase):
 
     def test_catalogue_has_ordinary_wonders_and_no_service_gates(self):
         db=compile_catalogue()
-        self.assertEqual(db.execute('SELECT COUNT(*) FROM CSC_BuildingTransactions').fetchone()[0],10)
-        self.assertEqual(db.execute('SELECT COUNT(*) FROM CSC_BuildingTransactionYields').fetchone()[0],30)
+        self.assertEqual(db.execute("SELECT COUNT(*) FROM CSC_BuildingTransactions WHERE QuantityKind<>'FIXED'").fetchone()[0],10)
+        self.assertEqual(db.execute("SELECT COUNT(*) FROM CSC_BuildingTransactionYields Y JOIN CSC_BuildingTransactions T USING(TransactionId) WHERE T.QuantityKind<>'FIXED'").fetchone()[0],30)
         rows=db.execute("SELECT * FROM CSC_QuarterWonderSales").fetchall()
         self.assertEqual(len(rows),3)
         # The same source property for Production/Gold is counted once by the

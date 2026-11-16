@@ -1,5 +1,16 @@
 # Current CSC AI status
 
+**1.4 / 2.1,16 November — fixed building exchange migration verified.**
+Nine external/local relationships now own their payout legs and native gate
+templates in gameplay SQL. The model reads actual amounts and distinguishes the
+recipient building from the investment enabling it. Gold on/off, replacement,
+alternative-Mill and changed-amount tests pass. Corrected zero-turn250 replay
+matches all10,954 CSC native effect rows, including Services/material effects,
+and the67-city population refresh. Closed/restored normally. No intended gameplay
+payout or gate change. [Goal and remaining scope](ordinary-economy-goal.md).
+Directional materials, joint customer valuation, observed routes/staffing and
+native residual attribution remain in progress. SQL preference remains1.
+
 **1.4 / 2.1,16 November — population building economy aligned and regression checked.**
 Astra's audit exposed independent Stage3/4 partner lists, hardcoded model terms
 and customer-host gate differences. Gameplay-owned transaction headers/payout

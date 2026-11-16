@@ -18,13 +18,13 @@ SELECT CASE WHEN NOT EXISTS (
         OR NOT EXISTS (SELECT 1 FROM Buildings WHERE BuildingType = T.PartnerBuildingType)
         OR NOT EXISTS (SELECT 1 FROM CSC_QuarterFlowBuildings F
             WHERE F.QuarterKey = T.QuarterKey AND F.BuildingType = T.SourceBuildingType
-                AND F.Stage = CASE T.QuantityKind WHEN 'PARTNER_POPULATION' THEN 3 ELSE 4 END)
+                AND F.Stage = CASE T.QuantityKind WHEN 'FIXED' THEN 2 WHEN 'PARTNER_POPULATION' THEN 3 ELSE 4 END)
         OR NOT EXISTS (SELECT 1 FROM CSC_BuildingTransactionYields Y
             WHERE Y.TransactionId = T.TransactionId AND Y.LegKey = 'SOURCE_PRODUCTION'
-                AND Y.Recipient = 'SOURCE' AND Y.AmountProperty IS NOT NULL)
+                AND Y.Recipient = 'SOURCE' AND (T.QuantityKind = 'FIXED' OR Y.AmountProperty IS NOT NULL))
         OR NOT EXISTS (SELECT 1 FROM CSC_BuildingTransactionYields Y
             WHERE Y.TransactionId = T.TransactionId AND Y.LegKey = 'PARTNER_RETURN'
-                AND Y.Recipient = 'PARTNER' AND Y.AmountProperty IS NOT NULL)
+                AND Y.Recipient = 'PARTNER' AND (T.QuantityKind = 'FIXED' OR Y.AmountProperty IS NOT NULL))
         OR (T.QuantityKind = 'PARTNER_POPULATION' AND T.SellerPopulationProperty IS NULL)
 ) THEN 1 ELSE 0 END;
 
@@ -32,8 +32,11 @@ INSERT INTO CSC_TransactionContractCheck
         (   Valid   )
 SELECT CASE WHEN NOT EXISTS (
     SELECT 1 FROM CSC_BuildingTransactionYields Y
-    WHERE NOT EXISTS (SELECT 1 FROM CSC_BuildingTransactionBindings B
-        WHERE B.TransactionId = Y.TransactionId AND B.LegKey = Y.LegKey)
+    JOIN CSC_BuildingTransactions T ON T.TransactionId = Y.TransactionId
+    WHERE (T.QuantityKind <> 'FIXED' AND NOT EXISTS (SELECT 1 FROM CSC_BuildingTransactionBindings B
+        WHERE B.TransactionId = Y.TransactionId AND B.LegKey = Y.LegKey))
+        OR (T.QuantityKind = 'FIXED' AND NOT EXISTS (SELECT 1 FROM CSC_BuildingTransactionFixedBindings B
+        WHERE B.TransactionId = Y.TransactionId AND B.LegKey = Y.LegKey))
 ) THEN 1 ELSE 0 END;
 
 INSERT INTO CSC_TransactionContractCheck
@@ -109,7 +112,7 @@ SELECT T.QuarterKey, B.PrereqDistrict, T.PartnerBuildingType, F.Stage
 FROM CSC_BuildingTransactions T
 JOIN CSC_QuarterFlowBuildings F ON F.QuarterKey = T.QuarterKey AND F.BuildingType = T.SourceBuildingType
 JOIN Buildings B ON B.BuildingType = T.PartnerBuildingType
-WHERE T.SpatialRule = 'ADJACENT_OWNED' AND T.QuantityKind = 'PARTNER_POPULATION_STEPS'
+WHERE T.SpatialRule = 'ADJACENT_OWNED' AND T.QuantityKind IN ('FIXED', 'PARTNER_POPULATION_STEPS')
     AND B.IsWonder = 0;
 
 INSERT OR IGNORE INTO CSC_QuarterWonderSales

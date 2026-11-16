@@ -410,7 +410,15 @@ INSERT INTO TypeTags VALUES
             sql = (ROOT / 'Civ Supply Chains/Data' / name).read_text(encoding='utf-8')
             amounts.update({m[0]:float(m[1]) for m in re.findall(
                 r"\(\s*'(MOD_CSC_[A-Z_]+)'\s*,\s*'Amount'\s*,\s*'?([0-9.]+)'?\s*\)",sql)})
-        self.assertGreater(len(roots),20)
+        # Fixed leaves are generated from canonical terms now. Keep this check
+        # for the remaining material unit assumptions, including their shared
+        # Cafe leaf; read generated native arguments as well as literal source.
+        import sys
+        sys.path.insert(0,str(ROOT/'project/tools/transactions'))
+        from population_catalogue_fixture import compile_catalogue
+        db=compile_catalogue()
+        amounts.update({row[0]:float(row[1])for row in db.execute("SELECT ModifierId,Value FROM ModifierArguments WHERE Name='Amount'")})
+        self.assertGreater(len(roots),0)
         self.assertEqual({root:amounts.get(root) for root in roots},{root:1 for root in roots})
 
 

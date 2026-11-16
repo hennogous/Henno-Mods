@@ -30,7 +30,7 @@ income. Services remain outside the new Quarter/customer placement forecasts.
 
 | Channel | Current gap / required correction |
 | --- | --- |
-| Stage 2 and local fixed building exchanges | Planning metadata and native modifier graph are authored separately; model assumes unit terms. Declare terms and bind/generate their native effects. |
+| Stage 2 and local fixed building exchanges | Nine relationships now declare terms and native gate bindings. Generated native effects and model legs agree; corrected live replay matches all10,954 CSC native rows. Material migration must resolve the shared Café Food leaf's remaining unit guard. |
 | Stage 3 | Gameplay registry is authoritative, but some AI/UI readers missed it. Preserve aggregate Q8 rounding and shared-property behavior while bringing it into the common catalogue. |
 | Stage 4 | Gameplay hardcodes venue lists separately from UI metadata. Include all Café venues, LGD Conservatory and Fashion House Wonder venues. |
 | Functioning gates | Stage 3/Café require a functioning partner building; Fashion House district partners additionally require an unpillaged district. Preserve or deliberately change/test this distinction. |

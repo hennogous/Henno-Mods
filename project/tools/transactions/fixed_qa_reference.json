@@ -1,0 +1,22 @@
+{
+  "0:0": {
+    "baseline": "60b51107",
+    "sha256": "e8063128285fc40ffbbac23d7bccb71db200968cbc4e597b8231882a45ddae73",
+    "rows": 102
+  },
+  "0:1": {
+    "baseline": "60b51107",
+    "sha256": "244020e2dd87a96b2e77bc10e0923dafcf4953cb67549adfa3b812e1304dd89d",
+    "rows": 105
+  },
+  "1:0": {
+    "baseline": "60b51107",
+    "sha256": "148deedab585c4a78f3a31b1e214039588a5f89773cfcf73fc7afb82938ac843",
+    "rows": 137
+  },
+  "1:1": {
+    "baseline": "60b51107",
+    "sha256": "4052bc7a2be3fe6873dc4fcc99fdc15495d556443c5a31c368bf1484204ddf05",
+    "rows": 143
+  }
+}

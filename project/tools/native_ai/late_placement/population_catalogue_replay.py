@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 import re
 import shutil
+import sqlite3
+import sys
 from types import SimpleNamespace
 import xml.etree.ElementTree as ET
 
@@ -22,6 +24,8 @@ from ce_bakers_fresh import LOGS
 
 HERE=Path(__file__).resolve().parent
 MOD=HERE.parents[3]/'Civ Supply Chains'
+sys.path.insert(0,str(HERE.parents[3]/'project/tools/transactions'))
+from population_catalogue_fixture import graph as transaction_graph, fixed_aliases
 GAMEPLAY='Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua'
 SQL_PATH='Data/CSC_DIAG_POPULATION_CATALOGUE.sql'
 
@@ -77,14 +81,42 @@ def run(args):
     paths=[MOD/'Data/CSC_BuildingTransactionSchema.sql']
     for q in('BAKERS','TAILORS'):
         paths.extend([MOD/f'Data/CSC_Q_{q}_TRANSACTIONS.sql',MOD/f'Data/CSC_Q_{q}_TRANSACTIONS_GOLD.sql'])
-    paths.append(MOD/'Data/CSC_BuildingTransactionProcessor.sql')
+    paths.extend([MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql',MOD/'Data/CSC_BuildingTransactionProcessor.sql'])
+    # Compare the complete loaded native rows for fixed aliases, including all
+    # actual engine columns/defaults, rather than only the fixture's schema.
+    # The source cache is read-only and was produced by the already qualified
+    # original mod stack; the structural save gate separately checks the world.
+    database=plan.user_root/'Cache/DebugGameplay.sqlite'
+    if args.reference_graph:
+        path=args.reference_graph.resolve(strict=True)
+        previous=json.loads((path.parent/'protocol.json').read_text())
+        closed=json.loads((path.parent/'session-closed.json').read_text())
+        require(closed['verified']and previous['source']==str(plan.source)
+            and previous['start']==args.at==previous['through']
+            and previous['gameplay_edits']is False and previous['main_lua_policy_unchanged']is True,
+            'Require closed, unchanged-policy same-world native reference')
+        original_all=json.loads(path.read_text())
+        aliases=fixed_aliases()
+        original_fixed={name:[r for r in rows if r[1 if name in('BuildingModifiers','DistrictModifiers')else 0]in aliases]
+            for name,rows in original_all.items()}
+    else:
+        with sqlite3.connect(database.resolve().as_uri()+'?mode=ro',uri=True)as db:
+            require(not db.execute("SELECT 1 FROM sqlite_master WHERE name='CSC_BuildingTransactions'").fetchone(),
+                'Use an explicit original-package reference after a candidate cache')
+            original_fixed=transaction_graph(db,'fixed');original_all=transaction_graph(db,'all_csc')
+    require(sum(map(len,original_fixed.values()))>0,'Missing fixed native reference')
+    write_json(out/'reference-fixed-native-graph.json',original_fixed)
+    write_json(out/'reference-all-csc-native-graph.json',original_all)
     sql='\n'.join(read(p)for p in paths)
     reference=read(args.reference/GAMEPLAY)
-    pins={str(p.resolve()):sha(p)for p in [*paths,MOD/GAMEPLAY,args.reference/GAMEPLAY,Path(__file__)]}
+    inputs=[*paths,MOD/GAMEPLAY,args.reference/GAMEPLAY,Path(__file__),Path(transaction_graph.__code__.co_filename)]
+    if args.reference_graph:inputs.append(args.reference_graph)
+    pins={str(p.resolve()):sha(p)for p in inputs}
     code=survey(reference)
     (out/'diagnostic.sql').write_text(sql,encoding='utf-8')
     (out/'diagnostic.lua').write_text(code,encoding='utf-8')
     write_json(out/'protocol.json',dict(diagnostic=True,zero_turn=True,at=args.at,production_population_sql=True,
+        production_fixed_sql=True,native_graph_scope='all_csc',reference_graph=str(args.reference_graph),
         legacy_refresh_isolated=True,no_orders=True,source_pins=pins,lgd=False))
     c=make_probe_controller(out,user_root=plan.user_root)
     s=NativeSession(out,c,inventory=native_inventory,hold=HeldProcess,write=write_json)
@@ -124,6 +156,17 @@ def run(args):
             turn=args.at,contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay','CSC_CustomerPopulationReturns'),eligibility=gate)
         ce=next(i for i in copied if i['role']=='ce')
         verify_modules(s,ce['install']/'Binaries/Win64'/DLL,out,HOTFIX_SHA)
+        with sqlite3.connect(database.resolve().as_uri()+'?mode=ro',uri=True)as db:
+            loaded_fixed=transaction_graph(db,'fixed')
+            loaded_all=transaction_graph(db,'all_csc')
+        write_json(out/'loaded-all-csc-native-graph.json',loaded_all)
+        all_effects=dict(verified=original_all==loaded_all,rows=sum(map(len,loaded_all.values())))
+        write_json(out/'all-csc-native-equivalence.json',all_effects)
+        require(all_effects['verified'],'Native CSC graph changes outside the declared migration')
+        write_json(out/'loaded-fixed-native-graph.json',loaded_fixed)
+        fixed=dict(verified=original_fixed==loaded_fixed,rows=sum(map(len,loaded_fixed.values())))
+        write_json(out/'fixed-native-equivalence.json',fixed)
+        require(fixed['verified'],'Fixed native graph changes the QAed loaded rules')
         result=c.cmd(code,'CSC_CustomerPopulationReturns','population-gameplay-equivalence')
         (out/'gameplay-equivalence.txt').write_text(result,encoding='utf-8')
         match=re.search(r'CSC_POPULATION_RESULT=([^\r\n]+)',result);require(match,'Missing gameplay result')
@@ -143,4 +186,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for k in('source','output','dependencies','reference'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--at',type=int,default=250)
+    p.add_argument('--reference-graph',type=Path)
     run(p.parse_args())

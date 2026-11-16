@@ -1,6 +1,6 @@
 -- Central CSC economic ledger. The facts adapter supplies physical footprints,
 -- available investments and relative ready times; this module owns transaction
--- amounts, recipients, alternatives and marginal values. It never reads a game
+-- application, recipients, alternatives and marginal values. It never reads a game
 -- object, publishes a bid, grants anything or assumes an unbuilt district.
 -- A pricing adapter converts recurring yields/amenities to native Q8 utility.
 -- Keep that conversion outside the rules so district and building decisions
@@ -25,12 +25,12 @@ local function ledger(site, second)
         siteAdjustmentQ8=site.nativeSiteAdjustmentQ8 or 0,
         adjacency=(site.adjacency or 0)+(second and second.terrain or 0)}
     local seen,clocks,populationFlows,customerTimes={},{},{},{}
-    local function emit(id,yield,amount,ready,city,building)
+    local function emit(id,yield,amount,ready,city,building,recipientBuilding)
         if amount==0 or not present(ready) or ready>=site.horizon then return end
         assert(not seen[id],'Duplicate economic relationship: '..id)
         seen[id]=true
         result.streams[#result.streams+1]={id=id,yield=yield,amount=amount,ready=ready,
-            city=city or site.city,building=building}
+            city=city or site.city,building=building,investmentBuilding=building,recipientBuilding=recipientBuilding}
     end
     local function omit(id,reason)
         result.omissions[#result.omissions+1]={id=id,reason=reason}
@@ -127,10 +127,25 @@ local function ledger(site, second)
             local start=maximum(ready2,stages[stage])
             -- The selected Stage2 alternative is the only local recipient.
             -- Never credit both mutually-exclusive Mills for one transaction.
-            local rates=definition.rates or {production=1,gold=1,outward=1}
-            emit('local-production:'..stage,'YIELD_PRODUCTION',rates.production,start,site.city,definition.type)
-            emit('local-gold:'..stage,'YIELD_GOLD',rates.gold,start,site.city,definition.type)
-            emit('local-return:'..stage,site.materialYield,rates.outward,start,site.city,definition.type)
+            if definition.localTransactions then
+                local transaction=second and definition.localTransactions[second.type]
+                if transaction then for _,leg in ipairs(transaction.legs)do
+                    local recipient=leg.recipient=='SOURCE'and second.type or definition.type
+                    -- Recipient is the actual upstream/downstream building.
+                    -- Investment attribution remains the enabling later stage,
+                    -- preserving the existing future-building utility convention.
+                    emit('local:'..transaction.id..':'..leg.key,leg.yield,transaction.amount*leg.amount,
+                        start,site.city,definition.type,recipient)
+                end end
+            else
+                -- Historical plain-record fixture/old-package compatibility.
+                -- Current shipping facts always supply the canonical map, even
+                -- when empty, so missing definitions never invent unit exchanges.
+                local rates=definition.rates or {production=1,gold=1,outward=1}
+                emit('local-production:'..stage,'YIELD_PRODUCTION',rates.production,start,site.city,definition.type)
+                emit('local-gold:'..stage,'YIELD_GOLD',rates.gold,start,site.city,definition.type)
+                emit('local-return:'..stage,site.materialYield,rates.outward,start,site.city,definition.type)
+            end
             for _,beneficiary in ipairs(definition.amenityCities or {})do
                 emit('amenity:'..stage..':'..beneficiary,'AMENITY',definition.amenityAmount or 0,stages[stage],beneficiary,definition.type)
             end
@@ -146,12 +161,15 @@ local function ledger(site, second)
             local quantity=1
             local outward=customer.yield or site.materialYield
             local sellerAmount,buyerAmount
-            if customer.transaction then
+            local producer=stage==2 and second or stage==3 and site.third or site.fourth
+            local transaction=customer.transaction
+            if customer.transactions then transaction=producer and customer.transactions[producer.type]end
+            if transaction then
                 -- Ordinary population exchanges share the actual gameplay
                 -- header/legs. Round quantity by its property first; multiplying
                 -- a target before Q8 rounding would change the native payout.
-                local transaction=customer.transaction
-                local quantity=transaction.amount*(customer.population or 0)
+                local quantity=transaction.amount
+                if transaction.kind=='PARTNER_POPULATION'then quantity=quantity*(customer.population or 0)end
                 if transaction.kind=='PARTNER_POPULATION_STEPS'then
                     quantity=transaction.amount*math.floor((customer.population or 0)/transaction.step)
                 end
@@ -163,8 +181,14 @@ local function ledger(site, second)
                     local identity='transaction:'..transaction.id..':'..customer.plot..':'..leg.key
                     if transaction.kind=='PARTNER_POPULATION'then
                         populationFlow(identity,leg.yield,quantity,start,city,population,leg.property,owner,leg.amount)
-                    else emit(identity,leg.yield,quantity*leg.amount,start,city,owner)end
+                    else
+                        local recipient=leg.recipient=='SOURCE'and producer.type or customer.type
+                        emit(identity,leg.yield,quantity*leg.amount,start,city,owner,recipient)
+                    end
                 end
+                sellerAmount,buyerAmount=0,0
+            elseif customer.transactions then
+                omit('customer-contract:'..customer.plot..':'..stage,'No transaction for the selected producer')
                 sellerAmount,buyerAmount=0,0
             elseif stage==3 then
                 quantity=(customer.population or 0)*(customer.rate or 0)
@@ -179,7 +203,7 @@ local function ledger(site, second)
             elseif stage==4 then
                 quantity=math.floor((customer.population or 0)/5)
                 sellerAmount,buyerAmount=quantity,quantity
-            else
+            elseif not customer.transactions then
                 local rates=customer.rates or {production=1,gold=1,outward=1}
                 sellerAmount,buyerAmount=quantity,quantity
                 local producer=stage==2 and second or stage==3 and site.third or site.fourth

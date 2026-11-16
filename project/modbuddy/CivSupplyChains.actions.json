@@ -1582,6 +1582,7 @@
           "LoadOrder": "2500"
         },
         "files": [
+          "Data/CSC_FixedBuildingTransactionProcessor.sql",
           "Data/CSC_BuildingTransactionProcessor.sql"
         ]
       }

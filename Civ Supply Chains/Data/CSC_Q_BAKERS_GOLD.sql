@@ -1,3 +1,4 @@
+-- Fixed building exchanges are generated from this Quarter's TRANSACTIONS companions.
 -- CSC_Q_BAKERS_GOLD.sql
 -- Author: Henno
 -- Gold modifiers for the Bakers' Quarter.
@@ -32,35 +33,19 @@ VALUES
         (   'BUILDING_CSC_BAKERS_WIND_MILL',    'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE'   ),
 
 -- 	+1 Gold return from an adjacent Granary
-        (   'BUILDING_GRANARY',                 'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER'   ),
-        (   'BUILDING_GRANARY',                 'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND'   ),
 
 --	BAKERY ------------------------------------------------------------------------------
 
 -- 	+1 Gold to the Flour Mill in the Quarter
-        (   'BUILDING_CSC_BAKERS_BAKERY',       'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL'   ),
-        (   'BUILDING_CSC_BAKERS_BAKERY',       'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'   ),
 
 --	CAFE --------------------------------------------------------------------------
 
 --	+1 Gold to adjacent specialty materials improvements
-        (   'BUILDING_CSC_BAKERS_CAFE',         'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC'   ),
+        (   'BUILDING_CSC_BAKERS_CAFE',         'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC'   )
 
 -- 	+1 Gold to the Flour Mill in the Quarter
-        (   'BUILDING_CSC_BAKERS_CAFE',         'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL'   ),
-        (   'BUILDING_CSC_BAKERS_CAFE',         'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'   );
 
-INSERT OR IGNORE INTO BuildingModifiers
-        (   BuildingType,   ModifierId   )
-SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER'
-FROM BuildingReplaces
-WHERE ReplacesBuildingType='BUILDING_GRANARY';
-
-INSERT OR IGNORE INTO BuildingModifiers
-        (   BuildingType,   ModifierId   )
-SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND'
-FROM BuildingReplaces
-WHERE ReplacesBuildingType='BUILDING_GRANARY';
+        ;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	DistrictModifiers
@@ -121,8 +106,6 @@ VALUES
         (   'MOD_CSC_ALL_GOLD_TO_PLOT',                        'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',            NULL,                    NULL   ),
 
 -- 	+1 Gold return from an adjacent Granary
-        (   'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      NULL,                    'REQSET_CSC_ADJ_BAKERS_QUARTER'   ),
-        (   'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND',       'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      NULL,                    'REQSET_CSC_ADJ_BAKERS_QUARTER'   ),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -137,8 +120,6 @@ VALUES
 -- 	SHARED ------------------------------------------------------------------------------
 
 -- 	+1 Gold to the Flour Mill in the Quarter
-        (   'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL',               'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',                'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
 
 --  +1 Gold return from eligible import routes to supplied Bakers buildings
         (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',               'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1'   ),
@@ -164,8 +145,6 @@ INSERT OR IGNORE INTO Modifiers
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit
 FROM CSC_Stage4StackBits;
 
-
-
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ModifierArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -182,8 +161,6 @@ VALUES
         (   'MOD_CSC_ALL_GOLD_TO_PLOT',                        'Amount',         1   ),
 
 -- 	+1 Gold return from an adjacent Granary
-        (   'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER',      'ModifierId',     'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL'   ),
-        (   'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND',       'ModifierId',     'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'   ),
 
 --	+1 Gold to adjacent specialty materials improvements
         (   'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC',         'ModifierId',     'MOD_CSC_ALL_GOLD_TO_PLOT'   ),
@@ -194,12 +171,6 @@ VALUES
         (   'MOD_CSC_BAKERS_GOLD_TO_CAFE',                     'Amount',         1   ),
 
 -- 	+1 Gold to the Flour Mill in the Quarter
-        (   'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL',               'BuildingType',   'BUILDING_CSC_BAKERS_WATER_MILL'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL',               'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL',               'Amount',         1   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',                'BuildingType',   'BUILDING_CSC_BAKERS_WIND_MILL'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',                'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',                'Amount',         1   ),
 
 --  +1 Gold return from eligible import routes to supplied Bakers buildings
         (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',               'BuildingType',   'BUILDING_CSC_BAKERS_BAKERY'   ),

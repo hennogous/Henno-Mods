@@ -27,10 +27,22 @@ def matches_population(text):
         or 'CSC_BakersStage4CultureBuildings'in text)
 
 
-def compile_catalogue(*,gold=True,lgd=True,reference=None):
+def fixed_aliases():
+    # Alias IDs come from the actual declarations, not another interaction list.
+    aliases=set()
+    for q in ('BAKERS','TAILORS'):
+        for suffix in ('','_GOLD'):
+            source=(MOD/f'Data/CSC_Q_{q}_TRANSACTIONS{suffix}.sql').read_text()
+            aliases.update(x for x in re.findall(r"'((?:MOD|REQSET|REQ)_CSC_[A-Z0-9_]+)'",source)
+                if not x.endswith('_BIT_'))
+    return aliases
+
+
+def compile_catalogue(*,gold=True,lgd=True,reference=None,uniques=False):
     db=sqlite3.connect(':memory:');db.row_factory=sqlite3.Row
     db.executescript('''
 CREATE TABLE Buildings(BuildingType TEXT PRIMARY KEY, PrereqDistrict TEXT, IsWonder INTEGER DEFAULT 0);
+CREATE TABLE BuildingReplaces(CivUniqueBuildingType TEXT, ReplacesBuildingType TEXT);
 CREATE TABLE DistrictModifiers(DistrictType TEXT, ModifierId TEXT, UNIQUE(DistrictType,ModifierId));
 CREATE TABLE BuildingModifiers(BuildingType TEXT, ModifierId TEXT, UNIQUE(BuildingType,ModifierId));
 CREATE TABLE Modifiers(ModifierId TEXT PRIMARY KEY, ModifierType TEXT, OwnerRequirementSetId TEXT, SubjectRequirementSetId TEXT, RunOnce INTEGER DEFAULT 0, Permanent INTEGER DEFAULT 0, OwnerStackLimit INTEGER, SubjectStackLimit INTEGER);
@@ -48,6 +60,10 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
         for b in buildings:locations['CSC_'+q+'_'+b]='CSC_'+q+'_QUARTER'
     db.executemany('INSERT INTO Buildings VALUES(?,?,?)',[
         ('BUILDING_'+b,'DISTRICT_'+d,int(d=='WONDER'))for b,d in locations.items()])
+    if uniques:
+        for name,district in [('GRANARY','CITY_CENTER'),('LIGHTHOUSE','HARBOR')]:
+            db.execute('INSERT INTO Buildings VALUES(?,?,0)',('BUILDING_UNIQUE_'+name,'DISTRICT_'+district))
+            db.execute('INSERT INTO BuildingReplaces VALUES(?,?)',('BUILDING_UNIQUE_'+name,'BUILDING_'+name))
     shared=(MOD/'Data/CSC_Q_ALL.sql').read_text(encoding='utf-8-sig')
     names={'CSC_QuarterFlowBuildings','CSC_QuarterCustomerBuildings','CSC_QuarterWonderSales','CSC_Stage3CustomerTransactions',
         'CSC_ScaledAmountBits','CSC_Stage3RateBits','CSC_Stage4StackBits'}
@@ -60,11 +76,12 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
     # Populate pre-existing consumers and their full requirements/attachments.
     # Mixed VALUES statements are retained whole, so the comparison includes
     # their neighboring definitions too rather than hiding an accidental edit.
+    aliases=fixed_aliases()
     for f in files:
         for s in statements((source/f).read_text(encoding='utf-8-sig')):
             table=re.match(r'INSERT(?: OR IGNORE)? INTO (\w+)',s)
             if ('CSC_BakersStage4CultureBuildings'in s or
-                (table and table[1]in NATIVE and matches_population(s))or
+                (table and table[1]in NATIVE and (matches_population(s)or any("'"+x+"'"in s for x in aliases)))or
                 (table and table[1]in names)):
                 db.executescript(s)
     if not reference:
@@ -75,9 +92,15 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
         if lgd:
             for s in statements((MOD/'ModSupport/ModSupport_LGD.sql').read_text(encoding='utf-8-sig')):
                 if re.match(r'INSERT INTO CSC_BuildingTransaction',s):db.executescript(s)
+        db.executescript((MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql').read_text())
         db.executescript((MOD/'Data/CSC_BuildingTransactionProcessor.sql').read_text())
     return db
 
 
-def graph(db):
-    return {n:sorted([list(r)for r in db.execute('SELECT * FROM '+n)],key=repr)for n in sorted(NATIVE)}
+def graph(db,scope='population'):
+    aliases=fixed_aliases()if scope=='fixed'else set()
+    def include(table,row):
+        identity=row[1]if table in('BuildingModifiers','DistrictModifiers')else row[0]
+        if scope=='all_csc':return identity.startswith(('MOD_CSC_','REQ_CSC_','REQSET_CSC_'))
+        return matches_population(identity)if scope=='population'else identity in aliases
+    return {n:sorted([list(r)for r in db.execute('SELECT * FROM '+n)if include(n,r)],key=repr)for n in sorted(NATIVE)}

@@ -3,20 +3,20 @@
   "reference_gameplay_sha256": "3bdc1dd36be7f3927601694cea46d1b194b36838134e8eb618fef4dbe540e981",
   "graphs": {
     "0:0": {
-      "sha256": "6ea07e2ce2a2079a6299c0958c53d03ae89c638db83b0ee90260baf282555532",
-      "rows": 2278
+      "sha256": "01b4cf0fab87457caa18cf7d767aae7388be62613c8aeea8c18f1d2b1cee5b68",
+      "rows": 2275
     },
     "0:1": {
-      "sha256": "d857e6130bfcfe777d3d2be51fd658ddcedc9dd2a2c8d152a363afc96aaf1f7c",
-      "rows": 2478
+      "sha256": "83ae1beb978a4178baee1428fae0abe7aee3eb286b52390048754b2b9a7d5997",
+      "rows": 2475
     },
     "1:0": {
-      "sha256": "eadbb963c5745416d3b319eb12276824c6f39743c9a6c968d26e81a65dd7e995",
-      "rows": 2598
+      "sha256": "0df0eb6ee75f32bf8e9449d0aa7f7c922c5d925583c7afd86d4848e77842e30a",
+      "rows": 2595
     },
     "1:1": {
-      "sha256": "e5c885d2be1453524a68c50c4c86f2051e2468c513c2e766741ded5c1b412c24",
-      "rows": 2798
+      "sha256": "d15c6a7c4e0a5e62a741044c3db038ae871cd8301367a224e3a8eb4601867b22",
+      "rows": 2795
     }
   },
   "worlds": {
@@ -309,5 +309,6 @@
     "1:1:10:1:one_supplier_removed": "6981a5a9b99d745d3a7b33499b13bb6e2ff55a79133cd7ef9eb91c604bc24225",
     "1:1:10:1:same_city_market": "052fff18d2841f08fd50db618a72af3db0abeb53d215fdb64c1998903ab17724"
   },
-  "reference_normalized_gameplay_sha256": "3bdc1dd36be7f3927601694cea46d1b194b36838134e8eb618fef4dbe540e981"
+  "reference_normalized_gameplay_sha256": "3bdc1dd36be7f3927601694cea46d1b194b36838134e8eb618fef4dbe540e981",
+  "graph_scope": "Population consumer identity closure; fixed graphs qualified separately after their migration."
 }

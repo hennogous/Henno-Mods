@@ -1,3 +1,4 @@
+-- Fixed building exchanges are generated from this Quarter's TRANSACTIONS companions.
 -- CSC_Q_TAILORS
 -- Author: Henno
 -- DateCreated: 2026-08-23
@@ -36,7 +37,6 @@ VALUES  (   'DISTRICT_CSC_TAILORS_QUARTER',                                     
 INSERT OR IGNORE INTO DynamicModifiers
         (   ModifierType,                                                        CollectionType,       EffectType   )
 VALUES  (   'MODIFIER_CSC_TAILORS_SINGLE_CITY_ADJUST_UNIT_TAG_ERA_PRODUCTION',   'COLLECTION_OWNER',   'EFFECT_ADJUST_UNIT_TAG_ERA_PRODUCTION'   );
-
 
 --===========================================================================================================================================================================--
 /*	RESOURCES */
@@ -107,9 +107,6 @@ VALUES  (   'TAILORS',    'DISTRICT_HARBOR',           'POLICY_NAVAL_INFRASTRUCT
 
 -- Stage2 planning metadata remains until fixed exchanges migrate. Population
 -- venues are generated from this Quarter's TRANSACTIONS companion.
-INSERT OR IGNORE INTO CSC_QuarterCustomerBuildings
-        (   QuarterKey,   DistrictType,        BuildingType,            ProducerStage   )
-VALUES  (   'TAILORS',    'DISTRICT_HARBOR',   'BUILDING_LIGHTHOUSE',   2   );
 
 INSERT OR IGNORE INTO CSC_QuarterFlowBuildings
         (   QuarterKey,   Stage,   BuildingType   )
@@ -129,7 +126,6 @@ VALUES  (   'TAILORS',    2,       'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
 -- returns; customer-owned Culture consumers are defined at the end of this file.
 -- Keep property names identical between this registry and the generated bit tests.
 -- Population transaction terms moved to the Quarter TRANSACTIONS companion.
-
 
 --===========================================================================================================================================================================--
 /*	STAGE 1 - MATERIALS IMPROVEMENTS */
@@ -152,7 +148,6 @@ INSERT INTO ImprovementModifiers
 VALUES  (   'IMPROVEMENT_FARM',         'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER'   ),
         (   'IMPROVEMENT_PLANTATION',   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER'   ),
         (   'IMPROVEMENT_PASTURE',      'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER'   );
-
 
 --===========================================================================================================================================================================--
 /*	TAILORS' QUARTER */
@@ -285,7 +280,6 @@ INSERT INTO DistrictModifiers
 SELECT  'DISTRICT_CITY_CENTER',       'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION_BIT_' || Bit
 FROM CSC_RouteStackBits
 WHERE Bit > 1;
-
 
 --===========================================================================================================================================================================--
 /*	STAGES 2-4 - BUILDINGS */
@@ -606,11 +600,7 @@ VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_FASHION_HOU
 INSERT INTO BuildingModifiers
         (   BuildingType,                              ModifierId   )
 VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD'   ),
-        (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_HARBOR_LIGHTHOUSE'   ),
-        (   'BUILDING_LIGHTHOUSE',                     'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD'   ),
-        (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR'   ),
-        (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE'   ),
-        (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP'   ),
+
         (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR'   ),
         (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR'   ),
         (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY'   ),
@@ -619,17 +609,6 @@ VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP
         (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE'   );
 
 -- Emit this attachment only if the Fashion House building exists in the loaded content.
-INSERT OR IGNORE INTO BuildingModifiers
-        (   BuildingType,   ModifierId   )
-SELECT BuildingType, 'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP'
-FROM Buildings
-WHERE BuildingType = 'BUILDING_CSC_TAILORS_FASHION_HOUSE';
-
-INSERT OR IGNORE INTO BuildingModifiers
-        (   BuildingType,   ModifierId   )
-SELECT CivUniqueBuildingType, 'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD'
-FROM BuildingReplaces
-WHERE ReplacesBuildingType = 'BUILDING_LIGHTHOUSE';
 
 -- Dockmaster expands an explicit era x naval-family matrix: Ancient through
 -- Renaissance, for naval melee/ranged/raider classes. Match each generated key
@@ -664,7 +643,6 @@ SET Description = CASE
 	ELSE '{' || Description || '}' || '{LOC_CSC_TAILORS_STAGE_3_CIVIC_APPEND}'
 END
 WHERE CivicType = 'CIVIC_DIVINE_RIGHT';
-
 
 --===========================================================================================================================================================================--
 /*	MODIFIERS */
@@ -754,14 +732,7 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'MODIFIER_CSC
         (   'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP',     'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
         (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',      NULL,                                         'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
         (   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                    'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',               NULL,                                         NULL   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_HARBOR_LIGHTHOUSE',   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         NULL,                                         'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE',         'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         NULL,                                         'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',         'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',          'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',   'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
-        (   'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',             'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',      'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
+
         (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR',       'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
         (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT',               'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',    NULL,                                         NULL   ),
         (   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR',        'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
@@ -905,26 +876,7 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'ModifierId',
         (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD',   'ModifierId',             'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE'   ),
         (   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                    'YieldType',              'YIELD_PRODUCTION'   ),
         (   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                    'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_HARBOR_LIGHTHOUSE',   'ModifierId',             'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE',         'BuildingType',           'BUILDING_LIGHTHOUSE'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE',         'YieldType',              'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE',         'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD',      'ModifierId',             'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',         'BuildingType',           'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',         'YieldType',              'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',         'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',          'BuildingType',           'BUILDING_CSC_TAILORS_TAILOR'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',          'YieldType',              'YIELD_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',          'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',   'BuildingType',           'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',   'YieldType',              'YIELD_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',   'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',             'BuildingType',           'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',             'YieldType',              'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',             'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',      'BuildingType',           'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',      'YieldType',              'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',      'Amount',                 1   ),
+
         (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR',       'ModifierId',             'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT'   ),
         (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT',               'BuildingType',           'BUILDING_CSC_TAILORS_STAGE_2_SERVICE'   ),
         (   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR',        'ModifierId',             'MOD_CSC_TAILORS_DOCKMASTER_GPP'   ),
@@ -1013,7 +965,6 @@ SELECT 'ERA_ANCIENT' AS EraType UNION ALL SELECT 'ERA_CLASSICAL' UNION ALL SELEC
 CROSS JOIN (
 SELECT 'PROMOTION_CLASS_NAVAL_MELEE' AS PromotionClass UNION ALL SELECT 'PROMOTION_CLASS_NAVAL_RANGED' UNION ALL SELECT 'PROMOTION_CLASS_NAVAL_RAIDER'
 );
-
 
 --===========================================================================================================================================================================--
 /*	REQUIREMENTS */
@@ -1478,7 +1429,6 @@ SELECT 'REQ_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_' || Bit, 'PropertyMinimum', 1
 FROM CSC_RouteStackBits
 WHERE Bit > 1;
 
-
 --===========================================================================================================================================================================--
 /*	UI */
 --===========================================================================================================================================================================--
@@ -1541,7 +1491,6 @@ INSERT OR IGNORE INTO ModifierStrings
         (   ModifierId,                                Context,     Text   )
 VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM',   'Preview',   'LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION'   ),
         (   'MOD_CSC_TAILORS_STAGE_4_SERVICE_GRANT',   'Preview',   'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME'   );
-
 
 INSERT OR IGNORE INTO ModifierStrings
         (   ModifierId,                                         Context,     Text   )
@@ -1631,7 +1580,6 @@ SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyName', 'C
 INSERT INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
 SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyMinimum', 1 FROM CSC_Stage3RateBits;
-
 
 -- Specialty producers receive the same bilateral return as Base producers.
 INSERT INTO BuildingModifiers

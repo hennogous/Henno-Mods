@@ -1,3 +1,4 @@
+-- Fixed building exchanges are generated from this Quarter's TRANSACTIONS companions.
 -- CSC_Q_TAILORS_GOLD
 -- Author: Henno
 -- DateCreated: 2026-08-23
@@ -21,21 +22,9 @@
 -- the same sites as the non-Gold half of the exchange.
 INSERT INTO BuildingModifiers
         (   BuildingType,                              ModifierId   )
-VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD'   ),
-        (   'BUILDING_LIGHTHOUSE',                     'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_GOLD'   ),
-        (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP'   );
+VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD'   )
 
-INSERT OR IGNORE INTO BuildingModifiers
-        (   BuildingType,   ModifierId   )
-SELECT BuildingType, 'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP'
-FROM Buildings
-WHERE BuildingType = 'BUILDING_CSC_TAILORS_FASHION_HOUSE';
-
-INSERT OR IGNORE INTO BuildingModifiers
-        (   BuildingType,   ModifierId   )
-SELECT CivUniqueBuildingType, 'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_GOLD'
-FROM BuildingReplaces
-WHERE ReplacesBuildingType = 'BUILDING_LIGHTHOUSE';
+        ;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	DistrictModifiers
@@ -70,10 +59,7 @@ INSERT OR IGNORE INTO Modifiers
         (   ModifierId,                                            ModifierType,                                         OwnerRequirementSetId,   SubjectRequirementSetId   )
 VALUES  (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
         (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',                    'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',            NULL,                    NULL   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_GOLD',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      NULL,                    'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP',         'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
-        (   'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP',             'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP',      'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
+
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD',                  'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_1'   );
 
 INSERT OR IGNORE INTO Modifiers
@@ -100,16 +86,7 @@ INSERT OR IGNORE INTO ModifierArguments
 VALUES  (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD',   'ModifierId',     'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE'   ),
         (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',                    'YieldType',      'YIELD_GOLD'   ),
         (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',                    'Amount',         1   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_GOLD',      'ModifierId',     'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP',         'BuildingType',   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP',         'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP',         'Amount',         1   ),
-        (   'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP',             'BuildingType',   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP',             'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP',             'Amount',         1   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP',      'BuildingType',   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP',      'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP',      'Amount',         1   ),
+
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD',                  'BuildingType',   'BUILDING_CSC_TAILORS_TAILOR'   ),
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD',                  'YieldType',      'YIELD_GOLD'   ),
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD',                  'Amount',         1   );
@@ -194,12 +171,10 @@ INSERT INTO DistrictModifiers
 SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_GOLD_BIT_' || Bit
 FROM CSC_Stage4StackBits;
 
-
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
 SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_GOLD_BIT_' || Bit, 'MODIFIER_BUILDING_YIELD_CHANGE', NULL, 'REQSET_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit
 FROM CSC_Stage4StackBits;
-
 
 -- Payout arguments generated by CSC_BuildingTransactionProcessor.sql.
 

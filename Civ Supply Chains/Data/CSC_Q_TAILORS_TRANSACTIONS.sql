@@ -119,3 +119,145 @@ VALUES  (   'CSC_TAILORS_TAILOR_MARKET',                      'SOURCE_PRODUCTION
         (   'CSC_TAILORS_FASHION_HOUSE_BROADWAY',             'PARTNER_RETURN',      'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_',       'REQSET_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_',       'BUILDING_STACK_BITS'   ),
         (   'CSC_TAILORS_FASHION_HOUSE_SYDNEY_OPERA_HOUSE',   'SOURCE_PRODUCTION',   'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_',       'REQSET_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_',          'BUILDING_STACK_BITS'   ),
         (   'CSC_TAILORS_FASHION_HOUSE_SYDNEY_OPERA_HOUSE',   'PARTNER_RETURN',      'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_',         'REQSET_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_',         'BUILDING_STACK_BITS'   );
+
+-- Fixed ordinary exchanges. Local building yields are city-scoped natively.
+-- Native aliases below preserve each leg's owner and asymmetric adjacency gates.
+INSERT INTO CSC_BuildingTransactions
+    (
+        TransactionId,
+        QuarterKey,
+        SourceBuildingType,
+        PartnerBuildingType,
+        SpatialRule,
+        QuantityKind,
+        QuantityAmount,
+        PopulationStep,
+        PartnerDistrictMustFunction,
+        SellerPopulationProperty
+    )
+VALUES
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_LIGHTHOUSE',
+        'TAILORS',
+        'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',
+        'BUILDING_LIGHTHOUSE',
+        'ADJACENT_OWNED',
+        'FIXED',
+        1,
+        NULL,
+        0,
+        NULL
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_TAILOR',
+        'TAILORS',
+        'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',
+        'BUILDING_CSC_TAILORS_TAILOR',
+        'SAME_CITY',
+        'FIXED',
+        1,
+        NULL,
+        0,
+        NULL
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_FASHION_HOUSE',
+        'TAILORS',
+        'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',
+        'BUILDING_CSC_TAILORS_FASHION_HOUSE',
+        'SAME_CITY',
+        'FIXED',
+        1,
+        NULL,
+        0,
+        NULL
+    );
+
+INSERT INTO CSC_BuildingTransactionYields
+        (   TransactionId,                                              LegKey,                Recipient,   YieldType,            AmountPerUnit,   AmountProperty   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_LIGHTHOUSE',                  'PARTNER_RETURN',      'PARTNER',   'YIELD_PRODUCTION',   1,               NULL   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_LIGHTHOUSE',                  'SOURCE_PRODUCTION',   'SOURCE',    'YIELD_PRODUCTION',   1,               NULL   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_TAILOR',          'PARTNER_RETURN',      'PARTNER',   'YIELD_CULTURE',      1,               NULL   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_TAILOR',          'SOURCE_PRODUCTION',   'SOURCE',    'YIELD_PRODUCTION',   1,               NULL   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_FASHION_HOUSE',   'PARTNER_RETURN',      'PARTNER',   'YIELD_CULTURE',      1,               NULL   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_FASHION_HOUSE',   'SOURCE_PRODUCTION',   'SOURCE',    'YIELD_PRODUCTION',   1,               NULL   );
+
+INSERT INTO CSC_BuildingTransactionFixedBindings
+    (
+        TransactionId,
+        LegKey,
+        OwnerSide,
+        RootModifierId,
+        ChildModifierId,
+        SubjectRequirementSetId,
+        AdjacencyRequirementId,
+        DistrictRequirementId,
+        BuildingRequirementId
+    )
+VALUES
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_LIGHTHOUSE',
+        'PARTNER_RETURN',
+        'SOURCE',
+        'MOD_CSC_TAILORS_WORKSHOP_ATTACH_HARBOR_LIGHTHOUSE',
+        'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE',
+        'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE',
+        'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',
+        'REQ_CSC_TAILORS_DISTRICT_IS_HARBOR',
+        'REQ_CSC_TAILORS_CITY_HAS_LIGHTHOUSE'
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_LIGHTHOUSE',
+        'SOURCE_PRODUCTION',
+        'PARTNER',
+        'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD',
+        'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',
+        'REQSET_CSC_ADJ_TAILORS_QUARTER',
+        'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',
+        'REQ_CSC_TAILORS_DISTRICT_IS_QUARTER',
+        NULL
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_TAILOR',
+        'PARTNER_RETURN',
+        'SOURCE',
+        'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',
+        'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',
+        NULL,
+        NULL,
+        NULL,
+        NULL
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_TAILOR',
+        'SOURCE_PRODUCTION',
+        'PARTNER',
+        'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',
+        'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',
+        NULL,
+        NULL,
+        NULL,
+        NULL
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_FASHION_HOUSE',
+        'PARTNER_RETURN',
+        'SOURCE',
+        'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',
+        'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',
+        NULL,
+        NULL,
+        NULL,
+        NULL
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_CSC_TAILORS_FASHION_HOUSE',
+        'SOURCE_PRODUCTION',
+        'PARTNER',
+        'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',
+        'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',
+        NULL,
+        NULL,
+        NULL,
+        NULL
+    );

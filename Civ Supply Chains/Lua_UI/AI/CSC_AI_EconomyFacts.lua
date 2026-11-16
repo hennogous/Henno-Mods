@@ -101,20 +101,24 @@ local families={BAKERS={yield='YIELD_FOOD'},TAILORS={yield='YIELD_CULTURE'}}
 local unitContracts={
     BAKERS={'MOD_CSC_ALL_PROD_TO_PLOT','MOD_CSC_ALL_GOLD_TO_PLOT',
         'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL','MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL',
-        'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY','MOD_CSC_BAKERS_PROD_TO_WATER_MILL',
-        'MOD_CSC_BAKERS_PROD_TO_WIND_MILL','MOD_CSC_BAKERS_GOLD_TO_WATER_MILL','MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',
-        'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY','MOD_CSC_BAKERS_FOOD_TO_CAFE'},
+        'MOD_CSC_BAKERS_FOOD_TO_CAFE'},
     TAILORS={'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP','MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',
-        'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE','MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',
-        'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE','MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',
-        'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP','MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',
-        'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE','MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',
-        'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP','MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',
-        'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP'}}
+        'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE','MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE'}}
 local function definitions()
     if catalogue then return catalogue end
-    local c={stages={},customers={},population={},transactions={},replacements={},tech={},civic={},amounts={},prerequisites={},exclusives={}}
+    local c={stages={},customers={},population={},transactions={},replacements={},tech={},civic={},amounts={},arguments={},prerequisites={},exclusives={}}
+    local fixedBindingRows,fixedLeaves={},{}
+    if GameInfo.CSC_BuildingTransactionFixedBindings then for row in GameInfo.CSC_BuildingTransactionFixedBindings()do
+        fixedBindingRows[#fixedBindingRows+1]=row;fixedLeaves[row.ChildModifierId]=true
+    end end
     for row in GameInfo.ModifierArguments()do
+        -- Keep full arguments only for the small set of canonical fixed leaves.
+        -- The loaded game can have tens of thousands of unrelated arguments;
+        -- retaining their nested tables would add no placement information.
+        if fixedLeaves[row.ModifierId]then
+            c.arguments[row.ModifierId]=c.arguments[row.ModifierId]or{}
+            c.arguments[row.ModifierId][row.Name]=row.Value
+        end
         if row.Name=='Amount'then c.amounts[row.ModifierId]=tonumber(row.Value)end
     end
     for row in GameInfo.BuildingPrereqs()do
@@ -131,18 +135,26 @@ local function definitions()
         p[row.Stage][#p[row.Stage]+1]=assert(GameInfo.Buildings[row.BuildingType])
     end
     if GameInfo.CSC_BuildingTransactions and GameInfo.CSC_BuildingTransactionYields then
-        local outputs={}
+        c.canonical=true
+        local outputs,bindings={},{}
+        for _,row in ipairs(fixedBindingRows)do
+            bindings[row.TransactionId..':'..row.LegKey]=row
+        end
         for row in GameInfo.CSC_BuildingTransactionYields()do
             outputs[row.TransactionId]=outputs[row.TransactionId]or{}
+            local binding=bindings[row.TransactionId..':'..row.LegKey]
             outputs[row.TransactionId][#outputs[row.TransactionId]+1]={key=row.LegKey,
-                recipient=row.Recipient,yield=row.YieldType,amount=row.AmountPerUnit,property=row.AmountProperty}
+                recipient=row.Recipient,yield=row.YieldType,amount=row.AmountPerUnit,property=row.AmountProperty,
+                ownerSide=binding and binding.OwnerSide,
+                requiresOtherBuilding=binding and binding.BuildingRequirementId~=nil,
+                nativeLeaf=binding and binding.ChildModifierId}
         end
         for row in GameInfo.CSC_BuildingTransactions()do
             -- Plain records cross into the pure ledger. Yield, quantity, payout
             -- property and functioning gates all come from the gameplay contract.
             c.transactions[row.SourceBuildingType..':'..row.PartnerBuildingType]={id=row.TransactionId,
                 source=row.SourceBuildingType,partner=row.PartnerBuildingType,
-                kind=row.QuantityKind,amount=row.QuantityAmount,step=row.PopulationStep,
+                quarter=row.QuarterKey,spatial=row.SpatialRule,kind=row.QuantityKind,amount=row.QuantityAmount,step=row.PopulationStep,
                 partnerDistrictMustFunction=flag(row.PartnerDistrictMustFunction),legs=outputs[row.TransactionId]or{}}
         end
     end
@@ -194,6 +206,20 @@ local function definitions()
     c.unsupported={}
     for family,roots in pairs(unitContracts)do for _,root in ipairs(roots)do
         if c.amounts[root]~=1 then c.unsupported[family]='Unsupported loaded transaction amount: '..root end
+    end end
+    -- Fixed terms can differ from one. Validate the loaded native leaf against
+    -- the canonical amount/type/yield, rather than keeping the old +1 assumption.
+    -- This catches later compatibility edits after generation. Material unit
+    -- checks above remain temporary until their directional catalogue migrates.
+    for _,transaction in pairs(c.transactions)do if transaction.kind=='FIXED'then
+        for _,leg in ipairs(transaction.legs)do
+            local args=leg.nativeLeaf and c.arguments[leg.nativeLeaf]
+            local target=leg.recipient=='SOURCE'and transaction.source or transaction.partner
+            if not args or c.amounts[leg.nativeLeaf]~=transaction.amount*leg.amount
+                or args.YieldType~=leg.yield or args.BuildingType~=target then
+                c.unsupported[transaction.quarter]='Loaded fixed transaction differs: '..transaction.id..':'..leg.key
+            end
+        end
     end end
     catalogue=c;return c
 end
@@ -518,8 +544,12 @@ function F.New(player,placement,ui,context)
         customer.rate=transaction and transaction.EngineAmountPerPopulation
         customer.sellerProperty=transaction and transaction.SellerReturnAmountProperty
         customer.customerProperty=transaction and transaction.CustomerYieldAmountProperty
-        local source=((c.stages[profile.key]or{})[stage]or{})[1]
-        local ordinary=source and c.transactions[source.BuildingType..':'..(c.replacements[definition.BuildingType]or definition.BuildingType)]
+        customer.transactions=c.canonical and{}or nil
+        local ordinary
+        for _,source in ipairs((c.stages[profile.key]or{})[stage]or{})do
+            local row=c.transactions[source.BuildingType..':'..(c.replacements[definition.BuildingType]or definition.BuildingType)]
+            if row then customer.transactions[source.BuildingType]=row;ordinary=ordinary or row end
+        end
         if ordinary then
             customer.transaction=ordinary
             for _,leg in ipairs(ordinary.legs)do if leg.recipient=='PARTNER'then customer.yield=leg.yield end end
@@ -895,6 +925,16 @@ function F.New(player,placement,ui,context)
                             if profile.key~='BAKERS'or not other or not city.buildings:HasBuilding(other.Index)then site.seconds[#site.seconds+1]=b end
                         end
                     else
+                        -- Local exchanges are keyed by the chosen upstream
+                        -- alternative. A hypothetical city cannot credit both
+                        -- Mills; the ledger chooses only that producer's terms.
+                        b.localTransactions=c.canonical and{}or nil
+                        for _,source in ipairs(stages[2]or{})do
+                            local transaction=c.transactions[source.BuildingType..':'..definition.BuildingType]
+                            if transaction and transaction.spatial=='SAME_CITY'then
+                                b.localTransactions[source.BuildingType]=transaction
+                            end
+                        end
                         b.amenityAmount=definition.Entertainment or 0
                         b.amenityCities={city.id}
                         if (definition.RegionalRange or 0)>0 then
