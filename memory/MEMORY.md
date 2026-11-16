@@ -1,3 +1,17 @@
+# CURRENT: small Dockmaster siting policy implemented; no new game,16 November
+
+Read session_ai_customer_first_20261116.md and csc-ai-dockmaster-siting-20261116.md.
+Tailors+1maybidbesideownedcompletedHarborinclunique;Lighthousecanfollow,Base/
+positiveeconomics/protection/nativeeligibilityremain. Sharedgeometry/full/grace
+floorhelper;realadjacency/incomeunchanged,minimum48fallback/8%referencepremium,
+.5referenceweakcap. Harbor-firstTailorsmaterialpreference8..16→16..24(+8),cap32,
+strictbestordinaryadjguardstays:0vs3and2vs3return0.95economy/Lua51testsPASS.
+NoSQL/CE/API/gamechange. LogdockmasterHarborPlot. UserwantsfullprospectiveService
+valuationlater;roadmap14.3nowqueuesdemand/recipients/cost/unlocktime/usefullifetime/
+eraandnodoublecounting.ExistingnarrowStage2streamvaluationunchanged.AI-C198.
+Latestcompleted250used19e29a42beforethisstep;coastfindingsAI-C197stillbaseline.
+Noactivegame/PR;preserveunrelatedWIP.
+
 # CURRENT: customer-first250 complete; coastal Dockmaster gap located,16 November
 
 Read session_ai_customer_first_20261116.md and report csc-ai-customer-first-

@@ -1,5 +1,13 @@
 # CSC AI architecture
 
+**16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed
+owned Harbor. The shared facts carry the Harbor plot to initial/final/grace
+admission; real income stays unchanged and the minimum preference/weak cap apply.
+Harbor-first material preference becomes16–24 per supplier city/type, total32,
+while the best ordinary-adjacency gate stays strict. Broader prospective Service
+value is roadmap14.3.95 economy/Lua tests pass; no new live run.
+[Details](../research/mods/csc-ai-dockmaster-siting-20261116.md).
+
 **Native valuation/calibration,15 November:** the economic ledger now receives
 native site-cost residuals and actual horizon/discount; stock item-specific
 construction estimates feed readiness. An adapter maps missing-building income

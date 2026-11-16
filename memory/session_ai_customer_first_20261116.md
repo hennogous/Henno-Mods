@@ -56,3 +56,18 @@ Ray. Jointfootprint/customercoordinationgap,notLighthousepriority. Historicalcom
 losingmatrixnotcaptured;don'tguessnumericcause. No policychange/newfullgame.
 Savedread-onlysurveydriver/queryinproject/tools/native_ai/late_placement;datedpolicy
 queryhardcodedIDsremainDesktopdiagnostic. PreserveunrelatedworkspaceWIP.
+
+
+## Small Dockmaster siting step and later Service valuation
+
+Userauthorises Tailors+1onlyifadjacentHarbor; strongerHarbor/materialpreference,
+retainordinaryHarborquality. ImplementedF.DistrictFamilyfromloadedreplacements,
+Geometry.completedHarborPlotfromownedcompletedinventory(Tailorsonly),Sitecopy;
+E.PlacementMinimumAdjacency usedearly/full/grace. Same48fallback/8%reference
+minimumsitingbandand.5referenceweakcap;real+1/incomeunchanged. Base/protection/
+positiveeconomicsremain. UniqueHarborsqualify;planned/unfinished/foreign/CLdo not.
+Harbor-firstTailors8..16→16..24(+8),aggregate32,strictbestadjgateunchanged,so
+Dumbarton0vs3still0. Tests95PASS(fivefocusednew),noSQL/CE/API/game. AddAI-C198 and
+csc-ai-dockmaster-siting-20261116.md. Usersteering:keepthissimple;roadmap14.3queues
+fullprospectiveServicevalue,cost/timing/demand/lifetime/recipients/nodoublecounting,
+Dockmastersailship/era;existingnarrowStage2serviceestimatesunchanged.

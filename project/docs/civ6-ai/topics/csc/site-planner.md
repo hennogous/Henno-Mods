@@ -1,5 +1,13 @@
 # Explainable Quarter site planning
 
+**16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed
+owned Harbor. The shared facts carry the Harbor plot to initial/final/grace
+admission; real income stays unchanged and the minimum preference/weak cap apply.
+Harbor-first material preference becomes16–24 per supplier city/type, total32,
+while the best ordinary-adjacency gate stays strict. Broader prospective Service
+value is roadmap14.3.95 economy/Lua tests pass; no new live run.
+[Details](../../../research/mods/csc-ai-dockmaster-siting-20261116.md).
+
 **16 November customer-first addition:** reverse loaded native partner edges to
 Quarter Base/Spec tags, retain concrete adjacent Quarter space (triangles count),
 and preserve the customer's best ordinary adjacency. Contributions8–16 per

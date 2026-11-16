@@ -1,5 +1,14 @@
 # Current CSC AI status
 
+**Small Dockmaster siting step implemented,16 November —1.2/1.4/2.1.**
+Tailors +1 can bid beside a completed owned Harbor; Base, positive economics,
+protection and native eligibility still apply. Initial/full/grace screens share
+the exception. Harbor-first Tailors material guidance rises8–16→16–24 utility,
+keeping32 aggregate cap and strict best ordinary adjacency (0 versus3 gets0).
+95 economy/Lua tests pass; no new game. Full prospective Service valuation is
+queued as14.3; the existing narrow Stage2 economic stream estimates are unchanged.
+[Parameters and evidence](../research/mods/csc-ai-dockmaster-siting-20261116.md).
+
 **Customer-first Continents250 completed,16 November —1.4/1.6/1.8 and2.1.**
 21 AI-founded Quarters (14B/7T), all Base/+3+, eight+4+, six both materials;
 88/88 native best comparisons match. Endpoint22 completed includes a captured

@@ -93,6 +93,7 @@ local row=options[1]
 assert(row.city==7 and row.plot==2 and row.quarterPlot==3 and row.quarterDistrict==36)
 assert(row.baseCount==1 and row.specialtyCount==1 and row.basePlots[1]==5 and row.specialtyPlots[1]==6)
 assert(row.adjacency==2 and row.bestAdjacency==2) -- private yield excluded
+assert(row.quarterKey=='TEST' and row.customerFamily=='DISTRICT_COMMERCIAL_HUB')
 assert(not player:GetTechs():HasTech(1)) -- locked improvement still has geometric potential
 ''')
 

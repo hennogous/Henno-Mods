@@ -3944,3 +3944,25 @@ cost. Do not fix this case by merely increasing Lighthouse bids.
 
 All ten censuses verify; full game and three surveys close/restored exit0.
 No gameplay changes during analysis. [Results, compact data and provenance](../research/mods/csc-ai-customer-first-continents-20261116.md).
+
+
+## AI-C198 — Narrow Harbor/Tailors siting policy retains economic and adjacency guards
+
+16 November2026, **1.2/1.4/2.1**, implemented/offline-qualified in main CSC.
+Tailors +1 is admitted only beside a completed owned Harbor, including loaded
+unique replacements. Both initial geometry and final economic screens, plus
+continuity grace, consume the same physical fact. Base supply, positive net
+economics and material protection remain mandatory. A +1 admitted site uses the
+minimum siting band and ordinary weak-site cap, keeping actual adjacency/income.
+
+Harbor-first guidance for a concrete Tailors/material arrangement gains8 utility,
+raising one supplier city/type contribution8–16→16–24 while retaining32 total cap.
+The ordinary-adjacency gate still rejects0 versus3 (also2 versus3); other customer
+links are unchanged. Gameplay-derived mappings/tags and loaded replacement rows
+supply the facts, without another authored interaction list. No new Service income
+is added; broader prospective Service valuation is queued as roadmap14.3.
+
+95 economy/Lua51 tests pass, including real reverse facts/unique Harbor,
+initial→final publication, caps, missing customers/Base and protection. No new
+live game, native qualification or gameplay/DLL/SQL change. The completed250
+result in AI-C197 predates this policy. [Mechanism and checks](../research/mods/csc-ai-dockmaster-siting-20261116.md).

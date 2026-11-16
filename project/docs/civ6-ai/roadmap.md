@@ -1,5 +1,14 @@
 # CSC AI roadmap
 
+**Small Dockmaster siting step implemented,16 November —1.2/1.4/2.1.**
+Tailors +1 can bid beside a completed owned Harbor; Base, positive economics,
+protection and native eligibility still apply. Initial/full/grace screens share
+the exception. Harbor-first Tailors material guidance rises8–16→16–24 utility,
+keeping32 aggregate cap and strict best ordinary adjacency (0 versus3 gets0).
+95 economy/Lua tests pass; no new game. Full prospective Service valuation is
+queued as14.3; the existing narrow Stage2 economic stream estimates are unchanged.
+[Parameters and evidence](../research/mods/csc-ai-dockmaster-siting-20261116.md).
+
 **2.1 customer-first planning,16 November — live reception/execution observed.**
 Reverse the generated gameplay partner graph from customer→Quarter→Base/Spec.
 Require concrete owned Quarter/material footprints, including triangles, and
@@ -735,8 +744,10 @@ until the active check closes or an explicit dependency needs attention.
   Forecast future eligible buildings only in already completed customer districts.
 - **1.3 Rivers.** Value the river effects the Quarter can actually realise,
   including the local Mill geometry where applicable.
-- **1.4 Adjacency.** Combine the actual sources: +2 minimum, +3 preferred,
-  with stronger sites valued on the existing incremental scale. Calibrate
+- **1.4 Adjacency.** Combine the actual sources: +2 minimum, +3 preferred.
+  Narrow Dockmaster exception: Tailors +1 beside a completed owned Harbor,
+  still requiring Base/positive economics and the weak-site cap. Stronger sites
+  use the existing incremental scale. Calibrate
   against competing native investments and weaker viable sites.
 - **1.5 Tile purchase.** Price an affordable unowned Quarter footprint or
   a supplier needed by a viable plan. These can require different native
@@ -786,7 +797,8 @@ until the active check closes or an explicit dependency needs attention.
   standalone value when comparing placements. Customer-first guidance reverses
   the loaded gameplay partner graph to feasible Quarter and material footprints,
   including triangles. One contribution per supplier city/Quarter type, at most32
-  utility total, preserves the best ordinary adjacency. Join proposed bids to
+  utility total, preserves the best ordinary adjacency. Harbor/Tailors preparation
+  contributes16–24 per supplier city/type, other links8–16. Join proposed bids to
   native receipts and actual placement/future chains in the next ordinary run.
 - **2.2 Material protection.** Price covering mapped Base or Specialty
   deposits, including unimproved ones. Protect the last viable deposit of
@@ -919,6 +931,20 @@ until the active check closes or an explicit dependency needs attention.
   benefit once. The Granary publisher now emits one 52-point bid per legal
   variant when two working Mills share its host. The packet fixture passes.
   Shared-supplier valuation and live shared-customer follow-through remain open.
+
+- **14.3 Prospective Service value in spatial investment (queued).** Extend the
+  central economy model's narrow Stage2 readiness/current-output estimates to
+  credible future Services, including Stage3/4. Expose one marginal value to
+  Quarter siting, customer placement and missing-link investments; avoid paying
+  the same benefit repeatedly across adapters. Include actual beneficiary cities,
+  mapped materials, viable customer footprints, prerequisite investment/unlock
+  time, realistic activity and remaining useful lifetime. Dockmaster must value
+  eligible sail-driven ship production and its era limits, rather than an assumed
+  percentage of all city Production. Storekeeper should use plausible growth;
+  other Services need their own useful recipients and realistic demand. Calibrate
+  against local native alternatives and verify forecast-versus-realised benefit.
+  Keep material/ordinary-adjacency safeguards. Do this after observing the small
+  Harbor/Tailors adjustment; no broad Service premium is added by that step.
 
 ### 15. Quarter investment and trade
 

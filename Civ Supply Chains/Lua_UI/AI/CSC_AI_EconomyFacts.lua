@@ -10,6 +10,22 @@ local F=CSC_AI_EconomyFacts
 local INF=math.huge
 local catalogue
 local customerQuarterMap
+local districtParents
+
+function F.DistrictFamily(index)
+    -- Definition-only lookup, shared by existing-footprint and customer-first
+    -- readers. Resolve unique districts from the loaded replacement table;
+    -- ownership/completion always comes from this publication's live inventory.
+    local definition=GameInfo.Districts[index]
+    if not definition then return nil end
+    if not districtParents then
+        districtParents={}
+        if GameInfo.DistrictReplaces then for row in GameInfo.DistrictReplaces()do
+            districtParents[row.CivUniqueDistrictType]=row.ReplacesDistrictType
+        end end
+    end
+    return districtParents[definition.DistrictType]or definition.DistrictType
+end
 
 function F.CustomerQuarterMap()
     -- Reverse the GENERATED native partner graph, not a second authored list.
@@ -339,7 +355,22 @@ function F.New(player,placement,ui,context)
         local key=city:GetID()..':'..profile.key..':'..plot:GetIndex()
         if geometry[key]then return geometry[key]end
         local direct,percent,raw=snapshot.DirectAmounts(city,plot,profile)
-        local result={direct=direct,mills={},base=(direct.YIELD_PRODUCTION or 0)+(direct.YIELD_GOLD or 0)}
+        local result={direct=direct,mills={},quarterKey=profile.key,
+            base=(direct.YIELD_PRODUCTION or 0)+(direct.YIELD_GOLD or 0)}
+        -- Physical customer evidence for the adapter's narrow Tailors +1
+        -- exception. A completed owned Harbor (including a unique replacement)
+        -- can receive a Lighthouse later; a plan, foundation, CL provider or
+        -- foreign Harbor cannot qualify. Pillage retains physical adjacency,
+        -- while the ordinary ledger separately prices building/repair readiness.
+        -- Use the shared inventory: no new CE/UI queries per candidate.
+        if profile.key=='TAILORS'then
+            for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
+                local host=snapshot.districts[near:GetIndex()]
+                if host and host.complete and F.DistrictFamily(host.type)=='DISTRICT_HARBOR'then
+                    result.completedHarborPlot=math.min(result.completedHarborPlot or near:GetIndex(),near:GetIndex())
+                end
+            end
+        end
         result.upper=result.base
         if profile.key=='BAKERS'then
             for _,kind in ipairs({'BUILDING_CSC_BAKERS_WIND_MILL','BUILDING_CSC_BAKERS_WATER_MILL'})do
@@ -581,7 +612,7 @@ function F.New(player,placement,ui,context)
                 or not plot:CanHaveDistrict(profile.district.Index,pid,city:GetID())then return nil end
             local supply=snapshot.Supply(plot,profile);work.supplyReads=work.supplyReads+1
             if not supply then return nil end
-            local row={quarterCity=city:GetID(),quarterDistrict=profile.district.Index,quarterPlot=plot:GetIndex(),
+            local row={quarterCity=city:GetID(),quarterDistrict=profile.district.Index,quarterKey=profile.key,quarterPlot=plot:GetIndex(),
                 basePlots={},specialtyPlots={}}
             -- A retained native district request may already be consuming a
             -- deposit; do not sell that doomed material as a future supplier.
@@ -641,7 +672,7 @@ function F.New(player,placement,ui,context)
                             if value==nil then known=false else best=math.max(best,value)end
                         end
                         if known then for _,prospect in ipairs(prospects)do
-                            local row={city=id,district=district,plot=prospect.plot:GetIndex(),
+                            local row={city=id,district=district,customerFamily=F.DistrictFamily(district),plot=prospect.plot:GetIndex(),
                                 adjacency=customerYield(city,prospect.plot,definition),bestAdjacency=best}
                             for key,value in pairs(prospect.future)do row[key]=value end
                             options[#options+1]=row
@@ -726,6 +757,7 @@ function F.New(player,placement,ui,context)
             end
         end
         local geometry=snapshot.Geometry(cityObject,plot,profile)
+        site.quarterKey=profile.key;site.completedHarborPlot=geometry.completedHarborPlot
         -- Before any producer building: use these facts to explain whether a
         -- paid footprint has immediate adjacency income once construction ends.
         -- Production is valuable utility but is not treasury income. Mill

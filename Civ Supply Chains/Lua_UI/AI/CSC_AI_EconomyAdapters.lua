@@ -227,7 +227,9 @@ end
 -- Prospective customer terrain adds at most96 in total; actual transactions
 -- still require completed customer districts in the economic ledger.
 -- They do not make an otherwise losing investment profitable or guarantee it
--- beats another district/unit. Below+2 and no-Base sites defer this publication.
+-- beats another district/unit. Below+2 and no-Base sites defer, except Tailors
+-- at+1 beside a completed Harbor. That exception opens eligibility only; it
+-- does not invent a Service payout or bypass positive economics/protection.
 -- Managed CE types withhold nonpositive options from fresh proposals because
 -- vanilla GetBestDistrict can otherwise select the least-negative candidate.
 E.DeferredQuarterQ8=-1024*256
@@ -236,6 +238,16 @@ E.DeferredQuarterQ8=-1024*256
 -- sites before their complete-value quote reaches the publication packet.
 E.MinimumAdjacency=2
 E.MinimumSitingBonusQ8=48*256
+
+function E.PlacementMinimumAdjacency(facts)
+    -- Shared by cheap geometry, full quotes and continuity grace. The live
+    -- facts reader supplies an owned completed Harbor plot, not future space.
+    -- Missing evidence keeps the normal floor; loss/capture is reconsidered
+    -- on the next publication. Base supply remains a separate mandatory gate.
+    if facts and facts.quarterKey=='TAILORS'and type(facts.completedHarborPlot)=='number'
+        and facts.completedHarborPlot>=0 then return 1 end
+    return E.MinimumAdjacency
+end
 
 function E.SpatialPlan(options)
     -- At most six adjacent plots per customer type. Keep only the two best
@@ -297,7 +309,7 @@ function E.NativeInvestmentReference(turn,horizon)
 end
 
 function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
-    if quote.adjacency+1e-6<E.MinimumAdjacency or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
+    if quote.adjacency+1e-6<E.PlacementMinimumAdjacency(site) or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
     -- Only named supply loss enters the complete ledger. Old no-host/readiness
     -- heuristics were ownership-dependent and duplicated its own valuation.
     -- Missing customer space loses its current layout preference/income; it
@@ -309,6 +321,12 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     local value=(quote.bidValueQ8 or quote.valueQ8)-penalty
     local premium
     local reference=site.comparisonReferenceQ8
+    -- An admitted +1 Harbor/Tailors uses the minimum siting band and the same
+    -- weak-site cap as +2. Keep the real +1 in the ledger/logs; extrapolating
+    -- the +2..+3 formula backwards would create a negative preference. This
+    -- small exception earns no Dockmaster income and cannot lift a losing
+    -- economic ledger into a bid. Stronger Quarters retain their usual bands.
+    local sitingAdjacency=math.max(E.MinimumAdjacency,quote.adjacency)
     if reference then
         -- Spatial policy, kept separate from actual economic income. At the
         -- early600 reference, +2/+3/+4 preferences are48/240/600. Strong +4
@@ -316,15 +334,15 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
         -- +2 sites retain a useful offer but cannot inflate into top-tier bids
         -- merely from a later generic amenity forecast. Actual native units,
         -- timing, material losses and production competition stay in force.
-        local adjacency=math.min(6,quote.adjacency)
+        local adjacency=math.min(6,sitingAdjacency)
         local fraction=adjacency<3 and(.08+.32*(adjacency-2))or(.4+.6*(adjacency-3))
         premium=reference*fraction*(site.sitingReadiness or 1)
-    elseif quote.adjacency<3 then
+    elseif sitingAdjacency<3 then
         -- Fractional adjacency can arise through yield multipliers. Interpolate
         -- 48->144 between +2/+3 rather than introducing a jump at the boundary.
-        premium=E.MinimumSitingBonusQ8+(quote.adjacency-2)*(144*256-E.MinimumSitingBonusQ8)
+        premium=E.MinimumSitingBonusQ8+(sitingAdjacency-2)*(144*256-E.MinimumSitingBonusQ8)
     else
-        premium=math.min(4,quote.adjacency-2)*144*256
+        premium=math.min(4,sitingAdjacency-2)*144*256
     end
     local materials=math.min(2,math.max(0,(site.baseCount or 0)-1))*24
     if (site.specialtyCount or 0)>0 then
@@ -334,7 +352,7 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     local proposed=value+premium+(materials+layout)*256
     local qualityCap
     if reference then
-        local extra=math.max(0,math.min(4,quote.adjacency-2))
+        local extra=math.max(0,math.min(4,sitingAdjacency-2))
         qualityCap=reference*(.5+.65*math.min(1,extra)+.6*math.max(0,extra-1))
         proposed=math.min(proposed,qualityCap)
     end
@@ -502,7 +520,7 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         -- Grace protects an OWNED confirmed construction plan, never an
         -- unpriced/increasing purchase invoice. Revalidate cheap Core safety
         -- even when staffing/native economic pricing is temporarily absent.
-        local safe=not frontier and supply and #supply.base>0 and geometry.upper>=E.MinimumAdjacency
+        local safe=not frontier and supply and #supply.base>0 and geometry.upper>=E.PlacementMinimumAdjacency(geometry)
             and not covers and (protectionQ8 or 0)==0 and not protected[plot:GetIndex()]
             and signature==plan.signature
         local carried=C.Grace(state,plan,details.reason,safe)
@@ -515,7 +533,11 @@ end
 function E.CustomerFirstPreference(option)
     -- Preparation policy, not forecast income: 8 utility for an actual Base
     -- deposit, +2 for each of at most two extra Base deposits, +4 for Spec.
-    -- Cap16 is deliberately below the former16..48 customer-layout preference.
+    -- Harbor preparation for Tailors adds8:16..24 per supplier city/type.
+    -- This bounded siting preference is deliberately separate from Service
+    -- income: eligible ship output, unlock timing and era are not assumed.
+    -- The facts come from reverse gameplay edges and loaded district families,
+    -- so unique Harbors qualify without another authored relationship list.
     -- Require the best measured ordinary adjacency before adding any bonus;
     -- this cannot compensate for sacrificing native adjacency elsewhere.
     -- Other native site costs/forecasts still compete with this small delta.
@@ -527,7 +549,9 @@ function E.CustomerFirstPreference(option)
         or base<1 or spec<0 or base%1~=0 or spec%1~=0
         or adjacency~=adjacency or best~=best or math.abs(adjacency)==math.huge or math.abs(best)==math.huge
         or adjacency+1e-6<best then return 0 end
-    return math.min(16,8+2*math.min(2,base-1)+(spec>0 and 4 or 0))
+    local preference=math.min(16,8+2*math.min(2,base-1)+(spec>0 and 4 or 0))
+    if option.quarterKey=='TAILORS'and option.customerFamily=='DISTRICT_HARBOR'then preference=preference+8 end
+    return preference
 end
 
 function E.CustomerFirstPlan(options,quarterClaims,customerClaims)
@@ -735,8 +759,9 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                         stats.evaluated=stats.evaluated+1
                         local id=siteKey(city:GetID(),profile.district.Index,plot:GetIndex())
                         local geometry=snapshot.Geometry(city,plot,profile)
-                        local supply=geometry.upper>=E.MinimumAdjacency and snapshot.Supply and snapshot.Supply(plot,profile)
-                        if geometry.upper+1e-6<E.MinimumAdjacency then
+                        local minimum=E.PlacementMinimumAdjacency(geometry)
+                        local supply=geometry.upper+1e-6>=minimum and snapshot.Supply and snapshot.Supply(plot,profile)
+                        if geometry.upper+1e-6<minimum then
                             stats.qualityDeferred=stats.qualityDeferred+1
                             evaluations[id]={reason='below_adjacency',adjacency=geometry.upper,owner=owner}
                             if activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())then
@@ -798,6 +823,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 plot=plot:GetIndex(),delta=0,finalQ8=bid,economy=true,
                                                 carried=evaluation.carried,publishedTurn=Game.GetCurrentGameTurn(),
                                                 adjacency=quote and quote.adjacency or geometry.upper,
+                                                dockmasterHarborPlot=site and site.completedHarborPlot,
                                                 economicQ8=quote and quote.valueQ8,preferenceQ8=quote and bid-quote.valueQ8,
                                                 forecastAdjustmentQ8=quote and quote.forecastAdjustmentQ8,
                                                 nativeSiteAdjustmentQ8=quote and quote.siteAdjustmentQ8,
@@ -862,7 +888,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     local keys={};for key in pairs(groups)do keys[#keys+1]=key end;table.sort(keys)
     for _,key in ipairs(keys)do for rank,entry in ipairs(groups[key])do
         local first,second=entry.customerLayout[1],entry.customerLayout[2]
-        print(string.format('CSC_AI_SPATIAL_BID turn=%d player=%d city=%d district=%d plot=%d rank=%d adjacency=%.3f economicQ8=%d forecastAdjustmentQ8=%d nativeSiteAdjustmentQ8=%d horizon=%d discountQ8=%d referenceQ8=%d qualityCapQ8=%d capAdjustmentQ8=%d adjacencyPreferenceQ8=%d materialPreferenceQ8=%d layoutPreferenceQ8=%d protectionPenaltyQ8=%d finalQ8=%d customerPlot1=%d customerType1=%d customerPlot2=%d customerType2=%d',
+        print(string.format('CSC_AI_SPATIAL_BID turn=%d player=%d city=%d district=%d plot=%d rank=%d adjacency=%.3f economicQ8=%d forecastAdjustmentQ8=%d nativeSiteAdjustmentQ8=%d horizon=%d discountQ8=%d referenceQ8=%d qualityCapQ8=%d capAdjustmentQ8=%d adjacencyPreferenceQ8=%d materialPreferenceQ8=%d layoutPreferenceQ8=%d protectionPenaltyQ8=%d finalQ8=%d customerPlot1=%d customerType1=%d customerPlot2=%d customerType2=%d dockmasterHarborPlot=%d',
             Game.GetCurrentGameTurn(),pid,entry.city,entry.district,entry.plot,rank,entry.adjacency,
             entry.economicQ8,entry.forecastAdjustmentQ8 or 0,entry.nativeSiteAdjustmentQ8 or 0,
             entry.evaluationHorizon or 50,entry.evaluationDiscountQ8 or 1024,
@@ -870,7 +896,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
             entry.adjacencyPreferenceQ8,entry.materialPreferenceQ8,
             entry.layoutPreferenceQ8,entry.protectionPenaltyQ8,entry.finalQ8,
             first and first.plot or -1,first and first.district or -1,
-            second and second.plot or -1,second and second.district or -1))
+            second and second.plot or -1,second and second.district or -1,entry.dockmasterHarborPlot or -1))
     end end
     if snapshot.SpatialStats then
         local spatial=snapshot.SpatialStats()
