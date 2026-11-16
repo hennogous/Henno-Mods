@@ -1,0 +1,2287 @@
+{
+  "date": "2026-11-16",
+  "source": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\289070\\2190389813",
+  "modinfo": {
+    "id": "95b955fc-2dd1-41c5-989e-0265d98a28bd",
+    "version": "1"
+  },
+  "cache": "C:\\Users\\Shadow\\AppData\\Local\\Firaxis Games\\Sid Meier's Civilization VI\\Cache\\DebugGameplay.sqlite",
+  "cache_role": "Last closed all-partners1-survey150 replay; readonly definitions",
+  "source_sha256": {
+    "City Lights.modinfo": "e52a243a61021da05d9c02c0afc0be0c8041beba9439ea6f3da3a08200a7fbe2",
+    "Gameplay/COREX_Civ_Ai_Updates.sql": "7260b4fe113d0d204c41d0f684246851087a53642b3965d27064c7b513c718fa",
+    "Gameplay/COREX_Core.sql": "13b976b1808d183a17971d3c246112f6ed7c2e99104845d1f6c3d1cc0dab6525",
+    "Gameplay/COREX_Civs.sql": "a631e220ac418169d1b54f84fc6cdedb1928800297d97632c542ba90b61021fa",
+    "Gameplay/COREX_Civ_NF_3.sql": "32c69232a89cc6486b1a0e21528d026a831517b6d53740a7adf4ab7560c9c6c5",
+    "Gameplay/00_COREX_GameData.xml": "dac01deab7aebc8b26847958717980dffd11b6fd5c11422f1e6372fdcb5d9ac9"
+  },
+  "lua_files": [],
+  "ai_action": [
+    "<UpdateDatabase id=\"CL_UpdateDatabase_Ai_SingleP\">\n      <Properties>\n        <LoadOrder>200</LoadOrder>\n      </Properties>\n      <Criteria>CL_Singleplayer</Criteria>\n      <File>Gameplay/COREX_Civ_Ai_Updates.sql</File>\n    </UpdateDatabase>\n    "
+  ],
+  "queries": {
+    "ai_modifiers": {
+      "sql": "SELECT m.*,a.Name,a.Value FROM Modifiers m LEFT JOIN ModifierArguments a USING(ModifierId) WHERE (m.ModifierId GLOB 'COREX*_AI_*' OR m.ModifierId GLOB 'RURCOM*_AI_*') ORDER BY m.ModifierId,a.Name",
+      "rows": [
+        {
+          "ModifierId": "COREXA_AI_DIST_GOLD_10",
+          "ModifierType": "MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "10"
+        },
+        {
+          "ModifierId": "COREXA_AI_DIST_GOLD_10",
+          "ModifierType": "MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "COREXA_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "COREXA_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_DISTRICT_DISTRICT_1_PRODUCTION"
+        },
+        {
+          "ModifierId": "COREXA_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_COREEXPANSIONA"
+        },
+        {
+          "ModifierId": "COREXA_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_FOOD"
+        },
+        {
+          "ModifierId": "COREXA_AI_GRANT_BUILD_CUL",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXA_AI_SET_HAS_TIER1_CUL",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXA_TIER2_CUL"
+        },
+        {
+          "ModifierId": "COREXA_AI_GRANT_BUILD_GOL",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXA_AI_SET_HAS_TIER1_GOL",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXA_TIER2_GOL"
+        },
+        {
+          "ModifierId": "COREXA_AI_GRANT_BUILD_SCI",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXA_AI_SET_HAS_TIER1_SCI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXA_TIER2_SCI"
+        },
+        {
+          "ModifierId": "COREXB_AI_DIST_GOLD_15",
+          "ModifierType": "MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "15"
+        },
+        {
+          "ModifierId": "COREXB_AI_DIST_GOLD_15",
+          "ModifierType": "MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "COREXB_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "2"
+        },
+        {
+          "ModifierId": "COREXB_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_DISTRICT_DISTRICT_1_PRODUCTION"
+        },
+        {
+          "ModifierId": "COREXB_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_COREEXPANSIONB"
+        },
+        {
+          "ModifierId": "COREXB_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_FOOD"
+        },
+        {
+          "ModifierId": "COREXB_AI_GRANT_BUILD_CUL",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXB_AI_SET_HAS_TIER1_CUL",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXB_TIER2_CUL"
+        },
+        {
+          "ModifierId": "COREXB_AI_GRANT_BUILD_GOL",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXB_AI_SET_HAS_TIER1_GOL",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXB_TIER2_GOL"
+        },
+        {
+          "ModifierId": "COREXB_AI_GRANT_BUILD_SCI",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXB_AI_SET_HAS_TIER1_SCI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXB_TIER2_SCI"
+        },
+        {
+          "ModifierId": "COREXC_AI_DIST_GOLD_20",
+          "ModifierType": "MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "20"
+        },
+        {
+          "ModifierId": "COREXC_AI_DIST_GOLD_20",
+          "ModifierType": "MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "COREXC_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "3"
+        },
+        {
+          "ModifierId": "COREXC_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_DISTRICT_DISTRICT_1_PRODUCTION"
+        },
+        {
+          "ModifierId": "COREXC_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_COREEXPANSIONC"
+        },
+        {
+          "ModifierId": "COREXC_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_FOOD"
+        },
+        {
+          "ModifierId": "COREXC_AI_GRANT_BUILD_CUL",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXC_AI_SET_HAS_TIER1_CUL",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXC_TIER2_CUL"
+        },
+        {
+          "ModifierId": "COREXC_AI_GRANT_BUILD_GOL",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXC_AI_SET_HAS_TIER1_GOL",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXC_TIER2_GOL"
+        },
+        {
+          "ModifierId": "COREXC_AI_GRANT_BUILD_SCI",
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "COREXC_AI_SET_HAS_TIER1_SCI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXC_TIER2_SCI"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "40"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_DISTRICT_DISTRICT_1_PRODUCTION"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_FARM"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_DISTRICT_DISTRICT_1_PRODUCTION"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_PASTURE"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_DISTRICT_DISTRICT_1_PRODUCTION"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_PLANTATION"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "40"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_RURCOM_TIER2_BUILDA_ADJ_LUMBER_MILL"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_LUMBER_MILL"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_MINE_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_MINE_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_RURCOM_TIER2_BUILDA_ADJ_MINE"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_MINE_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_MINE_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_MINE"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_MINE_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_MINE_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_RURCOM_TIER2_BUILDA_ADJ_QUARRY"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_QUARRY"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_RURCOM_TIER2_BUILDA_ADJ_FISHING_BOAT"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_FISHING_BOATS"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_RURCOM_TIER2_BUILDA_ADJ_CAMP"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_CAMP"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "40"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_DIST_PROD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_FISH_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Amount",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_FISH_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "Description",
+          "Value": "LOC_RURCOM_TIER2_BUILDA_ADJ_FISHERY"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_FISH_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "DistrictType",
+          "Value": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_FISH_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "ImprovementType",
+          "Value": "IMPROVEMENT_FISHERY"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_FISH_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "TilesRequired",
+          "Value": "1"
+        },
+        {
+          "ModifierId": "RURCOMC_AI_FISH_GOLD",
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "RunOnce": 0,
+          "NewOnly": 0,
+          "Permanent": 0,
+          "Repeatable": 0,
+          "OwnerRequirementSetId": null,
+          "SubjectRequirementSetId": "PLAYER_IS_AI",
+          "OwnerStackLimit": null,
+          "SubjectStackLimit": null,
+          "Name": "YieldType",
+          "Value": "YIELD_GOLD"
+        }
+      ]
+    },
+    "ai_district_preferences": {
+      "sql": "SELECT l.ListType,l.LeaderType,l.System,a.Item,a.Favored,a.Value FROM AiLists l JOIN AiFavoredItems a USING(ListType) WHERE l.System='Districts' AND(a.Item GLOB 'DISTRICT_CORE*'OR a.Item GLOB 'DISTRICT_RURALCOMMUNITY*') ORDER BY l.ListType,a.Item",
+      "rows": [
+        {
+          "ListType": "CL_MajorCivsHybrid",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONA",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsHybrid",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONB",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsHybrid",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONC",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsRural",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONA",
+          "Favored": 0,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsRural",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONB",
+          "Favored": 0,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsRural",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONC",
+          "Favored": 0,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsRural",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "System": "Districts",
+          "Item": "DISTRICT_RURALCOMMUNITYA",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsRural",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "System": "Districts",
+          "Item": "DISTRICT_RURALCOMMUNITYB",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsRural",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "System": "Districts",
+          "Item": "DISTRICT_RURALCOMMUNITYC",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsUrban",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONA",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsUrban",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONB",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsUrban",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "System": "Districts",
+          "Item": "DISTRICT_COREEXPANSIONC",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsUrban",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "System": "Districts",
+          "Item": "DISTRICT_RURALCOMMUNITYA",
+          "Favored": 0,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsUrban",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "System": "Districts",
+          "Item": "DISTRICT_RURALCOMMUNITYB",
+          "Favored": 0,
+          "Value": 0
+        },
+        {
+          "ListType": "CL_MajorCivsUrban",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "System": "Districts",
+          "Item": "DISTRICT_RURALCOMMUNITYC",
+          "Favored": 0,
+          "Value": 0
+        },
+        {
+          "ListType": "CleopatraDistricts",
+          "LeaderType": "TRAIT_LEADER_MEDITERRANEAN",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_TROYU",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "DeMediciCLDistricts",
+          "LeaderType": "FLYING_SQUADRON_TRAIT",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_ELYSEE",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "HojoClDistricts",
+          "LeaderType": "TRAIT_LEADER_DIVINE_WIND",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_GYOSON",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "IndiaCLDistricts",
+          "LeaderType": "TRAIT_LEADER_ARTHASHASTRA",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_UPAPITHA",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "IndiaCLDistricts",
+          "LeaderType": "TRAIT_LEADER_SATYAGRAHA",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_UPAPITHA",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "LaurierCLDistricts",
+          "LeaderType": "TRAIT_LEADER_LAST_BEST_WEST",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_FRONTIER_TOWN",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "MinorCivDistricts",
+          "LeaderType": "MINOR_CIV_DEFAULT_TRAIT",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_VENICE_01",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "MinorCivDistricts",
+          "LeaderType": "MINOR_CIV_DEFAULT_TRAIT",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_VENICE_02",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "PhilipIICLDistricts",
+          "LeaderType": "TRAIT_LEADER_EL_ESCORIAL",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_FUERTE",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "QinCLDistricts",
+          "LeaderType": "FIRST_EMPEROR_TRAIT",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_XIAN",
+          "Favored": 1,
+          "Value": 0
+        },
+        {
+          "ListType": "TamarCLDistricts",
+          "LeaderType": "TRAIT_LEADER_RELIGION_CITY_STATES",
+          "System": "Districts",
+          "Item": "DISTRICT_COREX_TSIKHE",
+          "Favored": 1,
+          "Value": 0
+        }
+      ]
+    },
+    "ai_building_lists": {
+      "sql": "SELECT l.ListType,l.LeaderType,l.System,count(*) items FROM AiLists l JOIN AiFavoredItems a USING(ListType)WHERE l.ListType GLOB 'CL_MajorCivs*'AND l.System='Buildings' GROUP BY l.ListType,l.LeaderType,l.System",
+      "rows": [
+        {
+          "ListType": "CL_MajorCivsCUL",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_CUL",
+          "System": "Buildings",
+          "items": 19
+        },
+        {
+          "ListType": "CL_MajorCivsGOL",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_GOL",
+          "System": "Buildings",
+          "items": 18
+        },
+        {
+          "ListType": "CL_MajorCivsSCI",
+          "LeaderType": "TRAIT_CL_MAJOR_CIV_SCI",
+          "System": "Buildings",
+          "items": 19
+        }
+      ]
+    },
+    "ai_trait_counts": {
+      "sql": "SELECT TraitType,count(*) leaders FROM LeaderTraits WHERE TraitType GLOB 'TRAIT_CL_MAJOR_CIV*'GROUP BY TraitType",
+      "rows": [
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_CUL",
+          "leaders": 23
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_GOL",
+          "leaders": 21
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "leaders": 20
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "leaders": 19
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_SCI",
+          "leaders": 14
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "leaders": 19
+        }
+      ]
+    },
+    "trait_attachments": {
+      "sql": "SELECT * FROM TraitModifiers WHERE TraitType GLOB 'TRAIT_CL_MAJOR_CIV*' ORDER BY TraitType,ModifierId",
+      "rows": [
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMB_AI_MINE_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_HYBRID",
+          "ModifierId": "RURCOMC_AI_FISH_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMA_AI_DIST_PROD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMA_AI_FARMS_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMA_AI_PASTR_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMA_AI_PLANT_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMB_AI_DIST_PROD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMB_AI_LUMBER_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMB_AI_MINE_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMB_AI_QUARRY_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMC_AI_BOAT_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMC_AI_CAMP_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMC_AI_DIST_PROD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_RURAL",
+          "ModifierId": "RURCOMC_AI_FISH_GOLD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "ModifierId": "COREXA_AI_DIST_PROD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "ModifierId": "COREXB_AI_DIST_PROD"
+        },
+        {
+          "TraitType": "TRAIT_CL_MAJOR_CIV_URBAN",
+          "ModifierId": "COREXC_AI_DIST_PROD"
+        }
+      ]
+    },
+    "district_ai_attachments": {
+      "sql": "SELECT * FROM DistrictModifiers WHERE ModifierId GLOB 'COREX*_AI_*'OR ModifierId GLOB 'RURCOM*_AI_*'ORDER BY DistrictType,ModifierId",
+      "rows": [
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONA",
+          "ModifierId": "COREXA_AI_DIST_GOLD_10"
+        },
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONB",
+          "ModifierId": "COREXB_AI_DIST_GOLD_15"
+        },
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONC",
+          "ModifierId": "COREXC_AI_DIST_GOLD_20"
+        }
+      ]
+    },
+    "civic_ai_attachments": {
+      "sql": "SELECT * FROM CivicModifiers WHERE ModifierId GLOB 'COREX*_AI_*' ORDER BY CivicType,ModifierId",
+      "rows": [
+        {
+          "CivicType": "CIVIC_COLD_WAR",
+          "ModifierId": "COREXC_AI_GRANT_BUILD_CUL"
+        },
+        {
+          "CivicType": "CIVIC_COLD_WAR",
+          "ModifierId": "COREXC_AI_GRANT_BUILD_GOL"
+        },
+        {
+          "CivicType": "CIVIC_COLD_WAR",
+          "ModifierId": "COREXC_AI_GRANT_BUILD_SCI"
+        },
+        {
+          "CivicType": "CIVIC_GUILDS",
+          "ModifierId": "COREXA_AI_GRANT_BUILD_CUL"
+        },
+        {
+          "CivicType": "CIVIC_GUILDS",
+          "ModifierId": "COREXA_AI_GRANT_BUILD_GOL"
+        },
+        {
+          "CivicType": "CIVIC_GUILDS",
+          "ModifierId": "COREXA_AI_GRANT_BUILD_SCI"
+        },
+        {
+          "CivicType": "CIVIC_URBANIZATION",
+          "ModifierId": "COREXB_AI_GRANT_BUILD_CUL"
+        },
+        {
+          "CivicType": "CIVIC_URBANIZATION",
+          "ModifierId": "COREXB_AI_GRANT_BUILD_GOL"
+        },
+        {
+          "CivicType": "CIVIC_URBANIZATION",
+          "ModifierId": "COREXB_AI_GRANT_BUILD_SCI"
+        }
+      ]
+    },
+    "district_flags": {
+      "sql": "SELECT DistrictType,RequiresPopulation,Aqueduct,NoAdjacentCity,Coast,AdjacentToLand,Maintenance,PrereqTech,Cost FROM Districts WHERE DistrictType IN('DISTRICT_COREEXPANSIONA','DISTRICT_COREEXPANSIONB','DISTRICT_COREEXPANSIONC','DISTRICT_RURALCOMMUNITYA','DISTRICT_RURALCOMMUNITYB','DISTRICT_RURALCOMMUNITYC')",
+      "rows": [
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONA",
+          "RequiresPopulation": 0,
+          "Aqueduct": 1,
+          "NoAdjacentCity": 0,
+          "Coast": 0,
+          "AdjacentToLand": 0,
+          "Maintenance": 10,
+          "PrereqTech": "TECH_CONSTRUCTION",
+          "Cost": 61
+        },
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONB",
+          "RequiresPopulation": 0,
+          "Aqueduct": 1,
+          "NoAdjacentCity": 0,
+          "Coast": 0,
+          "AdjacentToLand": 0,
+          "Maintenance": 15,
+          "PrereqTech": "TECH_GUNPOWDER",
+          "Cost": 81
+        },
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONC",
+          "RequiresPopulation": 0,
+          "Aqueduct": 1,
+          "NoAdjacentCity": 0,
+          "Coast": 0,
+          "AdjacentToLand": 0,
+          "Maintenance": 20,
+          "PrereqTech": "TECH_STEEL",
+          "Cost": 101
+        },
+        {
+          "DistrictType": "DISTRICT_RURALCOMMUNITYA",
+          "RequiresPopulation": 0,
+          "Aqueduct": 0,
+          "NoAdjacentCity": 1,
+          "Coast": 0,
+          "AdjacentToLand": 0,
+          "Maintenance": 1,
+          "PrereqTech": "TECH_IRRIGATION",
+          "Cost": 31
+        },
+        {
+          "DistrictType": "DISTRICT_RURALCOMMUNITYB",
+          "RequiresPopulation": 0,
+          "Aqueduct": 0,
+          "NoAdjacentCity": 1,
+          "Coast": 0,
+          "AdjacentToLand": 0,
+          "Maintenance": 1,
+          "PrereqTech": "TECH_MASONRY",
+          "Cost": 31
+        },
+        {
+          "DistrictType": "DISTRICT_RURALCOMMUNITYC",
+          "RequiresPopulation": 0,
+          "Aqueduct": 0,
+          "NoAdjacentCity": 1,
+          "Coast": 1,
+          "AdjacentToLand": 1,
+          "Maintenance": 1,
+          "PrereqTech": "TECH_SAILING",
+          "Cost": 31
+        }
+      ]
+    },
+    "urban_generic_adjacency": {
+      "sql": "SELECT d.DistrictType,a.* FROM District_Adjacencies d JOIN Adjacency_YieldChanges a ON a.ID=d.YieldChangeId WHERE d.DistrictType IN('DISTRICT_COREEXPANSIONA','DISTRICT_COREEXPANSIONB','DISTRICT_COREEXPANSIONC')AND a.OtherDistrictAdjacent=1",
+      "rows": [
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONA",
+          "ID": "District_Production_1",
+          "Description": "LOC_COREEX_DISTRICT_PRODUCTION_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": 1,
+          "TilesRequired": 1,
+          "OtherDistrictAdjacent": 1,
+          "AdjacentSeaResource": 0,
+          "AdjacentTerrain": null,
+          "AdjacentFeature": null,
+          "AdjacentRiver": 0,
+          "AdjacentWonder": 0,
+          "AdjacentNaturalWonder": 0,
+          "AdjacentImprovement": null,
+          "AdjacentDistrict": null,
+          "PrereqCivic": null,
+          "PrereqTech": null,
+          "ObsoleteCivic": null,
+          "ObsoleteTech": null,
+          "AdjacentResource": 0,
+          "AdjacentResourceClass": "NO_RESOURCECLASS",
+          "Self": 0
+        },
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONB",
+          "ID": "District_Production_1",
+          "Description": "LOC_COREEX_DISTRICT_PRODUCTION_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": 1,
+          "TilesRequired": 1,
+          "OtherDistrictAdjacent": 1,
+          "AdjacentSeaResource": 0,
+          "AdjacentTerrain": null,
+          "AdjacentFeature": null,
+          "AdjacentRiver": 0,
+          "AdjacentWonder": 0,
+          "AdjacentNaturalWonder": 0,
+          "AdjacentImprovement": null,
+          "AdjacentDistrict": null,
+          "PrereqCivic": null,
+          "PrereqTech": null,
+          "ObsoleteCivic": null,
+          "ObsoleteTech": null,
+          "AdjacentResource": 0,
+          "AdjacentResourceClass": "NO_RESOURCECLASS",
+          "Self": 0
+        },
+        {
+          "DistrictType": "DISTRICT_COREEXPANSIONC",
+          "ID": "District_Production_1",
+          "Description": "LOC_COREEX_DISTRICT_PRODUCTION_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": 1,
+          "TilesRequired": 1,
+          "OtherDistrictAdjacent": 1,
+          "AdjacentSeaResource": 0,
+          "AdjacentTerrain": null,
+          "AdjacentFeature": null,
+          "AdjacentRiver": 0,
+          "AdjacentWonder": 0,
+          "AdjacentNaturalWonder": 0,
+          "AdjacentImprovement": null,
+          "AdjacentDistrict": null,
+          "PrereqCivic": null,
+          "PrereqTech": null,
+          "ObsoleteCivic": null,
+          "ObsoleteTech": null,
+          "AdjacentResource": 0,
+          "AdjacentResourceClass": "NO_RESOURCECLASS",
+          "Self": 0
+        }
+      ]
+    },
+    "rural_outward_negative_adjacency": {
+      "sql": "SELECT d.DistrictType,a.ID,a.YieldType,a.YieldChange,a.AdjacentDistrict FROM District_Adjacencies d JOIN Adjacency_YieldChanges a ON a.ID=d.YieldChangeId WHERE a.AdjacentDistrict IN('DISTRICT_RURALCOMMUNITYA','DISTRICT_RURALCOMMUNITYB','DISTRICT_RURALCOMMUNITYC')AND a.YieldChange<0 ORDER BY d.DistrictType,a.AdjacentDistrict",
+      "rows": [
+        {
+          "DistrictType": "DISTRICT_ACROPOLIS",
+          "ID": "RurComA_negCul_1",
+          "YieldType": "YIELD_CULTURE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_ACROPOLIS",
+          "ID": "RurComB_negCul_1",
+          "YieldType": "YIELD_CULTURE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_ACROPOLIS",
+          "ID": "RurComC_negCul_1",
+          "YieldType": "YIELD_CULTURE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_CAMPUS",
+          "ID": "RurComA_negSci_1",
+          "YieldType": "YIELD_SCIENCE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_CAMPUS",
+          "ID": "RurComB_negSci_1",
+          "YieldType": "YIELD_SCIENCE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_CAMPUS",
+          "ID": "RurComC_negSci_1",
+          "YieldType": "YIELD_SCIENCE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_COMMERCIAL_HUB",
+          "ID": "RurComA_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_COMMERCIAL_HUB",
+          "ID": "RurComB_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_COMMERCIAL_HUB",
+          "ID": "RurComC_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_COTHON",
+          "ID": "RurComA_negFood_1",
+          "YieldType": "YIELD_FOOD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_COTHON",
+          "ID": "RurComB_negFood_1",
+          "YieldType": "YIELD_FOOD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_COTHON",
+          "ID": "RurComC_negFood_1",
+          "YieldType": "YIELD_FOOD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_HANSA",
+          "ID": "RurComA_negProd_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_HANSA",
+          "ID": "RurComB_negProd_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_HANSA",
+          "ID": "RurComC_negProd_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_HARBOR",
+          "ID": "RurComA_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_HARBOR",
+          "ID": "RurComB_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_HARBOR",
+          "ID": "RurComC_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_INDUSTRIAL_ZONE",
+          "ID": "RurComA_negProd_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_INDUSTRIAL_ZONE",
+          "ID": "RurComB_negProd_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_INDUSTRIAL_ZONE",
+          "ID": "RurComC_negProd_1",
+          "YieldType": "YIELD_PRODUCTION",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_OBSERVATORY",
+          "ID": "RurComB_negSci_1",
+          "YieldType": "YIELD_SCIENCE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_OBSERVATORY",
+          "ID": "RurComC_negSci_1",
+          "YieldType": "YIELD_SCIENCE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_ROYAL_NAVY_DOCKYARD",
+          "ID": "RurComA_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_ROYAL_NAVY_DOCKYARD",
+          "ID": "RurComB_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_ROYAL_NAVY_DOCKYARD",
+          "ID": "RurComC_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_SUGUBA",
+          "ID": "RurComA_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_SUGUBA",
+          "ID": "RurComB_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_SUGUBA",
+          "ID": "RurComC_negGold_1",
+          "YieldType": "YIELD_GOLD",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "DistrictType": "DISTRICT_THEATER",
+          "ID": "RurComA_negCul_1",
+          "YieldType": "YIELD_CULTURE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "DistrictType": "DISTRICT_THEATER",
+          "ID": "RurComB_negCul_1",
+          "YieldType": "YIELD_CULTURE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "DistrictType": "DISTRICT_THEATER",
+          "ID": "RurComC_negCul_1",
+          "YieldType": "YIELD_CULTURE",
+          "YieldChange": -1,
+          "AdjacentDistrict": "DISTRICT_RURALCOMMUNITYC"
+        }
+      ]
+    },
+    "exclusions": {
+      "sql": "SELECT * FROM MutuallyExclusiveDistricts WHERE District GLOB 'DISTRICT_COREEXPANSION*'OR District GLOB 'DISTRICT_RURALCOMMUNITY*'",
+      "rows": [
+        {
+          "District": "DISTRICT_COREEXPANSIONA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_FRONTIER_TOWN"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_GYOSON"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_TROYU"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_TSIKHE"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONA",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONA",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONA",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_FRONTIER_TOWN"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_FUERTE"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_GYOSON"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_TROYU"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_TSIKHE"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONB",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_FRONTIER_TOWN"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_GYOSON"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_TROYU"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_TSIKHE"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONC",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYA"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONC",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYB"
+        },
+        {
+          "District": "DISTRICT_COREEXPANSIONC",
+          "MutuallyExclusiveDistrict": "DISTRICT_RURALCOMMUNITYC"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONA"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONB"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONC"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_ELYSEE"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_FUERTE"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_UPAPITHA"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYA",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_XIAN"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONA"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONB"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONC"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_ELYSEE"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_FUERTE"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_UPAPITHA"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYB",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_XIAN"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONA"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONB"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREEXPANSIONC"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_ELYSEE"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_FUERTE"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_UPAPITHA"
+        },
+        {
+          "District": "DISTRICT_RURALCOMMUNITYC",
+          "MutuallyExclusiveDistrict": "DISTRICT_COREX_XIAN"
+        }
+      ]
+    },
+    "ai_requirements": {
+      "sql": "SELECT s.RequirementSetId,r.RequirementId,r.RequirementType,r.Inverse,a.Name,a.Value FROM RequirementSetRequirements s JOIN Requirements r USING(RequirementId)LEFT JOIN RequirementArguments a USING(RequirementId)WHERE s.RequirementSetId IN('PLAYER_IS_AI','PLAYER_IS_HUMAN','COREXA_AI_SET_HAS_TIER1_CUL')",
+      "rows": [
+        {
+          "RequirementSetId": "COREXA_AI_SET_HAS_TIER1_CUL",
+          "RequirementId": "COREXA_HAS_TIER1_CUL",
+          "RequirementType": "REQUIREMENT_CITY_HAS_BUILDING",
+          "Inverse": 0,
+          "Name": "BuildingType",
+          "Value": "BUILDING_COREXA_TIER1_CUL"
+        },
+        {
+          "RequirementSetId": "COREXA_AI_SET_HAS_TIER1_CUL",
+          "RequirementId": "REQUIRES_PLAYER_IS_AI",
+          "RequirementType": "REQUIREMENT_PLAYER_IS_HUMAN",
+          "Inverse": 1,
+          "Name": null,
+          "Value": null
+        },
+        {
+          "RequirementSetId": "PLAYER_IS_AI",
+          "RequirementId": "REQUIRES_PLAYER_IS_AI",
+          "RequirementType": "REQUIREMENT_PLAYER_IS_HUMAN",
+          "Inverse": 1,
+          "Name": null,
+          "Value": null
+        },
+        {
+          "RequirementSetId": "PLAYER_IS_HUMAN",
+          "RequirementId": "REQUIRES_PLAYER_IS_HUMAN",
+          "RequirementType": "REQUIREMENT_PLAYER_IS_HUMAN",
+          "Inverse": 0,
+          "Name": null,
+          "Value": null
+        }
+      ]
+    },
+    "effect_types": {
+      "sql": "SELECT * FROM DynamicModifiers WHERE ModifierType IN('MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY','MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY','MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING','MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION')",
+      "rows": [
+        {
+          "ModifierType": "MODIFIER_COREX_PLAYER_CITIES_GRANT_BUILDING",
+          "CollectionType": "COLLECTION_PLAYER_CITIES",
+          "EffectType": "EFFECT_GRANT_BUILDING_IN_CITY_IGNORE"
+        },
+        {
+          "ModifierType": "MODIFIER_PLAYER_CITIES_ADJUST_DISTRICT_PRODUCTION",
+          "CollectionType": "COLLECTION_PLAYER_CITIES",
+          "EffectType": "EFFECT_ADJUST_DISTRICT_PRODUCTION"
+        },
+        {
+          "ModifierType": "MODIFIER_PLAYER_CITIES_DISTRICT_ADJACENCY",
+          "CollectionType": "COLLECTION_PLAYER_CITIES",
+          "EffectType": "EFFECT_DISTRICT_ADJACENCY"
+        },
+        {
+          "ModifierType": "MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY",
+          "CollectionType": "COLLECTION_PLAYER_CITIES",
+          "EffectType": "EFFECT_IMPROVEMENT_ADJACENCY"
+        }
+      ]
+    }
+  }
+}

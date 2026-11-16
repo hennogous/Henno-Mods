@@ -1,3 +1,12 @@
+# CURRENT: native customer adjacency repaired; City Lights AI inspected,16 November
+
+Read session_ai_city_lights_20261116.md and session_ai_native_customer_signal_20261116.md.
+Native partner edges now derivefromgameplayregistries+SALES/PROVIDERtags,48/48live.
+Matched0/1/4/8shortreplays:default1switchesHubtolocalriversideBakerssite;keep1.
+CityLights ownSQLAIguidance/bonusesloaded; urbanFood/ruralGoldadjacency andeconomic
+assistance, noLua/DLLplanner. NoCLruralnegativeadjacencytargetsCSCquarters.
+AI-C194/195 reports,skillN135. Noactivegame/PR. UnrelatedworkspaceWIPpreserved.
+
 # CURRENT: calibrated Continents250 completed; old tests pruned,15 November
 
 16 November follow-up: read session_ai_innkeeper_followthrough_20261116.md.

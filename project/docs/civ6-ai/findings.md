@@ -3856,3 +3856,24 @@ is recorded in the report. CC settlement/exact Wonder buyers remain explicit
 separate consumers. This corrects AI-C193's initial all-stage SQL inference.
 
 [Coverage, exact values, scopes and corrections](../research/mods/csc-ai-native-customer-signal-20261116.md).
+
+
+## AI-C195 — City Lights supplies loaded SQL AI preferences and economic assistance
+
+16 November2026, **2.1**, installed Workshop2190389813, AI SQL SHA7260b4fe.
+City Lights' Singleplayer configuration action loads27 AI modifiers plus urban/
+rural/hybrid district and Science/Gold/Culture building preference lists. Our
+last closed replay DB contains these rows and attachments. Urban-trait AI gets
+Food adjacency1/2/3 (despite Production-like names); rural/hybrid AI gets Gold
+adjacency from mapped improvements; rural AI gets+40% town construction. Base
+Borough Gold10/15/20 offsets maintenance, their amenity penalties become human-
+only, and civic gates grant AI tier2 urban buildings after matching tier1 exists.
+
+Ordinary Borough+1 Production per adjacent district complements our private
+partner signal. City Lights'32 negative rural-adjacency links target11 vanilla/
+unique districts, with none targeting CSC Quarters. Installed package has no
+Lua/DLL planner. These are source/loaded-definition findings; actual comparative
+score contributions are unmeasured here. Hold City Lights' mod settings fixed
+when comparing CSC tuning and empire output. No game or tuning change.
+
+[Mechanisms, source locations, queries and CSC implications](../research/mods/city-lights-ai-placement-20261116.md).

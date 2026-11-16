@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [City Lights AI preferences, adjacency and economic assistance —16 November2026](../research/mods/city-lights-ai-placement-20261116.md)
+
 - [Data-driven native customer adjacency: missing edges and matched strength test —16 November2026](../research/mods/csc-ai-native-customer-signal-20261116.md)
 
 - [Calibrated Quarter bids: completed fresh Continents250 —15 November2026](../research/mods/csc-ai-calibrated-continents-20261115.md)

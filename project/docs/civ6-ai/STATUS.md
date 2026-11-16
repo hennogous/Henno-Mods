@@ -1,5 +1,11 @@
 # Current CSC AI status
 
+**2.1 City Lights inspection,16 November:** its loaded SQL adds urban/rural
+preferences, AI-only Food/Gold adjacency, rural construction and urban economic
+assistance. Generic Borough adjacency reinforces CSC co-location; no loaded rural
+adjacency penalty targets CSC Quarters. Keep CL settings fixed in comparisons.
+No tuning change or game launch. [Details](../research/mods/city-lights-ai-placement-20261116.md).
+
 **2.1,16 November — data-driven native customer adjacency repaired.**
 The last game misses six Stage3 transaction edges and18 City Lights sales-tag
 edges. Native rules now derive from existing gameplay registries/tags, with no
