@@ -9,6 +9,7 @@ from pathlib import Path
 import sqlite3
 
 from driver import write_json
+from customer_connector_audit import audit as audit_customers
 
 
 ROOTS=(
@@ -32,13 +33,13 @@ def inspect(database,output,*,require_complete=True):
  AND i.ImprovementType NOT IN ('IMPROVEMENT_INDUSTRY','IMPROVEMENT_CORPORATION')''',(root,tag,root)))
         counts={pair:db.execute('SELECT COUNT(*) FROM ImprovementModifiers WHERE ImprovementType=? AND ModifierId=?',pair).fetchone()[0]
                 for pair in sorted(expected)}
-        # Both loaded families use explicit tag identities, including optional
-        # mod districts and replacement aliases already mapped by compatibility.
-        providers=set()
-        for family in ('BAKERS','TAILORS'):
-            providers.update((row[0],'DISTRICT_CSC_'+family+'_QUARTER')for row in db.execute(
-                'SELECT DISTINCT d.DistrictType FROM TypeTags t JOIN Districts d ON d.DistrictType=t.Type WHERE t.Tag=?',
-                ('CLASS_CSC_'+family+'_GOODS_PROVIDER',)))
+        # Read every registered Quarter/customer pair, including the separate
+        # population-sales registry. A synthetic Stage3 row in the old catalogue
+        # previously hid missing Hub/Holy Site signals. No parallel AI mapping
+        # or fixed Quarter list belongs in this diagnostic.
+        customers=audit_customers(db)
+        providers={(r['customer'],r['quarter'])for r in customers['edges']
+                   if any('goods-provider'in source for source in r['sources'])}
         links={pair:db.execute('''SELECT COUNT(*) FROM District_Adjacencies d
  JOIN Adjacency_YieldChanges a ON a.ID=d.YieldChangeId
  WHERE d.DistrictType=? AND a.AdjacentDistrict=? AND a.YieldType='YIELD_CSC_AI_PLACEMENT'
@@ -46,8 +47,9 @@ def inspect(database,output,*,require_complete=True):
     result=dict(database=str(database),database_sha256=hashlib.sha256(database.read_bytes()).hexdigest(),
         read_only=True,material_hosts=[dict(improvement=p[0],root=p[1],count=n)for p,n in counts.items()],
         provider_links=[dict(provider=p[0],quarter=p[1],count=n)for p,n in links.items()],
-        verified=bool(counts)and all(n==1 for n in (*counts.values(),*links.values())))
+        customer_connectors=customers,
+        verified=bool(counts)and customers['complete']and all(n==1 for n in (*counts.values(),*links.values())))
     write_json(Path(output)/'coverage-preflight.json',result)
     if require_complete and not result['verified']:
-        raise AssertionError('Loaded material/provider coverage incomplete; inspect coverage-preflight.json')
+        raise AssertionError('Loaded material/customer/provider coverage incomplete; inspect coverage-preflight.json')
     return result

@@ -28,8 +28,11 @@ CREATE TEMP TABLE CSC_AI_CustomerEdges (
     PRIMARY KEY (Customer, Quarter)
 );
 
--- All mapped Stage2–4 customer districts use the same shared catalogue as
--- the live economic facts adapter. One signal per district/Quarter edge avoids
+-- Derive partner districts from the gameplay transaction definitions below.
+-- The ordinary customer catalogue covers the fixed transactions; population-
+-- scaled Stage3 transactions have their own gameplay registry and must also
+-- participate. Neither registry is copied into a separately maintained AI map.
+-- One signal per district/Quarter edge avoids
 -- stacking +1 for every building stage. City Centers are settlement decisions;
 -- Wonder placement has its own native consumer and is not covered by this row.
 -- Existing future-footprint Lua guidance remains separate, with no yield from
@@ -41,6 +44,19 @@ FROM CSC_QuarterCustomerBuildings m
 JOIN Districts q ON q.DistrictType = 'DISTRICT_CSC_' || m.QuarterKey || '_QUARTER'
 WHERE m.ProducerStage BETWEEN 2 AND 4
 AND m.DistrictType NOT IN ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER');
+
+-- Population-scaled sales (for example Bakery -> Market) are intentionally
+-- absent from CSC_QuarterCustomerBuildings. Omitting this registry silently
+-- removed the Commercial Hub and Holy Site incentives after that migration.
+-- Use the defined seller/recipient districts, including future Quarters and
+-- optional mod rows. The primary key merges overlap with other stages.
+INSERT OR IGNORE INTO CSC_AI_CustomerEdges
+        (   Customer,   Quarter   )
+SELECT m.CustomerDistrictType, m.SellerDistrictType
+FROM CSC_Stage3CustomerTransactions m
+JOIN Districts q ON q.DistrictType = m.SellerDistrictType
+JOIN Districts customer ON customer.DistrictType = m.CustomerDistrictType
+WHERE m.CustomerDistrictType NOT IN ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER');
 
 -- Goods providers are the opposite transaction direction, but their districts
 -- also benefit from being beside the Quarter. The loaded CL audit found seven

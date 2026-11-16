@@ -328,23 +328,32 @@ CREATE TABLE Districts(DistrictType PRIMARY KEY);
 CREATE TABLE TypeTags(Type,Tag);
 CREATE TABLE DistrictReplaces(CivUniqueDistrictType,ReplacesDistrictType);
 CREATE TABLE CSC_QuarterCustomerBuildings(QuarterKey,ProducerStage,DistrictType);
+CREATE TABLE CSC_Stage3CustomerTransactions(SellerDistrictType,CustomerDistrictType);
 CREATE TABLE Adjacency_YieldChanges(ID PRIMARY KEY,Description,YieldType,YieldChange,TilesRequired,AdjacentDistrict);
 CREATE TABLE District_Adjacencies(DistrictType,YieldChangeId,PRIMARY KEY(DistrictType,YieldChangeId));
-INSERT INTO Districts VALUES('DISTRICT_CSC_TAILORS_QUARTER');
+INSERT INTO Districts VALUES('DISTRICT_CSC_TAILORS_QUARTER'),('DISTRICT_CSC_BAKERS_QUARTER'),
+ ('DISTRICT_COMMERCIAL_HUB'),('DISTRICT_HOLY_SITE'),('DISTRICT_HARBOR'),
+ ('DISTRICT_UNIQUE_HARBOR'),('DISTRICT_THEATER'),('DISTRICT_UNIQUE_HUB');
 INSERT INTO DistrictReplaces VALUES('DISTRICT_UNIQUE_HARBOR','DISTRICT_HARBOR');
+INSERT INTO DistrictReplaces VALUES('DISTRICT_UNIQUE_HUB','DISTRICT_COMMERCIAL_HUB');
 INSERT INTO CSC_QuarterCustomerBuildings VALUES
- ('TAILORS',2,'DISTRICT_HARBOR'),('TAILORS',3,'DISTRICT_HOLY_SITE'),
+ ('TAILORS',2,'DISTRICT_HARBOR'),('TAILORS',4,'DISTRICT_HOLY_SITE'),
  ('TAILORS',4,'DISTRICT_THEATER'),('TAILORS',4,'DISTRICT_THEATER'),
  ('TAILORS',4,'DISTRICT_WONDER'),('TAILORS',2,'DISTRICT_CITY_CENTER');
+INSERT INTO CSC_Stage3CustomerTransactions VALUES
+ ('DISTRICT_CSC_TAILORS_QUARTER','DISTRICT_HOLY_SITE'),
+ ('DISTRICT_CSC_TAILORS_QUARTER','DISTRICT_COMMERCIAL_HUB'),
+ ('DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_COMMERCIAL_HUB');
 ''')
         sql = (ROOT / 'Civ Supply Chains/Data/CSC_AI_Connectors.sql').read_text(encoding='utf-8')
         db.executescript(sql)
         db.executescript(sql)
         self.assertEqual({r[0] for r in db.execute('SELECT DistrictType FROM District_Adjacencies')},
-                         {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER'})
-        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],4)
+                         {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER',
+                          'DISTRICT_COMMERCIAL_HUB','DISTRICT_UNIQUE_HUB'})
+        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],8)
         db.executescript('''
-INSERT INTO Districts VALUES('DISTRICT_RURALCOMMUNITYA'),('DISTRICT_HOLY_SITE');
+INSERT OR IGNORE INTO Districts VALUES('DISTRICT_RURALCOMMUNITYA'),('DISTRICT_HOLY_SITE'),('DISTRICT_UNIQUE_RURAL');
 INSERT INTO DistrictReplaces VALUES('DISTRICT_UNIQUE_RURAL','DISTRICT_RURALCOMMUNITYA');
 INSERT INTO TypeTags VALUES
  ('DISTRICT_RURALCOMMUNITYA','CLASS_CSC_TAILORS_GOODS_PROVIDER'),
@@ -354,8 +363,20 @@ INSERT INTO TypeTags VALUES
         db.executescript(sql);db.executescript(sql)
         self.assertEqual({r[0]for r in db.execute('SELECT DistrictType FROM District_Adjacencies')},
             {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER',
-             'DISTRICT_RURALCOMMUNITYA','DISTRICT_UNIQUE_RURAL'})
-        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],6)
+             'DISTRICT_RURALCOMMUNITYA','DISTRICT_UNIQUE_RURAL','DISTRICT_COMMERCIAL_HUB','DISTRICT_UNIQUE_HUB'})
+        self.assertEqual({r[0]for r in db.execute('SELECT DISTINCT DistrictType FROM District_Adjacencies WHERE DistrictType LIKE \'%HUB\'')},
+                         {'DISTRICT_COMMERCIAL_HUB','DISTRICT_UNIQUE_HUB'})
+        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],10)
+        from customer_connector_audit import audit
+        self.assertTrue(audit(db)['complete'])
+        # A new gameplay-defined Quarter/customer requires no AI mapping edit.
+        db.executescript('''
+INSERT INTO Districts VALUES('DISTRICT_CSC_TEST_QUARTER'),('DISTRICT_TEST_CUSTOMER');
+INSERT INTO CSC_Stage3CustomerTransactions VALUES('DISTRICT_CSC_TEST_QUARTER','DISTRICT_TEST_CUSTOMER');
+''')
+        self.assertEqual(len(audit(db)['missing']),1)
+        db.executescript(sql)
+        self.assertTrue(audit(db)['complete'])
 
     def test_loaded_unit_contract_leaves_match_current_source(self):
         source = (AI / 'CSC_AI_EconomyFacts.lua').read_text(encoding='utf-8')
