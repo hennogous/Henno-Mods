@@ -3825,10 +3825,34 @@ Adjacent Markets already exist, so co-location is the immediate observed gate.
 
 Frozen `QuarterBids` excludes `quarter_exists` scopes; `CustomerOffers` draws
 additional16–48utility layout offers from prospective Quarter entries. Existing
-Quarters therefore lose that extra customer adapter. All-stage SQL private-yield
-edges remain registered; this does not establish they are inert. Targeted building
+Quarters therefore lose that extra customer adapter. **Correction later16 November:**
+all-stage SQL edges were intended, but the loaded database omits the separate
+Stage3 registry and six resulting edges. Native SQL coverage/strength is now the
+first investigation, before another adapter. Targeted building
 guidance selects Stage2, while the central ledger models later transactions and
 explicitly omits Stage3/4 Service premiums. Next2.1 is persistent customer planning
 around existing Quarters with native terrain, capacity and material protection.
 No live experiment or tuning change.
 [Endpoint identities, counts and coverage](../research/mods/csc-ai-calibrated-continents-20261115.md#innkeeper-follow-up-16-november).
+
+
+## AI-C194 — Gameplay-derived customer adjacency restores a native site preference
+
+16 November2026, **2.1**, XP2 SHA092abfbb with identical .text to324c51e9 reference,
+CE1be0545b. Frozen ordinary Continents150 has24 native partner edges. The ordinary
+and population-scaled Stage3 registries require30; gameplay sales/provider tags
+expand the complete graph to48. Six Stage3/replacement edges and18 City Lights
+urban links were missing. The repaired SQL consumes existing definitions, dedupes
+stages/directions, expands uniques and contains no authored AI customer map.
+
+Four cold-loaded150→155 arms differ only in one Hub/Bakers rule's0/1/4/8 amount,
+using the30-edge transaction repair. Each matches175 structure rows, records18
+native37×54 matrices, closes/restores exit0 and has zero faults. At native150,
++1 raises adjacent riverside1379 from2818.348 to2864.047 while away1601 remains
+2838.164. Native154 picks1601 with0 and1379 with1/4/8. The preferred footprint is
+selected, not yet founded by155. Keep+1 pending normal-game outcomes; stronger
+values add no choice benefit here. Separate final48-edge integration qualification
+is recorded in the report. CC settlement/exact Wonder buyers remain explicit
+separate consumers. This corrects AI-C193's initial all-stage SQL inference.
+
+[Coverage, exact values, scopes and corrections](../research/mods/csc-ai-native-customer-signal-20261116.md).

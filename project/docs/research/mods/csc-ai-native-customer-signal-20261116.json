@@ -1,0 +1,3038 @@
+{
+  "final_graph_integration": {
+    "directory": "all-partners1-survey150",
+    "closure": {
+      "verified": true,
+      "native_exit_code": 0,
+      "owners_absent": true,
+      "preferences_verified": true,
+      "package_callback_completed": true
+    },
+    "coverage": {
+      "complete": true,
+      "expected": 48,
+      "actual": 48,
+      "missing": [],
+      "unexpected": [],
+      "invalid": [],
+      "duplicates": [],
+      "excluded": [
+        {
+          "customer": "DISTRICT_CITY_CENTER",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "source": "ordinary:2"
+        },
+        {
+          "customer": "DISTRICT_WONDER",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "source": "exact-wonder:4",
+          "building": "BUILDING_BOLSHOI_THEATRE"
+        },
+        {
+          "customer": "DISTRICT_WONDER",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "source": "exact-wonder:4",
+          "building": "BUILDING_BROADWAY"
+        },
+        {
+          "customer": "DISTRICT_WONDER",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "source": "exact-wonder:4",
+          "building": "BUILDING_SYDNEY_OPERA_HOUSE"
+        },
+        {
+          "customer": "DISTRICT_CITY_CENTER",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "source": "sales-tag"
+        }
+      ],
+      "edges": [
+        {
+          "customer": "DISTRICT_ACROPOLIS",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "population:3",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREEXPANSIONA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREEXPANSIONA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREEXPANSIONB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREEXPANSIONB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREEXPANSIONC",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREEXPANSIONC",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_ELYSEE",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_ELYSEE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_FRONTIER_TOWN",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_FRONTIER_TOWN",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_FUERTE",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_FUERTE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_GYOSON",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_GYOSON",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TROYU",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TROYU",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TSIKHE",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TSIKHE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_UPAPITHA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_UPAPITHA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_VENICE_01",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_VENICE_01",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_VENICE_02",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_VENICE_02",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_XIAN",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_XIAN",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COTHON",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:2",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_ENTERTAINMENT_COMPLEX",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "ordinary:4",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HARBOR",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "ordinary:2",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HIPPODROME",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HOLY_SITE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_LAVRA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_ROYAL_NAVY_DOCKYARD",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:2",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYC",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYC",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_STREET_CARNIVAL",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:population:3",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_THEATER",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "ordinary:4",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_WATER_ENTERTAINMENT_COMPLEX",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "ordinary:4",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_WATER_STREET_CARNIVAL",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4",
+            "replacement:sales-tag",
+            "sales-tag"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        }
+      ]
+    },
+    "source_structure": {
+      "verified": true,
+      "expected_rows": 175,
+      "actual_rows": 175,
+      "missing": [],
+      "unexpected": [],
+      "ignored_kinds": [
+        "ADJACENCY",
+        "END",
+        "TREASURY"
+      ],
+      "retained_partial_columns": {
+        "CITY": 3,
+        "QUARTER": 7
+      }
+    },
+    "turns_advanced": 0
+  },
+  "source": "Continents map21951115/game32151115; source150; plays150\u2013155",
+  "core_fix_commit": "83e56d4c",
+  "offline_coverage": {
+    "before": {
+      "complete": false,
+      "expected": 30,
+      "actual": 24,
+      "missing": [
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "population:3"
+          ]
+        },
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3"
+          ]
+        },
+        {
+          "customer": "DISTRICT_HOLY_SITE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3"
+          ]
+        },
+        {
+          "customer": "DISTRICT_LAVRA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ]
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ]
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ]
+        }
+      ],
+      "unexpected": [],
+      "invalid": [],
+      "duplicates": [],
+      "excluded": [
+        {
+          "customer": "DISTRICT_CITY_CENTER",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "source": "ordinary:2"
+        }
+      ],
+      "edges": [
+        {
+          "customer": "DISTRICT_ACROPOLIS",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "population:3"
+          ],
+          "native": null
+        },
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3"
+          ],
+          "native": null
+        },
+        {
+          "customer": "DISTRICT_COREX_FRONTIER_TOWN",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_FRONTIER_TOWN",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_GYOSON",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_GYOSON",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TROYU",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TROYU",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TSIKHE",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TSIKHE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COTHON",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:2"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_ENTERTAINMENT_COMPLEX",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HARBOR",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "ordinary:2"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HIPPODROME",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HOLY_SITE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3"
+          ],
+          "native": null
+        },
+        {
+          "customer": "DISTRICT_LAVRA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ],
+          "native": null
+        },
+        {
+          "customer": "DISTRICT_ROYAL_NAVY_DOCKYARD",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:2"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYC",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYC",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_STREET_CARNIVAL",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ],
+          "native": null
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ],
+          "native": null
+        },
+        {
+          "customer": "DISTRICT_THEATER",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_WATER_ENTERTAINMENT_COMPLEX",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_WATER_STREET_CARNIVAL",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        }
+      ]
+    },
+    "after": {
+      "complete": true,
+      "expected": 30,
+      "actual": 30,
+      "missing": [],
+      "unexpected": [],
+      "invalid": [],
+      "duplicates": [],
+      "excluded": [
+        {
+          "customer": "DISTRICT_CITY_CENTER",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "source": "ordinary:2"
+        }
+      ],
+      "edges": [
+        {
+          "customer": "DISTRICT_ACROPOLIS",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "population:3"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COMMERCIAL_HUB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_FRONTIER_TOWN",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_FRONTIER_TOWN",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_GYOSON",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_GYOSON",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TROYU",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TROYU",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TSIKHE",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COREX_TSIKHE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider",
+            "replacement:goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_COTHON",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:2"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_ENTERTAINMENT_COMPLEX",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HARBOR",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "ordinary:2"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HIPPODROME",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_HOLY_SITE",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "population:3"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_LAVRA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_ROYAL_NAVY_DOCKYARD",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:ordinary:2"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYB",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYB",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYC",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_RURALCOMMUNITYC",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "goods-provider"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_STREET_CARNIVAL",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_SUGUBA",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "replacement:population:3"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_THEATER",
+          "quarter": "DISTRICT_CSC_TAILORS_QUARTER",
+          "sources": [
+            "ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_WATER_ENTERTAINMENT_COMPLEX",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        },
+        {
+          "customer": "DISTRICT_WATER_STREET_CARNIVAL",
+          "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+          "sources": [
+            "replacement:ordinary:4"
+          ],
+          "native": {
+            "amount": 1,
+            "tiles": 1
+          }
+        }
+      ]
+    }
+  },
+  "source_checkpoints_identical": true,
+  "private_rule_identities_and_other_definitions_identical": true,
+  "only_package_difference": "Data/CSC_DIAG_CUSTOMER_STRENGTH.sql",
+  "arms": {
+    "0": {
+      "directory": "signal0-150-155",
+      "checkpoint_sha256": "38ad349572cdf0dc1d2e6cb2346c4264885f0ef8e5342b7f26ec4ff3cf11aaf9",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "coverage": {
+        "expected": 30,
+        "actual": 30,
+        "invalid": [
+          {
+            "customer": "DISTRICT_COMMERCIAL_HUB",
+            "quarter": "DISTRICT_CSC_BAKERS_QUARTER",
+            "amount": 0,
+            "tiles": 1
+          }
+        ]
+      },
+      "matrix_count": 18,
+      "native_records": 965,
+      "native_health": {
+        "rows": 965,
+        "installed": true,
+        "hooks": 20,
+        "frozen": true,
+        "active": 0,
+        "stopReason": null,
+        "faults": [],
+        "totals": {
+          "records": 965,
+          "targetedSavings": 44,
+          "commandDebits": 2,
+          "unknownLineage": 32,
+          "expiredBindings": 0,
+          "accountSnapshots": 150
+        },
+        "buffered": 0
+      },
+      "source_structure": {
+        "verified": true,
+        "expected_rows": 175,
+        "actual_rows": 175,
+        "missing": [],
+        "unexpected": [],
+        "ignored_kinds": [
+          "ADJACENCY",
+          "END",
+          "TREASURY"
+        ],
+        "retained_partial_columns": {
+          "CITY": 3,
+          "QUARTER": 7
+        }
+      },
+      "first_primary": {
+        "turn": 150,
+        "rows": 37,
+        "columns": 54,
+        "adjacent_plot": 1379,
+        "adjacent_valueQ8": 721497,
+        "nonadjacent_plot": 1601,
+        "nonadjacent_valueQ8": 726570
+      },
+      "primary_choices": [
+        {
+          "turn": 150,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 846871
+        },
+        {
+          "turn": 151,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 722734
+        },
+        {
+          "turn": 152,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 645916
+        },
+        {
+          "turn": 153,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 634293
+        },
+        {
+          "turn": 154,
+          "district": 6,
+          "plot": 1601,
+          "totalQ8": 864339
+        }
+      ],
+      "sql_sha256": "c963675906d20a459a320af6650cda4b99ca70d477bd05caf337959ec100b92a",
+      "native_journal_sha256": "d10ad46e55f49de77c96056cb1aea4756d41611b4edda6bfc984c2b88ab58ad4"
+    },
+    "1": {
+      "directory": "signal1-150-155-02",
+      "checkpoint_sha256": "38ad349572cdf0dc1d2e6cb2346c4264885f0ef8e5342b7f26ec4ff3cf11aaf9",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "coverage": {
+        "expected": 30,
+        "actual": 30,
+        "invalid": []
+      },
+      "matrix_count": 18,
+      "native_records": 965,
+      "native_health": {
+        "rows": 965,
+        "installed": true,
+        "hooks": 20,
+        "frozen": true,
+        "active": 0,
+        "stopReason": null,
+        "faults": [],
+        "totals": {
+          "records": 965,
+          "targetedSavings": 44,
+          "commandDebits": 2,
+          "unknownLineage": 32,
+          "expiredBindings": 0,
+          "accountSnapshots": 150
+        },
+        "buffered": 0
+      },
+      "source_structure": {
+        "verified": true,
+        "expected_rows": 175,
+        "actual_rows": 175,
+        "missing": [],
+        "unexpected": [],
+        "ignored_kinds": [
+          "ADJACENCY",
+          "END",
+          "TREASURY"
+        ],
+        "retained_partial_columns": {
+          "CITY": 3,
+          "QUARTER": 7
+        }
+      },
+      "first_primary": {
+        "turn": 150,
+        "rows": 37,
+        "columns": 54,
+        "adjacent_plot": 1379,
+        "adjacent_valueQ8": 733196,
+        "nonadjacent_plot": 1601,
+        "nonadjacent_valueQ8": 726570
+      },
+      "primary_choices": [
+        {
+          "turn": 150,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 846871
+        },
+        {
+          "turn": 151,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 722734
+        },
+        {
+          "turn": 152,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 645916
+        },
+        {
+          "turn": 153,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 634293
+        },
+        {
+          "turn": 154,
+          "district": 6,
+          "plot": 1379,
+          "totalQ8": 871713
+        }
+      ],
+      "sql_sha256": "d64635b16beaec8457ca500aafeba0a3d25630db1a70c80c1cd69d5e96d01364",
+      "native_journal_sha256": "3f278d088568e677befdfad01901c08f4a1fdf45c7ba6556af55c82fe12595e3",
+      "first_native_differences_vs_off": [
+        {
+          "player": 5,
+          "city": 524294,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1667,
+              "district": 1,
+              "beforeQ8": 162506,
+              "afterQ8": 157996,
+              "deltaQ8": -4510
+            },
+            {
+              "plot": 1667,
+              "district": 2,
+              "beforeQ8": 191398,
+              "afterQ8": 184633,
+              "deltaQ8": -6765
+            },
+            {
+              "plot": 1667,
+              "district": 6,
+              "beforeQ8": 307055,
+              "afterQ8": 316098,
+              "deltaQ8": 9043
+            },
+            {
+              "plot": 1667,
+              "district": 7,
+              "beforeQ8": 112940,
+              "afterQ8": 108430,
+              "deltaQ8": -4510
+            },
+            {
+              "plot": 1667,
+              "district": 8,
+              "beforeQ8": 198565,
+              "afterQ8": 191800,
+              "deltaQ8": -6765
+            },
+            {
+              "plot": 1667,
+              "district": 9,
+              "beforeQ8": 214025,
+              "afterQ8": 207260,
+              "deltaQ8": -6765
+            },
+            {
+              "plot": 1667,
+              "district": 10,
+              "beforeQ8": 168343,
+              "afterQ8": 163833,
+              "deltaQ8": -4510
+            },
+            {
+              "plot": 1667,
+              "district": 23,
+              "beforeQ8": 122540,
+              "afterQ8": 117253,
+              "deltaQ8": -5287
+            },
+            {
+              "plot": 1667,
+              "district": 41,
+              "beforeQ8": 114559,
+              "afterQ8": 109254,
+              "deltaQ8": -5305
+            },
+            {
+              "plot": 1740,
+              "district": 6,
+              "beforeQ8": 297195,
+              "afterQ8": 306216,
+              "deltaQ8": 9021
+            }
+          ]
+        },
+        {
+          "player": 5,
+          "city": 65536,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1379,
+              "district": 1,
+              "beforeQ8": 464519,
+              "afterQ8": 458672,
+              "deltaQ8": -5847
+            },
+            {
+              "plot": 1379,
+              "district": 2,
+              "beforeQ8": 438159,
+              "afterQ8": 429387,
+              "deltaQ8": -8772
+            },
+            {
+              "plot": 1379,
+              "district": 6,
+              "beforeQ8": 721497,
+              "afterQ8": 733196,
+              "deltaQ8": 11699
+            },
+            {
+              "plot": 1379,
+              "district": 10,
+              "beforeQ8": 252352,
+              "afterQ8": 246505,
+              "deltaQ8": -5847
+            },
+            {
+              "plot": 1379,
+              "district": 23,
+              "beforeQ8": 294311,
+              "afterQ8": 288134,
+              "deltaQ8": -6177
+            },
+            {
+              "plot": 1379,
+              "district": 27,
+              "beforeQ8": 431552,
+              "afterQ8": 425705,
+              "deltaQ8": -5847
+            },
+            {
+              "plot": 1379,
+              "district": 41,
+              "beforeQ8": 258375,
+              "afterQ8": 252202,
+              "deltaQ8": -6173
+            },
+            {
+              "plot": 1378,
+              "district": 1,
+              "beforeQ8": 440606,
+              "afterQ8": 434758,
+              "deltaQ8": -5848
+            },
+            {
+              "plot": 1378,
+              "district": 2,
+              "beforeQ8": 378690,
+              "afterQ8": 369912,
+              "deltaQ8": -8778
+            },
+            {
+              "plot": 1378,
+              "district": 6,
+              "beforeQ8": 655458,
+              "afterQ8": 667176,
+              "deltaQ8": 11718
+            },
+            {
+              "plot": 1378,
+              "district": 10,
+              "beforeQ8": 227402,
+              "afterQ8": 221554,
+              "deltaQ8": -5848
+            },
+            {
+              "plot": 1378,
+              "district": 23,
+              "beforeQ8": 269700,
+              "afterQ8": 263527,
+              "deltaQ8": -6173
+            },
+            {
+              "plot": 1378,
+              "district": 27,
+              "beforeQ8": 410205,
+              "afterQ8": 404354,
+              "deltaQ8": -5851
+            },
+            {
+              "plot": 1378,
+              "district": 33,
+              "beforeQ8": 784582,
+              "afterQ8": 774949,
+              "deltaQ8": -9633
+            },
+            {
+              "plot": 1378,
+              "district": 34,
+              "beforeQ8": 411430,
+              "afterQ8": 401796,
+              "deltaQ8": -9634
+            },
+            {
+              "plot": 1378,
+              "district": 40,
+              "beforeQ8": 244699,
+              "afterQ8": 238852,
+              "deltaQ8": -5847
+            },
+            {
+              "plot": 1378,
+              "district": 41,
+              "beforeQ8": 233792,
+              "afterQ8": 227619,
+              "deltaQ8": -6173
+            }
+          ]
+        },
+        {
+          "player": 3,
+          "city": 327684,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 968,
+              "district": 6,
+              "beforeQ8": -53807,
+              "afterQ8": -41456,
+              "deltaQ8": 12351
+            },
+            {
+              "plot": 1041,
+              "district": 6,
+              "beforeQ8": -36189,
+              "afterQ8": -23842,
+              "deltaQ8": 12347
+            },
+            {
+              "plot": 819,
+              "district": 6,
+              "beforeQ8": -78211,
+              "afterQ8": -65864,
+              "deltaQ8": 12347
+            }
+          ]
+        },
+        {
+          "player": 4,
+          "city": 65536,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1859,
+              "district": 1,
+              "beforeQ8": 92612,
+              "afterQ8": 86741,
+              "deltaQ8": -5871
+            },
+            {
+              "plot": 1859,
+              "district": 5,
+              "beforeQ8": 242780,
+              "afterQ8": 236607,
+              "deltaQ8": -6173
+            },
+            {
+              "plot": 1859,
+              "district": 6,
+              "beforeQ8": 129096,
+              "afterQ8": 141442,
+              "deltaQ8": 12346
+            },
+            {
+              "plot": 1859,
+              "district": 7,
+              "beforeQ8": 92202,
+              "afterQ8": 82930,
+              "deltaQ8": -9272
+            },
+            {
+              "plot": 1859,
+              "district": 10,
+              "beforeQ8": 313860,
+              "afterQ8": 308013,
+              "deltaQ8": -5847
+            }
+          ]
+        }
+      ]
+    },
+    "4": {
+      "directory": "signal4-150-155",
+      "checkpoint_sha256": "38ad349572cdf0dc1d2e6cb2346c4264885f0ef8e5342b7f26ec4ff3cf11aaf9",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "coverage": {
+        "expected": 30,
+        "actual": 30,
+        "invalid": []
+      },
+      "matrix_count": 18,
+      "native_records": 965,
+      "native_health": {
+        "rows": 965,
+        "installed": true,
+        "hooks": 20,
+        "frozen": true,
+        "active": 0,
+        "stopReason": null,
+        "faults": [],
+        "totals": {
+          "records": 965,
+          "targetedSavings": 44,
+          "commandDebits": 2,
+          "unknownLineage": 32,
+          "expiredBindings": 0,
+          "accountSnapshots": 150
+        },
+        "buffered": 0
+      },
+      "source_structure": {
+        "verified": true,
+        "expected_rows": 175,
+        "actual_rows": 175,
+        "missing": [],
+        "unexpected": [],
+        "ignored_kinds": [
+          "ADJACENCY",
+          "END",
+          "TREASURY"
+        ],
+        "retained_partial_columns": {
+          "CITY": 3,
+          "QUARTER": 7
+        }
+      },
+      "first_primary": {
+        "turn": 150,
+        "rows": 37,
+        "columns": 54,
+        "adjacent_plot": 1379,
+        "adjacent_valueQ8": 768331,
+        "nonadjacent_plot": 1601,
+        "nonadjacent_valueQ8": 726570
+      },
+      "primary_choices": [
+        {
+          "turn": 150,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 846871
+        },
+        {
+          "turn": 151,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 722734
+        },
+        {
+          "turn": 152,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 645916
+        },
+        {
+          "turn": 153,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 634293
+        },
+        {
+          "turn": 154,
+          "district": 6,
+          "plot": 1379,
+          "totalQ8": 908761
+        }
+      ],
+      "sql_sha256": "ab6e0856f861cdab1b6b4a8178cd862f8d8e807909787c85362eaa60f6f32dde",
+      "native_journal_sha256": "b5c27c1e8f351ca054300f609a8b8829de88892395edaa998864885e19e6f432",
+      "first_native_differences_vs_off": [
+        {
+          "player": 5,
+          "city": 524294,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1667,
+              "district": 1,
+              "beforeQ8": 162506,
+              "afterQ8": 144442,
+              "deltaQ8": -18064
+            },
+            {
+              "plot": 1667,
+              "district": 2,
+              "beforeQ8": 191398,
+              "afterQ8": 164301,
+              "deltaQ8": -27097
+            },
+            {
+              "plot": 1667,
+              "district": 6,
+              "beforeQ8": 307055,
+              "afterQ8": 343184,
+              "deltaQ8": 36129
+            },
+            {
+              "plot": 1667,
+              "district": 7,
+              "beforeQ8": 112940,
+              "afterQ8": 94876,
+              "deltaQ8": -18064
+            },
+            {
+              "plot": 1667,
+              "district": 8,
+              "beforeQ8": 198565,
+              "afterQ8": 171469,
+              "deltaQ8": -27096
+            },
+            {
+              "plot": 1667,
+              "district": 9,
+              "beforeQ8": 214025,
+              "afterQ8": 186941,
+              "deltaQ8": -27084
+            },
+            {
+              "plot": 1667,
+              "district": 10,
+              "beforeQ8": 168343,
+              "afterQ8": 150279,
+              "deltaQ8": -18064
+            },
+            {
+              "plot": 1667,
+              "district": 23,
+              "beforeQ8": 122540,
+              "afterQ8": 101383,
+              "deltaQ8": -21157
+            },
+            {
+              "plot": 1667,
+              "district": 41,
+              "beforeQ8": 114559,
+              "afterQ8": 93401,
+              "deltaQ8": -21158
+            },
+            {
+              "plot": 1740,
+              "district": 1,
+              "beforeQ8": 245729,
+              "afterQ8": 233333,
+              "deltaQ8": -12396
+            },
+            {
+              "plot": 1740,
+              "district": 2,
+              "beforeQ8": 310680,
+              "afterQ8": 283582,
+              "deltaQ8": -27098
+            },
+            {
+              "plot": 1740,
+              "district": 3,
+              "beforeQ8": 346821,
+              "afterQ8": 334430,
+              "deltaQ8": -12391
+            },
+            {
+              "plot": 1740,
+              "district": 6,
+              "beforeQ8": 297195,
+              "afterQ8": 338994,
+              "deltaQ8": 41799
+            },
+            {
+              "plot": 1740,
+              "district": 7,
+              "beforeQ8": 198134,
+              "afterQ8": 185739,
+              "deltaQ8": -12395
+            },
+            {
+              "plot": 1740,
+              "district": 8,
+              "beforeQ8": 312068,
+              "afterQ8": 293480,
+              "deltaQ8": -18588
+            },
+            {
+              "plot": 1740,
+              "district": 9,
+              "beforeQ8": 296504,
+              "afterQ8": 277935,
+              "deltaQ8": -18569
+            },
+            {
+              "plot": 1740,
+              "district": 10,
+              "beforeQ8": 253538,
+              "afterQ8": 241147,
+              "deltaQ8": -12391
+            },
+            {
+              "plot": 1740,
+              "district": 23,
+              "beforeQ8": 221737,
+              "afterQ8": 207234,
+              "deltaQ8": -14503
+            },
+            {
+              "plot": 1740,
+              "district": 33,
+              "beforeQ8": 562630,
+              "afterQ8": 537195,
+              "deltaQ8": -25435
+            },
+            {
+              "plot": 1740,
+              "district": 34,
+              "beforeQ8": 437944,
+              "afterQ8": 413842,
+              "deltaQ8": -24102
+            },
+            {
+              "plot": 1740,
+              "district": 40,
+              "beforeQ8": 279983,
+              "afterQ8": 267592,
+              "deltaQ8": -12391
+            },
+            {
+              "plot": 1740,
+              "district": 41,
+              "beforeQ8": 213760,
+              "afterQ8": 199235,
+              "deltaQ8": -14525
+            }
+          ]
+        },
+        {
+          "player": 5,
+          "city": 65536,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1379,
+              "district": 1,
+              "beforeQ8": 464519,
+              "afterQ8": 441102,
+              "deltaQ8": -23417
+            },
+            {
+              "plot": 1379,
+              "district": 2,
+              "beforeQ8": 438159,
+              "afterQ8": 403032,
+              "deltaQ8": -35127
+            },
+            {
+              "plot": 1379,
+              "district": 6,
+              "beforeQ8": 721497,
+              "afterQ8": 768331,
+              "deltaQ8": 46834
+            },
+            {
+              "plot": 1379,
+              "district": 10,
+              "beforeQ8": 252352,
+              "afterQ8": 228936,
+              "deltaQ8": -23416
+            },
+            {
+              "plot": 1379,
+              "district": 23,
+              "beforeQ8": 294311,
+              "afterQ8": 269615,
+              "deltaQ8": -24696
+            },
+            {
+              "plot": 1379,
+              "district": 27,
+              "beforeQ8": 431552,
+              "afterQ8": 408136,
+              "deltaQ8": -23416
+            },
+            {
+              "plot": 1379,
+              "district": 41,
+              "beforeQ8": 258375,
+              "afterQ8": 233678,
+              "deltaQ8": -24697
+            },
+            {
+              "plot": 1378,
+              "district": 1,
+              "beforeQ8": 440606,
+              "afterQ8": 417189,
+              "deltaQ8": -23417
+            },
+            {
+              "plot": 1378,
+              "district": 2,
+              "beforeQ8": 378690,
+              "afterQ8": 343565,
+              "deltaQ8": -35125
+            },
+            {
+              "plot": 1378,
+              "district": 6,
+              "beforeQ8": 655458,
+              "afterQ8": 702292,
+              "deltaQ8": 46834
+            },
+            {
+              "plot": 1378,
+              "district": 10,
+              "beforeQ8": 227402,
+              "afterQ8": 203984,
+              "deltaQ8": -23418
+            },
+            {
+              "plot": 1378,
+              "district": 23,
+              "beforeQ8": 269700,
+              "afterQ8": 245003,
+              "deltaQ8": -24697
+            },
+            {
+              "plot": 1378,
+              "district": 27,
+              "beforeQ8": 410205,
+              "afterQ8": 386787,
+              "deltaQ8": -23418
+            },
+            {
+              "plot": 1378,
+              "district": 33,
+              "beforeQ8": 784582,
+              "afterQ8": 745966,
+              "deltaQ8": -38616
+            },
+            {
+              "plot": 1378,
+              "district": 34,
+              "beforeQ8": 411430,
+              "afterQ8": 372814,
+              "deltaQ8": -38616
+            },
+            {
+              "plot": 1378,
+              "district": 40,
+              "beforeQ8": 244699,
+              "afterQ8": 221283,
+              "deltaQ8": -23416
+            },
+            {
+              "plot": 1378,
+              "district": 41,
+              "beforeQ8": 233792,
+              "afterQ8": 209095,
+              "deltaQ8": -24697
+            }
+          ]
+        },
+        {
+          "player": 3,
+          "city": 327684,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 968,
+              "district": 2,
+              "beforeQ8": -45284,
+              "afterQ8": -61832,
+              "deltaQ8": -16548
+            },
+            {
+              "plot": 968,
+              "district": 5,
+              "beforeQ8": 17074,
+              "afterQ8": 9432,
+              "deltaQ8": -7642
+            },
+            {
+              "plot": 968,
+              "district": 6,
+              "beforeQ8": -53807,
+              "afterQ8": 141094,
+              "deltaQ8": 194901
+            },
+            {
+              "plot": 968,
+              "district": 7,
+              "beforeQ8": -77037,
+              "afterQ8": -89260,
+              "deltaQ8": -12223
+            },
+            {
+              "plot": 968,
+              "district": 8,
+              "beforeQ8": 76123,
+              "afterQ8": -53361,
+              "deltaQ8": -129484
+            },
+            {
+              "plot": 968,
+              "district": 9,
+              "beforeQ8": -46438,
+              "afterQ8": -62980,
+              "deltaQ8": -16542
+            },
+            {
+              "plot": 968,
+              "district": 10,
+              "beforeQ8": 228756,
+              "afterQ8": 217721,
+              "deltaQ8": -11035
+            },
+            {
+              "plot": 968,
+              "district": 23,
+              "beforeQ8": -111195,
+              "afterQ8": -123441,
+              "deltaQ8": -12246
+            },
+            {
+              "plot": 968,
+              "district": 41,
+              "beforeQ8": -97947,
+              "afterQ8": -110169,
+              "deltaQ8": -12222
+            },
+            {
+              "plot": 1041,
+              "district": 6,
+              "beforeQ8": -36189,
+              "afterQ8": 133009,
+              "deltaQ8": 169198
+            },
+            {
+              "plot": 819,
+              "district": 6,
+              "beforeQ8": -78211,
+              "afterQ8": -28816,
+              "deltaQ8": 49395
+            }
+          ]
+        },
+        {
+          "player": 4,
+          "city": 65536,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1859,
+              "district": 1,
+              "beforeQ8": 92612,
+              "afterQ8": 69195,
+              "deltaQ8": -23417
+            },
+            {
+              "plot": 1859,
+              "district": 5,
+              "beforeQ8": 242780,
+              "afterQ8": 218083,
+              "deltaQ8": -24697
+            },
+            {
+              "plot": 1859,
+              "district": 6,
+              "beforeQ8": 129096,
+              "afterQ8": 178490,
+              "deltaQ8": 49394
+            },
+            {
+              "plot": 1859,
+              "district": 7,
+              "beforeQ8": 92202,
+              "afterQ8": 55158,
+              "deltaQ8": -37044
+            },
+            {
+              "plot": 1859,
+              "district": 10,
+              "beforeQ8": 313860,
+              "afterQ8": 290443,
+              "deltaQ8": -23417
+            }
+          ]
+        }
+      ]
+    },
+    "8": {
+      "directory": "signal8-150-155",
+      "checkpoint_sha256": "38ad349572cdf0dc1d2e6cb2346c4264885f0ef8e5342b7f26ec4ff3cf11aaf9",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "coverage": {
+        "expected": 30,
+        "actual": 30,
+        "invalid": []
+      },
+      "matrix_count": 18,
+      "native_records": 965,
+      "native_health": {
+        "rows": 965,
+        "installed": true,
+        "hooks": 20,
+        "frozen": true,
+        "active": 0,
+        "stopReason": null,
+        "faults": [],
+        "totals": {
+          "records": 965,
+          "targetedSavings": 44,
+          "commandDebits": 2,
+          "unknownLineage": 32,
+          "expiredBindings": 0,
+          "accountSnapshots": 150
+        },
+        "buffered": 0
+      },
+      "source_structure": {
+        "verified": true,
+        "expected_rows": 175,
+        "actual_rows": 175,
+        "missing": [],
+        "unexpected": [],
+        "ignored_kinds": [
+          "ADJACENCY",
+          "END",
+          "TREASURY"
+        ],
+        "retained_partial_columns": {
+          "CITY": 3,
+          "QUARTER": 7
+        }
+      },
+      "first_primary": {
+        "turn": 150,
+        "rows": 37,
+        "columns": 54,
+        "adjacent_plot": 1379,
+        "adjacent_valueQ8": 815166,
+        "nonadjacent_plot": 1601,
+        "nonadjacent_valueQ8": 726570
+      },
+      "primary_choices": [
+        {
+          "turn": 150,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 846871
+        },
+        {
+          "turn": 151,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 722734
+        },
+        {
+          "turn": 152,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 645916
+        },
+        {
+          "turn": 153,
+          "district": 33,
+          "plot": 1303,
+          "totalQ8": 634293
+        },
+        {
+          "turn": 154,
+          "district": 6,
+          "plot": 1379,
+          "totalQ8": 958155
+        }
+      ],
+      "sql_sha256": "5cca42b80e6a4d74a5b22a07114479aef11c473730c137c78279ac0f89c27a34",
+      "native_journal_sha256": "e963b2828c3eef7cb8ada1da20195b0f77fb0a0dc3ac885ad77a04cb831d0dc0",
+      "first_native_differences_vs_off": [
+        {
+          "player": 5,
+          "city": 524294,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1667,
+              "district": 1,
+              "beforeQ8": 162506,
+              "afterQ8": 126377,
+              "deltaQ8": -36129
+            },
+            {
+              "plot": 1667,
+              "district": 2,
+              "beforeQ8": 191398,
+              "afterQ8": 137205,
+              "deltaQ8": -54193
+            },
+            {
+              "plot": 1667,
+              "district": 6,
+              "beforeQ8": 307055,
+              "afterQ8": 379313,
+              "deltaQ8": 72258
+            },
+            {
+              "plot": 1667,
+              "district": 7,
+              "beforeQ8": 112940,
+              "afterQ8": 76811,
+              "deltaQ8": -36129
+            },
+            {
+              "plot": 1667,
+              "district": 8,
+              "beforeQ8": 198565,
+              "afterQ8": 144371,
+              "deltaQ8": -54194
+            },
+            {
+              "plot": 1667,
+              "district": 9,
+              "beforeQ8": 214025,
+              "afterQ8": 159832,
+              "deltaQ8": -54193
+            },
+            {
+              "plot": 1667,
+              "district": 10,
+              "beforeQ8": 168343,
+              "afterQ8": 132214,
+              "deltaQ8": -36129
+            },
+            {
+              "plot": 1667,
+              "district": 23,
+              "beforeQ8": 122540,
+              "afterQ8": 80224,
+              "deltaQ8": -42316
+            },
+            {
+              "plot": 1667,
+              "district": 41,
+              "beforeQ8": 114559,
+              "afterQ8": 72243,
+              "deltaQ8": -42316
+            },
+            {
+              "plot": 1740,
+              "district": 1,
+              "beforeQ8": 245729,
+              "afterQ8": 215269,
+              "deltaQ8": -30460
+            },
+            {
+              "plot": 1740,
+              "district": 2,
+              "beforeQ8": 310680,
+              "afterQ8": 256486,
+              "deltaQ8": -54194
+            },
+            {
+              "plot": 1740,
+              "district": 3,
+              "beforeQ8": 346821,
+              "afterQ8": 316365,
+              "deltaQ8": -30456
+            },
+            {
+              "plot": 1740,
+              "district": 6,
+              "beforeQ8": 297195,
+              "afterQ8": 375123,
+              "deltaQ8": 77928
+            },
+            {
+              "plot": 1740,
+              "district": 7,
+              "beforeQ8": 198134,
+              "afterQ8": 167674,
+              "deltaQ8": -30460
+            },
+            {
+              "plot": 1740,
+              "district": 8,
+              "beforeQ8": 312068,
+              "afterQ8": 266384,
+              "deltaQ8": -45684
+            },
+            {
+              "plot": 1740,
+              "district": 9,
+              "beforeQ8": 296504,
+              "afterQ8": 250830,
+              "deltaQ8": -45674
+            },
+            {
+              "plot": 1740,
+              "district": 10,
+              "beforeQ8": 253538,
+              "afterQ8": 223083,
+              "deltaQ8": -30455
+            },
+            {
+              "plot": 1740,
+              "district": 23,
+              "beforeQ8": 221737,
+              "afterQ8": 186077,
+              "deltaQ8": -35660
+            },
+            {
+              "plot": 1740,
+              "district": 33,
+              "beforeQ8": 562630,
+              "afterQ8": 500148,
+              "deltaQ8": -62482
+            },
+            {
+              "plot": 1740,
+              "district": 34,
+              "beforeQ8": 437944,
+              "afterQ8": 378715,
+              "deltaQ8": -59229
+            },
+            {
+              "plot": 1740,
+              "district": 40,
+              "beforeQ8": 279983,
+              "afterQ8": 249527,
+              "deltaQ8": -30456
+            },
+            {
+              "plot": 1740,
+              "district": 41,
+              "beforeQ8": 213760,
+              "afterQ8": 178078,
+              "deltaQ8": -35682
+            }
+          ]
+        },
+        {
+          "player": 5,
+          "city": 65536,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1379,
+              "district": 1,
+              "beforeQ8": 464519,
+              "afterQ8": 417685,
+              "deltaQ8": -46834
+            },
+            {
+              "plot": 1379,
+              "district": 2,
+              "beforeQ8": 438159,
+              "afterQ8": 367907,
+              "deltaQ8": -70252
+            },
+            {
+              "plot": 1379,
+              "district": 6,
+              "beforeQ8": 721497,
+              "afterQ8": 815166,
+              "deltaQ8": 93669
+            },
+            {
+              "plot": 1379,
+              "district": 10,
+              "beforeQ8": 252352,
+              "afterQ8": 205518,
+              "deltaQ8": -46834
+            },
+            {
+              "plot": 1379,
+              "district": 23,
+              "beforeQ8": 294311,
+              "afterQ8": 244917,
+              "deltaQ8": -49394
+            },
+            {
+              "plot": 1379,
+              "district": 27,
+              "beforeQ8": 431552,
+              "afterQ8": 384718,
+              "deltaQ8": -46834
+            },
+            {
+              "plot": 1379,
+              "district": 41,
+              "beforeQ8": 258375,
+              "afterQ8": 208981,
+              "deltaQ8": -49394
+            },
+            {
+              "plot": 1378,
+              "district": 1,
+              "beforeQ8": 440606,
+              "afterQ8": 393771,
+              "deltaQ8": -46835
+            },
+            {
+              "plot": 1378,
+              "district": 2,
+              "beforeQ8": 378690,
+              "afterQ8": 308438,
+              "deltaQ8": -70252
+            },
+            {
+              "plot": 1378,
+              "district": 6,
+              "beforeQ8": 655458,
+              "afterQ8": 749127,
+              "deltaQ8": 93669
+            },
+            {
+              "plot": 1378,
+              "district": 10,
+              "beforeQ8": 227402,
+              "afterQ8": 180567,
+              "deltaQ8": -46835
+            },
+            {
+              "plot": 1378,
+              "district": 23,
+              "beforeQ8": 269700,
+              "afterQ8": 220306,
+              "deltaQ8": -49394
+            },
+            {
+              "plot": 1378,
+              "district": 27,
+              "beforeQ8": 410205,
+              "afterQ8": 363371,
+              "deltaQ8": -46834
+            },
+            {
+              "plot": 1378,
+              "district": 33,
+              "beforeQ8": 784582,
+              "afterQ8": 707349,
+              "deltaQ8": -77233
+            },
+            {
+              "plot": 1378,
+              "district": 34,
+              "beforeQ8": 411430,
+              "afterQ8": 334197,
+              "deltaQ8": -77233
+            },
+            {
+              "plot": 1378,
+              "district": 40,
+              "beforeQ8": 244699,
+              "afterQ8": 197865,
+              "deltaQ8": -46834
+            },
+            {
+              "plot": 1378,
+              "district": 41,
+              "beforeQ8": 233792,
+              "afterQ8": 184398,
+              "deltaQ8": -49394
+            }
+          ]
+        },
+        {
+          "player": 3,
+          "city": 327684,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 968,
+              "district": 2,
+              "beforeQ8": -45284,
+              "afterQ8": -95213,
+              "deltaQ8": -49929
+            },
+            {
+              "plot": 968,
+              "district": 5,
+              "beforeQ8": 17074,
+              "afterQ8": -5993,
+              "deltaQ8": -23067
+            },
+            {
+              "plot": 968,
+              "district": 6,
+              "beforeQ8": -53807,
+              "afterQ8": 190488,
+              "deltaQ8": 244295
+            },
+            {
+              "plot": 968,
+              "district": 7,
+              "beforeQ8": -77037,
+              "afterQ8": -113957,
+              "deltaQ8": -36920
+            },
+            {
+              "plot": 968,
+              "district": 8,
+              "beforeQ8": 76123,
+              "afterQ8": -90408,
+              "deltaQ8": -166531
+            },
+            {
+              "plot": 968,
+              "district": 9,
+              "beforeQ8": -46438,
+              "afterQ8": -96351,
+              "deltaQ8": -49913
+            },
+            {
+              "plot": 968,
+              "district": 10,
+              "beforeQ8": 228756,
+              "afterQ8": 195467,
+              "deltaQ8": -33289
+            },
+            {
+              "plot": 968,
+              "district": 23,
+              "beforeQ8": -111195,
+              "afterQ8": -148138,
+              "deltaQ8": -36943
+            },
+            {
+              "plot": 968,
+              "district": 41,
+              "beforeQ8": -97947,
+              "afterQ8": -134866,
+              "deltaQ8": -36919
+            },
+            {
+              "plot": 1041,
+              "district": 2,
+              "beforeQ8": 102363,
+              "afterQ8": -12602,
+              "deltaQ8": -114965
+            },
+            {
+              "plot": 1041,
+              "district": 5,
+              "beforeQ8": 56216,
+              "afterQ8": 41210,
+              "deltaQ8": -15006
+            },
+            {
+              "plot": 1041,
+              "district": 6,
+              "beforeQ8": -36189,
+              "afterQ8": 207768,
+              "deltaQ8": 243957
+            },
+            {
+              "plot": 1041,
+              "district": 7,
+              "beforeQ8": -29114,
+              "afterQ8": -53143,
+              "deltaQ8": -24029
+            },
+            {
+              "plot": 1041,
+              "district": 8,
+              "beforeQ8": -40287,
+              "afterQ8": -76293,
+              "deltaQ8": -36006
+            },
+            {
+              "plot": 1041,
+              "district": 9,
+              "beforeQ8": -25622,
+              "afterQ8": -58104,
+              "deltaQ8": -32482
+            },
+            {
+              "plot": 1041,
+              "district": 10,
+              "beforeQ8": 272199,
+              "afterQ8": 250545,
+              "deltaQ8": -21654
+            },
+            {
+              "plot": 1041,
+              "district": 23,
+              "beforeQ8": -67105,
+              "afterQ8": -91109,
+              "deltaQ8": -24004
+            },
+            {
+              "plot": 1041,
+              "district": 41,
+              "beforeQ8": -53833,
+              "afterQ8": -77861,
+              "deltaQ8": -24028
+            },
+            {
+              "plot": 819,
+              "district": 2,
+              "beforeQ8": -2519,
+              "afterQ8": -69249,
+              "deltaQ8": -66730
+            },
+            {
+              "plot": 819,
+              "district": 5,
+              "beforeQ8": 30232,
+              "afterQ8": 15226,
+              "deltaQ8": -15006
+            },
+            {
+              "plot": 819,
+              "district": 6,
+              "beforeQ8": -78211,
+              "afterQ8": 165746,
+              "deltaQ8": 243957
+            },
+            {
+              "plot": 819,
+              "district": 7,
+              "beforeQ8": -71136,
+              "afterQ8": -95165,
+              "deltaQ8": -24029
+            },
+            {
+              "plot": 819,
+              "district": 8,
+              "beforeQ8": -103320,
+              "afterQ8": -139326,
+              "deltaQ8": -36006
+            },
+            {
+              "plot": 819,
+              "district": 9,
+              "beforeQ8": -63387,
+              "afterQ8": -95869,
+              "deltaQ8": -32482
+            },
+            {
+              "plot": 819,
+              "district": 10,
+              "beforeQ8": 234434,
+              "afterQ8": 212780,
+              "deltaQ8": -21654
+            },
+            {
+              "plot": 819,
+              "district": 23,
+              "beforeQ8": -109127,
+              "afterQ8": -133131,
+              "deltaQ8": -24004
+            },
+            {
+              "plot": 819,
+              "district": 33,
+              "beforeQ8": 376657,
+              "afterQ8": 339073,
+              "deltaQ8": -37584
+            },
+            {
+              "plot": 819,
+              "district": 34,
+              "beforeQ8": 363250,
+              "afterQ8": 325705,
+              "deltaQ8": -37545
+            },
+            {
+              "plot": 819,
+              "district": 40,
+              "beforeQ8": 36137,
+              "afterQ8": 14507,
+              "deltaQ8": -21630
+            },
+            {
+              "plot": 819,
+              "district": 41,
+              "beforeQ8": -95855,
+              "afterQ8": -119883,
+              "deltaQ8": -24028
+            }
+          ]
+        },
+        {
+          "player": 4,
+          "city": 65536,
+          "turn": 150,
+          "flags_identical": true,
+          "cells": 1998,
+          "changed": [
+            {
+              "plot": 1859,
+              "district": 1,
+              "beforeQ8": 92612,
+              "afterQ8": -18850,
+              "deltaQ8": -111462
+            },
+            {
+              "plot": 1859,
+              "district": 5,
+              "beforeQ8": 242780,
+              "afterQ8": 193386,
+              "deltaQ8": -49394
+            },
+            {
+              "plot": 1859,
+              "district": 6,
+              "beforeQ8": 129096,
+              "afterQ8": 227885,
+              "deltaQ8": 98789
+            },
+            {
+              "plot": 1859,
+              "district": 7,
+              "beforeQ8": 92202,
+              "afterQ8": 18109,
+              "deltaQ8": -74093
+            },
+            {
+              "plot": 1859,
+              "district": 10,
+              "beforeQ8": 313860,
+              "afterQ8": 267026,
+              "deltaQ8": -46834
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "conclusion": "Amount1 adds45.699utility to adjacent1379 and changes native154 choice from1601 to1379;4/8 retain that same choice. Keep1 and the coverage repair.",
+  "construction_window": "At inactive155 the target Hub is still a native selected plan; both footprints remain empty."
+}

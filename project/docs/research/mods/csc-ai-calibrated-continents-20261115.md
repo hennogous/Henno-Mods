@@ -184,7 +184,7 @@ Frozen main-mod source exposes a concrete2.1 coverage gap. `QuarterBids` skips
 city/type scopes once their Quarter exists; `CustomerOffers` obtains its layout
 links from those prospective Quarter entries. Its additional16–48utility
 customer-site offers consequently cease for that Quarter once founded. The
-all-stage SQL private-yield adjacency incentive continues, but ongoing completion
+registered SQL private-yield adjacency incentives continue, but ongoing completion
 of layouts around existing Quarters lacks this extra adapter. The targeted
 producer/customer-building policy currently selects Stage2 producers and buyers;
 the central ledger includes Stage3 transactions but omits Stage3 Service premiums,
@@ -195,3 +195,11 @@ Quarters, including riverside Commercial Hubs as well as Tailors Harbors, with
 shared material protection and ordinary native competition. More Bakery bids
 alone would leave the principal spatial gap unchanged. This investigation uses
 existing records and frozen source; no new game or tuning change is made.
+
+**Later16 November correction:** the native SQL generator omits the separate
+Stage3 transaction registry and gameplay sales-tag-only customers. The loaded
+game therefore lacks24 edges: six Stage3/replacement links, including Commercial
+Hub/Bakers, and18 City Lights urban sales links. Follow the [native SQL coverage and strength
+investigation](csc-ai-native-customer-signal-20261116.md) before adopting another
+customer adapter. The architectural observation remains valid; the intended
+all-stage native incentive was incomplete in this run.

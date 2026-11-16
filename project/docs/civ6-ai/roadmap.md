@@ -1,5 +1,17 @@
 # CSC AI roadmap
 
+**2.1,16 November — data-driven native customer adjacency repaired.**
+The last game misses six Stage3 transaction edges and18 City Lights sales-tag
+edges. Native rules now derive from existing gameplay registries/tags, with no
+AI-maintained partner list; offline and live-loaded coverage are48/48.
+Matched150→155 replays show
+the default+1 changes the actual Hub selector from a nonadjacent site to an empty
+riverside site beside Bakers. +4/+8 choose the same site; retain+1. A separate
+final-graph cold-load matches175 structural rows and closes/restores exit0.
+Measure ordinary-game follow-through
+with the complete graph before extending post-foundation customer adapters.
+[Coverage and native values](../research/mods/csc-ai-native-customer-signal-20261116.md).
+
 **16 November,2.1 customer follow-through priority:** keep terrain-aware customer
 plans alive after Quarter foundation. Current additional layout offers consume
 prospective Quarter entries, which disappear once that Quarter exists. In the
