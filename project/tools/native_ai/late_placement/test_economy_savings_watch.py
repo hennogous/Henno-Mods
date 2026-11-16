@@ -26,7 +26,9 @@ class EconomicGuards(unittest.TestCase):
                   start=0, through=250, width=74, height=46)
         for delta in [dict(start=5, through=5), dict(through=301), dict(players=[1, 1]),
                       dict(players=[6]), dict(width=0), dict(height=257),
-                      dict(districts=0), dict(districts=True), dict(districts=4097),dict(capture_placement=1)]:
+                      dict(districts=0), dict(districts=True), dict(districts=4097),dict(capture_placement=1),
+                      dict(matrix_targets=[(1,65536)]),dict(districts=40,matrix_targets=[(6,65536)]),
+                      dict(districts=40,matrix_targets=[(1,0)])]:
             with self.subTest(delta=delta), patch('economy_savings_watch.dependencies') as deps:
                 with self.assertRaises(ValueError):
                     EconomySavingsWatch(**dict(base, **delta))
@@ -178,6 +180,15 @@ function fixture(mismatch=false,invalidFunds=false,capturePlacement=false){
   assert.equal(chosen.reservation,77);assert.equal(chosen.completedDistrictFlag,false);
   assert.equal(chosen.existingFootprint,null);assert.equal(chosen.scoreStatus,'read');
   assert.equal(mem.get(matrix+180),91234); // observation left the bid untouched
+  assert.equal(chosen.matrix,undefined); // default full-game observer does no full read
+  for(let d=0;d<80;d++)if(!mem.has(matrix+d*4))put(matrix,d*4,0);
+  for(const offset of [0x48,0x51,0x55,0x57,0x5a,0x70,0x74])put(rows,offset,0);
+  cfg.matrixTargets=[[1,524295]];put(rows,0x20,matrix);
+  fire('selection',{rdi:p(build),rbp:p(frame),rax:p(5)});
+  const full=rpc.drain().records[0].matrix;
+  assert.equal(full.columns,40);assert.equal(full.rows.length,2);
+  assert.equal(full.rows[1].scoresQ8[5],91234);assert.equal(mem.get(matrix+180),91234);
+  cfg.matrixTargets=[];
   put(row,0x20,matrix);fire('selection',{rdi:p(build),rbp:p(frame),rax:p(5)});
   const missing=rpc.drain().records[0];assert.equal(missing.kind,'district-selection');
   assert.equal(missing.totalQ8,null);assert.equal(missing.scoreStatus,'row_matrix_alias_differs');

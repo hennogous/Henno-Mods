@@ -116,6 +116,38 @@ function selectedValue(build,selection){
     return matched||missing('selected_row_absent');
   }catch(e){return {...missing('matrix_read_failed'),scoreError:String(e)};}
 }
+// Diagnostic-only complete competitor surface, sampled after GetBestDistrict
+// returns at the already-qualified selection midpoint. This reads the exact
+// cached signed-Q8 utilities and flags; it calls no engine function and writes
+// no score. No DistrictAt call means completion flags are not emptiness proofs.
+// Empty target scope is the normal full-game path. At most32 matrices/process
+// and37*loaded-column-count cells/matrix bound the explicit diagnostic payload.
+let diagnosticMatrices=0;
+function selectedMatrix(build,selection){
+  if(!(cfg.matrixTargets||[]).some(t=>t[0]===selection.player&&t[1]===selection.city))return null;
+  if(diagnosticMatrices>=32)throw Error('Diagnostic matrix capture bound');
+  if(!readableSpan(build,M.length+4)||cfg.districts==null)throw Error('Diagnostic matrix header unavailable');
+  const identity=who(address(build,L.buildCity));
+  if(identity.player!==selection.player||identity.city!==selection.city)throw Error('Diagnostic matrix identity differs');
+  const count=build.add(M.rowCount).readU32(),length=build.add(M.length).readU32(),capacity=build.add(M.capacity).readU32();
+  if(count<2||count>37||length!==count*cfg.districts||capacity<length||capacity>37*4096)
+    throw Error('Diagnostic matrix bounds differ');
+  const rows=address(build,M.rows),matrix=address(build,M.data);
+  if(!readableSpan(rows,count*M.rowSize)||!readableSpan(matrix,length*4))throw Error('Diagnostic matrix span unavailable');
+  const result=[];
+  for(let i=0;i<count;i++){
+    const row=rows.add(i*M.rowSize),scores=matrix.add(i*cfg.districts*4);
+    if(!address(row,M.rowScores).equals(scores))throw Error('Diagnostic matrix alias differs');
+    const x=s32(row,M.x),y=s32(row,M.y),reservation=address(row,M.reservation);
+    result.push({row:i,x,y,plot:y*cfg.width+x,
+      rowOwner:row.add(M.rowOwner).readS16(),rowCity:s32(row,M.rowCity),
+      eligible:row.add(M.eligible).readU8()!==0,owned:row.add(M.owned).readU8()!==0,
+      frontier:row.add(M.frontier).readU8()!==0,completedDistrictFlag:row.add(M.completedDistrict).readU8()!==0,
+      reservation:readableSpan(reservation,4)?s32(reservation):null,
+      scoresQ8:Array.from({length:cfg.districts},(_,d)=>s32(scores,d*4))});
+  }
+  diagnosticMatrices++;return {columns:cfg.districts,rows:result,scoreUnits:'Q8_utility'};
+}
 function ancestry(tree){const path=[],seen=new Set();
   while(!tree.isNull()){
     const key=tree.toString();if(seen.has(key)||path.length>=32)throw Error('Purchase ancestry bound/cycle');
@@ -248,7 +280,9 @@ function install(){
     // request was accepted or a foundation appeared. It covers all selected
     // district types in scoped AI cities, including unmodified vanilla columns.
     // Missing optional cache evidence must not erase the exact choice receipt.
-    emit('district-selection',{...selection,...selectedValue(c.rdi,selection)});
+    const receipt={...selection,...selectedValue(c.rdi,selection)},matrix=selectedMatrix(c.rdi,selection);
+    if(matrix)receipt.matrix=matrix;
+    emit('district-selection',receipt);
     selections.set(thread,selection);
   });
   midpoint('treeInstalled',(c,thread)=>{const city=address(c.rdi,L.buildCity),identity=who(city),t=turn();
@@ -320,6 +354,10 @@ rpc.exports={
       config.capturePlacement!=null&&typeof config.capturePlacement!=='boolean'||
       !Number.isInteger(config.width)||!Number.isInteger(config.height)||config.width<1||config.width>256||
       config.height<1||config.height>256)throw Error('Unqualified Economic scope');
+    if(config.matrixTargets!=null&&(!Array.isArray(config.matrixTargets)||config.matrixTargets.length>8||
+       config.matrixTargets.some(t=>!Array.isArray(t)||t.length!==2||!config.players.includes(t[0])||
+         !Number.isInteger(t[1])||t[1]<=0||t[1]>=0x80000000)||config.matrixTargets.length>0&&config.districts==null))
+      throw Error('Unqualified diagnostic matrix scope');
     mod=Process.getModuleByName(spec.name);cfg=config;
     if(mod.path.replace(/\\/g,'/').toLowerCase()!==spec.path.replace(/\\/g,'/').toLowerCase()||mod.size!==spec.imageSize)
       throw Error('Different loaded Economic module');

@@ -57,6 +57,12 @@ class StructureTests(unittest.TestCase):
 
 
 class ProvenanceTests(unittest.TestCase):
+    def test_read_only_regular_checkpoints_reach_provenance_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for at in (50, 100, 150, 200, 250):
+                with self.subTest(at=at), self.assertRaisesRegex(RuntimeError, 'Source did not close/restore'):
+                    pc.prepare(tmp, Path(tmp)/'new', at, at, tmp, read_only=True)
+
     def test_invalid_windows_fail_before_inventory_install_or_launch(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as tmp:
             for at,through in [(200,200),(200,300),(201,250)]:

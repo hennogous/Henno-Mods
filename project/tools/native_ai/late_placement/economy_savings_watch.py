@@ -65,7 +65,8 @@ class EconomySavingsWatch:
     Never detach from a live owner, including in exception cleanup.
     """
     def __init__(self, *, directory, binary, output, start, through, write,
-                 players=(1, 2, 3, 4, 5), width, height, districts=None,capture_placement=False):
+                 players=(1, 2, 3, 4, 5), width, height, districts=None,capture_placement=False,
+                 matrix_targets=()):
         if (not isinstance(start, int) or not isinstance(through, int) or
                 not 0 <= start < through <= start + 300):
             raise ValueError('Require bounded <=300-turn observation')
@@ -77,6 +78,14 @@ class EconomySavingsWatch:
                 districts is not None and (type(districts) is not int or not 1 <= districts <= 4096)
                 or type(capture_placement)is not bool):
             raise ValueError('Invalid original-AI/map scope')
+        # Optional short diagnostic only: retain losing native district/site
+        # values at the same selection boundary as the winner. Ordinary full
+        # games leave this empty, adding no matrix reads or journal payload.
+        if (not isinstance(matrix_targets,(list,tuple)) or len(matrix_targets)>8 or
+                matrix_targets and districts is None or
+                any(not isinstance(t,(list,tuple))or len(t)!=2 or type(t[0])is not int or t[0]not in players or
+                    type(t[1])is not int or not 0<t[1]<2**31 for t in matrix_targets)):
+            raise ValueError('Invalid diagnostic matrix targets')
         self.spec = specification(binary,capture_placement=capture_placement)
         self.frida = dependencies(directory)
         self.output, self.write = Path(output), write
@@ -85,7 +94,7 @@ class EconomySavingsWatch:
         # cached totals remain explicitly missing rather than guessing a stride.
         self.config = dict(start=start, through=through, players=players,
                            width=width, height=height, districts=districts, maxRecords=MAX_RECORDS,
-                           capturePlacement=capture_placement)
+                           capturePlacement=capture_placement,matrixTargets=list(matrix_targets))
         self.owner = self.attached = self.script = self.frozen = None
         self.messages, self.rows, self.last_sequence = [], 0, 0
         script = self.output / 'economy_savings_watch.js'

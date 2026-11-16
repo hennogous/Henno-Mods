@@ -136,8 +136,10 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     # forward window. Neither mode relaxes source/save/package qualification.
     typed=type(at)is int and type(through)is int
     window=typed and(0<at==through<=250 if read_only else 0<at<through<=250)
-    require(typed and at % 25 == 0 and
-            window and through in (50, 200, 250), 'Unsupported continuation window')
+    # A read-only source inspection may use any regular archived checkpoint,
+    # including100/150. Playing continuations retain their qualified endpoints.
+    endpoint_ok = at in (50, 100, 150, 200, 250) if read_only else through in (50, 200, 250)
+    require(typed and at % 25 == 0 and window and endpoint_ok, 'Unsupported continuation window')
     require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')
