@@ -1,5 +1,18 @@
 # CSC AI roadmap
 
+**2.1 Commercial Hub audit,16 November — recorded data only.**
+Of19 Hubs, three already touch Quarters and six have no completed Quarter within
+reach at native selection. Two further cities have credible matching-Gold
+footprints: Aberdeen788 beside Bakers789 and Napata1751 beside Bakers1826.
+Ordinary base Gold reconstructs to2, matching chosen Hubs; native losing scores
+and exact counterfactual legality remain unrecorded. No extra Lua Hub offer is
+published in either choice window: existing supplier links rely on native SQL.
+Aberdeen788 later becomes a good Tailors, an important footprint trade-off.
+CL's rural districts impose−1 Gold on Hubs/Harbors and must be included.
+Next2.1: price/support customers of built Quarters while preserving adjacency
+and future Quarter footprints. User session preserved; no replay or policy change.
+[Cases and full19-decision audit](../research/mods/csc-ai-commercial-hub-audit-20261116.md).
+
 **Small Dockmaster siting step implemented,16 November —1.2/1.4/2.1.**
 Tailors +1 can bid beside a completed owned Harbor; Base, positive economics,
 protection and native eligibility still apply. Initial/full/grace screens share
@@ -798,7 +811,11 @@ until the active check closes or an explicit dependency needs attention.
   the loaded gameplay partner graph to feasible Quarter and material footprints,
   including triangles. One contribution per supplier city/Quarter type, at most32
   utility total, preserves the best ordinary adjacency. Harbor/Tailors preparation
-  contributes16–24 per supplier city/type, other links8–16. Join proposed bids to
+  contributes16–24 per supplier city/type, other links8–16. Extend support to
+  already-built supplier Quarters: the latest audit finds plausible matching-Gold
+  customer footprints at Aberdeen/Napata receiving only native SQL guidance.
+  Preserve valuable future Quarter footprints (Aberdeen788 later houses Tailors).
+  Diagnose actual losing cells before choosing a new premium. Join proposed bids to
   native receipts and actual placement/future chains in the next ordinary run.
 - **2.2 Material protection.** Price covering mapped Base or Specialty
   deposits, including unimproved ones. Protect the last viable deposit of

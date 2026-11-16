@@ -71,3 +71,23 @@ Dumbarton0vs3still0. Tests95PASS(fivefocusednew),noSQL/CE/API/game. AddAI-C198 a
 csc-ai-dockmaster-siting-20261116.md. Usersteering:keepthissimple;roadmap14.3queues
 fullprospectiveServicevalue,cost/timing/demand/lifetime/recipients/nodoublecounting,
 Dockmastersailship/era;existingnarrowStage2serviceestimatesunchanged.
+
+
+## Commercial Hub retrospective (user session kept open)
+
+UseraskswhethermoreHubs couldadjQuarterswithoutlosingownadj. Answerrecorded-only:
+foreignCivpid5384/Tuner15788detected;userexplicitlyKeepOpen. NoFireTunerconnect,
+noquery/replay/policy. Offlineaudit19Hubs atnativechoice usingrawall-player
+FOUNDATION/COMPLETION/OWNERSHIP history + same-turnOPPORTUNITYscope andoldcoastmap.
+3alreadyadj,6noQwithinreach,10othernearQ. Twoadditionalcitieshaveownedresource-free
+footprints:Aberdeen788(Native110Baker789complete109),Napata1751/1825(native122Baker
+1826complete45). InferredbaseGold788=2river+2minor−2CLrural=2;1751=2river+1minor−1
+rural=2. Chosen936/2121Gold2atfound113/123;nativeutilities1607.188/1817.723. No
+extraLuaHuboffers109–111/121–123. Actuallosingcells/legality/policymodifiersnot
+recorded. NativeSQLprivate1loaded;futureplannerexcludesalreadybuiltcity/type,
+soexistingQuarteronlynativeSQL/noextraLuasiting. Aberdeen788laterTailors187/188,
+valuablefootprinttradeoff;Napata1751Spaceport168/190(noassertpriorreservation).
+CLCOREX_Core.sql negGoldruralA/B/C affectHub/Harbor (notCSCquarter);SHA13b976b1
+matchespinnedrun. Toolaudit_commercial_hub_placements.py validates52nativepaths,
+19recordsJSON/reportcsc-ai-commercial-hub-audit-20261116.md. AI-C199;next2.1existing
+Quartercustomerpreference/coordination,actualmatrixlaterwhenuserallows. No game.

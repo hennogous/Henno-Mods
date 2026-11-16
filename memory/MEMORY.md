@@ -1,3 +1,19 @@
+# CURRENT: Commercial Hub retrospective complete; user session preserved,16 November
+
+Read csc-ai-commercial-hub-audit-20261116.md/json and session_ai_customer_first_20261116.md.
+Recorded-onlyperuserKeepCiv/TunerOpen. No connection/query/replay/policy.19Hubs:
+3adjQ,6noexistingcompleteQinreach,10nearQbutnonadj. Twoadditionalcitiesownedopen
+footprints:Aberdeen788besideBakers789(complete109,Hubchoice110),Napata1751beside
+Bakers1826(complete45,choice122). BaseGoldrecon2matcheschosen2,afterCLruralpenalties.
+Actualnativecounterfactuallegality/modifiers/losingcellsmissing. NoextraLuaHuboffer
+109–111/121–123;existingQuarterlinksrelySQLprivate1. Aberdeen788latergoodTailors187,
+sofootprinttradeoffimportant. Napata1751laterSpaceport168(noassertpriorreservation).
+CLruralA/B/C−1GoldonHubs/Harbors;COREX_CoreSHA13b976b1matchesoriginalmanifest.
+Offlineaudittoolverifies52nativepaths/19records/3connectedHubs. AI-C199;next2.1
+customerplanningafterQuarterfoundation,nativecellcomparisonwhenmachineavailable.
+SmallDockstep1949abd6 remainslatestpolicy,notusedincompleted250(old19e29a42).
+Noactiveagent-ownedgame/PR;user'sforeignsessionuntouched. UnrelatedWIPpreserved.
+
 # CURRENT: small Dockmaster siting policy implemented; no new game,16 November
 
 Read session_ai_customer_first_20261116.md and csc-ai-dockmaster-siting-20261116.md.

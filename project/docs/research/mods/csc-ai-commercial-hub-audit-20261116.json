@@ -1,0 +1,1795 @@
+{
+  "run": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-first-continents-20261116\\continents250-01",
+  "survey": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-first-continents-20261116\\coast250-02\\tailors-coast-survey.txt",
+  "endpoint": 250,
+  "tracked_ai": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "map_geometry_verified_native_paths": 52,
+  "east_west_wrap": true,
+  "lua_sha256": "99429aacd2f13107af06f82e700c85c34637e8fa6487aa4b74e2d7bfb777b984",
+  "survey_sha256": "1eea28c8e478a675cdea09d2a82d85f0c6c19bb3fc048cada52cd08db798a7bb",
+  "hubs": [
+    {
+      "player": 1,
+      "city": 131073,
+      "name": "Yangsan",
+      "plot": 2030,
+      "choice_turn": 70,
+      "foundation_turn": 73,
+      "chosen_gold": 3,
+      "chosen_utility": 623.14453125,
+      "nearby_completed_quarters": [],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 2,
+      "city": 131073,
+      "name": "Ray",
+      "plot": 2612,
+      "choice_turn": 72,
+      "foundation_turn": 74,
+      "chosen_gold": 0,
+      "chosen_utility": 855.09765625,
+      "nearby_completed_quarters": [
+        2244
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 2169,
+          "quarters": [
+            2244
+          ],
+          "endpoint_resource": "RESOURCE_FURS",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 2243,
+          "quarters": [
+            2244
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 2317,
+          "quarters": [
+            2244
+          ],
+          "endpoint_resource": "RESOURCE_CSC_FLAX",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": {
+            "city": "131073",
+            "direct": "1",
+            "district": "42",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "2",
+            "player": "2",
+            "plot": "2317",
+            "protected": "true",
+            "qualified": "false",
+            "sequence": "35735",
+            "turn": "72",
+            "upper": "1",
+            "version": "72"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": [
+        {
+          "turn": "73",
+          "player": "2",
+          "city": "131073",
+          "district": "6",
+          "plot": "2391",
+          "suppliers": "1",
+          "rawQ8": "3072",
+          "deltaQ8": "3072"
+        }
+      ]
+    },
+    {
+      "player": 1,
+      "city": 65536,
+      "name": "Seoul",
+      "plot": 2105,
+      "choice_turn": 73,
+      "foundation_turn": 75,
+      "chosen_gold": 2,
+      "chosen_utility": 1214.3984375,
+      "nearby_completed_quarters": [],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 5,
+      "city": 262147,
+      "name": "Aberdeen",
+      "plot": 936,
+      "choice_turn": 110,
+      "foundation_turn": 113,
+      "chosen_gold": 2,
+      "chosen_utility": 1607.1875,
+      "nearby_completed_quarters": [
+        789,
+        1156
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 1083,
+          "quarters": [
+            1156
+          ],
+          "endpoint_resource": "RESOURCE_CATTLE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 715,
+          "quarters": [
+            789
+          ],
+          "endpoint_resource": "RESOURCE_GRANITE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": {
+            "city": "262147",
+            "direct": "1",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "715",
+            "protected": "false",
+            "qualified": "false",
+            "sequence": "77033",
+            "turn": "110",
+            "upper": "1",
+            "version": "110"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 788,
+          "quarters": [
+            789
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "DISTRICT_CSC_TAILORS_QUARTER",
+          "endpoint_owner": 5,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": {
+            "city": "262147",
+            "direct": "3",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "788",
+            "protected": "false",
+            "qualified": "true",
+            "sequence": "77125",
+            "turn": "110",
+            "upper": "3",
+            "version": "110"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 863,
+          "quarters": [
+            789
+          ],
+          "endpoint_resource": "RESOURCE_RICE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": {
+            "city": "262147",
+            "direct": "0",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "863",
+            "protected": "true",
+            "qualified": "false",
+            "sequence": "77109",
+            "turn": "110",
+            "upper": "0",
+            "version": "110"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 5,
+      "city": 131073,
+      "name": "Haddington",
+      "plot": 1528,
+      "choice_turn": 118,
+      "foundation_turn": 120,
+      "chosen_gold": 3,
+      "chosen_utility": 2015.4765625,
+      "nearby_completed_quarters": [
+        1156,
+        1454
+      ],
+      "chosen_adjacent_quarters": [
+        1454
+      ],
+      "alternative_footprints": [
+        {
+          "plot": 1381,
+          "quarters": [
+            1454
+          ],
+          "endpoint_resource": "RESOURCE_CSC_FLAX",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": {
+            "city": "131073",
+            "direct": "2",
+            "district": "42",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "1381",
+            "protected": "true",
+            "qualified": "true",
+            "sequence": "85873",
+            "turn": "118",
+            "upper": "2",
+            "version": "118"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1453,
+          "quarters": [
+            1454
+          ],
+          "endpoint_resource": "RESOURCE_DYES",
+          "endpoint_feature": "FEATURE_JUNGLE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": {
+            "city": "131073",
+            "direct": "1",
+            "district": "42",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "1453",
+            "protected": "false",
+            "qualified": "true",
+            "sequence": "86066",
+            "turn": "118",
+            "upper": "2",
+            "version": "118"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1230,
+          "quarters": [
+            1156
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "FEATURE_FLOODPLAINS_PLAINS",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1231,
+          "quarters": [
+            1156
+          ],
+          "endpoint_resource": "RESOURCE_WHEAT",
+          "endpoint_feature": "FEATURE_FLOODPLAINS_PLAINS",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 3,
+      "city": 131073,
+      "name": "Napata",
+      "plot": 2121,
+      "choice_turn": 122,
+      "foundation_turn": 123,
+      "chosen_gold": 2,
+      "chosen_utility": 1817.72265625,
+      "nearby_completed_quarters": [
+        1826
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 1751,
+          "quarters": [
+            1826
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "FEATURE_FLOODPLAINS_GRASSLAND",
+          "endpoint_district": "DISTRICT_SPACEPORT",
+          "endpoint_owner": 3,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": {
+            "city": "131073",
+            "direct": "1",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "3",
+            "player": "3",
+            "plot": "1751",
+            "protected": "false",
+            "qualified": "false",
+            "sequence": "90014",
+            "turn": "122",
+            "upper": "1",
+            "version": "122"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1825,
+          "quarters": [
+            1826
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "DISTRICT_THEATER",
+          "endpoint_owner": 3,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": {
+            "city": "131073",
+            "direct": "0",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "3",
+            "player": "3",
+            "plot": "1825",
+            "protected": "false",
+            "qualified": "false",
+            "sequence": "89957",
+            "turn": "122",
+            "upper": "0",
+            "version": "122"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1900,
+          "quarters": [
+            1826
+          ],
+          "endpoint_resource": "RESOURCE_MAIZE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": {
+            "city": "131073",
+            "direct": "0",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "3",
+            "player": "3",
+            "plot": "1900",
+            "protected": "true",
+            "qualified": "false",
+            "sequence": "89965",
+            "turn": "122",
+            "upper": "0",
+            "version": "122"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 4,
+      "city": 65536,
+      "name": "Amsterdam",
+      "plot": 2970,
+      "choice_turn": 130,
+      "foundation_turn": 131,
+      "chosen_gold": 2,
+      "chosen_utility": 948.7421875,
+      "nearby_completed_quarters": [],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 1,
+      "city": 262147,
+      "name": "Gyeongju",
+      "plot": 1440,
+      "choice_turn": 135,
+      "foundation_turn": 138,
+      "chosen_gold": 0,
+      "chosen_utility": 1908.98046875,
+      "nearby_completed_quarters": [],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 3,
+      "city": 262147,
+      "name": "Sedeinga",
+      "plot": 1759,
+      "choice_turn": 137,
+      "foundation_turn": 142,
+      "chosen_gold": 2,
+      "chosen_utility": 1581.15625,
+      "nearby_completed_quarters": [
+        1829,
+        1831,
+        1978
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 1903,
+          "quarters": [
+            1978,
+            1829
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "DISTRICT_WONDER",
+          "endpoint_owner": 3,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1904,
+          "quarters": [
+            1978,
+            1831
+          ],
+          "endpoint_resource": "RESOURCE_BANANAS",
+          "endpoint_feature": "FEATURE_JUNGLE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1979,
+          "quarters": [
+            1978
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 2052,
+          "quarters": [
+            1978
+          ],
+          "endpoint_resource": "RESOURCE_DYES",
+          "endpoint_feature": "FEATURE_JUNGLE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1756,
+          "quarters": [
+            1831
+          ],
+          "endpoint_resource": "RESOURCE_DYES",
+          "endpoint_feature": "FEATURE_JUNGLE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 196610,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 196610,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1830,
+          "quarters": [
+            1831,
+            1829
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "DISTRICT_COMMERCIAL_HUB",
+          "endpoint_owner": 3,
+          "endpoint_city": 196610,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 196610,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1905,
+          "quarters": [
+            1831
+          ],
+          "endpoint_resource": "RESOURCE_CSC_FLAX",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": {
+            "city": "262147",
+            "direct": "0",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "3",
+            "player": "3",
+            "plot": "1905",
+            "protected": "true",
+            "qualified": "false",
+            "sequence": "106111",
+            "turn": "137",
+            "upper": "0",
+            "version": "137"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1755,
+          "quarters": [
+            1829
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "DISTRICT_COREEXPANSIONA",
+          "endpoint_owner": 3,
+          "endpoint_city": 196610,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 196610,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 5,
+      "city": 393221,
+      "name": "Roxburgh",
+      "plot": 871,
+      "choice_turn": 140,
+      "foundation_turn": 143,
+      "chosen_gold": 0,
+      "chosen_utility": 2897.73046875,
+      "nearby_completed_quarters": [
+        1015
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 942,
+          "quarters": [
+            1015
+          ],
+          "endpoint_resource": "RESOURCE_BAMBOO",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 393221,
+          "same_turn_opportunity": {
+            "city": "393221",
+            "direct": "2",
+            "district": "42",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "942",
+            "protected": "true",
+            "qualified": "true",
+            "sequence": "109685",
+            "turn": "140",
+            "upper": "2",
+            "version": "140"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 393221,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1014,
+          "quarters": [
+            1015
+          ],
+          "endpoint_resource": "RESOURCE_GOLD",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 393221,
+          "same_turn_opportunity": {
+            "city": "393221",
+            "direct": "1",
+            "district": "42",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "1014",
+            "protected": "false",
+            "qualified": "false",
+            "sequence": "109654",
+            "turn": "140",
+            "upper": "1",
+            "version": "140"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 393221,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1016,
+          "quarters": [
+            1015
+          ],
+          "endpoint_resource": "RESOURCE_DYES",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 5,
+          "endpoint_city": 393221,
+          "same_turn_opportunity": {
+            "city": "393221",
+            "direct": "1",
+            "district": "42",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "5",
+            "player": "5",
+            "plot": "1016",
+            "protected": "false",
+            "qualified": "false",
+            "sequence": "109653",
+            "turn": "140",
+            "upper": "1",
+            "version": "140"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 393221,
+              "owner": 5,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1089,
+          "quarters": [
+            1015
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 9,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 3,
+      "city": 196610,
+      "name": "El-Kurru",
+      "plot": 1830,
+      "choice_turn": 147,
+      "foundation_turn": 150,
+      "chosen_gold": 4,
+      "chosen_utility": 2198.8671875,
+      "nearby_completed_quarters": [
+        1826,
+        1829,
+        1831,
+        1978
+      ],
+      "chosen_adjacent_quarters": [
+        1831,
+        1829
+      ],
+      "alternative_footprints": [
+        {
+          "plot": 1903,
+          "quarters": [
+            1978,
+            1829
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "DISTRICT_WONDER",
+          "endpoint_owner": 3,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1904,
+          "quarters": [
+            1978,
+            1831
+          ],
+          "endpoint_resource": "RESOURCE_BANANAS",
+          "endpoint_feature": "FEATURE_JUNGLE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1751,
+          "quarters": [
+            1826
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "FEATURE_FLOODPLAINS_GRASSLAND",
+          "endpoint_district": "DISTRICT_SPACEPORT",
+          "endpoint_owner": 3,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1900,
+          "quarters": [
+            1826
+          ],
+          "endpoint_resource": "RESOURCE_MAIZE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1756,
+          "quarters": [
+            1831
+          ],
+          "endpoint_resource": "RESOURCE_DYES",
+          "endpoint_feature": "FEATURE_JUNGLE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 196610,
+          "same_turn_opportunity": {
+            "city": "196610",
+            "direct": "1",
+            "district": "42",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "3",
+            "player": "3",
+            "plot": "1756",
+            "protected": "false",
+            "qualified": "true",
+            "sequence": "117025",
+            "turn": "147",
+            "upper": "2",
+            "version": "147"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 196610,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1902,
+          "quarters": [
+            1829
+          ],
+          "endpoint_resource": "RESOURCE_COTTON",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 3,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 3,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 2,
+      "city": 262147,
+      "name": "Sparda",
+      "plot": 1651,
+      "choice_turn": 153,
+      "foundation_turn": 158,
+      "chosen_gold": 3,
+      "chosen_utility": 1775.640625,
+      "nearby_completed_quarters": [
+        1724
+      ],
+      "chosen_adjacent_quarters": [
+        1724
+      ],
+      "alternative_footprints": [
+        {
+          "plot": 1650,
+          "quarters": [
+            1724
+          ],
+          "endpoint_resource": "RESOURCE_CATTLE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": {
+            "city": "262147",
+            "direct": "1",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "2",
+            "player": "2",
+            "plot": "1650",
+            "protected": "true",
+            "qualified": "false",
+            "sequence": "123221",
+            "turn": "153",
+            "upper": "1",
+            "version": "153"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1798,
+          "quarters": [
+            1724
+          ],
+          "endpoint_resource": "RESOURCE_MAIZE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": {
+            "city": "262147",
+            "direct": "1",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "2",
+            "player": "2",
+            "plot": "1798",
+            "protected": "true",
+            "qualified": "false",
+            "sequence": "123145",
+            "turn": "153",
+            "upper": "1",
+            "version": "153"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1799,
+          "quarters": [
+            1724
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": {
+            "city": "262147",
+            "direct": "2",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "2",
+            "player": "2",
+            "plot": "1799",
+            "protected": "false",
+            "qualified": "true",
+            "sequence": "123151",
+            "turn": "153",
+            "upper": "2",
+            "version": "153"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 5,
+      "city": 196610,
+      "name": "Ayr",
+      "plot": 1078,
+      "choice_turn": 157,
+      "foundation_turn": 161,
+      "chosen_gold": 5,
+      "chosen_utility": 3392.41015625,
+      "nearby_completed_quarters": [],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 2,
+      "city": 327684,
+      "name": "Bakhtri",
+      "plot": 2611,
+      "choice_turn": 159,
+      "foundation_turn": 162,
+      "chosen_gold": 0,
+      "chosen_utility": 1959.65625,
+      "nearby_completed_quarters": [
+        2391
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 2465,
+          "quarters": [
+            2391
+          ],
+          "endpoint_resource": "RESOURCE_COAL",
+          "endpoint_feature": "FEATURE_VOLCANIC_SOIL",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 4,
+      "city": 458754,
+      "name": "Newcastle",
+      "plot": 1864,
+      "choice_turn": 189,
+      "foundation_turn": 192,
+      "chosen_gold": 1,
+      "chosen_utility": 1621.58203125,
+      "nearby_completed_quarters": [
+        1792,
+        2159
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 1717,
+          "quarters": [
+            1792
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "FEATURE_FLOODPLAINS_GRASSLAND",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 0,
+          "endpoint_city": 196610,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1718,
+          "quarters": [
+            1792
+          ],
+          "endpoint_resource": "RESOURCE_RICE",
+          "endpoint_feature": "FEATURE_MARSH",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 4,
+          "endpoint_city": 458754,
+          "same_turn_opportunity": {
+            "city": "458754",
+            "direct": "1",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "4",
+            "player": "4",
+            "plot": "1718",
+            "protected": "true",
+            "qualified": "false",
+            "sequence": "167762",
+            "turn": "189",
+            "upper": "1",
+            "version": "189"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 458754,
+              "owner": 4,
+              "frontier": "false",
+              "protected": "true"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1791,
+          "quarters": [
+            1792
+          ],
+          "endpoint_resource": "RESOURCE_FURS",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 4,
+          "endpoint_city": 458754,
+          "same_turn_opportunity": {
+            "city": "458754",
+            "direct": "0",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "4",
+            "player": "4",
+            "plot": "1791",
+            "protected": "false",
+            "qualified": "false",
+            "sequence": "167611",
+            "turn": "189",
+            "upper": "0",
+            "version": "189"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 458754,
+              "owner": 4,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1793,
+          "quarters": [
+            1792
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 6,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 1866,
+          "quarters": [
+            1792
+          ],
+          "endpoint_resource": "RESOURCE_SPICES",
+          "endpoint_feature": "FEATURE_JUNGLE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 4,
+          "endpoint_city": 458754,
+          "same_turn_opportunity": {
+            "city": "458754",
+            "direct": "1",
+            "district": "43",
+            "frontier": "false",
+            "futureCustomersCounted": "false",
+            "geometryOnly": "true",
+            "minimumAdjacency": "2",
+            "nativeEligibility": "notMeasured",
+            "offered": "false",
+            "owner": "4",
+            "player": "4",
+            "plot": "1866",
+            "protected": "false",
+            "qualified": "false",
+            "sequence": "167556",
+            "turn": "189",
+            "upper": "1",
+            "version": "189"
+          },
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 458754,
+              "owner": 4,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 2,
+      "city": 196610,
+      "name": "Gordian",
+      "plot": 2165,
+      "choice_turn": 216,
+      "foundation_turn": 218,
+      "chosen_gold": 3,
+      "chosen_utility": 2757.83203125,
+      "nearby_completed_quarters": [
+        2244,
+        2391
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 2169,
+          "quarters": [
+            2244
+          ],
+          "endpoint_resource": "RESOURCE_FURS",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 2243,
+          "quarters": [
+            2244
+          ],
+          "endpoint_resource": "NONE",
+          "endpoint_feature": "NONE",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 65536,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 65536,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        },
+        {
+          "plot": 2390,
+          "quarters": [
+            2391
+          ],
+          "endpoint_resource": "RESOURCE_SILK",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 2,
+          "endpoint_city": 131073,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 131073,
+              "owner": 2,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 4,
+      "city": 131073,
+      "name": "Eindhoven",
+      "plot": 2307,
+      "choice_turn": 216,
+      "foundation_turn": 219,
+      "chosen_gold": 4,
+      "chosen_utility": 2022.76171875,
+      "nearby_completed_quarters": [
+        2159,
+        2457
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [
+        {
+          "plot": 2233,
+          "quarters": [
+            2159
+          ],
+          "endpoint_resource": "RESOURCE_SPICES",
+          "endpoint_feature": "FEATURE_FOREST",
+          "endpoint_district": "NONE",
+          "endpoint_owner": 4,
+          "endpoint_city": 262147,
+          "same_turn_opportunity": null,
+          "historical_native_hub_legality": "unrecorded",
+          "same_turn_city_scopes": [
+            {
+              "city": 262147,
+              "owner": 4,
+              "frontier": "false",
+              "protected": "false"
+            }
+          ],
+          "historical_hub_adjacency": "unrecorded",
+          "historical_hub_total": "unrecorded"
+        }
+      ],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 3,
+      "city": 327684,
+      "name": "Iken",
+      "plot": 2195,
+      "choice_turn": 228,
+      "foundation_turn": 235,
+      "chosen_gold": 2,
+      "chosen_utility": 2167.44140625,
+      "nearby_completed_quarters": [],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [],
+      "lua_hub_offers_in_choice_window": []
+    },
+    {
+      "player": 3,
+      "city": 786443,
+      "name": "Johannesburg",
+      "plot": 1897,
+      "choice_turn": 240,
+      "foundation_turn": 243,
+      "chosen_gold": 3,
+      "chosen_utility": 2249.9765625,
+      "nearby_completed_quarters": [
+        1826
+      ],
+      "chosen_adjacent_quarters": [],
+      "alternative_footprints": [],
+      "lua_hub_offers_in_choice_window": []
+    }
+  ],
+  "policy_source_commit": "19e29a42",
+  "analysis_scope": "Recorded data only; user session preserved. No live queries, replay or policy change.",
+  "counts": {
+    "hub_foundations": 19,
+    "already_adjacent_to_completed_quarter": 3,
+    "no_completed_quarter_in_city_radius_plus_one": 6,
+    "nonadjacent_with_nearby_completed_quarter": 10,
+    "additional_cities_with_same_turn_owned_resource_free_footprints": 2
+  },
+  "reconstructed_cases": [
+    {
+      "city": "Aberdeen",
+      "player": 5,
+      "city_id": 262147,
+      "choice_turn": 110,
+      "quarter_plot": 789,
+      "quarter_completed": 109,
+      "chosen_hub": 936,
+      "chosen_foundation_gold": 2,
+      "alternative": 788,
+      "estimated_ordinary_base_gold": 2,
+      "formula": "River2 + four adjacent districts/2 =2 - CL rural penalties2",
+      "river_evidence": "Same fixed tile is recorded as river-adjacent when Tailors788 exists at250; endpoint terrain remains grass hills/NONE",
+      "later_use": "Tailors foundation187/completion188",
+      "extra_lua_hub_offer_in_choice_window": false,
+      "losing_native_cell": "unrecorded"
+    },
+    {
+      "city": "Napata",
+      "player": 3,
+      "city_id": 131073,
+      "choice_turn": 122,
+      "quarter_plot": 1826,
+      "quarter_completed": 45,
+      "chosen_hub": 2121,
+      "chosen_foundation_gold": 2,
+      "alternative": 1751,
+      "estimated_ordinary_base_gold": 2,
+      "formula": "River2 + two adjacent districts/2 =1 - CL rural penalty1",
+      "river_evidence": "Archived FEATURE_FLOODPLAINS_GRASSLAND and contemporaneous Tailors geometry direct1; unchanged map geography",
+      "later_use": "Spaceport foundation168/completion190",
+      "extra_lua_hub_offer_in_choice_window": false,
+      "losing_native_cell": "unrecorded"
+    }
+  ],
+  "source_city_lights_core_sha256": "13b976b1808d183a17971d3c246112f6ed7c2e99104845d1f6c3d1cc0dab6525"
+}

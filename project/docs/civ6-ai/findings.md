@@ -3966,3 +3966,37 @@ is added; broader prospective Service valuation is queued as roadmap14.3.
 initial→final publication, caps, missing customers/Base and protection. No new
 live game, native qualification or gameplay/DLL/SQL change. The completed250
 result in AI-C197 predates this policy. [Mechanism and checks](../research/mods/csc-ai-dockmaster-siting-20261116.md).
+
+
+## AI-C199 — Built-Quarter Hub opportunities lack the extra future-layout preference
+
+16 November2026, **2.1**, original customer-first Continents250 stock AI1–5,
+CL/R2/Suk, policy19e29a42, CE2d200ef/XP2 SHA092abfbb. Recorded data only; Henno
+keeps Civ/FireTuner open. No connection to that session, replay or policy change.
+
+19 Hub foundations include three touching completed Quarters, six without any
+completed owned Quarter within possible city radius, and ten nonadjacent despite
+one in reach. The audit joins raw all-player district history to native-choice
+turns, same-turn Quarter ownership/protection records and the endpoint map.
+Two cities have plausible additional matching-Gold footprints: Aberdeen788 beside
+Bakers789 (complete109, Hub choice110); Napata1751 beside Bakers1826 (complete45,
+Hub choice122). Both are recorded owned/unprotected at the relevant publication.
+Their ordinary base Gold reconstructs to2, matching the selected Hubs' foundation
+Gold2, after including native minor/river rules and CL rural penalties.
+
+No additional Lua Hub offer occurs in109–111 or121–123. Generated native SQL
+contains its +1 private-yield edge; customer-first Lua excludes an already-built
+supplier city/type and offers speculative empty Quarter footprints instead.
+Thus built-supplier co-location has no additional Lua preference. Winning native
+utilities1607.188/1817.723 are recorded; losing cells/cost components are absent.
+Counterfactual native eligibility and full adjacency modifiers need a later replay,
+so these are credible geometric/ordinary-yield opportunities, not measured wins.
+Aberdeen788 becomes Tailors187/188; consuming that footprint has a real trade-off.
+
+CL `COREX_Core.sql` attaches−1 Gold per adjacent rural type to Commercial Hub
+and Harbor, while Boroughs add positive Gold. Its SHA13b976b1 matches the run's
+pinned source. AI-C195's absence of rural penalties on CSC Quarters remains true;
+these customer districts are affected.52 archived native neighbor paths validate
+the offline geometry. Next2.1 is existing-Quarter customer support and footprint
+coordination, with local native-cell comparison before another premium.
+[Cases, reconstruction scope and data](../research/mods/csc-ai-commercial-hub-audit-20261116.md).

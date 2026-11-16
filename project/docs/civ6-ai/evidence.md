@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [Commercial Hub opportunities beside existing Quarters: recorded latest250 audit —16 November2026](../research/mods/csc-ai-commercial-hub-audit-20261116.md)
+
 - [Small Dockmaster siting adjustment and queued Service valuation —16 November2026](../research/mods/csc-ai-dockmaster-siting-20261116.md)
 
 - [Customer-first Continents250: placements, all Services and coastal Tailors diagnosis —16 November2026](../research/mods/csc-ai-customer-first-continents-20261116.md)

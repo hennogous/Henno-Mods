@@ -89,3 +89,13 @@ and empire yields, so economic outcomes should be interpreted with that package
 included. The recent zero/+1/+4/+8 customer-signal arms already held City Lights
 constant, preserving their causal comparison. No increase to our placement bonus
 or extra interaction definition is justified by this source inspection alone.
+
+
+## Customer-placement follow-up
+
+The [latest Hub audit](csc-ai-commercial-hub-audit-20261116.md) highlights another
+part of the loaded CL rules: `COREX_Core.sql` attaches−1 Gold from each adjacent
+rural district to Commercial Hub and Harbor. These penalties target customers,
+while the preceding finding about no rural penalty on CSC Quarters remains true.
+Include them when comparing a Quarter-adjacent customer site with an alternative;
+a river and several districts need not produce the naive unmodified Gold total.
