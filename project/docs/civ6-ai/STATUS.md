@@ -1,5 +1,15 @@
 # Current CSC AI status
 
+**2.1 customer-first planning,16 November — implemented/offline-qualified.**
+Reverse the generated gameplay partner graph from customer→Quarter→Base/Spec.
+Require concrete owned Quarter/material footprints, including triangles, and
+current customer eligibility. Each supplier city/Quarter type contributes once;
+shared materials may support multiple types. Best ordinary customer adjacency
+must be retained; contributions8–16 utility sum to a32-point cap. No Quarter bid,
+research unlock or spare future Quarter slot is needed. Native reception and
+ordinary-game follow-through are next; no game launched for this implementation.
+[Mechanism, diagnostics and tests](../research/mods/csc-ai-customer-first-planning-20261116.md).
+
 **2.1 City Lights inspection,16 November:** its loaded SQL adds urban/rural
 preferences, AI-only Food/Gold adjacency, rural construction and urban economic
 assistance. Generic Borough adjacency reinforces CSC co-location; no loaded rural

@@ -1,0 +1,25 @@
+# Customer-first implementation —16 November2026
+
+User authorises data-driven reverse customer→Quarter→materials, includingtriangle.
+Lateststeer:onebonus per suppliercity×Quartertype;sharedFlaxcanfeedseveraltypes;
+32totalcap explicitlyapproved (especiallyCH mappedtoallQuarters).
+ImplementedF.CustomerQuarterMap usingGENERATEDnativeprivateyieldgraph (gameplay
+registries/tags/uniques), genericclassnamekey; sharedP.ReadSuppliers improvement
+catalog nowallloadedresource-improvementrows ratherthanStageTwoProfiles.
+F.New.CustomerFirstOptions startsnativelegalownedcustomertargets,adjacentowned
+Quartergeometry→adjacentownedvisibleBase/Spec viaexistingreader. No currentQbid,
+Qunlock orfuturepopslotrequired. Currentcustomerlegal/slot required. Nativeordinary
+adjacencybesttiegate, no privateyieldfeedback, stale/missingreaddefers. Onlyowned
+land/materialsthisfirstpass; purchasesremainseparate. ExistingQuarterdeduponly
+same suppliercity/type, anothercitysametypecanstillcontribute.
+E.CustomerFirstPreference8+extraBase2(max2)+Spec4cap16; E.CustomerFirstPlan64maskDP
+matchesonepercity/typeonDISTINCTQuartertiles; sharedmaterialsdontconsumeanything.
+Aggregatecap32. E.CustomerOffers nowreversefacts, replacesold16–48Quarter-bidpath.
+Logs FUTURE_BID aggregate and FUTURE_LINK components/work; existingCEreceiptjoin.
+NoDLL/newAPI/SQLdefinition/newmodulewiring needed. Noactivegame/newtestlaunch.
+Testsnewfile+spatialactualmodules, genericQuarter/moddedresources, triangle/line,
+conflicts/cache/nativeadjgate, sharedmaterialcity/typegroups;40oraclecomparisons.
+RealDBreverse48/48;syntheticCLdefinitionremoval16/16. Finalsuitecount/doccommitpending.
+AI-C196 plusroadmap/status/architecture/siteplannerdocupdated. PreserveunrelatedWIP.
+
+Finalreview: sharedmaterialpolicyandnativepartnerexistingdedupfixedpercity/type; slot6DPoracle40cases. P.ReadSuppliers nowrejectsunrelatedtagclassesBEFOREnativegeometrycalls. 90economy/Lua+31controller/observerchecksPASS; reportlinkschecked. No livegame. Scopedcommits/pushnext.

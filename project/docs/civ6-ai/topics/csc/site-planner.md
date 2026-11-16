@@ -1,5 +1,13 @@
 # Explainable Quarter site planning
 
+**16 November customer-first addition:** reverse loaded native partner edges to
+Quarter Base/Spec tags, retain concrete adjacent Quarter space (triangles count),
+and preserve the customer's best ordinary adjacency. Contributions8–16 per
+supplier city/Quarter type combine up to32 utility; shared materials can support
+several types. This replaces Quarter-bid-dependent customer offers. Implemented
+and offline-tested; native delivery/outcomes await the next ordinary run.
+[Policy and verification](../../../research/mods/csc-ai-customer-first-planning-20261116.md).
+
 **Current15 November spatial revision:** +2 minimum/+3 preferred remains;
 preferences now48/144/288/432/576 at+2/+3/+4/+5/+6+, Base+Spec64 and bounded
 extra-material bonuses. Concrete compatible customer footprints earn0–96

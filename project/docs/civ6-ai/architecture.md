@@ -104,6 +104,11 @@ flowchart TD
     MODEL --> PROTECT
     FACTS --> PLAN
     DB --> SQL
+    SQL --> REVERSE["Reverse generated partner graph<br/>customer → Quarter type → material classes"]
+    REVERSE --> FIRST["Customer-first preparation<br/>concrete linear / triangular layouts<br/>one contribution per supplier city/type; total cap32"]
+    FACTS --> FIRST
+    CAP --> FIRST
+    FIRST --> PACKET
     SITE --> PACKET
     PROTECT --> PACKET
     PLAN --> PACKET
@@ -155,7 +160,7 @@ economic bid has solved those capabilities or priced every Service.
 | **1.6 Follow-through** | Unlock estimates, native legal targets and population-limited capacity. | Native district comparison → request/tree → foundation → completion. Retained new-Quarter request values are repriced through the native tracked setter; reservations, queues and existing foundations/repairs remain native. |
 | **1.7 Place or defer** | Whether a credible Base/customer path exists, with unknown distinguished from absent. | Negative managed default plus sparse positive offers. Nonpositive new investments are withheld during native placement selection; fresh facts can promote them next turn. |
 | **1.8 Poor placement** | Missing Base, covering mapped materials, absent customer path and low realised adjacency. | Complete Quarter valuation, +2/no-Base gate and bounded profitable-site preferences; actual native choice and foundation quality qualify suppression. |
-| **2.1 Customer placement** | Shared all-stage registry, replacement families, native terrain adjacency and alternative city footprints. | Native SQL private-yield adjacency beside built Quarters; concrete future layouts in the complete-value adapter, with current legal/capacity and cross-plan conflict checks before customer offers. City Center settlement and Wonder placement are separate consumers. |
+| **2.1 Customer placement** | Generated all-stage/tag partner graph reversed to Quarter material classes, native terrain adjacency and concrete future Quarter footprints, including triangles. | Native SQL beside built Quarters; customer-first preparation gives8–16 utility per supplier city/type, capped32 total, with exact distinct-Quarter matching, best ordinary adjacency and current customer eligibility. Quarter unlock/capacity can arrive later. City Center settlement and Wonder placement remain separate. |
 | **2.2 Material protection** | Shared retained chains, last viable/working Base or Specialty, marginal lost transactions. | Existing district deductions and qualified native exclusion, Wonder and destructive-Builder guards. Economic quotes enrich rather than replace structural protection. |
 
 This table is a code/ownership map, **not ten new completion claims**. For the

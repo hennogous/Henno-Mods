@@ -3877,3 +3877,30 @@ score contributions are unmeasured here. Hold City Lights' mod settings fixed
 when comparing CSC tuning and empire output. No game or tuning change.
 
 [Mechanisms, source locations, queries and CSC implications](../research/mods/city-lights-ai-placement-20261116.md).
+
+
+## AI-C196 — Customer-first planning reverses gameplay edges to material-backed layouts
+
+16 November2026, **2.1**, implemented/offline-qualified in main CSC. Reverse the
+SQL-generated native partner graph to generic Quarter Base/Spec classes. A
+customer's current legal footprint needs a distinct feasible adjacent Quarter
+site and that Quarter's actual adjacent suppliers; straight and triangular
+layouts qualify. Quarter research/population may arrive later. No current winning
+Quarter bid is required. The improvement catalogue now covers all loaded resource
+mappings, with actual supply filtered by the caller's material classes.
+
+Each supplier city/Quarter type contributes8–16 utility once, with32 total cap
+agreed by Henno. Shared materials can support several groups; an exact at-most64-
+state matching requires distinct Quarter footprints. Keep the best measured
+ordinary customer adjacency; omit private yield and unknown alternatives.
+Existing native SQL handles built supplier city/type links. This replaces the
+old16–48 Quarter-bid-derived customer offers, without adding forecast income.
+
+Actual-module tests cover generic/modded definitions, geometry, suppliers,
+eligibility, cache freshness and conflicts;40 small matching cases agree with
+exhaustive enumeration. Reverse index reproduces48 loaded links and16 after
+synthetic CL-definition removal. No new live run or native acceptance is claimed.
+Proposal/component/work logs join the existing CE customer receipt path; that
+and subsequent foundations/chains are the next measurement.
+
+[Implementation, diagnostics and limits](../research/mods/csc-ai-customer-first-planning-20261116.md).

@@ -1,5 +1,15 @@
 # CSC AI roadmap
 
+**2.1 customer-first planning,16 November — implemented/offline-qualified.**
+Reverse the generated gameplay partner graph from customer→Quarter→Base/Spec.
+Require concrete owned Quarter/material footprints, including triangles, and
+current customer eligibility. Each supplier city/Quarter type contributes once;
+shared materials may support multiple types. Best ordinary customer adjacency
+must be retained; contributions8–16 utility sum to a32-point cap. No Quarter bid,
+research unlock or spare future Quarter slot is needed. Native reception and
+ordinary-game follow-through are next; no game launched for this implementation.
+[Mechanism, diagnostics and tests](../research/mods/csc-ai-customer-first-planning-20261116.md).
+
 **2.1,16 November — data-driven native customer adjacency repaired.**
 The last game misses six Stage3 transaction edges and18 City Lights sales-tag
 edges. Native rules now derive from existing gameplay registries/tags, with no
@@ -766,7 +776,11 @@ until the active check closes or an explicit dependency needs attention.
 
 - **2.1 Customer placement.** Favor a site adjacent to a provider Quarter
   or a credible specific future Quarter footprint. Preserve the district's
-  standalone value when comparing placements.
+  standalone value when comparing placements. Customer-first guidance reverses
+  the loaded gameplay partner graph to feasible Quarter and material footprints,
+  including triangles. One contribution per supplier city/Quarter type, at most32
+  utility total, preserves the best ordinary adjacency. Join proposed bids to
+  native receipts and actual placement/future chains in the next ordinary run.
 - **2.2 Material protection.** Price covering mapped Base or Specialty
   deposits, including unimproved ones. Protect the last viable deposit of
   either class per Quarter and account for lost Services when the last

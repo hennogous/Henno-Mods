@@ -1,3 +1,14 @@
+# CURRENT: customer-first planner implemented; fresh250 requested,16 November
+
+Read session_ai_customer_first_20261116.md. MainCSC19e29a42 reverses nativegameplay
+partnergraph→Quarter→materials; triangles supported. Onebonus per suppliercity×
+Quartertype, sharedmaterialscanfeedseveraltypes, max16each/32total approved.
+Bestordinarycustomeradjacency retained. 90Lua/economy+31controllerchecksPASS;
+48loadedreverseedges/16syntheticwithoutCL. Nativefollowthroughawaitsnewrun.
+Userrequests freshOnlineContinents250, stockAI/CL/R2/Suk,15minchecks,reportplacements
+andallServices. NoactiveCiv/Tuner atpreflight; CEupstreamrefsunchanged2986/e59b.
+Use acceptedgameplaypackage + currentmainAI/SQLoverlay, preserveunrelatedWIP.
+
 # CURRENT: native customer adjacency repaired; City Lights AI inspected,16 November
 
 Read session_ai_city_lights_20261116.md and session_ai_native_customer_signal_20261116.md.
