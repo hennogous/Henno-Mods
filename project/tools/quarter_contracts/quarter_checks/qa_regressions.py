@@ -104,9 +104,9 @@ def validate_mechanism_bindings(db, implementation, phase):
 
 def validate_customer_delivery(db):
     failures = []
-    bits = [r[0] for r in db.execute('SELECT Bit FROM CSC_ScaledAmountBits')]
+    bits = [r[0] for r in db.execute('SELECT Bit FROM CSC_Stage3RateBits')]
     for family in ('MARKET', 'TEMPLE'):
-        prop = f'CSC_TAILORS_STAGE_3_{family}_CULTURE_AMOUNT'
+        prop = f'CSC_TAILORS_STAGE_3_{family}_CULTURE_AMOUNT_Q8'
         row = db.execute('SELECT CustomerYieldAmountProperty FROM CSC_Stage3CustomerTransactions WHERE TransactionId=?', ('CSC_TAILORS_TAILOR_' + family,)).fetchone()
         if row != (prop,):
             failures.append(f'{family}: customer-owned property delivery is required')
@@ -117,7 +117,7 @@ def validate_customer_delivery(db):
                 failures.append(f'{modifier}: customer centre must own an ungated population effect')
                 continue
             args = dict(db.execute('SELECT Name,Value FROM ModifierArguments WHERE ModifierId=?', (modifier,)))
-            if args.get('YieldType') != 'YIELD_CULTURE' or abs(float(args.get('Amount', -1)) - bit / 10000) > 1e-8:
+            if args.get('YieldType') != 'YIELD_CULTURE' or abs(float(args.get('Amount', -1)) - bit / 256) > 1e-8:
                 failures.append(f'{modifier}: wrong Culture amount')
             requirements = list(db.execute('SELECT A.Name,A.Value FROM Modifiers M JOIN RequirementSetRequirements S ON S.RequirementSetId=M.SubjectRequirementSetId JOIN Requirements R ON R.RequirementId=S.RequirementId JOIN RequirementArguments A ON A.RequirementId=R.RequirementId WHERE M.ModifierId=? AND R.RequirementType=?', (modifier, 'REQUIREMENT_PLOT_PROPERTY_MATCHES')))
             if dict(requirements) != {'PropertyName': prop + '_BIT_' + str(bit), 'PropertyMinimum': '1'}:

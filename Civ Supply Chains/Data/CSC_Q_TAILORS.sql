@@ -152,9 +152,9 @@ VALUES
         'DISTRICT_COMMERCIAL_HUB',
         'BUILDING_MARKET',
         'CSC_TAILORS_STAGE_3_CUSTOMER_POP',
-        'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT',
-        'CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT',
-        0.105
+        'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_Q8',
+        'CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT_Q8',
+        0.101
     ),
     (
         'CSC_TAILORS_TAILOR_TEMPLE',
@@ -163,9 +163,9 @@ VALUES
         'DISTRICT_HOLY_SITE',
         'BUILDING_TEMPLE',
         'CSC_TAILORS_STAGE_3_CUSTOMER_POP',
-        'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT',
-        'CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT',
-        0.105
+        'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_Q8',
+        'CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT_Q8',
+        0.101
     );
 
 
@@ -315,7 +315,7 @@ VALUES  (   'DISTRICT_CITY_CENTER',   'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOU
 INSERT INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
 SELECT  'DISTRICT_CITY_CENTER',       'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits
+FROM CSC_Stage3RateBits
 WHERE Bit > 1;
 
 INSERT INTO DistrictModifiers
@@ -815,16 +815,16 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'MODIFIER_CSC
         (   'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY',               'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',        NULL,                                         'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE_BIT_1'   ),
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_1'   );
 
--- Stage 3 bits encode a rate scaled by 10,000. Lua divides a target city-total
+-- Stage 3 bits encode a rate scaled by 256. Lua divides a target city-total
 -- yield by the receiving city's population; the native per-population effect
--- multiplies it back. Bit / 10000.0 must stay floating point so fractional returns
+-- multiplies it back. Bit / 256.0 must stay floating point so fractional returns
 -- survive SQL division.
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
 SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_' || Bit,
 	'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', NULL,
 	'REQSET_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
@@ -1061,12 +1061,12 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'ModifierId',
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
 SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_' || Bit, 'YieldType', 'YIELD_PRODUCTION'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_' || Bit, 'Amount', Bit / 10000.0
-FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_' || Bit, 'Amount', Bit / 256.0
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
@@ -1224,7 +1224,7 @@ VALUES  (   'REQSET_CSC_TAILORS_PLOT_HAS_BASE',               'REQUIREMENTSET_TE
 INSERT OR IGNORE INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
 SELECT 'REQSET_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
@@ -1336,7 +1336,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
         (   RequirementSetId,   RequirementId   )
 SELECT 'REQSET_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit,
 	'REQ_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementSetRequirements
         (   RequirementSetId,   RequirementId   )
@@ -1435,7 +1435,7 @@ VALUES  (   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',                  'REQUIREMENT_P
 INSERT OR IGNORE INTO Requirements
         (   RequirementId,   RequirementType,   Inverse   )
 SELECT 'REQ_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES', 0
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO Requirements
         (   RequirementId,   RequirementType,   Inverse   )
@@ -1576,13 +1576,13 @@ VALUES  (   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',             'Tag',        
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
 SELECT 'REQ_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit, 'PropertyName',
-	'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+	'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_Q8_BIT_' || Bit
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
 SELECT 'REQ_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit, 'PropertyMinimum', 1
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
@@ -1702,62 +1702,62 @@ VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_STAGE_2_
 
 INSERT INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
-SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO Modifiers
         (   ModifierId,   ModifierType,   SubjectRequirementSetId   )
-SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE' FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE' FROM CSC_Stage3RateBits;
 INSERT INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'Amount', Bit / 10000.0 FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'Amount', Bit / 256.0 FROM CSC_Stage3RateBits;
 INSERT INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
-SELECT 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL' FROM CSC_ScaledAmountBits;
+SELECT 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL' FROM CSC_Stage3RateBits;
 INSERT INTO RequirementSetRequirements
         (   RequirementSetId,   RequirementId   )
-SELECT 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO Requirements
         (   RequirementId,   RequirementType   )
-SELECT 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES' FROM CSC_ScaledAmountBits;
+SELECT 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES' FROM CSC_Stage3RateBits;
 INSERT INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
-SELECT 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT_Q8_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
-SELECT 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyMinimum', 1 FROM CSC_ScaledAmountBits;
+SELECT 'REQ_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyMinimum', 1 FROM CSC_Stage3RateBits;
 
 -- Temple has its own property family even when its city also has a Market.
 -- Lua counts those sites independently. Both channels can pay into one Culture
 -- total without overwriting one another's saved bit properties.
 INSERT INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
-SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO Modifiers
         (   ModifierId,   ModifierType,   SubjectRequirementSetId   )
-SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE' FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE' FROM CSC_Stage3RateBits;
 INSERT INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'Amount', Bit / 10000.0 FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'Amount', Bit / 256.0 FROM CSC_Stage3RateBits;
 INSERT INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
-SELECT 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL' FROM CSC_ScaledAmountBits;
+SELECT 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL' FROM CSC_Stage3RateBits;
 INSERT INTO RequirementSetRequirements
         (   RequirementSetId,   RequirementId   )
-SELECT 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO Requirements
         (   RequirementId,   RequirementType   )
-SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES' FROM CSC_ScaledAmountBits;
+SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES' FROM CSC_Stage3RateBits;
 INSERT INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
-SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT_BIT_' || Bit FROM CSC_ScaledAmountBits;
+SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT_Q8_BIT_' || Bit FROM CSC_Stage3RateBits;
 INSERT INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
-SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyMinimum', 1 FROM CSC_ScaledAmountBits;
+SELECT 'REQ_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'PropertyMinimum', 1 FROM CSC_Stage3RateBits;
 
 
 -- Specialty producers receive the same bilateral return as Base producers.

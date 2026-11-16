@@ -233,6 +233,19 @@ VALUES  (   1   ),
         (   262144   ),
         (   524288   );
 
+-- Stage 3 uses exact binary fractions to avoid rounding every decimal bit
+-- separately in native yield modifiers. Fifteen bits cover 0..127.99609375
+-- yield per receiving citizen, exceeding the old 20-bit decimal range of
+-- 0..104.8575. Keep the wider shared table for Stage 4's whole-number stacks.
+CREATE TABLE IF NOT EXISTS CSC_Stage3RateBits
+    (
+    Bit INTEGER PRIMARY KEY
+    );
+
+INSERT OR IGNORE INTO CSC_Stage3RateBits
+        (   Bit   )
+SELECT Bit FROM CSC_ScaledAmountBits WHERE Bit <= 16384;
+
 -- Stage/customer return stack bits used by thresholded customer-building effects,
 -- where the game-facing amount is an integer such as +1 per 5 customer Citizens.
 CREATE TABLE IF NOT EXISTS CSC_Stage4StackBits

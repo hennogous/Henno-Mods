@@ -79,12 +79,12 @@ VALUES
 
 --  Customer-population return stacks. Lua sums adjacent Market city population
 --  and writes scaled per-population amount bits on the seller city's City
---  Center plot. This preserves +0.105 Gold per customer citizen while paying
+--  Center plot. This preserves +0.101 Gold per customer citizen while paying
 --  the seller city.
 INSERT OR IGNORE INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
@@ -157,7 +157,7 @@ FROM CSC_RouteStackBits;
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
@@ -242,12 +242,12 @@ FROM CSC_RouteStackBits;
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'YieldType',				'YIELD_GOLD'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 10000.0
-FROM CSC_ScaledAmountBits;
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 256.0
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )

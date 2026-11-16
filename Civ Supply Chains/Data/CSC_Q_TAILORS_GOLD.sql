@@ -43,11 +43,11 @@ WHERE ReplacesBuildingType = 'BUILDING_LIGHTHOUSE';
 
 -- Stage 3 Gold reads the aggregate return-rate bits also used by Production.
 -- One city-center consumer pays the summed customer demand once; the encoded
--- value is a 10,000-scaled per-population rate, not one Gold per active bit.
+-- value is a 256-scaled per-population rate, not one Gold per active bit.
 INSERT INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
 SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_CUSTOMER_RETURN_GOLD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT INTO DistrictModifiers
         (   DistrictType,             ModifierId   )
@@ -81,7 +81,7 @@ INSERT OR IGNORE INTO Modifiers
 SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_GOLD_AMOUNT_BIT_' || Bit,
 	'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', NULL,
 	'REQSET_CSC_TAILORS_CUSTOMER_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
@@ -117,14 +117,14 @@ VALUES  (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD',   'ModifierId',
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
 SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_GOLD_AMOUNT_BIT_' || Bit, 'YieldType', 'YIELD_GOLD'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 -- Keep floating-point division: integer division would erase the fractional
 -- rate before the engine multiplies it by the receiving city's population.
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_GOLD_AMOUNT_BIT_' || Bit, 'Amount', Bit / 10000.0
-FROM CSC_ScaledAmountBits;
+SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_GOLD_AMOUNT_BIT_' || Bit, 'Amount', Bit / 256.0
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )

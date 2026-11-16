@@ -125,10 +125,19 @@ local PROP_BAKERS_STAGE_4_CAFE_RETURN = "CSC_BAKERS_STAGE_4_CAFE_RETURN";
 local PROP_BAKERS_STAGE_4_ZOO_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_ZOO_CULTURE_RETURN";
 local PROP_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN";
 local PROP_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN";
-local AMOUNT_SCALE = 10000;
+-- Stage 3 SQL divides each active bit by 256. Each coefficient is therefore
+-- exactly representable on the Q8 model that reproduces the reported tooltips.
+-- Registry amount-property names carry a Q8 suffix so saved decimal-rate bits
+-- are never interpreted with the new divisor. As with existing saved-state
+-- handling, the next synchronized turn/event initializes the new properties.
+-- Round the aggregate rate once, after all customer transactions are summed.
+-- SQL generates only 15 rate bits; this range exceeds the previous decimal
+-- encoding. Saturate exceptional demand instead of wrapping its high bits.
+local AMOUNT_SCALE = 256;
+local MAX_STAGE3_SCALED_RATE = 32767;
 -- These bits mirror CSC_ScaledAmountBits and CSC_Stage4StackBits in CSC_Q_ALL.sql.
--- For decimal per-population returns, Lua writes scaled integers such as 2500
--- for 0.25; SQL activates the matching bit modifiers and sums their amounts.
+-- Stage 3 writes 64 for a 0.25 per-citizen rate. Its SQL uses only the first
+-- 15 bits. The remaining shared bits retain Stage 4's existing integer range.
 local AMOUNT_STACK_BITS = {
 	1, 2, 4, 8, 16, 32, 64, 128,
 	256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
@@ -547,7 +556,13 @@ local function CSC_GetScaledPerPopulationAmount(targetYield, population)
 		return 0;
 	end
 
-	return math.floor(((targetYield * AMOUNT_SCALE) / population) + 0.5);
+	-- Rounding upward preserves the requested total as a minimum. The added
+	-- yield is less than one native rate unit per receiving citizen (pop/256
+	-- city yield). This removes loss during bit decomposition, but very large
+	-- receiving cities can still expose the native per-population granularity.
+	-- The epsilon prevents a floating-point residue adding an extra whole unit.
+	return math.min(MAX_STAGE3_SCALED_RATE,
+		math.ceil((targetYield * AMOUNT_SCALE) / population - 1e-9));
 end
 
 local function CSC_WriteAmountBits(pCity, pCityCenterPlot, propertyName, scaledAmount)

@@ -132,7 +132,7 @@ VALUES  (   'BAKERS',     'DISTRICT_COMMERCIAL_HUB',   'POLICY_TOWN_CHARTERS'   
 -- The registry names the seller's population/Production-return properties and
 -- the customer's Food property. CSC_CustomerPopulationReturns.lua accumulates
 -- all qualifying seller/site pairs, including same-city and cross-city sales.
--- The 0.105 is a per-customer-citizen target, not an integer yield per Market.
+-- The 0.101 is a per-customer-citizen target, not an integer yield per Market.
 INSERT OR IGNORE INTO CSC_Stage3CustomerTransactions
     (
         TransactionId,
@@ -153,9 +153,9 @@ VALUES
         'DISTRICT_COMMERCIAL_HUB',
         'BUILDING_MARKET',
         'CSC_BAKERS_STAGE_3_MARKET_CUSTOMER_POP',
-        'CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT',
-        'CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT',
-        0.105
+        'CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT_Q8',
+        'CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT_Q8',
+        0.101
     );
 
 
@@ -325,7 +325,7 @@ VALUES
 
 --  Customer-population return stacks. Lua sums adjacent Market city population
 --  and writes scaled per-population amount bits on City Center plots. This
---  preserves +0.105 yield per customer citizen while paying the current city.
+--  preserves +0.101 yield per customer citizen while paying the current city.
 -- Why these effects attach to City Center instead of Bakery/Market
 -- Lua already sums every eligible transaction. One property consumer per receiving
 -- city pays that sum once; attaching it again for each seller would multiply it.
@@ -333,12 +333,12 @@ VALUES
 INSERT OR IGNORE INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO DistrictModifiers
         (   DistrictType,   ModifierId   )
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 --  Stage 4 customer-population returns. Lua sums +1 per 5 Citizens in
 --  adjacent Zoo/Ferris/Conservatory customer cities, then writes integer
@@ -854,7 +854,7 @@ VALUES
 --  +1 Food from the local Flour Mill
         (   'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',               'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                              NULL   ),
 
---  +0.105 Food per Citizen to adjacent Market cities
+--  +0.101 Food per Citizen to adjacent Market cities
 -- Legacy direct Market-Food definitions are retained here, but this wrapper is
 -- not attached in the current BuildingModifiers list. Active Market Food comes
 -- from the customer-owned amount-bit consumers above; do not wire both paths.
@@ -937,18 +937,18 @@ SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'MODIFIER_BUILDI
 FROM CSC_RouteStackBits;
 
 -- Customer population returns are too granular for direct integer yield rows:
--- Lua calculates the target decimal amount, scales it by 10000, then writes
+-- Lua calculates the target decimal amount, rounds the combined rate up to 1/256 units, then writes
 -- active bit properties. These generated modifiers turn those bit properties
 -- back into per-population yield increments.
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType,   OwnerRequirementSetId,   SubjectRequirementSetId   )
 SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,						'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 -- Stage 4 returns are whole-number stacks (+1 per 5 Citizens in each eligible
 -- customer city). They use the same property-bit pattern, but BUILDING_YIELD_CHANGE
@@ -1042,10 +1042,10 @@ VALUES
         (   'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',               'YieldType',              'YIELD_FOOD'   ),
         (   'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',               'Amount',                 1   ),
 
---  +0.105 Food per Citizen to adjacent Market cities
+--  +0.101 Food per Citizen to adjacent Market cities
         (   'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',            'ModifierId',             'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET'   ),
         (   'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',                   'YieldType',              'YIELD_FOOD'   ),
-        (   'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',                   'Amount',                 0.105   ),
+        (   'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',                   'Amount',                 0.101   ),
 
 --  Cache supplied Bakery status for route exports
         (   'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',             'Key',                    'CSC_BAKERS_BAKERY_SUPPLIED'   ),
@@ -1159,27 +1159,27 @@ SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'Amount',					Bi
 FROM CSC_RouteStackBits;
 
 -- The Amount values below divide by AMOUNT_SCALE from
--- CSC_CustomerPopulationReturns.lua. For example, a stored bit of 256 becomes
--- 0.0256 yield per population when this modifier is active.
+-- CSC_CustomerPopulationReturns.lua. For example, a stored bit of 1 becomes
+-- 0.00390625 yield per population when this modifier is active.
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'YieldType',				'YIELD_PRODUCTION'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 10000.0
-FROM CSC_ScaledAmountBits;
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 256.0
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
 SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,							'YieldType',				'YIELD_FOOD'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,							'Amount',					Bit / 10000.0
-FROM CSC_ScaledAmountBits;
+SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,							'Amount',					Bit / 256.0
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
@@ -1260,7 +1260,7 @@ VALUES
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.105 Food per Citizen to adjacent Market cities
+--  +0.101 Food per Citizen to adjacent Market cities
         (   'REQSET_CSC_ADJ_MARKET',                            'REQUIREMENTSET_TEST_ALL'   ),
         (   'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',             'REQUIREMENTSET_TEST_ALL'   ),
 
@@ -1307,12 +1307,12 @@ VALUES
 INSERT OR IGNORE INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
 SELECT	'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,		'REQUIREMENTSET_TEST_ALL'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
 SELECT	'REQSET_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,			'REQUIREMENTSET_TEST_ALL'
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
@@ -1374,7 +1374,7 @@ VALUES
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.105 Food to adjacent Market cities; +0.105 Production and +0.105 Gold returns to Bakery city per Citizen
+--  +0.101 Food to adjacent Market cities; +0.101 Production and +0.101 Gold returns to Bakery city per Citizen
         (   'REQSET_CSC_ADJ_MARKET',                            'REQ_CSC_PLOT_ADJ_TO_OWNER'   ),
         (   'REQSET_CSC_ADJ_MARKET',                            'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'   ),
         (   'REQSET_CSC_ADJ_MARKET',                            'REQ_CSC_CITY_HAS_MARKET'   ),
@@ -1452,12 +1452,12 @@ FROM CSC_RouteStackBits;
 INSERT OR IGNORE INTO RequirementSetRequirements
         (   RequirementSetId,   RequirementId   )
 SELECT	'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,		'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementSetRequirements
         (   RequirementSetId,   RequirementId   )
 SELECT	'REQSET_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,			'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementSetRequirements
         (   RequirementSetId,   RequirementId   )
@@ -1500,7 +1500,7 @@ VALUES
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.105 Food to adjacent Market cities
+--  +0.101 Food to adjacent Market cities
         (   'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',                'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',   0   ),
         (   'REQ_CSC_CITY_HAS_MARKET',                           'REQUIREMENT_CITY_HAS_BUILDING',            0   ),
         (   'REQ_CSC_CITY_HAS_BAKERY',                           'REQUIREMENT_CITY_HAS_BUILDING',            0   ),
@@ -1562,12 +1562,12 @@ FROM CSC_RouteStackBits;
 INSERT OR IGNORE INTO Requirements
         (   RequirementId,   RequirementType,   Inverse   )
 SELECT	'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,					'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO Requirements
         (   RequirementId,   RequirementType,   Inverse   )
 SELECT	'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,					'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO Requirements
         (   RequirementId,   RequirementType,   Inverse   )
@@ -1607,7 +1607,7 @@ VALUES
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.105 Food to adjacent Market cities
+--  +0.101 Food to adjacent Market cities
         (   'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',                'DistrictType',        'DISTRICT_COMMERCIAL_HUB'   ),
         (   'REQ_CSC_CITY_HAS_MARKET',                           'BuildingType',        'BUILDING_MARKET'   ),
         (   'REQ_CSC_CITY_HAS_BAKERY',                           'BuildingType',        'BUILDING_CSC_BAKERS_BAKERY'   ),
@@ -1695,23 +1695,23 @@ FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
-SELECT	'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+SELECT	'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT_Q8_BIT_' || Bit
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
 SELECT	'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,					'PropertyMinimum',				1
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
-SELECT	'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT_BIT_' || Bit
-FROM CSC_ScaledAmountBits;
+SELECT	'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT_Q8_BIT_' || Bit
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
 SELECT	'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,					'PropertyMinimum',				1
-FROM CSC_ScaledAmountBits;
+FROM CSC_Stage3RateBits;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )

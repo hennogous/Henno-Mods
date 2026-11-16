@@ -3,6 +3,12 @@
 from __future__ import annotations
 
 import re
+import math
+
+try:
+    from lupa import LuaRuntime
+except ImportError:
+    LuaRuntime = None
 import sqlite3
 import unittest
 from pathlib import Path
@@ -35,6 +41,56 @@ class Stage3CustomerRegistryTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.connection.close()
 
+    @unittest.skipIf(LuaRuntime is None, "lupa is required to execute gameplay Lua")
+    def test_binary_rates_preserve_reported_transaction_totals(self) -> None:
+        source = LUA.read_text(encoding="utf-8")
+        helper = source.split("local function CSC_GetScaledPerPopulationAmount", 1)[1]
+        helper = helper.split("local function CSC_WriteAmountBits", 1)[0]
+        runtime = LuaRuntime()
+        runtime.execute(
+            "local AMOUNT_SCALE = 256; local MAX_STAGE3_SCALED_RATE = 32767; "
+            "function encode" + helper
+        )
+        for target, population, displayed in (
+            (1.01, 10, 1.0), (2.02, 10, 2.0), (1.01, 5, 1.0),
+            (0.101, 26, 0.1), (0, 10, 0), (1.01, 0, 0),
+        ):
+            with self.subTest(target=target, population=population):
+                encoded = runtime.globals().encode(target, population)
+                bits = [1 << index for index in range(15) if encoded & (1 << index)]
+                # Each SQL coefficient survives individual Q8 truncation exactly.
+                native_rate = sum(math.floor(bit / 256 * 256) / 256 for bit in bits)
+                total = native_rate * population
+                self.assertEqual(math.floor(total * 10) / 10, displayed)
+                if target > 0 and population > 0:
+                    self.assertGreaterEqual(total, target)
+                    self.assertLess(total - target, population / 256)
+
+    def test_stage3_uses_fifteen_bits_and_retains_stage4_range(self) -> None:
+        shared = (DATA / "CSC_Q_ALL.sql").read_text(encoding="utf-8-sig")
+        for table in ("CSC_ScaledAmountBits", "CSC_Stage3RateBits", "CSC_Stage4StackBits"):
+            self.connection.executescript(
+                _statement(shared, "CREATE TABLE IF NOT EXISTS " + table)
+            )
+            for statement in re.findall(
+                rf"^INSERT OR IGNORE INTO {table}\b[^;]*;", shared, re.MULTILINE | re.DOTALL
+            ):
+                self.connection.executescript(statement)
+        self.assertEqual(
+            self.connection.execute("SELECT COUNT(*), MAX(Bit) FROM CSC_Stage3RateBits").fetchone(),
+            (15, 16384),
+        )
+        self.assertEqual(
+            self.connection.execute("SELECT COUNT(*), MAX(Bit) FROM CSC_Stage4StackBits").fetchone(),
+            (20, 524288),
+        )
+        for quarter in ("BAKERS", "TAILORS"):
+            for suffix in ("", "_GOLD"):
+                sql = (DATA / f"CSC_Q_{quarter}{suffix}.sql").read_text(encoding="utf-8-sig")
+                self.assertNotIn("Bit / 10000.0", sql)
+                self.assertNotIn("FROM CSC_ScaledAmountBits", sql)
+                self.assertIn("Bit / 256.0", sql)
+
     def test_each_customer_family_has_one_complete_row(self) -> None:
         rows = self.connection.execute(
             "SELECT TransactionId, SellerBuildingType, CustomerDistrictType, CustomerBuildingType, "
@@ -47,17 +103,17 @@ class Stage3CustomerRegistryTests(unittest.TestCase):
                 (
                     "CSC_BAKERS_BAKERY_MARKET", "BUILDING_CSC_BAKERS_BAKERY", "DISTRICT_COMMERCIAL_HUB",
                     "BUILDING_MARKET", "CSC_BAKERS_STAGE_3_MARKET_CUSTOMER_POP",
-                    "CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT", "CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT", 0.105,
+                    "CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT_Q8", "CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT_Q8", 0.101,
                 ),
                 (
                     "CSC_TAILORS_TAILOR_MARKET", "BUILDING_CSC_TAILORS_TAILOR", "DISTRICT_COMMERCIAL_HUB",
                     "BUILDING_MARKET", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
-                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", "CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT", 0.105,
+                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_Q8", "CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT_Q8", 0.101,
                 ),
                 (
                     "CSC_TAILORS_TAILOR_TEMPLE", "BUILDING_CSC_TAILORS_TAILOR", "DISTRICT_HOLY_SITE",
                     "BUILDING_TEMPLE", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
-                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", "CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT", 0.105,
+                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_Q8", "CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT_Q8", 0.101,
                 ),
             ],
         )
