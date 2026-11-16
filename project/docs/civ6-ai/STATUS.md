@@ -1,5 +1,15 @@
 # Current CSC AI status
 
+**G3,16 November — observed ordinary staffing qualified.**
+The model now reads native citizen-yield definitions and actual assignments,
+excluding Service rates and assumed future workers. Native trace separates
+per-worker yields from slot capacity. A zero-turn mature-world pass observes28
+workers/30 ordinary streams across22 chains; the10,954-row native graph and
+67-city population refresh match, session closed/restored.40 transaction and113
+economy tests pass. Next: actual route income/import loss and the complete
+candidate-world facts, followed by native residual attribution/delivery.
+[Staffing mechanism and evidence](../research/mods/csc-observed-specialists-20261116.md).
+
 **G3,16 November — joint customer ledger foundation implemented.**
 One scheduler now shares building investments and city queues across affected
 Quarters, and pools population targets before rounding. Astra's review caught

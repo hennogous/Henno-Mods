@@ -181,6 +181,26 @@ local function ledger(site, second, shared)
         result.chainStages[site.key]={second=second and second.type,third=site.third and site.third.type,
             fourth=site.fourth and site.fourth.type,ready={[2]=stages[2],[3]=stages[3],[4]=stages[4]}}
     end
+    -- Slots are capacity, not workers. Keep only observed assignments and the
+    -- gameplay-owned ordinary citizen rates supplied by Facts. Existing rows
+    -- are baseline income; an actually missing building can improve those same
+    -- workers at its scheduled completion. No Service-building rate or assumed
+    -- future assignment is introduced by this ledger.
+    local specialists=site.specialists
+    if specialists and(specialists.workers or 0)>0 then
+        for yield,amount in pairs(specialists.base or{})do
+            emit('specialist-base:'..yield,yield,amount*specialists.workers,0,specialists.city)
+        end
+        for stage=2,4 do
+            local definition=stage==2 and second or stage==3 and site.third or stage==4 and site.fourth
+            if definition and not(specialists.presentBuildings or{})[definition.type]then
+                for yield,amount in pairs((specialists.buildings or{})[definition.type]or{})do
+                    emit('specialist-building:'..definition.type..':'..yield,yield,amount*specialists.workers,
+                        stages[stage],specialists.city,definition.type)
+                end
+            end
+        end
+    end
     local ready2=stages[2]
     if second then emit('producer-terrain','YIELD_PRODUCTION',second.terrain or 0,ready2,site.city,second.type)end
     for _,supplier in ipairs(site.suppliers or {})do
@@ -366,7 +386,7 @@ local function ledger(site, second, shared)
             end
         end
     end
-    -- Specialist slots, trade and later Services are not free assumed income.
+    -- Future specialist assignments, trade and later Services are not free income.
     -- Facts/adapter diagnostics expose these omissions; retain the separate
     -- Service-aware nomination policy until those economic channels are priced.
     for _,reason in ipairs(site.omissions or {})do omit('coverage',reason)end

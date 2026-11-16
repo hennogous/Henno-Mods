@@ -13,6 +13,7 @@ import re
 import shutil
 import sqlite3
 import sys
+import time
 from types import SimpleNamespace
 import xml.etree.ElementTree as ET
 
@@ -132,19 +133,23 @@ for _,pid in ipairs('''+lua(plan.identity['original_ai'])+''')do
   local site=assert(chain.economy,'Existing chain economy unavailable')
   assert(site.service==nil,'Services entered ordinary placement smoke')
   local result=CSC_AI_EconomyModel.Forecast(site,function()return 0 end)
-  local suppliers,legs,worked,workingCities,inputStreams,returnStreams=0,0,0,0,0,0
+  local suppliers,legs,worked,workingCities,inputStreams,returnStreams,specialistStreams=0,0,0,0,0,0,0
   for _,s in ipairs(site.suppliers)do
    assert(s.transactions,'Missing canonical material map');suppliers=suppliers+1
    if s.worked then worked=worked+1 end
    if s.city then workingCities=workingCities+1 end
    for _,tx in pairs(s.transactions)do legs=legs+#tx.legs end
   end
-  for _,stream in ipairs(result.streams)do if stream.id:find('material:',1,true)==1 then
-   if stream.recipientBuilding then inputStreams=inputStreams+1 else returnStreams=returnStreams+1 end
-  end end
+  for _,stream in ipairs(result.streams)do
+   if stream.id:find('material:',1,true)==1 then
+    if stream.recipientBuilding then inputStreams=inputStreams+1 else returnStreams=returnStreams+1 end
+   elseif stream.id:find('specialist-',1,true)==1 then specialistStreams=specialistStreams+1 end
+  end
   rows[#rows+1]={player=pid,city=chain.city:GetID(),quarter=chain.profile.key,
    suppliers=suppliers,eligibleLegs=legs,workedSuppliers=worked,knownWorkingCities=workingCities,
-   inputStreams=inputStreams,returnStreams=returnStreams,streams=#result.streams,omissions=#result.omissions}
+   inputStreams=inputStreams,returnStreams=returnStreams,streams=#result.streams,omissions=#result.omissions,
+   specialistWorkers=site.specialists and site.specialists.workers or 0,
+   specialistCity=site.specialists and site.specialists.city,specialistStreams=specialistStreams}
  end
 end
 assert(#rows>0,'No actual chain sites sampled')
@@ -212,11 +217,16 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
         match=re.search(r'CSC_POPULATION_RESULT=([^\r\n]+)',result);require(match,'Missing gameplay result')
         proof=json.loads(match[1]);require(proof['verified']and proof['turn']==args.at,'Gameplay equivalence failed')
         if smoke:
+            started=time.perf_counter()
             raw=c.cmd(smoke,'CSC_AI_BakersGameplay','material-model-smoke')
+            elapsed=time.perf_counter()-started
             (out/'model-smoke.txt').write_text(raw,encoding='utf-8')
             match=re.search(r'CSC_MATERIAL_MODEL_SMOKE=([^\r\n]+)',raw);require(match,'Missing material model smoke result')
             result=json.loads(match[1]);require(result['verified']and result['turn']==args.at,'Model smoke failed')
             write_json(out/'model-smoke.json',result)
+            write_json(out/'model-smoke-runtime.json',dict(wall_seconds=elapsed,
+                scope='Five-player mature-world Facts plus isolated zero-price Model, including console transport',
+                pricing='Zero diagnostic, no native pricing or bids',chains=len(result['chains'])))
         write_json(out/'complete.json',proof)
     finally:
         if s.owner is not None and s.owner.poll()is None:

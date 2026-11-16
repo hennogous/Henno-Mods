@@ -66,3 +66,38 @@ Tailor2Culture1Gold;Fashion1Culture2Gold. Goldintrinsic independentGoldtoggle.
 Unrelated large UI/art/Pedia/localization/Taxes WIP belongs to concurrent work.
 Stage manifest/project/tailors_assertions from HEAD with only material additions.
 No upstream PR. Current CE2d200ef, DLL1be0545b, XP2SHA092abfbb .text qualified.
+
+## Observed staffing slice, after12f00cff
+
+Current Facts/Model adds native citizen-yield definitions + observed assignments.
+No gameplaySQL changes. Only ordinary Stage2/3/4 building rows; Service citizen
+rates excluded. NativeMapPlot5f6d0→RulesYield37ec60 districtbranch sums district
+CitizenYieldChanges + physical GetBuildingsAtLocation10b6e0, withoutpillagefilter.
+CityYieldFromTiles133780 multipliesyield*actualworkers*256. WorkerCapacity10fff0
+separately completed/unpillageddistrict andunpillagedslots. Presentpillaged rates
+arebaseline; don'taddagainonrepair. Newempty slots neverearnfutureworkerincome.
+Factsrequiresfreshknownreceivingcitywhenworkers>0, keepsintrinsicTailorGold
+withtransactionGoldoff. Uses0whenobserved0. Site nowexplicitplayer/key/plot.
+
+40transaction+113economy testsPASS. Astra5staffing+11jointtests independentPASS.
+staffing250-01 native22chains/28workers/30ordinarystreams; all10954nativeeffectrows,
+137fixedand67citypopulation match. Closed/restored exit0.5playerfacts/modelzero-
+price command3.69966s inclconsoletransport, noCEpricing/search; fullG5stillopen.
+AI-N138 skillexported/pusheda5ef245, private staffing-native-plot-yield.json and
+staffing-native-city-workers.json atordinaryartifactroot. Noactiveownedgame.
+
+## G4 Astra preparation (review, no native code changes)
+
+CE AIDistrictScores.cpp calculate_with_late_policy→original_cache postaggregate
+isappropriate path; DistrictAggregationReturnRva3e2941. No current building
+component/root-value readAPI. BuildingNominationReceipt onlycounts. Reuse passive
+mill_building_study observer/analyze and late_placement/calibrate.py positive-
+building-gate reconstruction, savings_watch rowcaches. Avoid Frida/CE overlapping
+prologues; controlled attribution run or passiveCEshared-detourprofile.
+New aggregateDelta mode shouldenum notboolmix, checkedint64Q8add/sentinels/positive
+result/eligibility/reservation rules, immutablegenerationpacket andreceipts.
+Atmostonceperpublicationinitial, qualifyfreshmatrixgenerationbeforeperiodicrepublish;
+pointer/scoreequality notfreshnessproof, no speculativeequalityrollback. Repeated
+downstreamreadsreadonly. NeednativeoverlapattributionMarket/Bank/Stock+otherfamily
+andpositivebuildinggatecrossing. MainnativeBase andprivateSQL1 preserved.
+NoCEsourceedits/build/PRyet. WildWrefs unchanged2986a746/e59b5aa pre-staffingsmoke.

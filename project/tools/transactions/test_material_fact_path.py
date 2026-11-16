@@ -45,7 +45,7 @@ GameInfo.Districts=info({{DistrictType='DISTRICT_CSC_'..QUARTER..'_QUARTER',Requ
  {DistrictType='DISTRICT_HARBOR',RequiresPopulation=1}},'DistrictType')
 for b in GameInfo.Buildings()do if b.BuildingType~=PRODUCER then b.MustPurchase=1 end end
 local q={GetIndex=function()return 1 end,GetX=function()return 0 end,GetY=function()return 0 end,
- GetWorkerCount=function()return 0 end,IsRiver=function()return false end}
+ GetWorkerCount=function()return QUARTER_WORKERS or 0 end,IsRiver=function()return false end}
 local p={GetIndex=function()return 2 end,GetX=function()return 1 end,GetY=function()return 0 end,
  GetOwner=function()return 1 end,GetResourceType=function()return GameInfo.Resources[RESOURCE].Index end,
  GetDistrictType=function()return -1 end,GetImprovementType=function()return GameInfo.Improvements[HOST].Index end,
@@ -63,6 +63,7 @@ local hd={GetX=customerPlot.GetX,GetY=customerPlot.GetY,IsComplete=function()ret
  IsPillaged=function()return CUSTOMER_DAMAGED end,GetType=customerPlot.GetDistrictType}
 local ds={GetNumDistricts=function()return CUSTOMER and 2 or 1 end,GetDistrictByIndex=function(_,i)return i==0 and d or hd end}
 local buildings={HasBuilding=function(_,id)return id==GameInfo.Buildings[PRODUCER].Index
+ or EXTRA_BUILDINGS and EXTRA_BUILDINGS[id]
  or CUSTOMER and id==GameInfo.Buildings.BUILDING_LIGHTHOUSE.Index end,
  IsPillaged=function()return false end,GetBuildingLocation=function(_,id)return id==GameInfo.Buildings.BUILDING_LIGHTHOUSE.Index and 3 or 1 end}
 local function makeCity(id)
@@ -89,7 +90,8 @@ profile={key=QUARTER,district=GameInfo.Districts['DISTRICT_CSC_'..QUARTER..'_QUA
  base='CLASS_CSC_'..QUARTER..'_BASE',specialty='CLASS_CSC_'..QUARTER..'_SPEC'}
 WORKERS=1;UI_LAG=0;HOST_DAMAGED=false;CUSTOMER_DAMAGED=false
 ui={GetEconomyCityNumber=function()return 10 end,GetEconomyPlotFacts=function(index)return{
- turn=20-UI_LAG,plotOwner=1,workingPlayer=1,workingCity=2,workers=index==2 and WORKERS or 0,yields={}}end}
+ turn=20-UI_LAG,plotOwner=1,workingPlayer=1,workingCity=index==1 and 1 or 2,
+ workers=index==2 and WORKERS or QUARTER_WORKERS or 0,yields={}}end}
 quarterPlot=q
 ''')
     for name in('Facts','Model'):vm.execute((MOD/f'Lua_UI/AI/CSC_AI_Economy{name}.lua').read_text())

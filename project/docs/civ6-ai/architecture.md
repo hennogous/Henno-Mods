@@ -8,8 +8,12 @@ The source-to-native path and diagram are in the
 [migration report](../research/mods/csc-population-transaction-catalogue-20261116.md).
 Population gameplay matches the QAed source in288 offline worlds and67 live
 cities. Fixed/native material graphs match the QAed baseline. A bounded live pass
-processes22 actual chain sites. Material lifecycle/protection alignment, observed
-trade/staffing and the joint customer-site residual remain active work.
+processes22 actual chain sites;30 lifecycle observations qualify material
+damage/recovery and shared protection. The pure joint ledger now shares customer
+investments/queues and pools population targets before rounding. Ordinary staffing
+reads native citizen-yield definitions and actual assignments; the mature smoke
+observes28 workers and30 ordinary streams. Existing routes, the affected-world factory and the native residual
+remain active work.
 [Contract](../integrations/csc-economic-contract.md).
 
 ```mermaid

@@ -4079,3 +4079,26 @@ survive district-only damage. Protection now consumes these actual suppliers.
 Final material250-02 verifies the current reader on22 chains/32 suppliers with
 27 input and52 worked-return streams; the full native graph remains unchanged.
 [Evidence and correction](../research/mods/csc-material-transaction-catalogue-20261116.md).
+
+## AI-C204 — Joint customer value shares physical investments and payout rounding
+
+16 November2026, G3/roadmap1.4/2.1/2.2. The pure evaluator uses one owner/city
+queue and building identity across all supplied chains. Global customer choices
+preserve automatic links; pooled population targets round once. Minimal and
+all-enabled seeds admit jointly profitable investments. Eleven focused cases
+cover the shared-cost and deleted-edge defects found by Astra, owner collisions,
+contradictory facts and budget behavior. Live candidate-world/route construction
+and native residual remain open.
+[Evaluator and remaining integration](../research/mods/csc-joint-customer-ledger-20261116.md).
+
+## AI-C205 — Ordinary specialist value uses observed workers and native rates
+
+16 November2026, G3. Facts selects ordinary Stage2/3/4 citizen-yield rows and
+observed workers/receiving city. Slots create no workers, Service rows stay
+excluded, and intrinsic Tailor Gold survives transaction Gold off. Native code
+sums physical building citizen rates separately from unpillaged slot capacity;
+present/pillaged rows must not be added again as future repair income. Five
+actual-SQL regressions and mature staffing250-01 pass:28 workers/30 ordinary
+streams, original10,954 native graph rows and67-city population refresh unchanged,
+session closed/restored. G3 route/world integration remains open.
+[Native path and checks](../research/mods/csc-observed-specialists-20261116.md).

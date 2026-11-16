@@ -56,6 +56,7 @@ def compile_catalogue(*,gold=True,lgd=True,reference=None,uniques=False,mc=False
     db.executescript('''
 CREATE TABLE Buildings(BuildingType TEXT PRIMARY KEY, PrereqDistrict TEXT, IsWonder INTEGER DEFAULT 0);
 CREATE TABLE BuildingReplaces(CivUniqueBuildingType TEXT, ReplacesBuildingType TEXT);
+CREATE TABLE Building_CitizenYieldChanges(BuildingType TEXT,YieldType TEXT,YieldChange INTEGER,PRIMARY KEY(BuildingType,YieldType));
 CREATE TABLE ImprovementModifiers(ImprovementType TEXT, ModifierId TEXT, UNIQUE(ImprovementType,ModifierId));
 CREATE TABLE DistrictModifiers(DistrictType TEXT, ModifierId TEXT, UNIQUE(DistrictType,ModifierId));
 CREATE TABLE BuildingModifiers(BuildingType TEXT, ModifierId TEXT, UNIQUE(BuildingType,ModifierId));
@@ -100,7 +101,7 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
             table=re.match(r'INSERT(?: OR IGNORE)? INTO (\w+)',s)
             if ('CSC_BakersStage4CultureBuildings'in s or
                 (table and table[1]in (NATIVE|{'ImprovementModifiers'}) and (matches_population(s)or any("'"+x+"'"in s for x in aliases)))or
-                (table and table[1]in names)):
+                (table and table[1]in names|{'Building_CitizenYieldChanges'})):
                 db.executescript(s)
     if not reference:
         db.executescript((MOD/'Data/CSC_BuildingTransactionSchema.sql').read_text())

@@ -98,6 +98,18 @@ local function definitions()
     if catalogue then return catalogue end
     local c={stages={},customers={},population={},transactions={},replacements={},tech={},civic={},amounts={},arguments={},prerequisites={},exclusives={}}
     c.materials={}
+    c.citizenYields={};c.districtCitizenYields={}
+    -- Ordinary specialist rates remain native gameplay definitions. Cache them
+    -- once, then select only the Quarter's Stage2/3/4 producers at a live site;
+    -- Service buildings cannot enter that subset. Intrinsic citizen Gold is
+    -- independent of the optional transaction-Gold companion.
+    for _,entry in ipairs({{GameInfo.Building_CitizenYieldChanges,c.citizenYields,'BuildingType'},
+        {GameInfo.District_CitizenYieldChanges,c.districtCitizenYields,'DistrictType'}})do
+        if entry[1]then for row in entry[1]()do
+            local rates=entry[2][row[entry[3]]]or{};entry[2][row[entry[3]]]=rates
+            rates[row.YieldType]=(rates[row.YieldType]or 0)+row.YieldChange
+        end end
+    end
     local fixedBindingRows,fixedLeaves={},{}
     if GameInfo.CSC_BuildingTransactionFixedBindings then for row in GameInfo.CSC_BuildingTransactionFixedBindings()do
         fixedBindingRows[#fixedBindingRows+1]=row;fixedLeaves[row.ChildModifierId]=true
@@ -905,10 +917,11 @@ function F.New(player,placement,ui,context)
         local qUnlock=math.max(research('tech',profile.district.PrereqTech),research('civic',profile.district.PrereqCivic))
         local qReady=functioning and 0 or duration and qUnlock+math.max(1,duration)
             or cost and city.production and city.production>0 and qUnlock+math.max(1,math.ceil(cost/city.production))or INF
-        local site={city=city.id,population=city.population,horizon=context and context.horizon or 50,quarterReady=qReady,adjacency=0,
+        local site={key=pid..':'..key,player=pid,city=city.id,plot=plot:GetIndex(),population=city.population,
+            horizon=context and context.horizon or 50,quarterReady=qReady,adjacency=0,
             maintenance=profile.district.Maintenance or 0,existing=exists,materialYield=family.yield,
             direct={},suppliers={},customers={},seconds={},omissions={
-                'Future specialist staffing, trade routes, GPP and Stage3/4 Service premiums are not priced'}}
+                'Future worker assignments, trade routes, GPP and Stage3/4 Service premiums are not priced'}}
         if context and context.nativeSite and profile.service and profile.service.civic then
             local amount=profile.key=='BAKERS'and c.amounts.MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER
                 or c.amounts.MOD_CSC_TAILORS_DOCKMASTER_EFFECT_ANCIENT_NAVAL_MELEE
@@ -976,6 +989,35 @@ function F.New(player,placement,ui,context)
             if yield=='YIELD_PRODUCTION'or yield=='YIELD_GOLD'then site.adjacency=site.adjacency+amount end
         end
         local stages=c.stages[profile.key]or{}
+        local specialistCity=footprint.workingCity
+        if not specialistCity and Cities.GetPlotWorkingCity then
+            local ok,working=pcall(Cities.GetPlotWorkingCity,plot:GetIndex())
+            if ok and working and working:GetOwner()==pid then specialistCity=working:GetID()end
+        end
+        local workers=exists and footprint.workers or 0
+        if workers==0 or specialistCity and snapshot.cities[specialistCity]then
+            site.specialists={workers=workers,city=specialistCity or city.id,base={},buildings={},presentBuildings={}}
+            for yield,amount in pairs(c.districtCitizenYields[profile.district.DistrictType]or{})do
+                site.specialists.base[yield]=amount
+            end
+            for stage=2,4 do for _,definition in ipairs(stages[stage]or{})do
+                local kind=definition.BuildingType
+                local rates=c.citizenYields[kind]or{}
+                site.specialists.buildings[kind]=rates
+                if city.buildings:HasBuilding(definition.Index)
+                    and city.buildings:GetBuildingLocation(definition.Index)==plot:GetIndex()then
+                    -- Native GetYield37ec60 sums citizen rows for every building
+                    -- at the district location, including pillaged ones. Worker
+                    -- capacity10fff0 separately excludes pillaged building slots.
+                    -- Preserve that distinction; repairing a present building
+                    -- does not create its citizen-yield increment a second time.
+                    site.specialists.presentBuildings[kind]=true
+                    for yield,amount in pairs(rates)do
+                        site.specialists.base[yield]=(site.specialists.base[yield]or 0)+amount
+                    end
+                end
+            end end
+        else site.omissions[#site.omissions+1]='Specialist receiving city unavailable'end
         for stage=2,4 do
             for _,definition in ipairs(stages[stage]or{})do
                 if allowed(definition)and not flag(definition.MustPurchase)then
