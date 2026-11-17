@@ -62,7 +62,7 @@ class Stage3CustomerRegistryTests(unittest.TestCase):
                     self.assertLess(total - target, population / 256)
 
     def test_stage3_uses_fifteen_bits_and_retains_stage4_range(self) -> None:
-        shared = (DATA / "CSC_Q_ALL.sql").read_text(encoding="utf-8-sig")
+        shared = (DATA / "CSC_Q_ALL_Schema.sql").read_text(encoding="utf-8-sig") + "\n" + (DATA / "CSC_Q_ALL_Common.sql").read_text(encoding="utf-8-sig")
         for table in ("CSC_ScaledAmountBits", "CSC_Stage3RateBits", "CSC_Stage4StackBits"):
             self.connection.executescript(
                 _statement(shared, "CREATE TABLE IF NOT EXISTS " + table)
@@ -84,7 +84,7 @@ class Stage3CustomerRegistryTests(unittest.TestCase):
                 sql = (DATA / f"CSC_Q_{quarter}{suffix}.sql").read_text(encoding="utf-8-sig")
                 self.assertNotIn("Bit / 10000.0", sql)
                 self.assertNotIn("FROM CSC_ScaledAmountBits", sql)
-        processor = (DATA / "CSC_BuildingTransactionProcessor.sql").read_text(encoding="utf-8")
+        processor = (DATA / "CSC_Q_ALL_TransactionProcessor.sql").read_text(encoding="utf-8")
         self.assertIn("/ 256.0", processor)
 
     def test_each_customer_family_has_one_complete_row(self) -> None:

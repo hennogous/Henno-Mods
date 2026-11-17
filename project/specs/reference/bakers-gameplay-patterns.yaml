@@ -137,7 +137,7 @@ patterns:
 
   - id: GP.BUILDING.CUSTOMER_TRANSACTION
     classification: reusable_parameterized
-    source_anchor: "CSC_Q_ALL.sql: CSC_Stage3CustomerTransactions; CSC_Q_BAKERS.sql and CSC_Q_TAILORS.sql: transaction rows; CSC_CustomerPopulationReturns.lua: shared scanner"
+    source_anchor: "CSC_Q_ALL_Schema.sql: CSC_Stage3CustomerTransactions; CSC_Q_BAKERS.sql and CSC_Q_TAILORS.sql: transaction rows; CSC_CustomerPopulationReturns.lua: shared scanner"
     parameters: [source_building, customer_buildings_or_districts, customer_yields, return_yields, scaling, stacking_unit]
     invariant:
       - "Require adjacency, same owner, correct destination, and functioning required building."

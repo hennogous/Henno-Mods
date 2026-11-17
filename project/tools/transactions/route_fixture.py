@@ -40,7 +40,7 @@ end
 
 def copy_read_model(database):
     """Provide the real late projection to independent native/UI SQL fixtures."""
-    database.executescript((MOD/'Data/CSC_TradeRouteSchema.sql').read_text())
+    database.executescript((MOD/'Data/CSC_Q_ALL_Schema.sql').read_text())
     for name,values in rows().items():
         if not values:continue
         columns=list(values[0])

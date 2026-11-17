@@ -1,5 +1,8 @@
 # Gameplay integrations
 
+- [CSC shared SQL structure](csc-shared-sql.md) — current schema, declarations,
+  processors, load dependencies and gameplay-preserving consolidation checks.
+
 - [CSC AI roadmap](../civ6-ai/roadmap.md) — **Fresh plan, 3 November 2026**; explainable site valuation, native incentives, focused decision tests, chain development and sustained benefit. Replaces the removed old roadmap.
 
 

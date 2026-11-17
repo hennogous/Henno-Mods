@@ -22,9 +22,8 @@ INSERT INTO Improvements SELECT DISTINCT ImprovementType FROM ImprovementModifie
 INSERT OR IGNORE INTO Improvements VALUES('IMPROVEMENT_FARM');
 INSERT INTO Improvement_ValidResources VALUES('IMPROVEMENT_FARM','RESOURCE_WHEAT');
 ''')
-    db.executescript((MOD/'Data/CSC_MaterialTransactions.sql').read_text())
-    for s in statements((MOD/'Data/CSC_Q_ALL.sql').read_text()):
-        if s.startswith('CREATE TABLE IF NOT EXISTS CSC_QuarterMaterialAdjacencyConfig'):db.executescript(s)
+    db.executescript((MOD/'Data/CSC_Q_ALL_MaterialHosts.sql').read_text())
+    # compile_catalogue loads the shared schema, including adjacency config.
     for name in ('CSC_AdjacencySchema.sql','CSC_AdjacencySources.sql'):
         db.executescript((MOD/'Lua_UI/Adjacencies'/name).read_text())
     sources=[MOD/f'Data/CSC_Q_{q}.sql'for q in ('BAKERS','TAILORS')]

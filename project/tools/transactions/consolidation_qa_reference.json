@@ -1,0 +1,1664 @@
+{
+  "description": "Pre-consolidation current working source; complete native INSERT loader; omit only two verified unattached legacy Bakery modifiers and their three arguments.",
+  "tables": [
+    "BuildingModifiers",
+    "CSC_BuildingTransactionBindings",
+    "CSC_BuildingTransactionFixedBindings",
+    "CSC_BuildingTransactionYields",
+    "CSC_BuildingTransactions",
+    "CSC_MaterialTransactionBindings",
+    "CSC_MaterialTransactionGateBindings",
+    "CSC_MaterialTransactionYields",
+    "CSC_MaterialTransactions",
+    "CSC_QuarterCustomerBuildings",
+    "CSC_QuarterFlowBuildings",
+    "CSC_QuarterWonderSales",
+    "CSC_Stage3CustomerTransactions",
+    "CSC_TradeRouteChannelFacts",
+    "CSC_TradeRouteChannels",
+    "CSC_TradeRoutePayoutBindings",
+    "CSC_TradeRoutePayouts",
+    "CSC_TradeRouteSupplyRequirements",
+    "DistrictModifiers",
+    "ModifierArguments",
+    "Modifiers",
+    "RequirementArguments",
+    "RequirementSetRequirements",
+    "RequirementSets",
+    "Requirements"
+  ],
+  "cases": {
+    "0:0:0:0": {
+      "BuildingModifiers": {
+        "rows": 76,
+        "sha256": "9b2787597b9d7d4092dab3f3d83edf2ea3c5568b845bec58227b92c78553ea34"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 18,
+        "sha256": "d1c8080070227b2e921bf84d61b1d40352cae8111d147f4e35fec19c4f863944"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 36,
+        "sha256": "b9a0c175885bf58ef12fc588919d7f9c2b5c2ecbe2f29ec832f00eb17b5bfb70"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 10,
+        "sha256": "4707506995ef8d5a9ddbeaa7b1079087fc2f5419dccf97beb64fba37ccd63afe"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 25,
+        "sha256": "02d3c99d5cdfa5863c538f198658ef69be9a184bd1c5780d02830278d0508b2c"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 10,
+        "sha256": "9ae05b52b77dc77a29e0aa24077680fb7e7e04f06b79ce09a30c93db63dd4327"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 297,
+        "sha256": "38387ae4b839b2d4635d03e1278cfa76ce0f89e3611e96de7dbc301f42ccd5f5"
+      },
+      "ModifierArguments": {
+        "rows": 949,
+        "sha256": "c026a29db53471a73ae3a92912d262bf68931a7c3f0e59288eab60dfdb6aeafe"
+      },
+      "Modifiers": {
+        "rows": 415,
+        "sha256": "d707aebe4a32c7afa68a78ec8026ceccf9adbe65c63c81bba3b7cd8527f9f331"
+      },
+      "RequirementArguments": {
+        "rows": 642,
+        "sha256": "e3ea10bd9d1951d42774d0113e20b75e54b5bcb10fa8c48555580176fe2060f3"
+      },
+      "RequirementSetRequirements": {
+        "rows": 371,
+        "sha256": "ee90175cba643723abbb4da9e6503c80bd30f64a2764ed92f7c1e0913b8f31ca"
+      },
+      "RequirementSets": {
+        "rows": 322,
+        "sha256": "ad4e1de14a451cce6ea204e7a96fa1c9171cd9e4761ea47abc1ea8661b7db960"
+      },
+      "Requirements": {
+        "rows": 336,
+        "sha256": "928014c7e527b4539158071e643b222c118dbe2e07abd3bbeb35f6e75b44b081"
+      }
+    },
+    "0:0:0:1": {
+      "BuildingModifiers": {
+        "rows": 79,
+        "sha256": "09f48101e20b9e354012de0b9d6deff494bb503220d722019d2f1b523a271010"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 18,
+        "sha256": "d1c8080070227b2e921bf84d61b1d40352cae8111d147f4e35fec19c4f863944"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 36,
+        "sha256": "b9a0c175885bf58ef12fc588919d7f9c2b5c2ecbe2f29ec832f00eb17b5bfb70"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 10,
+        "sha256": "4707506995ef8d5a9ddbeaa7b1079087fc2f5419dccf97beb64fba37ccd63afe"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 25,
+        "sha256": "02d3c99d5cdfa5863c538f198658ef69be9a184bd1c5780d02830278d0508b2c"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 10,
+        "sha256": "9ae05b52b77dc77a29e0aa24077680fb7e7e04f06b79ce09a30c93db63dd4327"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 297,
+        "sha256": "38387ae4b839b2d4635d03e1278cfa76ce0f89e3611e96de7dbc301f42ccd5f5"
+      },
+      "ModifierArguments": {
+        "rows": 949,
+        "sha256": "c026a29db53471a73ae3a92912d262bf68931a7c3f0e59288eab60dfdb6aeafe"
+      },
+      "Modifiers": {
+        "rows": 415,
+        "sha256": "d707aebe4a32c7afa68a78ec8026ceccf9adbe65c63c81bba3b7cd8527f9f331"
+      },
+      "RequirementArguments": {
+        "rows": 642,
+        "sha256": "e3ea10bd9d1951d42774d0113e20b75e54b5bcb10fa8c48555580176fe2060f3"
+      },
+      "RequirementSetRequirements": {
+        "rows": 371,
+        "sha256": "ee90175cba643723abbb4da9e6503c80bd30f64a2764ed92f7c1e0913b8f31ca"
+      },
+      "RequirementSets": {
+        "rows": 322,
+        "sha256": "ad4e1de14a451cce6ea204e7a96fa1c9171cd9e4761ea47abc1ea8661b7db960"
+      },
+      "Requirements": {
+        "rows": 336,
+        "sha256": "928014c7e527b4539158071e643b222c118dbe2e07abd3bbeb35f6e75b44b081"
+      }
+    },
+    "0:0:1:0": {
+      "BuildingModifiers": {
+        "rows": 86,
+        "sha256": "15cf3c376170eb398d7503c99968f512d329cd9cd9bad31ecbf65c3052cc7943"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 18,
+        "sha256": "d1c8080070227b2e921bf84d61b1d40352cae8111d147f4e35fec19c4f863944"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 36,
+        "sha256": "b9a0c175885bf58ef12fc588919d7f9c2b5c2ecbe2f29ec832f00eb17b5bfb70"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 30,
+        "sha256": "c631c45816d33e3e4c30c0fbaa50532a63f1cc27144bd267e23facbbfd8a3cf8"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 85,
+        "sha256": "e0d685a3816146e3a13cd6f3b81871e22b01e7ee46e7933c9fabe2a6e0c3281b"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 30,
+        "sha256": "da55f40ff3f74b0d6b1a9d03cbe1175e4b9dfd3bfda11d6e405795e60f90378e"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 297,
+        "sha256": "38387ae4b839b2d4635d03e1278cfa76ce0f89e3611e96de7dbc301f42ccd5f5"
+      },
+      "ModifierArguments": {
+        "rows": 1005,
+        "sha256": "1ade4d15e953c2cc0e9f1d4691b921240f9724df33ffecddbd89913877bbd2d0"
+      },
+      "Modifiers": {
+        "rows": 447,
+        "sha256": "19d55e800a9b20cb9b99b47f8bcb84171603b8453ff9b868caf98d8dbc8ac6ea"
+      },
+      "RequirementArguments": {
+        "rows": 646,
+        "sha256": "16c69c2a84eb803e25882d74c689b33ac9acda9a1ec80f7f1f1bb2b31d8ccb4a"
+      },
+      "RequirementSetRequirements": {
+        "rows": 395,
+        "sha256": "31a4d307284c11ca7d24ab2ae1dc53c32574c5b5ade9f99407931338053e080c"
+      },
+      "RequirementSets": {
+        "rows": 330,
+        "sha256": "1353ff09355c8cdb8a0db1762be9351ecbb28641380804fe576d0606b9c271d9"
+      },
+      "Requirements": {
+        "rows": 340,
+        "sha256": "0a9085ceb90640e26b9dc31d5ab74ce13c895658081d092a30c6e565db7e5dbc"
+      }
+    },
+    "0:0:1:1": {
+      "BuildingModifiers": {
+        "rows": 89,
+        "sha256": "155f40f6126177c37c6466f084a17a8d209a5a497d157b2f3e224b21f2a9f5b7"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 18,
+        "sha256": "d1c8080070227b2e921bf84d61b1d40352cae8111d147f4e35fec19c4f863944"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 36,
+        "sha256": "b9a0c175885bf58ef12fc588919d7f9c2b5c2ecbe2f29ec832f00eb17b5bfb70"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 30,
+        "sha256": "c631c45816d33e3e4c30c0fbaa50532a63f1cc27144bd267e23facbbfd8a3cf8"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 85,
+        "sha256": "e0d685a3816146e3a13cd6f3b81871e22b01e7ee46e7933c9fabe2a6e0c3281b"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 30,
+        "sha256": "da55f40ff3f74b0d6b1a9d03cbe1175e4b9dfd3bfda11d6e405795e60f90378e"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 297,
+        "sha256": "38387ae4b839b2d4635d03e1278cfa76ce0f89e3611e96de7dbc301f42ccd5f5"
+      },
+      "ModifierArguments": {
+        "rows": 1005,
+        "sha256": "1ade4d15e953c2cc0e9f1d4691b921240f9724df33ffecddbd89913877bbd2d0"
+      },
+      "Modifiers": {
+        "rows": 447,
+        "sha256": "19d55e800a9b20cb9b99b47f8bcb84171603b8453ff9b868caf98d8dbc8ac6ea"
+      },
+      "RequirementArguments": {
+        "rows": 646,
+        "sha256": "16c69c2a84eb803e25882d74c689b33ac9acda9a1ec80f7f1f1bb2b31d8ccb4a"
+      },
+      "RequirementSetRequirements": {
+        "rows": 395,
+        "sha256": "31a4d307284c11ca7d24ab2ae1dc53c32574c5b5ade9f99407931338053e080c"
+      },
+      "RequirementSets": {
+        "rows": 330,
+        "sha256": "1353ff09355c8cdb8a0db1762be9351ecbb28641380804fe576d0606b9c271d9"
+      },
+      "Requirements": {
+        "rows": 340,
+        "sha256": "0a9085ceb90640e26b9dc31d5ab74ce13c895658081d092a30c6e565db7e5dbc"
+      }
+    },
+    "0:1:0:0": {
+      "BuildingModifiers": {
+        "rows": 79,
+        "sha256": "d80cb8d7822d2370effcebfff52e0842bcb008b37e57a428a110028de41a5b1e"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 20,
+        "sha256": "359192451a12743222836c39f27b77a558fd318310d361f72e5da6ffb5ed83de"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 38,
+        "sha256": "69287b7ea0d5486f3e7db30389ee72453538c52c33e2c703aa44ee381ec82317"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 10,
+        "sha256": "4707506995ef8d5a9ddbeaa7b1079087fc2f5419dccf97beb64fba37ccd63afe"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 25,
+        "sha256": "02d3c99d5cdfa5863c538f198658ef69be9a184bd1c5780d02830278d0508b2c"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 10,
+        "sha256": "9ae05b52b77dc77a29e0aa24077680fb7e7e04f06b79ce09a30c93db63dd4327"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 317,
+        "sha256": "60e1062cfa23d4a233b86114ee12531e9ed604a835b735660b4bea7e6633f266"
+      },
+      "ModifierArguments": {
+        "rows": 1019,
+        "sha256": "5b7f885e91e9169ced1528a394f6421764a2ab7e01844058d1675f25f36b7879"
+      },
+      "Modifiers": {
+        "rows": 442,
+        "sha256": "7580f70611bd9cf9e26a54933e18cee45ceef8a22ba3932d34a76216cbd3f5c9"
+      },
+      "RequirementArguments": {
+        "rows": 687,
+        "sha256": "26691e491bd5f2a955b3e9aa15cf948fb45f9e0c87d7b9f05b745d62c2301424"
+      },
+      "RequirementSetRequirements": {
+        "rows": 397,
+        "sha256": "d95caff0d62c167f8784655809e56b34f78d2f18d4ab16ef1d997366fd9aba8a"
+      },
+      "RequirementSets": {
+        "rows": 344,
+        "sha256": "b841634936d7cac993bb34d91c44920612f228e656d6ea890760667deec55103"
+      },
+      "Requirements": {
+        "rows": 359,
+        "sha256": "36b2ca1a0cb3abf29c5e3cf853b2e2efad23826bef76ea442184a8495d9d1f97"
+      }
+    },
+    "0:1:0:1": {
+      "BuildingModifiers": {
+        "rows": 82,
+        "sha256": "52fbf5bd24044ed680e36a3b70e123d351274d4235151dc63014501dd185721b"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 20,
+        "sha256": "359192451a12743222836c39f27b77a558fd318310d361f72e5da6ffb5ed83de"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 38,
+        "sha256": "69287b7ea0d5486f3e7db30389ee72453538c52c33e2c703aa44ee381ec82317"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 10,
+        "sha256": "4707506995ef8d5a9ddbeaa7b1079087fc2f5419dccf97beb64fba37ccd63afe"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 25,
+        "sha256": "02d3c99d5cdfa5863c538f198658ef69be9a184bd1c5780d02830278d0508b2c"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 10,
+        "sha256": "9ae05b52b77dc77a29e0aa24077680fb7e7e04f06b79ce09a30c93db63dd4327"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 317,
+        "sha256": "60e1062cfa23d4a233b86114ee12531e9ed604a835b735660b4bea7e6633f266"
+      },
+      "ModifierArguments": {
+        "rows": 1019,
+        "sha256": "5b7f885e91e9169ced1528a394f6421764a2ab7e01844058d1675f25f36b7879"
+      },
+      "Modifiers": {
+        "rows": 442,
+        "sha256": "7580f70611bd9cf9e26a54933e18cee45ceef8a22ba3932d34a76216cbd3f5c9"
+      },
+      "RequirementArguments": {
+        "rows": 687,
+        "sha256": "26691e491bd5f2a955b3e9aa15cf948fb45f9e0c87d7b9f05b745d62c2301424"
+      },
+      "RequirementSetRequirements": {
+        "rows": 397,
+        "sha256": "d95caff0d62c167f8784655809e56b34f78d2f18d4ab16ef1d997366fd9aba8a"
+      },
+      "RequirementSets": {
+        "rows": 344,
+        "sha256": "b841634936d7cac993bb34d91c44920612f228e656d6ea890760667deec55103"
+      },
+      "Requirements": {
+        "rows": 359,
+        "sha256": "36b2ca1a0cb3abf29c5e3cf853b2e2efad23826bef76ea442184a8495d9d1f97"
+      }
+    },
+    "0:1:1:0": {
+      "BuildingModifiers": {
+        "rows": 89,
+        "sha256": "8dbff85dc18149d7cb327c390a91c0b48afb3d4bf40ae49cf059ef4162b290b4"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 20,
+        "sha256": "359192451a12743222836c39f27b77a558fd318310d361f72e5da6ffb5ed83de"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 38,
+        "sha256": "69287b7ea0d5486f3e7db30389ee72453538c52c33e2c703aa44ee381ec82317"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 30,
+        "sha256": "c631c45816d33e3e4c30c0fbaa50532a63f1cc27144bd267e23facbbfd8a3cf8"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 85,
+        "sha256": "e0d685a3816146e3a13cd6f3b81871e22b01e7ee46e7933c9fabe2a6e0c3281b"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 30,
+        "sha256": "da55f40ff3f74b0d6b1a9d03cbe1175e4b9dfd3bfda11d6e405795e60f90378e"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 317,
+        "sha256": "60e1062cfa23d4a233b86114ee12531e9ed604a835b735660b4bea7e6633f266"
+      },
+      "ModifierArguments": {
+        "rows": 1075,
+        "sha256": "6d1e77608622d73f88cc69a6effc179ba2d64f14613ea58550bffeb01cf1c208"
+      },
+      "Modifiers": {
+        "rows": 474,
+        "sha256": "4845b5c2e6714a57ea68bbccc09566fda92a0ce1152af9ae6ca1f4fa3bcbc7b3"
+      },
+      "RequirementArguments": {
+        "rows": 691,
+        "sha256": "f89e864a7ffa9f5a63e76eeae5fbf362811bed254a50c42fdc813b83321778df"
+      },
+      "RequirementSetRequirements": {
+        "rows": 421,
+        "sha256": "45015fee9c311f7022a6d39c0f4191f16ae96507acfb5bf410a2f8dc7575f344"
+      },
+      "RequirementSets": {
+        "rows": 352,
+        "sha256": "6cb8076c65674c116d5e7e7f1a480e81008317ca5bb49b07a5dec504fdb5a287"
+      },
+      "Requirements": {
+        "rows": 363,
+        "sha256": "502027116c94d8673334612c040c4fd0aa0e28b7320fbb469b701a1c6542e18d"
+      }
+    },
+    "0:1:1:1": {
+      "BuildingModifiers": {
+        "rows": 92,
+        "sha256": "612ff5849ca5ecca80757b36a97eb94f1d7b5ac4400fcbe5572fe7977f6bb813"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 20,
+        "sha256": "359192451a12743222836c39f27b77a558fd318310d361f72e5da6ffb5ed83de"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 18,
+        "sha256": "c5b37f18887e2ec5a0fdf8a0e3189e0b2f057a8a05e295cee678aaed73af01af"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 38,
+        "sha256": "69287b7ea0d5486f3e7db30389ee72453538c52c33e2c703aa44ee381ec82317"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 30,
+        "sha256": "c631c45816d33e3e4c30c0fbaa50532a63f1cc27144bd267e23facbbfd8a3cf8"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 85,
+        "sha256": "e0d685a3816146e3a13cd6f3b81871e22b01e7ee46e7933c9fabe2a6e0c3281b"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 30,
+        "sha256": "da55f40ff3f74b0d6b1a9d03cbe1175e4b9dfd3bfda11d6e405795e60f90378e"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 12,
+        "sha256": "5c194505c515327df5b4d8f5f91acde9d6a9147e38cb8cb9c1030d1aa8d96872"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 60,
+        "sha256": "42904a8823fe13ce372dc10736c9fdc07dc93c559a0ca18c78c6d83f588f58b3"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 317,
+        "sha256": "60e1062cfa23d4a233b86114ee12531e9ed604a835b735660b4bea7e6633f266"
+      },
+      "ModifierArguments": {
+        "rows": 1075,
+        "sha256": "6d1e77608622d73f88cc69a6effc179ba2d64f14613ea58550bffeb01cf1c208"
+      },
+      "Modifiers": {
+        "rows": 474,
+        "sha256": "4845b5c2e6714a57ea68bbccc09566fda92a0ce1152af9ae6ca1f4fa3bcbc7b3"
+      },
+      "RequirementArguments": {
+        "rows": 691,
+        "sha256": "f89e864a7ffa9f5a63e76eeae5fbf362811bed254a50c42fdc813b83321778df"
+      },
+      "RequirementSetRequirements": {
+        "rows": 421,
+        "sha256": "45015fee9c311f7022a6d39c0f4191f16ae96507acfb5bf410a2f8dc7575f344"
+      },
+      "RequirementSets": {
+        "rows": 352,
+        "sha256": "6cb8076c65674c116d5e7e7f1a480e81008317ca5bb49b07a5dec504fdb5a287"
+      },
+      "Requirements": {
+        "rows": 363,
+        "sha256": "502027116c94d8673334612c040c4fd0aa0e28b7320fbb469b701a1c6542e18d"
+      }
+    },
+    "1:0:0:0": {
+      "BuildingModifiers": {
+        "rows": 90,
+        "sha256": "5b9972e5fa91dc4264d4caff8402b46604f5a5b7f819e5f0d7a2916f163a213e"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 27,
+        "sha256": "d2c2daf88f716207c3a5cc5f420bf6bafd525920ea93ba8dfca0ae1639ddff54"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 54,
+        "sha256": "24e9c603f5df376d089f366cec1ef9d6dbcb409b84a9d2eb525092e9a23a521b"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 15,
+        "sha256": "bde0eb5ba2f5d4842c6d5a4d530777026e4be6ea46d608a31473e679689fce57"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 35,
+        "sha256": "50f6599a56dfbe69526533e01a2d56d4e17222b1b21554ce65ff173356734a2e"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 15,
+        "sha256": "8307606fd078eeebda99a52f1098102671ed970694b1f04c077ac4eb22c4feeb"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 387,
+        "sha256": "73c240086e0603d516b475e2c69188a601599a7e2b5647a05ec647509a38d7eb"
+      },
+      "ModifierArguments": {
+        "rows": 1218,
+        "sha256": "6dbfff237a8478771bdf94383d8150b45f756b9f60a3c585901cb538c7d6efe2"
+      },
+      "Modifiers": {
+        "rows": 520,
+        "sha256": "ffe73ad76841419370769631a02ab38cb6fbdedef4bd77fe8f90c11fc4ca7b04"
+      },
+      "RequirementArguments": {
+        "rows": 642,
+        "sha256": "e3ea10bd9d1951d42774d0113e20b75e54b5bcb10fa8c48555580176fe2060f3"
+      },
+      "RequirementSetRequirements": {
+        "rows": 371,
+        "sha256": "ee90175cba643723abbb4da9e6503c80bd30f64a2764ed92f7c1e0913b8f31ca"
+      },
+      "RequirementSets": {
+        "rows": 322,
+        "sha256": "ad4e1de14a451cce6ea204e7a96fa1c9171cd9e4761ea47abc1ea8661b7db960"
+      },
+      "Requirements": {
+        "rows": 336,
+        "sha256": "928014c7e527b4539158071e643b222c118dbe2e07abd3bbeb35f6e75b44b081"
+      }
+    },
+    "1:0:0:1": {
+      "BuildingModifiers": {
+        "rows": 96,
+        "sha256": "89c42ded827af0fc01769d5721d4a94e4e064912aca9b009b0c8fd3ddbe38c71"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 27,
+        "sha256": "d2c2daf88f716207c3a5cc5f420bf6bafd525920ea93ba8dfca0ae1639ddff54"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 54,
+        "sha256": "24e9c603f5df376d089f366cec1ef9d6dbcb409b84a9d2eb525092e9a23a521b"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 15,
+        "sha256": "bde0eb5ba2f5d4842c6d5a4d530777026e4be6ea46d608a31473e679689fce57"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 35,
+        "sha256": "50f6599a56dfbe69526533e01a2d56d4e17222b1b21554ce65ff173356734a2e"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 15,
+        "sha256": "8307606fd078eeebda99a52f1098102671ed970694b1f04c077ac4eb22c4feeb"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 387,
+        "sha256": "73c240086e0603d516b475e2c69188a601599a7e2b5647a05ec647509a38d7eb"
+      },
+      "ModifierArguments": {
+        "rows": 1218,
+        "sha256": "6dbfff237a8478771bdf94383d8150b45f756b9f60a3c585901cb538c7d6efe2"
+      },
+      "Modifiers": {
+        "rows": 520,
+        "sha256": "ffe73ad76841419370769631a02ab38cb6fbdedef4bd77fe8f90c11fc4ca7b04"
+      },
+      "RequirementArguments": {
+        "rows": 642,
+        "sha256": "e3ea10bd9d1951d42774d0113e20b75e54b5bcb10fa8c48555580176fe2060f3"
+      },
+      "RequirementSetRequirements": {
+        "rows": 371,
+        "sha256": "ee90175cba643723abbb4da9e6503c80bd30f64a2764ed92f7c1e0913b8f31ca"
+      },
+      "RequirementSets": {
+        "rows": 322,
+        "sha256": "ad4e1de14a451cce6ea204e7a96fa1c9171cd9e4761ea47abc1ea8661b7db960"
+      },
+      "Requirements": {
+        "rows": 336,
+        "sha256": "928014c7e527b4539158071e643b222c118dbe2e07abd3bbeb35f6e75b44b081"
+      }
+    },
+    "1:0:1:0": {
+      "BuildingModifiers": {
+        "rows": 110,
+        "sha256": "9b8441da7ab5ca9a9e1079a7945835d074f1ddaaa87df86e9fd0e24c906eb10e"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 27,
+        "sha256": "d2c2daf88f716207c3a5cc5f420bf6bafd525920ea93ba8dfca0ae1639ddff54"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 54,
+        "sha256": "24e9c603f5df376d089f366cec1ef9d6dbcb409b84a9d2eb525092e9a23a521b"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 45,
+        "sha256": "05b974ebf157e7677d8c5e3b385924b08430d7f7ea5225df051720a43e6b84bf"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 125,
+        "sha256": "9f3a6b8338b8e3f2211291e00cdca44d2f4b0a9b090ff6dea6c7ed9e1d999b2a"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 45,
+        "sha256": "64efbd90bbc6e063cd9b7f14818acd01080e659ec9e5d66ec4b9cf9301e9b9d2"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 387,
+        "sha256": "73c240086e0603d516b475e2c69188a601599a7e2b5647a05ec647509a38d7eb"
+      },
+      "ModifierArguments": {
+        "rows": 1290,
+        "sha256": "0c8e450b7c1d4677034fc26b8bb4db5715089d6ae3a6e66435c609ffc105f46d"
+      },
+      "Modifiers": {
+        "rows": 564,
+        "sha256": "8719d3131ade68f18c1f8bc183007b1135c11fce62c68f3fd4a05d3ddd4bac8a"
+      },
+      "RequirementArguments": {
+        "rows": 646,
+        "sha256": "16c69c2a84eb803e25882d74c689b33ac9acda9a1ec80f7f1f1bb2b31d8ccb4a"
+      },
+      "RequirementSetRequirements": {
+        "rows": 395,
+        "sha256": "31a4d307284c11ca7d24ab2ae1dc53c32574c5b5ade9f99407931338053e080c"
+      },
+      "RequirementSets": {
+        "rows": 330,
+        "sha256": "1353ff09355c8cdb8a0db1762be9351ecbb28641380804fe576d0606b9c271d9"
+      },
+      "Requirements": {
+        "rows": 340,
+        "sha256": "0a9085ceb90640e26b9dc31d5ab74ce13c895658081d092a30c6e565db7e5dbc"
+      }
+    },
+    "1:0:1:1": {
+      "BuildingModifiers": {
+        "rows": 116,
+        "sha256": "be414de9b9c7785e1910d623672ca29ec41dbb4eea71ce8565a682ac6795121d"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 27,
+        "sha256": "d2c2daf88f716207c3a5cc5f420bf6bafd525920ea93ba8dfca0ae1639ddff54"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 54,
+        "sha256": "24e9c603f5df376d089f366cec1ef9d6dbcb409b84a9d2eb525092e9a23a521b"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 18,
+        "sha256": "dce9cb80324878d83192d4873cd7919f482d5b50630a2e0a8b9bfd4af5aa01e4"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 45,
+        "sha256": "05b974ebf157e7677d8c5e3b385924b08430d7f7ea5225df051720a43e6b84bf"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 125,
+        "sha256": "9f3a6b8338b8e3f2211291e00cdca44d2f4b0a9b090ff6dea6c7ed9e1d999b2a"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 45,
+        "sha256": "64efbd90bbc6e063cd9b7f14818acd01080e659ec9e5d66ec4b9cf9301e9b9d2"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 5,
+        "sha256": "09e31628b783b1c0837b9655987f4f95a4076ec77f380960dc71371ea3b2934a"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 387,
+        "sha256": "73c240086e0603d516b475e2c69188a601599a7e2b5647a05ec647509a38d7eb"
+      },
+      "ModifierArguments": {
+        "rows": 1290,
+        "sha256": "0c8e450b7c1d4677034fc26b8bb4db5715089d6ae3a6e66435c609ffc105f46d"
+      },
+      "Modifiers": {
+        "rows": 564,
+        "sha256": "8719d3131ade68f18c1f8bc183007b1135c11fce62c68f3fd4a05d3ddd4bac8a"
+      },
+      "RequirementArguments": {
+        "rows": 646,
+        "sha256": "16c69c2a84eb803e25882d74c689b33ac9acda9a1ec80f7f1f1bb2b31d8ccb4a"
+      },
+      "RequirementSetRequirements": {
+        "rows": 395,
+        "sha256": "31a4d307284c11ca7d24ab2ae1dc53c32574c5b5ade9f99407931338053e080c"
+      },
+      "RequirementSets": {
+        "rows": 330,
+        "sha256": "1353ff09355c8cdb8a0db1762be9351ecbb28641380804fe576d0606b9c271d9"
+      },
+      "Requirements": {
+        "rows": 340,
+        "sha256": "0a9085ceb90640e26b9dc31d5ab74ce13c895658081d092a30c6e565db7e5dbc"
+      }
+    },
+    "1:1:0:0": {
+      "BuildingModifiers": {
+        "rows": 93,
+        "sha256": "ba9f25feed059a9c50913e5b2c0e8f898d6e2027480ac8d99a3f317a4478180c"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 30,
+        "sha256": "216a0091413e66a62dd1e63a412e664b67adfb7816d9bf1439f746d1156fa67f"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 57,
+        "sha256": "9138b8ee272a040828b7dedebed0ddc5c274d15787a077e7068808418160749d"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 15,
+        "sha256": "bde0eb5ba2f5d4842c6d5a4d530777026e4be6ea46d608a31473e679689fce57"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 35,
+        "sha256": "50f6599a56dfbe69526533e01a2d56d4e17222b1b21554ce65ff173356734a2e"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 15,
+        "sha256": "8307606fd078eeebda99a52f1098102671ed970694b1f04c077ac4eb22c4feeb"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 407,
+        "sha256": "c5537ce479e538c4345fb1f68c361c4b5a519ce91a8163c613d0910ebb1df968"
+      },
+      "ModifierArguments": {
+        "rows": 1288,
+        "sha256": "fc94c6dfc4abc5b2e344f0c56e227f459a7b34a229680200b1c852797d006d70"
+      },
+      "Modifiers": {
+        "rows": 547,
+        "sha256": "1eb83cd37221a92a74723abe6827eec8869d8423a8bc9ae38e8ceeb1e8cf9f42"
+      },
+      "RequirementArguments": {
+        "rows": 687,
+        "sha256": "26691e491bd5f2a955b3e9aa15cf948fb45f9e0c87d7b9f05b745d62c2301424"
+      },
+      "RequirementSetRequirements": {
+        "rows": 397,
+        "sha256": "d95caff0d62c167f8784655809e56b34f78d2f18d4ab16ef1d997366fd9aba8a"
+      },
+      "RequirementSets": {
+        "rows": 344,
+        "sha256": "b841634936d7cac993bb34d91c44920612f228e656d6ea890760667deec55103"
+      },
+      "Requirements": {
+        "rows": 359,
+        "sha256": "36b2ca1a0cb3abf29c5e3cf853b2e2efad23826bef76ea442184a8495d9d1f97"
+      }
+    },
+    "1:1:0:1": {
+      "BuildingModifiers": {
+        "rows": 99,
+        "sha256": "d6e5a7c1469db141eb9b9f56f4132fba8914523eca468ed2f6bad7941e181c40"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 30,
+        "sha256": "216a0091413e66a62dd1e63a412e664b67adfb7816d9bf1439f746d1156fa67f"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 57,
+        "sha256": "9138b8ee272a040828b7dedebed0ddc5c274d15787a077e7068808418160749d"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 15,
+        "sha256": "bde0eb5ba2f5d4842c6d5a4d530777026e4be6ea46d608a31473e679689fce57"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 35,
+        "sha256": "50f6599a56dfbe69526533e01a2d56d4e17222b1b21554ce65ff173356734a2e"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 15,
+        "sha256": "8307606fd078eeebda99a52f1098102671ed970694b1f04c077ac4eb22c4feeb"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 407,
+        "sha256": "c5537ce479e538c4345fb1f68c361c4b5a519ce91a8163c613d0910ebb1df968"
+      },
+      "ModifierArguments": {
+        "rows": 1288,
+        "sha256": "fc94c6dfc4abc5b2e344f0c56e227f459a7b34a229680200b1c852797d006d70"
+      },
+      "Modifiers": {
+        "rows": 547,
+        "sha256": "1eb83cd37221a92a74723abe6827eec8869d8423a8bc9ae38e8ceeb1e8cf9f42"
+      },
+      "RequirementArguments": {
+        "rows": 687,
+        "sha256": "26691e491bd5f2a955b3e9aa15cf948fb45f9e0c87d7b9f05b745d62c2301424"
+      },
+      "RequirementSetRequirements": {
+        "rows": 397,
+        "sha256": "d95caff0d62c167f8784655809e56b34f78d2f18d4ab16ef1d997366fd9aba8a"
+      },
+      "RequirementSets": {
+        "rows": 344,
+        "sha256": "b841634936d7cac993bb34d91c44920612f228e656d6ea890760667deec55103"
+      },
+      "Requirements": {
+        "rows": 359,
+        "sha256": "36b2ca1a0cb3abf29c5e3cf853b2e2efad23826bef76ea442184a8495d9d1f97"
+      }
+    },
+    "1:1:1:0": {
+      "BuildingModifiers": {
+        "rows": 113,
+        "sha256": "9208a0f7517e950dc7e4778d734fdb0e75b6afa24e62d341727738c54caac023"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 30,
+        "sha256": "216a0091413e66a62dd1e63a412e664b67adfb7816d9bf1439f746d1156fa67f"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 57,
+        "sha256": "9138b8ee272a040828b7dedebed0ddc5c274d15787a077e7068808418160749d"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 45,
+        "sha256": "05b974ebf157e7677d8c5e3b385924b08430d7f7ea5225df051720a43e6b84bf"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 125,
+        "sha256": "9f3a6b8338b8e3f2211291e00cdca44d2f4b0a9b090ff6dea6c7ed9e1d999b2a"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 45,
+        "sha256": "64efbd90bbc6e063cd9b7f14818acd01080e659ec9e5d66ec4b9cf9301e9b9d2"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 407,
+        "sha256": "c5537ce479e538c4345fb1f68c361c4b5a519ce91a8163c613d0910ebb1df968"
+      },
+      "ModifierArguments": {
+        "rows": 1360,
+        "sha256": "92cedc2846ba032c57886741f45316f8eeaed53ddb676b831479fe525fb7f114"
+      },
+      "Modifiers": {
+        "rows": 591,
+        "sha256": "2d474a87ef890991a91a6b9af2a2eeee6d73dc289375c799c4e675f4af95c5d2"
+      },
+      "RequirementArguments": {
+        "rows": 691,
+        "sha256": "f89e864a7ffa9f5a63e76eeae5fbf362811bed254a50c42fdc813b83321778df"
+      },
+      "RequirementSetRequirements": {
+        "rows": 421,
+        "sha256": "45015fee9c311f7022a6d39c0f4191f16ae96507acfb5bf410a2f8dc7575f344"
+      },
+      "RequirementSets": {
+        "rows": 352,
+        "sha256": "6cb8076c65674c116d5e7e7f1a480e81008317ca5bb49b07a5dec504fdb5a287"
+      },
+      "Requirements": {
+        "rows": 363,
+        "sha256": "502027116c94d8673334612c040c4fd0aa0e28b7320fbb469b701a1c6542e18d"
+      }
+    },
+    "1:1:1:1": {
+      "BuildingModifiers": {
+        "rows": 119,
+        "sha256": "908b15d8af78c8df8eb1d6785206dd19b443391557a464f94ff35354aefaa090"
+      },
+      "CSC_BuildingTransactionBindings": {
+        "rows": 30,
+        "sha256": "216a0091413e66a62dd1e63a412e664b67adfb7816d9bf1439f746d1156fa67f"
+      },
+      "CSC_BuildingTransactionFixedBindings": {
+        "rows": 27,
+        "sha256": "cba9a143a894aefdd257bc91eda888ae68ee302ed41cb1e2c4e4f706938503b1"
+      },
+      "CSC_BuildingTransactionYields": {
+        "rows": 57,
+        "sha256": "9138b8ee272a040828b7dedebed0ddc5c274d15787a077e7068808418160749d"
+      },
+      "CSC_BuildingTransactions": {
+        "rows": 19,
+        "sha256": "0bb1423e8539815c871c856c417c06354d223ef6ccda4360f5c7169c1fd370c3"
+      },
+      "CSC_MaterialTransactionBindings": {
+        "rows": 45,
+        "sha256": "05b974ebf157e7677d8c5e3b385924b08430d7f7ea5225df051720a43e6b84bf"
+      },
+      "CSC_MaterialTransactionGateBindings": {
+        "rows": 125,
+        "sha256": "9f3a6b8338b8e3f2211291e00cdca44d2f4b0a9b090ff6dea6c7ed9e1d999b2a"
+      },
+      "CSC_MaterialTransactionYields": {
+        "rows": 45,
+        "sha256": "64efbd90bbc6e063cd9b7f14818acd01080e659ec9e5d66ec4b9cf9301e9b9d2"
+      },
+      "CSC_MaterialTransactions": {
+        "rows": 5,
+        "sha256": "f4f5f60af51a30ca14272430bea0c37782ff2bcd967e144f15b91c667cbc2b0a"
+      },
+      "CSC_QuarterCustomerBuildings": {
+        "rows": 6,
+        "sha256": "799bbb3a1444cba56703a7a778acb8338c4b41d49aec4a61af34805027c9230f"
+      },
+      "CSC_QuarterFlowBuildings": {
+        "rows": 7,
+        "sha256": "6310ed1a8e9328fda20cf82a8b3eef3cecd3edb363de97bddd005e5b966e70ef"
+      },
+      "CSC_QuarterWonderSales": {
+        "rows": 3,
+        "sha256": "fe3c5d3a687936a5837502f6eef78c1d05eb03f7874aaf606233994d0f8d2aee"
+      },
+      "CSC_Stage3CustomerTransactions": {
+        "rows": 3,
+        "sha256": "bdbdf9a6c87b0b6f6dfca88c0f4816ce4e644ea44bd6942c1c60f5cafa8da092"
+      },
+      "CSC_TradeRouteChannelFacts": {
+        "rows": 4,
+        "sha256": "2c110348f473802360cd04a9997b29b8bd67b9431d49817a74b06d85582330dd"
+      },
+      "CSC_TradeRouteChannels": {
+        "rows": 4,
+        "sha256": "d55bb6f58165c102b89c3a28f5b51d347f9448387b92b377606396d589231187"
+      },
+      "CSC_TradeRoutePayoutBindings": {
+        "rows": 16,
+        "sha256": "2cd9b5d6324b87a0403d4894f1699a683c7da244aaded21e5fcaf71b129ee738"
+      },
+      "CSC_TradeRoutePayouts": {
+        "rows": 80,
+        "sha256": "aee62a2dbfcec961c9bf0fb1b7e7f6b421b324557fd5cafccd8920913e825adc"
+      },
+      "CSC_TradeRouteSupplyRequirements": {
+        "rows": 6,
+        "sha256": "c110fe4a64348469238cb96b9f483dccd883c267f6812a13decbd2bcc468e8b7"
+      },
+      "DistrictModifiers": {
+        "rows": 407,
+        "sha256": "c5537ce479e538c4345fb1f68c361c4b5a519ce91a8163c613d0910ebb1df968"
+      },
+      "ModifierArguments": {
+        "rows": 1360,
+        "sha256": "92cedc2846ba032c57886741f45316f8eeaed53ddb676b831479fe525fb7f114"
+      },
+      "Modifiers": {
+        "rows": 591,
+        "sha256": "2d474a87ef890991a91a6b9af2a2eeee6d73dc289375c799c4e675f4af95c5d2"
+      },
+      "RequirementArguments": {
+        "rows": 691,
+        "sha256": "f89e864a7ffa9f5a63e76eeae5fbf362811bed254a50c42fdc813b83321778df"
+      },
+      "RequirementSetRequirements": {
+        "rows": 421,
+        "sha256": "45015fee9c311f7022a6d39c0f4191f16ae96507acfb5bf410a2f8dc7575f344"
+      },
+      "RequirementSets": {
+        "rows": 352,
+        "sha256": "6cb8076c65674c116d5e7e7f1a480e81008317ca5bb49b07a5dec504fdb5a287"
+      },
+      "Requirements": {
+        "rows": 363,
+        "sha256": "502027116c94d8673334612c040c4fd0aa0e28b7320fbb469b701a1c6542e18d"
+      }
+    }
+  }
+}

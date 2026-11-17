@@ -155,12 +155,12 @@ class PopulationCatalogue(unittest.TestCase):
         data=json.loads((ROOT/'project/modbuddy/CivSupplyChains.actions.json').read_text())
         actions={a['id']:a for a in data['blocks']['inGameActions']}
         order=lambda key:int(actions[key]['properties']['LoadOrder'])
-        self.assertIn('Data/CSC_BuildingTransactionSchema.sql',actions['CSC_Q_ALL']['files'])
+        owners={f:a for a in actions.values()for f in a.get('files',[])}
+        self.assertIn('Data/CSC_Q_ALL_Schema.sql',actions['CSC_Q_ALL']['files'])
         for q in ['BAKERS','TAILORS']:
-            self.assertIn(f'Data/CSC_Q_{q}_TRANSACTIONS.sql',actions['CSC_Q_'+q]['files'])
-            self.assertIn(f'Data/CSC_Q_{q}_TRANSACTIONS_GOLD.sql',actions['CSC_Q_'+q+'_GOLD']['files'])
-            self.assertLess(order('CSC_Q_ALL'),order('CSC_Q_'+q))
-            self.assertLess(order('CSC_Q_'+q+'_GOLD'),order('CSC_BuildingTransactionProcessor'))
+            core=owners[f'Data/CSC_Q_{q}.sql'];gold=owners[f'Data/CSC_Q_{q}_GOLD.sql']
+            self.assertLess(order('CSC_Q_ALL'),int(core['properties']['LoadOrder']))
+            self.assertLess(int(gold['properties']['LoadOrder']),order('CSC_BuildingTransactionProcessor'))
         self.assertLess(order('ModSupport_LGD'),order('CSC_BuildingTransactionProcessor'))
         self.assertLess(order('CSC_BuildingTransactionProcessor'),order('CSC_AdjacencyProcessor'))
         self.assertLess(order('CSC_AdjacencyProcessor'),order('CSC_AI_Connectors'))
@@ -177,7 +177,7 @@ class PopulationCatalogue(unittest.TestCase):
             with self.subTest(mutation=mutation):
                 db=compile_catalogue();db.execute(mutation)
                 with self.assertRaises(sqlite3.IntegrityError):
-                    db.executescript((MOD/'Data/CSC_BuildingTransactionProcessor.sql').read_text())
+                    db.executescript((MOD/'Data/CSC_Q_ALL_TransactionProcessor.sql').read_text())
                 db.close()
         db=compile_catalogue()
         for mutation in ["UPDATE CSC_BuildingTransactions SET QuantityKind='UNKNOWN_KIND'",

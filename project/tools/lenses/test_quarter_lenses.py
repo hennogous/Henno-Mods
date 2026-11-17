@@ -49,7 +49,7 @@ def main():
         CREATE TABLE Colors(Type TEXT PRIMARY KEY, Color TEXT, Red REAL, Green REAL, Blue REAL, Alpha REAL);
         CREATE TABLE LocalizedText(Language TEXT, Tag TEXT PRIMARY KEY, Text TEXT);
     """)
-    shared = sql(MOD / "Data/CSC_Q_ALL.sql")
+    shared = sql(MOD / "Data/CSC_Q_ALL_Schema.sql")
     db.executescript(re.search(r"CREATE TABLE IF NOT EXISTS CSC_QuarterMaterialAdjacencyConfig.*?;", shared, re.S)[0])
     db.executescript(re.search(r"CREATE TABLE IF NOT EXISTS CSC_QuarterWonderSales.*?;", shared, re.S)[0])
     for name in ("CSC_Stage3CustomerTransactions", "CSC_QuarterCustomerBuildings", "CSC_QuarterFlowBuildings", "CSC_AbilityAttachModifiers"):
@@ -58,6 +58,18 @@ def main():
         for statement in re.findall(r"INSERT (?:OR IGNORE )?INTO (?:TypeTags|CSC_QuarterMaterialAdjacencyConfig|CSC_QuarterWonderSales|CSC_Stage3CustomerTransactions|CSC_QuarterCustomerBuildings|CSC_QuarterFlowBuildings|CSC_AbilityAttachModifiers)\b.*?;",
                                     sql(MOD / f"Data/CSC_Q_{key}.sql"), re.S):
             db.executescript(statement)
+    # Partner registries are generated from the Quarter declarations. Use the
+    # real compiler rather than expecting literal registry INSERTs in core SQL.
+    sys.path.insert(0, str(ROOT / "project/tools/transactions"))
+    from population_catalogue_fixture import compile_catalogue
+    catalogue = compile_catalogue(lgd=True)
+    for name in ("CSC_QuarterWonderSales", "CSC_Stage3CustomerTransactions",
+                 "CSC_QuarterCustomerBuildings", "CSC_QuarterFlowBuildings"):
+        rows = catalogue.execute("SELECT * FROM " + name).fetchall()
+        db.execute("DELETE FROM " + name)
+        if rows:
+            db.executemany("INSERT INTO " + name + " VALUES (" + ','.join('?' for _ in rows[0]) + ")", rows)
+    catalogue.close()
     # Resolve the real notification registry exactly as its late SQL pass does.
     db.executescript("CREATE TABLE ModifierArguments(ModifierId TEXT,Name TEXT,Value TEXT); CREATE TABLE ModifierStrings(ModifierId TEXT,Context TEXT,Text TEXT);")
     for key in ("BAKERS", "TAILORS"):
@@ -280,7 +292,7 @@ def main():
     assert chooser["type"] == "AddUserInterfaces" and not chooser.get("criteria")
     assert chooser["properties"]["Context"] == "InGame"
     assert all(file in contents for file in chooser["files"])
-    imports = next(row for row in source["blocks"]["inGameActions"] if row["id"] == "CSC_QuarterLenses")
+    imports = next(row for row in source["blocks"]["inGameActions"] if "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua" in row.get("files", []))
     assert "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua" in imports["files"]
     assert not imports.get("criteria")
     assert not any("ModLens_CSC_Quarters.lua" in path for path in contents)

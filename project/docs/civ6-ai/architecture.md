@@ -205,7 +205,7 @@ and acceptance data. All reusable CSC policy is in `Civ Supply Chains/Lua_UI/AI/
 | Existing chain decisions | `CSC_AI_QuarterPlacement.lua`: shared suppliers/chains, material deductions, exclusions, supplier acquisition, Builder and building/repair offers. Economic loss enriches protection; structural safeguards remain. |
 | Publication | `CSC_AI_BakersGameplay.lua`: despite its historical name, coordinates Bakers and Tailors; refreshes and publishes one bounded packet, then reads receipts. |
 | Transport | `CSC_AI_DistrictBridge.lua`: validates and publishes typed CE entries atomically. Complete Quarter bids are exclusive with the old early score adjustment for the same pair. |
-| Native database input | `Data/CSC_AI_Connectors.sql`: moderate private-yield adjacency for mapped customer districts, with replacement expansion and edge deduplication; also retains the existing modest Builder controls. |
+| Native database input | `Data/CSC_Q_ALL_AI_Connectors.sql`: moderate private-yield adjacency for mapped customer districts, with replacement expansion and edge deduplication; also retains the existing modest Builder controls. |
 | CE mechanism | Isolated CE feature branch `codex/quarter-value-delivery`: managed-type defaults, consumer refresh, retained-request repricing and native economic quotes. CSC rules do not belong in CE. No upstream PR is submitted. |
 
 The adjacent Builder, building, research and recovery problems remain distinct

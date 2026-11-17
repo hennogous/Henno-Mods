@@ -6,7 +6,7 @@ from population_catalogue_fixture import compile_catalogue,graph,MOD,legacy_refe
 from test_population_catalogue import digest,lua
 
 HERE=Path(__file__).resolve().parent
-PROCESSOR=MOD/'Data/CSC_MaterialTransactionProcessor.sql'
+PROCESSOR=MOD/'Data/CSC_Q_ALL_TransactionProcessor.sql'
 WIND='BUILDING_CSC_BAKERS_WIND_MILL'
 
 

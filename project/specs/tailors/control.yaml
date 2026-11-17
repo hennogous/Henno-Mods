@@ -8,17 +8,17 @@ locked_sources:
     sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    # Reviewed 3 November: existing lens registries and supplied-route bit receipts; reference-only synchronization.
-    sha256: ac9c01aadfad575e2269b8cbde3360a0488c5f4f432e4d37e2caab6196fb76e7
+    # Reviewed 17 November: SQL consolidation; all 16 option graphs preserve gameplay.
+    sha256: da66386a1b81d623d727cd31782d8280459b4166f838fcd1cd887a74996f22cb
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
-    sha256: ae289c5dd0e9d0382e4d8f4dcf19dee837b4589ac822ffaf688bda31acbc1f1c
+    sha256: 7f7ebba6cdce3d80272b84cad585aa3901212a8ce420fc9f9bced112d8d87955
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE.sql
     role: gameplay_reference_monopolies
-    sha256: ad9e47f18d5d8148b2c0ef8f7c22ae019456405afdc5cda900f911ceff83feeb
+    sha256: cd5a6368b714aa5b330e82db2b1f9e108240d169cd8235382bc8f150082e4775
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql
     role: gameplay_reference_monopolies_gold
-    sha256: 91aa79aaadd6f063cd5a6fbdf4ff65c419c6b8af00e9e9ca1f5773e3ca5c6070
+    sha256: a094f999d54d1250ac15284dde611a13b3ae4af6c7e94515548e3dbc13f53b16
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
     # Reviewed 3 November: supplied-route wording; remove obsolete duplicate Cafe trade bullet.

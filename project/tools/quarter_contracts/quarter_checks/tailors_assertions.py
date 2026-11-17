@@ -123,19 +123,14 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
     scripts = [
         "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencySchema.sql",
         "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencySources.sql",
-        "Civ Supply Chains/Data/CSC_Q_ALL.sql",
-        "Civ Supply Chains/Data/CSC_BuildingTransactionSchema.sql",
-        "Civ Supply Chains/Data/CSC_TradeRouteSchema.sql",
+        "Civ Supply Chains/Data/CSC_Q_ALL_Schema.sql",
+        "Civ Supply Chains/Data/CSC_Q_ALL_Common.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
-        "Civ Supply Chains/Data/CSC_Q_TAILORS_TRANSACTIONS.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
-        "Civ Supply Chains/Data/CSC_Q_TAILORS_TRANSACTIONS_GOLD.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql",
-        "Civ Supply Chains/Data/CSC_MaterialTransactionProcessor.sql",
-        "Civ Supply Chains/Data/CSC_FixedBuildingTransactionProcessor.sql",
-        "Civ Supply Chains/Data/CSC_BuildingTransactionProcessor.sql",
-        "Civ Supply Chains/Data/CSC_TradeRouteProcessor.sql",
+        "Civ Supply Chains/Data/CSC_Q_ALL_TransactionProcessor.sql",
+        "Civ Supply Chains/Data/CSC_Q_ALL_TradeRouteReader.sql",
         "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql",
         "Civ Supply Chains/Lua_UI/Notifications_Suk_MCUIS/CSC_UI_DB_Dynamic.sql",
         "Civ Supply Chains/ModSupport/ModSupport_SUIA.sql",
@@ -1325,7 +1320,7 @@ def _validate_trade_route_yield_presentation(
             failures.append(f"SUIA trade-route presentation registry missing {token}")
 
     for relative in (
-        "Civ Supply Chains/Data/CSC_Q_ALL.sql",
+        "Civ Supply Chains/Data/CSC_Q_ALL_Common.sql",
         "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
     ):

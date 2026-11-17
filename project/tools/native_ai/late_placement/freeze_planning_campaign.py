@@ -30,12 +30,22 @@ def register_material_transactions(package):
     actions=root.find('InGameActions');files=root.find('Files')
     if actions is None or files is None:
         raise ValueError('Accepted package has no gameplay actions or file list')
+    # Historical packages can predate the shared schema. Input-host DDL now
+    # lives there, so the isolated host repair must register it too. Current
+    # packages already load it at95 and need no additional action.
+    schema='Data/CSC_Q_ALL_Schema.sql'
+    if not any(file.text==schema for action in actions for file in action.findall('File')):
+        action=ET.SubElement(actions,'UpdateDatabase',id='CSC_MaterialHostSchema')
+        ET.SubElement(ET.SubElement(action,'Properties'),'LoadOrder').text='94'
+        ET.SubElement(action,'File').text=schema
+    if not any(file.text==schema for file in files):
+        ET.SubElement(files,'File').text=schema
     existing=[a for a in actions if a.get('id')=='CSC_MaterialTransactions']
     for action in existing:
         actions.remove(action)
     action=ET.SubElement(actions,'UpdateDatabase',id='CSC_MaterialTransactions')
     ET.SubElement(ET.SubElement(action,'Properties'),'LoadOrder').text='800010'
-    relative='Data/CSC_MaterialTransactions.sql'
+    relative='Data/CSC_Q_ALL_MaterialHosts.sql'
     ET.SubElement(action,'File').text=relative
     if not any(f.text==relative for f in files):
         ET.SubElement(files,'File').text=relative
@@ -72,33 +82,57 @@ def register_economy_contract(package, specs, read_content):
     would leave its new shared gameplay tables or route modules unavailable.
     read_content supplies committed bytes, avoiding unrelated workspace edits.
     """
-    selected={'CSC_Q_ALL','CSC_Q_BAKERS','CSC_Q_BAKERS_GOLD','CSC_Q_TAILORS',
-              'CSC_Q_TAILORS_GOLD','CSC_BuildingTransactionProcessor',
-              'CSC_TradeRouteProcessor','CSC_TradeRouteShared'}
+    # Select economic files rather than former action IDs: actions can now
+    # contain several Quarters or shared imports. Keep art/Pedia/UI files out
+    # of this deliberately scoped historical-package upgrade.
+    selected={'Data/CSC_Q_ALL_Schema.sql','Data/CSC_Q_ALL_Common.sql',
+              'Data/CSC_Q_ALL_TransactionProcessor.sql','Data/CSC_Q_ALL_TradeRouteReader.sql',
+              'Lua_UI/TradeRoutes/CSC_TradeRouteCore.lua','Lua_UI/TradeRoutes/CSC_TradeRouteFacts.lua'}
+    selected|={f'Data/CSC_Q_{q}{suffix}.sql'for q in ('BAKERS','TAILORS')
+               for suffix in ('','_GOLD','_MC_MODE','_MC_MODE_GOLD')}
+    retired={'Data/'+name for name in ('CSC_Q_ALL.sql','CSC_BuildingTransactionSchema.sql',
+        'CSC_TradeRouteSchema.sql','CSC_MaterialTransactionProcessor.sql',
+        'CSC_FixedBuildingTransactionProcessor.sql','CSC_BuildingTransactionProcessor.sql',
+        'CSC_TradeRouteProcessor.sql')}
+    retired|={f'Data/CSC_Q_{q}_TRANSACTIONS{suffix}.sql'for q in ('BAKERS','TAILORS')for suffix in ('','_GOLD')}
     path,=package.glob('*.modinfo')
     tree=ET.parse(path);root=tree.getroot();actions=root.find('InGameActions');files=root.find('Files')
-    copied={};found=set()
+    copied={};found=set();previous_criteria={}
+    for action in list(actions):
+        for file in list(action.findall('File')):
+            if file.text in selected:
+                previous_criteria[file.text]=tuple(c.text for c in action.findall('Criteria'))
+            if file.text in selected|retired:action.remove(file)
+        if not action.findall('File')and action.tag in ('UpdateDatabase','ImportFiles'):
+            actions.remove(action)
+    for file in list(files):
+        if file.text in retired:files.remove(file)
     def copy(relative):
         data=read_content(relative);target=package/relative
         target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
         copied[relative]=hashlib.sha256(data).hexdigest()
         if not any(f.text==relative for f in files):ET.SubElement(files,'File').text=relative
     for spec in specs:
-        if spec['id']not in selected:continue
-        found.add(spec['id'])
-        action=next((a for a in actions if a.get('id')==spec['id']),None)
-        if action is None:action=ET.SubElement(actions,spec['type'],id=spec['id'])
-        if action.tag!=spec['type']:raise ValueError('Economic action type differs: '+spec['id'])
-        for old in action.findall('File'):action.remove(old)
-        props=action.find('Properties')
-        if props is None:props=ET.SubElement(action,'Properties')
-        for name,value in spec.get('properties',{}).items():
-            field=props.find(name)
-            if field is None:field=ET.SubElement(props,name)
-            field.text=str(value)
-        for relative in spec['files']:
-            copy(relative);ET.SubElement(action,'File').text=relative
-    if found!=selected:raise ValueError('Missing reviewed economic actions: '+str(selected-found))
+        relevant=[f for f in spec.get('files',[])if f in selected]
+        if not relevant:continue
+        groups={}
+        for relative in relevant:
+            criteria=previous_criteria.get(relative,tuple(spec.get('criteria',[])))
+            groups.setdefault(criteria,[]).append(relative)
+        for index,(criteria,paths)in enumerate(groups.items()):
+            identity=spec['id']if len(groups)==1 else spec['id']+'_'+str(index+1)
+            # An accepted consolidated action can retain unrelated files after
+            # the selected ones were removed. Preserve it and avoid a duplicate
+            # action ID when adding this scoped economic portion back.
+            if any(a.get('id')==identity for a in actions):identity+='_Economic'
+            if any(a.get('id')==identity for a in actions):raise ValueError('Ambiguous economic action '+identity)
+            action=ET.SubElement(actions,spec['type'],id=identity)
+            props=ET.SubElement(action,'Properties')
+            for name,value in spec.get('properties',{}).items():ET.SubElement(props,name).text=str(value)
+            for criterion in criteria:ET.SubElement(action,'Criteria').text=criterion
+            for relative in paths:
+                found.add(relative);copy(relative);ET.SubElement(action,'File').text=relative
+    if found!=selected:raise ValueError('Missing reviewed economic files: '+str(selected-found))
     for relative in ('Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua',
                      'Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.lua'):
         copy(relative)
@@ -116,7 +150,7 @@ def freeze(base, source, output, *, economy_registry=False, ce_dll=None):
     overlays = list((source / 'Lua_UI/AI').glob('*.lua'))
     overlays.append(source / 'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua')
     overlays.extend(source / 'Data' / name for name in
-                    ('CSC_AI_Connectors.sql','CSC_MaterialTransactions.sql'))
+                    ('CSC_Q_ALL_AI_Connectors.sql','CSC_Q_ALL_MaterialHosts.sql','CSC_Q_ALL_Schema.sql'))
     hashes = {}
     for path in overlays:
         relative = path.relative_to(source)

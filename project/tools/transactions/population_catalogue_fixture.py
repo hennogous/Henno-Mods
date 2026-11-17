@@ -32,7 +32,7 @@ def fixed_aliases():
     aliases=set()
     for q in ('BAKERS','TAILORS'):
         for suffix in ('','_GOLD'):
-            source=(MOD/f'Data/CSC_Q_{q}_TRANSACTIONS{suffix}.sql').read_text()
+            source=(MOD/f'Data/CSC_Q_{q}{suffix}.sql').read_text()
             for statement in statements(source):
                 if not re.match(r'INSERT INTO CSC_BuildingTransactionFixedBindings\b',statement):continue
                 aliases.update(x for x in re.findall(r"'((?:MOD|REQSET|REQ)_CSC_[A-Z0-9_]+)'",statement)
@@ -43,9 +43,9 @@ def fixed_aliases():
 def material_aliases():
     aliases=set()
     for q in('BAKERS','TAILORS'):
-        for kind in('TRANSACTIONS','MC_MODE'):
+        for kind in('','_MC_MODE'):
             for suffix in('','_GOLD'):
-                for statement in statements((MOD/f'Data/CSC_Q_{q}_{kind}{suffix}.sql').read_text(encoding='utf-8-sig')):
+                for statement in statements((MOD/f'Data/CSC_Q_{q}{kind}{suffix}.sql').read_text(encoding='utf-8-sig')):
                     if re.match(r'INSERT INTO CSC_MaterialTransaction(?:Gate)?Bindings\b',statement):
                         aliases.update(re.findall(r"'((?:MOD|REQSET|REQ)_CSC_[A-Z0-9_]+)'",statement))
     return aliases
@@ -55,13 +55,13 @@ def route_aliases():
     aliases=set()
     for q in ('BAKERS','TAILORS'):
         for suffix in ('','_GOLD'):
-            for statement in statements((MOD/f'Data/CSC_Q_{q}_TRANSACTIONS{suffix}.sql').read_text()):
+            for statement in statements((MOD/f'Data/CSC_Q_{q}{suffix}.sql').read_text()):
                 if re.match(r'INSERT INTO CSC_TradeRoute\w+\b',statement):
                     aliases.update(re.findall(r"'(MOD_CSC_[A-Z0-9_]+)'",statement))
     return aliases
 
 
-def compile_catalogue(*,gold=True,lgd=True,reference=None,uniques=False,mc=False):
+def compile_catalogue(*,gold=True,lgd=True,reference=None,uniques=False,mc=False,source_root=None):
     db=sqlite3.connect(':memory:');db.row_factory=sqlite3.Row
     db.executescript('''
 CREATE TABLE Buildings(BuildingType TEXT PRIMARY KEY, PrereqDistrict TEXT, IsWonder INTEGER DEFAULT 0);
@@ -94,12 +94,21 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
         for name,district in [('GRANARY','CITY_CENTER'),('LIGHTHOUSE','HARBOR')]:
             db.execute('INSERT INTO Buildings VALUES(?,?,0)',('BUILDING_UNIQUE_'+name,'DISTRICT_'+district))
             db.execute('INSERT INTO BuildingReplaces VALUES(?,?)',('BUILDING_UNIQUE_'+name,'BUILDING_'+name))
-    shared=(MOD/'Data/CSC_Q_ALL.sql').read_text(encoding='utf-8-sig')
+    source=Path(source_root or reference or MOD)
+    consolidated=(source/'Data/CSC_Q_ALL_Schema.sql').exists()
+    # source_root permits a before/after consolidation comparison through the
+    # SAME native loader. reference retains the older pre-migration semantics.
+    schema_source=source if not reference else MOD
+    if consolidated or reference:
+        db.executescript((schema_source/'Data/CSC_Q_ALL_Schema.sql').read_text(encoding='utf-8-sig'))
+    else:
+        for filename in ('CSC_BuildingTransactionSchema.sql','CSC_TradeRouteSchema.sql'):
+            db.executescript((source/'Data'/filename).read_text(encoding='utf-8-sig'))
+    shared=(source/('Data/CSC_Q_ALL_Common.sql'if consolidated else'Data/CSC_Q_ALL.sql')).read_text(encoding='utf-8-sig')
     names={'CSC_QuarterFlowBuildings','CSC_QuarterCustomerBuildings','CSC_QuarterWonderSales','CSC_Stage3CustomerTransactions',
         'CSC_ScaledAmountBits','CSC_Stage3RateBits','CSC_Stage4StackBits','CSC_RouteStackBits'}
     for s in statements(shared):
         if any(re.match(r'(?:CREATE TABLE IF NOT EXISTS|INSERT OR IGNORE INTO)\s+'+n+r'\b',s)for n in names)or re.match(r'INSERT(?: OR IGNORE)? INTO DynamicModifiers\b',s):db.executescript(s)
-    source=Path(reference)if reference else MOD
     files=['Data/CSC_Q_BAKERS.sql','Data/CSC_Q_TAILORS.sql']
     if gold:files+=['Data/CSC_Q_BAKERS_GOLD.sql','Data/CSC_Q_TAILORS_GOLD.sql']
     if mc:
@@ -107,40 +116,34 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
             files.append(f'Data/CSC_Q_{q}_MC_MODE.sql')
             if gold:files.append(f'Data/CSC_Q_{q}_MC_MODE_GOLD.sql')
     if lgd:files+=['ModSupport/ModSupport_LGD.sql']
-    # Populate pre-existing consumers and their full requirements/attachments.
-    # Mixed VALUES statements are retained whole, so the comparison includes
-    # their neighboring definitions too rather than hiding an accidental edit.
-    aliases=fixed_aliases()|material_aliases()|route_aliases()
+    # Load every native INSERT, independent of whether its VALUES neighbours
+    # happen to mention a transaction alias. Cleanup can legitimately remove
+    # those neighbours without removing the remaining Service or route gates.
     for f in files:
-        text=(source/f).read_text(encoding='utf-8-sig')
+        text=(source/f).read_text(encoding='utf-8-sig').split('-- Ordinary transaction declarations',1)[0]
         imports=re.search(r'CREATE TEMP TABLE CSC_(?:Bakers|Tailors)ImportChannels\b',text)
         for s in statements(text[:imports.start()]if imports else text):
             table=re.match(r'INSERT(?: OR IGNORE)? INTO (\w+)',s)
             if ('CSC_BakersStage4CultureBuildings'in s or
-                (table and table[1]in (NATIVE|{'ImprovementModifiers'}) and (matches_population(s)
-                 or re.search(r'CSC_(?:BAKERS|TAILORS)_(?:IMPORT|EXPORT)_',s)
-                 or any("'"+x+"'"in s for x in aliases)))or
+                (table and table[1]in (NATIVE|{'ImprovementModifiers'}))or
                 (table and table[1]in names|{'Building_CitizenYieldChanges'})):
                 db.executescript(s)
         if imports:db.executescript(text[imports.start():])
     if not reference:
-        db.executescript((MOD/'Data/CSC_BuildingTransactionSchema.sql').read_text())
-        db.executescript((MOD/'Data/CSC_TradeRouteSchema.sql').read_text())
-        for q in ['BAKERS','TAILORS']:
-            db.executescript((MOD/f'Data/CSC_Q_{q}_TRANSACTIONS.sql').read_text())
-            if gold:db.executescript((MOD/f'Data/CSC_Q_{q}_TRANSACTIONS_GOLD.sql').read_text())
-            if mc:
-                for suffix in (['','_GOLD']if gold else['']):
-                    for s in statements((MOD/f'Data/CSC_Q_{q}_MC_MODE{suffix}.sql').read_text()):
-                        if re.match(r'INSERT(?: OR IGNORE)? INTO CSC_Material\w+\b',s):
-                            db.executescript(s)
-        if lgd:
-            for s in statements((MOD/'ModSupport/ModSupport_LGD.sql').read_text(encoding='utf-8-sig')):
-                if re.match(r'INSERT INTO CSC_BuildingTransaction',s):db.executescript(s)
-        db.executescript((MOD/'Data/CSC_MaterialTransactionProcessor.sql').read_text())
-        db.executescript((MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql').read_text())
-        db.executescript((MOD/'Data/CSC_BuildingTransactionProcessor.sql').read_text())
-        db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
+        # Economic declarations now live in their Quarter/Gold/MC files. Read
+        # only declarations here: native structures above remain independently
+        # selected, so loading a whole Quarter cannot hide a missing generator.
+        declarations=files if consolidated else [
+            *[f'Data/CSC_Q_{q}_TRANSACTIONS{suffix}.sql'for q in ('BAKERS','TAILORS')for suffix in (('','_GOLD')if gold else('',))],
+            *[f for f in files if '_MC_MODE'in f or f.startswith('ModSupport/')]]
+        for relative in declarations:
+            for s in statements((source/relative).read_text(encoding='utf-8-sig')):
+                if re.match(r'INSERT(?: OR IGNORE)? INTO CSC_(?:BuildingTransaction|MaterialTransaction|TradeRoute)\w*\b',s):
+                    db.executescript(s)
+        processors=('CSC_Q_ALL_TransactionProcessor.sql','CSC_Q_ALL_TradeRouteReader.sql')if consolidated else(
+            'CSC_MaterialTransactionProcessor.sql','CSC_FixedBuildingTransactionProcessor.sql',
+            'CSC_BuildingTransactionProcessor.sql','CSC_TradeRouteProcessor.sql')
+        for filename in processors:db.executescript((source/'Data'/filename).read_text())
     return db
 
 

@@ -5,6 +5,10 @@ change to achieve this; gameplay changes require regression checks. This is the
 16 November 2026 decision following Henno's concern about gaps between incremental
 implementations and Astra's source audit.
 
+The current source layout is described in [shared SQL structure](csc-shared-sql.md).
+Economic declarations now live inside their Quarter files; shared processors
+materialize the native graph without duplicating authored amounts.
+
 ## Contract
 
 Ordinary building transactions should have one gameplay-owned identity, source

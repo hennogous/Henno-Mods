@@ -355,101 +355,45 @@
         "id": "Settings",
         "files": [
           "Settings/Settings.xml"
-        ]
+        ],
+        "properties": {
+          "LoadOrder": "100"
+        }
       },
       {
         "type": "UpdateText",
         "id": "Settings_Text",
         "files": [
           "Settings/Settings_Text.xml"
-        ]
+        ],
+        "properties": {
+          "LoadOrder": "100"
+        }
       }
     ],
     "inGameActions": [
       {
-        "type": "ImportFiles",
-        "id": "CSC_QuarterOverlaySupport",
+        "type": "UpdateDatabase",
+        "id": "CSC_A_RESOURCES",
         "properties": {
-          "LoadOrder": "490"
+          "LoadOrder": "50"
         },
+        "criteria": [
+          "CSC_A_RESOURCES"
+        ],
         "files": [
-          "Lua_UI/Lenses/CSC_QuarterLensSupport.lua",
-          "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua",
-          "Lua_UI/Lenses/CSC_QuarterFlowTrial.lua",
-          "Lua_UI/Notifications_Suk_MCUIS/CSC_ServicePresentation.lua",
-          "Lua_UI/Lenses/CSC_QuarterServicePins.lua"
-        ]
-      },
-      {
-        "type": "ReplaceUIScript",
-        "id": "CSC_QuarterPlacementOverlay",
-        "properties": {
-          "LoadOrder": "505",
-          "LuaContext": "PlotInfo",
-          "LuaReplace": "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua"
-        }
-      },
-      {
-        "type": "ImportFiles",
-        "id": "CSC_QuarterLenses",
-        "properties": {
-          "LoadOrder": "501"
-        },
-        "files": [
-          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua"
-        ]
-      },
-      {
-        "type": "AddUserInterfaces",
-        "id": "CSC_SupplyChainsLensPanel",
-        "properties": {
-          "Context": "InGame",
-          "LoadOrder": "501"
-        },
-        "files": [
-          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.xml"
-        ]
-      },
-      {
-        "type": "AddUserInterfaces",
-        "id": "CSC_QuarterFlowTrial",
-        "properties": {
-          "Context": "InGame",
-          "LoadOrder": "502"
-        },
-        "files": [
-          "Lua_UI/Lenses/CSC_QuarterFlowTrial.xml"
-        ]
-      },
-      {
-        "type": "AddUserInterfaces",
-        "id": "CSC_QuarterServicePins",
-        "properties": {
-          "Context": "InGame",
-          "LoadOrder": "503"
-        },
-        "files": [
-          "Lua_UI/Lenses/CSC_QuarterServicePins.xml"
+          "Data/CSC_A_RESOURCES.sql"
         ]
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_LensColors",
+        "id": "CSC_AdjacencySchema",
         "properties": {
-          "LoadOrder": "501"
+          "LoadOrder": "90"
         },
         "files": [
-          "Lua_UI/Lenses/CSC_Lens_Colors.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_LensText",
-        "properties": {
-          "LoadOrder": "501"
-        },
-        "files": [
-          "Lua_UI/Lenses/CSC_Lens_Text.sql"
+          "Lua_UI/Adjacencies/CSC_AdjacencySchema.sql",
+          "Lua_UI/Adjacencies/CSC_AdjacencySources.sql"
         ]
       },
       {
@@ -459,199 +403,18 @@
           "LoadOrder": "95"
         },
         "files": [
-          "Data/CSC_Q_ALL.sql",
-          "Data/CSC_BuildingTransactionSchema.sql",
-          "Data/CSC_TradeRouteSchema.sql"
+          "Data/CSC_Q_ALL_Schema.sql",
+          "Data/CSC_Q_ALL_Common.sql"
         ]
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_Q_BAKERS",
+        "id": "CSC_RESOURCES",
         "properties": {
-          "LoadOrder": "100"
+          "LoadOrder": "98"
         },
         "files": [
-          "Data/CSC_Q_BAKERS.sql",
-          "Data/CSC_Q_BAKERS_TRANSACTIONS.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_BAKERS_GOLD",
-        "properties": {
-          "LoadOrder": "101"
-        },
-        "files": [
-          "Data/CSC_Q_BAKERS_GOLD.sql",
-          "Data/CSC_Q_BAKERS_TRANSACTIONS_GOLD.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "files": [
-          "Data/CSC_Q_TAILORS.sql",
-          "Data/CSC_Q_TAILORS_TRANSACTIONS.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS_GOLD",
-        "properties": {
-          "LoadOrder": "101"
-        },
-        "files": [
-          "Data/CSC_Q_TAILORS_GOLD.sql",
-          "Data/CSC_Q_TAILORS_TRANSACTIONS_GOLD.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_ALL_TEXT",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "files": [
-          "Text/CSC_ALL_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_BAKERS_TEXT",
-        "properties": {
-          "LoadOrder": "101"
-        },
-        "files": [
-          "Text/CSC_BAKERS_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_TAILORS_TEXT",
-        "properties": {
-          "LoadOrder": "102"
-        },
-        "files": [
-          "Text/CSC_TAILORS_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_TAILORS_MC_MODE_TEXT",
-        "properties": {
-          "LoadOrder": "103"
-        },
-        "criteria": [
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Text/CSC_TAILORS_MC_MODE_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_UI_CITY_PANEL_TEXT",
-        "properties": {
-          "LoadOrder": "9999999"
-        },
-        "files": [
-          "Text/CSC_UI_CITY_PANEL_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_BAKERS_MC_MODE",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "criteria": [
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Data/CSC_Q_BAKERS_MC_MODE.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_BAKERS_MC_MODE_GOLD",
-        "properties": {
-          "LoadOrder": "101"
-        },
-        "criteria": [
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS_MC_MODE",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "criteria": [
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Data/CSC_Q_TAILORS_MC_MODE.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS_MC_MODE_GOLD",
-        "properties": {
-          "LoadOrder": "101"
-        },
-        "criteria": [
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_MC_MODE_REMOVE_BONUSES",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "criteria": [
-          "CSC_MC_REMOVE_BONUSES",
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Data/CSC_MC_MODE_REMOVE_BONUSES.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_MC_MODE_REMOVE_BONUSES_TEXT",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "criteria": [
-          "CSC_MC_REMOVE_BONUSES",
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Text/CSC_MC_MODE_REMOVE_BONUSES_TEXT.xml"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_MC_MODE_TEXT",
-        "properties": {
-          "LoadOrder": "3000"
-        },
-        "criteria": [
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "Text/CSC_MC_MODE_TEXT.sql"
+          "Data/CSC_RESOURCES.sql"
         ]
       },
       {
@@ -669,45 +432,6 @@
       },
       {
         "type": "UpdateDatabase",
-        "id": "ModSupport_LAR",
-        "properties": {
-          "LoadOrder": "98"
-        },
-        "criteria": [
-          "ModSupport_LAR"
-        ],
-        "files": [
-          "ModSupport/ModSupport_LAR.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_R2",
-        "properties": {
-          "LoadOrder": "98"
-        },
-        "criteria": [
-          "ModSupport_R2"
-        ],
-        "files": [
-          "ModSupport/ModSupport_R2.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_SR",
-        "properties": {
-          "LoadOrder": "98"
-        },
-        "criteria": [
-          "ModSupport_SR"
-        ],
-        "files": [
-          "ModSupport/ModSupport_SR.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
         "id": "ModSupport_CR",
         "properties": {
           "LoadOrder": "98"
@@ -717,47 +441,6 @@
         ],
         "files": [
           "ModSupport/ModSupport_CR.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_SO",
-        "properties": {
-          "LoadOrder": "98"
-        },
-        "criteria": [
-          "ModSupport_SO"
-        ],
-        "files": [
-          "ModSupport/ModSupport_SO.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_R2_LAR",
-        "properties": {
-          "LoadOrder": "99"
-        },
-        "criteria": [
-          "ModSupport_R2",
-          "ModSupport_LAR"
-        ],
-        "files": [
-          "ModSupport/ModSupport_R2_LAR.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_R2_SO",
-        "properties": {
-          "LoadOrder": "99902"
-        },
-        "criteria": [
-          "ModSupport_R2",
-          "ModSupport_SO"
-        ],
-        "files": [
-          "ModSupport/ModSupport_R2_SO.sql"
         ]
       },
       {
@@ -775,15 +458,15 @@
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_A_RESOURCES",
+        "id": "ModSupport_LAR",
         "properties": {
-          "LoadOrder": "50"
+          "LoadOrder": "98"
         },
         "criteria": [
-          "CSC_A_RESOURCES"
+          "ModSupport_LAR"
         ],
         "files": [
-          "Data/CSC_A_RESOURCES.sql"
+          "ModSupport/ModSupport_LAR.sql"
         ]
       },
       {
@@ -802,6 +485,19 @@
       },
       {
         "type": "UpdateDatabase",
+        "id": "ModSupport_R2",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_R2"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
         "id": "ModSupport_R2_A",
         "properties": {
           "LoadOrder": "98"
@@ -812,6 +508,19 @@
         ],
         "files": [
           "ModSupport/ModSupport_R2_A.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_SO",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_SO"
+        ],
+        "files": [
+          "ModSupport/ModSupport_SO.sql"
         ]
       },
       {
@@ -829,105 +538,122 @@
         ]
       },
       {
-        "type": "DoNothing",
-        "id": "CSC_Q_APOTHECARIES",
+        "type": "UpdateDatabase",
+        "id": "ModSupport_SR",
         "properties": {
-          "LoadOrder": "100"
+          "LoadOrder": "98"
         },
+        "criteria": [
+          "ModSupport_SR"
+        ],
         "files": [
-          "Data/CSC_Q_APOTHECARIES.sql"
+          "ModSupport/ModSupport_SR.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2_LAR",
+        "properties": {
+          "LoadOrder": "99"
+        },
+        "criteria": [
+          "ModSupport_R2",
+          "ModSupport_LAR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_LAR.sql"
         ]
       },
       {
         "type": "DoNothing",
-        "id": "CSC_Q_STONEMASONS",
+        "id": "CSC_ParkedQuarters",
         "properties": {
           "LoadOrder": "100"
         },
         "files": [
+          "Data/CSC_Q_APOTHECARIES.sql",
+          "Data/CSC_Q_BLACKSMITHS.sql",
+          "Data/CSC_Q_BREWERS.sql",
+          "Data/CSC_Q_CARPENTERS.sql",
+          "Data/CSC_Q_GOLDSMITHS.sql",
           "Data/CSC_Q_STONEMASONS.sql"
         ]
       },
       {
-        "type": "DoNothing",
-        "id": "CSC_Q_CARPENTERS",
+        "type": "UpdateDatabase",
+        "id": "CSC_MC_MODE_REMOVE_BONUSES",
         "properties": {
           "LoadOrder": "100"
         },
+        "criteria": [
+          "CSC_MC_REMOVE_BONUSES",
+          "Monopolies_Mode"
+        ],
         "files": [
-          "Data/CSC_Q_CARPENTERS.sql"
-        ]
-      },
-      {
-        "type": "DoNothing",
-        "id": "CSC_Q_BLACKSMITHS",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "files": [
-          "Data/CSC_Q_BLACKSMITHS.sql"
-        ]
-      },
-      {
-        "type": "DoNothing",
-        "id": "CSC_Q_GOLDSMITHS",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "files": [
-          "Data/CSC_Q_GOLDSMITHS.sql"
-        ]
-      },
-      {
-        "type": "DoNothing",
-        "id": "CSC_Q_BREWERS",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "files": [
-          "Data/CSC_Q_BREWERS.sql"
+          "Data/CSC_MC_MODE_REMOVE_BONUSES.sql"
         ]
       },
       {
         "type": "UpdateDatabase",
-        "id": "ModSupport_R2_SR",
+        "id": "CSC_Q_ALL_Definitions",
         "properties": {
-          "LoadOrder": "99902"
+          "LoadOrder": "100"
         },
-        "criteria": [
-          "ModSupport_R2",
-          "ModSupport_SR"
-        ],
         "files": [
-          "ModSupport/ModSupport_R2_SR.sql"
+          "Data/CSC_Q_BAKERS.sql",
+          "Data/CSC_Q_TAILORS.sql"
         ]
       },
       {
         "type": "UpdateDatabase",
-        "id": "ModSupport_REMOVE_ALL_UNUSED",
+        "id": "CSC_Q_ALL_Monopolies",
         "properties": {
-          "LoadOrder": "99902"
+          "LoadOrder": "100"
         },
         "criteria": [
-          "ModSupport_REMOVE_UNUSED",
-          "CSC_NO_A_RESOURCES"
+          "Monopolies_Mode"
         ],
         "files": [
-          "ModSupport/ModSupport_REMOVE_ALL_UNUSED.sql"
+          "Data/CSC_Q_BAKERS_MC_MODE.sql",
+          "Data/CSC_Q_TAILORS_MC_MODE.sql"
         ]
       },
       {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_KEEP_A_REMOVE_UNUSED",
+        "type": "UpdateIcons",
+        "id": "UpdateIcons",
+        "files": [
+          "Icons/CSC_ALL_ICONS.sql",
+          "Icons/CSC_BAKERS_ICONS.sql",
+          "Icons/CSC_TAILORS_ICONS.sql",
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons.sql"
+        ],
         "properties": {
-          "LoadOrder": "99902"
+          "LoadOrder": "100"
+        }
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_CommonText",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Text/CSC_ALL_TEXT.sql",
+          "Text/CSC_RESOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_MC_MODE_REMOVE_BONUSES_TEXT",
+        "properties": {
+          "LoadOrder": "100"
         },
         "criteria": [
-          "ModSupport_REMOVE_UNUSED",
-          "CSC_A_RESOURCES"
+          "CSC_MC_REMOVE_BONUSES",
+          "Monopolies_Mode"
         ],
         "files": [
-          "ModSupport/ModSupport_A_REMOVE_UNUSED.sql"
+          "Text/CSC_MC_MODE_REMOVE_BONUSES_TEXT.xml"
         ]
       },
       {
@@ -941,33 +667,29 @@
         ]
       },
       {
-        "type": "UpdateIcons",
-        "id": "UpdateIcons",
+        "type": "UpdateDatabase",
+        "id": "CSC_CoreContent",
+        "properties": {
+          "LoadOrder": "101"
+        },
         "files": [
-          "Icons/CSC_ALL_ICONS.sql",
-          "Icons/CSC_BAKERS_ICONS.sql",
-          "Icons/CSC_TAILORS_ICONS.sql",
-          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons.sql"
+          "Data/CSC_Q_BAKERS_GOLD.sql",
+          "Data/CSC_Q_TAILORS_GOLD.sql",
+          "Text/CSC_QUARTERS_PEDIA.sql"
         ]
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_RESOURCES",
+        "id": "CSC_Q_ALL_Monopolies_Gold",
         "properties": {
-          "LoadOrder": "98"
+          "LoadOrder": "101"
         },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
         "files": [
-          "Data/CSC_RESOURCES.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_RESOURCES_TEXT",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "files": [
-          "Text/CSC_RESOURCES_TEXT.sql"
+          "Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql",
+          "Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql"
         ]
       },
       {
@@ -984,6 +706,17 @@
         ]
       },
       {
+        "type": "UpdateText",
+        "id": "CSC_QuarterText",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "files": [
+          "Text/CSC_BAKERS_TEXT.sql",
+          "Text/CSC_QUARTERS_TEXT.sql"
+        ]
+      },
+      {
         "type": "UpdateDatabase",
         "id": "ModSupport_6T",
         "properties": {
@@ -997,92 +730,6 @@
         ]
       },
       {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_LGD",
-        "properties": {
-          "LoadOrder": "2005"
-        },
-        "criteria": [
-          "ModSupport_LGD"
-        ],
-        "files": [
-          "ModSupport/ModSupport_LGD.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "ModSupport_LGD_GOLD",
-        "properties": {
-          "LoadOrder": "2006"
-        },
-        "criteria": [
-          "ModSupport_LGD"
-        ],
-        "files": [
-          "ModSupport/ModSupport_LGD_GOLD.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "ModSupport_LGD_TEXT",
-        "properties": {
-          "LoadOrder": "2005"
-        },
-        "criteria": [
-          "ModSupport_LGD"
-        ],
-        "files": [
-          "ModSupport/ModSupport_LGD_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "ModSupport_LGD_MC_MODE_TEXT",
-        "properties": {
-          "LoadOrder": "3001"
-        },
-        "criteria": [
-          "ModSupport_LGD",
-          "Monopolies_Mode"
-        ],
-        "files": [
-          "ModSupport/ModSupport_LGD_MC_MODE_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "ModSupport_CL_TEXT",
-        "properties": {
-          "LoadOrder": "1000"
-        },
-        "criteria": [
-          "ModSupport_CL"
-        ],
-        "files": [
-          "ModSupport/ModSupport_CL_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_QUARTERS_TEXT",
-        "properties": {
-          "LoadOrder": "101"
-        },
-        "files": [
-          "Text/CSC_QUARTERS_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_QUARTERS_PEDIA",
-        "properties": {
-          "LoadOrder": "101"
-        },
-        "files": [
-          "Text/CSC_QUARTERS_PEDIA.sql"
-        ]
-      },
-      {
         "type": "UpdateText",
         "id": "CSC_A_RESOURCES_TEXT",
         "properties": {
@@ -1093,6 +740,16 @@
         ],
         "files": [
           "Text/CSC_A_RESOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_TAILORS_TEXT",
+        "properties": {
+          "LoadOrder": "102"
+        },
+        "files": [
+          "Text/CSC_TAILORS_TEXT.sql"
         ]
       },
       {
@@ -1119,6 +776,19 @@
         ],
         "files": [
           "ModSupport/ModSupport_R2_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_TAILORS_MC_MODE_TEXT",
+        "properties": {
+          "LoadOrder": "103"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Text/CSC_TAILORS_MC_MODE_TEXT.sql"
         ]
       },
       {
@@ -1190,48 +860,30 @@
         ]
       },
       {
-        "type": "UpdateDatabase",
-        "id": "CSC_UI_DynamicDatabase",
-        "properties": {
-          "LoadOrder": "9999999"
-        },
-        "files": [
-          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_DB_Dynamic.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_UI_Text",
-        "properties": {
-          "LoadOrder": "9999999"
-        },
-        "files": [
-          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Text.sql"
-        ]
-      },
-      {
         "type": "ImportFiles",
-        "id": "CSC_UI_MCUIS",
+        "id": "CSC_SharedModules",
         "properties": {
-          "LoadOrder": "500"
+          "LoadOrder": "490"
         },
         "files": [
-          "Lua_UI/Notifications_Suk_MCUIS/Suk_MCUIS_CSC.lua",
-          "Lua_UI/Notifications_Suk_MCUIS/Suk_MCUIS_CityPanelFix.lua"
-        ]
-      },
-      {
-        "type": "UpdateIcons",
-        "id": "CSC_UI_Notifications_Icons_XP1",
-        "properties": {
-          "LoadOrder": "500"
-        },
-        "criteria": [
-          "Expansion1or2",
-          "CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED"
-        ],
-        "files": [
-          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons_XP1.sql"
+          "Lua_UI/Adjacencies/CSC_AdjacencyCore.lua",
+          "Lua_UI/Adjacencies/CSC_AdjacencyPresentation.lua",
+          "Lua_UI/Adjacencies/CSC_StockAdjacencyBonusSupport.lua",
+          "Lua_UI/Adjacencies/CSC_AdjacencyUI.lua",
+          "Lua_UI/AI/CSC_AI_AdjacencyScan.lua",
+          "Lua_UI/AI/CSC_AI_QuarterPlacement.lua",
+          "Lua_UI/AI/CSC_AI_DistrictBridge.lua",
+          "Lua_UI/AI/CSC_AI_EconomyModel.lua",
+          "Lua_UI/AI/CSC_AI_EconomyFacts.lua",
+          "Lua_UI/AI/CSC_AI_EconomyAdapters.lua",
+          "Lua_UI/AI/CSC_AI_PlanContinuity.lua",
+          "Lua_UI/Lenses/CSC_QuarterLensSupport.lua",
+          "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua",
+          "Lua_UI/Lenses/CSC_QuarterFlowTrial.lua",
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_ServicePresentation.lua",
+          "Lua_UI/Lenses/CSC_QuarterServicePins.lua",
+          "Lua_UI/TradeRoutes/CSC_TradeRouteCore.lua",
+          "Lua_UI/TradeRoutes/CSC_TradeRouteFacts.lua"
         ]
       },
       {
@@ -1250,6 +902,17 @@
       },
       {
         "type": "ImportFiles",
+        "id": "CSC_UI_MCUIS",
+        "properties": {
+          "LoadOrder": "500"
+        },
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/Suk_MCUIS_CSC.lua",
+          "Lua_UI/Notifications_Suk_MCUIS/Suk_MCUIS_CityPanelFix.lua"
+        ]
+      },
+      {
+        "type": "ImportFiles",
         "id": "CSC_UI_NotificationPanel",
         "properties": {
           "LoadOrder": "500"
@@ -1262,219 +925,17 @@
         ]
       },
       {
-        "type": "AddGameplayScripts",
-        "id": "CSC_ArtProperties",
+        "type": "UpdateIcons",
+        "id": "CSC_UI_Notifications_Icons_XP1",
         "properties": {
-          "LoadOrder": "501"
-        },
-        "files": [
-          "Lua_UI/ArtProperties/CSC_ArtProperties.lua"
-        ]
-      },
-      {
-        "type": "AddGameplayScripts",
-        "id": "CSC_CustomerPopulationReturns",
-        "properties": {
-          "LoadOrder": "502"
-        },
-        "files": [
-          "Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
-        ]
-      },
-      {
-        "type": "ImportFiles",
-        "id": "CSC_TradeRouteShared",
-        "properties": {
-          "LoadOrder": "490"
-        },
-        "files": [
-          "Lua_UI/TradeRoutes/CSC_TradeRouteCore.lua",
-          "Lua_UI/TradeRoutes/CSC_TradeRouteFacts.lua"
-        ]
-      },
-      {
-        "type": "AddGameplayScripts",
-        "id": "CSC_TradeRouteInteractions_Gameplay",
-        "properties": {
-          "LoadOrder": "503"
-        },
-        "files": [
-          "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions_Gameplay.lua"
-        ]
-      },
-      {
-        "type": "AddUserInterfaces",
-        "id": "CSC_TradeRouteInteractions",
-        "properties": {
-          "Context": "InGame",
-          "LoadOrder": "502"
-        },
-        "files": [
-          "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.xml"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_SUIA_YieldPresentationDatabase",
-        "properties": {
-          "LoadOrder": "9999001"
+          "LoadOrder": "500"
         },
         "criteria": [
-          "SimpleUIAdjustmentsMod"
+          "Expansion1or2",
+          "CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED"
         ],
         "files": [
-          "ModSupport/ModSupport_SUIA.sql"
-        ]
-      },
-      {
-        "type": "ReplaceUIScript",
-        "id": "CSC_SUIA_YieldTooltipSupport",
-        "properties": {
-          "LuaContext": "Suk_YieldTT",
-          "LuaReplace": "UI/Common/Additions/Suk_YieldTT.lua",
-          "LoadOrder": "60001"
-        },
-        "criteria": [
-          "SimpleUIAdjustmentsMod"
-        ]
-      },
-      {
-        "type": "ImportFiles",
-        "id": "CSC_BTS_TradeRouteSupport",
-        "properties": {
-          "LoadOrder": "60000"
-        },
-        "criteria": [
-          "BetterTradeScreenMod"
-        ],
-        "files": [
-          "Lua_UI/TradeRoutes/CSC_BTS_TradeRoutePreviewSupport.lua",
-          "Lua_UI/TradeRoutes/TradeSupport.lua",
-          "Replacements/TradeRouteChooser.lua",
-          "Replacements/TradeRouteChooser.xml"
-        ]
-      },
-      {
-        "type": "ImportFiles",
-        "id": "CSC_UnitPanelTradeRouteSupport",
-        "properties": {
-          "LoadOrder": "50001"
-        },
-        "files": [
-          "Lua_UI/TradeRoutes/UnitPanel.lua"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_AdjacencySchema",
-        "properties": {
-          "LoadOrder": "90"
-        },
-        "files": [
-          "Lua_UI/Adjacencies/CSC_AdjacencySchema.sql",
-          "Lua_UI/Adjacencies/CSC_AdjacencySources.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_AdjacencyProcessor",
-        "properties": {
-          "LoadOrder": "3000"
-        },
-        "files": [
-          "Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_AdjacencyModifiers",
-        "properties": {
-          "LoadOrder": "4000"
-        },
-        "files": [
-          "Lua_UI/Adjacencies/CSC_AdjacencyModifiers.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_AdjacencyText",
-        "properties": {
-          "LoadOrder": "4000"
-        },
-        "files": [
-          "Text/CSC_ADJACENCY_TEXT.sql",
-          "Text/CSC_ADJACENCY_SOURCES_TEXT.sql"
-        ]
-      },
-      {
-        "type": "ImportFiles",
-        "id": "CSC_AdjacencyModules",
-        "properties": {
-          "LoadOrder": "490"
-        },
-        "files": [
-          "Lua_UI/Adjacencies/CSC_AdjacencyCore.lua",
-          "Lua_UI/Adjacencies/CSC_AdjacencyPresentation.lua",
-          "Lua_UI/Adjacencies/CSC_StockAdjacencyBonusSupport.lua"
-        ]
-      },
-      {
-        "type": "ImportFiles",
-        "id": "CSC_AI_PlacementModules",
-        "properties": {
-          "LoadOrder": "490"
-        },
-        "files": [
-          "Lua_UI/AI/CSC_AI_AdjacencyScan.lua",
-          "Lua_UI/AI/CSC_AI_QuarterPlacement.lua",
-          "Lua_UI/AI/CSC_AI_DistrictBridge.lua",
-          "Lua_UI/AI/CSC_AI_EconomyModel.lua",
-          "Lua_UI/AI/CSC_AI_EconomyFacts.lua",
-          "Lua_UI/AI/CSC_AI_EconomyAdapters.lua",
-          "Lua_UI/AI/CSC_AI_PlanContinuity.lua"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_MaterialTransactions",
-        "properties": {
-          "LoadOrder": "800010"
-        },
-        "files": [
-          "Data/CSC_MaterialTransactions.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_AI_Connectors",
-        "properties": {
-          "LoadOrder": "3001"
-        },
-        "criteria": [
-          "CSC_CE_SupplierExclusion"
-        ],
-        "files": [
-          "Data/CSC_AI_Connectors.sql"
-        ]
-      },
-      {
-        "type": "AddGameplayScripts",
-        "id": "CSC_AI_BakersGameplay",
-        "properties": {
-          "LoadOrder": "999991"
-        },
-        "files": [
-          "Lua_UI/AI/CSC_AI_BakersGameplay.lua"
-        ]
-      },
-      {
-        "type": "ImportFiles",
-        "id": "CSC_AdjacencyUI",
-        "properties": {
-          "LoadOrder": "501"
-        },
-        "files": [
-          "Lua_UI/Adjacencies/AdjacencyBonusSupport.lua"
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons_XP1.sql"
         ]
       },
       {
@@ -1485,6 +946,16 @@
         },
         "files": [
           "Lua_UI/Adjacencies/CSC_AdjacencyGameplay.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_ArtProperties",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/ArtProperties/CSC_ArtProperties.lua"
         ]
       },
       {
@@ -1499,13 +970,98 @@
         ]
       },
       {
-        "type": "ImportFiles",
-        "id": "CSC_AdjacencyUIBridge",
+        "type": "AddUserInterfaces",
+        "id": "CSC_SupplyChainsLensPanel",
         "properties": {
-          "LoadOrder": "490"
+          "Context": "InGame",
+          "LoadOrder": "501"
         },
         "files": [
-          "Lua_UI/Adjacencies/CSC_AdjacencyUI.lua"
+          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.xml"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_UI_Imports",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/AdjacencyBonusSupport.lua",
+          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_LensColors",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_Lens_Colors.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_LensText",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_Lens_Text.sql"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_CustomerPopulationReturns",
+        "properties": {
+          "LoadOrder": "502"
+        },
+        "files": [
+          "Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_QuarterFlowTrial",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "502"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_QuarterFlowTrial.xml"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_TradeRouteInteractions",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "502"
+        },
+        "files": [
+          "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.xml"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_TradeRouteInteractions_Gameplay",
+        "properties": {
+          "LoadOrder": "503"
+        },
+        "files": [
+          "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions_Gameplay.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_QuarterServicePins",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "503"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_QuarterServicePins.xml"
         ]
       },
       {
@@ -1554,6 +1110,265 @@
         ]
       },
       {
+        "type": "ReplaceUIScript",
+        "id": "CSC_QuarterPlacementOverlay",
+        "properties": {
+          "LoadOrder": "505",
+          "LuaContext": "PlotInfo",
+          "LuaReplace": "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua"
+        }
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_CL_TEXT",
+        "properties": {
+          "LoadOrder": "1000"
+        },
+        "criteria": [
+          "ModSupport_CL"
+        ],
+        "files": [
+          "ModSupport/ModSupport_CL_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_LGD",
+        "properties": {
+          "LoadOrder": "2005"
+        },
+        "criteria": [
+          "ModSupport_LGD"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_LGD_TEXT",
+        "properties": {
+          "LoadOrder": "2005"
+        },
+        "criteria": [
+          "ModSupport_LGD"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_LGD_GOLD",
+        "properties": {
+          "LoadOrder": "2006"
+        },
+        "criteria": [
+          "ModSupport_LGD"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD_GOLD.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_BuildingTransactionProcessor",
+        "properties": {
+          "LoadOrder": "2500"
+        },
+        "files": [
+          "Data/CSC_Q_ALL_TransactionProcessor.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencyProcessor",
+        "properties": {
+          "LoadOrder": "3000"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_MC_MODE_TEXT",
+        "properties": {
+          "LoadOrder": "3000"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Text/CSC_MC_MODE_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AI_Connectors",
+        "properties": {
+          "LoadOrder": "3001"
+        },
+        "criteria": [
+          "CSC_CE_SupplierExclusion"
+        ],
+        "files": [
+          "Data/CSC_Q_ALL_AI_Connectors.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_LGD_MC_MODE_TEXT",
+        "properties": {
+          "LoadOrder": "3001"
+        },
+        "criteria": [
+          "ModSupport_LGD",
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD_MC_MODE_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencyModifiers",
+        "properties": {
+          "LoadOrder": "4000"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyModifiers.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_AdjacencyText",
+        "properties": {
+          "LoadOrder": "4000"
+        },
+        "files": [
+          "Text/CSC_ADJACENCY_TEXT.sql",
+          "Text/CSC_ADJACENCY_SOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_UnitPanelTradeRouteSupport",
+        "properties": {
+          "LoadOrder": "50001"
+        },
+        "files": [
+          "Lua_UI/TradeRoutes/UnitPanel.lua"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_BTS_TradeRouteSupport",
+        "properties": {
+          "LoadOrder": "60000"
+        },
+        "criteria": [
+          "BetterTradeScreenMod"
+        ],
+        "files": [
+          "Lua_UI/TradeRoutes/CSC_BTS_TradeRoutePreviewSupport.lua",
+          "Lua_UI/TradeRoutes/TradeSupport.lua",
+          "Replacements/TradeRouteChooser.lua",
+          "Replacements/TradeRouteChooser.xml"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_SUIA_YieldTooltipSupport",
+        "properties": {
+          "LuaContext": "Suk_YieldTT",
+          "LuaReplace": "UI/Common/Additions/Suk_YieldTT.lua",
+          "LoadOrder": "60001"
+        },
+        "criteria": [
+          "SimpleUIAdjustmentsMod"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_KEEP_A_REMOVE_UNUSED",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_REMOVE_UNUSED",
+          "CSC_A_RESOURCES"
+        ],
+        "files": [
+          "ModSupport/ModSupport_A_REMOVE_UNUSED.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2_SO",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_R2",
+          "ModSupport_SO"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_SO.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2_SR",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_R2",
+          "ModSupport_SR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_SR.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_REMOVE_ALL_UNUSED",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_REMOVE_UNUSED",
+          "CSC_NO_A_RESOURCES"
+        ],
+        "files": [
+          "ModSupport/ModSupport_REMOVE_ALL_UNUSED.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_MaterialTransactions",
+        "properties": {
+          "LoadOrder": "800010"
+        },
+        "files": [
+          "Data/CSC_Q_ALL_MaterialHosts.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_MaterialMap_TAR",
+        "criteria": [
+          "ModSupport_TAR"
+        ],
+        "properties": {
+          "LoadOrder": "999899"
+        },
+        "files": [
+          "ModSupport/ModSupport_TAR_MAP.sql"
+        ]
+      },
+      {
         "type": "ImportFiles",
         "id": "CSC_MaterialMapModules",
         "properties": {
@@ -1575,28 +1390,13 @@
         ]
       },
       {
-        "type": "UpdateDatabase",
-        "id": "CSC_MaterialMap_TAR",
-        "criteria": [
-          "ModSupport_TAR"
-        ],
+        "type": "AddGameplayScripts",
+        "id": "CSC_AI_BakersGameplay",
         "properties": {
-          "LoadOrder": "999899"
+          "LoadOrder": "999991"
         },
         "files": [
-          "ModSupport/ModSupport_TAR_MAP.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_BuildingTransactionProcessor",
-        "properties": {
-          "LoadOrder": "2500"
-        },
-        "files": [
-          "Data/CSC_MaterialTransactionProcessor.sql",
-          "Data/CSC_FixedBuildingTransactionProcessor.sql",
-          "Data/CSC_BuildingTransactionProcessor.sql"
+          "Lua_UI/AI/CSC_AI_BakersGameplay.lua"
         ]
       },
       {
@@ -1606,7 +1406,41 @@
           "LoadOrder": "9999000"
         },
         "files": [
-          "Data/CSC_TradeRouteProcessor.sql"
+          "Data/CSC_Q_ALL_TradeRouteReader.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_SUIA_YieldPresentationDatabase",
+        "properties": {
+          "LoadOrder": "9999001"
+        },
+        "criteria": [
+          "SimpleUIAdjustmentsMod"
+        ],
+        "files": [
+          "ModSupport/ModSupport_SUIA.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_UI_DynamicDatabase",
+        "properties": {
+          "LoadOrder": "9999999"
+        },
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_DB_Dynamic.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_UI_Text",
+        "properties": {
+          "LoadOrder": "9999999"
+        },
+        "files": [
+          "Text/CSC_UI_CITY_PANEL_TEXT.sql",
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Text.sql"
         ]
       }
     ]

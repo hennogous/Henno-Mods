@@ -20,7 +20,7 @@ INSERT INTO Improvements VALUES('IMP_CL_TRADING_POST'),('IMPROVEMENT_RES2_SAWMIL
 INSERT INTO Improvement_ValidResources VALUES('IMP_CL_TRADING_POST','RESOURCE_WHEAT'),('IMPROVEMENT_RES2_SAWMILL','RESOURCE_BAMBOO');
 INSERT INTO TypeTags VALUES('RESOURCE_WHEAT','CLASS_CSC_BAKERS_BASE'),('RESOURCE_BAMBOO','CLASS_CSC_TAILORS_BASE');
 ''')
-    db.executescript((MOD/'Data/CSC_MaterialTransactions.sql').read_text())
+    db.executescript((MOD/'Data/CSC_Q_ALL_MaterialHosts.sql').read_text())
     tables={}
     for name, in db.execute("SELECT name FROM sqlite_master WHERE type='table'"):
         tables[name]=[dict(r)for r in db.execute('SELECT * FROM '+name)]

@@ -15,15 +15,15 @@ class FreezeCoverage(unittest.TestCase):
             package=Path(directory)
             (package/'mod.modinfo').write_text('''<Mod id="accepted"><Dependencies><Mod id="CE"/></Dependencies>
 <InGameActions><UpdateDatabase id="CSC_Q_BAKERS_GOLD"><Criteria>Gold</Criteria>
-<File>old.sql</File></UpdateDatabase></InGameActions><Files/></Mod>''')
+<File>Data/CSC_Q_BAKERS_GOLD.sql</File></UpdateDatabase></InGameActions><Files/></Mod>''')
             copied=register_economy_contract(package,specs,lambda p:('committed '+p).encode())
             root=ET.parse(package/'mod.modinfo').getroot();actions=root.find('InGameActions')
-            gold=next(a for a in actions if a.get('id')=='CSC_Q_BAKERS_GOLD')
+            gold=next(a for a in actions if any(f.text=='Data/CSC_Q_BAKERS_GOLD.sql'for f in a.findall('File')))
             self.assertEqual(gold.findtext('Criteria'),'Gold')
             self.assertEqual(root.find('Dependencies/Mod').get('id'),'CE')
             declared={f.text for f in root.find('Files')}
-            self.assertIn('Data/CSC_BuildingTransactionSchema.sql',declared)
-            self.assertIn('Data/CSC_TradeRouteSchema.sql',declared)
+            self.assertIn('Data/CSC_Q_ALL_Schema.sql',declared)
+            self.assertIn('Data/CSC_Q_ALL_Common.sql',declared)
             self.assertIn('Lua_UI/TradeRoutes/CSC_TradeRouteCore.lua',declared)
             self.assertEqual(next(a for a in actions if a.get('id')=='CSC_BuildingTransactionProcessor').findtext('Properties/LoadOrder'),'2500')
             self.assertEqual(next(a for a in actions if a.get('id')=='CSC_TradeRouteProcessor').findtext('Properties/LoadOrder'),'9999000')
@@ -37,10 +37,10 @@ class FreezeCoverage(unittest.TestCase):
             (base/'CSC/Data/unrelated.sql').write_text('accepted')
             (base/'CSC/mod.modinfo').write_text('''<Mod id="accepted">
 <InGameActions><UpdateDatabase id="CSC_AI_Connectors"><Criteria>CE</Criteria>
-<File>Data/CSC_AI_Connectors.sql</File></UpdateDatabase></InGameActions>
-<Files><File>Data/CSC_AI_Connectors.sql</File></Files></Mod>''')
+<File>Data/CSC_Q_ALL_AI_Connectors.sql</File></UpdateDatabase></InGameActions>
+<Files><File>Data/CSC_Q_ALL_AI_Connectors.sql</File></Files></Mod>''')
             for name in ('Lua_UI/AI/model.lua','Lua_UI/Adjacencies/CSC_AdjacencyUI.lua',
-                         'Data/CSC_AI_Connectors.sql','Data/CSC_MaterialTransactions.sql',
+                         'Data/CSC_Q_ALL_AI_Connectors.sql','Data/CSC_Q_ALL_MaterialHosts.sql','Data/CSC_Q_ALL_Schema.sql',
                          'Data/unrelated.sql'):
                 path=source/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(name)
             freeze(base,source,out)
@@ -50,7 +50,10 @@ class FreezeCoverage(unittest.TestCase):
             self.assertEqual(action.findtext('Properties/LoadOrder'),'800010')
             self.assertIsNone(action.find('Criteria'))
             self.assertEqual(next(a for a in actions if a.get('id')=='CSC_AI_Connectors').findtext('Criteria'),'CE')
-            self.assertIn('Data/CSC_MaterialTransactions.sql',[f.text for f in tree.find('Files')])
+            self.assertIn('Data/CSC_Q_ALL_MaterialHosts.sql',[f.text for f in tree.find('Files')])
+            schema=next(a for a in actions if a.get('id')=='CSC_MaterialHostSchema')
+            self.assertEqual(schema.findtext('Properties/LoadOrder'),'94')
+            self.assertEqual(schema.findtext('File'),'Data/CSC_Q_ALL_Schema.sql')
             modules=next(a for a in actions if a.get('id')=='CSC_AI_PlacementModules')
             self.assertEqual([f.text for f in modules.findall('File')],['Lua_UI/AI/model.lua'])
             self.assertIn('Lua_UI/AI/model.lua',[f.text for f in tree.find('Files')])
@@ -58,7 +61,7 @@ class FreezeCoverage(unittest.TestCase):
             self.assertEqual(len([a for a in ET.parse(out/'CSC/mod.modinfo').find('InGameActions')
                                   if a.get('id')=='CSC_MaterialTransactions']),1)
             record=json.loads((out/'freeze.json').read_text())
-            self.assertEqual(len(record['overlays']),4)
+            self.assertEqual(len(record['overlays']),5)
             self.assertEqual(len(record['runtime_manifest_sha256']),64)
 
 

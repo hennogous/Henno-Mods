@@ -43,7 +43,7 @@ mechanism_bindings:
     cache_keys: live_strings_or_serialized_hashes
 
 planned_outputs:
-  shared_stage3_registry: Civ Supply Chains/Data/CSC_Q_ALL.sql
+  shared_stage3_registry: Civ Supply Chains/Data/CSC_Q_ALL_Schema.sql
   customer_population_gameplay: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
   core: Civ Supply Chains/Data/CSC_Q_TAILORS.sql
   gold: Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql
@@ -98,7 +98,7 @@ build_wiring:
     shared_stage3_registry:
       id: CSC_Q_ALL
       type: UpdateDatabase
-      file: Data/CSC_Q_ALL.sql
+      file: Data/CSC_Q_ALL_Schema.sql
       load_order: 95
       criteria: []
     customer_population_gameplay:

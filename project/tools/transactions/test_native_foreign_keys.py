@@ -10,7 +10,7 @@ import unittest
 
 from population_catalogue_fixture import MOD,compile_catalogue
 
-SQL=(MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql').read_text()
+SQL=(MOD/'Data/CSC_Q_ALL_TransactionProcessor.sql').read_text()
 
 
 def native_keys(db):

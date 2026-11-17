@@ -104,3 +104,5 @@ Shared skills are split by responsibility: [civ6-gameplay](https://github.com/he
 CSC-specific art budgets, scale baselines, palettes and tool observations live in the [CSC skill](https://github.com/hennogous/civ-supply-chains), starting with its [production conventions](https://github.com/hennogous/civ-supply-chains/blob/main/references/art-production-conventions.md). Shared Civ VI guidance remains in `civ6-art`; the project art plan remains the source for asset decisions.
 
 The generic skills refer to the modder’s projects without depending on CSC. For this project, `civ-supply-chains` supplies that context. ImageGen and deterministic building-icon/SV production remain project-specific; their publication has not been decided.
+
+Shared gameplay SQL and load phases: [CSC shared SQL structure](docs/integrations/csc-shared-sql.md).

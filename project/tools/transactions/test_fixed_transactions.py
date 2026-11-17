@@ -9,7 +9,7 @@ from population_catalogue_fixture import ROOT,MOD,compile_catalogue,graph,legacy
 from test_population_catalogue import digest,lua
 
 HERE=Path(__file__).resolve().parent
-PROCESSOR=MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql'
+PROCESSOR=MOD/'Data/CSC_Q_ALL_TransactionProcessor.sql'
 
 
 def transactions(db):

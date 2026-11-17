@@ -250,7 +250,7 @@ def main():
     ]
 
     source_paths = sorted({MOD / row["files"][0] for row in relevant_actions if row.get("files")}
-        | {MOD / "Data/CSC_Q_ALL.sql", ROOT / "project/modbuddy/CivSupplyChains.actions.json"}
+        | {MOD / "Data/CSC_Q_ALL_Common.sql", ROOT / "project/modbuddy/CivSupplyChains.actions.json"}
         | {MOD / f"Lua_UI/Adjacencies/CSC_Adjacency{name}{extension}" for name, extension in (("Schema", ".sql"), ("Processor", ".sql"), ("Modifiers", ".sql"), ("Core", ".lua"))}
         | {MOD / rel for rel in ("Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua", "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.lua", "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions_Gameplay.lua", "Lua_UI/TradeRoutes/CSC_BTS_TradeRoutePreviewSupport.lua", "Lua_UI/WonderServices/CSC_WonderServicePlacement.lua", "Lua_UI/ArtProperties/CSC_ArtProperties.lua")}
         | set((ROOT / "docs/content/quarters").glob("*.md")))

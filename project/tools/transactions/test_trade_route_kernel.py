@@ -12,11 +12,12 @@ class Routes(unittest.TestCase):
         path=MOD.parent/'project/modbuddy/CivSupplyChains.actions.json'
         actions={a['id']:a for a in json.loads(path.read_text())['blocks']['inGameActions']}
         order=lambda key:int(actions[key]['properties']['LoadOrder'])
-        self.assertIn('Data/CSC_TradeRouteSchema.sql',actions['CSC_Q_ALL']['files'])
-        self.assertEqual(set(actions['CSC_TradeRouteShared']['files']),{
-            'Lua_UI/TradeRoutes/CSC_TradeRouteCore.lua','Lua_UI/TradeRoutes/CSC_TradeRouteFacts.lua'})
+        self.assertIn('Data/CSC_Q_ALL_Schema.sql',actions['CSC_Q_ALL']['files'])
+        owners={f:a for a in actions.values()for f in a.get('files',[])}
+        for filename in ('CSC_TradeRouteCore.lua','CSC_TradeRouteFacts.lua'):
+            self.assertEqual(owners['Lua_UI/TradeRoutes/'+filename]['type'],'ImportFiles')
         self.assertNotIn('criteria',actions['CSC_TradeRouteProcessor'])
-        for key in ('CSC_Q_BAKERS','CSC_Q_BAKERS_GOLD','CSC_Q_TAILORS','CSC_Q_TAILORS_GOLD','ModSupport_LGD'):
+        for key in ('CSC_Q_ALL_Definitions','CSC_CoreContent','ModSupport_LGD'):
             self.assertLess(order(key),order('CSC_TradeRouteProcessor'))
         self.assertLess(order('CSC_TradeRouteProcessor'),order('CSC_SUIA_YieldPresentationDatabase'))
 
@@ -43,7 +44,7 @@ end
         for gold,expected in ((True,80),(False,60)):
             db=compile_catalogue(gold=gold)
             before=graph(db,'all_csc')
-            db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
+            db.executescript((MOD/'Data/CSC_Q_ALL_TradeRouteReader.sql').read_text())
             self.assertEqual(before,graph(db,'all_csc'))
             self.assertEqual(db.execute('SELECT COUNT(*) FROM CSC_TradeRoutePayouts').fetchone()[0],expected)
             self.assertEqual(db.execute('SELECT COUNT(*) FROM CSC_TradeRouteSupplyRequirements').fetchone()[0],6)
@@ -90,7 +91,7 @@ end
         db=compile_catalogue()
         db.execute("UPDATE ModifierArguments SET Value='3' WHERE ModifierId='MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD' AND Name='Amount'")
         db.execute("UPDATE ModifierArguments SET Value='7' WHERE ModifierId='MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD_BIT_2' AND Name='Amount'")
-        db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
+        db.executescript((MOD/'Data/CSC_Q_ALL_TradeRouteReader.sql').read_text())
         self.vm(database=db).execute('''
 local a,b=city(1,1),city(2,2)
 assert(R.Nominal(D,a,b,'ORIGIN').YIELD_FOOD==4) -- Bakery3 + Cafe1.
@@ -108,7 +109,7 @@ assert(R.EvaluateBits(D.byId.BAKERS_BAKERY,2,'ORIGIN',a).YIELD_FOOD==7)
         ):
             with self.subTest(sql=sql):
                 db=compile_catalogue();db.execute(sql)
-                with self.assertRaises(sqlite3.IntegrityError):db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
+                with self.assertRaises(sqlite3.IntegrityError):db.executescript((MOD/'Data/CSC_Q_ALL_TradeRouteReader.sql').read_text())
 
     def test_unsupported_lifecycle_or_dynamic_scope_is_rejected(self):
         for modifier in ('MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD','MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP'):
@@ -116,10 +117,10 @@ assert(R.EvaluateBits(D.byId.BAKERS_BAKERY,2,'ORIGIN',a).YIELD_FOOD==7)
                 with self.subTest(modifier=modifier,flag=flag):
                     db=compile_catalogue()
                     db.execute('UPDATE Modifiers SET '+flag+'=1 WHERE ModifierId=?',(modifier,))
-                    with self.assertRaises(sqlite3.IntegrityError):db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
+                    with self.assertRaises(sqlite3.IntegrityError):db.executescript((MOD/'Data/CSC_Q_ALL_TradeRouteReader.sql').read_text())
         db=compile_catalogue()
         db.execute("UPDATE DynamicModifiers SET CollectionType='COLLECTION_PLAYER_CITIES' WHERE ModifierType='MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE'")
-        with self.assertRaises(sqlite3.IntegrityError):db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
+        with self.assertRaises(sqlite3.IntegrityError):db.executescript((MOD/'Data/CSC_Q_ALL_TradeRouteReader.sql').read_text())
 
     def test_timeline_removes_imports_at_foundation_and_never_invents_renewal(self):
         self.vm().execute('''

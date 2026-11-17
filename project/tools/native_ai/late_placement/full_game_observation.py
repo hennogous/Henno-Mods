@@ -45,7 +45,7 @@ def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mod
     (out/'full-game-preflight.txt').write_text(raw,encoding='utf-8')
     db=database_snapshot(user_root/'Cache/DebugGameplay.sqlite')
     write_json(out/'loaded-native-customer-database.json',db);qualify_database(db,'on')
-    if csc_path and (Path(csc_path)/'Data/CSC_MaterialTransactions.sql').is_file():
+    if csc_path and (Path(csc_path)/'Data/CSC_Q_ALL_MaterialHosts.sql').is_file():
         # New coverage packages qualify the actual loader output once, before
         # autoplay. Historical replays retain their original DB and bypass this
         # gate. This does not create a modifier or publish an AI offer.

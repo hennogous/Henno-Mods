@@ -347,7 +347,7 @@ INSERT INTO CSC_Stage3CustomerTransactions VALUES
  ('DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_COMMERCIAL_HUB');
 INSERT INTO CSC_QuarterWonderSales VALUES('TAILORS','BUILDING_TEST_WONDER',4);
 ''')
-        sql = (ROOT / 'Civ Supply Chains/Data/CSC_AI_Connectors.sql').read_text(encoding='utf-8')
+        sql = (ROOT / 'Civ Supply Chains/Data/CSC_Q_ALL_AI_Connectors.sql').read_text(encoding='utf-8')
         db.executescript(sql)
         db.executescript(sql)
         self.assertEqual({r[0] for r in db.execute('SELECT DistrictType FROM District_Adjacencies')},

@@ -44,13 +44,7 @@ DROP VIEW CSC_MaterialTransactionRoots;
 -- Session-static read-model for actual incoming hosts, not another authored
 -- list. Include legacy registrations and exact M&C roots. The facts adapter
 -- consults this per observed improvement; valid-pair jobs remain separate.
-CREATE TABLE IF NOT EXISTS CSC_MaterialTransactionInputHosts (
-    TransactionId TEXT NOT NULL,
-    LegKey TEXT NOT NULL,
-    ImprovementType TEXT NOT NULL,
-    PRIMARY KEY (TransactionId, LegKey, ImprovementType),
-    FOREIGN KEY (TransactionId, LegKey) REFERENCES CSC_MaterialTransactionYields (TransactionId, LegKey)
-);
+
 DELETE FROM CSC_MaterialTransactionInputHosts;
 INSERT INTO CSC_MaterialTransactionInputHosts
 SELECT DISTINCT b.TransactionId, b.LegKey, i.ImprovementType

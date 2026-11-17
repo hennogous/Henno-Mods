@@ -27,7 +27,7 @@ from ce_bakers_fresh import LOGS
 HERE=Path(__file__).resolve().parent
 MOD=HERE.parents[3]/'Civ Supply Chains'
 sys.path.insert(0,str(HERE.parents[3]/'project/tools/transactions'))
-from population_catalogue_fixture import graph as transaction_graph, fixed_aliases
+from population_catalogue_fixture import graph as transaction_graph, fixed_aliases, statements
 GAMEPLAY='Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua'
 ECONOMY_UI='Lua_UI/Adjacencies/CSC_AdjacencyUI.lua'
 SQL_PATH='Data/CSC_DIAG_POPULATION_CATALOGUE.sql'
@@ -98,12 +98,11 @@ def run(args):
     require(bool(ce_dll)==bool(ce_sha),'CE diagnostic overlay requires both DLL and expected SHA')
     if ce_dll:require(sha(ce_dll)==ce_sha,'CE diagnostic overlay identity differs')
     out=plan.output;out.mkdir(parents=True)
-    paths=[MOD/'Data/CSC_BuildingTransactionSchema.sql',MOD/'Data/CSC_TradeRouteSchema.sql']
+    paths=[MOD/'Data/CSC_Q_ALL_Schema.sql']
     for q in('BAKERS','TAILORS'):
-        paths.extend([MOD/f'Data/CSC_Q_{q}_TRANSACTIONS.sql',MOD/f'Data/CSC_Q_{q}_TRANSACTIONS_GOLD.sql'])
-    paths.extend([MOD/'Data/CSC_MaterialTransactionProcessor.sql',MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql',
-                  MOD/'Data/CSC_BuildingTransactionProcessor.sql',MOD/'Data/CSC_MaterialTransactions.sql',
-                  MOD/'Data/CSC_TradeRouteProcessor.sql'])
+        paths.extend([MOD/f'Data/CSC_Q_{q}.sql',MOD/f'Data/CSC_Q_{q}_GOLD.sql'])
+    paths.extend([MOD/'Data/CSC_Q_ALL_TransactionProcessor.sql',MOD/'Data/CSC_Q_ALL_MaterialHosts.sql',
+                  MOD/'Data/CSC_Q_ALL_TradeRouteReader.sql'])
     # Compare the complete loaded native rows for fixed aliases, including all
     # actual engine columns/defaults, rather than only the fixture's schema.
     # The source cache is read-only and was produced by the already qualified
@@ -129,7 +128,18 @@ def run(args):
     require(sum(map(len,original_fixed.values()))>0,'Missing fixed native reference')
     write_json(out/'reference-fixed-native-graph.json',original_fixed)
     write_json(out/'reference-all-csc-native-graph.json',original_all)
-    sql='\n'.join(read(p)for p in paths)
+    # Diagnostic-only upgrade of a legacy saved-world package. Quarter files
+    # now contain native definitions and the catalogue together. Import only
+    # their catalogue INSERTs; replaying complete Quarter files would redefine
+    # districts/buildings already supplied by the original package.
+    chunks=[]
+    for path in paths:
+        if path.name.startswith(('CSC_Q_BAKERS', 'CSC_Q_TAILORS')):
+            chunks.extend(s for s in statements(read(path)) if re.match(
+                r'INSERT INTO CSC_(?:BuildingTransaction|MaterialTransaction|TradeRoute)',s))
+        else:
+            chunks.append(read(path))
+    sql='\n'.join(chunks)
     reference=read(args.reference/GAMEPLAY)
     inputs=[*paths,MOD/GAMEPLAY,args.reference/GAMEPLAY,Path(__file__),Path(transaction_graph.__code__.co_filename)]
     route_legacy=None

@@ -285,7 +285,7 @@ class TailorsPhaseContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("CREATE TABLE IF NOT EXISTS CSC_TradeRouteYieldPresentation", modsupport)
         for relative in (
-            "Civ Supply Chains/Data/CSC_Q_ALL.sql",
+            "Civ Supply Chains/Data/CSC_Q_ALL_Common.sql",
             "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
             "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
         ):

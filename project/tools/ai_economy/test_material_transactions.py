@@ -11,7 +11,7 @@ import unittest
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[3]
-SQL=(ROOT/'Civ Supply Chains/Data/CSC_MaterialTransactions.sql').read_text(encoding='utf-8')
+SQL=(ROOT/'Civ Supply Chains/Data/CSC_Q_ALL_MaterialHosts.sql').read_text(encoding='utf-8')
 ROOTS={
     'BW':'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER',
     'BI':'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND',
@@ -29,9 +29,9 @@ class MaterialTransactions(unittest.TestCase):
         # R2 defines Sawmill at799990 and optionally edits it at800000;
         # CL's resource-validity links load at9999. Resource tags alone are early.
         self.assertEqual(int(action['properties']['LoadOrder']),800010)
-        self.assertEqual(action['files'],['Data/CSC_MaterialTransactions.sql'])
+        self.assertEqual(action['files'],['Data/CSC_Q_ALL_MaterialHosts.sql'])
         project=ET.parse(ROOT/'Civ Supply Chains/Civ Supply Chains.civ6proj')
-        self.assertTrue(any(e.attrib.get('Include')=='Data\\CSC_MaterialTransactions.sql'for e in project.iter()))
+        self.assertTrue(any(e.attrib.get('Include')=='Data\\CSC_Q_ALL_MaterialHosts.sql'for e in project.iter()))
 
     def setUp(self):
         self.db=sqlite3.connect(':memory:');self.addCleanup(self.db.close)
@@ -45,6 +45,7 @@ CREATE TABLE CSC_MaterialTransactions(TransactionId PRIMARY KEY,MaterialClass);
 CREATE TABLE CSC_MaterialTransactionYields(TransactionId,LegKey,Recipient,ImprovementScope);
 CREATE TABLE CSC_MaterialTransactionBindings(TransactionId,LegKey,RootModifierId);
 ''')
+        self.db.executescript((ROOT/'Civ Supply Chains/Data/CSC_Q_ALL_Schema.sql').read_text(encoding='utf-8'))
         classes={'BW':'BAKERS_BASE','BI':'BAKERS_BASE','BS':'BAKERS_SPEC','TB':'TAILORS_BASE','TS':'TAILORS_SPEC'}
         for key,root in ROOTS.items():
             self.db.execute('INSERT INTO CSC_MaterialTransactions VALUES(?,?)',(key,'CLASS_CSC_'+classes[key]))

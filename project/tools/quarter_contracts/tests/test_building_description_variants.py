@@ -105,9 +105,11 @@ class BuildingDescriptionVariantTests(unittest.TestCase):
 
     def test_cafe_effective_text_in_all_mode_and_garden_combinations(self):
         manifest = json.loads((ROOT / "project/modbuddy/CivSupplyChains.actions.json").read_text(encoding="utf-8"))
-        family = {"CSC_BAKERS_TEXT", "CSC_MC_MODE_TEXT", "ModSupport_LGD_TEXT", "ModSupport_LGD_MC_MODE_TEXT"}
+        # File membership survives combining actions with identical criteria.
+        family = {"Text/CSC_BAKERS_TEXT.sql", "Text/CSC_MC_MODE_TEXT.sql",
+                  "ModSupport/ModSupport_LGD_TEXT.sql", "ModSupport/ModSupport_LGD_MC_MODE_TEXT.sql"}
         actions = sorted(
-            (action for action in manifest["blocks"]["inGameActions"] if action["id"] in family),
+            (action for action in manifest["blocks"]["inGameActions"] if family.intersection(action.get("files", []))),
             key=lambda action: int(action["properties"]["LoadOrder"]),
         )
         self.assertEqual(len(actions), 4)
@@ -121,7 +123,8 @@ class BuildingDescriptionVariantTests(unittest.TestCase):
                         if set(action.get("criteria", [])) <= enabled:
                             loaded.append(action["id"])
                             for file in action["files"]:
-                                db.executescript((ROOT / "Civ Supply Chains" / file).read_text(encoding="utf-8"))
+                                if file in family:
+                                    db.executescript((ROOT / "Civ Supply Chains" / file).read_text(encoding="utf-8"))
                     self.assertEqual("ModSupport_LGD_MC_MODE_TEXT" in loaded, monopolies and garden)
                     tag = self.tag if garden else self.tag.removesuffix("_GARDEN")
                     row = db.execute("SELECT Text FROM LocalizedText WHERE Language='en_US' AND Tag=?", (tag,)).fetchone()

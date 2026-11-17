@@ -43,7 +43,7 @@ assert(p[FOOD_INDEX]==2 and actual.YIELD_FOOD==2 and actual.AMENITY==3)
     def test_native_amount_change_reaches_bts_unit_panel_and_suia(self):
         db=compile_catalogue()
         db.execute("UPDATE ModifierArguments SET Value=3 WHERE ModifierId='MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD' AND Name='Amount'")
-        db.executescript((MOD/'Data/CSC_TradeRouteProcessor.sql').read_text())
+        db.executescript((MOD/'Data/CSC_Q_ALL_TradeRouteReader.sql').read_text())
         vm=self.setup(database=db)
         vm.execute('''
 local p={};CSC_BTS_ApplyBakersTradeRoutePreview(route,p,{},false,'Origin')

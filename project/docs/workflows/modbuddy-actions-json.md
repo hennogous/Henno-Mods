@@ -1,7 +1,6 @@
 # ModBuddy Action JSON Workflow
 
-> **Documentation audit — 2026-09-12: Needs refresh.** JSON/check/patch tooling exists and remains the active workflow. The instruction to export before starting needs qualification: actions JSON is the editing source; reconcile differences before exporting from .civ6proj so JSON edits are not overwritten.
-> Classification: Tool workflow. See the [full audit](../DOCUMENT-AUDIT.md).
+Updated 17 November 2026.
 
 ModBuddy stores `ActionCriteriaData`, `FrontEndActionData`, and `InGameActionData` in `Civ Supply Chains/Civ Supply Chains.civ6proj` as minified XML inside CDATA. Editing those blocks directly is error-prone, especially when adding criteria or moving files between action types.
 
@@ -20,10 +19,10 @@ Default paths:
 
 ## Normal Edit Flow
 
-1. Run `export` before starting if the `.civ6proj` may have changed in ModBuddy.
+1. Treat JSON as the editing source. If ModBuddy changed actions, reconcile those changes before using `export`, which overwrites JSON.
 2. Edit `project/modbuddy/CivSupplyChains.actions.json`.
 3. Run `check` to verify the JSON can regenerate valid CDATA.
-4. Run `patch` to regenerate the three CDATA blocks in the `.civ6proj`.
+4. Run `sort` to order both action lists and regenerate CDATA. Use `patch` when deliberately preserving the existing order.
 5. Review the `.civ6proj` diff before building.
 
 ## JSON Shape
@@ -43,7 +42,7 @@ Default paths:
     "SomeCriterion"
   ],
   "files": [
-    "Data/CSC_Q_ALL.sql"
+    "Data/CSC_Q_ALL_Schema.sql"
   ]
 }
 ```
@@ -56,3 +55,33 @@ Multiple `criteria` entries become multiple `<Criteria>` child elements, which M
 - The tool patches only `ActionCriteriaData`, `FrontEndActionData`, and `InGameActionData`.
 - Adding a new file still requires both a `<Content Include="...">` entry and an action entry in the JSON.
 - Do not hand-edit the generated `.modinfo`; ModBuddy overwrites it from the `.civ6proj`.
+
+## Ordering and consolidation
+
+Every action must declare a numeric `LoadOrder`. Sort by **LoadOrder, action
+type, action ID**, with alphabetical comparisons for the last two keys:
+
+```powershell
+python project/tools/modbuddy/civ6proj_actions.py sort
+python -m unittest discover -s project/tools/modbuddy -q
+```
+
+The shipping-manifest tests compare actual project CDATA against JSON, check
+ordering, and check action files exist and are included in the project. `check`
+checks JSON round-tripping; the tests also detect an out-of-date project.
+
+Settings database/text actions and icons use 100. The Pedia shared import uses 490
+so it is available before UI contexts at 500. Other established phases remain.
+File order within an action is dependency order: shared Schema before Common.
+
+`organize_actions.py` is the reviewed consolidation helper. It combines only
+UpdateDatabase, UpdateText, UpdateIcons, ImportFiles and DoNothing actions with
+identical properties, criteria and additional metadata. New merged cohorts need
+a deliberate descriptive action ID. Gameplay scripts, UI contexts and script
+replacements keep their own actions and identities. Running `sort` never merges.
+
+The 17 November cleanup reduced the working in-game action list from 109 to 90
+(the committed base goes from 105 to 87),
+including Quarter/Gold/M&C, text and shared import groups. Existing criteria,
+context properties and file coverage were retained. These are authoring actions;
+ModBuddy generates the resulting `.modinfo` at build time.

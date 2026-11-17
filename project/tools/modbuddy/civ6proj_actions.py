@@ -291,8 +291,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "command",
-        choices=("export", "check", "patch"),
-        help="export JSON, verify JSON matches the project, or patch the project from JSON",
+        choices=("export", "check", "patch", "sort"),
+        help="export/check/patch actions, or sort JSON by load order, type and ID and patch the project",
     )
     parser.add_argument("--project", type=Path, default=default_project_path(), help="Path to the .civ6proj file")
     parser.add_argument("--json", type=Path, default=default_json_path(), help="Path to the action JSON file")
@@ -310,6 +310,16 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "patch":
             changed = patch(args.project, args.json)
             print("Patched project CDATA blocks" if changed else "Project already matches JSON")
+        elif args.command == "sort":
+            from organize_actions import order
+            data = json.loads(read_text(args.json))
+            for name in ("frontEndActions", "inGameActions"):
+                # Missing orders are an authoring error. Choose a meaningful
+                # phase explicitly rather than silently treating it as zero.
+                data["blocks"][name].sort(key=order)
+            write_text(args.json, json.dumps(data, indent=2) + "\n")
+            patch(args.project, args.json)
+            print("Sorted actions by LoadOrder, action type, action ID; regenerated CDATA")
     except Exception as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

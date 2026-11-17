@@ -43,6 +43,9 @@ class QARegressionTests(unittest.TestCase):
             ).fetchone())
         for name in ('CSC_Q_BAKERS_MC_MODE.sql', 'CSC_Q_BAKERS_MC_MODE_GOLD.sql'):
             self.db.executescript((ROOT / 'Civ Supply Chains/Data' / name).read_text(encoding='utf-8-sig'))
+        # Mode files author transactions; materialize their native graph after
+        # all declarations, as the real load-order-2500 processor does.
+        self.db.executescript((ROOT / 'Civ Supply Chains/Data/CSC_Q_ALL_TransactionProcessor.sql').read_text(encoding='utf-8-sig'))
 
     def tearDown(self):
         self.db.close()

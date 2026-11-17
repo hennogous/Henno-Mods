@@ -34,7 +34,7 @@ sys.path.insert(0,str(HERE.parents[3]/'project/tools/transactions'))
 from population_catalogue_fixture import graph as transaction_graph
 RULE = 'CSC_AI_CUSTOMER_DISTRICT_COMMERCIAL_HUB__DISTRICT_CSC_BAKERS_QUARTER'
 SQL_PATH = 'Data/CSC_DIAG_CUSTOMER_STRENGTH.sql'
-CONNECTORS = HERE.parents[3]/'Civ Supply Chains/Data/CSC_AI_Connectors.sql'
+CONNECTORS = HERE.parents[3]/'Civ Supply Chains/Data/CSC_Q_ALL_AI_Connectors.sql'
 
 
 def stage(source, amount, connector_sql=b''):
