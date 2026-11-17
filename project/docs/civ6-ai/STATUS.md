@@ -4,6 +4,13 @@
 work from remaining AI gaps, records the source cleanup and pending EPC screen
 check, and preserves operating instructions. No active goal or new test game.
 
+**Continuation audit with Astra:** main Quarter/customer scoring and material
+protection have native uptake. The clearest code boundaries are customer land
+acquisition, persistent joint layouts and limited alternative-site coverage.
+Good-site rejection and split customer skip causes need better observation.
+A fresh matched Continents250 regression is recommended after restructuring;
+no repeat game has started. [Capability audit and proposed diagnostics](../research/mods/csc-ai-continents-capability-audit-20261117.md).
+
 **17 November — Continents analysis complete; further games paused.**
 The integrated model founded **22 Quarters**, all with Base materials;20 rated
 +3 or better. All82 native Quarter wins matched the published bid. Eight

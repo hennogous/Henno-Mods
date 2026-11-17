@@ -860,13 +860,18 @@ until the active check closes or an explicit dependency needs attention.
   current constructibility. AI-C178 tests a blanket publication gate; AI-C179
   supersedes it after proving growth later in the same round leaves stale negative
   bids. Current capacity is observational; native admission remains authoritative.
-  Earlier positive delivery is verified, broad construction follow-through is not.
+  Latest Continents250 adds22 foundations and82 exact native BEST receipts;
+  one natural paid footprint reaches completion. Broader acquisition/admission
+  reliability remains open across additional worlds.
 - **1.7 Place or defer.** Decide whether the best available Quarter site
   merits a bid now. Consider whether the Base supplier and customer path can
   be made usable and what would need to happen first. Reconsider as ownership,
   unlocks and district commitments change. In a weak-only city, verify whether
   the AI leaves the Quarter uncommitted and can revisit it when a credible
   opportunity becomes available.
+  Current complete-valuation mode uses managed negative defaults; zero use of
+  the older optional typed-decline path is expected in this run. Trace a natural
+  weak-city defer/change/reconsider/build sequence separately.
 - **1.8 Discourage poor placements.** Deduct value from individual Quarter
   sites that lack a viable Base, cover a mapped material, or have no credible
   customer footprint. Distinguish a site deduction from the decision to
@@ -883,12 +888,16 @@ until the active check closes or an explicit dependency needs attention.
   the loaded gameplay partner graph to feasible Quarter and material footprints,
   including triangles. One contribution per supplier city/Quarter type, at most32
   utility total, preserves the best ordinary adjacency. Harbor/Tailors preparation
-  contributes16–24 per supplier city/type, other links8–16. Extend support to
-  already-built supplier Quarters: the latest audit finds plausible matching-Gold
-  customer footprints at Aberdeen/Napata receiving only native SQL guidance.
+  contributes16–24 per supplier city/type, other links8–16. Already-built Quarters
+  now receive signed ordinary-economic customer-site residuals as well as SQL
+  adjacency;1,587 native writes and19 site-win windows are recorded in Continents.
+  Remaining code boundaries are owned/currently legal customer tiles, no customer
+  land-purchase route, a bounded shortlist and no persistent joint layout after
+  Quarter foundation. Do not treat the older SQL-only observation as current.
   Preserve valuable future Quarter footprints (Aberdeen788 later houses Tailors).
   Diagnose actual losing cells before choosing a new premium. Join proposed bids to
-  native receipts and actual placement/future chains in the next ordinary run.
+  native receipts and actual placement/future chains in a matched regression.
+  [Latest capability audit and diagnostics](../research/mods/csc-ai-continents-capability-audit-20261117.md).
 - **2.2 Material protection.** Price covering mapped Base or Specialty
   deposits, including unimproved ones. Protect the last viable deposit of
   either class per Quarter and account for lost Services when the last

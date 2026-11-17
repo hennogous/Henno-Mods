@@ -5,6 +5,11 @@ page, [STATUS](STATUS.md), the opening of the [roadmap](roadmap.md), and the
 installed `civ6-ai` skill. Earlier dated checkpoints remain evidence; their
 superseded next-step lists are not instructions to restart that work.
 
+Follow-up: Henno chose to continue in this chat and requested Astra's review.
+[Problems1/2 capability audit](../research/mods/csc-ai-continents-capability-audit-20261117.md)
+records additional native receipt counts, customer code boundaries and the
+recommended matched post-restructure regression. No new game has started.
+
 ## Scope and architecture
 
 The current AI scope is **Problems 1.1–1.8 and 2.1–2.2**: worthwhile Quarter
