@@ -23,3 +23,21 @@ Henno must rebuild CSC in ModBuddy to deploy the corrected manifest and retry.
 Keep unrelated art, lenses, Pedia, localization and Tailors PLUNDER_GOLD changes
 out of this commit. Clean HEAD-based project/JSON staging variants carry only
 the phase split while preserving the current working files.
+
+## Follow-up: rebuilt game loads successfully; policy UI errors
+
+Henno requested a read-only log review after further in-game issues. Current
+Modding.log confirms Schema then Common in separate actions at 3923837.030 and
+3923837.044; all shared transaction passes loaded. Database.log reports Gameplay
+Passed Validation at 3923838.338. No gameplay SQL errors or CSC Lua exceptions.
+
+Lua.log contains three identical exceptions in Extended Policy Cards, Workshop
+2266952591, GovernmentScreen.lua:1493. EnsureRowContentsFit accesses
+inst.Content:SetOffsetX during OnRowAnimCallback; the expected card instance or
+Content control is missing. CSC does not replace GovernmentScreen. The installed
+mod identifies itself as Extended Policy Cards by Aristos; Better Report Screen,
+its documented dependency, is active. Cause of the missing UI instance remains
+unconfirmed; disabling EPC on a subsequent launch is the direct isolation test.
+Repeated LOC_CLICKOUT_26_CAROUSEL_TOOLTIP duplicates come from Firaxis
+CurrentClickouts XML, separately from gameplay validation. No files or game state
+were changed during this log inspection.
