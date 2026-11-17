@@ -92,9 +92,9 @@ The one-turn baseline qualifies two real player5/city65536 Hub footprints:
 
 Both guarded-late attempts skip the write because the legacy API requires an
 actual reservation ID of−1. Plot1082 has an active claim;1083 retains ID3538948
-although the native selector finds no active control and uses its ordinary
-no-claim threshold. A negative comparison threshold therefore does not establish
-an empty reservation slot. Both attempts exit0 and restore normally; no correction
+while its effective comparison threshold is the ordinary−2,559,744 sentinel.
+That threshold does not establish an empty reservation slot. Both attempts exit0
+and restore normally; no correction
 was consumed in those arms.
 
 Astra recommends testing the existing early Entry hook before adding another

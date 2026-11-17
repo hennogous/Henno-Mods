@@ -24,8 +24,9 @@ values at3e2941 and actual candidate read at GetBestDistrict3e4b2c (ECX score,
 EDI reservation threshold, EBX best-so-far, RSI row, R14 district). Avoid hooking
 the aggregation CALL: its literal return address is part of CE's late guard.
 Baseline customer-native-baseline250-01 completes/closed0. Two late arms skip
-because actual IDs are nonempty;1083 has staleID3538948 but nativeFind ignores
-it and uses−2559744 threshold. Native selector's no-claim threshold does NOT
+because actual IDs are nonempty;1083 hasID3538948 with effectivecomparison
+threshold−2559744. NoFind-result/priority-field capture: don't assertstaleID
+fromthresholdalone. Native selector's sentinel threshold does NOT
 imply literalID−1, which the legacy guardedLate API requires.
 
 Early arm customer-native-early250-01 (session47638, finished0) proves complete
