@@ -23,9 +23,28 @@ New narrow native probe records CityBuild activation prevalues, postaggregation
 values at3e2941 and actual candidate read at GetBestDistrict3e4b2c (ECX score,
 EDI reservation threshold, EBX best-so-far, RSI row, R14 district). Avoid hooking
 the aggregation CALL: its literal return address is part of CE's late guard.
-Baseline replay customer-native-baseline250-01 launched with session77875;
-check its live handle before changing any pinned helper/Facts/Model/Adapters.
-It holds the normal publisher for one diagnostic turn; no full efficacy games
-have started. Follow with matched --customer-native-treatment result.json.
+Baseline customer-native-baseline250-01 completes/closed0. Two late arms skip
+because actual IDs are nonempty;1083 has staleID3538948 but nativeFind ignores
+it and uses−2559744 threshold. Native selector's no-claim threshold does NOT
+imply literalID−1, which the legacy guardedLate API requires.
+
+Early arm customer-native-early250-01 (session47638, finished0) proves complete
+native reception:605685+59110=664795 fresh NetValue; native125288 building uplift
+retained; comparator reads790083 versuscontrol730973. Stronger1019221 stillwins.
+Two ordinary turns, noobserverfaults, closed/restored0. No active game.
+
+Astra recommends reuse existing early Entry for routine signed SAME-city/type
+site differences from a stable ordinary-preferred reference. Keep custom CSC
+receiving adjacency unless overlap actually demonstrated. Full59110 marginal is
+transportfixture only. No new transientreaderAPI initially. Native applies its
+own1.5 district need branch afterNetValue when appropriate (observedfactor1here).
+Early permits validnegative rawscores (unlikeLatepositivefinal); must watch zero
+crossing because aggregationaddsbuildingvalue only topositives. Existing
+CE_AIDistrictSiteAdjustment returns netQ8/intrinsicQ8 for a cheap clamp check.
+Bound shortlist reference+3/city/type and max64sites/player, merge earlyprefs/
+protection bysamekey, measureheadroom4096writes/16384traces perpacket. Cached
+scores changeonnativereevaluation; retainedrequestmaxima stillordinarylifecycle.
+Next implement routinecustomer adapter +newQuarter jointworld/trade coverage,
+warmperformance, then3freshOnline250integratedonlygames. No fullgamesstarted.
 
 Source uncommitted art/UI/Pedia/Taxes work belongs to other work; preserve it.

@@ -108,7 +108,7 @@ def records(raw,marker):
     return [json.loads(v)for v in re.findall(re.escape(marker)+r'=([^\r\n]+)',raw)]
 
 
-def run(controller,output,legacy,players=None):
+def run(controller,output,legacy,players=None,customer_world=False):
     output=Path(output);output.mkdir()
     code=ui_code(legacy);(output/'ui.lua').write_text(code,encoding='utf-8')
     raw=controller.cmd(code,'PlotInfo','route-scanner-parity')
@@ -131,5 +131,8 @@ def run(controller,output,legacy,players=None):
         joint,=records(raw,'CSC_ROUTE_JOINT_RESULT');joint['player_rows']=records(raw,'CSC_ROUTE_JOINT_PLAYER')
         require(joint['verified']and joint['players']==len(players),'Joint route smoke incomplete')
         write_json(output/'joint.json',joint);result['joint']=joint
+    if customer_world:
+        from customer_world_probe import run as customer_probe
+        result['customer_world']=customer_probe(controller,output/'customers',observed,players)
     write_json(output/'result.json',result)
     return result

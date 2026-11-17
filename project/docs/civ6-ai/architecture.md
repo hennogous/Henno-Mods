@@ -14,8 +14,11 @@ investments/queues and pools population targets before rounding. Ordinary staffi
 reads native citizen-yield definitions and actual assignments; the mature smoke
 observes28 workers and30 ordinary streams.17 November adds shared native route
 definitions and one route-network pass after shared scheduling, with city-level
-amenity pooling. The affected-customer world and native residual remain active
-work. [Route implementation](../research/mods/csc-joint-route-economy-20261117.md).
+amenity pooling. The affected-customer world now builds and prices real candidate
+footprints (8/8 sampled native quotes); native residual delivery remains active
+work. Explicit recurring-interval quotes preserve the native weights while
+correcting the time-zero origin. [Customer worlds and pricing](../research/mods/csc-customer-world-pricing-20261117.md).
+[Route implementation](../research/mods/csc-joint-route-economy-20261117.md).
 [Contract](../integrations/csc-economic-contract.md).
 
 ```mermaid
@@ -30,6 +33,8 @@ flowchart LR
     C["Joint customer residual<br/>implementation in progress"]
     R["Observed routes<br/>actual endpoints and paid counters"]
     T["Joint scheduling then route network<br/>pooled amenity counterfactuals"]
+    W["Shared before/after customer worlds<br/>footprint, partners, suppliers, queues"]
+    PRICE["Native interval quotes<br/>yield weights / city happiness / discount"]
     N["Native comparisons<br/>selection and execution"]
     DECL --> GEN
     TAG --> GEN
@@ -41,7 +46,11 @@ flowchart LR
     GEN --> R
     R --> T
     MODEL --> T
-    T -.-> C -.-> N
+    LIVE --> W
+    MODEL --> W
+    T --> W
+    W --> PRICE
+    PRICE -.-> C -.-> N
 ```
 
 **16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed

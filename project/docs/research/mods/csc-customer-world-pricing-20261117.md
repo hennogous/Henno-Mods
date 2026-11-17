@@ -77,11 +77,57 @@ instructions. Private evidence root:
 
 ## Next dependency and gameplay QA
 
-The next diagnostic records the ordinary pre-aggregation score and the exact
-candidate value read inside native GetBestDistrict, then tests one guarded late
-adjustment in a matched replay. Shipping customer residuals and their recurring
-budget remain implementation work. These sampled quotes have not yet been
-published as routine policy.
+The narrow observer now records native GetBestDistrict's actual comparison at
+RVA3e4b2c: ECX is the candidate score, EDI its reservation threshold, EBX the
+best score so far, RSI the plot-analysis row and R14 the district type. It also
+records raw activation and post-aggregation values. All hooks are observational
+and avoid CE's patched function entries and the guarded aggregation CALL.
+
+The one-turn baseline qualifies two real player5/city65536 Hub footprints:
+
+| Plot | Native pre-aggregation Q8 | Native aggregate/compared Q8 | Joint marginal Q8 |
+| --- | --- | --- | --- |
+|1082|605,685|730,973|59,110|
+|1083|575,787|701,075|29,871|
+
+Both guarded-late attempts skip the write because the legacy API requires an
+actual reservation ID of−1. Plot1082 has an active claim;1083 retains ID3538948
+although the native selector finds no active control and uses its ordinary
+no-claim threshold. A negative comparison threshold therefore does not establish
+an empty reservation slot. Both attempts exit0 and restore normally; no correction
+was consumed in those arms.
+
+Astra recommends testing the existing early Entry hook before adding another
+native API. The off-turn evaluator writes fresh NetValue output and then applies
+the stock district preference; aggregation adds the common building subtotal.
+An early site differential can follow this established path without cumulative
+reader writes. The two-turn early probe now passes. For plot1082, the actual
+fresh native result605,685 becomes664,795 after the59,110 adjustment. The native
+building aggregation still adds125,288, producing790,083. GetBestDistrict's
+comparison reads exactly790,083, against the control730,973. The stronger
+1,019,221 candidate remains ahead. This is real reception with ordinary
+competition preserved. The observed preference factor is1 in this case; the
+evaluator's1.5 branch remains part of native policy when applicable.
+
+`customer-native-early250-01` advances two ordinary turns, records no observer
+faults, exits0 and restores ownership/preferences/packages. The packet contains
+one diagnostic model bid; the main publisher is held only in this diagnostic.
+Full outcome games will use integrated main-mod guidance alone.
+
+For routine overlap handling, use a signed same-city/type difference against a
+stable ordinary-preferred reference footprint. That retains native type-level
+value and cancels common terms without an exact native component reconstruction.
+Keep custom CSC receiving adjacency unless a specific native overlap is shown.
+The full marginal in the transport diagnostic is not the proposed routine bid.
+Bound the shortlist and check CE write/trace headroom. Shipping integration and
+its recurring budget remain implementation work.
+
+The early path preserves native invalid sentinels, but permits valid negative
+raw scores. A routine negative differential should account for the aggregation
+gate at zero: crossing it can remove the common positive building subtotal.
+The existing read-only site quote exposes `netQ8`, so this boundary can be
+checked without inventing a new native reader API. Cache changes follow native
+reevaluation; existing request maxima retain their ordinary lifecycle.
 
 This slice changes AI facts/pricing only. It changes no gameplay payout, building
 availability, transaction rate or material gate. Earlier definition migrations

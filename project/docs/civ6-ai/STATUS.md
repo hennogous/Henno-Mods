@@ -4,9 +4,12 @@
 The shared before/after model prices8/8 sampled owned customer footprints in the
 mature world. New CE interval APIs fix the one-turn route pricing blocker;
 15 real price cases and249 native checks pass. All10,954 gameplay rows still
-match; replay exits0 and restores. Astra reviewed the implementation. Next:
-one guarded customer adjustment consumed at the native comparison, followed by
-remaining major channel integration and the three Online250 games.
+match; replay exits0 and restores. Astra reviewed the implementation.
+The early-path qualifier now proves native reception:605,685 raw +59,110 model
+adjustment +125,288 ordinary building forecast =790,083, read by the actual
+comparison. A stronger candidate stays ahead. Closed/restored0. Next: signed
+reference-based customer offers, remaining new-Quarter integration and the
+three Online250 games.
 [Scope, evidence and current limits](../research/mods/csc-customer-world-pricing-20261117.md).
 The updated [goal](ordinary-economy-goal.md) prioritises reasonable economic
 coverage for Problems1 and2; exact native parity and exhaustive qualification

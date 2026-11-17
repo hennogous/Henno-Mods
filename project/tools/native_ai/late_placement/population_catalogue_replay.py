@@ -1,10 +1,11 @@
-"""Zero-turn, shared-controller gameplay migration qualification.
+"""Shared-controller gameplay migration and bounded native reception qualification.
 
 Install an isolated copy of the qualified saved-world package, append production
 population catalogue SQL, and replace only the population gameplay script. Run
 the pre-migration QAed refresh in lexical isolation, then the shipping refresh.
 Compare every registered city/center property and bit, preserving native rules,
-ordinary policy and the original save. No orders or turns are issued.
+ordinary policy and the original save. The default advances no turns; explicit
+native-customer arms hold score publication and advance one ordinary turn.
 """
 import argparse
 import json
@@ -93,6 +94,9 @@ assert(same,'Population migration changes gameplay properties')
 def run(args):
     plan=prepare(args.source,args.output,args.at,args.at,args.dependencies,read_only=True)
     require(not native_inventory(),'Preserve foreign Civ/Tuner session')
+    ce_dll=getattr(args,'ce_dll',None);ce_sha=getattr(args,'ce_sha',None)
+    require(bool(ce_dll)==bool(ce_sha),'CE diagnostic overlay requires both DLL and expected SHA')
+    if ce_dll:require(sha(ce_dll)==ce_sha,'CE diagnostic overlay identity differs')
     out=plan.output;out.mkdir(parents=True)
     paths=[MOD/'Data/CSC_BuildingTransactionSchema.sql',MOD/'Data/CSC_TradeRouteSchema.sql']
     for q in('BAKERS','TAILORS'):
@@ -135,8 +139,23 @@ def run(args):
         package=next(i for i in plan.packages if i['role']=='csc')
         route_legacy=package['source']/'Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.lua'
         inputs.extend(route_inputs(route_legacy))
+    if getattr(args,'customer_world_smoke',False):
+        require(args.route_smoke and args.model_smoke and args.joint_route_smoke,'Customer world requires route/model/joint smoke flags')
+        from customer_world_probe import inputs as customer_inputs
+        inputs.extend(customer_inputs())
+    native_baseline=getattr(args,'customer_native_baseline',False)
+    native_treatment=getattr(args,'customer_native_treatment',None)
+    native_mode=getattr(args,'customer_native_mode','late')
+    require(not(native_baseline and native_treatment),'Choose one native customer diagnostic arm')
+    if native_baseline or native_treatment:
+        require(args.customer_world_smoke and ce_dll,'Customer native probe requires corrected CE and customer-world quotes')
+        inputs.extend([HERE/'customer_native_probe.py',HERE/'customer_native_watch.js'])
+        if native_treatment:inputs.append(native_treatment)
     if args.reference_graph:inputs.append(args.reference_graph)
     pins={str(p.resolve()):sha(p)for p in inputs}
+    if ce_dll:
+        pins[str(ce_dll.resolve())]=ce_sha
+        pins[str((HERE/'interval_pricing_probe.py').resolve())]=sha(HERE/'interval_pricing_probe.py')
     code=survey(reference)
     smoke=None
     if args.model_smoke:
@@ -180,10 +199,13 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
         (out/'model-smoke.lua').write_text(smoke,encoding='utf-8')
     (out/'diagnostic.sql').write_text(sql,encoding='utf-8')
     (out/'diagnostic.lua').write_text(code,encoding='utf-8')
-    write_json(out/'protocol.json',dict(diagnostic=True,zero_turn=True,at=args.at,production_population_sql=True,
+    write_json(out/'protocol.json',dict(diagnostic=True,zero_turn=not(native_baseline or native_treatment),at=args.at,production_population_sql=True,
         production_fixed_sql=True,native_graph_scope='all_csc',reference_graph=str(args.reference_graph),
         legacy_refresh_isolated=True,no_orders=True,source_pins=pins,lgd=False,
-        model_smoke_isolated=bool(smoke),ui_economy_facts_overlay=bool(smoke),model_smoke_price='zero diagnostic; no bids'))
+        model_smoke_isolated=bool(smoke),ui_economy_facts_overlay=bool(smoke),model_smoke_price='zero diagnostic; no bids',
+        ce_overlay_sha256=ce_sha,customer_native_baseline=native_baseline,
+        customer_native_treatment=str(native_treatment)if native_treatment else None,
+        diagnostic_ordinary_turns_advanced=(2 if native_mode=='early'and native_treatment else 1)if native_baseline or native_treatment else 0))
     c=make_probe_controller(out,user_root=plan.user_root)
     s=NativeSession(out,c,inventory=native_inventory,hold=HeldProcess,write=write_json)
     copied=[]
@@ -202,6 +224,10 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
     try:
         for item in plan.packages:
             shutil.copytree(item['source'],item['install']);copied.append(item)
+            # Local, explicitly pinned native API candidate. The qualified source
+            # package is immutable; cleanup removes this diagnostic copy only.
+            if item['role']=='ce'and ce_dll:
+                shutil.copyfile(ce_dll,item['install']/'Binaries/Win64'/DLL)
             if item['role']=='csc':
                 metadata,=item['install'].glob('*.modinfo');root=ET.fromstring(metadata.read_bytes())
                 actions=root.find('InGameActions');files=root.find('Files')
@@ -223,6 +249,10 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
             turn=args.at,contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay','CSC_CustomerPopulationReturns'),eligibility=gate)
         ce=next(i for i in copied if i['role']=='ce')
         verify_modules(s,ce['install']/'Binaries/Win64'/DLL,out,HOTFIX_SHA)
+        if ce_dll:
+            require(sha(ce['install']/'Binaries/Win64'/DLL)==ce_sha,'Loaded CE overlay changed')
+            from interval_pricing_probe import run as interval_probe
+            interval_probe(c,out,plan.identity['original_ai'])
         with sqlite3.connect(database.resolve().as_uri()+'?mode=ro',uri=True)as db:
             loaded_fixed=transaction_graph(db,'fixed')
             loaded_all=transaction_graph(db,'all_csc')
@@ -240,7 +270,8 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
         proof=json.loads(match[1]);require(proof['verified']and proof['turn']==args.at,'Gameplay equivalence failed')
         if route_legacy:
             from route_catalogue_probe import run as route_probe
-            route_probe(c,out/'routes',route_legacy,plan.identity['original_ai']if args.joint_route_smoke else None)
+            route_result=route_probe(c,out/'routes',route_legacy,plan.identity['original_ai']if args.joint_route_smoke else None,
+                                     args.customer_world_smoke)
         if smoke:
             started=time.perf_counter()
             raw=c.cmd(smoke,'CSC_AI_BakersGameplay','material-model-smoke')
@@ -252,6 +283,9 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
             write_json(out/'model-smoke-runtime.json',dict(wall_seconds=elapsed,
                 scope='Five-player mature-world Facts plus isolated zero-price Model, including console transport',
                 pricing='Zero diagnostic, no native pricing or bids',chains=len(result['chains'])))
+        if native_baseline or native_treatment:
+            from customer_native_probe import run as native_probe
+            native_probe(s,c,out/'customer-native',args.dependencies,route_result['customer_world'],native_treatment,native_mode)
         write_json(out/'complete.json',proof)
     finally:
         if s.owner is not None and s.owner.poll()is None:
@@ -268,7 +302,13 @@ if __name__=='__main__':
     for k in('source','output','dependencies','reference'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--at',type=int,default=250)
     p.add_argument('--reference-graph',type=Path)
+    p.add_argument('--ce-dll',type=Path,help='Explicit read-only pricing API candidate, installed only in the isolated replay copy')
+    p.add_argument('--ce-sha',help='Required SHA-256 for --ce-dll')
+    p.add_argument('--customer-native-baseline',action='store_true',help='One ordinary turn with passive customer comparison receipts; holds normal CE publication')
+    p.add_argument('--customer-native-treatment',type=Path,help='Matched baseline result for one guarded diagnostic customer adjustment and one ordinary turn')
+    p.add_argument('--customer-native-mode',choices=('late','early'),default='late',help='Diagnostic transport; early arm advances two turns to include fresh evaluation')
     p.add_argument('--model-smoke',action='store_true',help='Isolated current Facts/Model pass over actual saved-world chains; no bids')
     p.add_argument('--joint-route-smoke',action='store_true',help='With --route-smoke --model-smoke, qualify current joint route ledger using zero diagnostic prices')
+    p.add_argument('--customer-world-smoke',action='store_true',help='Also quote admitted customer footprints with the real CE pricing API; no published bids')
     p.add_argument('--route-smoke',action='store_true',help='Compare isolated original/current UI packets and read native trader operation clocks; no submitted operations')
     run(p.parse_args())
