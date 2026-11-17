@@ -1,3 +1,14 @@
+# CURRENT: new-chat handoff,17 November
+
+Start at project/docs/civ6-ai/HANDOFF.md, then STATUS.md and the numbered roadmap.
+Latest complete run: ordinary-economy Continents250,22 foundations/8Store/2Inn,
+guidance2.03s average/4.61s max. Tailors customer coordination and profiling are
+the clearest remaining AI gaps. No active goal; do not resume games automatically.
+Source cleanup is complete; latest UI repair ad774e85 preserves original BRS
+initialization. Rebuild/reload and native Government-screen review remain pending.
+Read session_csc_startup_load_order_20261117.md for corrections; don't blame EPC
+alone. Keep unrelated art/lens/Pedia/localization work separate.
+
 # CURRENT: population transaction alignment qualified,16 November
 
 Read session_ai_transaction_catalogue_20261116.md and the population migration /

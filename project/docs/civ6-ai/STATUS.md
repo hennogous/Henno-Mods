@@ -1,5 +1,9 @@
 # Current CSC AI status
 
+**New-chat entry point: [handoff](HANDOFF.md).** It distinguishes implemented
+work from remaining AI gaps, records the source cleanup and pending EPC screen
+check, and preserves operating instructions. No active goal or new test game.
+
 **17 November — Continents analysis complete; further games paused.**
 The integrated model founded **22 Quarters**, all with Base materials;20 rated
 +3 or better. All82 native Quarter wins matched the published bid. Eight

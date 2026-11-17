@@ -1,5 +1,10 @@
 # Ordinary-economy implementation goal
 
+**Continuation status, 17 November:** no active goal; further games stopped at
+Henno's request. One integrated Continents 250 game and its analysis are complete.
+Pangaea stopped at verified 75; Fractal unstarted. Read the [handoff](HANDOFF.md)
+before treating the implementation sequence below as new work.
+
 Updated 17 November 2026. The numbered roadmap remains the spine: Problems
 1.1–1.8 (worthwhile Quarter placement and follow-through) and 2.1–2.2 (related
 district placement and material protection). Support Bakers and Tailors through
@@ -40,11 +45,11 @@ they do not replace or expand the numbered roadmap.
 | --- | --- | --- |
 | G1 Fixed external/local exchanges | Gameplay-owned headers/legs and native gate templates; UI/AI readers; baseline graph parity, replacements/alternatives/amount tests | Verified: corrected replay matches all10,954 native rows,137 fixed rows and67-city population refresh; closed/restored |
 | G2 Directional materials | Data-owned inputs/returns, registered hosts, Base/Spec, M&C2/3 totals, ownership/worked/pillage behavior, protection consumes actual legs | Verified: Gold/M&C graph parity, end-to-end protection/owner tests,30 live lifecycle observations and final current-reader22-chain smoke pass; native10,954-row graph unchanged |
-| G3 Joint customer economy | A coherent shared model covers affected suppliers, adjacency/provider changes, shared queues/rounding and observed routes/staffing | Owned-customer worlds implemented;12 actual-SQL/Core/Facts/Model tests pass. Corrected CE interval pricing passes15 real cases and8/8 mature-world customer quotes; graph/reader parity and closure pass. Routine customer differences and shared new-Quarter worlds implemented; bounded mature smoke passes; fresh integrated publication/results next |
-| G4 Native residual | Representative overlap check avoids substantial duplication; correction retains ordinary district value and is consumed by a native comparison | Early transport qualified: model59,110 adjustment reaches fresh NetValue,125,288 native building uplift is retained, actual comparator reads790,083. Routine signed site differences/reference selection implemented, including unlinked alternatives and native zero-gate guard; full-game reception next |
-| G5 Bounded work | Definition caches, targeted updates and measured mature-empire overhead | Local affected-plan search,16 customer worlds/player,128 route timelines/publication; mature smoke preserves offers with large speedup. Precise wall clock and average/max full-run report implemented; full-game measurement next |
+| G3 Joint customer economy | A coherent shared model covers affected suppliers, adjacency/provider changes, shared queues/rounding and observed routes/staffing | Implemented and exercised in completed Continents 250. 22 Base-adjacent foundations; strong Bakers outcomes, Tailors customer/investment coordination remains the clearest gap. Prior mature-world, graph and interval-quote checks remain valid |
+| G4 Native residual | Representative overlap check avoids substantial duplication; correction retains ordinary district value and is consumed by a native comparison | Representative matched transport qualified. Completed game records customer writes/native comparisons and82/82 exact Quarter BEST receipts; continue outcome/calibration audits without reopening transport as unimplemented |
+| G5 Bounded work | Definition caches, targeted updates and measured mature-empire overhead | Bounded searches/caches implemented. Complete250-turn clock coverage: average2.03s/max4.61s across five AIs, last50 average2.98s. Repeated economic pricing still needs profiling |
 | G6 Review and handoff | Astra review, maintained findings/roadmap/skill, scoped pushes, exact gameplay change list and manual QA cases | Ongoing |
-| G7 Three250-turn efficacy games | After G1–G6, run integrated-only stock AI games on Online speed through shared controller;15-minute checks; regular placement, chain, Service and economy comparisons | Added by Henno; follows implementation and agent checks |
+| G7 Three250-turn efficacy games | After G1–G6, run integrated-only stock AI games on Online speed through shared controller;15-minute checks; regular placement, chain, Service and economy comparisons | Incomplete and stopped by Henno: Continents250 analysed, Pangaea interrupted at75, Fractal unstarted. Do not resume without instruction |
 
 ## Fixed slice
 

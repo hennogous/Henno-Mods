@@ -1,5 +1,9 @@
 # CSC AI roadmap
 
+For current continuation instructions, use the [handoff](HANDOFF.md). Later
+dated entries supersede earlier next-step lists; no test campaign should resume
+automatically. The latest maintenance/UI work changed no AI policy or CE binary.
+
 **17 November — first ordinary-economy outcome analysed; games paused.**
 Problems1.1–1.4/1.8:22 Base-adjacent foundations,20 at+3+,all22 best geometry
 in their positive city/type packets;82/82 native bids consumed exactly.

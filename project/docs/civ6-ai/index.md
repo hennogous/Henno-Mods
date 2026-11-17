@@ -1,6 +1,7 @@
 # CSC AI research
 
-Start with **[current status](STATUS.md)**. It explains what we have learned,
+For a new chat, start with the **[17 November handoff](HANDOFF.md)** and
+**[current status](STATUS.md)**. They explain what we have learned,
 what remains open and which problem we are working on.
 
 - [Architecture and diagram](architecture.md): shared economy, decision adapters, native systems and all ten placement sub-problems.
