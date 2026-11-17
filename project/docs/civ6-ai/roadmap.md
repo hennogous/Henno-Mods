@@ -1,20 +1,28 @@
 # CSC AI roadmap
 
 For current continuation instructions, use the [handoff](HANDOFF.md). Later
-dated entries supersede earlier next-step lists; no test campaign should resume
-automatically. The latest maintenance/UI work changed no AI policy or CE binary.
+dated entries supersede earlier next-step lists. The active customer-placement
+goal below authorises its serial tests; earlier stopped campaigns stay stopped.
 
-**Proposed2.1 sequence after Astra review,17 November.** First improve useful
-fresh site-comparison coverage under the existing16-forecast budget: reference+
-one challenger across groups, singleton skips, fair alternatives and revalidated
-candidate identities. Qualify actual native near-tie selection/foundation and a
-stronger-ordinary-site control in short matched replays, with SQL+1 unchanged.
-Then bridge both foundation orders with shared connection records, audit ordinary
-pricing where bids lose (Perth), and extend customer acquisition where affordable
-frontier-only opportunities warrant it. Use decision-time viable opportunities
-as the conversion denominator. Services remain deferred; no implementation or
-game has begun under this proposed slice.
-[Review, first slice and completion gates](../research/mods/csc-ai-customer-coordination-review-20261117.md).
+**Active2.1 customer-placement goal,17 November.** Pair-first scheduling,
+singleton skips, fair alternatives and revalidated identity hints are deployed
+at the same16-world budget. Buffalo's fresh62.414utility residual reaches the
+actual native comparison; the stronger ordinary site still wins/founds and the
+Hub offer then stops. Coverage123/164→164/164 uses the same474 forecasts, with
+guidance average2.579→2.480s. Magdeburg's combined relationship-guidance0/1 test
+changes an unlinked choice to a linked one, and each footprint is founded151.
+Zero also disables the Lua edge, so this proves the combined mechanism.
+
+The first fresh Continents control is running in a six-game serial campaign:
+current-policy control/treatment on three preselected Online250 worlds. Measure
+viable-opportunity conversion, actual links/both foundation orders, ordinary
+customer quality, supplier retention and average/max overhead before closing2.1.
+Preserve SQL1, ordinary competition and Service deferral. Extend continuity,
+acquisition or pricing when those outcomes identify a blocker. Record only
+positive observed alternatives in the opportunity denominator; missing coverage
+remains unknown. Immutable input checks and exact-duplicate retirement protect
+comparability and disk space. [Active goal](customer-placement-goal.md) ·
+[Native gates, timing and campaign](../research/mods/csc-ai-customer-scheduling-20261117.md).
 
 **17 November — Perth delivery trace closed; next1.4 economic calibration.**
 20 matched positive Quarter writes equal published values and lose to stronger

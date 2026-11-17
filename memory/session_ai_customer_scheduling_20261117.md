@@ -29,12 +29,18 @@ Magdeburg SQL0/1 150–155 both closed/qualified.0 picks2377=288287,1 picks2227=
 294684, eachphysicalfoundation151. Mainadapter identical bothSQLarms. Important:
 F.CustomerQuarterMap filtersYieldChange>0, so0alsodisablesBakersHubLuaedge;
 this is combined-edgeablation, NOTisolatedSQLcausality. No productionfix/coefs.
-CURRENT final6game serialrunner customer_placement_campaign.py is ready at
-root/final-comparisons; inspectcampaign-progress beforelaunch/restart. Uses
+CURRENT final6game serialrunner customer_placement_campaign.py RUNNING exec80845
+at root/final-comparisons, firstContinentscontrol250. Started~21:47UTC; next
+15mincheck~22:02UTC. Inspectcampaign-progress beforelaunch/restart. Uses
 preselectedseed3maps currentd6control vs7eacandidate, same5extras/CEb719, fresh
 Online250 andinitialworldparity. Two newretirementtests pass; Astrarunnerreview
 addsclosed-qualifiedchildresume/offlineanalysisretry, stoponexistingpartial/live,
 startupmanifestfreeze/per-childchecks, separatekeeper/nonjunctionguards.
+ff0dc07b pushed runner/gates/docs. Skill98b0ea3 pushed AI-N142 corroboration of
+exactfresh residual→nativecache→selector and actualcall vsdrain clock. WildW
+develop2986/mastere59 unchanged rechecked viaGitHub connector beforecampaign.
+Do not edit frozen packages/mainFME or runner/full-game/watch implementations
+while campaign lives. Whole driver remains mainCSC only, no diagnosticpolicy.
 After all6close, compare opportunityconversion, quality/materialretention,
 bothfoundationorders andtiming beforedeciding2.1success. Ifnoimprovement,
 continue evidencedpolicywork; do notmarkgoalcompletejustbecausegamesfinish.
