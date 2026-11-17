@@ -205,6 +205,32 @@ clean native exit. The matched candidate starts next with the same initial-world
 reference and frozen gameplay/mod stack. Compare both arms before deciding
 whether this first scheduler slice improves the full-game outcomes.
 
+### Candidate checkpoint recovery
+
+The first candidate attempt stops at100 before issuing its optional checkpoint
+save: shipped single-player UI permission requires a locally active turn, which
+the inactive observer seat did not have. Core was idle/alive, and the native
+recorder had zero faults. The session closes normally, exit0/preferences
+restored. Its records remain in
+`final-comparisons/continents-treatment250-attempt01-save-gate100`; the relocation
+receipt preserves its original path/provenance.
+
+Full-game observation now follows the existing vanilla control runner: catch
+only `SavePermissionUnavailable` for ancillary50/100/150/200 saves, record zero
+requests and continue to the next bounded play window. Ambiguous/post-request
+failures and the required endpoint save remain strict. The regression test
+confirms observation continues100→105 after a refusal and stops after a sent-save
+timeout.23 focused observation/campaign/continuation checks pass. Fix6b31aca7
+changes no game policy, coefficient or package. Astra verified shipped UI source
+and the closed failed session; the validated control remains usable.
+
+The candidate restarts freshly from1 on the same preselected seed and frozen
+inputs. This avoids combining different transient-cache segments in its final
+outcome. Exact duplicate failed-attempt packages and its redundant native50
+checkpoint are retired after hash checks; the archived save and all records
+remain. The parent runner resumes qualified controls and preserves this failed
+attempt explicitly in its progress history.
+
 ## Storage
 
 On Henno's instruction, ten exact duplicate CE/CSC installed-package archives

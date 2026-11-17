@@ -34,8 +34,19 @@ at root/final-comparisons. FirstContinentscontrol250completed/qualified/analysed
 all1844orderednativechoices/scores matcholdsource,23Q16B7T allBase/21+3+,20nonCC
 links12Qfirst8customerfirst. Newopportunity8/16confirmedchoices,Hub3/5;8Store3Inn.
 Guidance1.9758avg/4.0245max, complete250,0faults.0.379GiBduplicatecopiesretired.
-CURRENT ContinentsTREATMENT250started~22:52UTC, childworker16836; at100 on23:07
-check,0faults/36.13GiBfree. Next15mincheck~23:22UTC. Parentexec80845.
+FirstContinentsTREATMENT stopped100 onpre-request optional-save permission
+refusal(localturninactive). Closed/restoredexit0/nativeobserver0faults, preserved
+as continents-treatment250-attempt01-save-gate100 + relocationreceipt/history.
+6b31aca7 fixesfull_game_observation.play tocatchONLYSavePermissionUnavailable at
+optional50/100/150/200 checkpoints; record0requests andcontinue.23tests pass
+incl100→105 continuation andpost-requesttimeoutstaysstrict. Endpointsave strict.
+No tuning/package/coefficientchanges. Astraverifiedstocksavegates +safeclosure.
+Duplicate2packagesretired; oldnative50checkpointalso removedONLYaftermatching
+historicalarchivedsave andmtime<newattemptstart, avoidingreusednamecollision.
+CURRENT freshContinentsTREATMENT250 restarted~23:30UTC, nativePID2920;
+parentexec88923. Next15mincheck~23:45UTC. Parentold80845exit1isfinished.
+Rootfrozen-inputsmanifestunchanged, controlreused/analysisrepeatedsafely.
+Skill67f6186 pushed extendedAI-N040neutrality fornew1844exactfullcontrol.
 Inspectcampaign-progress beforelaunch/restart. Uses
 preselectedseed3maps currentd6control vs7eacandidate, same5extras/CEb719, fresh
 Online250 andinitialworldparity. Two newretirementtests pass; Astrarunnerreview

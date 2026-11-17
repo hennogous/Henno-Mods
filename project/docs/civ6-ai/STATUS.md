@@ -19,7 +19,11 @@ this is combined-system evidence. Six serial fresh games now compare current
 control/candidate on the three preselected maps. First Continents control closes/
 qualifies250, preserving all1,844 prior native choices/scores and20 physical
 non-City-Center links. New confirmed comparable placements connect8/16; guidance
-1.976s average/4.025s max. Candidate is running. Passive legal-set/native
+1.976s average/4.025s max. Candidate restarts freshly after an optional100 save
+permission refusal; failed attempt closes/restores0 and is preserved. The
+tested observation fix records zero-request ancillary refusals and continues,
+keeping endpoint/post-request checks strict. Frozen tuning is unchanged.
+Passive legal-set/native
 lineage adds no worlds; opportunity/capture and retirement checks pass.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
