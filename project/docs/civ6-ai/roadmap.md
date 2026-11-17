@@ -823,6 +823,12 @@ until the active check closes or an explicit dependency needs attention.
 - **1.1 Materials.** Favor legal sites beside at least one viable mapped Base
   source, ideally with viable Specialty as well. Distinguish deposits from
   working supply and include enabled compatibility mappings.
+  **17 November related map follow-up:** survey distinct useful Dockmaster
+  Base–Quarter–Harbor layouts on the current and available earlier maps before
+  revising material assistance. Version4 increases general Tailors site density
+  but has no coastal objective. First consider a coastal allocation within its
+  existing budget rather than a blanket density/Harbor-bid increase.
+  [Survey scope](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
 - **1.2 Neighbors.** Value mapped customer districts and City Lights goods
   providers. Keep a specific feasible future footprint as preparation evidence,
   without crediting its adjacency or transactions before the district is complete.

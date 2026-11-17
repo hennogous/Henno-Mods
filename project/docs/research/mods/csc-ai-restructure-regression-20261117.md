@@ -67,7 +67,13 @@ guidance time. The reference is the completed ordinary-economy Continents250,
 not a newly labelled untuned baseline. Extra UI dependencies are recorded.
 Do not automatically start Pangaea/Fractal after this one game.
 
-Status: preparation and offline checks; no new game launched yet.
+Status: `continents250-02` is running. Initial map/AI/start/unit parity passed.
+The Government and Policies pages both opened and closed successfully at25,
+with no new Lua errors. BRS initialized normally and CSC confirmed attachment.
+`government-screen-check.json` and its transcript/log delta preserve this proof.
+SDK source commit is `d6a9114a`, with276 committed Content inputs and the same
+qualified CE hash. The package uses the prior controller test identity, leaving
+the user's installed CSC distinct; this changes no content or policy.
 
 The first launch preflight stopped before creating a game because the historical
 driver required a CE dependency in CSC's manifest. Main CSC correctly keeps CE
@@ -75,3 +81,19 @@ optional behind its criterion. The explicit main-package driver option now
 verifies that criterion against the pinned CE identity instead; runtime native
 capability qualification remains mandatory. Connector detection follows the SQL
 file, including its consolidated name, rather than relying on an action ID.
+
+The initial same-ID package was also rejected by the duplicate-entry guard in
+the main menu. The owned process was closed through shared-session recovery;
+original mod-ID flags were verified and its temporary alias packages retired.
+No turns/game were created on that attempt. The replacement package uses SDK's
+Guid property to produce the established distinct regression identity. A
+separate reference-source option verifies initial world parity without treating
+this source-regression comparison as an opposite-policy untuned arm.
+
+Henno additionally requested final counts showing how the two planning
+directions meet: exact Quarter-planned customer footprints realized, reverse
+customer-first footprints later receiving Quarters, native SQL private-yield
+readings at customer foundation, prior Lua economic offers and physical links.
+`customer_coordination_results.py` joins those separately and excludes City
+Centers from influence counts. Read-only Dockmaster opportunity surveys of this
+and earlier maps follow; do not change resource generation in the running game.

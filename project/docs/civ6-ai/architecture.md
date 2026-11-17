@@ -1,5 +1,22 @@
 # CSC AI architecture
 
+## How customer SQL and Lua combine
+
+Customer scoring retains native site value, including the SQL private-yield
+signal, and adds Lua's signed ordinary-economic site differential through the
+fresh-result hook. Native preferences/building aggregation and competition then
+continue. Customer scoring is not the managed whole-bid overwrite used for
+Quarters. The private yield is excluded from central-model ordinary income.
+
+SQL currently adds1 private yield per adjacent mapped Quarter, with a25% native
+yield-weight bias; these are not25 utility points. This coarse signal has no
+Base-material gate. Customer-first Lua preparation is material-aware (Harbor/
+Tailors16–24 utility, shared cap32, preserves best ordinary adjacency). Existing
+Quarters also receive signed customer economic residuals. These mechanisms can
+reinforce or counteract each other, but do not retain a joint customer commitment
+after Quarter foundation. The current regression records their overlap and
+physical follow-through before further calibration.
+
 **16 November economic-definition migration:** ordinary fixed, local, Stage3/4
 and directional material transactions have gameplay-owned headers, payout legs
 and checked native consumer bindings. Processors generate metadata, payout and
