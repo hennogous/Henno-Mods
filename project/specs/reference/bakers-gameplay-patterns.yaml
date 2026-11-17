@@ -40,7 +40,8 @@ patterns:
     classification: reusable_invariant
     source_anchor: "CSC_Q_BAKERS.sql: numbered section headers"
     invariant:
-      - "Quarter SQL is ordered: types, tags, material interactions, district, buildings, modifiers, requirements, scaling, strings."
+      - "Quarter SQL has seven sections: types, resources, Stage 1 material improvements, Quarter definition/modifiers, Stage 2-4 buildings/Services/economic terms, plumbing, UI/art."
+      - "Building/material/route terms are authored with the economy in section 5; native bindings, property consumers and requirement details live in section 6."
       - "Gold and Monopolies & Corporations deltas remain in companion files."
 
   - id: GP.TYPE.QUARTER_OBJECTS

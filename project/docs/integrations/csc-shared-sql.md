@@ -17,8 +17,8 @@ economy, native identities, rounding, gates and Lua refresh behavior are preserv
 | `CSC_Q_ALL_MaterialHosts.sql` | Reconcile input-host attachments after compatibility resource/improvement mappings have loaded. |
 | `CSC_Q_ALL_TradeRouteReader.sql` | Publish the late read model of effective route payouts after final compatibility effects. |
 
-Transaction declarations are at the end of each Quarter file, under
-`Ordinary transaction declarations`. Gold adds legs rather than copying rates or
+In the main Quarter files, transaction terms are in section 5 alongside the
+buildings, with native identity bindings in section 6. Gold adds legs rather than copying rates or
 partner identities from core. Mode and compatibility files stay conditional.
 An economic amount belongs in its declaration; generated native amounts are
 outputs of the shared processor.
@@ -55,8 +55,8 @@ file with ordered sections. Material hosts, route reader and AI connectors now
 use the `CSC_Q_ALL_Purpose.sql` naming convention.
 
 The four `_TRANSACTIONS*.sql` sidecars were folded back into their Quarter/Gold
-files. Their declarations now sit next to the owning Quarter instead of forming
-a second authoring location. Redundant fixed/material native rows were removed
+files. Main files follow the seven-section outline below; Gold companions keep
+their additional legs. Redundant fixed/material native rows were removed
 from Quarter/Gold/M&C files: the shared processor generates their existing IDs.
 Explicit Service gates, route/property consumers and early improvement-owner
 registrations remain where their existing lifecycle requires them.
@@ -95,3 +95,37 @@ unrelated design/localization locks were left for their owning changes.
 
 Historical reports retain their original filenames as evidence of those builds.
 Use this document and current action JSON for today's source paths.
+
+## Reading a main Quarter file
+
+Bakers and Tailors share this outline:
+
+1. **Types** — register district, buildings, custom modifier and notification IDs.
+2. **Resources** — material and district classes, plus core mappings.
+3. **Stage 1** — improvement-owned material host registrations.
+4. **Quarter** — district definition, adjacency rules and Quarter-owned attachments.
+5. **Buildings and Services** — producer/hidden Service definitions, construction
+   gates, specialists, active Service attachments and ordinary material/building/
+   route terms. Rows are grouped by stage within compatible batches.
+6. **Plumbing** — stable identity bindings, native amount consumers, modifiers,
+   arguments, requirements and dependent temporary generators.
+7. **UI and art** — description disclosures, notification observations, previews
+   and Service-gated art properties.
+
+Use section 5 to change an ordinary exchange's partners, spatial rule, quantity
+or payout. Use section 6 to follow an attachment into its native leaf and gates.
+The shared processor remains a separate load-order-2500 pass; these files supply
+its declarations rather than running the compiler at their foot.
+
+Compatible literal writes are batched with the same conflict policy and column
+list. Each main file now has one `CSC_BuildingTransactions` insert and one
+`CSC_BuildingTransactionYields` insert, including Stage 2–4 relationships. Bounded
+SELECT generators remain ordered with their dependencies. This reduces setup
+statement counts (Bakers 119→118; Tailors 177→152), with no change to per-turn work.
+
+The internal reorganization preserved every literal row write and every other
+SQL expression. Executing the old and new core files, Gold/M&C companions and
+shared processors in disposable copies of the existing gameplay cache produced
+identical contents across 466 tables and 64,196 rows. The 16-configuration
+transaction regression, AI economy tests and both CSC style profiles also pass.
+The source game cache was read-only; no game was started.

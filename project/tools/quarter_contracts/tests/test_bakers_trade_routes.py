@@ -111,11 +111,12 @@ class QuarterRouteTests(unittest.TestCase):
             INSERT INTO CSC_RouteStackBits VALUES(2),(4),(8),(16);
         ''')
         source = (ROOT / f'Civ Supply Chains/Data/CSC_Q_{quarter}.sql').read_text(encoding='utf-8-sig')
-        # The import generator ends before the authored ordinary transaction
-        # catalogue. This fixture intentionally exercises native route SQL only.
-        source = source.split('-- Ordinary transaction declarations', 1)[0]
         marker = f'CREATE TEMP TABLE CSC_{title}ImportChannels'
         before, block = source.split(marker, 1)
+        # The import generator is a bounded plumbing block; UI/art follows it.
+        # Its own teardown defines the end, independent of where terms live.
+        end = f'DROP TABLE CSC_{title}ImportChannels;'
+        block = block.split(end, 1)[0] + end
         # Read real base rows, then execute the complete production import generator.
         before = re.sub(r'--[^\n]*|/\*.*?\*/', '', before, flags=re.S)
         for match in re.finditer(r'INSERT(?: OR IGNORE)? INTO (Modifiers|DistrictModifiers|ModifierArguments|Requirements|RequirementSets|RequirementSetRequirements|RequirementArguments)\b.*?;', before, re.S):

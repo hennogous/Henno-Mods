@@ -120,15 +120,17 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
     # happen to mention a transaction alias. Cleanup can legitimately remove
     # those neighbours without removing the remaining Service or route gates.
     for f in files:
-        text=(source/f).read_text(encoding='utf-8-sig').split('-- Ordinary transaction declarations',1)[0]
-        imports=re.search(r'CREATE TEMP TABLE CSC_(?:Bakers|Tailors)ImportChannels\b',text)
-        for s in statements(text[:imports.start()]if imports else text):
+        text=(source/f).read_text(encoding='utf-8-sig')
+        # Read by table/dependency, not by a declaration section's old position.
+        # Economic terms now precede native plumbing. The temporary venue and
+        # import tables still execute with all their dependent SELECTs in order.
+        for s in statements(text):
             table=re.match(r'INSERT(?: OR IGNORE)? INTO (\w+)',s)
             if ('CSC_BakersStage4CultureBuildings'in s or
+                re.search(r'CSC_(?:Bakers|Tailors)Import(?:Channels|Effects)\b',s)or
                 (table and table[1]in (NATIVE|{'ImprovementModifiers'}))or
                 (table and table[1]in names|{'Building_CitizenYieldChanges'})):
                 db.executescript(s)
-        if imports:db.executescript(text[imports.start():])
     if not reference:
         # Economic declarations now live in their Quarter/Gold/MC files. Read
         # only declarations here: native structures above remain independently

@@ -8,8 +8,8 @@ locked_sources:
     sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    # Reviewed 17 November: SQL consolidation; all 16 option graphs preserve gameplay.
-    sha256: da66386a1b81d623d727cd31782d8280459b4166f838fcd1cd887a74996f22cb
+    # Reviewed 17 November: shared SQL cleanup and seven-section reorganization; full database parity.
+    sha256: c9ce4d7e594c6353fc85275fd0ebdfc61355b814340739b0e5a0a4ae9b05dc20
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
     sha256: 7f7ebba6cdce3d80272b84cad585aa3901212a8ce420fc9f9bced112d8d87955

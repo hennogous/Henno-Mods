@@ -167,16 +167,23 @@ Current task list is here: `project\TODO.md`
 
 ## SQL Structure Per Quarter
 
-Each Quarter SQL follows this 9-section pattern (reference: `CSC_Q_BAKERS.sql`, 1492 lines):
-1. Types (district + buildings + custom modifiers)
-2. Resource tags (BASE/SPEC material classes + resource mappings)
-3. Stage 1 ImprovementModifiers
-4. District definition + adjacencies (standard + Ruivo custom)
-5. Buildings (stage 2/3/4 + specialist buildings + river/no-river flags)
-6. BuildingModifiers + ModifierArguments (bulk — transaction logic)
-7. Requirements + RequirementSets + RequirementArguments
-8. Population scaling (temp table pattern for per-5-citizen yields)
-9. ModifierStrings (preview text)
+Each main Quarter SQL follows this seven-section reading order (reference: `CSC_Q_BAKERS.sql` and `CSC_Q_TAILORS.sql`):
+1. Type definitions, including notification identifiers.
+2. Resources: material/district classes and their core mappings.
+3. Stage 1 material-improvement host registrations.
+4. Quarter definition, adjacency configuration and Quarter-owned attachments.
+5. Stage 2–4 buildings and Services: definitions, prerequisites, specialists,
+   active Service attachments, and ordinary material/building/route declarations.
+6. Plumbing: stable native bindings, amount consumers, modifier details,
+   requirements and bounded temporary-table generators.
+7. UI and art: descriptions, notifications, previews and Service-gated art properties.
+
+Keep authored economic terms with the buildings in section 5. Batch compatible
+literal INSERTs while preserving conflict policies, column layouts and dependency
+order. Put detailed requirement wiring in section 6, and keep every dependent
+temporary-table generator with its setup and teardown. Preserve the CSC SQL
+formatting rules and per-value column labels in Districts/Buildings. Remove or
+rewrite comments when their code moves; do not retain empty migration headings.
 
 ~65–70% is directly templatable by substituting names/yields/resources/customer districts. The ~30% variance is thematic: stage 2 mechanic variant, customer districts, stage effects.
 

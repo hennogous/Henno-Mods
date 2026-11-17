@@ -23,21 +23,22 @@ visual_rules:
   - "Wide Districts and Buildings rows align every value following its /* ColumnName, */ comment."
 
 architectural_rules:
-  - "Core section order follows Bakers: Types, Resources, Stage 1, Quarter, Stages 2-4, Civics when used, Modifiers, Requirements, UI."
+  - "Core section order: Types, Resources, Stage 1 material improvements, Quarter definition/modifiers, Stage 2-4 buildings/Services/economy, Plumbing, UI/Art."
+  - "Ordinary economic declarations belong with buildings in section 5; stable native bindings and requirement details belong in section 6."
+  - "Batch compatible literal INSERTs without changing their conflict policy or target columns. Keep dependent temporary-table generators together."
   - "Gold companions contain no non-Gold YieldType literal."
   - "M&C non-Gold companions contain no Gold YieldType literal."
   - "Shared CSC_Q_ALL infrastructure is referenced, not redefined."
   - "Tailors files contain no Bakers identifiers."
 
 core_required_sections:
-  - TYPES
-  - RESOURCES
-  - STAGE 1 - MATERIALS IMPROVEMENTS
-  - "{QUARTER}' QUARTER"
-  - STAGES 2-4 - BUILDINGS
-  - MODIFIERS
-  - REQUIREMENTS
-  - UI
+  - "1. TYPES"
+  - "2. RESOURCES"
+  - "3. STAGE 1 - MATERIAL IMPROVEMENTS"
+  - "4. QUARTER DEFINITION AND MODIFIERS"
+  - "5. STAGES 2-4 - BUILDINGS AND SERVICES"
+  - "6. PLUMBING"
+  - "7. UI AND ART"
 
 core_required_subsections:
   - Tags
@@ -51,6 +52,12 @@ core_required_subsections:
   - BuildingPrereqs
   - Building_CitizenYieldChanges
   - BuildingModifiers
+  - CSC_MaterialTransactions
+  - CSC_MaterialTransactionYields
+  - CSC_BuildingTransactions
+  - CSC_BuildingTransactionYields
+  - CSC_TradeRouteChannels
+  - Bindings
   - Modifiers
   - ModifierArguments
   - RequirementSets
