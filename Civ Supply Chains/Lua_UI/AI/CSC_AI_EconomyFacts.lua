@@ -1390,6 +1390,7 @@ function F.New(player,placement,ui,context)
         -- and related alternatives. Policy chooses the bounded priced shortlist;
         -- this reader neither bids nor buys and retains no cross-turn targets.
         local groups={};local graph=F.CustomerQuarterMap()
+        local auditTurn=Game.GetCurrentGameTurn()%25==0
         local query=snapshot.ui or ui
         if type(query.GetLegalDistrictTargets)~='function'then return {}end
         for _,chain in ipairs(snapshot.chains)do
@@ -1415,11 +1416,14 @@ function F.New(player,placement,ui,context)
         for _,group in pairs(groups)do
             local city=snapshot.cities[group.city].object
             local unlocked=math.max(research('tech',group.definition.PrereqTech),research('civic',group.definition.PrereqCivic))==0
+            if auditTurn then group.auditUnlocked=unlocked end
             if unlocked then
                 local map=customerMap(city,group.definition,protectedPlots)
                 local ok,targets=pcall(query.GetLegalDistrictTargets,pid,group.city,group.definition.Hash)
+                if auditTurn then group.auditMap=map;group.auditTargetsAvailable=ok and type(targets)=='table' end
                 if ok and type(targets)=='table'then
                     local admitted={};for _,index in ipairs(targets)do admitted[index]=true end
+                    if auditTurn then group.auditAdmitted=admitted end
                     local choices={}
                     for _,row in ipairs(map.free)do if admitted[row.index]and not protectedPlots[row.index]then
                         local link=group.related[row.index]
@@ -1448,6 +1452,41 @@ function F.New(player,placement,ui,context)
                             if other[i]then group.candidates[#group.candidates+1]=other[i]end
                         end
                         if #related>0 then result[#result+1]=group end
+                    end
+                end
+            end
+        end
+        if auditTurn then
+            -- Passive coastal opportunity inventory: at most96 adjacent cells
+            -- per player/25-turn census. Reuse maps/admission results computed
+            -- above. Never ask for additional native legality/yield quotes or
+            -- turn an unowned/locked footprint into an actionable bid.
+            local harbors={DISTRICT_HARBOR=true}
+            for row in GameInfo.DistrictReplaces()do
+                if row.ReplacesDistrictType=='DISTRICT_HARBOR'then harbors[row.CivUniqueDistrictType]=true end
+            end
+            local records=0
+            for _,chain in ipairs(snapshot.chains)do
+                for district,mapping in pairs(graph)do
+                    local mapped=false
+                    for _,q in ipairs(mapping.quarters)do if q.key==chain.profile.key then mapped=true;break end end
+                    if mapped and harbors[mapping.definition.DistrictType]then
+                        for _,plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
+                            if records<96 then
+                                records=records+1
+                                local owner=plot:GetOwner()==pid and Cities.GetPlotPurchaseCity(plot)
+                                local group=owner and groups[owner:GetID()..':'..district]
+                                local row=group and group.auditMap and group.auditMap.plots[plot:GetIndex()]
+                                local native=-1
+                                if group and group.auditAdmitted then native=group.auditAdmitted[plot:GetIndex()]and 1 or 0 end
+                                print(string.format('CSC_AI_CUSTOMER_OPPORTUNITY turn=%d player=%d quarter=%d quarterType=%s district=%d plot=%d owner=%d city=%d water=%s lake=%s occupied=%d resource=%d protected=%s unlocked=%s native=%d ordinaryAdjacency=%s reference=%d',
+                                    Game.GetCurrentGameTurn(),pid,chain.plot:GetIndex(),chain.profile.key,district,plot:GetIndex(),
+                                    plot:GetOwner(),owner and owner:GetID()or-1,tostring(plot:IsWater()),tostring(plot:IsLake()),
+                                    plot:GetDistrictType(),plot:GetResourceType(),tostring(protectedPlots[plot:GetIndex()]~=nil),
+                                    tostring(group and group.auditUnlocked),native,tostring(row and row.adjacency),
+                                    group and group.reference and group.reference.plot or-1))
+                            end
+                        end
                     end
                 end
             end

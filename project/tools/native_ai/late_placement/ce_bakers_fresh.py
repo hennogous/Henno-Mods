@@ -522,6 +522,10 @@ def run(args):
                                        for source, files in installed_pins.items()})
     write_json(out / 'protocol.json', protocol)
     write_json(out / 'extra-mods.json', extra_mods)
+    if getattr(args,'government_screen_check',False):
+        require(getattr(args,'harmonised_observation',False)
+                and {'6f2888d4-79dc-415f-a8ff-f9d81d7afb53','382a187f-c8ba-4094-a6a7-0d5315661f33'}<=set(extra_mods),
+                'Government regression requires the shared observer and both pinned BRS/EPC packages')
     controller = make_probe_controller(out, user_root=args.user_root)
     controller.study_endpoint = args.through
     # A long qualification window stays continuous for the native Service
@@ -960,8 +964,12 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             observer.exports_sync.advance(probe_start)
         if getattr(args,'harmonised_observation',False):
             from full_game_observation import play
+            screen_check=None
+            if getattr(args,'government_screen_check',False):
+                from government_screen_check import GovernmentScreenCheck
+                screen_check=GovernmentScreenCheck(controller,out,args.user_root)
             play(controller,out,args.user_root,start=start,endpoint=args.through,saves=args.saves,
-                 savings=savings_watch)
+                 savings=savings_watch,observe_boundary=screen_check)
         else:
             controller.play(args.through)
         if getattr(args,'economy_preflight',False):
@@ -1048,6 +1056,8 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--government-screen-check',action='store_true',
+                        help='Open/close Government and Policies at an inactive observer boundary; no game orders')
     for name in ('output', 'mods', 'user-root', 'binary', 'ce', 'csc'):
         parser.add_argument('--' + name, type=Path, required=True)
     for name in ('map-seed', 'game-seed', 'through'):

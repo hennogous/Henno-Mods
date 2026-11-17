@@ -725,7 +725,8 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     -- adjacency picks a stable reference without consulting our modified cache.
     -- The early native hook consumes these Q8 residuals on fresh evaluation;
     -- stock district preference and production competition still follow.
-    local stats={groups=0,forecasts=0,unknown=0,clamped=0,offers=0}
+    local stats={groups=0,forecasts=0,unknown=0,clamped=0,offers=0,
+        referenceUnavailable=0,candidateUnavailable=0,nativeUnavailable=0,nativeNonpositive=0}
     if not snapshot.CustomerCandidateSets or not snapshot.WorldQuote or not snapshot.CustomerNetValue then return {},stats end
     local groups=snapshot.CustomerCandidateSets(protectedPlots);local offers={}
     local count=#groups
@@ -746,7 +747,7 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
         if stats.forecasts+1>=CUSTOMER_FORECAST_BUDGET then break end
         local group=groups[(offset+step-1)%count+1];stats.groups=stats.groups+1
         local reference=quote(group,group.reference.plot)
-        if not reference then stats.unknown=stats.unknown+1
+        if not reference then stats.unknown=stats.unknown+1;stats.referenceUnavailable=stats.referenceUnavailable+1
         else
             local attempted=0
             for _,candidate in ipairs(group.candidates)do
@@ -754,10 +755,13 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
                     and stats.forecasts<CUSTOMER_FORECAST_BUDGET then
                     attempted=attempted+1
                     local value,investment=quote(group,candidate.plot)
+                    local outcome,rawValue,finalDelta,netValue='candidate_unavailable',nil,nil,nil
                     if value then
                         local raw=value.valueQ8-reference.valueQ8
+                        rawValue=raw
                         local delta=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw))
                         local net=snapshot.CustomerNetValue(group.city,group.district,candidate.plot,investment.ready)
+                        netValue=net
                         if net and net>0 then
                             -- Building aggregation only uplifts positive raw
                             -- cells. Keep this negative residual above zero so
@@ -766,6 +770,7 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
                             -- retain native treatment. This is a publication
                             -- estimate; final eligibility remains native.
                             delta=math.max(delta,1-net)
+                            finalDelta=delta;outcome=delta~=0 and'offered'or'zero_difference'
                             if delta~=raw then stats.clamped=stats.clamped+1 end
                             if delta~=0 then
                                 offers[#offers+1]={player=snapshot.id,city=group.city,district=group.district,
@@ -775,8 +780,22 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
                                     Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
                                     group.reference.plot,raw,delta,net,value.valueQ8,reference.valueQ8,candidate.adjacency,candidate.links))
                             end
-                        else stats.unknown=stats.unknown+1 end
-                    else stats.unknown=stats.unknown+1 end
+                        else
+                            stats.unknown=stats.unknown+1
+                            outcome=net==nil and'native_unavailable'or'native_nonpositive'
+                            if net==nil then stats.nativeUnavailable=stats.nativeUnavailable+1
+                            else stats.nativeNonpositive=stats.nativeNonpositive+1 end
+                        end
+                    else stats.unknown=stats.unknown+1;stats.candidateUnavailable=stats.candidateUnavailable+1 end
+                    if Game.GetCurrentGameTurn()%25==0 then
+                        -- At most the existing15 alternative quotes/player at
+                        -- a census. Identify the priced shortlist even when a
+                        -- zero delta or native gate prevents publication.
+                        print(string.format('CSC_AI_CUSTOMER_ALTERNATIVE turn=%d player=%d city=%d district=%d plot=%d reference=%d outcome=%s rawQ8=%s deltaQ8=%s nativeQ8=%s adjacency=%.3f links=%d',
+                            Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
+                            group.reference.plot,outcome,tostring(rawValue),tostring(finalDelta),tostring(netValue),
+                            candidate.adjacency,candidate.links))
+                    end
                 end
             end
         end
@@ -784,7 +803,46 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     stats.offers=#offers
     print(string.format('CSC_AI_CUSTOMER_ECONOMIC_WORK turn=%d player=%d groups=%d totalGroups=%d forecasts=%d offers=%d unknown=%d clamped=%d quotes=%d',
         Game.GetCurrentGameTurn(),snapshot.id,stats.groups,count,stats.forecasts,#offers,stats.unknown,stats.clamped,snapshot.QuoteCount and snapshot.QuoteCount()or 0))
+    -- Passive reason totals use the results above, not another forecast or native
+    -- quote. Keep the old WORK contract for existing reports. This separates a
+    -- missing model quote from the deliberate native nonpositive-cell guard.
+    print(string.format('CSC_AI_CUSTOMER_ECONOMIC_GAPS turn=%d player=%d referenceUnavailable=%d candidateUnavailable=%d nativeUnavailable=%d nativeNonpositive=%d unvisitedGroups=%d',
+        Game.GetCurrentGameTurn(),snapshot.id,stats.referenceUnavailable,stats.candidateUnavailable,
+        stats.nativeUnavailable,stats.nativeNonpositive,count-stats.groups))
     return offers,stats
+end
+
+function E.ReportQuarterFunnel(snapshot,evaluations)
+    -- Diagnostic only: inspect already-calculated results every25 turns. One
+    -- summary and at most eight representative rejected cells per player; no
+    -- extra map scan, world evaluation, score write or change to candidate order.
+    local turn=Game.GetCurrentGameTurn()
+    if turn%25~=0 then return end
+    local counts,best={},{}
+    for id,details in pairs(evaluations)do
+        local reason=details.reason or'unspecified'
+        counts[reason]=(counts[reason]or 0)+1
+        local previous=best[reason]
+        if reason~='positive'and reason~='grace'and(not previous
+            or(details.adjacency or-1)>(previous.details.adjacency or-1)
+            or((details.adjacency or-1)==(previous.details.adjacency or-1)and id<previous.id))then
+            best[reason]={id=id,details=details}
+        end
+    end
+    local names={};for name in pairs(counts)do names[#names+1]=name end;table.sort(names)
+    local totals={};local samples=0
+    for _,name in ipairs(names)do
+        totals[#totals+1]=name..':'..counts[name]
+        local row=best[name]
+        if row and samples<8 then
+            samples=samples+1
+            print(string.format('CSC_AI_QUARTER_FUNNEL_SAMPLE turn=%d player=%d key=%s reason=%s adjacency=%s economicQ8=%s purchaseQ8=%s detail=%s',
+                turn,snapshot.id,row.id,name,tostring(row.details.adjacency),
+                tostring(row.details.economicQ8),tostring(row.details.purchaseQ8),
+                tostring(row.details.detail):gsub('[\r\n\t]',' ')))
+        end
+    end
+    print(string.format('CSC_AI_QUARTER_FUNNEL turn=%d player=%d reasons=%s samples=%d',turn,snapshot.id,table.concat(totals,','),samples))
 end
 
 function E.MergeCustomerOffers(entries,offers)
@@ -1083,6 +1141,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
             Game.GetCurrentGameTurn(),snapshot.id,work.worlds,work.evaluations,work.budgetFailures,work.unknown,work.cacheHits,
             work.routeHits,work.routeMisses,work.routeOverflow))
     end
+    E.ReportQuarterFunnel(snapshot,evaluations)
     E.ReportWithdrawals(snapshot,result,evaluations,scopes,previous or{})
     -- Retain bounded candidate-surface evidence in ordinary main-mod logs:
     -- two leading sites per city/type, with economic and spatial components.

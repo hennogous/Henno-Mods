@@ -81,5 +81,34 @@ local empty=E.MergeCustomerOffers({original[1]},{{player=1,city=7,district=6,plo
 assert(#empty==0)
 ''')
 
+    def test_skip_reasons_separate_native_gates_from_missing_world_quotes(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+nets[20]=nil;nets[21]=0
+local rows,stats=E.CustomerEconomicOffers(snapshot,{})
+assert(#rows==0 and stats.unknown==2)
+assert(stats.nativeUnavailable==1 and stats.nativeNonpositive==1)
+assert(stats.referenceUnavailable==0 and stats.candidateUnavailable==0)
+values[20]=nil;nets[21]=5000
+rows,stats=E.CustomerEconomicOffers(snapshot,{})
+assert(#rows==1 and stats.unknown==1 and stats.candidateUnavailable==1)
+values[10]=nil
+rows,stats=E.CustomerEconomicOffers(snapshot,{})
+assert(#rows==0 and stats.forecasts==1 and stats.referenceUnavailable==1)
+''')
+
+    def test_quarter_funnel_uses_existing_facts_and_limits_output(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local logs={};print=function(line)logs[#logs+1]=line end
+local evaluations={}
+for i=1,20 do evaluations['1:7:6:'..i]={reason='reason'..i,adjacency=i}end
+evaluations['1:7:6:99']={reason='positive',adjacency=4}
+E.ReportQuarterFunnel(snapshot,evaluations);assert(#logs==0)
+turn=25;E.ReportQuarterFunnel(snapshot,evaluations)
+assert(#logs==9 and logs[9]:find('samples=8',1,true))
+assert(evaluations['1:7:6:99'].reason=='positive' and values[20]==14000)
+''')
+
 
 if __name__=='__main__':unittest.main()

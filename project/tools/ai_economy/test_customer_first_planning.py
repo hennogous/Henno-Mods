@@ -12,6 +12,35 @@ AI = Path(__file__).resolve().parents[3] / 'Civ Supply Chains/Lua_UI/AI'
 
 
 class CustomerFirstPlanning(unittest.TestCase):
+    def test_census_coast_diagnostics_reuse_the_candidate_queries(self):
+        self.facts().execute('''
+GameInfo.Districts[20].DistrictType='DISTRICT_HARBOR'
+GameInfo.DistrictReplaces=function()return function()end end
+plots[3].district=36
+for _,p in ipairs(plots)do
+ p.IsWater=function()return false end;p.IsLake=function()return false end
+end
+CSC_Adjacency.PlotsInBand=function()return plots end
+local originalAdjacency=ui.GetDistrictAdjacency
+ui.GetDistrictAdjacency=function(...)
+ local result=originalAdjacency(...);result.turn=Game.GetCurrentGameTurn();return result
+end
+local calls=0;local original=ui.GetLegalDistrictTargets
+ui.GetLegalDistrictTargets=function(...)calls=calls+1;return original(...)end
+local function candidates()
+ local s=CSC_AI_EconomyFacts.New(player,placement,ui)
+ s.chains={{city=city,plot=plots[3],profile={key='TEST'}}}
+ return s.CustomerCandidateSets({})
+end
+local before=candidates();local ordinaryCalls=calls
+local logs={};print=function(line)logs[#logs+1]=line end
+Game.GetCurrentGameTurn=function()return 25 end
+local after=candidates()
+assert(#before==#after and calls==ordinaryCalls*2)
+assert(after[1].reference.plot==before[1].reference.plot)
+assert(#logs>0 and #logs<=96 and logs[1]:find('CSC_AI_CUSTOMER_OPPORTUNITY',1,true))
+''')
+
     def test_existing_quarter_reference_keeps_unlinked_competitor_for_negative_residual(self):
         vm=self.facts()
         vm.execute('''
