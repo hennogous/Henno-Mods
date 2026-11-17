@@ -1,5 +1,17 @@
 # CSC AI roadmap
 
+**17 November — first ordinary-economy outcome analysed; games paused.**
+Problems1.1–1.4/1.8:22 Base-adjacent foundations,20 at+3+,all22 best geometry
+in their positive city/type packets;82/82 native bids consumed exactly.
+1.5–1.6: one30-Gold Quarter payment leads to foundation33/completion35.
+2.1: live customer writes land, but Tailors remain spatially disconnected from
+Harbors and producer/customer investments do not always coincide.2.2: two
+non-last resource removals; other disruption is improvement/pillage/ownership.
+Priorities are customer coordination, missing profitable strong-site offers and
+G5 repeated-computation cost (2.03s average/4.61s max per turn). Pangaea was
+interrupted and Fractal unstarted; no further games until Henno resumes them.
+[Completed Continents analysis](../research/mods/csc-ai-ordinary-economy-continents-20261117.md).
+
 **17 November1.4 / 2.1 / 2.2 implementation checkpoint.**
 The shared candidate-world model now feeds new Quarter bids and signed
 customer-site differences; material losses enter the same marginal economy.

@@ -132,3 +132,21 @@ throughstillgap. Raw2resource-lossesnonlastMaizeWonder48/RiceSpaceport195;
 lastownedclasslosseswerecapture/elimination. Firstreportnotyetpromoted beyond
 thishandoff; onresume documentresults, runremaining2freshgames,completegoalaudit.
 Newanalysiscode/tests76e91b20 pushed; no policychangeafterfrozen01.
+
+
+## Continents offline analysis authorised/completed,17 November
+
+Userrequestedcontinentsanalysisonly;goalremainsPAUSED,noCivlaunch/nativeconsole/
+policychange. Report+compact162KBJSON csc-ai-ordinary-economy-continents-20261117
+promoted,AI-C208,index/status/roadmapupdated. All22foundations tie bestgeometry
+amongpositiveofferedcity/typepacket.2grade2/13grade3/4grade4/3grade5. Native
+Quarter1123purchase30Gold23 followsselection22,foundation33,completion35.
+Historicalsameworld14Nov6Q/3Store/0Inn/437chainturns ->22/8/2/1101. Native
+slotdistricts158->162,cities48->54,pop602->705;totalProduction+26%,Gold+2.6%,
+FoodSurplus+21.9%. Current19completedheldallBaseimproved,4bothimproved;22original
+foundationsinclcapturelosses. TailorsTempleplot2159hasWorkshopbutnoTailor;other
+3survivingTailorshaveTailorbutnoTemple;noneHarbor. DistinctadjHubs3/15.
+Perfavg2.027657s,max4.61054;last50avg2.977s. Centralunknown0,customeradapterskips
+153/11659forecastsatunavailable/nonpositivenativequote gate;13clamps. Important
+scope:don'tdescribetheseaszeroallquoteunknowns. Noadditionaltests/gamesneeded
+forreport;nativefixtureproofs/Astrareviewalreadyqualified. Remaininggamespaused.

@@ -1,5 +1,27 @@
 # CSC findings and evidence
 
+## AI-C208 — Ordinary-economy guidance completes Continents250 with live delivery and measured cost
+
+17 November2026, Problems1.1–1.8/2.1–2.2. Integrated-only stock-AI Online250
+closes/restores exit0.22 foundations all have Base;20 rate+3+,7 rate+4+,5 have
+both classes. All82 native Quarter BEST results equal published values. Signed
+customer differences yield1,587 sampled combined-entry writes/19 site-win
+windows. Eight Storekeepers/two Innkeepers operate at250; native Storekeeper
+observation records1,101 chain-turns across9 sources, including5 interrupted
+chains that resume. Tailors have4 working Stage2 producers but0 adjacent Harbors;
+the Temple-connected Quarter lacks its Stage3 producer.
+
+Full250-turn guidance wall coverage measures2.028s average/4.611s maximum across
+five AIs; native managed refresh separately averages12.25ms. Central model has
+zero budget failures/unknowns/route overflow; customer admission skips153 options,
+with reasons aggregated in its log. Two resource removals are non-last Base;
+last owned-class losses follow capture. One30-Gold native Quarter purchase leads
+to foundation33/completion35. Same initial world as the historical6-Quarter run;
+the complete updated setup produces22. Astra reviews the result. Remaining
+Pangaea/Fractal qualification is paused by Henno, not completed.
+[Analysis, limits and results](../research/mods/csc-ai-ordinary-economy-continents-20261117.md).
+
+
 ## AI-C207 — Joint route value follows shared readiness and a common amenity baseline
 
 17 November2026, G3. One route pass follows selected shared investments. Actual

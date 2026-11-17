@@ -1,41 +1,26 @@
 # Current CSC AI status
 
-**Paused by Henno,17 November.** Continents completed250; Pangaea was stopped
-at the user’s request after its verified75 boundary so the machine is free.
-Fractal has not started. Test processes are stopped, temporary packages archived
-and original mod preferences restored offline. The three-game goal remains
-incomplete; resume only when Henno asks. Completed Continents:22 Base-adjacent
-foundations,20 at+3+,82/82 exact native bids,8 active Storekeepers/2 Innkeepers,
-1,101 Storekeeper chain-turns. Guidance wall time:2.03s average/4.61s maximum
-per turn across five AIs, with complete250-turn coverage.
+**17 November — Continents analysis complete; further games paused.**
+The integrated model founded **22 Quarters**, all with Base materials;20 rated
++3 or better. All82 native Quarter wins matched the published bid. Eight
+Storekeepers and two Innkeepers operate at250, with1,101 verified Storekeeper
+chain-turns over the game. Tailors customer coordination remains weak: four
+working Workshops, no adjacent Harbor; the Temple-connected Quarter lacks its
+Tailor building.
 
-**1.4 / 2.1 / 2.2,17 November — routine economic integration implemented.**
-Quarter worlds and signed customer-site differences now share the complete
-ordinary-economy model. Local affected-plan search and a bounded route memo
-preserve mature-smoke offers while sharply reducing work.123 economy/82
-transaction/16 timing-controller-packaging tests pass. Precise turn timing and
-average/max reports are implemented. Precise mature planning totals are
-3.85/3.49 seconds across five players; the replay closes/restores0.
-The three fresh integrated-only Online250 campaign is running: Continents
-first, then Pangaea and Fractal. Initial turn1 timing/publication is verified;
-full-game results and average/max overhead are pending.
-[Implementation](../research/mods/csc-customer-world-pricing-20261117.md) ·
-[Timing scope](performance.md).
+Guidance wall time across five AI players averages **2.03s/turn**, maximum4.61s,
+with complete250-turn coverage. Late-game average is2.98s. Native managed
+refresh separately averages12.25ms. Repeated repricing deserves further profiling.
+[Full analysis and comparison](../research/mods/csc-ai-ordinary-economy-continents-20261117.md)
+· [Timing method](performance.md)
+· [Gameplay changes and human QA](../research/mods/csc-economic-integration-manual-qa-20261117.md).
 
-**1.4 / 2.1 / 2.2,17 November — real customer-world pricing now works.**
-The shared before/after model prices8/8 sampled owned customer footprints in the
-mature world. New CE interval APIs fix the one-turn route pricing blocker;
-15 real price cases and249 native checks pass. All10,954 gameplay rows still
-match; replay exits0 and restores. Astra reviewed the implementation.
-The early-path qualifier now proves native reception:605,685 raw +59,110 model
-adjustment +125,288 ordinary building forecast =790,083, read by the actual
-comparison. A stronger candidate stays ahead. Closed/restored0. Next: signed
-reference-based customer offers, remaining new-Quarter integration and the
-three Online250 games.
-[Scope, evidence and current limits](../research/mods/csc-customer-world-pricing-20261117.md).
-The updated [goal](ordinary-economy-goal.md) prioritises reasonable economic
-coverage for Problems1 and2; exact native parity and exhaustive qualification
-are unnecessary.
+Pangaea was stopped at Henno's request after its verified75 boundary; Fractal
+has not started. Test processes are stopped, temporary packages archived and
+original mod preferences restored. The three-game goal remains paused and
+incomplete. This analysis request authorises no new games or tuning changes.
+
+## Earlier checkpoints
 
 **G3,17 November — joint route events and amenity pooling implemented.**
 The shared scheduler now feeds one observed-network evaluation. Material
