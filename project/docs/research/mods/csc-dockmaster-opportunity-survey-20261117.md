@@ -45,3 +45,19 @@ prioritizing Base material. Specialty is additional value; it cannot substitute
 for the Workshop's Base input. Prefer naturally viable Harbor sites rather than
 overbidding for weak ones. No resource-placement or bonus change is authorized
 by this survey note itself; the running comparison must retain its frozen rules.
+
+## Recorded-world recheck while the regression runs
+
+Reprocessing the complete earlier `coast250-02` capture gives17 unoccupied,
+resource-free sea-side Quarter/Harbor combinations across10 Quarter footprints,
+using6 distinct Base-resource clusters. Native player/city filtering records8
+pairs, of which just1 has owned Quarter/water footprints and current native
+admission. The previous case inspection identifies that owned pair as Dumbarton:
+Harbor0Gold versus best3. These are late-world counts, after expansion and
+occupation of potential footprints, rather than original-map counts.
+
+The updated survey appends actual ordinary Harbor Gold, best current legal
+alternative, lake flag and working Base count, caching each quote once. Its
+summary groups shared Quarter/material footprints and retains unknown quality
+for older captures rather than turning it into a zero. Current and earlier
+saved-world checks use the same shared-controller structural/clock protections.

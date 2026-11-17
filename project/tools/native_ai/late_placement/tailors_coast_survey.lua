@@ -20,9 +20,11 @@ local function emit(kind,...)
  print('CSC_COAST_'..kind..'\t'..table.concat(fields,'\t'))
 end
 local function list(materials)local t={};for _,m in ipairs(materials)do t[#t+1]=m.plot end;table.sort(t);return table.concat(t,',')end
+local function workingCount(materials)local n=0;for _,m in ipairs(materials)do if m.working then n=n+1 end end;return n end
 local function name(city)return Locale and Locale.Lookup and Locale.Lookup(city:GetName())or city:GetName()end
 local quarterType=qdef.Index
-emit('META',Game.GetCurrentGameTurn(),quarterType)
+local width,height=Map.GetGridSize()
+emit('META',Game.GetCurrentGameTurn(),quarterType,width,height)
 -- The empty inventory proxy isolates permanent actor/type restrictions from
 -- already-built districts. It is only a future-type filter; it does not make
 -- the live CanHaveDistrict/current target checks counterfactual. Keep those
@@ -63,6 +65,30 @@ for pid=1,5 do
   table.sort(harbors,function(a,b)return a.Index<b.Index end)
   local cities={}
   for _,city in player:GetCities():Members()do cities[#cities+1]=city end
+  -- Diagnostic-only quote cache for one unchanged saved world. Native ordinary
+  -- Harbor Gold is kept separate from the private placement yield and from a
+  -- hypothetical future Quarter. No native score or gameplay state is written.
+  local gold,legalCache,bestGold={},{},{}
+  local function harborGold(city,definition,index)
+   local key=city:GetID()..':'..definition.Index..':'..index
+   if gold[key]~=nil then return gold[key]or nil end
+   local record=ui.GetDistrictAdjacency(pid,city:GetID(),index,definition.Index)
+   local amount=record and record.available and record.yields and record.yields.YIELD_GOLD
+   if type(amount)~='number'then amount=nil end
+   gold[key]=amount~=nil and amount or false;return amount
+  end
+  local function harborTargets(city,definition)
+   local key=city:GetID()..':'..definition.Index
+   if not legalCache[key]then
+    local set={};legalCache[key]=set
+    for _,index in ipairs(ui.GetLegalDistrictTargets(pid,city:GetID(),definition.Hash)or{})do
+     set[index]=true
+     local amount=harborGold(city,definition,index)
+     if amount~=nil then bestGold[key]=math.max(bestGold[key]or-math.huge,amount)end
+    end
+   end
+   return legalCache[key],bestGold[key]
+  end
   for _,city in ipairs(cities)do
    local id=city:GetID();local ds=city:GetDistricts();local hasQ=ds:HasDistrict(quarterType)
    local quarterLegal={};for _,plot in ipairs(ui.GetLegalDistrictTargets(pid,id,qdef.Hash)or{})do quarterLegal[plot]=true end
@@ -70,8 +96,7 @@ for pid=1,5 do
    emit('CITY',pid,id,name(city),city:GetX(),city:GetY(),city:GetPopulation(),hasQ,cap.used or -1,cap.allowed or -1,player:GetTreasury():GetGoldBalance())
    local currentHarborLegal={}
    for _,harbor in ipairs(harbors)do
-    local sites={};currentHarborLegal[harbor.Index]=sites
-    for _,plot in ipairs(ui.GetLegalDistrictTargets(pid,id,harbor.Hash)or{})do sites[plot]=true end
+    currentHarborLegal[harbor.Index]=harborTargets(city,harbor)
    end
    local center=Map.GetPlot(city:GetX(),city:GetY())
    for _,q in ipairs(A.PlotsInBand(center,1,3))do
@@ -99,8 +124,8 @@ for pid=1,5 do
            local hgeometry=existing or water:CanHaveDistrict(h.Index,pid,hid)
            if hgeometry then
             local legal=false
-            if hid==id then legal=currentHarborLegal[h.Index][water:GetIndex()]or false
-            else for _,i in ipairs(ui.GetLegalDistrictTargets(pid,hid,h.Hash)or{})do if i==water:GetIndex()then legal=true;break end end end
+            local legalSet,ordinaryBest=harborTargets(harborCity,h)
+            legal=legalSet[water:GetIndex()]or false
             local workingLight=false
             if existing then for _,lighthouse in ipairs(lights)do
              if harborCity:GetBuildings():HasBuilding(lighthouse.Index)
@@ -111,7 +136,9 @@ for pid=1,5 do
             emit('PAIR',pid,id,q:GetIndex(),owned,placed,qgeometry,quarterLegal[q:GetIndex()]or false,
              #supply.base,#supply.specialty,list(supply.base),list(supply.specialty),q:IsRiver(),
              adjacency.current.production+adjacency.current.gold,adjacency.production+adjacency.gold,
-             hid,h.Index,water:GetIndex(),wowner,existing,legal,workingLight)
+             hid,h.Index,water:GetIndex(),wowner,existing,legal,workingLight,
+             harborGold(harborCity,h,water:GetIndex())or'UNKNOWN',ordinaryBest or'UNKNOWN',water:IsLake(),
+             workingCount(supply.base))
            end
           end
          end

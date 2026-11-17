@@ -178,7 +178,12 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     require([digest(by_role[k]['files']) for k in ('ce', 'csc')] == protocol['input_digests'],
             'Original package digests differ')
     _, csc_manifest = package_identity(by_role['csc']['source'])
-    require(csc_manifest.find("Dependencies/Mod[@id='"+protocol['ce']+"']") is not None,
+    optional=csc_manifest.find("ActionCriteria/Criteria[@id='CSC_CE_SupplierExclusion']/ModInUse")
+    # Normal CSC keeps CE optional; a zero-turn survey can qualify that exact
+    # gate while retaining every source/package/module/clock check. Playing
+    # continuations keep their original explicit-dependency contract.
+    optional_readonly=read_only and optional is not None and optional.text==protocol['ce']
+    require(csc_manifest.find("Dependencies/Mod[@id='"+protocol['ce']+"']") is not None or optional_readonly,
             'CSC no longer depends on the recorded CE package')
     extras = load(source/'extra-mods.json')
     require(len(extras) == 3 and set(extras) == set(protocol['extra_mods']), 'Expected exact original three optional packages')
