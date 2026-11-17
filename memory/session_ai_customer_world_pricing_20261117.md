@@ -70,3 +70,19 @@ Freeze accepted gameplay+committed economy registry+currentAI+newCE; no unrelate
 UI/art/Pedia WIP. planning_campaign supports explicit freeze/SHA/policyqualification;
 serial seeds preselected Continents18461107/29461107,Pangaea18431267/28681391,
 Fractal19672039/29812257, sharedcontroller15minchecks,mainCSCpolicyonly.
+
+
+## Active full-game campaign
+
+Main commits571f381f/1d7ecc0f pushed; CE39c5ebf pushed, noPR. Frozen01 at
+Desktop/Codex/csc-ai-ordinary-economy-20261117 includes acceptedgameplay+
+committed economicregistry+currentmainAI+CEb719. planning_campaign.py running
+in execsession15789 (hostPython owns serial children). Continents250-01 is
+initializing; initial mainmod turn1 logs two attempts17us and10834us, one
+publication, zero policy/runtime errors. Clock works in real gameplay.
+Campaignprogress.json records seeds/freeze/SHA. Three preselected maps run
+serially, Online250, CL/R2/Suk, stockAI, no probe/test policy, sharedcontroller
+15minchecks. Do not start a parallel game or mutate pinned inputs/frozen files.
+Next goal continuation: monitor every15min, analyse each closedgame and timing,
+fix recoverable failures, finish all3. Fullgame timer requested by user is
+implemented/tested; result averages/maxima still pending livegame completion.

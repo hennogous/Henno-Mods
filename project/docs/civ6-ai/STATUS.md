@@ -7,7 +7,9 @@ preserve mature-smoke offers while sharply reducing work.123 economy/82
 transaction/16 timing-controller-packaging tests pass. Precise turn timing and
 average/max reports are implemented. Precise mature planning totals are
 3.85/3.49 seconds across five players; the replay closes/restores0.
-Next: three fresh integrated-only Online250 games.
+The three fresh integrated-only Online250 campaign is running: Continents
+first, then Pangaea and Fractal. Initial turn1 timing/publication is verified;
+full-game results and average/max overhead are pending.
 [Implementation](../research/mods/csc-customer-world-pricing-20261117.md) ·
 [Timing scope](performance.md).
 
