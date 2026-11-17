@@ -26,7 +26,8 @@ end
 local function newLedger(site,second)
     return {result={streams={},investments={},omissions={},byBuilding={},futureDepths={},alternative=second and second.type,
         siteAdjustmentQ8=site.nativeSiteAdjustmentQ8 or 0,
-        adjacency=(site.adjacency or 0)+(second and second.terrain or 0)},seen={},clocks={},populationFlows={}}
+        adjacency=(site.adjacency or 0)+(second and second.terrain or 0),quarterReadyByChain={},quarterStartByChain={}},
+        seen={},clocks={},populationFlows={}}
 end
 
 -- Finalize only after every affected chain has contributed its unrounded
@@ -78,6 +79,7 @@ local function ledger(site, second, shared)
     local context=shared or newLedger(site,second)
     local result=context.result
     local seen,clocks,populationFlows,customerTimes=context.seen,context.clocks,context.populationFlows,{}
+    local quarter=site.quarterReady
     local function cityKey(city)return context.joint and tostring(site.player or 0)..':'..city or tostring(city)end
     local function investmentKey(city,building)return cityKey(city)..':'..building end
     local function emit(id,yield,amount,ready,city,building,recipientBuilding,investmentCity)
@@ -109,7 +111,7 @@ local function ledger(site, second, shared)
             -- Restoring the Quarter does not rebuild an intact producer or
             -- repay its upkeep. Existing stages also do not need their original
             -- construction prerequisites rebuilt before they can resume.
-            ready=definition.hostReady
+            ready=definition.hostQuarter==site.key and site.key~=nil and quarter or definition.hostReady
         elseif definition.excluded then return INF
         elseif present(definition.unlock) and present(definition.turns) and present(prerequisite) then
             for _,required in ipairs(definition.prerequisites or {})do
@@ -133,9 +135,7 @@ local function ledger(site, second, shared)
             -(definition.maintenance or 0),ready,recipient,definition.type,nil,recipient) end
         return ready
     end
-    local quarter=site.quarterReady
     if not present(quarter) then omit('quarter','Unknown Quarter readiness');return result end
-    clocks[cityKey(site.city)]=maximum(clocks[cityKey(site.city)]or 0,quarter)
     -- A prospective customer district occupies its city's queue before its
     -- buildings. This plain-record reservation is shared by both sides of a
     -- marginal comparison; it does not reserve native production or delay an
@@ -143,8 +143,30 @@ local function ledger(site, second, shared)
     for city,ready in pairs(site.queueReady or{})do
         if present(ready)then clocks[cityKey(city)]=maximum(clocks[cityKey(city)]or 0,ready)end
     end
+    local quarterStart=0
+    if site.quarterWork then
+        -- Unfinished/repairing Quarters also consume the city's ONE queue.
+        -- Absolute standalone ETAs cannot be combined with a customer-first
+        -- reservation: that would build two districts concurrently. Schedule
+        -- remaining root work here, then use this time for dependent hosts,
+        -- adjacency receivers and route repair events throughout the ledger.
+        local work=site.quarterWork
+        if not present(work.unlock)or not present(work.turns)then
+            context.error='Quarter construction work unavailable'
+            if not shared then return nil,context.error end
+            return result
+        end
+        quarterStart=maximum(clocks[cityKey(site.city)]or 0,work.unlock)
+        quarter=quarterStart+work.turns
+    end
+    clocks[cityKey(site.city)]=maximum(clocks[cityKey(site.city)]or 0,quarter)
+    if site.key then
+        result.quarterReadyByChain[site.key]=quarter;result.quarterStartByChain[site.key]=quarterStart
+    end
     for _,flow in ipairs(site.direct or {})do
-        emit('site:'..flow.id,flow.yield,flow.amount,quarter,flow.city)
+        local ready=flow.ready==nil and quarter or flow.ready
+        if flow.quarterStartKey then ready=maximum(ready,result.quarterStartByChain[flow.quarterStartKey]or INF)end
+        emit('site:'..flow.id,flow.yield,flow.amount,ready,flow.city)
     end
     if not site.existing then emit('quarter-upkeep','YIELD_GOLD',-(site.maintenance or 0),quarter)end
     if (site.purchaseGold or 0)>0 then
@@ -501,6 +523,8 @@ function M.RouteLedger(result,trade,player,horizon)
             local completion=result.byBuilding[change.investmentKey]
             ready=present(completion)and math.max(ready,completion)or INF
         end
+        if change.quarterKey then ready=math.max(ready,(result.quarterReadyByChain or{})[change.quarterKey]or INF)end
+        if change.quarterStartKey then ready=math.max(ready,(result.quarterStartByChain or{})[change.quarterStartKey]or INF)end
         if present(ready)and ready<horizon then
             changes[#changes+1]={ready=ready,city=change.city,field=change.field,key=change.key,value=change.value}
         end
@@ -640,6 +664,7 @@ function M.JointForecast(world,price)
         end
         visiting[stamp]=nil;table.sort(required)
         fields[#fields+1]=table.concat(required,',')
+        fields[#fields+1]='hostQuarter='..tostring(definition.hostQuarter or'')
         local signature=table.concat(fields,'|')
         if definitions[stamp]and definitions[stamp]~=signature then return nil,'Conflicting shared investment: '..stamp end
         definitions[stamp]=signature;return true
@@ -707,6 +732,18 @@ function M.JointForecast(world,price)
         end
         local result,problem=finishLedger(context)
         if not result then return nil,problem end
+        for _,source in ipairs(world.extraStreams or{})do
+            if not present(source.ready)or not present(source.player)or not present(source.city)
+                or source.finish~=nil and not present(source.finish)
+                or not numeric(source.amount)or source.amount~=source.amount or math.abs(source.amount)==INF then
+                return nil,'Invalid joint externality stream'
+            end
+            -- Facts marks receiver/timing/component explicitly. Keep this
+            -- separate from native ordinary site value for overlap attribution.
+            local stream=copy(source)
+            if stream.quarterKey then stream.ready=maximum(stream.ready,result.quarterReadyByChain[stream.quarterKey]or INF)end
+            if stream.ready<math.min(horizon,stream.finish or horizon)then result.streams[#result.streams+1]=stream end
+        end
         if world.trade then
             result,problem=M.RouteLedger(result,world.trade,world.player,horizon)
         else result,problem=M.PoolAmenities(result,{},horizon)end

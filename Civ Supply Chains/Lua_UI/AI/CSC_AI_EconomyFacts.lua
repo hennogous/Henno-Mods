@@ -542,13 +542,13 @@ function F.New(player,placement,ui,context)
             seen[cityKey..':'..profile.key]=true
             if site.routeFoundationReady~=nil then
                 if not finite(site.routeFoundationReady)then return nil,'Quarter foundation timing unavailable'end
-                trade.changes[#trade.changes+1]={ready=site.routeFoundationReady,city=cityKey,
+                trade.plannedChanges[#trade.plannedChanges+1]={ready=site.routeFoundationReady,city=cityKey,quarterStartKey=site.key,
                     field='quarters',key=profile.district.DistrictType,value=true}
             elseif site.existing and not endpoint.quarters[profile.district.DistrictType]and finite(site.quarterReady)then
                 -- A repaired Quarter resumes its origin import-blocking flag.
                 -- Existing unpillaged foundations already have that flag and
                 -- must not wait for construction completion a second time.
-                trade.changes[#trade.changes+1]={ready=site.quarterReady,city=cityKey,
+                trade.plannedChanges[#trade.plannedChanges+1]={ready=0,city=cityKey,quarterKey=site.key,
                     field='quarters',key=profile.district.DistrictType,value=true}
             end
             local potential={}
@@ -600,17 +600,12 @@ function F.New(player,placement,ui,context)
         end
         return trade
     end
-    function snapshot.DirectAmounts(city,plot,profile,removed)
+    function snapshot.AdjacencyAmounts(city,plot,districtType,project)
+        -- Match the gameplay writer: it gates the RECEIVING district's
+        -- completion. Adjacent source types/tags include foundations and do
+        -- not acquire an invented functioning/completion requirement here.
         local sums,percents={},{}
-        local function project(p,rule)
-            if p:GetIndex()==removed then return nil end
-            if rule.AdjacencyType:find('DISTRICT',1,true)or rule.AdjacencyType:find('WONDER',1,true)then
-                local district=snapshot.districts[p:GetIndex()]
-                if not district or not district.complete then return nil end
-            end
-            return p
-        end
-        for _,rule in ipairs(CSC_Adjacency.ByDistrict[profile.district.DistrictType]or{})do
+        for _,rule in ipairs(CSC_Adjacency.ByDistrict[districtType]or{})do
             if rule.ModifierOwner~='BuildingModifiers'and CSC_Adjacency.Eligible(rule,city,pid)then
                 local amount=CSC_Adjacency.Amount(rule,CSC_Adjacency.Count(rule,plot,city,pid,project))
                 if rule.ProvideType=='SelfBonus'then sums[rule.YieldType]=(sums[rule.YieldType]or 0)+amount
@@ -619,6 +614,10 @@ function F.New(player,placement,ui,context)
         end
         local raw={};for yield,amount in pairs(sums)do raw[yield]=amount;sums[yield]=amount*(1+(percents[yield]or 0)/100)end
         return sums,percents,raw
+    end
+    function snapshot.DirectAmounts(city,plot,profile,removed)
+        return snapshot.AdjacencyAmounts(city,plot,profile.district.DistrictType,
+            removed and function(p)if p:GetIndex()~=removed then return p end end or nil)
     end
     local geometry={}
     function snapshot.Geometry(city,plot,profile)
@@ -1050,6 +1049,7 @@ function F.New(player,placement,ui,context)
             -- finishes construction. Legal admission is the decision adapter's
             -- responsibility; this timing never grants a district or unlock.
             routeFoundationReady=not placed and qUnlock or nil,
+            quarterWork=not functioning and finite(qReady)and {unlock=qUnlock,turns=qReady-qUnlock}or nil,
             maintenance=profile.district.Maintenance or 0,existing=exists,materialYield=family.yield,
             direct={},suppliers={},customers={},seconds={},omissions={
                 'Future worker assignments, trade routes, GPP and Stage3/4 Service premiums are not priced'}}
@@ -1157,6 +1157,7 @@ function F.New(player,placement,ui,context)
                     -- another copy constructed or another upkeep charge. Its
                     -- owner-side material returns can already be active at0.
                     b.hostReady=qReady
+                    b.hostQuarter=site.key
                     if stage==2 then
                         local water=definition.BuildingType=='BUILDING_CSC_BAKERS_WATER_MILL'
                         if not water or plot:IsRiver()then
@@ -1302,7 +1303,12 @@ function F.New(player,placement,ui,context)
                 end
                 for yield,value in pairs(reciprocal)do
                     site.direct[#site.direct+1]={id='return:'..near:GetIndex()..':'..yield,yield=yield,
-                        amount=value*(1+(reciprocalPercent[yield]or 0)/100),city=buyer.id}
+                        amount=value*(1+(reciprocalPercent[yield]or 0)/100),city=buyer.id,
+                        -- The receiving customer already exists. A Quarter
+                        -- foundation supplies this adjacency before its own
+                        -- construction/producer investments finish.
+                        ready=site.routeFoundationReady or 0}
+                    if site.routeFoundationReady~=nil then site.direct[#site.direct].quarterStartKey=site.key end
                 end
                 local seen={}
                 for _,mapping in ipairs(c.customers[profile.key]or{})do
@@ -1359,6 +1365,110 @@ function F.New(player,placement,ui,context)
     for _,chain in ipairs(snapshot.chains)do
         chain.supply=snapshot.Supply(chain.plot,chain.profile)
         chain.economy=snapshot.Site(chain.city,chain.plot,chain.profile)
+    end
+    local customerWorlds={}
+    function snapshot.CustomerWorld(cityID,districtIndex,plotIndex)
+        -- First correctness path: include ALL owned implemented chains. Queue
+        -- sharing/population pools are not the only links: distant exporters
+        -- can share a route counter or amenity recipient. A future component
+        -- optimization must match this bounded full-world result. Never
+        -- truncate its inventory or inherit single-site population baselines.
+        local key=cityID..':'..districtIndex..':'..plotIndex
+        if customerWorlds[key]then return customerWorlds[key][1],customerWorlds[key][2]end
+        local buyer,definition,plot=snapshot.cities[cityID],GameInfo.Districts[districtIndex],Map.GetPlotByIndex(plotIndex)
+        if not buyer or not definition or not plot or plot:GetOwner()~=pid then return nil,'Owned customer footprint required'end
+        local owner=Cities.GetPlotPurchaseCity(plot)
+        if not owner or owner:GetOwner()~=pid or owner:GetID()~=cityID then return nil,'Customer footprint belongs to another city'end
+        if plot:GetDistrictType()~=-1 then return nil,'Customer footprint is occupied'end
+        if definition.DistrictType=='DISTRICT_CITY_CENTER'or definition.DistrictType=='DISTRICT_WONDER'
+            or definition.DistrictType:match('^DISTRICT_CSC_.+_QUARTER$')then return nil,'Separate district investment adapter required'end
+        local unlock=math.max(research('tech',definition.PrereqTech),research('civic',definition.PrereqCivic))
+        if unlock~=0 then return nil,'Customer district is not unlocked'end
+        local duration=cityNumber(buyer.object,'districtTurns',districtIndex)
+        local cost=cityNumber(buyer.object,'district',districtIndex)
+        local ready=duration and math.max(1,duration)
+            or cost and buyer.production and buyer.production>0 and math.max(1,math.ceil(cost/buyer.production))
+        if not finite(ready)then return nil,'Customer construction timing unavailable'end
+        local horizon=context and context.horizon or 50
+        local function copy(source)local result={};for k,v in pairs(source)do result[k]=v end;return result end
+        local before={player=pid,horizon=horizon,sites={},populationBaselines={},extraStreams={}}
+        local after={player=pid,horizon=horizon,sites={},populationBaselines={},extraStreams={},
+            queueReady={[pid..':'..cityID]=ready}}
+        if #snapshot.chains>64 then return nil,'Affected chain budget exceeded'end
+        -- Native PreCreateDistrict1029c0 rechecks zoning with/without resource
+        -- removal. A visible deposit must be removed for an admitted fresh
+        -- foundation. Hidden deposits may remain and are not counted by CSC's
+        -- visible-resource adjacency matcher. Terrain/rivers remain unchanged.
+        local resource=plot:GetResourceType()
+        local resourceAfter=resource>=0 and CSC_Adjacency.ResourceVisible(pid,resource)and -1 or resource
+        local projected=setmetatable({GetDistrictType=function()return districtIndex end,
+            GetImprovementType=function()return -1 end,IsImprovementPillaged=function()return false end,
+            GetResourceType=function()return resourceAfter end},{__index=function(_,name)
+                local value=plot[name]
+                if type(value)=='function'then return function(_,...)return value(plot,...)end end
+                return value
+            end})
+        local function project(p)return p:GetIndex()==plotIndex and projected or p end
+        local supported={FROM_RINGS_TYPETAG_RESOURCE=true,FROM_RINGS_TYPETAG_DISTRICT=true,
+            FROM_RINGS_CAO_DISTRICT=true,FROM_RINGS_CAO_TERRAIN_SETS=true,FROM_RIVER_CROSSING=true}
+        local function checkedAmounts(city,center,kind,projection)
+            for _,rule in ipairs(CSC_Adjacency.ByDistrict[kind]or{})do
+                if rule.ModifierOwner~='BuildingModifiers'and not supported[rule.AdjacencyType]then
+                    return nil,'District projection source requires support: '..tostring(rule.AdjacencyType)
+                end
+            end
+            return snapshot.AdjacencyAmounts(city,center,kind,projection)
+        end
+        for _,chain in ipairs(snapshot.chains)do
+            local site=chain.economy
+            if not site then return nil,'Existing Quarter economy unavailable'end
+            before.sites[#before.sites+1]=site
+            local changed=copy(site);changed.service=nil;changed.suppliers={};changed.customers={}
+            for _,supplier in ipairs(site.suppliers)do
+                if supplier.plot~=plotIndex then changed.suppliers[#changed.suppliers+1]=supplier end
+            end
+            for _,customer in ipairs(site.customers)do changed.customers[#changed.customers+1]=customer end
+            local adjacent=false
+            for _,neighbor in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
+                if neighbor:GetIndex()==plotIndex then adjacent=true;break end
+            end
+            if adjacent then
+                for _,source in ipairs(snapshot.ProjectedCustomers(chain.profile,cityID,districtIndex,plotIndex))do
+                    local venue=copy(source);venue.complete=true;venue.projected=true;venue.working=false;venue.intactOwner=false
+                    venue.unlock=math.max(venue.unlock or INF,ready);venue.hostReady=ready
+                    -- Keep ordinary upkeep/prerequisites in economic facts.
+                    -- G4 reconciles native overlap; the older building-only
+                    -- diagnostic's blanket expense removal is not used here.
+                    changed.customers[#changed.customers+1]=venue
+                end
+            end
+            after.sites[#after.sites+1]=changed
+            local old,error=checkedAmounts(chain.city,chain.plot,chain.profile.district.DistrictType)
+            if not old then return nil,error end
+            local new,problem=checkedAmounts(chain.city,chain.plot,chain.profile.district.DistrictType,project)
+            if not new then return nil,problem end
+            local yields={};for yield in pairs(old)do yields[yield]=true end;for yield in pairs(new)do yields[yield]=true end
+            for yield in pairs(yields)do
+                local delta=(new[yield]or 0)-(old[yield]or 0)
+                if delta~=0 then after.extraStreams[#after.extraStreams+1]={id='quarter-adjacency:'..site.key..':'..yield,
+                    component='quarter-adjacency-externality',player=pid,city=site.city,yield=yield,amount=delta,
+                    ready=0,quarterKey=site.key}end
+            end
+        end
+        local receiving,error=checkedAmounts(buyer.object,plot,definition.DistrictType,project)
+        if not receiving then return nil,error end
+        for yield,amount in pairs(receiving)do if amount~=0 then
+            after.extraStreams[#after.extraStreams+1]={id='customer-adjacency:'..key..':'..yield,
+                component='customer-csc-adjacency',player=pid,city=cityID,yield=yield,amount=amount,ready=ready}
+        end end
+        local trade,problem=snapshot.TradeWorld(before.sites);if not trade then return nil,problem end
+        before.trade=trade
+        after.trade,problem=snapshot.TradeWorld(after.sites,{removedPlot=plotIndex,ready=0})
+        if not after.trade then return nil,problem end
+        before.customer={city=cityID,district=districtIndex,plot=plotIndex,ready=ready,cost=cost}
+        after.customer=before.customer
+        customerWorlds[key]={before,after}
+        return before,after
     end
     return snapshot
 end

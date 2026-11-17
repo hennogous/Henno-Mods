@@ -85,9 +85,9 @@ end
 function E.Available()
     if type(CE_AIEconomyStatus)~='function'or type(CE_AIDistrictScoresFinalEntry)~='function'
         or type(CE_AIDistrictScoresManagedType)~='function'or type(CE_AIDistrictScoresManagedReceipt)~='function'
-        or type(CE_AIYieldStreamValue)~='function'or type(CE_AIAmenityStreamValue)~='function'
+        or type(CE_AIYieldIntervalValue)~='function'or type(CE_AIAmenityIntervalValue)~='function'
         or type(CE_AIYieldFixedValue)~='function'then
-        return false,'CE economic pricing/final-score API unavailable'
+        return false,'CE economic interval-pricing/final-score API unavailable'
     end
     local ok,status=pcall(CE_AIEconomyStatus)
     if not ok or type(status)~='string'or not status:match('"pricingReady":1')
@@ -111,6 +111,11 @@ function E.Snapshot(player,placement,ui)
     local snapshot=F.New(player,placement,ui,context)
     snapshot.evaluationContext=context or{horizon=50,discountQ8=4*256,nativeSite=false}
     local discount=snapshot.evaluationContext.discountQ8
+    -- Interval APIs use a zero cumulative origin. Raw native Stream APIs treat
+    -- turn zero as a fixed income amount, which can reject a valid 0..1 flow.
+    -- Require the corrected contract above rather than silently changing the
+    -- horizon or dropping short observed-route contributions. Quotes are cached
+    -- only in this snapshot: native strategy and happiness can change next turn.
     local quotes={};local count=0
     local function rawPrice(stream,horizon,amount)
         local yield=stream.yield
@@ -135,14 +140,14 @@ function E.Snapshot(player,placement,ui)
         if quotes[key]~=nil then return quotes[key]end
         local value
         if yield=='AMENITY'then
-            value=CE_AIAmenityStreamValue(snapshot.id,stream.city,amount,stream.ready,horizon,discount)
+            value=CE_AIAmenityIntervalValue(snapshot.id,stream.city,amount,stream.ready,horizon,discount)
         else
             local definition=GameInfo.Yields[yield]
             if not definition then return nil end
             if stream.fixed then
                 value=CE_AIYieldFixedValue(snapshot.id,stream.city,definition.Index,units,stream.ready,discount)
             else
-                value=CE_AIYieldStreamValue(snapshot.id,stream.city,definition.Index,units,stream.ready,horizon,discount)
+                value=CE_AIYieldIntervalValue(snapshot.id,stream.city,definition.Index,units,stream.ready,horizon,discount)
             end
         end
         -- Unknown is not cached as zero and cannot produce a final replacement.

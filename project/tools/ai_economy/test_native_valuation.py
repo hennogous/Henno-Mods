@@ -13,6 +13,16 @@ AI=Path(__file__).resolve().parents[3]/'Civ Supply Chains/Lua_UI/AI'
 
 
 class NativeValuation(unittest.TestCase):
+    def test_interval_api_is_required_and_short_flows_keep_their_actual_window(self):
+        self.vm().execute('''
+local raw=snapshot.Price({city=10,yield='YIELD_PRODUCTION',amount=1,ready=0,finish=1},100)
+assert(raw==256 and calls[#calls].r==0 and calls[#calls].h==1)
+CE_AIYieldIntervalValue=nil
+CE_AIYieldStreamValue=function()error('Legacy stream fallback must not be used')end
+local available,reason=E.Available()
+assert(not available and reason:find('interval',1,true))
+''')
+
     def test_spatial_preference_cannot_consume_a_protected_supplier_plot(self):
         vm=boundaries.Boundaries().bid_vm()
         vm.execute('''
@@ -34,12 +44,12 @@ CE_AIDistrictScoresManagedReceipt=function()end
 CE_AIDistrictSiteAdjustment=function()return '{"adjustmentQ8":-256,"includesPurchase":1}'end
 CE_AIEvaluationContext=function()return '{"ordinaryHorizon":100,"discountQ8":512}'end
 calls={}
-CE_AIYieldStreamValue=function(p,c,y,a,r,h,d)
+CE_AIYieldIntervalValue=function(p,c,y,a,r,h,d)
  assert(d==512 and h<=100);calls[#calls+1]={a=a,r=r,h=h,y=y}
  return a*(h-r)
 end
 CE_AIYieldFixedValue=function(p,c,y,a,r,d)assert(d==512);return a end
-CE_AIAmenityStreamValue=function(p,c,a,r,h,d)assert(d==512);return a*256*(h-r)end
+CE_AIAmenityIntervalValue=function(p,c,a,r,h,d)assert(d==512);return a*256*(h-r)end
 CSC_AI_EconomyFacts={New=function(_,_,_,context)
  assert(context.horizon==100 and context.discountQ8==512 and context.nativeSite)
  return{id=1,cities={[10]={foodSurplus=20,navalProduction=0}}}
@@ -186,12 +196,12 @@ assert(total==r.quote.valueQ8)
         self.vm().execute('''
 local facts=site()
 CSC_AI_EconomyFacts.New=function()return{id=1,cities={},Site=function()return facts end}end
-local native=CE_AIYieldStreamValue
-CE_AIYieldStreamValue=function()return nil end
+local native=CE_AIYieldIntervalValue
+CE_AIYieldIntervalValue=function()return nil end
 local fresh=assert(E.Snapshot({}, {}, {}))
 assert(fresh.Site()==nil and facts.comparisonReferenceQ8==nil and facts.sitingReadiness==nil)
 assert(fresh.Site()==nil and facts.comparisonReferenceQ8==nil)
-CE_AIYieldStreamValue=native
+CE_AIYieldIntervalValue=native
 assert(fresh.Site()==facts and facts.comparisonReferenceQ8 and facts.sitingReadiness)
 ''')
 
