@@ -22,6 +22,14 @@ end
 local function list(materials)local t={};for _,m in ipairs(materials)do t[#t+1]=m.plot end;table.sort(t);return table.concat(t,',')end
 local function workingCount(materials)local n=0;for _,m in ipairs(materials)do if m.working then n=n+1 end end;return n end
 local function name(city)return Locale and Locale.Lookup and Locale.Lookup(city:GetName())or city:GetName()end
+-- Building location matters: an unrelated city's Workshop cannot complete this
+-- Quarter's exchange. Adjacent same-owner Harbor cities remain allowed by CSC.
+local function buildingWorksAt(city,typeName,index)
+ local definition=GameInfo.Buildings[typeName];local buildings=city:GetBuildings()
+ return definition and buildings:HasBuilding(definition.Index)
+  and not buildings:IsPillaged(definition.Index)
+  and buildings:GetBuildingLocation(definition.Index)==index or false
+end
 local quarterType=qdef.Index
 local width,height=Map.GetGridSize()
 emit('META',Game.GetCurrentGameTurn(),quarterType,width,height)
@@ -104,7 +112,7 @@ for pid=1,5 do
     local owned=assigned and assigned:GetID()==id
     local placed=owned and q:GetDistrictType()==quarterType
     local vacant=q:GetDistrictType()==-1 and q:GetResourceType()==-1
-    if permanent[quarterType]and(owned or owner==-1)and(placed or vacant)
+    if permanent[quarterType]and not q:IsWater()and not q:IsImpassable()and(owned or owner==-1)and(placed or vacant)
       and PlayersVisibility[pid]:IsRevealed(q:GetX(),q:GetY())then
      local qgeometry=placed or q:CanHaveDistrict(quarterType,pid,id)
      local supply=P.ReadSuppliers(player,q,profile)
@@ -138,7 +146,8 @@ for pid=1,5 do
              adjacency.current.production+adjacency.current.gold,adjacency.production+adjacency.gold,
              hid,h.Index,water:GetIndex(),wowner,existing,legal,workingLight,
              harborGold(harborCity,h,water:GetIndex())or'UNKNOWN',ordinaryBest or'UNKNOWN',water:IsLake(),
-             workingCount(supply.base))
+             workingCount(supply.base),buildingWorksAt(city,'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',q:GetIndex()),
+             naval and player:GetCulture():HasCivic(naval.Index)or false)
            end
           end
          end
@@ -159,9 +168,10 @@ for index=0,Map.GetPlotCount()-1 do
  local feature=GameInfo.Features[p:GetFeatureType()]
  local district=GameInfo.Districts[p:GetDistrictType()]
  local resource=GameInfo.Resources[p:GetResourceType()]
+ local improvement=GameInfo.Improvements[p:GetImprovementType()]
  emit('MAP',index,p:GetX(),p:GetY(),terrain and terrain.TerrainType or 'NONE',
   feature and feature.FeatureType or 'NONE',p:IsWater(),p:IsLake(),p:IsImpassable(),
   p:GetOwner(),city and city:GetID()or -1,district and district.DistrictType or 'NONE',
-  resource and resource.ResourceType or 'NONE',p:GetImprovementType())
+  resource and resource.ResourceType or 'NONE',p:GetImprovementType(),improvement and improvement.ImprovementType or'NONE')
 end
 emit('END',Game.GetCurrentGameTurn())

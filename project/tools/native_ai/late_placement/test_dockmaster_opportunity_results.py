@@ -14,7 +14,7 @@ class CoastalResults(unittest.TestCase):
               'CSC_COAST_MAP\t2\t2\t0\tTERRAIN_COAST\tNONE\ttrue\tfalse\tfalse\t1\t7\tNONE\tNONE\t-1',
               'CSC_COAST_MAP\t3\t3\t0\tTERRAIN_COAST\tNONE\ttrue\ttrue\tfalse\t1\t7\tNONE\tNONE\t-1']
         pair=['1','7','1','true','false','true','true','1','0','0','','false','1','1','7','4','2','1','false','true','false']
-        if extended:pair+=['2','3','false','0']
+        if extended:pair+=['2','3','false','0','false','true']
         rows+=['CSC_COAST_PAIR\t'+'\t'.join(pair),'CSC_COAST_PAIR\t'+'\t'.join(pair),'CSC_COAST_END\t250']
         path=root/'capture.txt';path.write_text('\n'.join(rows));return path
 
@@ -30,6 +30,17 @@ class CoastalResults(unittest.TestCase):
             new=analyse(self.capture(root,True))['summary']
             self.assertEqual(new['owned_harbor_gold_at_least2'],1)
             self.assertEqual(new['owned_pairs_matching_best_harbor'],0)
+            self.assertEqual(new['fully_equipped_pairs'],0)
+            self.assertIsNone(old['fully_equipped_pairs'])
+
+    def test_native_rejected_water_quarter_is_not_an_opportunity(self):
+        with TemporaryDirectory()as temporary:
+            path=self.capture(Path(temporary),True)
+            raw=path.read_text()
+            fields=next(line for line in raw.splitlines()if line.startswith('CSC_COAST_PAIR\t')).split('\t')
+            fields[3]='2' # Water cell printed by an older query before its native rejection.
+            path.write_text(raw.replace('CSC_COAST_END','\t'.join(fields)+'\nCSC_COAST_END'))
+            self.assertEqual(analyse(path)['summary']['player_city_native_pairs'],1)
 
 
 if __name__=='__main__':unittest.main()

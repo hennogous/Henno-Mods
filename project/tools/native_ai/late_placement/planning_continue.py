@@ -155,7 +155,12 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     require(players == [1, 2, 3, 4, 5] and len(identity['map_signature']) == 3 and
             {r['player'] for r in identity['starts']} == set(players) | {0},
             'Missing original roster/map provenance')
-    checkpoint = load(source/('checkpoint-'+str(at)+'.json'))
+    checkpoint_path = source/('checkpoint-'+str(at)+'.json')
+    # Fresh-game drivers name the final receipt checkpoint.json; intermediate
+    # boundaries use checkpoint-N.json. Both still require exact turn/save hashes.
+    if at == 250 and not checkpoint_path.is_file():
+        checkpoint_path = source/'checkpoint.json'
+    checkpoint = load(checkpoint_path)
     require(checkpoint['verified'] and checkpoint['turn'] == at and
             sha(Path(checkpoint['native_save'])) == checkpoint['sha256'] == sha(Path(checkpoint['archive'])),
             'Checkpoint native/archive hash mismatch')
@@ -186,7 +191,12 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     require(csc_manifest.find("Dependencies/Mod[@id='"+protocol['ce']+"']") is not None or optional_readonly,
             'CSC no longer depends on the recorded CE package')
     extras = load(source/'extra-mods.json')
-    require(len(extras) == 3 and set(extras) == set(protocol['extra_mods']), 'Expected exact original three optional packages')
+    # The Government-screen regression adds the pinned BRS/EPC UI pair. A
+    # zero-turn survey must reload that original stack, never silently drop it.
+    # Playing continuations retain their qualified three-gameplay-mod contract.
+    ui_pair = {'6f2888d4-79dc-415f-a8ff-f9d81d7afb53', '382a187f-c8ba-4094-a6a7-0d5315661f33'}
+    extra_count_ok = len(extras) == 3 or (read_only and len(extras) == 5 and ui_pair <= set(extras))
+    require(extra_count_ok and set(extras) == set(protocol['extra_mods']), 'Expected exact original optional packages')
     for mod_id, item in extras.items():
         package = Path(item['path']).resolve(strict=True)
         require(package_identity(package)[0] == mod_id and manifest(package) == item['files'] and

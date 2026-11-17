@@ -22,6 +22,7 @@ def analyse(path):
     if len(plots)!=width*height or rows['META'][0][0]!=rows['END'][-1][0]:
         raise ValueError('Incomplete map or inconsistent survey clocks')
     harbors={'DISTRICT_HARBOR'}
+    city_names={(int(r[0]),int(r[1])):r[2]for r in rows.get('CITY',[])}
     for row in rows.get('PAIR',[]):
         if row[18]=='true'and int(row[16])in plots:harbors.add(plots[int(row[16])]['district'])
     layouts={};usable_resources=set()
@@ -50,8 +51,10 @@ def analyse(path):
         for i in ordered[1:]:parents[find(i)]=find(ordered[0])
     pairs={}
     for row in rows.get('PAIR',[]):
-        hplot=int(row[16]);h=plots.get(hplot)
-        if h and h['lake']:continue
+        hplot=int(row[16]);h=plots.get(hplot);q=plots.get(int(row[2]))
+        # Early captures also printed water/impassable Quarter cells before the
+        # native gate rejected them. They are never potential Tailors footprints.
+        if not q or q['water']or q['impassable']or not h or h['lake']:continue
         record=dict(player=int(row[0]),city=int(row[1]),quarterPlot=int(row[2]),
             quarterOwned=row[3]=='true',quarterExists=row[4]=='true',quarterGeometry=row[5]=='true',
             quarterLegal=row[6]=='true',base=int(row[7]),spec=int(row[8]),basePlots=row[9],
@@ -61,6 +64,14 @@ def analyse(path):
         for index,key in ((21,'harborGold'),(22,'bestLegalHarborGold')):
             try:record[key]=float(row[index])
             except(IndexError,ValueError):record[key]=None
+        record['cityName']=city_names.get((record['player'],record['city']))
+        record['harborCityName']=city_names.get((record['player'],record['harborCity']))
+        # Old captures remain usable; missing building/supply fields are unknown.
+        # Native legal targets describe today's capacity/unlocks, whereas these
+        # extra facts identify what the actual Workshop/Lighthouse chain lacks.
+        record['workingBase']=int(row[24])if len(row)>24 else None
+        record['workshopWorks']=row[25]=='true'if len(row)>25 else None
+        record['navalTradition']=row[26]=='true'if len(row)>26 else None
         pairs[(record['player'],record['quarterPlot'],hplot)]=record
     practical=[r for r in pairs.values()if r['quarterGeometry']and r['quarterOwned']and r['harborOwner']==r['player']]
     ready=[r for r in practical if(r['quarterExists']or r['quarterLegal'])and(r['harborExists']or r['harborLegal'])]
@@ -73,7 +84,10 @@ def analyse(path):
         owned_harbor_gold_at_least2=(sum(r['harborGold']is not None and r['harborGold']>=2 for r in practical)
             if any(r['harborGold']is not None for r in practical)else None),
         owned_pairs_matching_best_harbor=(sum(r['harborGold']>=r['bestLegalHarborGold']for r in comparable)if comparable else None),
-        existing_quarter_harbor_pairs=sum(r['quarterExists']and r['harborExists']for r in practical))
+        existing_quarter_harbor_pairs=sum(r['quarterExists']and r['harborExists']for r in practical),
+        fully_equipped_pairs=(sum(r['quarterExists']and r['harborExists']and r['workshopWorks']
+            and r['lighthouseWorks']and(r['workingBase']or 0)>0 and r['navalTradition']for r in practical)
+            if any(r['workshopWorks']is not None for r in practical)else None))
     return dict(schema='csc-dockmaster-opportunities-v1',source=str(path),summary=summary,
         layouts=[dict(quarter=q,harbor=h,basePlots=sorted(materials))for(q,h),materials in sorted(layouts.items())],
         native_pairs=list(pairs.values()),scope='Late-world free geometry and current native opportunities; not original map or promised future builds.')
