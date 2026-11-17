@@ -11,6 +11,7 @@ import time
 class GovernmentScreenCheck:
     def __init__(self,controller,output,user_root):
         self.controller=controller;self.output=Path(output);self.user_root=Path(user_root);self.done=False
+        (self.output/'government_screen_check.py').write_bytes(Path(__file__).read_bytes())
 
     def __call__(self,turn):
         if self.done or turn<25:return

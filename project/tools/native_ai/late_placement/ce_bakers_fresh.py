@@ -312,9 +312,15 @@ def run(args):
         require(identity not in {ce_id, csc_id} and identity not in extra_mods,
                 'Duplicate extra mod identity')
         extra_mods[identity] = dict(path=str(source), files=manifest(source))
-    integrated_connectors = csc_manifest.find("InGameActions/UpdateDatabase[@id='CSC_AI_Connectors']") is not None
-    require(ce_id != csc_id and csc_manifest.find(f"Dependencies/Mod[@id='{ce_id}']") is not None,
-            'The staged CSC manifest must depend on the separate local CE package')
+    integrated_connectors = any(action.tag=='UpdateDatabase' and any(file.text in {
+        'Data/CSC_AI_Connectors.sql','Data/CSC_Q_ALL_AI_Connectors.sql'}for file in action.findall('File'))
+        for action in csc_manifest.find('InGameActions'))
+    optional_gate=csc_manifest.find("ActionCriteria/Criteria[@id='CSC_CE_SupplierExclusion']/ModInUse")
+    main_mod_optional=(getattr(args,'main_mod_package',False) and optional_gate is not None
+                       and optional_gate.text==ce_id)
+    require(ce_id != csc_id and (csc_manifest.find(f"Dependencies/Mod[@id='{ce_id}']") is not None
+                               or main_mod_optional),
+            'CSC must depend on CE, or explicitly qualify its main-mod optional CE criterion')
     local = {ce: mods / 'CSC Bakers Development CE', csc: mods / 'CSC Bakers Development Mod'}
     require(not out.exists() and not native_inventory() and all(not path.exists() for path in local.values()),
             'Fresh output, unused development paths and exclusive native ownership required')
@@ -1056,6 +1062,8 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--main-mod-package',action='store_true',
+                        help='Accept main CSC optional CE gating; actual native capabilities must still pass preflight')
     parser.add_argument('--government-screen-check',action='store_true',
                         help='Open/close Government and Policies at an inactive observer boundary; no game orders')
     for name in ('output', 'mods', 'user-root', 'binary', 'ce', 'csc'):

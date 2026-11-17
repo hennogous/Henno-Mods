@@ -68,3 +68,10 @@ not a newly labelled untuned baseline. Extra UI dependencies are recorded.
 Do not automatically start Pangaea/Fractal after this one game.
 
 Status: preparation and offline checks; no new game launched yet.
+
+The first launch preflight stopped before creating a game because the historical
+driver required a CE dependency in CSC's manifest. Main CSC correctly keeps CE
+optional behind its criterion. The explicit main-package driver option now
+verifies that criterion against the pinned CE identity instead; runtime native
+capability qualification remains mandatory. Connector detection follows the SQL
+file, including its consolidated name, rather than relying on an action ID.
