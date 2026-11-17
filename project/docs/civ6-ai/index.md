@@ -7,6 +7,8 @@ what remains open and which problem we are working on.
 - [Gameplay/AI economic contract](../integrations/csc-economic-contract.md): shared definitions, remaining gaps and regression gates.
 - [Population migration and manual QA](../research/mods/csc-population-transaction-catalogue-20261116.md): exact gameplay changes, preserved rules and native equivalence checks.
 - [Shared route economy](../research/mods/csc-joint-route-economy-20261117.md): actual routes, investment timing, combined amenities and coverage assumptions.
+- [Guidance processing time](performance.md): average/max per-turn measurements, per-player breakdown and coverage.
+- [Economic integration gameplay review](../research/mods/csc-economic-integration-manual-qa-20261117.md): consolidated change list and focused human QA checklist.
 - [Numbered roadmap](roadmap.md): capabilities we want, in the agreed order.
 - [Completion contract](acceptance.md): evidence levels, finite acceptance tests and completed scopes.
 - [Current tuning and placement coverage](topics/csc/site-planner.md): what the running CSC code does and its evidence.
