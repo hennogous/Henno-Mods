@@ -3,6 +3,13 @@
 **New-chat entry point: [handoff](HANDOFF.md).** It distinguishes implemented
 work from remaining AI gaps and preserves operating instructions.
 
+**Astra's proposed next2.1 slice:** prioritize fresh reference/challenger pairs
+across more city/types at the same16-world budget; preserve candidate identities
+with fresh validation, SQL+1 and normal competition. Short matched replays should
+qualify comparison-time coverage and selected foundations before broader joint
+planning/acquisition. Services stay deferred. No code/game change for this review.
+[Recommendation](../research/mods/csc-ai-customer-coordination-review-20261117.md).
+
 **Perth trace completed, Problems1.4/1.6/2.1:** all20 matched positive Tailors
 comparisons consume the exact published score and lose to a higher district.
 No Tailors winner/request exists. The site reaches+2 at143 and+3 only204;

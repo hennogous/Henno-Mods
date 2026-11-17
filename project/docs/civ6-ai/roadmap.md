@@ -4,6 +4,18 @@ For current continuation instructions, use the [handoff](HANDOFF.md). Later
 dated entries supersede earlier next-step lists; no test campaign should resume
 automatically. The latest maintenance/UI work changed no AI policy or CE binary.
 
+**Proposed2.1 sequence after Astra review,17 November.** First improve useful
+fresh site-comparison coverage under the existing16-forecast budget: reference+
+one challenger across groups, singleton skips, fair alternatives and revalidated
+candidate identities. Qualify actual native near-tie selection/foundation and a
+stronger-ordinary-site control in short matched replays, with SQL+1 unchanged.
+Then bridge both foundation orders with shared connection records, audit ordinary
+pricing where bids lose (Perth), and extend customer acquisition where affordable
+frontier-only opportunities warrant it. Use decision-time viable opportunities
+as the conversion denominator. Services remain deferred; no implementation or
+game has begun under this proposed slice.
+[Review, first slice and completion gates](../research/mods/csc-ai-customer-coordination-review-20261117.md).
+
 **17 November — Perth delivery trace closed; next1.4 economic calibration.**
 20 matched positive Quarter writes equal published values and lose to stronger
 district bids. There is no Tailors winner or request. The site is+2 at143 and+3

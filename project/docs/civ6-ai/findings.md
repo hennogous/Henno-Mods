@@ -1,5 +1,20 @@
 # CSC findings and evidence
 
+## AI-C213 — Astra prioritizes fresh customer-comparison coverage under the same budget
+
+17 November2026,2.1. Independent source/evidence review recommends reference+
+one challenger per city/type before extra alternatives, singleton skips and fair
+plot rotation under the existing16-world limit. Retain/revalidate candidate
+identities as scheduling hints, not old signed scores or reservations. Current
+work counters visit2,787/3,645 repeated group windows; this is not a decision-miss
+rate and packet expiry does not imply native cache erasure. First qualify a
+short matched owned/legal case through fresh valuation, native choice/foundation,
+better-ordinary-site control and invalidation, retaining SQL+1 and current costs.
+Then bridge both foundation orders, audit ordinary calibration where bids lose,
+and add customer acquisition if frontier opportunities warrant it. Services stay
+deferred. No policy/game/native change; proposed next slice.
+[Astra recommendation and gates](../research/mods/csc-ai-customer-coordination-review-20261117.md).
+
 ## AI-C212 — Customer connections are modest; capture inflated earlier totals
 
 17 November2026,2.1. Latest Continents250 physical sites:3/16 Hubs adjacent to
