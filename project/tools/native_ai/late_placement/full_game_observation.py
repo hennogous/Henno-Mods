@@ -233,10 +233,21 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,obser
             # handoff; it must not publish a second AI policy or issue orders.
             observe_boundary(boundary)
         if saves is not None and boundary in(50,100,150,200):
-            from full_game_controller.checkpoint import save_inactive_boundary
-            checkpoint=save_inactive_boundary(controller,turn=boundary,name='CSC_AI_HARMONISED_'+str(boundary),
-                native_directory=saves,archive=out/('turn-'+str(boundary)+'.Civ6Save'))
-            write_json(out/('checkpoint-'+str(boundary)+'.json'),checkpoint)
+            from full_game_controller.checkpoint import save_inactive_boundary,SavePermissionUnavailable
+            # These mid-run artifacts support later replays; the live censuses
+            # and native journals measure the campaign. Civ's shipped SP save
+            # gate may decline an inactive observer seat even though finite
+            # autoplay can continue. Match vanilla_district_run: record only
+            # this pre-request refusal and continue with no role/turn change.
+            # A sent request, completion timeout or ambiguous acknowledgement
+            # stays strict. The required endpoint save is handled separately.
+            try:
+                checkpoint=save_inactive_boundary(controller,turn=boundary,name='CSC_AI_HARMONISED_'+str(boundary),
+                    native_directory=saves,archive=out/('turn-'+str(boundary)+'.Civ6Save'))
+            except SavePermissionUnavailable as error:
+                write_json(out/('checkpoint-unavailable-'+str(boundary)+'.json'),
+                    dict(turn=boundary,save_requests=0,optional_artifact=True,reason=str(error)))
+            else:write_json(out/('checkpoint-'+str(boundary)+'.json'),checkpoint)
         cursor=boundary
     # The final packet has no successor to collect its native timing counter.
     # Share the existing journal read; this optional getter never clears state.

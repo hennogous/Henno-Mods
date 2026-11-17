@@ -2,12 +2,42 @@
 from pathlib import Path
 import tempfile
 import unittest
+import json
+from unittest.mock import patch
 from lupa.lua51 import LuaRuntime
 from full_game_observation import archive_censuses,play,finish,observe_inactive_storekeeper,observe_purchase_contexts,HERE
 from driver import lua
 
 
 class FullGameObservation(unittest.TestCase):
+    def test_only_pre_request_permission_refusal_skips_optional_checkpoint(self):
+        from full_game_controller.checkpoint import SavePermissionUnavailable
+        class Controller:
+            def __init__(self):self.boundaries=[]
+            def play(self,turn):self.boundaries.append(turn)
+            def cmd(self,*args):return 'CSC_QUARTER_WATCH_DRAINED'
+        for error,continues in((SavePermissionUnavailable('local turn inactive; no request'),True),
+                                (TimeoutError('file unsettled after request'),False)):
+            with self.subTest(error=type(error).__name__),tempfile.TemporaryDirectory()as directory:
+                root=Path(directory);(root/'Logs').mkdir()
+                (root/'Logs/Lua.log').write_text('CSC_STOREKEEPER_END\t100\t0\n')
+                c=Controller();observed=[]
+                with patch('full_game_controller.checkpoint.save_inactive_boundary',side_effect=error)as save:
+                    if continues:play(c,root,root,start=95,endpoint=105,saves=root,observe_boundary=observed.append)
+                    else:
+                        with self.assertRaisesRegex(TimeoutError,'after request'):
+                            play(c,root,root,start=95,endpoint=105,saves=root,observe_boundary=observed.append)
+                self.assertEqual(save.call_count,1)
+                self.assertEqual(c.boundaries,[100,105]if continues else[100])
+                self.assertEqual(observed,[100,105]if continues else[100])
+                receipt=root/'checkpoint-unavailable-100.json'
+                if continues:
+                    value=json.loads(receipt.read_text())
+                    self.assertEqual(value['save_requests'],0);self.assertTrue(value['optional_artifact'])
+                else:self.assertFalse(receipt.exists())
+                self.assertFalse((root/'checkpoint-100.json').exists())
+                self.assertFalse((root/'turn-100.Civ6Save').exists())
+
     def test_inactive_read_defers_lagging_clock_and_never_relabels_it(self):
         class Controller:
             def __init__(self,replies):self.replies=iter(replies);self.codes=[]
