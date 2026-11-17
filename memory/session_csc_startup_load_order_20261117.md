@@ -41,3 +41,28 @@ unconfirmed; disabling EPC on a subsequent launch is the direct isolation test.
 Repeated LOC_CLICKOUT_26_CAROUSEL_TOOLTIP duplicates come from Firaxis
 CurrentClickouts XML, separately from gameplay validation. No files or game state
 were changed during this log inspection.
+
+## Correction: CSC participates in EPC's rendering path
+
+Henno pointed out the EPC adapter and clarified that the Government screen no
+longer opens, beginning after the latest restructuring. The initial attribution
+to EPC alone was premature. The working CSC_PolicyCardEstimates ReplaceUIScript
+replaced BRS's RMA context, tried to include its original paired (not imported)
+Lua, and silently returned if initialization was absent. Modding.log confirms
+that replacement action ran, not that the original API was restored. The saved
+pre-restructure working JSON has the same EPC action, so the precise trigger
+has not been reproduced; don't claim the action changed in consolidation.
+
+Reworked the adapter into a separate BRS-gated paired XML/Lua context. Original
+BRS initializes normally, then CSC decorates its exposed table. A one-time load
+event handles late publication; unavailable APIs leave BRS untouched. A small
+policy-only fold uses public decoder results for affected cards; other objects
+pass through. Optional forecast errors fall back/log once and cannot abort card
+creation. No Workshop source or active game was modified.
+
+80 numerical fixtures and separate-context lifecycle tests pass, including
+immediate/late/absent APIs, table identity, no duplicate installation, original
+refresh preservation and fault recovery. The installed EPC card renderer also
+passes with mock controls for both normal and injected-failure paths. See the
+new project/docs/integrations/csc-policy-card-estimates.md. Rebuild/reload and
+Government-screen review are still needed in Henno's session.

@@ -344,3 +344,42 @@ Firaxis `TunerMapPanel.lua:136` startup error.
   materials/stage2 and stage3 independently.
 
 No Workshop publication or Git commit was made by this implementation.
+
+### Extended Policy Cards / Better Report Screen estimates - 16 November 2026
+
+Extended Policy Cards calls `ExposedMembers.RMA.CalculateModifierEffect` from
+Better Report Screen. Its displayed figure is the additional income a policy
+grants, not the district total after doubling. The optional
+`CSC_PolicyCardEstimates.lua` adapter now runs in a separate paired XML/Lua
+context. BRS keeps its original `RealModifierAnalysis` initialization; CSC attaches
+through the exposed API after it is ready. Workshop files remain untouched. The
+optional context is conditional on Better Report Screen's ModId, so it also
+benefits that mod's policy report without requiring Extended Policy Cards.
+The former replace-and-include approach was removed after the Government-screen
+regression report. See [loading, fallback and regression details](csc-policy-card-estimates.md).
+
+The adapter recognizes exact registered CSC policy-return attachment IDs. It
+forecasts each rule once from completed, unpillaged receiving districts using
+the shared ownership/rings/count/amount evaluator. Only the active-card gate is
+bypassed, so unslotted cards and slotted cards report the same intrinsic policy
+benefit. It terminates the property's attach chain and returns the full rule
+amount on its first wrapper, zero on the other encoding wrappers. This prevents
+live property state and ten literal bit weights from corrupting forecasts.
+Numeric yield tables, compact summaries and detailed tooltips all receive the
+CSC return. Forecast state lasts for a single synchronous RMA request.
+
+Installed RMA 7.0's `YieldTableGetInfo` uses `ipairs` over engine yield IDs and
+can omit Food at ID zero. A numeric probe detects that behavior; the adapter
+includes Food in affected policy summaries and CSC detail text without
+duplicating it if the installed formatter is already corrected.
+
+`test_policy_card_estimates.py` executes the adapter with the installed RMA's
+actual aggregation and formatting functions under Lua 5.1. Eighty fixtures cover
+all 20 base/unique policy rules at 0/1/2/6 adjacent sites, unslotted/slotted cards,
+pillage/construction, city filtering, foreign ownership and refreshes. Additional
+mixed Economic Union checks retain native Gold while adding Bakers Food and
+Tailors Culture, and check missing-player and unrelated-modifier passthrough.
+All pass offline. Separate-context lifecycle tests now cover immediate, delayed
+and missing APIs, duplicate events and failure recovery; EPC's actual card
+renderer also runs with stand-in controls. ModBuddy action round-trip and 11
+packaging tests pass. Native EPC/BRS screen review after rebuild remains pending.

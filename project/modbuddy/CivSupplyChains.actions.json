@@ -347,6 +347,18 @@
             "text": "960c7ce4-c961-43c8-90bf-282eb7b260ea"
           }
         ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "BetterReportScreenMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "6f2888d4-79dc-415f-a8ff-f9d81d7afb53"
+          }
+        ]
       }
     ],
     "frontEndActions": [
@@ -1258,6 +1270,20 @@
         "files": [
           "Text/CSC_ADJACENCY_TEXT.sql",
           "Text/CSC_ADJACENCY_SOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_PolicyCardEstimates",
+        "properties": {
+          "LoadOrder": "12347",
+          "Context": "InGame"
+        },
+        "criteria": [
+          "BetterReportScreenMod"
+        ],
+        "files": [
+          "Lua_UI/Adjacencies/CSC_PolicyCardEstimates.xml"
         ]
       },
       {
