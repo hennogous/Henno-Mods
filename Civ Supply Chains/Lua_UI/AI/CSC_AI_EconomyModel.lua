@@ -508,6 +508,85 @@ end
 -- counterfactual events. A conditional event may name an investmentKey: an
 -- omitted/unavailable producer cannot activate it, and its completion time is
 -- shared with every other chain. This entry issues no routes, orders or bids.
+local function cachedRoutes(R,trade,player,horizon,changes)
+    local memo,observation=trade.memo,trade.observed
+    if not memo then
+        local routes,error=R.Forecast({cities=observation.cities,routes=observation.routes,changes=changes},trade.definitions,player,horizon)
+        if not routes then return nil,error end
+        local baseline,problem=R.PaidAmenities(observation.cities,trade.definitions,player)
+        if not baseline then return nil,problem end
+        local groups,coverage=R.Coverage(observation,trade.definitions,player,horizon)
+        if not groups then return nil,coverage end
+        return routes,baseline,coverage
+    end
+    if memo.observation then
+        if memo.observation~=observation or memo.definitions~=trade.definitions or memo.player~=player or memo.horizon~=horizon then
+            return nil,'Route memo observation scope differs'
+        end
+    else
+        local baseline,problem=R.PaidAmenities(observation.cities,trade.definitions,player)
+        if not baseline then return nil,problem end
+        local groups,coverage=R.Coverage(observation,trade.definitions,player,horizon)
+        if not groups then return nil,coverage end
+        local activity=0
+        for _,route in ipairs(observation.routes)do
+            activity=math.max(activity,math.min(horizon,route.observedThrough or 1,route.removedAt or horizon))
+        end
+        memo.observation,memo.definitions,memo.player,memo.horizon=observation,trade.definitions,player,horizon
+        memo.baseline,memo.coverage,memo.activity=baseline,coverage,activity
+    end
+    -- Validate/conflict-check BEFORE cache lookup or no-op removal. A malformed
+    -- later event cannot hide behind an earlier successful forecast. Canonical
+    -- order applies changes to projected state, preserving a later restoration.
+    local events,seen={},{}
+    local function text(value)local s=type(value)..':'..tostring(value);return #s..':'..s end
+    for _,change in ipairs(changes)do
+        if not present(change.ready)or not observation.cities[change.city]
+            or(change.field~='quarters'and change.field~='buildings'and change.field~='properties')or change.key==nil then
+            return nil,'Invalid route counterfactual event'
+        end
+        if change.ready<horizon then
+            local identity=text(change.city)..text(change.field)..text(change.key)
+            local key=text(change.ready)..identity
+            if seen[key]and seen[key].value~=change.value then return nil,'Conflicting route counterfactual events'end
+            if not seen[key]then
+                local event={ready=change.ready,city=change.city,field=change.field,key=change.key,
+                    value=change.value,identity=identity}
+                seen[key]=event;events[#events+1]=event
+            end
+        end
+    end
+    table.sort(events,function(a,b)return a.ready<b.ready or a.ready==b.ready and a.identity<b.identity end)
+    local states,normalized,parts={},{},{text(memo.activity)}
+    for _,event in ipairs(events)do if event.ready<memo.activity then
+        local state=states[event.identity]
+        if not state then
+            state={value=(observation.cities[event.city][event.field]or{})[event.key]};states[event.identity]=state
+        end
+        if state.value~=event.value then
+            normalized[#normalized+1]=event
+            parts[#parts+1]=text(event.ready)..event.identity..text(event.value)
+            state.value=event.value
+        end
+    end end
+    local key=table.concat(parts,'|');local routes=memo.entries[key]
+    if routes then memo.hits=memo.hits+1
+    else
+        memo.misses=memo.misses+1
+        if memo.activity==0 then routes={}
+        else
+            local error
+            routes,error=R.Forecast({cities=observation.cities,routes=observation.routes,changes=normalized},
+                trade.definitions,player,memo.activity)
+            if not routes then return nil,error end
+        end
+        -- Publication-local bound; extra distinct timelines still calculate
+        -- correctly, merely without retained reuse. No result survives a turn.
+        if memo.count<128 then memo.entries[key]=routes;memo.count=memo.count+1 else memo.overflow=memo.overflow+1 end
+    end
+    return routes,memo.baseline,memo.coverage
+end
+
 function M.RouteLedger(result,trade,player,horizon)
     local R=CSC_TradeRouteCore
     if not R then return nil,'Shared route kernel unavailable'end
@@ -529,14 +608,14 @@ function M.RouteLedger(result,trade,player,horizon)
             changes[#changes+1]={ready=ready,city=change.city,field=change.field,key=change.key,value=change.value}
         end
     end
-    local routes,error=R.Forecast({cities=observation.cities,routes=observation.routes,changes=changes},
-        trade.definitions,player,horizon)
-    if not routes then return nil,error end
-    for _,stream in ipairs(routes)do result.streams[#result.streams+1]=stream end
-    local baseline,problem=R.PaidAmenities(observation.cities,trade.definitions,player)
-    if not baseline then return nil,problem end
-    local groups,coverage=R.Coverage(observation,trade.definitions,player,horizon)
-    if not groups then return nil,coverage end
+    local routes,baseline,coverage=cachedRoutes(R,trade,player,horizon,changes)
+    if not routes then return nil,baseline end
+    -- Pricing annotates streams. Borrow no cached output table into a trial;
+    -- amenity pooling still runs against this trial's ordinary building flows.
+    for _,stream in ipairs(routes)do
+        local copy={};for k,v in pairs(stream)do copy[k]=v end
+        result.streams[#result.streams+1]=copy
+    end
     result.routeSegments=#routes
     return M.PoolAmenities(result,baseline,horizon,coverage)
 end
@@ -638,7 +717,10 @@ function M.JointForecast(world,price)
     end
     if #sites==0 and not world.trade then return nil,'No affected Quarter chains'end
     if #sites>(world.maxChains or 64)then return nil,'Affected chain budget exceeded'end
-    table.sort(sites,function(a,b)return a.key<b.key end)
+    table.sort(sites,function(a,b)
+        if (a.key==world.firstChainKey)~=(b.key==world.firstChainKey)then return a.key==world.firstChainKey end
+        return a.key<b.key
+    end)
     -- Repeated references describe one physical investment. Refuse conflicting
     -- state/cost/readiness copies rather than let chain traversal decide which
     -- Market is real. Relationship eligibility belongs on its own flow, not in
@@ -703,13 +785,48 @@ function M.JointForecast(world,price)
         end end
         return result
     end
+    local baseline=world.baselinePlan
+    local affected={}
+    if baseline then
+        for key,value in pairs(world.affectedChains or{})do affected[key]=value end
+        -- A shared physical customer must remain one decision. Expand only
+        -- this investment connection; distant queue/route peers keep their
+        -- choices but their readiness and effects are recomputed below.
+        local customerPeers={}
+        for _,site in ipairs(sites)do for _,v in ipairs(site.customers or{})do
+            if v.type and not v.working and not v.intactOwner then
+                local key=site.player..':'..v.city..':'..v.type
+                customerPeers[key]=customerPeers[key]or{};customerPeers[key][#customerPeers[key]+1]=site.key
+            end
+        end end
+        local changed=true
+        while changed do
+            changed=false
+            for _,peers in pairs(customerPeers)do
+                local touches=false;for _,key in ipairs(peers)do touches=touches or affected[key]end
+                if touches then for _,key in ipairs(peers)do if not affected[key]then affected[key]=true;changed=true end end end
+            end
+        end
+    end
     local alternatives,nodes,nodeKeys={},{},{}
     for i,site in ipairs(sites)do
         alternatives[i]=options(site)
+        local frozen=baseline and baseline.chains[site.key]and not affected[site.key]
+        if frozen then
+            local selected
+            local fixed=baseline.chains[site.key]
+            for _,option in ipairs(alternatives[i])do
+                if (option.second and option.second.type)==fixed.second
+                    and(option.site.third and option.site.third.type)==fixed.third
+                    and(option.site.fourth and option.site.fourth.type)==fixed.fourth then selected=option;break end
+            end
+            if not selected then return nil,'Baseline investment identity unavailable'end
+            alternatives[i]={selected}
+        end
         for _,customer in ipairs(site.customers or{})do
             if customer.type and not customer.working and not customer.intactOwner then
                 local key=tostring(site.player or 0)..':'..customer.city..':'..customer.type
-                if not nodeKeys[key]then nodes[#nodes+1]=key;nodeKeys[key]=true end
+                if not frozen and not nodeKeys[key]then nodes[#nodes+1]=key;nodeKeys[key]=true end
             end
         end
     end
@@ -750,22 +867,35 @@ function M.JointForecast(world,price)
         if not result then return nil,problem end
         local value,error=M.Price(result,price,horizon)
         if not value then return nil,error end
-        result.valueQ8=value;result.servicesExcluded=true;result.diagnosticOnly=true
+        result.valueQ8=value;result.servicesExcluded=true;result.modelOnly=true
+        result.disabledBuildings={};for key,disabled in pairs(disabled)do if disabled then result.disabledBuildings[key]=true end end
+        -- The placement adapter may rank producer alternatives by its final
+        -- calibrated bid while retaining physical income/valueQ8 unchanged.
+        -- This mirrors the single-site Forecast objective; other consumers
+        -- continue to optimise raw economics with no policy callback.
+        result.selectionQ8=world.objective and world.objective(result)or value
         return result
     end
     local best
-    for seed=1,2 do
+    local function better(a,b)
+        return a.selectionQ8>b.selectionQ8 or a.selectionQ8==b.selectionQ8 and a.valueQ8>b.valueQ8
+    end
+    local variable=#nodes>0
+    for _,choices in ipairs(alternatives)do variable=variable or #choices>1 end
+    for seed=1,variable and 2 or 1 do
         local selected,disabled={},{}
+        if baseline then for key,value in pairs(baseline.disabledBuildings)do disabled[key]=value end end
+        for _,key in ipairs(nodes)do disabled[key]=nil end
         for i,choices in ipairs(alternatives)do selected[i]=choices[seed==1 and 1 or #choices]end
         local current,message=evaluate(selected,disabled);if not current then return nil,message end
-        for sweep=1,2 do
+        for sweep=1,variable and 2 or 0 do
             for i,site in ipairs(sites)do
                 local chosen=selected[i]
-                for _,candidate in ipairs(alternatives[i])do
+                if #alternatives[i]>1 then for _,candidate in ipairs(alternatives[i])do
                     selected[i]=candidate
                     local result,error=evaluate(selected,disabled);if not result then return nil,error end
-                    if result.valueQ8>current.valueQ8 then current,chosen=result,candidate end
-                end
+                    if better(result,current)then current,chosen=result,candidate end
+                end end
                 selected[i]=chosen
             end
             -- Choose unique physical customer investments globally. A venue
@@ -775,14 +905,16 @@ function M.JointForecast(world,price)
             for _,key in ipairs(nodes)do
                 local previous=disabled[key];disabled[key]=not previous or nil
                 local result,error=evaluate(selected,disabled);if not result then return nil,error end
-                if result.valueQ8>current.valueQ8 or result.valueQ8==current.valueQ8 and disabled[key]then
+                if better(result,current)or result.selectionQ8==current.selectionQ8 and result.valueQ8==current.valueQ8 and disabled[key]then
                     current=result
                 else disabled[key]=previous end
             end
         end
-        if not best or current.valueQ8>best.valueQ8 then best=current end
+        if not best or better(current,best)then best=current end
     end
     best.evaluations=evaluations;best.affectedChains=#sites
+    -- Plain winning identities, never cached readiness or mutable search state.
+    best.plan={chains=best.chainStages,disabledBuildings=best.disabledBuildings}
     return best
 end
 
@@ -801,9 +933,11 @@ function M.JointCustomerForecast(beforeWorld,afterWorld,price)
             or beforeWorld.player~=afterWorld.player then return nil,'Marginal trade observations differ'end
     end
     local before,message=M.JointForecast(beforeWorld,price);if not before then return nil,message end
-    local after,error=M.JointForecast(afterWorld,price);if not after then return nil,error end
+    local localWorld={};for k,v in pairs(afterWorld)do localWorld[k]=v end
+    if afterWorld.affectedChains then localWorld.baselinePlan=before.plan end
+    local after,error=M.JointForecast(localWorld,price);if not after then return nil,error end
     return {before=before,after=after,valueQ8=after.valueQ8-before.valueQ8,
-        bidValueQ8=after.bidValueQ8-before.bidValueQ8,servicesExcluded=true,diagnosticOnly=true}
+        bidValueQ8=after.bidValueQ8-before.bidValueQ8,servicesExcluded=true,modelOnly=true}
 end
 
 function M.Marginal(site,building,price)

@@ -12,6 +12,23 @@ AI = Path(__file__).resolve().parents[3] / 'Civ Supply Chains/Lua_UI/AI'
 
 
 class CustomerFirstPlanning(unittest.TestCase):
+    def test_existing_quarter_reference_keeps_unlinked_competitor_for_negative_residual(self):
+        vm=self.facts()
+        vm.execute('''
+plots[3].district=36
+CSC_Adjacency.PlotsInBand=function()return plots end
+local s=CSC_AI_EconomyFacts.New(player,placement,ui)
+s.chains={{city=city,plot=plots[3],profile={key='TEST'}}}
+local groups=s.CustomerCandidateSets({})
+assert(#groups==1 and groups[1].reference.plot==2)
+local linked,unlinked=false,false
+for _,r in ipairs(groups[1].candidates)do
+ if r.plot==2 then linked=r.links>0 elseif r.plot==4 then unlinked=r.links==0 end
+end
+assert(linked and unlinked)
+assert(#s.CustomerCandidateSets({[2]=true})==0) -- fresh exclusions also filter cached maps
+''')
+
     def facts(self):
         vm = boundaries.Boundaries().facts_vm()
         vm.execute('''

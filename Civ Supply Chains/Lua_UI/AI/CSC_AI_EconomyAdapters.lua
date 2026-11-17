@@ -173,6 +173,51 @@ function E.Snapshot(player,placement,ui)
         if bid==nil then return nil end
         return raw,bid
     end
+    local worldQuotes={}
+    local worldStats={worlds=0,evaluations=0,budgetFailures=0,unknown=0,cacheHits=0}
+    snapshot.WorldStats=function()
+        local routes=snapshot.TradeCacheStats and snapshot.TradeCacheStats()or{}
+        worldStats.routeHits=routes.hits or 0;worldStats.routeMisses=routes.misses or 0
+        worldStats.routeEntries=routes.entries or 0;worldStats.routeOverflow=routes.overflow or 0
+        return worldStats
+    end
+    snapshot.WorldQuote=function(world)
+        -- Fact worlds and this Price function are immutable for one publication.
+        -- Share the ordinary baseline and repeated references across adapters;
+        -- no stale native weights, route counters or construction times survive.
+        if worldQuotes[world]then worldStats.cacheHits=worldStats.cacheHits+1;return worldQuotes[world]end
+        worldStats.worlds=worldStats.worlds+1
+        local planWorld=world
+        if world.baselineWorld then
+            local baseline,problem=snapshot.WorldQuote(world.baselineWorld)
+            if not baseline then return nil,problem end
+            -- Freeze only unrelated discrete choices around the common plan.
+            -- Every trial still schedules/prices every chain, so shared queues,
+            -- rounded returns and route losses respond to the candidate.
+            planWorld={};for k,v in pairs(world)do planWorld[k]=v end
+            planWorld.baselinePlan=baseline.plan
+        end
+        local value,problem=M.JointForecast(planWorld,snapshot.Price)
+        if value then
+            worldQuotes[world]=value;worldStats.evaluations=worldStats.evaluations+(value.evaluations or 0)
+        elseif type(problem)=='string'and problem:find('budget',1,true)then
+            worldStats.budgetFailures=worldStats.budgetFailures+1
+        else worldStats.unknown=worldStats.unknown+1 end
+        return value,problem
+    end
+    local customerNative={}
+    snapshot.CustomerNetValue=function(cityID,district,plotIndex,ready)
+        local key=cityID..':'..district..':'..plotIndex..':'..ready
+        if customerNative[key]~=nil then return customerNative[key]or nil end
+        local plot=Map.GetPlotByIndex(plotIndex)
+        local value
+        if context and plot then
+            local ok,raw=pcall(CE_AIDistrictSiteAdjustment,snapshot.id,cityID,district,
+                plot:GetX(),plot:GetY(),ready,context.horizon,discount)
+            value=ok and type(raw)=='string'and tonumber(raw:match('"netQ8":(-?%d+)'))or nil
+        end
+        customerNative[key]=value or false;return value
+    end
     if context and type(snapshot.Site)=='function'then
         local readSite=snapshot.Site
         snapshot.Site=function(...)
@@ -319,7 +364,10 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     -- heuristics were ownership-dependent and duplicated its own valuation.
     -- Missing customer space loses its current layout preference/income; it
     -- does not acquire a hidden128-utility penalty when land becomes owned.
-    local penalty=math.max(0,protectionQ8 or 0)
+    -- Joint worlds already remove the displaced supplier's transactions,
+    -- adjacency and route contribution. Keep the explicit material-covering
+    -- policy floor, but do not debit that same economic SupplyValue again.
+    local penalty=site.jointEconomy and 0 or math.max(0,protectionQ8 or 0)
     if coversOwnMaterial then penalty=math.max(penalty,256*256)end
     local economic=quote.valueQ8-penalty
     if economic<=0 then return economic,'economics'end
@@ -458,6 +506,51 @@ function E.ReportWithdrawals(snapshot,entries,evaluations,scopes,previous)
     if omitted>0 then print('CSC_AI_QUARTER_WITHDRAWALS_OMITTED',Game.GetCurrentGameTurn(),snapshot.id,omitted)end
 end
 
+function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
+    if not snapshot.QuarterWorld or not snapshot.WorldQuote then
+        return M.Forecast(site,snapshot.Price,function(q)return E.PlacementValue(q,site,protectionQ8,covers)end)
+    end
+    local before,after=snapshot.QuarterWorld(city,plot,profile,site)
+    if not before then return nil,after end
+    local baseline,problem=snapshot.WorldQuote(before)
+    if not baseline then return nil,problem end
+    site.jointEconomy=true
+    local function marginal(result)
+        local stages=result.chainStages[site.key]
+        local terrain=0
+        for _,second in ipairs(site.seconds or{})do if stages and second.type==stages.second then terrain=second.terrain or 0 end end
+        local streams,premium={},0
+        local prefix=site.key..'/'
+        for _,flow in ipairs(result.streams)do if flow.id:sub(1,#prefix)==prefix then
+            local copy={};for k,v in pairs(flow)do copy[k]=v end
+            copy.id=flow.id:sub(#prefix+1);streams[#streams+1]=copy
+            premium=premium+(flow.bidValueQ8 or flow.valueQ8)-flow.valueQ8
+        end end
+        -- Only the new Quarter receives its stock-style building-depth premium.
+        -- Reweighting unrelated existing plans cannot become free new-Quarter
+        -- value. Shared/pooled effects still enter once at their raw marginal.
+        local raw=result.valueQ8-baseline.valueQ8
+        return{valueQ8=raw,bidValueQ8=raw+premium,
+            adjacency=(site.adjacency or 0)+terrain,streams=streams,omissions=result.omissions,
+            siteAdjustmentQ8=result.siteAdjustmentQ8-baseline.siteAdjustmentQ8,
+            forecastAdjustmentQ8=premium,jointEconomy=true,
+            affectedChains=result.affectedChains,jointEvaluations=result.evaluations,servicesExcluded=true,
+            second=stages and stages.second}
+    end
+    after.objective=function(result)return E.PlacementValue(marginal(result),site,protectionQ8,covers)end
+    local result,error=snapshot.WorldQuote(after)
+    if not result then return nil,error end
+    local quote=marginal(result)
+    -- The whole new Quarter owns its marginal bid. Existing-chain income,
+    -- shared buildings/rounding and current route income cancel against the
+    -- common baseline; the footprint's losses and import-blocking flag remain.
+    -- Native site costs enter once through the new site's existing accounting.
+    print(string.format('CSC_AI_QUARTER_WORLD turn=%d player=%d city=%d district=%d plot=%d chains=%d evaluations=%d beforeQ8=%d afterQ8=%d marginalQ8=%d bidQ8=%d',
+        Game.GetCurrentGameTurn(),snapshot.id,city:GetID(),profile.district.Index,plot:GetIndex(),
+        result.affectedChains,result.evaluations,baseline.valueQ8,result.valueQ8,quote.valueQ8,quote.bidValueQ8))
+    return quote
+end
+
 function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,protectionQ8,ignoredLegacy,covers,protected)
     local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
     local state=snapshot.planState
@@ -481,11 +574,10 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         -- repair marginals retain their existing narrow Stage2 Service input.
         local transactionSite={};for k,v in pairs(site)do transactionSite[k]=v end
         transactionSite.service=nil
-        local ok,value,message=pcall(M.Forecast,transactionSite,snapshot.Price,function(alternative)
-            return E.PlacementValue(alternative,site,protectionQ8,covers)
-        end)
+        local ok,value,message=pcall(E.QuarterForecast,snapshot,city,plot,profile,transactionSite,protectionQ8,covers)
         if ok then quote,reason=value,message else reason=tostring(value)end
         if quote then
+            site.jointEconomy=quote.jointEconomy==true
             bid,details.reason,parts=E.PlacementValue(quote,site,protectionQ8,covers)
             details.economicQ8=quote.valueQ8;details.afterProtectionQ8=quote.valueQ8-(parts and parts.penaltyQ8 or math.max(protectionQ8 or 0,covers and 256*256 or 0))
             details.forecastAdjustmentQ8=quote.forecastAdjustmentQ8 or 0
@@ -621,6 +713,107 @@ function E.CustomerFirstPlan(options,quarterClaims,customerClaims)
     -- calibrated income. All legitimate contributions stay in diagnostics;
     -- several future links cannot grow an unbounded production incentive.
     return{preference=math.min(32,best.value),rawPreference=best.value,links=links}
+end
+
+local CUSTOMER_FORECAST_BUDGET=16
+local CUSTOMER_ALTERNATIVES=3
+local CUSTOMER_RESIDUAL_LIMIT_Q8=256*256
+function E.CustomerEconomicOffers(snapshot,protectedPlots)
+    -- Native building forecasts are common to a city/type. Compare two full
+    -- CSC worlds for that SAME investment, retaining signed site differences
+    -- instead of adding its entire economic marginal a second time. Ordinary
+    -- adjacency picks a stable reference without consulting our modified cache.
+    -- The early native hook consumes these Q8 residuals on fresh evaluation;
+    -- stock district preference and production competition still follow.
+    local stats={groups=0,forecasts=0,unknown=0,clamped=0,offers=0}
+    if not snapshot.CustomerCandidateSets or not snapshot.WorldQuote or not snapshot.CustomerNetValue then return {},stats end
+    local groups=snapshot.CustomerCandidateSets(protectedPlots);local offers={}
+    local count=#groups
+    if count==0 then return offers,stats end
+    -- Reference plus at most three alternatives, max16 world forecasts/player.
+    -- Rotate the starting group so a large empire cannot starve later cities.
+    -- Bids expire with the atomic packet; every retained bid is freshly priced.
+    local offset=(Game.GetCurrentGameTurn()+snapshot.id)%count
+    local function quote(group,plot)
+        stats.forecasts=stats.forecasts+1
+        local before,after=snapshot.CustomerWorld(group.city,group.district,plot)
+        if not before then return nil,after end
+        local value,problem=snapshot.WorldQuote(after)
+        if value then return value,after.customer end
+        return nil,problem
+    end
+    for step=1,count do
+        if stats.forecasts+1>=CUSTOMER_FORECAST_BUDGET then break end
+        local group=groups[(offset+step-1)%count+1];stats.groups=stats.groups+1
+        local reference=quote(group,group.reference.plot)
+        if not reference then stats.unknown=stats.unknown+1
+        else
+            local attempted=0
+            for _,candidate in ipairs(group.candidates)do
+                if candidate.plot~=group.reference.plot and attempted<CUSTOMER_ALTERNATIVES
+                    and stats.forecasts<CUSTOMER_FORECAST_BUDGET then
+                    attempted=attempted+1
+                    local value,investment=quote(group,candidate.plot)
+                    if value then
+                        local raw=value.valueQ8-reference.valueQ8
+                        local delta=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw))
+                        local net=snapshot.CustomerNetValue(group.city,group.district,candidate.plot,investment.ready)
+                        if net and net>0 then
+                            -- Building aggregation only uplifts positive raw
+                            -- cells. Keep this negative residual above zero so
+                            -- it cannot accidentally erase a large common
+                            -- building subtotal. Unknown/nonpositive raw sites
+                            -- retain native treatment. This is a publication
+                            -- estimate; final eligibility remains native.
+                            delta=math.max(delta,1-net)
+                            if delta~=raw then stats.clamped=stats.clamped+1 end
+                            if delta~=0 then
+                                offers[#offers+1]={player=snapshot.id,city=group.city,district=group.district,
+                                    plot=candidate.plot,delta=delta,customer=true,customerEconomic=true,
+                                    customerEconomicQ8=delta,referencePlot=group.reference.plot}
+                                print(string.format('CSC_AI_CUSTOMER_ECONOMIC_BID turn=%d player=%d city=%d district=%d plot=%d reference=%d rawQ8=%d deltaQ8=%d netQ8=%d afterQ8=%d referenceQ8=%d adjacency=%.3f links=%d',
+                                    Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
+                                    group.reference.plot,raw,delta,net,value.valueQ8,reference.valueQ8,candidate.adjacency,candidate.links))
+                            end
+                        else stats.unknown=stats.unknown+1 end
+                    else stats.unknown=stats.unknown+1 end
+                end
+            end
+        end
+    end
+    stats.offers=#offers
+    print(string.format('CSC_AI_CUSTOMER_ECONOMIC_WORK turn=%d player=%d groups=%d totalGroups=%d forecasts=%d offers=%d unknown=%d clamped=%d quotes=%d',
+        Game.GetCurrentGameTurn(),snapshot.id,stats.groups,count,stats.forecasts,#offers,stats.unknown,stats.clamped,snapshot.QuoteCount and snapshot.QuoteCount()or 0))
+    return offers,stats
+end
+
+function E.MergeCustomerOffers(entries,offers)
+    -- CE's packet rejects duplicate keys. Combine the existing spatial signal,
+    -- structural deduction and economic residual once before native staging.
+    -- Copy rows so merging never changes the original planner/protection facts.
+    local result,byKey={},{}
+    local function key(row)return row.player..':'..row.city..':'..row.district..':'..row.plot end
+    for _,row in ipairs(entries)do
+        local copy={};for k,v in pairs(row)do copy[k]=v end
+        result[#result+1]=copy;byKey[key(copy)]=copy
+    end
+    for _,offer in ipairs(offers)do
+        local previous=byKey[key(offer)]
+        if previous then
+            if previous.finalQ8==nil then
+                previous.delta=(previous.delta or 0)+offer.delta
+                previous.customer=true
+                if offer.customerEconomic then
+                    previous.customerEconomic=true;previous.customerEconomicQ8=offer.delta;previous.referencePlot=offer.referencePlot
+                end
+            end
+        else
+            local copy={};for k,v in pairs(offer)do copy[k]=v end
+            result[#result+1]=copy;byKey[key(copy)]=copy
+        end
+    end
+    for i=#result,1,-1 do if result[i].finalQ8==nil and result[i].delta==0 then table.remove(result,i)end end
+    return result
 end
 
 function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
@@ -881,7 +1074,14 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     -- stay intact; no old additive Quarter score is mixed with whole values.
     for _,entry in ipairs(early)do if not managed[entry.district]then result[#result+1]=entry end end
     if snapshot.CustomerFirstOptions then
-        for _,offer in ipairs(E.CustomerOffers(snapshot,result,protectedPlots))do result[#result+1]=offer end
+        result=E.MergeCustomerOffers(result,E.CustomerOffers(snapshot,result,protectedPlots))
+    end
+    if snapshot.CustomerCandidateSets then result=E.MergeCustomerOffers(result,E.CustomerEconomicOffers(snapshot,protectedPlots))end
+    if snapshot.WorldStats then
+        local work=snapshot.WorldStats()
+        print(string.format('CSC_AI_JOINT_WORK turn=%d player=%d worlds=%d evaluations=%d budgetFailures=%d unknown=%d cacheHits=%d routeHits=%d routeMisses=%d routeOverflow=%d',
+            Game.GetCurrentGameTurn(),snapshot.id,work.worlds,work.evaluations,work.budgetFailures,work.unknown,work.cacheHits,
+            work.routeHits,work.routeMisses,work.routeOverflow))
     end
     E.ReportWithdrawals(snapshot,result,evaluations,scopes,previous or{})
     -- Retain bounded candidate-surface evidence in ordinary main-mod logs:

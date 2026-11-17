@@ -13,6 +13,18 @@ AI=Path(__file__).resolve().parents[3]/'Civ Supply Chains/Lua_UI/AI'
 
 
 class NativeValuation(unittest.TestCase):
+    def test_joint_value_keeps_structural_floor_without_repeating_supplier_income_loss(self):
+        self.vm().execute('''
+local s=site();local q={valueQ8=100000,bidValueQ8=100000,adjacency=3}
+local _,_,ordinary=E.PlacementValue(q,s,1024,false)
+assert(ordinary.penaltyQ8==1024)
+s.jointEconomy=true
+local _,_,joint=E.PlacementValue(q,s,1024,false)
+assert(joint.penaltyQ8==0)
+local _,_,covered=E.PlacementValue(q,s,1024,true)
+assert(covered.penaltyQ8==256*256)
+''')
+
     def test_interval_api_is_required_and_short_flows_keep_their_actual_window(self):
         self.vm().execute('''
 local raw=snapshot.Price({city=10,yield='YIELD_PRODUCTION',amount=1,ready=0,finish=1},100)

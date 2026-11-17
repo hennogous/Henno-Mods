@@ -49,7 +49,7 @@ end
 assert(food==M.PopulationPayout(2*.099*9,9))
 assert(food<2*M.PopulationPayout(.099*9,9))
 assert(upkeep==-3)
-assert(r.servicesExcluded and r.diagnosticOnly)
+assert(r.servicesExcluded and r.modelOnly)
 ''')
 
     def test_input_order_cannot_change_joint_schedule_or_value(self):
@@ -117,10 +117,45 @@ assert(events==2 and total==M.PopulationPayout(2*.099*9,9))
     def test_work_budget_and_incomplete_world_return_unavailable(self):
         self.vm().execute('''
 local a=chain('A',1)
+ a.customers={venue(100,3)} -- A real optional decision must exceed the one-evaluation budget.
 local w=world({a});w.maxEvaluations=1
 local r,why=M.JointForecast(w,price);assert(r==nil and why=='Joint evaluation budget exceeded')
 r,why=M.JointForecast(world({a,a}),price);assert(r==nil and why=='Missing or duplicate chain identity')
 r,why=M.JointForecast(world({a}),function()return nil end);assert(r==nil and why)
+''')
+
+    def test_frozen_identity_world_reproduces_baseline_in_one_evaluation(self):
+        self.vm().execute('''
+local a,b=chain('A',1),chain('B',2)
+a.third={type='BAKERY',unlock=0,turns=3}
+local base=assert(M.JointForecast(world({a,b}),price))
+local w=world({a,b});w.baselinePlan=base.plan;w.affectedChains={}
+local frozen=assert(M.JointForecast(w,price))
+assert(frozen.evaluations==1 and frozen.valueQ8==base.valueQ8)
+assert(frozen.byBuilding['1:1:BAKERY']==base.byBuilding['1:1:BAKERY'])
+w.queueReady={['1:1']=7}
+local delayed=assert(M.JointForecast(w,price))
+assert(delayed.evaluations==1 and delayed.byBuilding['1:1:BAKERY']==10)
+assert(delayed.valueQ8<base.valueQ8)
+''')
+
+    def test_new_customer_unfreezes_affected_producers_and_shared_customer_peers(self):
+        self.vm().execute('''
+local a,b=chain('A',1),chain('B',2)
+for _,s in ipairs({a,b})do s.third={type='BAKERY',unlock=0,turns=1,localTransactions={}} end
+local base=assert(M.JointForecast(world({a,b}),price))
+assert(base.plan.chains.A.third==nil and base.plan.chains.B.third==nil)
+local aa,bb=copy(a),copy(b)
+for _,s in ipairs({aa,bb})do
+ s.customers={venue(100,3)}
+ local v=s.customers[1];v.maintenance=3;v.turns=1;v.prerequisites={}
+end
+local w=world({aa,bb});w.baselinePlan=base.plan;w.affectedChains={A=true}
+local opened=assert(M.JointForecast(w,price))
+assert(opened.valueQ8>0 and #opened.investments==3)
+assert(opened.byBuilding['1:1:BAKERY']==1 and opened.byBuilding['1:2:BAKERY']==1)
+assert(opened.byBuilding['1:3:MARKET']==1)
+assert(base.plan.chains.A.third==nil and next(base.plan.disabledBuildings)==nil)
 ''')
 
     def test_jointly_profitable_producers_can_cover_one_shared_customer(self):

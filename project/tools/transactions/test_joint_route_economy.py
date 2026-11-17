@@ -8,6 +8,59 @@ from population_catalogue_fixture import MOD
 
 
 class JointRoutes(unittest.TestCase):
+    def test_route_memo_matches_uncached_restoration_and_keeps_pricing_annotations_private(self):
+        self.vm().execute('''
+local a,b=endpoint(1,1),endpoint(2,2);bakery(b);paid(a,'BAKERS_BAKERY','ORIGIN',1)
+local t=trade({['1:1']=a,['2:2']=b},{{origin='1:1',destination='2:2',observedThrough=5}})
+t.changes={{ready=0,city='1:1',field='quarters',key='DISTRICT_CSC_BAKERS_QUARTER',value=true},
+ {ready=2,city='1:1',field='quarters',key='DISTRICT_CSC_BAKERS_QUARTER',value=nil}}
+local raw=assert(M.JointForecast(world(t),price))
+t.memo={entries={},count=0,hits=0,misses=0,overflow=0}
+local first=assert(M.JointForecast(world(t),price))
+local again=assert(M.JointForecast(world(t),price))
+assert(first.valueQ8==raw.valueQ8 and again.valueQ8==raw.valueQ8 and t.memo.hits>0)
+local function signature(r)local rows={};for _,s in ipairs(r.streams)do
+ rows[#rows+1]=table.concat({s.id,s.yield,s.ready,s.finish or 10,s.amount},'/')end
+ table.sort(rows);return table.concat(rows,';')end
+assert(signature(first)==signature(raw))
+for _,streams in pairs(t.memo.entries)do for _,s in ipairs(streams)do assert(s.valueQ8==nil and s.bidValueQ8==nil)end end
+assert(a.quarters.DISTRICT_CSC_BAKERS_QUARTER==nil)
+''')
+
+    def test_route_memo_does_not_hide_conflicts_or_invalid_out_of_window_changes(self):
+        self.vm().execute('''
+local a,b=endpoint(1,1),endpoint(2,2);bakery(b)
+local t=trade({['1:1']=a,['2:2']=b},{{origin='1:1',destination='2:2',observedThrough=1}})
+t.memo={entries={},count=0,hits=0,misses=0,overflow=0}
+assert(M.JointForecast(world(t),price))
+t.changes={{ready=0,city='1:1',field='quarters',key='DISTRICT_CSC_BAKERS_QUARTER',value=nil},
+ {ready=0,city='1:1',field='quarters',key='DISTRICT_CSC_BAKERS_QUARTER',value=true}}
+local r,why=M.JointForecast(world(t),price)
+assert(r==nil and why=='Conflicting route counterfactual events')
+t.changes={{ready=9,city='1:1',field='wrong',key='x',value=1}}
+r,why=M.JointForecast(world(t),price)
+assert(r==nil and why=='Invalid route counterfactual event')
+''')
+
+    def test_route_memo_preserves_32_contributors_explicit_removal_and_future_incoming_eligibility(self):
+        self.vm().execute('''
+local a,b=endpoint(1,1),endpoint(2,2);bakery(b);paid(a,'BAKERS_BAKERY','ORIGIN',32)
+local routes={};for i=1,32 do routes[i]={origin='1:1',destination='2:2',observedThrough=10}end
+routes[32].removedAt=4
+local t=trade({['1:1']=a,['2:2']=b},routes)
+local raw=assert(M.JointForecast(world(t),price))
+t.memo={entries={},count=0,hits=0,misses=0,overflow=0}
+assert(M.JointForecast(world(t),price).valueQ8==raw.valueQ8 and raw.valueQ8==62*6*256)
+local own,foreign=endpoint(1,3),endpoint(2,4)
+local incoming=trade({['1:3']=own,['2:4']=foreign},{{origin='2:4',destination='1:3',observedThrough=5}})
+local ch=D.byId.BAKERS_BAKERY
+incoming.changes={{ready=2,city='1:3',field='properties',key=ch.supplyProperty,value=1},
+ {ready=2,city='1:3',field='buildings',key=ch.producer,value=true}}
+local expected=assert(M.JointForecast(world(incoming),price))
+incoming.memo={entries={},count=0,hits=0,misses=0,overflow=0}
+assert(M.JointForecast(world(incoming),price).valueQ8==expected.valueQ8 and expected.valueQ8>0)
+''')
+
     def vm(self):
         vm=route_tests.Routes().vm()
         vm.execute((MOD/'Lua_UI/AI/CSC_AI_EconomyModel.lua').read_text())
@@ -70,7 +123,7 @@ local function nonlinear(s,h)
  return 100*256
 end
 local r=assert(M.JointForecast(world(t),nonlinear))
-assert(r.valueQ8==100*256 and calls==2) -- Two bounded seeds; one pooled quote each.
+assert(r.valueQ8==100*256 and calls==1) -- No discrete choice: one ledger and one pooled quote.
 local combined={streams={
  {id='route',player=1,city=1,yield='AMENITY',amount=1,ready=0},
  {id='existingCafe',player=1,city=1,yield='AMENITY',amount=1,amenityBaseline=1,ready=0},

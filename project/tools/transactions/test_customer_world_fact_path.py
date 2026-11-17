@@ -4,6 +4,41 @@ from customer_world_fixture import world
 
 
 class CustomerWorld(unittest.TestCase):
+    def test_joint_quarter_adapter_scopes_cost_diagnostics_to_the_new_chain(self):
+        vm=world()
+        from customer_world_fixture import MOD
+        vm.execute((MOD/'Lua_UI/AI/CSC_AI_EconomyAdapters.lua').read_text())
+        vm.execute('''
+local s=snapshot();s.Price=price
+s.WorldQuote=function(w)return CSC_AI_EconomyModel.JointForecast(w,price)end
+local site=assert(s.Site(CITIES[3],PLOTS[3],profile));site.purchaseGold=42
+local quote=assert(CSC_AI_EconomyAdapters.QuarterForecast(s,CITIES[3],PLOTS[3],profile,site,1000,false))
+assert(quote.jointEconomy and site.jointEconomy and quote.affectedChains==3)
+local invoice=0
+for _,flow in ipairs(quote.streams)do
+ assert(not flow.id:find(s.chains[1].economy.key,1,true))
+ if flow.id=='footprint-purchase'then invoice=invoice+1 end
+end
+assert(invoice==1)
+''')
+
+    def test_new_quarter_uses_common_world_and_enters_observed_route_forecast(self):
+        world().execute('''
+local s=snapshot();local site=assert(s.Site(CITIES[3],PLOTS[3],profile))
+local before,after=assert(s.QuarterWorld(CITIES[3],PLOTS[3],profile,site))
+assert(before==s.CurrentWorld() and #before.sites==2 and #after.sites==3)
+assert(after.sites[3]~=site and after.sites[3].key==site.key and after.sites[3].service==nil)
+assert(before.trade.observed==after.trade.observed and before.trade.definitions==after.trade.definitions)
+local M=CSC_AI_EconomyModel
+local result=assert(M.JointCustomerForecast(before,after,price))
+assert(result.after.chainStages[site.key] and result.after.quarterReadyByChain[site.key]>=site.quarterReady)
+local hasFoundation=false
+for _,event in ipairs(after.trade.plannedChanges)do
+ if event.quarterStartKey==site.key and event.field=='quarters'then hasFoundation=true end
+end
+assert(hasFoundation and #before.sites==2)
+''')
+
     def test_two_quarters_share_one_market_upkeep_and_receiving_population_rounding(self):
         world().execute('''
 local s=snapshot();local before,after=assert(s.CustomerWorld(3,GameInfo.Districts.DISTRICT_COMMERCIAL_HUB.Index,3))
@@ -22,7 +57,7 @@ for _,f in ipairs(q.after.streams)do
 end
 assert(markets==1 and upkeep==-1)
 assert(food==M.PopulationPayout(2*venue.transaction.amount*9,9))
-assert(q.valueQ8>0 and q.servicesExcluded and q.diagnosticOnly)
+assert(q.valueQ8>0 and q.servicesExcluded and q.modelOnly)
 assert(s.CustomerWorld(3,GameInfo.Districts.DISTRICT_COMMERCIAL_HUB.Index,3)==before)
 assert(#before.sites[1].customers<#after.sites[1].customers) -- No fact mutation.
 ''')

@@ -51,6 +51,20 @@ end}}
 
 
 class RouteFacts(unittest.TestCase):
+    def test_ai_scope_keeps_owned_cities_and_skips_unrelated_foreign_network(self):
+        observed_world().execute('''
+local get=ExposedMembers.CSC_TradeRoutes.GetFacts
+Players[2]={GetCities=function()error('Unrelated foreign city should not be refreshed')end}
+ExposedMembers.CSC_TradeRoutes.GetFacts=function()
+ local facts=get();facts.cities['2:77']={player=2,city=77};facts.cities['3:88']={player=3,city=88}
+ facts.routes[#facts.routes+1]={origin='2:77',destination='3:88',native={TraderUnitPlayer=2,TraderUnitID=99}}
+ return facts
+end
+local _,_,snapshot=evaluate();local t=assert(snapshot.TradeRoutes())
+assert(t.observed.cities['1:1']and t.observed.cities['1:2'])
+assert(t.observed.cities['2:77']==nil and #t.observed.routes==1)
+''')
+
     def test_one_observation_refreshes_gameplay_endpoints_and_native_start(self):
         observed_world().execute('''
 local _,site,snapshot=evaluate()
