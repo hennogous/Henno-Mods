@@ -5,7 +5,12 @@ work from remaining AI gaps and preserves operating instructions.
 
 **Active customer-placement goal:** first pair-first scheduler is implemented
 and131 economy checks pass, including Astra's hint/invalidation corrections.
-The shared-controller matched150–155 control is running; treatment follows.
+The matched150–155 arms completed/restored, broadening group visits68/92→92/92
+with identical forecasts and all44 choices/scores preserved. The100–130 missed-
+opportunity control100–130 completed/restored; its adapter-only treatment is
+running through the shared controller. Washington's control chooses a five-Gold
+Hub over the linked one-Gold site by35.65utility after a140.05utility economic
+offer. The matched treatment will test changed coverage against that comparison.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).
@@ -44,8 +49,8 @@ and Harbor/Lighthouse beside an unbuilt+3 Quarter site with42 native score write
 Current Dallas's promising+4 Harbor layout appears249. No actual Tailors/Harbor
 pair developed. The later Perth audit above resolves its main delivery question.
 [Survey and cases](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
-**No game/controller remains active.** No further campaign, resource-placement
-change or fresh game is started automatically.
+Those Dockmaster surveys are closed. The newer authorised customer-placement
+goal and active replay are described at the top of this file.
 
 **Continuation audit with Astra:** main Quarter/customer scoring and material
 protection have native uptake. The clearest code boundaries are customer land

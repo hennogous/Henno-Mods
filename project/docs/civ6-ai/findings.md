@@ -1,5 +1,16 @@
 # CSC findings and evidence
 
+## AI-C214 — Pair-first scheduling broadens fresh coverage without disturbing a good Hub
+
+17 November2026,2.1. Matched150–155 control/treatment differ only in main CSC
+adapter, with SQL1/CE/economics fixed. Group visits68/92→92/92 at264 total
+forecasts/max16 per player; all44 native decisions and selected scores match.
+Magdeburg's linked Hub2227 wins150 at294,684Q8, contract2994 begins151 in both.
+Full selector matrix retained. Publication151–155 averages2.461→2.455s, maxima
+2.641→2.579s; zero faults, closed/restored0. This qualifies broader coverage and
+preservation; switching/stronger-site controls and final games remain open.
+[Pilot, next window and storage retirement](../research/mods/csc-ai-customer-scheduling-20261117.md).
+
 ## AI-C213 — Astra prioritizes fresh customer-comparison coverage under the same budget
 
 17 November2026,2.1. Independent source/evidence review recommends reference+

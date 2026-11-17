@@ -1,6 +1,6 @@
 """Saved-game main policy plus passive customer-score/forecast inspection.
 
-The shared controller owns a <=25-turn replay and restores every package and
+The shared controller owns a <=30-turn replay and restores every package and
 preference. Current model modules run in an isolated Lua environment for quotes;
 they never replace the saved world's active policy or publish prototype bids.
 All sampled building-cache IDs come from the actual loaded catalogue. An explicit
@@ -74,7 +74,7 @@ def query(cases):
 def run(args):
     plan=prepare(args.source,args.output,args.at,args.at,args.dependencies,read_only=True)
     packages,policy_changes=policy_packages(plan,getattr(args,'policy_package',None))
-    require(args.at<args.through<=args.at+25,'At most25 diagnostic turns')
+    require(args.at<args.through<=args.at+30,'At most30 diagnostic turns')
     cases=args.case
     require(0<len(cases)<=8,'At most8 diagnostic cases')
     for case in cases:

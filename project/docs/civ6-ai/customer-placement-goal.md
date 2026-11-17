@@ -54,9 +54,19 @@ checks incorporate the review.131 economy checks and replay packaging checks pas
 The initial matched150–155 replay uses the completed post-restructure save and
 the same complete source packages. Only the treatment's main CSC adapter differs.
 The controller verifies structural census, modules, packages and normal closure.
-First control is active under `Desktop/Codex/csc-ai-customer-scheduling-20261117`.
+Evidence is under `Desktop/Codex/csc-ai-customer-scheduling-20261117`.
 No full comparison game has begun. Full native choice/foundation, controls,
 performance and the final three-game campaign remain open.
+
+Later:150–155 control/treatment complete and restore. Group coverage68/92→92/92
+at identical264 forecasts, all44 actual district choices/scores unchanged, linked
+Hub construction preserved, no timing regression. The missed-opportunity window
+100–130 control has completed/restored; the same-source adapter-only treatment
+is running. Switching/stronger-site gates remain open.
+[Pilot results](../research/mods/csc-ai-customer-scheduling-20261117.md).
+
+Updated goal adds Problem3 research after successful completion of2.1 if usage
+remains. It does not relax any customer-placement completion requirement.
 
 WildW upstream was rechecked before CE tests: develop2986a746/mastere59b5aa9,
 unchanged. The qualified CE b7194a8 binary remains necessary for current APIs.
