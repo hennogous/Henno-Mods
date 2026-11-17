@@ -18,7 +18,7 @@ title: Tailors' Quarter
 
 ---
 
-* +1 {{production}} Production from every 2 adjacent river segments.
+* +1 {{production}} Production from every 2 adjacent River segments.
 * +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain.
 * +1 {{gold}} Gold from each adjacent {{sales}} Harbor, and +1 {{production}} Production in return.
 * +1 {{gold}} Gold from each adjacent {{sales}} Commercial Hub, Holy Site and Theater Square, and +1 {{culture}} Culture in return.
@@ -61,7 +61,7 @@ title: Tailors' Quarter
 * At Divine Right, a Tailor adjacent to an improved {{base}} Base Materials resource unlocks:
    * A Sacristan is established in an adjacent Holy Site if it has a Temple.
    * The Sacristan provides the city with +10% {{faith}} Faith, +1 {{citizen}} Citizen slot and +1 {{prophet}} Great Prophet point per turn.
-* +1 {{culture}} Culture bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Tailors' Quarter. +1 {{amenity}} Amenity to the origin city.
+* +1 {{culture}} Culture and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Tailors' Quarter.
 
 ## 4. Fashion House
 
@@ -80,4 +80,4 @@ title: Tailors' Quarter
    * A Stage Manager is established in an adjacent Theater Square with an Amphitheater.
    * A Ballet Dancer is established at each adjacent Bolshoi Theatre, a Musical Actor at each adjacent Broadway, and an Opera Singer at each adjacent Sydney Opera House.
    * Each service provides the city with +2 {{tourism}} Tourism and +1 {{artist}} Great Artist point per turn from each adjacent supplied Fashion House. The Stage Manager also provides +1 {{citizen}} Citizen slot in the Theater Square; the Wonder services have no Citizen slot.
-* +1 {{culture}} Culture bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Tailors' Quarter. +1 {{amenity}} Amenity to the origin city.
+* +1 {{culture}} Culture and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Tailors' Quarter.

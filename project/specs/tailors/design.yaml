@@ -2,7 +2,7 @@ schema_version: 1
 quarter: tailors
 status: transcribed
 canonical_source: docs/content/quarters/tailors.md
-canonical_source_sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
+canonical_source_sha256: 24df29fbdd6b4534bdf8fcfe71c85411c4ee6cd667639805f3991674a011e4c5
 transcription_rule: >
   This file is a machine-readable transcription only. It must not resolve engine
   questions, select Bakers patterns, add replacement support, or reinterpret prose.

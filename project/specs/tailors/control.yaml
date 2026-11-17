@@ -5,7 +5,7 @@ status: implementing
 locked_sources:
   - path: docs/content/quarters/tailors.md
     role: canonical_design
-    sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
+    sha256: 24df29fbdd6b4534bdf8fcfe71c85411c4ee6cd667639805f3991674a011e4c5
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
     # Reviewed 17 November: shared SQL cleanup and seven-section reorganization; full database parity.
@@ -21,8 +21,8 @@ locked_sources:
     sha256: a094f999d54d1250ac15284dde611a13b3ae4af6c7e94515548e3dbc13f53b16
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
-    # Reviewed 3 November: supplied-route wording; remove obsolete duplicate Cafe trade bullet.
-    sha256: 0a32e15e43095f3db8c6af3874a486141c7387c63a4b8661ac2f7320ba6ad199
+    # Reviewed 17 November: correct Amenities icon and identify Bakery/Cafe route returns.
+    sha256: 37fa04bd152a28dbe5ffeecc9abfb0f11ac6c459dd7eede3c66b8fbe835a8c4b
 
 contract_approvals:
   design_transcription:

@@ -88,9 +88,10 @@ fixture suite. An activation-contract audit also matched all 136 file
 registrations, with only the four documented implicit-to-explicit orders.
 
 The Fashion House population/trade fixtures now load the real compiled
-catalogue and shared route modules; all 21 tests in that suite pass. The global
-design/localization lock check still reports existing document drift and remains
-separate from the focused architecture check.
+catalogue and shared route modules; all 21 tests in that suite pass. The design/
+localization checksums were refreshed after reviewing the wording and restoring
+the truncated Harbor description. The full 201-test Quarter suite now passes,
+including the global contract check.
 
 Historical reports retain their original filenames as evidence of those builds.
 Use this document and current action JSON for today's source paths.
