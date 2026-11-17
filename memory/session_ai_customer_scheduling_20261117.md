@@ -30,8 +30,13 @@ Magdeburg SQL0/1 150–155 both closed/qualified.0 picks2377=288287,1 picks2227=
 F.CustomerQuarterMap filtersYieldChange>0, so0alsodisablesBakersHubLuaedge;
 this is combined-edgeablation, NOTisolatedSQLcausality. No productionfix/coefs.
 CURRENT final6game serialrunner customer_placement_campaign.py RUNNING exec80845
-at root/final-comparisons, firstContinentscontrol250. Started~21:47UTC; next
-15mincheck~22:02UTC. Inspectcampaign-progress beforelaunch/restart. Uses
+at root/final-comparisons. FirstContinentscontrol250completed/qualified/analysed;
+all1844orderednativechoices/scores matcholdsource,23Q16B7T allBase/21+3+,20nonCC
+links12Qfirst8customerfirst. Newopportunity8/16confirmedchoices,Hub3/5;8Store3Inn.
+Guidance1.9758avg/4.0245max, complete250,0faults.0.379GiBduplicatecopiesretired.
+CURRENT ContinentsTREATMENT250started~22:52UTC, childworker16836; at100 on23:07
+check,0faults/36.13GiBfree. Next15mincheck~23:22UTC. Parentexec80845.
+Inspectcampaign-progress beforelaunch/restart. Uses
 preselectedseed3maps currentd6control vs7eacandidate, same5extras/CEb719, fresh
 Online250 andinitialworldparity. Two newretirementtests pass; Astrarunnerreview
 addsclosed-qualifiedchildresume/offlineanalysisretry, stoponexistingpartial/live,

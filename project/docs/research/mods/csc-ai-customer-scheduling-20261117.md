@@ -1,8 +1,10 @@
-# Customer scheduling: first native preservation test
+# Customer placement: native delivery and matched outcomes
 
-**The new scheduler prices more city/type groups at the same cost, while
-preserving the already-good Hub choice.** This is the first native gate for the
-active Problem2.1 goal, not its final outcome proof. **AI-C214**.
+**Short gates pass; the first full control is complete and its candidate is
+running.** Pair-first scheduling improves fresh coverage at the same forecast
+budget; a combined-guidance ablation changes a close Hub choice through physical
+foundation. Stronger ordinary sites retain their wins. Three matched Online250
+worlds provide the remaining repeated-outcome test. **AI-C214–216**.
 
 The matched150–155 replay starts from the same verified post-restructure save.
 Control uses frozen d6a9114a policy; treatment changes only the main CSC economic
@@ -174,6 +176,34 @@ still must demonstrate improvement before the goal is complete.
 
 WildW's develop2986a746/mastere59b5aa9 remain unchanged on the pre-campaign
 GitHub branch check. Qualified CE b7194a8 remains the frozen runtime. No PR.
+
+### Continents control completed
+
+The fresh current-policy control closes/qualifies250. All1,844 ordered native
+district choices **and their Q8 scores** equal the previous frozen-control run.
+Its23 Quarter foundations remain16 Bakers/seven Tailors, all Base-adjacent;
+21 are+3+, seven+4+, three have both material classes. This corroborates that the
+added passive candidate/journal diagnostics preserve these decisions on this map.
+
+At250,20 physical non-City-Center customer/Quarter pairs remain:12 Quarter-first,
+eight customer-first. There are three connected Hubs/16 total, two Theaters/31,
+one Holy Site/seven, one Entertainment/Hippodrome/ten, zero Harbors/13, seven CL
+urban sales sites/28 and four rural goods-provider sites/37. Eight Storekeeper
+properties and three Innkeeper properties are active; no Dockmaster/Sacristan.
+
+The new opportunity denominator finds16 customer foundations with positively
+observed linked **and** ordinary owned legal alternatives beside an existing
+Quarter at the actual choice; eight select linked sites and physically connect.
+Hubs contribute3/5. Two further Hub choices fall outside the current observed
+candidate set and remain separate; sites without a positive group are not
+counted as proven absence. Customer-first foundations are reported by their
+physical order, outside this existing-Quarter comparison denominator.
+
+Guidance has complete250-turn timing:1.976s average,4.025s maximum; zero policy
+or observer failures. Exact duplicate package retirement recovers0.379GiB after
+clean native exit. The matched candidate starts next with the same initial-world
+reference and frozen gameplay/mod stack. Compare both arms before deciding
+whether this first scheduler slice improves the full-game outcomes.
 
 ## Storage
 

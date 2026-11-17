@@ -16,7 +16,10 @@ same474 forecasts,100/100 types/sites retained, average2.579→2.480s. Magdeburg
 combined-edge0/1 gate changes the chosen Hub from unlinked2377 to linked2227;
 each founds151, both close/qualify. Zero also disables the Lua graph edge, so
 this is combined-system evidence. Six serial fresh games now compare current
-control/candidate on the three preselected maps. Passive legal-set/native
+control/candidate on the three preselected maps. First Continents control closes/
+qualifies250, preserving all1,844 prior native choices/scores and20 physical
+non-City-Center links. New confirmed comparable placements connect8/16; guidance
+1.976s average/4.025s max. Candidate is running. Passive legal-set/native
 lineage adds no worlds; opportunity/capture and retirement checks pass.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
