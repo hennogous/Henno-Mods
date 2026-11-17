@@ -1,5 +1,19 @@
 # CSC findings and evidence
 
+## AI-C215 — Fresh customer residual reaches the comparison; stronger Buffalo site wins
+
+17 November2026,2.1. Matched main-adapter150–160 arms close/restore and qualify.
+Buffalo's baseline omits linked Hub2017 at156; pair-first publishes15,978Q8.
+CE gen16/v7 early write259564→275542 ordinal862, cache421150 ordinal982,
+winner2015=470990 ordinal1007 match independent native call156. Final losing
+cell gains exactly15978Q8 vs control405172. Winner still leads194.688utility,
+founds158; customer group removed159. The linked farm has substantial native
+site opportunity cost. Coverage123/164→164/164 at474 forecasts;100/100 selected
+types/sites retained,98/100 scores; average2.579→2.480s/max3.368→3.192s.
+No coefficient increase. Next bounded positive switch-through-foundation test
+uses current Magdeburg world with only SQL0/1 varying, attributed separately.
+[Delivery, construction, timing and gate](../research/mods/csc-ai-customer-scheduling-20261117.md).
+
 ## AI-C214 — Pair-first scheduling broadens fresh coverage without disturbing a good Hub
 
 17 November2026,2.1. Matched150–155 control/treatment differ only in main CSC

@@ -28,6 +28,7 @@ from ce_bakers_fresh import LOGS
 from customer_adjacency_policy import database_snapshot
 from customer_connector_audit import audit as audit_customers
 from economy_savings_watch import EconomySavingsWatch
+from customer_transaction_replay import policy_packages, customer_observation
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE.parents[3]/'project/tools/transactions'))
@@ -113,25 +114,29 @@ def run(args):
     # supported continuation endpoints: this tool declares its own <=5-turn
     # diagnostic window after qualifying the zero-turn source.
     plan = prepare(args.source, args.output, args.at, args.at, args.dependencies, read_only=True)
+    packages,policy_changes=policy_packages(plan,getattr(args,'policy_package',None))
     require(args.at <= args.through <= args.at + 5, 'At most five diagnostic turns')
     targets = [tuple(t) for t in args.target]
+    customer=customer_observation(targets)
     require(0 < len(targets) <= 8 and len(set(targets)) == len(targets) and
             all(p in plan.identity['original_ai'] and 0 < c < 2**31 for p, c in targets), 'Invalid target scope')
     require(not native_inventory(), 'Preserve foreign Civ/Tuner session')
     out = plan.output
     out.mkdir(parents=True)
-    by_role = {p['role']: p for p in plan.packages}
+    by_role = {p['role']: p for p in packages}
     metadata, = by_role['csc']['source'].glob('*.modinfo')
     staged, sql = stage(metadata.read_bytes(), args.amount, CONNECTORS.read_bytes())
     (out/'diagnostic.modinfo').write_bytes(staged)
     (out/'diagnostic.sql').write_bytes(sql)
     write_json(out/'protocol.json', dict(diagnostic=True, amount=args.amount, rule=RULE,
         source=str(plan.source), checkpoint=plan.checkpoint, start=args.at, through=args.through,
-        targets=targets, gameplay_edits=False, main_lua_policy_unchanged=True, shared_stage3_sql_repair=True,
-        connector_generator_sha256=sha(CONNECTORS), source_commit='de174092'))
+        targets=targets, gameplay_edits=False, main_lua_policy_unchanged=not policy_changes,
+        policy_adapter_changes_from_save=policy_changes,main_csc_is_only_policy=True,
+        shared_stage3_sql_repair=True,connector_generator_sha256=sha(CONNECTORS)))
     scripts = [Path(__file__), Path(transaction_graph.__code__.co_filename), HERE/'economy_savings_watch.py', HERE/'economy_savings_watch.js',
                HERE/'full_game_census.lua', HERE/'planning_observer.lua', HERE/'district_adjacency_watch.lua',
-               HERE/'customer_connector_audit.py', CONNECTORS]
+               HERE/'customer_connector_audit.py', HERE/'customer_transaction_replay.py',
+               HERE/'customer_placement_watch.lua',CONNECTORS]
     pins = {str(p.resolve()): sha(p) for p in scripts}
     write_json(out/'implementation-archive.json', archive_sources(pins, out/'implementation-version'))
     controller = make_probe_controller(out, user_root=plan.user_root)
@@ -166,7 +171,7 @@ def run(args):
         require('CSC_SIGNAL_SURVEY_END' in raw, 'Incomplete native site survey')
 
     try:
-        for item in plan.packages:
+        for item in packages:
             shutil.copytree(item['source'], item['install'])
             copied.append(item)
             if item['role'] == 'csc':
@@ -219,20 +224,28 @@ def run(args):
             for name in ('planning_observer.lua', 'district_adjacency_watch.lua'):
                 raw = controller.cmd(read(HERE/name), 'PlotInfo' if name.startswith('district_') else 'CSC_AI_BakersGameplay', name)
                 (out/(name+'.txt')).write_text(raw, encoding='utf-8')
+            raw=controller.cmd(customer,'CSC_AI_BakersGameplay','install-passive-customer-opportunities')
+            (out/'customer_placement_watch.lua.txt').write_text(raw,encoding='utf-8')
+            require('CSC_CUSTOMER_WATCH_INSTALLED'in raw and 'CSC_CUSTOMER_WATCH_FAULT'not in raw,
+                    'Customer observation did not initialise')
             watch.window(args.at, args.through)
             controller.play(args.through)
             watch.drain()
             survey('endpoint-survey')
+            raw=controller.cmd('CSC_CUSTOMER_PLACEMENT_WATCH.Finish();CSC_AI_PLANNING_WATCH.Finish()',
+                               'CSC_AI_BakersGameplay','finish-passive-customer-observation')
+            require(re.search(r'CSC_CUSTOMER_WATCH_FINISH records=\d+ faults=0 dropped=0\b',raw)
+                    and 'CSC_PLANNING_FAULT'not in raw,'Customer observation incomplete')
         state = controller.state_read('customer-signal-final-clock')
         require(state['turn'] == args.through and not state['active'], 'Wrong diagnostic endpoint')
-        write_json(out/'complete.json', dict(verified=True, reached=args.through, amount=args.amount))
+        write_json(out/'endpoint-reached.json', dict(reached=args.through, amount=args.amount))
     except Exception as error:
         write_json(out/'failure.json', dict(error=str(error), traceback=traceback.format_exc()))
         raise
     finally:
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda: restore_preferences(controller, out), restore_package=verify,
-                before_menu=lambda: watch.freeze() if watch else None,
+                before_menu=lambda: watch.freeze(allow_faulted=True) if watch else None,
                 after_native_exit=lambda: watch.after_exit() if watch else None)
         if session.closed:
             for item in copied: item['install'].rename(out/item['install'].name)
@@ -240,11 +253,15 @@ def run(args):
                 p = plan.user_root/'Logs'/name
                 if p.is_file(): shutil.copyfile(p, out/name)
     if watch: watch.qualify()
+    require(session.closed,'Customer signal replay did not close/restore')
+    write_json(out/'complete.json',dict(verified=True,reached=args.through,amount=args.amount,
+        session_closed=True,observation_qualified=True))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for key in ('source', 'output', 'dependencies'): parser.add_argument('--'+key, type=Path, required=True)
+    parser.add_argument('--policy-package',type=Path)
     for key in ('at', 'through', 'amount'): parser.add_argument('--'+key, type=int, required=True)
     parser.add_argument('--target', nargs=2, type=int, action='append', required=True, metavar=('PLAYER', 'CITY'))
     run(parser.parse_args())

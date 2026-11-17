@@ -9,9 +9,12 @@ The matched150–155 arms completed/restored, broadening group visits68/92→92/
 with identical forecasts and all44 choices/scores preserved. The100–130 missed-
 opportunity control100–130 completed/restored; its treatment diverges from108
 and its recorder hits the32-matrix limit129. The held game is safely closed and
-restored, with failed capture retained. Buffalo150–160 control now runs through
-the shared controller to isolate Hub156 and its foundation. Passive legal-set
-and raw CE-lineage recording is added without extra worlds;44 related checks pass.
+restored, with failed capture retained. Buffalo150–160 both arms qualify: the
+fresh+62.414utility residual lands in the exact156 comparison, stronger ordinary
+site still wins/founds158, and further Hub offers stop. Coverage123/164→164/164,
+same474 forecasts,100/100 types/sites retained, average2.579→2.480s. Magdeburg
+SQL0/1 bounded construction gate is next, with0 active. Passive legal-set/native
+lineage and opportunity analysis add no worlds;50 related checks pass.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).

@@ -64,7 +64,12 @@ Hub construction preserved, no timing regression. The missed-opportunity window
 100–130 control completed/restored; treatment diverges from108 and its passive
 recorder hits32 matrices129. Its frozen held game closes/restores through an
 identity-checked cleanup, with observation still failed. The shorter Buffalo
-control150–160 is active: actual Hub winner2015 vs linked2017, Bakers1943.
+control/treatment150–160 complete/qualify: fresh residual15978Q8 reaches the
+actual comparison156, increases linked2017's final cell by exactly that amount,
+but stronger2015 still wins/founds158; Hub offers stop. All100 selected footprints
+are preserved with the same474 forecasts and broader123/164→164/164 coverage.
+The current Magdeburg SQL0/1 test extends the combined mechanism through a
+changed-choice/foundation gate;0 is active, current pair-first policy in both.
 New passive legal-set changes and CE score lineage support native timing and
 opportunity-normalized outcomes without extra worlds. Switching/stronger-site
 gates remain open.

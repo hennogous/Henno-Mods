@@ -95,6 +95,50 @@ linked-only choices and unknown coverage separately by loaded customer type.
 It reuses the gameplay-derived native connector registry. A linked proposal
 without physical foundation cannot count as a constructed connection.
 
+## Buffalo: the scheduler repairs comparison-time delivery (AI-C215)
+
+Both150–160 arms close/restore exit0 with qualified observations. The original
+schedule publishes linked Hub2017 through155 but omits it156; the new schedule
+publishes15,978Q8 (+62.414utility) at156. CE generation16/version7 records the
+exact early write259,564→275,542 at ordinal862, cached421,150 at982, then
+winner2015=470,990 at1007. The independent native selector records actual call156.
+Control's linked cell is405,172: treatment's final matrix gains exactly15,978Q8.
+This closes publication→early consumer→final comparison for this gap.
+
+The stronger ordinary site still wins by49,840Q8 (194.688utility), and both
+physically found Hub2015 at158. The customer set disappears159, with no further
+Hub offer. At155 the linked site is a farm with native site adjustment−81,759Q8
+(−319.37utility); the riverside woods alternative receives+7,652Q8 (+29.89).
+Those are same-clock native site-accounting components, not an attribution of
+the entire156 final difference to one input. The ordinary adjacencies are3vs2.
+No new coefficient or blanket bonus is justified by this result.
+
+| Measure,150–160 | Control | Pair-first |
+|---|---:|---:|
+|City/type group windows visited|123/164|164/164|
+|World forecasts|474|474|
+|Actual native district choices|100|100|
+|Same selected types/sites|—|100/100|
+|Same selected scores|—|98/100|
+|Guidance average,151–160|2.579s|2.480s|
+|Guidance maximum|3.368s|3.192s|
+
+The two score differences are the same linked CL rural site1532 on156/157;
+neither selected footprint changes. All policy/observer faults are zero.
+
+### Bounded positive construction gate
+
+Astra confirms that earlier Qaraqorum SQL0/1 changed a choice but reached no
+foundation by155. Magdeburg's already-winning Hub did reach foundation, so those
+different cases cannot be combined into changed-choice→construction evidence.
+The next bounded test uses the **current** qualified150 save and pair-first main
+CSC adapter, Magdeburg city262144. Only the Bakers→Hub private SQL amount varies
+0/1; all ordinary economic coefficients remain fixed. The zero arm is active
+under `magdeburg-sql0-150-155`. This qualifies the combined customer-placement
+mechanism; any SQL-driven switch will be attributed to SQL, with scheduler-only
+delivery already measured separately above. Final three-map comparisons still
+must demonstrate actual improvement.
+
 ## Storage
 
 On Henno's instruction, ten exact duplicate CE/CSC installed-package archives
