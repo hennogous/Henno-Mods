@@ -189,3 +189,20 @@ Online250 outcome games remain the next integration evidence.
 These routine changes alter AI calculation and observability only. Gameplay
 payouts, transaction eligibility and building availability are unchanged by this
 slice. Earlier contract migrations retain their documented manual QA cases.
+
+
+## Architecture review before outcome analysis
+
+Astra's final read-only review confirms the major ordinary economic channels,
+shared definition authority, native competition and bounded work are represented
+coherently. There is no ordinary-game blocker requiring interruption of the
+pinned campaign. The proposed jointEconomy flag concern was checked against
+committed571f381f line580 and retracted: the original site already receives the
+returned quote's flag before final placement pricing.
+
+The handoff limits are intentional: customer guidance adjusts siting while native
+type-level demand remains; local search freezes distant discrete investment
+choices while recalculating their consequences; future staffing, route renewal
+and prospective placement Services are not invented. Cached reevaluation and
+retained request maxima keep their native lifecycle. Efficacy and complete-run
+overhead await the three outcome games.

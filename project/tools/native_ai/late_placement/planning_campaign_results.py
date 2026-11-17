@@ -155,6 +155,8 @@ def report(root):
             if r['kind']=='OPPORTUNITY'and r.get('player')in players and r.get('offered')and r.get('owner')==-1}),
         held_quarters_T250=held,quarter_ownership_events=ownership,
         alive_T250=[payload.split('\t')for kind,payload in endpoint['rows']if kind=='PLAYER'],
+        processing_time=(json.loads((root/'ai-processing-time.json').read_text(encoding='utf-8'))
+                         if(root/'ai-processing-time.json').exists()else None),
         reconsidered_scopes=len({(r['player'],r['city'],r['district'])for r in result['plan_transitions']if r.get('reconsidered')}),
         raw_segments_required_for_services=(root/'normalized-segments.json').exists())
 
@@ -163,8 +165,8 @@ def markdown(reports):
     lines=['# Three-map CSC planning campaign —250 turns', '',
         'Original AI seats only. Quarter quality is observed geometry with a prospective local Mill; '
         'it excludes future customers and is not active gameplay yield. Native totals are '
-        'choice-time utility; adjacency is a separate UI-event yield vector. Pangaea includes a '
-        'verified turn200 reload with an explicit native capture gap.', '',
+        'choice-time utility; adjacency is a separate UI-event yield vector. '
+        'Any normalized continuation is identified in its individual report.', '',
         '| Map | Bakers | Tailors | +3+ | +4+ | Base | Spec / both | Vanilla footprints | Native totals joined |',
         '|---|---:|---:|---:|---:|---:|---:|---:|---:|']
     for name,r in reports.items():
@@ -181,6 +183,21 @@ def markdown(reports):
         lines.append(f"| {name} | {s['new_quarter_native_best_exact_bid_write']}/{s['new_quarter_native_best']} | "
             f"{s['reconsideration_transitions']}/{r['reconsidered_scopes']} | {o} | {s['material_loss_events']} | "
             f"{f['paid']} / {f['gold']:g} | {f['quarter_site_payments']} |")
+    timed={name:r['processing_time']for name,r in reports.items()if r.get('processing_time')}
+    if timed:
+        lines+=['','## Guidance processing time','',
+            'Whole-publication wall time sums all AI players and retries per turn. '
+            'Native managed-cell refresh is separate; player spans partition the '
+            'publication and are not added again. Missing coverage remains explicit.', '',
+            '| Map | Measured turns | Average Lua wall ms | Maximum Lua wall ms | Native average ms | Native maximum ms | Missing / incomplete turns |',
+            '|---|---:|---:|---:|---:|---:|---:|']
+        def number(value):return f'{value:.3f}'if value is not None else '—'
+        for name,timing in timed.items():
+            wall=timing['publisher_wall'];native=timing['native_managed_cell_wall']
+            lines.append(f"| {name} | {wall['turns']} | {number(wall['average_ms'])} | "
+                f"{number(wall['max_ms'])} | {number(native['average_ms'])} | "
+                f"{number(native['max_ms'])} | {len(timing['unobserved_turns'])} / "
+                f"{len(timing['incomplete_wall_turns'])} |")
     lines+=['','## Vanilla district calibration','',
         'These districts competed in the **tuned CSC/City Lights games**. They are not an untuned control. '
         'Different cities, turns and costs make their medians descriptive rather than interchangeable bid targets.', '',

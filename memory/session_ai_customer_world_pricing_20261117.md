@@ -86,3 +86,18 @@ serially, Online250, CL/R2/Suk, stockAI, no probe/test policy, sharedcontroller
 Next goal continuation: monitor every15min, analyse each closedgame and timing,
 fix recoverable failures, finish all3. Fullgame timer requested by user is
 implemented/tested; result averages/maxima still pending livegame completion.
+
+
+## 09:48UTC campaign check
+
+Authoritative execsession15789 stilllive, CivPID20168 child6140/root4752. First
+Continents game reaches165 (no fault). Full Lua timing coverage1–165, avg
+1586.924ms/max3366.147ms, retriesincluded. Next scheduled checkabout10:03UTC,
+then analyse onlywhenclosed. Campaign serialcontinues Pangaea/Fractal automatically.
+Do not opena secondTunerconnection orrestartfromstaleartifacts. economy-preflight
+json intentionallyproduced atterminal boundary,notstartup. Allnewpolicy in frozen01.
+Astra finalarchitectureaudit passes; apparentjointEconomyflagissue retracted
+because committed571f381f line580 alreadypropagatesflag. HumanQA consolidated in
+csc-economic-integration-manual-qa-20261117.md, pushed dde45155. Offlinecampaign
+reportnowincludes availabletimingtable anddropshistoricalPangaeareloadassumption;
+8focusedanalysischecks pass. Noactualpolicychangeafterfreeze. Goal active.
