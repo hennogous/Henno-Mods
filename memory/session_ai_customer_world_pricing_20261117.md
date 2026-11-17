@@ -101,3 +101,34 @@ because committed571f381f line580 alreadypropagatesflag. HumanQA consolidated in
 csc-economic-integration-manual-qa-20261117.md, pushed dde45155. Offlinecampaign
 reportnowincludes availabletimingtable anddropshistoricalPangaeareloadassumption;
 8focusedanalysischecks pass. Noactualpolicychangeafterfreeze. Goal active.
+
+
+## PAUSED by user,17 November10:39UTC
+
+User first requested stopaftercurrentgame; Continents hadalreadyclosed and
+Pangaea hadstarted, so scheduler4752 was suspended. Userclarified STOPPangaea
+NOW, needmachine. OwnedCiv22484/controller12684/scheduler4752 stopped; nofuture
+launch. Pangaea interrupted atlastverified75 (notqualification), Fractalunstarted.
+Goalstatus alreadyPAUSED byuser; doNOTresume work/tests withoutuserresume.
+Offlinecleanup restored147 original ModGroupItems flags inselectedgroup9,
+archived onlyrecorded CSCBakersDevelopmentCE/Mod foldersintoPangaeaoutput,
+backedupMods.sqlitefirst, copiedpartiallogs, andwroteinterrupted-by-user.json.
+Campaignprogress activeNone,completedContinents,remainingPangaea/Fractal.
+NoCiv/Tunerwasrelaunched. Preserveuser'smachine/session.
+
+CompletedContinents250ordinary-economy-results.json:22foundations17B5T allBase,
+20+3+,7+4+,5bothmaterials;82/82exactnativeBEST. Completeheld15B4T, improvedBase
+15/4,bothimproved2/2; mappedcompletedcustomers13/2,Stage2producer13/4,
+Stage2customerbuilding8/0.8Store2Inn,0Dock/Sacristan/Stage4;1101nativeStore
+chainturns9sources. Economiccustomer1905sampledstagedwindows/1591attempts/
+1587writes/19sitewins;9foundationsonpreviouslyevaluatedtargets (3lastnegative,
+someoldproposals; not9attributablepositivewins). Zerojointbudget/unknown/overflow.
+Wholepublisher250turnavg2027.657344ms,max4610.54ms; native-managedavg12.251316ms,
+max26.4. Sourceworld/settingsparity with14NovContinents verifiedallinitialkeys,
+old6vsnew22foundations historicalcontext. Firstanalysiscanonicalprivateoutput
+Desktop/Codex/csc-ai-ordinary-economy-20261117/continents250-01. Astra reviewed
+firstresults:goodplacement/nativeuptake/sustainedStore,butTailorscustomerfollow-
+throughstillgap. Raw2resource-lossesnonlastMaizeWonder48/RiceSpaceport195;
+lastownedclasslosseswerecapture/elimination. Firstreportnotyetpromoted beyond
+thishandoff; onresume documentresults, runremaining2freshgames,completegoalaudit.
+Newanalysiscode/tests76e91b20 pushed; no policychangeafterfrozen01.

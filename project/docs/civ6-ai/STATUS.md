@@ -1,5 +1,14 @@
 # Current CSC AI status
 
+**Paused by Henno,17 November.** Continents completed250; Pangaea was stopped
+at the user’s request after its verified75 boundary so the machine is free.
+Fractal has not started. Test processes are stopped, temporary packages archived
+and original mod preferences restored offline. The three-game goal remains
+incomplete; resume only when Henno asks. Completed Continents:22 Base-adjacent
+foundations,20 at+3+,82/82 exact native bids,8 active Storekeepers/2 Innkeepers,
+1,101 Storekeeper chain-turns. Guidance wall time:2.03s average/4.61s maximum
+per turn across five AIs, with complete250-turn coverage.
+
 **1.4 / 2.1 / 2.2,17 November — routine economic integration implemented.**
 Quarter worlds and signed customer-site differences now share the complete
 ordinary-economy model. Local affected-plan search and a bounded route memo
