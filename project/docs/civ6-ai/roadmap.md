@@ -4,6 +4,15 @@ For current continuation instructions, use the [handoff](HANDOFF.md). Later
 dated entries supersede earlier next-step lists; no test campaign should resume
 automatically. The latest maintenance/UI work changed no AI policy or CE binary.
 
+**17 November — Perth delivery trace closed; next1.4 economic calibration.**
+20 matched positive Quarter writes equal published values and lose to stronger
+district bids. There is no Tailors winner or request. The site is+2 at143 and+3
+only204; removing the quality cap alone changes none of those numeric outcomes.
+Audit ordinary income/cost, staffed-footprint loss and competing native values
+next. Preserve prospective-Service deferral and ordinary district competition;
+do not implement a reservation fix or blanket score increase for this result.
+[Perth trace](../research/mods/csc-ai-perth-followthrough-20261117.md).
+
 **17 November — restructure regression and coastal survey completed.**
 Problems1/2 remain active:23 Base-adjacent foundations,21 at+3+,36 exact native
 Quarter BEST values; eight Storekeepers/three Innkeepers at250. Customer

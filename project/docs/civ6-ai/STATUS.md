@@ -3,6 +3,16 @@
 **New-chat entry point: [handoff](HANDOFF.md).** It distinguishes implemented
 work from remaining AI gaps and preserves operating instructions.
 
+**Perth trace completed, Problems1.4/1.6/2.1:** all20 matched positive Tailors
+comparisons consume the exact published score and lose to a higher district.
+No Tailors winner/request exists. The site reaches+2 at143 and+3 only204;
+its earlier weak band and ordinary economic estimates explain low bids.
+Removing only the quality cap would not reverse those20 numeric comparisons.
+Next: audit ordinary Quarter income/cost and staffed-footprint pricing against
+the competing investment; prospective Services stay deferred. No reservation
+rewrite or blanket bonus is indicated by this case. Recorded-only investigation;
+no game was launched. [Perth audit](../research/mods/csc-ai-perth-followthrough-20261117.md).
+
 **Latest continuation completed:** post-restructure Continents250 closes/restores
 exit0.23 Base-adjacent foundations,21 at+3+,eight Storekeepers/three Innkeepers,
 36/36 exact native Quarter bids and1,204 customer score writes. Government and
@@ -15,7 +25,7 @@ inspections all close/restore; a previous Continents capture adds a third map.
 Fractal has two good owned layouts (Opis/Karkar); current Perth has improved Base
 and Harbor/Lighthouse beside an unbuilt+3 Quarter site with42 native score writes.
 Current Dallas's promising+4 Harbor layout appears249. No actual Tailors/Harbor
-pair developed. Next useful investigation: Perth reservation/production follow-through.
+pair developed. The later Perth audit above resolves its main delivery question.
 [Survey and cases](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
 **No game/controller remains active.** No further campaign, resource-placement
 change or fresh game is started automatically.

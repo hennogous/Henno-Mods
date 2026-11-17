@@ -10,6 +10,12 @@ Geography helps explain the scarcity; it does not explain all the missing chains
 [Compact survey, cases and capture hashes](csc-dockmaster-opportunity-survey-20261117.json).
 No resource generation, gameplay rule or AI coefficient changed for this survey.
 
+**Later Perth trace:** the site was+2 until204 and never won district selection.
+All20 matched positive comparisons consumed the exact offered value and selected
+a higher district bid. The next step is ordinary-economy calibration, replacing
+the earlier reservation/follow-through hypothesis below.
+[Perth comparison audit](csc-ai-perth-followthrough-20261117.md).
+
 ## Map inventory
 
 | World and sample | Tailors Base deposits | Coastal material clusters with room for both districts | Quarter footprints / Quarter–Harbor combinations | Owned pairs passing both current native admission checks |
@@ -75,10 +81,12 @@ ordinary transaction income continues to matter later.
 
 ## Implication for our next change
 
-First trace **Perth's remaining reservation/production path** and preserve the
-strong nearby Quarter/Harbor plan through execution. Karkar is a useful saved
-case for a future controlled test of current policy. These are more targeted
-than increasing Harbor bonuses everywhere.
+The [Perth comparison audit](csc-ai-perth-followthrough-20261117.md) now answers
+the delivery question: its positive Quarter values land and lose to higher
+district bids. Audit ordinary economic calibration before changing values or
+reservation handling. Karkar remains a useful saved case for a future controlled
+test of current policy. These are more targeted than increasing Harbor bonuses
+everywhere.
 
 All five surviving Tailors in the current run are inland. Its576 passive
 Harbor-neighbour records contain no water tile. A stronger adjacency SQL signal

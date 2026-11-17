@@ -14,7 +14,8 @@ what remains open and which problem we are working on.
 - [Completion contract](acceptance.md): evidence levels, finite acceptance tests and completed scopes.
 - [Current tuning and placement coverage](topics/csc/site-planner.md): what the running CSC code does and its evidence.
 - [Latest restructure regression](../research/mods/csc-ai-restructure-regression-20261117.md):23 Base-adjacent Quarters, Government/Policies UI pass, both directions of customer planning and complete processing time.
-- [Dockmaster opportunity survey](../research/mods/csc-dockmaster-opportunity-survey-20261117.md):three maps, good coastal layouts and the remaining Perth follow-through case.
+- [Dockmaster opportunity survey](../research/mods/csc-dockmaster-opportunity-survey-20261117.md):three maps, good coastal layouts and the Perth candidate.
+- [Perth's actual district comparisons](../research/mods/csc-ai-perth-followthrough-20261117.md):20 exact delivered positive Quarter values lose to higher districts; the site reaches+3 late. Next: economic calibration.
 - [Previous integrated result](../research/mods/csc-ai-ordinary-economy-continents-20261117.md):22 Base-adjacent Quarters, native economic delivery, sustained Services and historical comparison.
 - [Earlier customer-first run](../research/mods/csc-ai-customer-first-continents-20261116.md):21 Quarters and the coastal Dockmaster diagnosis.
 - [Latest three-map results](../research/mods/csc-ai-planning-campaign-results-20261114.md): placement quality, material retention, savings and ordinary district calibration.

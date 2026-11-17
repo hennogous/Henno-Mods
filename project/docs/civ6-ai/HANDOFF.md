@@ -1,5 +1,14 @@
 # CSC AI handoff — 17 November 2026
 
+**Latest Perth follow-up:** recorded native comparisons answer the delivery
+question:20/20 positive target writes equal published values and lose to higher
+district bids; zero Tailors winner/request. Perth was+2 through203, then+3;
+first positive+3 offer214 loses to Campus. Removing only the quality cap would
+not reverse any matched numeric comparison. Next1.4: audit ordinary economic
+income/cost and staffed-footprint pricing against competing investments, before
+changing values. No replay/game/tuning/native change was needed.
+[Perth report and comparison records](../research/mods/csc-ai-perth-followthrough-20261117.md).
+
 **Later continuation completed:** post-restructure Continents250 closes/restores
 normally:23 foundations,21 at+3+,eight Storekeepers/three Innkeepers, guidance
 1.97s average/3.86s maximum. Government/Policies UI passes at25.24 non-City-Center

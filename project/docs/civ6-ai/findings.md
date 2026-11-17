@@ -1,5 +1,21 @@
 # CSC findings and evidence
 
+## AI-C211 — Perth's delivered Tailors value loses the district comparison
+
+17 November2026, Problems1.4/1.6/2.1. Recorded-only analysis pairs74 native city
+selections with CE journal winners.57 have a fresh target-cell write before
+the winner in the same generation;20 are positive. All20 exactly equal the
+published Quarter bid and all lose to a higher district value.42 receipt writes,
+zero Tailors district wins, zero submitted requests and zero foundations.
+The site is+1 until Harbor foundation142, then+2; CL Rural Community C foundation
+203 raises it to+3 at204. First positive+3 offer214 loses1,574 to Campus3,696.
+At150 a+2 offer684 loses to Rural Community2,468. Removing only the quality cap
+would not reverse any of those20 numeric comparisons. Four policy withdrawals
+are explicit negative-economic decisions, including staffed-footprint costs.
+Perth's delivery question is answered; next audit ordinary benefit/cost pricing
+against competing investments. No new game/native patch/tuning change.
+[Exact comparisons and correction](../research/mods/csc-ai-perth-followthrough-20261117.md).
+
 ## AI-C210 — Coastal Tailors opportunities are sparse, with concrete missed layouts
 
 17 November2026, Problems1/2. Shared-controller zero-turn surveys of current
