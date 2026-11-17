@@ -1,5 +1,19 @@
 # CSC findings and evidence
 
+## AI-C212 — Customer connections are modest; capture inflated earlier totals
+
+17 November2026,2.1. Latest Continents250 physical sites:3/16 Hubs adjacent to
+mapped Quarters,1/10 Entertainment/Hippodromes,1/7 Holy Sites,2/31 Theaters,
+0/10 Water Parks,0/13 Harbors; CL urban sales7/28 and rural goods providers4/37.
+All3 Hubs and the Entertainment Complex follow a Quarter; one Theater follows
+and one precedes; Holy Site precedes. Full-map denominators include cities
+without Quarters. Capture-deduplication corrects42 owner-specific records to35
+physical pairs, and24 non-City-Center records to20 (12 Quarter-first/eight
+customer-first). Private-yield foundations remain11, prior economic links five,
+exact forward/reverse matches two each. Previous reference corrects20→19 pairs.
+Analyzer v2 retains player-specific evidence but counts physical sites once.
+[Breakdown and correction](../research/mods/csc-ai-customer-placement-breakdown-20261117.md).
+
 ## AI-C211 — Perth's delivered Tailors value loses the district comparison
 
 17 November2026, Problems1.4/1.6/2.1. Recorded-only analysis pairs74 native city
@@ -39,8 +53,8 @@ follow-through before broad bonuses or coastal resource assistance.
 and closes/restores exit0.23 foundations all have Base;21 rate+3+,seven+4+,
 three both-material.36/36 native Quarter BEST values exactly match published
 bids. Signed customer adjustments record1,204 native writes/zero readback errors.
-24 non-City-Center Quarter/customer-provider links include15 Quarter-first and
-nine customer-first;11 customer foundations expose the native SQL private yield,
+20 physical non-City-Center Quarter/customer-provider links include12 Quarter-first
+and eight customer-first (capture-deduplicated in AI-C212);11 customer foundations expose the native SQL private yield,
 five links have prior economic offers, two exact reverse and two logged forward
 layout matches. Eight Storekeepers/three Innkeepers operate at250; no Tailors
 Harbor link or Dockmaster. Guidance averages1.975s/max3.865s with250-turn coverage.

@@ -42,14 +42,21 @@ to unchanged tuning coefficients. Quarter/customer delivery remains active.
 
 ### How customer guidance connects
 
-There are24 distinct Quarter/customer-provider district links, excluding18 City
-Center links.15 customers follow their Quarter; nine precede it. Eleven distinct
+After deduplicating capture, there are20 physical Quarter/customer-provider
+district links, excluding15 City Center links.12 neighbours follow their Quarter;
+eight precede it. Eleven distinct
 customer foundations record the SQL private placement yield. Five links have a
 prior Lua economic proposal at that customer plot. Two match the exact reverse
 customer-first planned Quarter footprint; two match the latest logged forward
 Quarter layout. A link can satisfy multiple measures; these counts do not add.
-The previous run's corresponding counts are20 links,13/7 order,10 SQL readings,
+The previous run's corrected counts are19 links,12/7 order,10 SQL readings,
 seven prior economic offers and one exact match in each planning direction.
+
+The earlier24/18 and15/9 totals counted owner-specific records, including
+captured pairs again. Archived schema-v1 JSON preserves those original records.
+[Corrected per-type physical counts](csc-ai-customer-placement-breakdown-20261117.md)
+show3/16 Hubs,1/10 Entertainment/Hippodromes,1/7 Holy Sites,2/31 Theaters,
+0/10 Water Parks and0/13 Harbors adjacent to mapped Quarters.
 
 Both directions therefore meet in real construction, with incomplete persistence
 between them. The exact forward measure covers the leading two logged Quarter

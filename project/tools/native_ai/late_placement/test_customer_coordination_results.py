@@ -3,10 +3,28 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
-from customer_coordination_results import analyse
+from customer_coordination_results import analyse, physical_summary, district_breakdown
 
 
 class CoordinationResults(unittest.TestCase):
+    def test_capture_does_not_create_another_placement_and_shared_customer_counts_once(self):
+        row=dict(player=1,quarter='BAKERS',quarterPlot=10,customerPlot=20,
+            customerDistrict='DISTRICT_COMMERCIAL_HUB',cityCenter=False,order='quarter_first',
+            exactPriorCustomerFirstLink=False,latestQuarterLayoutMatches=False,
+            priorCustomerEconomicOffer=True,privateYieldAtCustomerFoundation=1,
+            ownedBaseAtCustomerPlacement=1,roles=['customer','sales'])
+        rows=[row,dict(row,player=2),dict(row,quarterPlot=11,order='customer_first')]
+        summary=physical_summary(rows)
+        self.assertEqual(summary['physical_links'],2)
+        self.assertEqual(summary['owner_scoped_links'],3)
+        self.assertEqual(summary['order'],dict(quarter_first=1,customer_first=1))
+        self.assertEqual(summary['customer_foundations_with_private_yield'],1)
+        bytype=district_breakdown(rows,[dict(district=6),dict(district=4)],
+            {6:'DISTRICT_COMMERCIAL_HUB',4:'DISTRICT_HARBOR'}, {'DISTRICT_HARBOR'})
+        self.assertEqual(bytype['DISTRICT_COMMERCIAL_HUB']['adjacent_district_sites'],1)
+        self.assertEqual(bytype['DISTRICT_COMMERCIAL_HUB']['quarter_district_pairs'],2)
+        self.assertEqual(bytype['DISTRICT_HARBOR']['adjacent_district_sites'],0)
+
     def test_both_directions_deduplicate_roles_and_keep_base_and_sql_evidence(self):
         with TemporaryDirectory()as temporary:
             root=Path(temporary)

@@ -11,9 +11,11 @@ changing values. No replay/game/tuning/native change was needed.
 
 **Later continuation completed:** post-restructure Continents250 closes/restores
 normally:23 foundations,21 at+3+,eight Storekeepers/three Innkeepers, guidance
-1.97s average/3.86s maximum. Government/Policies UI passes at25.24 non-City-Center
-customer/provider links include15 Quarter-first/nine customer-first. See
+1.97s average/3.86s maximum. Government/Policies UI passes at25.20 physical
+non-City-Center links include12 Quarter-first/eight customer-first, after capture
+deduplication; earlier24 counted owner-scoped records. See
 [completed regression](../research/mods/csc-ai-restructure-regression-20261117.md).
+[Per-type placement and count correction](../research/mods/csc-ai-customer-placement-breakdown-20261117.md).
 Read-only current50/250 and earlier Fractal250 surveys also close/restore.
 [Dockmaster survey](../research/mods/csc-dockmaster-opportunity-survey-20261117.md)
 finds two good owned Fractal layouts and a current Perth follow-through case:

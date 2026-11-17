@@ -16,7 +16,8 @@ do not implement a reservation fix or blanket score increase for this result.
 **17 November — restructure regression and coastal survey completed.**
 Problems1/2 remain active:23 Base-adjacent foundations,21 at+3+,36 exact native
 Quarter BEST values; eight Storekeepers/three Innkeepers at250. Customer
-directions connect in24 non-City-Center links, with native SQL readings and Lua
+directions connect in20 physical non-City-Center links after capture-deduplication,
+with native SQL readings and Lua
 economic writes. Guidance1.97s average/3.86s maximum; Government/Policies pass.
 Coastal surveys identify two good owned Fractal layouts and current Perth's
 unfinished+3 Quarter beside improved Base and Harbor/Lighthouse, despite42

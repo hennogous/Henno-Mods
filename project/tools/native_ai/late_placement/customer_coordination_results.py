@@ -21,6 +21,44 @@ def fields(text):
     return result
 
 
+def physical_summary(links):
+    # Keep owner-specific evidence rows for receipt attribution, but count a
+    # physical Quarter/neighbour pair once when conquest changes its owner.
+    # One district beside two Quarters still supplies two economic links.
+    pairs=defaultdict(list)
+    for row in links:
+        pairs[(row['quarter'],row['quarterPlot'],row['customerDistrict'],row['customerPlot'])].append(row)
+    eligible=[rows for rows in pairs.values()if not rows[0]['cityCenter']]
+    orders=Counter()
+    for rows in eligible:
+        values={row['order']for row in rows}
+        orders[next(iter(values))if len(values)==1 else'conflicting_history']+=1
+    return dict(physical_links=len(pairs),planned_district_links=len(eligible),
+        city_center_links=len(pairs)-len(eligible),order=dict(orders),
+        owner_scoped_links=len(links),owner_scoped_planned_links=sum(not r['cityCenter']for r in links),
+        exact_prior_customer_first_links=sum(any(r['exactPriorCustomerFirstLink']for r in rows)for rows in eligible),
+        latest_quarter_layout_matches=sum(any(r['latestQuarterLayoutMatches']for r in rows)for rows in eligible),
+        links_with_prior_economic_offer=sum(any(r['priorCustomerEconomicOffer']for r in rows)for rows in eligible),
+        customer_foundations_with_private_yield=len({(r['customerDistrict'],r['customerPlot'])
+            for r in links if not r['cityCenter']and(r['privateYieldAtCustomerFoundation']or 0)>0}),
+        existing_quarter_links_observed_without_base=sum(any(r['ownedBaseAtCustomerPlacement']==0 for r in rows)for rows in eligible))
+
+
+def district_breakdown(links,constructions,types,mapped):
+    # The frozen loaded SQL connector registry supplies zero-link district
+    # types too. This avoids omitting Harbors simply because no pair formed.
+    founded=Counter(types.get(r['district'],str(r['district']))for r in constructions)
+    result={}
+    for kind in sorted({r['customerDistrict']for r in links}|(set(founded)&mapped)):
+        rows=[r for r in links if r['customerDistrict']==kind]
+        result[kind]=dict(foundations=founded[kind],
+            adjacent_district_sites=len({r['customerPlot']for r in rows}),
+            quarter_district_pairs=len({(r['quarter'],r['quarterPlot'],r['customerPlot'])for r in rows}),
+            customer_placed_after_quarter=len({r['customerPlot']for r in rows if r['order']=='quarter_first'}),
+            roles=sorted({role for r in rows for role in r['roles']}))
+    return result
+
+
 def analyse(root):
     root=Path(root)
     detailed=json.loads((root/'planning-results.json').read_text())
@@ -81,21 +119,15 @@ def analyse(root):
             economicLastDeltaQ8=eco.get('deltaQ8')if eco else None,
             baseInventoryObserved=bool(states),ownedBaseAtCustomerPlacement=len(bases)if states else None,
             workingBaseAtCustomerPlacement=sum(bool(r.get('working')and r.get('compatible'))for r in bases)if states else None))
-    eligible=[r for r in result if not r['cityCenter']]
-    summary=dict(physical_links=len(result),planned_district_links=len(eligible),
-        city_center_links=len(result)-len(eligible),
-        order=dict(Counter(r['order']for r in eligible)),
-        exact_prior_customer_first_links=sum(r['exactPriorCustomerFirstLink']for r in eligible),
-        latest_quarter_layout_matches=sum(r['latestQuarterLayoutMatches']for r in eligible),
-        links_with_prior_economic_offer=sum(r['priorCustomerEconomicOffer']for r in eligible),
-        customer_foundations_with_private_yield=len({(r['player'],r['customerDistrict'],r['customerPlot'])
-            for r in eligible if(r['privateYieldAtCustomerFoundation']or 0)>0}),
-        existing_quarter_links_observed_without_base=sum(r['ownedBaseAtCustomerPlacement']==0 for r in eligible))
+    summary=physical_summary(result)
+    database=root/'loaded-native-customer-database.json'
+    mapped={r['DistrictType']for r in json.loads(database.read_text())['links']}if database.is_file()else set()
     gaps=[fields(s)for s in re.findall(r'CSC_AI_CUSTOMER_ECONOMIC_GAPS ([^\r\n]+)',log)]
-    return dict(schema='csc-customer-coordination-v1',summary=summary,links=result,
+    return dict(schema='csc-customer-coordination-v2',summary=summary,links=result,
+        district_placements=district_breakdown(result,detailed['constructions'],types,mapped),
         diagnostics=dict(skip_totals={key:sum(r.get(key,0)for r in gaps)for key in
             ('referenceUnavailable','candidateUnavailable','nativeUnavailable','nativeNonpositive','unvisitedGroups')}),
-        scope='Observed links and exact prior proposals; layout logging covers the leading two Quarter offers only.')
+        scope='Physical counts deduplicate ownership changes; evidence links retain player identity. Layout logging covers the leading two Quarter offers only.')
 
 
 if __name__=='__main__':

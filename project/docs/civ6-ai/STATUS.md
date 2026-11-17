@@ -17,7 +17,10 @@ no game was launched. [Perth audit](../research/mods/csc-ai-perth-followthrough-
 exit0.23 Base-adjacent foundations,21 at+3+,eight Storekeepers/three Innkeepers,
 36/36 exact native Quarter bids and1,204 customer score writes. Government and
 Policies pass at25 with BRS/EPC. Guidance averages1.97s/max3.86s over250 turns.
-Customer directions meet in24 district links (15 Quarter-first/nine customer-first).
+Customer directions meet in20 physical district links (12 Quarter-first/eight
+customer-first), after deduplicating capture. Hubs connect3/16, Entertainment/
+Hippodromes1/10, Holy Sites1/7, Theaters2/31, Harbors0/13; CL urban sales7/28.
+[Per-type counts and correction](../research/mods/csc-ai-customer-placement-breakdown-20261117.md).
 [Run, comparison and diagnostics](../research/mods/csc-ai-restructure-regression-20261117.md).
 
 **Dockmaster survey completed:** current50/250 and earlier Fractal250 zero-turn
