@@ -1,5 +1,14 @@
 # CSC AI handoff — 17 November 2026
 
+**Later continuation:** Henno authorized one post-restructure Continents250 run,
+now active as `csc-ai-restructure-regression-20261117/continents250-02`. The shared
+controller exclusively owns the session; do not start another connection/game.
+Government and Policies passed their actual UI check at25. On completion report
+both directions of customer planning and survey usable Dockmaster layouts on
+this and earlier maps. See [current run](../research/mods/csc-ai-restructure-regression-20261117.md).
+The stopped three-map campaign itself remains stopped; earlier pause/no-run
+statements below describe the previous checkpoint.
+
 This is the starting point for continuing the research in a new chat. Read this
 page, [STATUS](STATUS.md), the opening of the [roadmap](roadmap.md), and the
 installed `civ6-ai` skill. Earlier dated checkpoints remain evidence; their
