@@ -505,6 +505,15 @@ def run(args):
     if args.observe_supplier_at is not None:
         protocol['diagnostic_supplier_boundary'] = args.observe_supplier_at
     other_source = None
+    if getattr(args,'reference_source',None):
+        require(not(args.matched_source or args.untuned or args.resume_from or args.qualification),
+                'Regression reference is for a fresh tuned game, separate from opposite-policy matched arms')
+        other_source=args.reference_source.resolve(strict=True)
+        require(load(other_source.parent/'session-closed.json')['verified'], 'Reference game did not close cleanly')
+        # Source/action reorganizations and explicit UI dependencies legitimately
+        # change package hashes. Enforce actual initial map/AI/unit parity below,
+        # without pretending this is the strict identical-package untuned arm.
+        protocol['regression_reference']=str(other_source)
     if args.matched_source:
         other_source = args.matched_source.resolve(strict=True)
         previous = load(other_source.parent / 'protocol.json')
@@ -1064,6 +1073,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--main-mod-package',action='store_true',
                         help='Accept main CSC optional CE gating; actual native capabilities must still pass preflight')
+    parser.add_argument('--reference-source',type=Path,
+                        help='Require initial world/AI/unit parity for a fresh tuned source-regression game')
     parser.add_argument('--government-screen-check',action='store_true',
                         help='Open/close Government and Policies at an inactive observer boundary; no game orders')
     for name in ('output', 'mods', 'user-root', 'binary', 'ce', 'csc'):
