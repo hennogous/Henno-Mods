@@ -13,6 +13,12 @@ The companion visual/architectural catalog is
 style demonstrated by Bakers and the CSC/Civ VI skill rules that should be
 machine-enforced rather than left to prose review.
 
+The shared SQL ownership/loading contract is
+`project/specs/reference/csc-shared-sql.yaml`.
+`GP.ECONOMY.SHARED_COMPILER` binds ordinary declarations to that pipeline;
+derived registries are compiler outputs. Use the current seven-section
+Bakers/Tailors files rather than the retired template or MAB-era definitions.
+
 ## Classifications
 
 | Classification | Meaning |

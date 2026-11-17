@@ -5,6 +5,7 @@ design_contract: project/specs/tailors/design.yaml
 gameplay_catalog: project/specs/reference/bakers-gameplay-patterns.yaml
 localization_catalog: project/specs/reference/bakers-localization-patterns.yaml
 sql_style_catalog: project/specs/reference/bakers-sql-style.yaml
+shared_sql_contract: project/specs/reference/csc-shared-sql.yaml
 
 icon_atlas_layout:
   source: gameplay_catalog
@@ -18,12 +19,15 @@ authority_order:
 
 mechanism_bindings:
   material_producer_returns:
-    implementation: bakers_modifier_pattern
+    implementation: shared_material_transactions
+    catalogue: CSC_MaterialTransactions
     participants: [BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP, BUILDING_CSC_TAILORS_FASHION_HOUSE]
     tier_totals: [1, 2, 3]
     yields: [YIELD_PRODUCTION, YIELD_GOLD]
   customer_population_sales:
-    implementation: shared_registry
+    implementation: shared_building_transactions
+    catalogue: CSC_BuildingTransactions
+    registry_role: generated_compatibility_projection
     registry: CSC_Stage3CustomerTransactions
     gameplay_output: customer_population_gameplay
     participants: [CSC_TAILORS_TAILOR_MARKET, CSC_TAILORS_TAILOR_TEMPLE]
@@ -43,7 +47,7 @@ mechanism_bindings:
     cache_keys: live_strings_or_serialized_hashes
 
 planned_outputs:
-  shared_stage3_registry: Civ Supply Chains/Data/CSC_Q_ALL_Schema.sql
+  shared_economy_schema: Civ Supply Chains/Data/CSC_Q_ALL_Schema.sql
   customer_population_gameplay: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
   core: Civ Supply Chains/Data/CSC_Q_TAILORS.sql
   gold: Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql
@@ -95,7 +99,7 @@ build_wiring:
       value: 805cc499-c534-4e0a-bdce-32fb3c53ba38
       inverse: true
   actions:
-    shared_stage3_registry:
+    shared_economy_schema:
       id: CSC_Q_ALL
       type: UpdateDatabase
       file: Data/CSC_Q_ALL_Schema.sql
@@ -108,25 +112,25 @@ build_wiring:
       load_order: 502
       criteria: []
     core:
-      id: CSC_Q_TAILORS
+      id: CSC_Q_ALL_Definitions
       type: UpdateDatabase
       file: Data/CSC_Q_TAILORS.sql
       load_order: 100
       criteria: []
     gold:
-      id: CSC_Q_TAILORS_GOLD
+      id: CSC_CoreContent
       type: UpdateDatabase
       file: Data/CSC_Q_TAILORS_GOLD.sql
       load_order: 101
       criteria: []
     monopolies:
-      id: CSC_Q_TAILORS_MC_MODE
+      id: CSC_Q_ALL_Monopolies
       type: UpdateDatabase
       file: Data/CSC_Q_TAILORS_MC_MODE.sql
       load_order: 100
       criteria: [Monopolies_Mode]
     monopolies_gold:
-      id: CSC_Q_TAILORS_MC_MODE_GOLD
+      id: CSC_Q_ALL_Monopolies_Gold
       type: UpdateDatabase
       file: Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql
       load_order: 101
@@ -189,7 +193,7 @@ build_wiring:
       id: CSC_SUIA_YieldPresentationDatabase
       type: UpdateDatabase
       file: ModSupport/ModSupport_SUIA.sql
-      load_order: 60000
+      load_order: 9999001
       criteria: [SimpleUIAdjustmentsMod]
     trade_route_yield_tooltip_suk:
       id: CSC_SUIA_YieldTooltipSupport
@@ -252,19 +256,19 @@ phase_validation:
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage3:
-    required_outputs: [shared_stage3_registry, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
+    required_outputs: [shared_economy_schema, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage4:
-    required_outputs: [shared_stage3_registry, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk, wonder_service_city_breakdown_lua, trade_route_state_ui, trade_route_state_context, trade_route_state_gameplay, trade_route_preview_bts, trade_route_preview_unit_panel, monopolies_localization_source, monopolies_localization_generated]
+    required_outputs: [shared_economy_schema, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk, wonder_service_city_breakdown_lua, trade_route_state_ui, trade_route_state_context, trade_route_state_gameplay, trade_route_preview_bts, trade_route_preview_unit_panel, monopolies_localization_source, monopolies_localization_generated]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   compatibility:
-    required_outputs: [shared_stage3_registry, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
+    required_outputs: [shared_economy_schema, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   localization_and_integration:
-    required_outputs: [shared_stage3_registry, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk, wonder_service_city_breakdown_lua, trade_route_state_ui, trade_route_state_context, trade_route_state_gameplay, trade_route_preview_bts, trade_route_preview_unit_panel, monopolies_localization_source]
+    required_outputs: [shared_economy_schema, customer_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk, wonder_service_city_breakdown_lua, trade_route_state_ui, trade_route_state_context, trade_route_state_gameplay, trade_route_preview_bts, trade_route_preview_unit_panel, monopolies_localization_source]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
 validation_ownership:
@@ -286,6 +290,9 @@ sql_style_profiles:
 
 implementation_rules:
   - GP.FILE.SECTION_ORDER
+  - GP.ECONOMY.SHARED_COMPILER
+  - "Author ordinary terms in core section 5 and native bindings in section 6; generated registries are outputs, not a second partner list."
+  - "Reuse shared Schema/Common, transaction compiler, bundled adjacency processor, material-host reconciliation and final route reader through shared_sql_contract."
   - GP.REPLACEMENT.DIRECT_ONE_LEVEL
   - GP.GOLD.COMPANION_SPLIT
   - "Every referenced LP.* pattern's authorship_mode is binding: strict_template wording is substituted, deterministic_composition is generated from implementation data, structured_original_prose preserves architecture but must be freshly written, and curated_integrated_prose requires editorial integration across all participating Quarters."
@@ -306,7 +313,7 @@ replacement_policy:
   explicit_direct_expansion:
     - BuildingModifiers
     - building_and_district_description_appends
-    - MAB_TypeTags_and_generated_return_adjacencies
+    - CSC_TypeTags_and_generated_return_adjacencies
     - Lua_building_and_district_type_lookups
   never_expand: [named_wonders, CSC_owned_buildings_and_districts]
   invariants:
@@ -430,11 +437,11 @@ phases:
         static_assertions:
           - "Harbor: Tailors +1 Gold; Harbor +1 Production."
           - "Commercial Hub/Holy Site/Theater: Tailors +1 Gold; customer +1 Culture."
-          - "MAB customer tags and generated return adjacencies explicitly include each direct unique district replacement exactly once."
+          - "CSC customer tags and generated return adjacencies explicitly include each direct unique district replacement exactly once."
           - "Seven Tailors policy mappings add one extra return per adjacent owned Quarter: Harbor Production for Naval Infrastructure/Economic Union; Commercial Hub Culture for Town Charters/Economic Union; Holy Site Culture for Scripture; Theater Culture for Aesthetics/Sports Media. Direct unique replacements inherit exactly once."
           - "Shared policy-return regression verifies compiled policy attachments, all six neighboring Quarter counts, policy slot/removal/obsoletion refresh, and one native-plus-custom placement total per yield with combined Quarter source sentences."
         replacement_binding:
-          MAB_TypeTags_and_generated_return_adjacencies: explicit_direct_one_level
+          CSC_TypeTags_and_generated_return_adjacencies: explicit_direct_one_level
         runtime_scenarios:
           - "Test every customer district separately and verify both transaction directions."
           - "Slot/remove each relevant policy beside two owned Quarters: customer returns change from +2 to +4 and back, while Quarter sales remain unchanged. Check a direct unique replacement and native-plus-custom placement totals."
@@ -616,7 +623,7 @@ phases:
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.POP_CUSTOMERS]
         gameplay_patterns: [GP.BUILDING.CUSTOMER_TRANSACTION, GP.SCALING.PER_POPULATION_DECIMAL, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns: [LP.CUSTOMER.BILATERAL_BULLET, LP.PEDIA.CUSTOMER_APPEND]
-        outputs: [shared_stage3_registry, customer_population_gameplay, core, gold, localization_source]
+        outputs: [shared_economy_schema, customer_population_gameplay, core, gold, localization_source]
         static_assertions:
           - "Each adjacent Temple and Market grants its city 0.1 Culture per citizen through a distinct child modifier, so both buildings in one customer city stack."
           - "The Tailor city gets 0.1 Production and 0.1 Gold per citizen of each eligible adjacent Temple and Market city; both families in one customer city contribute separately."
@@ -633,11 +640,11 @@ phases:
           declared_customer_city_culture: "0.1 * customer_city_population * qualifying_adjacent_market_or_temple_count_in_customer_city"
           customer_side:
             method: shared_population_property_bit_bridge
-            customer_properties: [CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT, CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT]
+            customer_properties: [CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT_Q8, CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT_Q8]
             modifier_type: MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION
             distinct_child_modifier_per_family: true
             declared_amount_per_citizen: 0.1
-            bakers_engine_amount: 0.105
+            bakers_engine_amount: 0.101
           tailor_return_side:
             method: shared_customer_population_lua_property_bit_bridge
             reference_script: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
@@ -645,8 +652,8 @@ phases:
             deduplication_key: [seller_city, transaction_id, customer_plot]
             replacement_traversal: direct_one_level
             declared_amount_per_customer_citizen: 0.1
-            bakers_engine_amount: 0.105
-            amount_scale: 10000
+            bakers_engine_amount: 0.101
+            amount_scale: 256
           invariant: "Stage 3 population returns use the shared registry scanner and property-bit bridge. Direct one-level customer replacements are expanded by the shared scanner; customer Culture uses distinct Market and Temple property-bit families owned by the customer city centre, so supplier changes invalidate delivery immediately."
         replacement_binding:
           market_and_temple_presence_requirements: engine_inherited
@@ -1002,7 +1009,7 @@ resolved_engine_decisions:
 
   - id: E.DECIMAL_POPULATION
     affects: I.STAGE3_POP_CUSTOMERS
-    resolution: "Use the Bakers direct customer-side per-population effect through customer-owned property-bit modifiers and extend the shared customer-population Lua/property-bit bridge for the cross-city Tailor returns. Preserve the Bakers 0.105 engine amount while presenting the designed 0.1 value."
+    resolution: "Use the Bakers direct customer-side per-population effect through customer-owned property-bit modifiers and extend the shared customer-population Lua/property-bit bridge for the cross-city Tailor returns. Preserve the Bakers 0.101 calibrated amount while presenting the designed 0.1 value."
     evidence:
       - Civ Supply Chains/Data/CSC_Q_BAKERS.sql
       - Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql

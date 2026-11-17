@@ -1,6 +1,7 @@
 """Execute the Fashion House production Lua against controlled game API state."""
 from pathlib import Path
 import re
+import sys
 import unittest
 from lupa import LuaRuntime
 
@@ -34,7 +35,25 @@ class FashionWorld(unittest.TestCase):
 
 class FashionPopulationTests(FashionWorld):
     def setUp(self):
-        super().setUp();self.load('CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua');self.refresh()
+        super().setUp()
+        # Production now reads the shared economic catalogue, not hard-coded
+        # Fashion House partners. Load its real terms while keeping physical
+        # cities/plots controlled by this fixture.
+        sys.path.insert(0, str(ROOT/'project/tools/transactions'))
+        from population_catalogue_fixture import compile_catalogue
+        db=compile_catalogue()
+        headers=[dict(r)for r in db.execute("SELECT * FROM CSC_BuildingTransactions WHERE QuarterKey='TAILORS' AND QuantityKind='PARTNER_POPULATION_STEPS'")]
+        identities={r['TransactionId']for r in headers}
+        legs=[dict(r)for r in db.execute('SELECT * FROM CSC_BuildingTransactionYields')if r['TransactionId']in identities]
+        for table,rows in (('CSC_BuildingTransactions',headers),('CSC_BuildingTransactionYields',legs)):
+            self.lua.globals().GameInfo[table]=self.lua.globals().fixtureInfo(self.lua.table_from(rows,recursive=True))
+        for row in db.execute('SELECT BuildingType,PrereqDistrict,IsWonder FROM Buildings'):
+            building=self.lua.globals().GameInfo.Buildings[row[0]]
+            if building is not None:
+                building.PrereqDistrict=row[1]
+                building.IsWonder=row[2]
+        db.close()
+        self.load('CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua');self.refresh()
     def refresh(self):self.lua.globals().CSC_RefreshCustomerPopulationReturns()
 
     def test_customer_threshold_controls_both_sides(self):
@@ -293,6 +312,11 @@ class WonderPresentationTests(FashionWorld):
 class FashionTradeTests(FashionWorld):
     def setUp(self):
         super().setUp()
+        sys.path.insert(0, str(ROOT/'project/tools/transactions'))
+        from route_fixture import bind
+        bind(self.lua)
+        # bind() already loads the shared route modules that gameplay includes.
+        self.execute('function include()end')
         self.execute("""
             addBuilding(seller,'BUILDING_CSC_TAILORS_TAILOR');
             seller:SetProperty('CSC_TAILORS_TAILOR_SUPPLIED',1);

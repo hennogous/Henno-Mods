@@ -11,6 +11,9 @@ from pathlib import Path
 
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sql_architecture import validate_core
+
 
 LAYOUT_SPEC = importlib.util.spec_from_file_location(
     "csc_format_sql_layout", Path(__file__).with_name("format_sql_layout.py")
@@ -131,6 +134,9 @@ def validate_sql_style(
                 subsections.append(title)
 
     if profile == "core":
+        # Headings alone cannot enforce ownership: reject misplaced economic
+        # terms, copied projections and repeated declaration batches as well.
+        errors.extend(validate_core(path))
         required_sections = [
             value.replace("{QUARTER}", quarter_upper)
             for value in policy["core_required_sections"]
@@ -140,6 +146,8 @@ def validate_sql_style(
             errors.append(
                 "missing or out-of-order major sections: " + ", ".join(missing)
             )
+        elif major_sections != required_sections:
+            errors.append("core files require exactly the seven numbered sections; remove extra or duplicate headings")
         for subsection in policy["core_required_subsections"]:
             if subsection not in subsections:
                 errors.append(f"missing required subsection: {subsection}")

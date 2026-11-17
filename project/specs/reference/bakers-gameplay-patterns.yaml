@@ -25,16 +25,6 @@ quarter_icon_atlas_layout:
   stage3_service: 9
   stage4_service: 10
 
-quarter_icon_atlas_layout:
-  district_normal: 0
-  district_fow: 1
-  stage2_building: 4
-  stage3_building: 5
-  stage4_building: 6
-  stage2_service: 8
-  stage3_service: 9
-  stage4_service: 10
-
 patterns:
   - id: GP.FILE.SECTION_ORDER
     classification: reusable_invariant
@@ -43,6 +33,18 @@ patterns:
       - "Quarter SQL has seven sections: types, resources, Stage 1 material improvements, Quarter definition/modifiers, Stage 2-4 buildings/Services/economic terms, plumbing, UI/art."
       - "Building/material/route terms are authored with the economy in section 5; native bindings, property consumers and requirement details live in section 6."
       - "Gold and Monopolies & Corporations deltas remain in companion files."
+
+  - id: GP.ECONOMY.SHARED_COMPILER
+    classification: reusable_invariant
+    source_anchor: "CSC_Q_ALL_Schema.sql, CSC_Q_ALL_Common.sql and CSC_Q_ALL_TransactionProcessor.sql"
+    invariant:
+      - "Use project/specs/reference/csc-shared-sql.yaml for shared inputs, ownership and load phases."
+      - "Author ordinary material/building/route terms in core section 5 and stable native bindings in section 6."
+      - "Gold appends yield legs to the same transaction identity; M&C adds conditional increments, not another complete base payout."
+      - "Shared compilation owns fixed/material effects and derived customer/Wonder registries; retained Service gates and property consumers stay explicit."
+      - "Use the shared population and route scanners and their actual Q8/whole-stack units. Do not recreate per-Quarter scanners."
+      - "Core and optional declarations load before compilation; material-host reconciliation and the final route read model keep their late phases."
+      - "A grouped action may own several files; each file must retain exactly one owner and its expected type, criteria, phase and dependency order."
 
   - id: GP.TYPE.QUARTER_OBJECTS
     classification: reusable_parameterized
@@ -99,16 +101,16 @@ patterns:
     parameters: [quarter, material_classes, yield, amount]
     invariant:
       - "Use the shared CSC material-adjacency configuration."
-      - "Do not hand-duplicate generated MAB material rows."
+      - "Do not hand-duplicate generated CSC material rules."
 
   - id: GP.DISTRICT.BILATERAL_ADJACENCY
     classification: reusable_parameterized
-    source_anchor: "CSC_Q_BAKERS.sql: Ruivo_New_Adjacency district transactions"
+    source_anchor: "CSC_Q_BAKERS.sql: CSC_AdjacencyRules generated district transactions"
     parameters: [source_district, customer_districts_or_tags, source_yield, return_yield, amounts]
     invariant:
       - "Both sides of the exchange are specified and tested."
-      - "Use MAB tags where the design addresses a customer class."
-      - "Every class-valued MAB CustomAdjacentObject has a Ruivo_CAO row whose Name resolves through a readable localization key; a player-facing tooltip must never fall back to a raw CLASS_CSC_* identifier."
+      - "Use CSC TypeTags where the design addresses a customer class."
+      - "Every class-valued CSC CustomAdjacentObject has a CSC_AdjacencyObjects row whose Name resolves through a readable localization key; a player-facing tooltip must never fall back to a raw CLASS_CSC_* identifier."
       - "Quarter-specific tags with the same player-facing role may share the same generic localized role name and overlay, as Bakers and Tailors goods-provider classes share LOC_CLASS_CSC_GOODS_PROVIDER_NAME and CSC_Goods_Provider."
 
   - id: GP.DISTRICT.RIVER_EDGES
@@ -132,7 +134,7 @@ patterns:
     parameters: [source_building, destination_building, source_yields, return_yields]
     invariant:
       - "Local exchanges require both buildings to be present and functioning."
-      - "Follow the Bakery and Mill wiring: attach each yield modifier to the building that sends it, and use its BuildingType argument to target the local building that receives it. The source building's presence activates the return; do not attach the return to its recipient and gate it with a city-has-source requirement."
+      - "Declare a SAME_CITY transaction and directional SOURCE/PARTNER yield legs. Bind the existing native identity template in section 6; the shared compiler generates attachments and amounts. Do not copy generated modifier rows back into the Quarter."
       - "If a later-stage sender has no Buildings row yet, register its attachment only when that row exists."
       - "Every direction has a matching design and localization obligation."
 
@@ -146,7 +148,7 @@ patterns:
       - "Each eligible adjacent customer site is a separate transaction. Distinct qualifying building families in one city remain separate, as do multiple qualifying sites of one family when the game permits them. Customer-side effects and every Quarter return yield stack per transaction."
       - "For a Stage 3 per-citizen transaction, the seller's total for each return yield is its per-customer-population rate times the sum, over customer cities, of that city's population times its number of qualifying adjacent customer sites. A customer city's total for each supply yield is its per-citizen rate times its population times its number of qualifying adjacent sites for that seller. The seller and customer may be the same city or different cities."
       - "This population formula is the standard for every Stage 3 building. Bakery contributes one Market transaction row; Tailor contributes separate Market and Temple rows. The Bakery's single customer site per city is the N=1 case."
-      - "Declare every Stage 3 producer/customer building-family pair in CSC_Stage3CustomerTransactions, including seller and customer district/building types, distinct transaction ID, seller population and return properties, optional customer yield property, and calibrated per-population amount. The shared gameplay Lua reads the registry and scans all Stage 3 pairs; do not add Quarter-specific Stage 3 population scanners."
+      - "Declare Stage 3 pairs in CSC_BuildingTransactions with quantity kind PARTNER_POPULATION and their legs in CSC_BuildingTransactionYields. The common processor generates CSC_Stage3CustomerTransactions as a compatibility projection. Shared gameplay Lua reads the canonical catalogue; do not author another partner registry or Quarter-specific scanner."
       - "Where two customer families can grant the same city yield through attach wrappers, each wrapper references its own child effect modifier ID; sharing one child ID can collapse the effects."
       - "For Lua population returns, identify the seller city, registry transaction ID, and adjacent customer plot. This distinguishes Market and Temple in one city and multiple customer sites of one family. Sum all qualifying customer-population contributions before scaling each Quarter return; deduplicate repeated scans of the same transaction only."
       - "Customer-side SQL attach modifiers and seller-side SQL amount-bit modifiers must match the registry's customer families and property names. A NULL customer yield property means SQL attaches the customer yield directly; otherwise the shared Lua writes that property's amount bits."
@@ -216,7 +218,7 @@ patterns:
       explicit_direct_one_level:
         - BuildingModifiers
         - building_and_district_description_appends
-        - MAB_TypeTags_and_generated_return_adjacencies
+        - CSC_TypeTags_and_generated_return_adjacencies
         - Lua_building_and_district_type_lookups
       never_expand:
         - named_wonders

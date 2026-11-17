@@ -59,7 +59,7 @@ Focused checks run with:
 py -3 -m unittest discover -s project/tools/quarter_contracts/tests -p test_stage4_population_contract.py -v
 ```
 
-The behavior tests execute the unchanged Cafe gameplay script with a small game
+The behavior tests execute the shared customer-population script with the compiled economic catalogue and a small game
 API fixture. They cover unequal producer/customer populations, thresholds beyond
 the SQL ladder, rounding before summation, multiple customer sites/sellers,
 same-city and unique-replacement transactions, and clearing raw/bit properties.
@@ -99,7 +99,8 @@ explicit `CSC_TradeRouteYieldPresentation` entry; the UI must consume that
 registry rather than infer eligibility from modifier names. The registry schema
 and rows live in a dedicated `ModSupport` SQL output, never in core shared or
 Quarter SQL. Its `UpdateDatabase` action and the `Suk_YieldTT` replacement are
-both gated by `SimpleUIAdjustmentsMod`, with the database action loading first.
+both gated by `SimpleUIAdjustmentsMod`. The database projection loads after the
+final route reader; the UI sees the completed GameInfo data when its context starts.
 Registry entry IDs use the economic tier rather than the implementation building:
 `CSC_<QUARTER>_IMPORT_CONSUMER_<YIELD>` for Stage 3 and
 `CSC_<QUARTER>_IMPORT_SPECIALTY_<YIELD>` for Stage 4. Modifier and property IDs
@@ -236,3 +237,35 @@ original bugs. Native FireTuner tests remain necessary to establish engine event
 and yield behavior; the offline graph evaluator cannot prove native delivery.
 `CSC_GAMEPLAY_DATABASE` may select an immutable XP2 gameplay database fixture;
 validation replays current Tailors source into an in-memory copy.
+
+## Current SQL implementation architecture
+
+Every implementation contract names
+`shared_sql_contract: project/specs/reference/csc-shared-sql.yaml`. That shared
+contract owns the common input files, activation conditions, dependency order,
+source-table sections and generated-registry ownership. It is reused by every
+Quarter; do not copy its schema, compilers or scanners into Quarter outputs.
+
+Main files use exactly seven numbered sections. Section 5 owns authored ordinary
+material/building/route terms; section 6 owns native bindings, consumers and
+requirements; section 7 owns UI/art. Compatible declarations form one batch per
+table. All literal Districts/Buildings fields carry their column labels. The
+formatter still enforces aligned 1–6-column rows and vertical 7+-column lists.
+
+The core style check enforces those rules through `sql_architecture.py`.
+`validate_quarter.py` also checks shared schema ownership and processor loading,
+including optional mode/venue inputs. Phase wiring checks permit compatible
+siblings in a consolidated action and reject duplicate registrations, changed
+activation conditions and merged runtime contexts.
+
+For a focused maintenance check independent of canonical design/hash approvals:
+
+```powershell
+python project/tools/quarter_contracts/validate_sql_architecture.py tailors
+python -m unittest discover -s project/tools/quarter_contracts/tests -p test_sql_architecture.py
+```
+
+The normal contract and phase checks retain their design and acceptance gates.
+A successful architecture check does not advance those gates or rewrite hashes.
+For a new Quarter, use the current Bakers/Tailors files and shared patterns;
+the old `CSC_Q__TEMPLATE.sql` is not the implementation template.

@@ -28,7 +28,7 @@ outputs of the shared processor.
 ```mermaid
 flowchart TD
     S[95: Schema then Common] --> Q[100: Quarter definitions]
-    Q --> G[150: Gold declarations]
+    Q --> G[101: Gold declarations]
     G --> M[Conditional M&C and venue definitions]
     M --> P[2500: Transaction processor]
     P --> N[Native gameplay modifiers and gates]
@@ -87,11 +87,10 @@ checks, nine action/packaging tests, two campaign-package tests and the lens
 fixture suite. An activation-contract audit also matched all 136 file
 registrations, with only the four documented implicit-to-explicit orders.
 
-The wider Quarter sweep also reports older Fashion House population/trade
-fixtures that lack today's catalogue/include setup (eight test methods), plus
-the global design/localization lock check. Their runtime source and fixtures are
-unchanged here. Current catalogue tests cover the Fashion House payouts;
-unrelated design/localization locks were left for their owning changes.
+The Fashion House population/trade fixtures now load the real compiled
+catalogue and shared route modules; all 21 tests in that suite pass. The global
+design/localization lock check still reports existing document drift and remains
+separate from the focused architecture check.
 
 Historical reports retain their original filenames as evidence of those builds.
 Use this document and current action JSON for today's source paths.
@@ -129,3 +128,5 @@ shared processors in disposable copies of the existing gameplay cache produced
 identical contents across 466 tables and 64,196 rows. The 16-configuration
 transaction regression, AI economy tests and both CSC style profiles also pass.
 The source game cache was read-only; no game was started.
+
+Implementation enforcement: [Quarter validation](../quarters/QUARTER-VALIDATION.md#shared-sql-architecture-gate).

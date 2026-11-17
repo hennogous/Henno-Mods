@@ -1,7 +1,7 @@
 # Quarter contract workflow
 
-> **Documentation audit — 2026-09-12: Needs refresh.** The clean Tailors baseline and blanket deferral of art are obsolete. control.yaml records foundation, materials_and_stage2, stage3 and art_integration ready_for_review with user approvals; acceptance is separate. Its phase approval_rule supersedes the old whole-contract approval sequence.
-> Classification: Quarter workflow. See the [full audit](../DOCUMENT-AUDIT.md).
+Updated 17 November 2026: shared economic compilation, seven-section SQL and
+consolidated actions are the current implementation baseline.
 
 This workflow turns a Quarter design into gameplay without allowing the
 implementation to drift toward a generic interpretation. Tailors is the first
@@ -144,3 +144,30 @@ After Tailors passes all non-art runtime scenarios:
 
 This makes later Quarters faster without treating an accidental implementation
 detail as a permanent template rule.
+
+## Implementing against the current shared economy
+
+Before adding a Quarter, read its implementation contract together with
+`project/specs/reference/csc-shared-sql.yaml` and the current Bakers/Tailors core
+files. Register the shared contract in `shared_sql_contract`. It defines the
+common SQL inputs; those inputs are reused, rather than generated per Quarter.
+
+1. Establish the seven numbered sections from the SQL style catalog.
+2. Register Types, resource/district tags, improvement hosts and the Quarter.
+3. Put buildings, Services and ordinary economic terms in section 5. Author
+   building/material transaction identities and directional payout legs there;
+   Gold companions add legs to those identities and M&C adds conditional deltas.
+4. Bind native identities in section 6. Keep explicit Service gates, amount
+   consumers and dependent temporary generators there. Let the common compiler
+   generate ordinary effects and partner/Wonder registries.
+5. Put descriptions, notification observations, previews and art in section 7.
+6. Wire each output once with its intended criteria and load phase. Compatible
+   declarative files can share an action; UI/gameplay contexts remain individual.
+7. Run the focused SQL architecture check, then the contract/phase checks and
+   the affected gameplay regressions. Resolve any design/hash drift explicitly.
+
+The shared population scanner reads canonical building transactions. Stage 3
+uses the current 256-scaled Q8 aggregate rate (15 bits, capped at 32767); the
+calibrated 0.101 input represents the designed 0.1 rate under that encoding.
+Stage 4 retains whole per-customer population steps. These implementation units
+are checked against the existing gameplay, rather than inferred from old files.

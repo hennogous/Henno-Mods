@@ -92,18 +92,28 @@ def validate_action_wiring(
     for output_key, expected in wiring.get("actions", {}).items():
         if output_key not in required_outputs:
             continue
-        matches = [action for action in actions if action.get("id") == expected.get("id")]
+        # Several Quarters/imports may share one action. Each contracted file
+        # must still have exactly one owner with the right ID and activation.
+        matches = [action for action in actions if expected.get("file") in action_file_paths(action)]
         if len(matches) != 1:
             failures.append(
-                f"{output_key}: expected exactly one action {expected.get('id')}, found {len(matches)}"
+                f"{output_key}: expected exactly one action owning {expected.get('file')}, found {len(matches)}"
             )
             continue
         actual = matches[0]
+        if actual.get("id") != expected.get("id"):
+            failures.append(f"{output_key}: action ID is {actual.get('id')}, expected {expected.get('id')}")
         if actual.get("type") != expected.get("type"):
             failures.append(
                 f"{output_key}: action type is {actual.get('type')}, expected {expected.get('type')}"
             )
-        if action_file_paths(actual) != [expected.get("file")]:
+        # Context-creating actions stay individual; declarative/import actions
+        # can have siblings without weakening their load-order/criteria checks.
+        paths = action_file_paths(actual)
+        if paths.count(expected.get("file")) != 1 or (
+            actual.get("type") in ("AddGameplayScripts", "AddUserInterfaces", "ReplaceUIScript")
+            and paths != [expected.get("file")]
+        ):
             failures.append(
                 f"{output_key}: action files are {action_file_paths(actual)}, expected {[expected.get('file')]}"
             )

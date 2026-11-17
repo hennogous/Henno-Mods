@@ -10,6 +10,7 @@
     "gameplay_catalog",
     "localization_catalog",
     "sql_style_catalog",
+    "shared_sql_contract",
     "icon_atlas_layout",
     "planned_outputs",
     "build_wiring",
@@ -23,6 +24,7 @@
     "open_engine_decisions"
   ],
   "properties": {
+    "shared_sql_contract": {"const": "project/specs/reference/csc-shared-sql.yaml"},
     "mechanism_bindings": {"type": "object", "additionalProperties": {"type": "object"}},
     "schema_version": {"const": 1},
     "quarter": {"type": "string", "minLength": 1},

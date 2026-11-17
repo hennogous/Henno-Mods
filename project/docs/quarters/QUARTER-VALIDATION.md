@@ -61,7 +61,7 @@ identical file. It checks the reusable house structure:
 - vertically aligned values in wide `Districts` and `Buildings` comment blocks;
 - no Bakers identifiers in Tailors;
 - Gold-only and M&C companion boundaries;
-- no redefinition of infrastructure owned by `CSC_Q_ALL.sql`.
+- no redefinition of tables owned by shared Schema/Common.
 
 This test improves reviewability and catches architectural drift, but it cannot
 prove modifier semantics or gameplay behavior.
@@ -149,3 +149,19 @@ integrations.
 
 Art validation is a separate final phase. Existing Tailors art is preserved, but
 no art property contract is inferred before gameplay behavior is accepted.
+
+## Shared SQL architecture gate
+
+```powershell
+python project/tools/quarter_contracts/validate_sql_architecture.py tailors
+```
+
+This checks section/table ownership, declaration batching, per-value definition
+labels, shared file registration, exact load phases and criteria, Schema-before-
+Common ordering inside grouped actions, declaration-before-compiler ordering,
+and late material/route projections. It rejects retired SQL sidecars, copied
+persistent schema and hand-authored generated partner registries.
+
+The standard style/contract/phase commands invoke these checks too. The focused
+command lets maintenance proceed while an unrelated canonical document or
+localization lock is under review. It never changes approval state or hashes.

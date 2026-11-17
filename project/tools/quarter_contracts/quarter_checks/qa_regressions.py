@@ -79,8 +79,9 @@ def validate_mechanism_bindings(db, implementation, phase):
     if phase == 'foundation':
         return failures
     material = bindings.get('material_producer_returns', {})
-    if material.get('implementation') != 'bakers_modifier_pattern':
-        failures.append('Contract must declare the existing Bakers material-return pattern')
+    if (material.get('implementation') != 'shared_material_transactions'
+            or material.get('catalogue') != 'CSC_MaterialTransactions'):
+        failures.append('Contract must bind material returns to the shared gameplay catalogue/compiler')
     if set(material.get('participants', [])) != {'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP', 'BUILDING_CSC_TAILORS_FASHION_HOUSE'}:
         failures.append('Material contract must cover both Base and Specialty producers')
     if material.get('tier_totals') != [1, 2, 3] or set(material.get('yields', [])) != {'YIELD_PRODUCTION', 'YIELD_GOLD'}:
@@ -94,6 +95,9 @@ def validate_mechanism_bindings(db, implementation, phase):
         failures.append('Contract must bind Services to the shared save-compatible notification handler')
     if phase in ('stage3', 'stage4'):
         customer = bindings.get('customer_population_sales', {})
+        if (customer.get('implementation') != 'shared_building_transactions'
+                or customer.get('catalogue') != 'CSC_BuildingTransactions'):
+            failures.append('Population sales must use the shared building-transaction catalogue')
         if customer.get('registry') != 'CSC_Stage3CustomerTransactions' or customer.get('customer_delivery') != 'customer_owned_property_bits':
             failures.append('Contract must declare immediate customer-owned population delivery')
         actual = {r[0] for r in db.execute("SELECT TransactionId FROM CSC_Stage3CustomerTransactions WHERE TransactionId LIKE 'CSC_TAILORS_%'")}

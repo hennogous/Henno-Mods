@@ -15,6 +15,9 @@ from typing import Any
 import jsonschema
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sql_architecture import load_contract as load_sql_contract, validate_pipeline
+
 
 ROOT = Path(__file__).resolve().parents[3]
 SPEC_ROOT = ROOT / "project" / "specs"
@@ -94,34 +97,6 @@ def validate_schema(instance: dict[str, Any], schema_name: str, result: Validati
         result.error(f"{schema_name} {location}: {failure.message}")
 
 
-def validate_icon_atlas_layout(
-    gameplay_catalog: dict[str, Any],
-    implementation: dict[str, Any],
-    result: Validation,
-) -> dict[str, int]:
-    catalog_layout = gameplay_catalog.get("quarter_icon_atlas_layout")
-    if catalog_layout != QUARTER_ICON_ATLAS_LAYOUT:
-        result.error(
-            "gameplay catalog quarter_icon_atlas_layout must match the shared "
-            "CSC district/building/service convention"
-        )
-        catalog_layout = QUARTER_ICON_ATLAS_LAYOUT
-
-    contract = implementation.get("icon_atlas_layout", {})
-    overrides = contract.get("overrides", {})
-    if not isinstance(overrides, dict):
-        return dict(catalog_layout)
-    effective = dict(catalog_layout)
-    effective.update(overrides)
-    duplicate_indices = sorted(
-        index for index in set(effective.values()) if list(effective.values()).count(index) > 1
-    )
-    if duplicate_indices:
-        result.error(
-            "icon_atlas_layout assigns multiple semantic roles to index(es): "
-            + ", ".join(str(index) for index in duplicate_indices)
-        )
-    return effective
 
 
 def validate_icon_atlas_layout(
@@ -188,33 +163,6 @@ def resolve_design_ref(document: Any, reference: str) -> tuple[bool, Any]:
     return True, current
 
 
-def phase_design_sha256(
-    design: dict[str, Any], implementation: dict[str, Any], phase_id: str
-) -> str:
-    """Hash only the canonical design subtrees consumed by one phase."""
-    phase = next(
-        (item for item in implementation.get("phases", []) if item.get("id") == phase_id),
-        None,
-    )
-    if phase is None:
-        raise ValueError(f"unknown phase {phase_id}")
-    references = sorted(
-        {
-            reference
-            for requirement in phase.get("requirements", [])
-            for reference in requirement.get("design_refs", [])
-        }
-    )
-    resolved: list[dict[str, Any]] = []
-    for reference in references:
-        found, value = resolve_design_ref(design, reference)
-        if not found:
-            raise ValueError(f"{phase_id}: unresolved design reference {reference}")
-        resolved.append({"reference": reference, "value": value})
-    payload = json.dumps(
-        resolved, ensure_ascii=False, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest()
 
 
 def phase_design_sha256(
@@ -457,10 +405,16 @@ def validate_trade_route_yield_presentation_requirement(
         )
     registry_order = registry_action.get("load_order")
     ui_order = ui_action.get("load_order")
-    if not isinstance(registry_order, int) or not isinstance(ui_order, int) or registry_order >= ui_order:
-        result.error(
-            f"{requirement_id}: presentation registry must load before Suk_YieldTT"
-        )
+    if not isinstance(registry_order, int) or not isinstance(ui_order, int):
+        result.error(f"{requirement_id}: presentation actions need explicit numeric load orders")
+    elif implementation.get("shared_sql_contract"):
+        # Database assembly completes before UI contexts run. Comparing a DB
+        # action's numeric order with ReplaceUIScript would reject the late
+        # route projection even though the UI sees its completed GameInfo rows.
+        shared = load_sql_contract(ROOT, implementation["shared_sql_contract"])
+        reader_order = shared["files"]["route_reader"]["load_order"]
+        if registry_order <= reader_order:
+            result.error(f"{requirement_id}: presentation registry must load after the final route reader")
 
 
 def validate_trade_route_yield_presentation_uniqueness(
@@ -754,12 +708,24 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
     validate_art_property_naming(design, result)
     validate_schema(implementation, "quarter-implementation.schema.json", result)
     validate_schema(control, "quarter-control.schema.json", result)
+    # Shared SQL is reused by every Quarter. Validate the actual activation and
+    # declaration/processor order rather than asking each implementation to
+    # recreate its own schemas, scanners or compiled partner registries.
+    shared_contract = implementation.get("shared_sql_contract")
+    if shared_contract:
+        try:
+            shared = load_sql_contract(ROOT, shared_contract)
+            manifest = ROOT / implementation["build_wiring"]["action_manifest"]
+            actions = json.loads(manifest.read_text(encoding="utf-8"))
+            for failure in validate_pipeline(ROOT, shared, actions):
+                result.error("shared SQL: " + failure)
+        except (OSError, KeyError, TypeError, ValueError, yaml.YAMLError) as failure:
+            result.error(f"shared SQL contract could not be validated: {failure}")
     localization_catalog_path = ROOT / implementation["localization_catalog"]
     for failure in LOCALIZATION_PATTERNS.validate_catalog(
         localization_catalog, localization_catalog_path
     ):
         result.error(f"localization catalog: {failure}")
-    validate_icon_atlas_layout(gameplay_catalog, implementation, result)
     validate_icon_atlas_layout(gameplay_catalog, implementation, result)
 
     for name, document in (

@@ -1,0 +1,106 @@
+schema_version: 1
+purpose: Shared SQL ownership and loading contract for every Quarter implementation.
+
+# These are inputs reused by each Quarter, not files to copy into its output.
+files:
+  adjacency_schema:
+    file: Lua_UI/Adjacencies/CSC_AdjacencySchema.sql
+    load_order: 90
+    criteria: []
+  adjacency_sources:
+    file: Lua_UI/Adjacencies/CSC_AdjacencySources.sql
+    load_order: 90
+    criteria: []
+  schema:
+    file: Data/CSC_Q_ALL_Schema.sql
+    load_order: 95
+    criteria: []
+  common:
+    file: Data/CSC_Q_ALL_Common.sql
+    load_order: 95
+    criteria: []
+  transactions:
+    file: Data/CSC_Q_ALL_TransactionProcessor.sql
+    load_order: 2500
+    criteria: []
+  adjacencies:
+    file: Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql
+    load_order: 3000
+    criteria: []
+  ai_connectors:
+    file: Data/CSC_Q_ALL_AI_Connectors.sql
+    load_order: 3001
+    criteria: [CSC_CE_SupplierExclusion]
+  material_hosts:
+    file: Data/CSC_Q_ALL_MaterialHosts.sql
+    load_order: 800010
+    criteria: []
+  route_reader:
+    file: Data/CSC_Q_ALL_TradeRouteReader.sql
+    load_order: 9999000
+    criteria: []
+
+dependency_order: [adjacency_schema, adjacency_sources, schema, common, transactions, adjacencies, ai_connectors, material_hosts, route_reader]
+
+# The compiler must see all authored terms, including optional venue/mode legs.
+declaration_tables:
+  - CSC_MaterialTransactions
+  - CSC_MaterialTransactionYields
+  - CSC_BuildingTransactions
+  - CSC_BuildingTransactionYields
+  - CSC_TradeRouteChannels
+
+# Main-file ownership. Native Service/amount consumers remain explicit plumbing.
+core_sections:
+  Types: [1]
+  DynamicModifiers: [1]
+  Tags: [2]
+  TypeTags: [2]
+  ImprovementModifiers: [3]
+  Districts: [4]
+  CSC_QuarterMaterialAdjacencyConfig: [4]
+  CSC_QuarterPolicyAdjacencyConfig: [4]
+  Buildings: [5, 7] # Section 7 may update descriptions, never define buildings.
+  Buildings_XP2: [5]
+  BuildingPrereqs: [5]
+  MutuallyExclusiveBuildings: [5]
+  Building_CitizenYieldChanges: [5]
+  CSC_QuarterFlowBuildings: [5]
+  CSC_MaterialTransactions: [5]
+  CSC_MaterialTransactionYields: [5]
+  CSC_BuildingTransactions: [5]
+  CSC_BuildingTransactionYields: [5]
+  CSC_TradeRouteChannels: [5]
+  CSC_BuildingTransactionBindings: [6]
+  CSC_BuildingTransactionFixedBindings: [6]
+  CSC_MaterialTransactionBindings: [6]
+  CSC_MaterialTransactionGateBindings: [6]
+  CSC_TradeRoutePayoutBindings: [6]
+  RequirementSets: [6]
+  RequirementSetRequirements: [6]
+  Requirements: [6]
+  RequirementArguments: [6]
+  Notifications: [7]
+  CSC_AbilityAttachModifiers: [7]
+  ModifierStrings: [7]
+  CivilopediaPageExcludes: [7]
+  Civics: [7]
+
+# Quarter files consume these projections; the common compiler owns their rows.
+generated_registries:
+  - CSC_Stage3CustomerTransactions
+  - CSC_QuarterCustomerBuildings
+  - CSC_QuarterWonderSales
+  - CSC_TradeRouteChannelFacts
+  - CSC_TradeRoutePayouts
+
+retired_files:
+  - Data/CSC_Q_ALL.sql
+  - Data/CSC_BuildingTransactionSchema.sql
+  - Data/CSC_TradeRouteSchema.sql
+  - Data/CSC_MaterialTransactionProcessor.sql
+  - Data/CSC_FixedBuildingTransactionProcessor.sql
+  - Data/CSC_BuildingTransactionProcessor.sql
+  - Data/CSC_MaterialTransactions.sql
+  - Data/CSC_TradeRouteProcessor.sql
+  - Data/CSC_AI_Connectors.sql
