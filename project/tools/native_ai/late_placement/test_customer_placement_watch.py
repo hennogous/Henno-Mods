@@ -30,7 +30,7 @@ CSC_AI_EconomyAdapters={CustomerEconomicOffers=function(s,p)
 end}
 CSC_AI_DistrictBridge={Publish=function(...)publishes=publishes+1;return true,'same'end}
 CE_AIDistrictScoresStatus=function()return '{"generation":9,"trace_count":2}'end
-CE_AIDistrictScoresTraceRead=function()return '{"records":[{"k":"net","player":1,"city":7,"district":6,"plot":20,"base":50,"result":70},{"k":"best","player":2,"city":7,"district":6,"plot":50}]}'end
+CE_AIDistrictScoresTraceRead=function()return '{"offset":0,"total":2,"records":[{"k":"net","player":1,"city":7,"district":6,"plot":20,"base":50,"result":70},{"k":"best","player":2,"city":7,"district":6,"plot":50}]}'end
 ''')
         vm.execute(SOURCE)
         return vm
@@ -65,6 +65,16 @@ local drains=0;CSC_QUARTER_PLACEMENT_WATCH={Drain=function()drains=drains+1 end}
 CE_AIDistrictScoresStatus=function()error('duplicate journal reader')end
 assert(CSC_AI_DistrictBridge.Publish()==true and publishes==2)
 CSC_CUSTOMER_PLACEMENT_WATCH.Finish();assert(drains==1)
+''')
+
+    def test_truncated_native_page_is_reported_as_failed_observation(self):
+        self.vm().execute(r'''
+CSC_AI_EconomyAdapters.CustomerEconomicOffers(snapshot,{})
+CE_AIDistrictScoresTraceRead=function()return '{"offset":0,"total":2,"records":[]}'end
+assert(CSC_AI_DistrictBridge.Publish()==true)
+assert(table.concat(lines,'\n'):find('Customer journal page record count differs',1,true))
+CSC_CUSTOMER_PLACEMENT_WATCH.Finish()
+assert(table.concat(lines,'\n'):find('faults=2 dropped=0',1,true))
 ''')
 
 

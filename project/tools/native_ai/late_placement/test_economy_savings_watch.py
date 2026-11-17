@@ -99,6 +99,16 @@ class EconomicGuards(unittest.TestCase):
             else:
                 with self.assertRaisesRegex(RuntimeError,'sequence gap'):w.freeze(allow_faulted=True)
 
+    def test_final_drain_failure_cannot_be_bypassed_by_retrying_freeze(self):
+        w=EconomySavingsWatch.__new__(EconomySavingsWatch)
+        w.output=Path('unused');w.write=Mock();w.frozen=None;w.messages=[]
+        w.drain=Mock(side_effect=OSError('transport lost'))
+        w.script=SimpleNamespace(exports_sync=Mock(freeze=Mock(return_value=
+            dict(frozen=True,active=0,faults=[],stopReason=None))))
+        with self.assertRaisesRegex(OSError,'transport lost'):w.freeze()
+        with self.assertRaisesRegex(RuntimeError,'previously failed'):w.freeze()
+        with self.assertRaisesRegex(RuntimeError,'faulted'):w.qualify()
+
     @unittest.skipUnless(shutil.which('node'),'Node required for synthetic Frida VM')
     def test_register_memory_pairing_and_fail_closed_vm(self):
         script=Path(__file__).with_name('economy_savings_watch.js')

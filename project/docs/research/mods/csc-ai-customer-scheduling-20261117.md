@@ -80,8 +80,20 @@ games reuse the Quarter observer's journal pass; short customer replays own the
 passive read. Neither path writes policy or gameplay state. Physical events and
 native selector matrices remain the later outcome records. Eligibility is at
 publication; later reservations/legality are checked separately. Diagnostic
-faults or truncation fail observation qualification.43 relevant checks and an
-additional frozen-fault cleanup check pass.
+faults or truncation fail observation qualification. Astra's second review adds
+page offset/total/record-count validation, persistent final-drain failures and
+final success only after observer qualification, native exit and restoration.
+Missing clocks and disappeared groups remain unobserved; only positive sets
+enter the opportunity denominator.47 related checks and three opportunity-
+analysis checks pass. The first Buffalo setup closes/restores before play after
+a Python-tuple/Lua-list serialization error; the corrected control is
+`buffalo-control150-160-02`. Diagnostic source compilation now precedes launch.
+
+`customer_opportunity_results.py` joins the changed sets to actual native choices
+and physical foundations, deduplicates capture and reports comparable choices,
+linked-only choices and unknown coverage separately by loaded customer type.
+It reuses the gameplay-derived native connector registry. A linked proposal
+without physical foundation cannot count as a constructed connection.
 
 ## Storage
 

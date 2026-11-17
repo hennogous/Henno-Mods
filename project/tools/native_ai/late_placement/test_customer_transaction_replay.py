@@ -5,10 +5,15 @@ from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
 from lupa.lua51 import LuaRuntime
-from customer_transaction_replay import query, policy_packages
+from customer_transaction_replay import query, policy_packages, customer_observation
 
 
 class CustomerTransactionReplay(unittest.TestCase):
+    def test_customer_scope_tuples_are_serialised_before_launch(self):
+        source=customer_observation([(5,458756),(3,262144)])
+        self.assertTrue(source.startswith('CSC_CUSTOMER_WATCH_TARGETS={{5,458756},{3,262144}}\n'))
+        LuaRuntime().eval('function(s)assert(loadstring(s))end')(source)
+
     def test_scheduling_arm_changes_only_adapter_without_mutating_source_manifest(self):
         with TemporaryDirectory()as temporary:
             adapter='Lua_UI/AI/CSC_AI_EconomyAdapters.lua'

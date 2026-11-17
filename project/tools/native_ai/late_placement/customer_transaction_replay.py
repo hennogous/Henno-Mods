@@ -27,6 +27,12 @@ HERE=Path(__file__).resolve().parent
 AI=HERE.parents[3]/'Civ Supply Chains/Lua_UI/AI'
 
 
+def customer_observation(targets):
+    # The shared Lua encoder accepts lists, not Python identity tuples. Compile
+    # this pure diagnostic source before launch so packaging errors cost no game.
+    return 'CSC_CUSTOMER_WATCH_TARGETS='+lua([list(t)for t in targets])+'\n'+read(HERE/'customer_placement_watch.lua')
+
+
 def policy_packages(plan, replacement):
     """Qualify a main-mod scheduling arm before installing or launching anything.
 
@@ -82,6 +88,7 @@ def run(args):
         require(case[0]in plan.identity['original_ai']and case[1]>0 and case[4]in('BAKERS','TAILORS'),
                 'Invalid diagnostic case')
     targets=sorted({(c[0],c[1])for c in cases})
+    customer=customer_observation(targets)
     require(not native_inventory(),'Preserve foreign Civ/Tuner session')
     out=plan.output;out.mkdir(parents=True)
     code=query(cases);(out/'diagnostic-query.lua').write_text(code,encoding='utf-8')
@@ -148,7 +155,6 @@ def run(args):
         for name in ('planning_observer.lua','district_adjacency_watch.lua'):
             raw=controller.cmd(read(HERE/name),'PlotInfo'if name.startswith('district_')else'CSC_AI_BakersGameplay',name)
             (out/(name+'.txt')).write_text(raw,encoding='utf-8')
-        customer='CSC_CUSTOMER_WATCH_TARGETS='+lua(targets)+'\n'+read(HERE/'customer_placement_watch.lua')
         raw=controller.cmd(customer,'CSC_AI_BakersGameplay','install-passive-customer-opportunities')
         (out/'customer_placement_watch.lua.txt').write_text(raw,encoding='utf-8')
         require('CSC_CUSTOMER_WATCH_INSTALLED'in raw and 'CSC_CUSTOMER_WATCH_FAULT'not in raw,
@@ -163,7 +169,7 @@ def run(args):
                            'CSC_AI_BakersGameplay','finish-passive-customer-observation')
         require(re.search(r'CSC_CUSTOMER_WATCH_FINISH records=\d+ faults=0 dropped=0\b',raw)
                 and 'CSC_PLANNING_FAULT'not in raw,'Incomplete customer opportunity observation')
-        write_json(out/'complete.json',dict(verified=True,turn=args.through))
+        write_json(out/'endpoint-reached.json',dict(turn=args.through,observers_finished=True))
     except Exception as error:
         write_json(out/'failure.json',dict(error=str(error),traceback=traceback.format_exc()));raise
     finally:
@@ -175,7 +181,13 @@ def run(args):
             for name in LOGS:
                 p=plan.user_root/'Logs'/name
                 if p.is_file():shutil.copyfile(p,out/name)
-    if watch:watch.qualify()
+    try:
+        if watch:watch.qualify()
+        require(session.closed,'Customer replay did not close/restore')
+    except Exception as error:
+        write_json(out/'qualification-failure.json',dict(error=str(error),traceback=traceback.format_exc()))
+        raise
+    write_json(out/'complete.json',dict(verified=True,turn=args.through,session_closed=True,observation_qualified=True))
 
 
 if __name__=='__main__':

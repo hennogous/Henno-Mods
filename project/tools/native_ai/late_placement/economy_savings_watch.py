@@ -106,6 +106,7 @@ class EconomySavingsWatch:
                            capturePlacement=capture_placement,matrixTargets=list(matrix_targets),
                            matrixBuildings=list(matrix_buildings))
         self.owner = self.attached = self.script = self.frozen = None
+        self.freeze_failure = None
         self.messages, self.rows, self.last_sequence = [], 0, 0
         script = self.output / 'economy_savings_watch.js'
         write(self.output / 'economy-savings-inputs.json', dict(
@@ -166,6 +167,8 @@ class EconomySavingsWatch:
         return batch
 
     def freeze(self, *, allow_faulted=False):
+        if getattr(self, 'freeze_failure', None):
+            raise RuntimeError('Economic final drain previously failed: '+self.freeze_failure)
         if self.script is None or self.frozen is not None:
             return
         deadline = time.monotonic() + 5
@@ -176,7 +179,8 @@ class EconomySavingsWatch:
                 self.frozen = state
                 try:
                     self.drain()
-                except RuntimeError as error:
+                except Exception as error:
+                    self.freeze_failure = str(error)
                     # A passive capture can exhaust its payload while native
                     # pairs are safely frozen/inactive. Preserve its failed
                     # evidence, but let an explicit cleanup restore preferences
@@ -206,6 +210,6 @@ class EconomySavingsWatch:
             self.attached = None
 
     def qualify(self):
-        if (not self.frozen or not self.frozen['frozen'] or self.frozen['active'] or
+        if (getattr(self,'freeze_failure',None) or not self.frozen or not self.frozen['frozen'] or self.frozen['active'] or
                 self.frozen['faults'] or self.frozen['stopReason'] or self.messages):
             raise RuntimeError('Incomplete/faulted Economic observation')

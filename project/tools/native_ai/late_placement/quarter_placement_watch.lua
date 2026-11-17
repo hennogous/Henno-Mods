@@ -30,6 +30,9 @@ local function drain()
  for offset=0,total-1,64 do
   local page=assert(CE_AIDistrictScoresTraceRead(offset,64,generation))
   assert(not page:find('"stale":true',1,true),'Publication changed during journal read')
+  if CSC_CUSTOMER_PLACEMENT_WATCH then
+   assert(number(page,'offset')==offset and number(page,'total')==total,'Customer shared journal page bounds differ')
+  end
   local ordinal=0
   for record in page:gmatch('{[^{}]+}')do
    local kind=record:match('"k":"([^"]+)"')
@@ -90,6 +93,9 @@ local function drain()
      end
     end
    end
+  end
+  if CSC_CUSTOMER_PLACEMENT_WATCH then
+   assert(ordinal==math.min(64,total-offset),'Customer shared journal record count differs')
   end
  end
  for _,row in pairs(writes)do emit('WRITE',row)end

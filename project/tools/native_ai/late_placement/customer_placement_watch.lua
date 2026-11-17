@@ -46,6 +46,9 @@ local function capture(snapshot,groups)
  end
  previous[snapshot.id]=states[snapshot.id]or{}
  for key in pairs(previous[snapshot.id])do if not nextState[key]then
+  -- Removed means absent from this policy result, which can also follow a
+  -- failed legality/adjacency query. Only positive sets establish opportunities;
+  -- an absent player CLOCK leaves coverage unknown.
   emit('REMOVED','turn='..Game.GetCurrentGameTurn()..' scope='..key)
  end end
  states[snapshot.id]=nextState
@@ -91,10 +94,12 @@ local function drain()
  for offset=0,total-1,64 do
   local page=assert(CE_AIDistrictScoresTraceRead(offset,64,generation))
   assert(not page:find('"stale":true',1,true),'Customer journal changed during read')
+  assert(number(page,'offset')==offset and number(page,'total')==total,'Customer journal page bounds differ')
   local ordinal=0
   for record in page:gmatch('{[^{}]+}')do if record:match('"k":"([^"]+)"')then
    ordinal=ordinal+1;W.Record(record,offset+ordinal,generation)
   end end
+  assert(ordinal==math.min(64,total-offset),'Customer journal page record count differs')
  end
 end
 local publish=B.Publish
