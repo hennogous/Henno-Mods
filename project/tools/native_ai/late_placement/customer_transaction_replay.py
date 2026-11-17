@@ -1,9 +1,11 @@
-"""Unchanged saved-game policy plus passive customer-score/forecast inspection.
+"""Saved-game main policy plus passive customer-score/forecast inspection.
 
 The shared controller owns a <=25-turn replay and restores every package and
 preference. Current model modules run in an isolated Lua environment for quotes;
 they never replace the saved world's active policy or publish prototype bids.
-All sampled building-cache IDs come from the actual loaded catalogue.
+All sampled building-cache IDs come from the actual loaded catalogue. An explicit
+--policy-package may replace only the main CSC adapter for matched scheduling
+tests; gameplay SQL, CE and the other policy modules must remain byte-identical.
 """
 import argparse
 import json
@@ -18,11 +20,32 @@ from driver import (NativeSession, HeldProcess, make_probe_controller, native_in
     launch, configure, flags, manifest, read, lua, sha, write_json, restore_preferences,
     require, archive_sources)
 from ce_replay import DLL, HOTFIX_SHA, verify_modules
-from ce_bakers_fresh import LOGS
+from ce_bakers_fresh import LOGS, package_identity
 from economy_savings_watch import EconomySavingsWatch
 
 HERE=Path(__file__).resolve().parent
 AI=HERE.parents[3]/'Civ Supply Chains/Lua_UI/AI'
+
+
+def policy_packages(plan, replacement):
+    """Qualify a main-mod scheduling arm before installing or launching anything.
+
+    Neither arm has a second policy writer. The normal imported adapter runs
+    from CSC, and the lexical diagnostic modules below only read/quote facts.
+    All non-adapter bytes, including SQL/private yield and CE, are fixed.
+    """
+    packages=[dict(item) for item in plan.packages]
+    changes=[]
+    if replacement is not None:
+        replacement=Path(replacement).resolve(strict=True)
+        item=next(row for row in packages if row['role']=='csc')
+        require(package_identity(replacement)[0]==item['id'], 'Policy package identity differs')
+        files=manifest(replacement)
+        different=[key for key in set(files)|set(item['files']) if files.get(key)!=item['files'].get(key)]
+        require(different and all(key.replace('\\','/')=='Lua_UI/AI/CSC_AI_EconomyAdapters.lua'
+                                  for key in different), 'Only the scheduling adapter may differ')
+        changes=sorted(different);item.update(source=replacement,files=files)
+    return packages,changes
 
 
 def query(cases):
@@ -50,6 +73,7 @@ def query(cases):
 
 def run(args):
     plan=prepare(args.source,args.output,args.at,args.at,args.dependencies,read_only=True)
+    packages,policy_changes=policy_packages(plan,getattr(args,'policy_package',None))
     require(args.at<args.through<=args.at+25,'At most25 diagnostic turns')
     cases=args.case
     require(0<len(cases)<=8,'At most8 diagnostic cases')
@@ -66,7 +90,8 @@ def run(args):
         *(AI/n for n in ('CSC_AI_EconomyFacts.lua','CSC_AI_EconomyModel.lua','CSC_AI_EconomyAdapters.lua'))]}
     write_json(out/'implementation-archive.json',archive_sources(pins,out/'implementation-version'))
     write_json(out/'protocol.json',dict(diagnostic=True,source=str(plan.source),at=args.at,through=args.through,
-        cases=cases,targets=targets,checkpoint=plan.checkpoint,active_policy_unchanged=True,
+        cases=cases,targets=targets,checkpoint=plan.checkpoint,active_policy_unchanged=not policy_changes,
+        policy_changes=policy_changes,main_csc_is_only_policy=True,
         sql_unchanged=True,services_in_prototype=False,prototype_publishes_bids=False))
     controller=make_probe_controller(out,user_root=plan.user_root)
     controller.study_endpoint=args.through;controller.autoplay_interval_seconds=900
@@ -95,7 +120,7 @@ def run(args):
         require('CSC_TRANSACTION_COMPLETE'in raw and len(records)==len(cases),'Incomplete customer survey')
         write_json(out/('survey-'+str(turn)+'.json'),dict(turn=turn,records=records))
     try:
-        for item in plan.packages:shutil.copytree(item['source'],item['install']);copied.append(item)
+        for item in packages:shutil.copytree(item['source'],item['install']);copied.append(item)
         write_json(out/'installed-manifests.json',{i['role']:i['files']for i in copied})
         session.start(lambda:launch(SimpleNamespace(binary=plan.binary),out));session.wait_context('MainMenu')
         configure(controller,out,csc_id=plan.protocol['ce']);enable(session,plan.protocol['csc'])
@@ -148,5 +173,6 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for k in('source','output','dependencies'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--at',type=int,default=100);p.add_argument('--through',type=int,default=125)
+    p.add_argument('--policy-package',type=Path)
     p.add_argument('--case',nargs=6,action='append',required=True,metavar=('PLAYER','CITY','CHOSEN','ALT','QUARTER','Q_PLOT'))
     run(p.parse_args())

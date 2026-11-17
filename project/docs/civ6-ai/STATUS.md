@@ -3,6 +3,13 @@
 **New-chat entry point: [handoff](HANDOFF.md).** It distinguishes implemented
 work from remaining AI gaps and preserves operating instructions.
 
+**Active customer-placement goal:** first pair-first scheduler is implemented
+and131 economy checks pass, including Astra's hint/invalidation corrections.
+The shared-controller matched150–155 control is running; treatment follows.
+Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
+Targeted changed-choice/foundation/stronger-site controls and three fresh matched
+Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).
+
 **Astra's proposed next2.1 slice:** prioritize fresh reference/challenger pairs
 across more city/types at the same16-world budget; preserve candidate identities
 with fresh validation, SQL+1 and normal competition. Short matched replays should

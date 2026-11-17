@@ -11,6 +11,75 @@ AI=Path(__file__).resolve().parents[3]/'Civ Supply Chains/Lua_UI/AI'
 
 
 class CustomerEconomicOffers(unittest.TestCase):
+    def test_legal_but_no_longer_linked_incumbent_loses_priority(self):
+        self.vm().execute('''
+print=function()end;local E=CSC_AI_EconomyAdapters
+E.CustomerEconomicOffers(snapshot,{})
+turn=21;E.CustomerEconomicOffers(snapshot,{})
+groups[1].candidates[1].links=0
+local observed={};local old=snapshot.CustomerWorld
+snapshot.CustomerWorld=function(c,d,p)observed[#observed+1]=p;return old(c,d,p)end
+turn=22;E.CustomerEconomicOffers(snapshot,{})
+assert(observed[2]==21)
+''')
+
+    def test_losing_runner_up_keeps_incumbent_but_native_gated_winner_does_not(self):
+        self.vm().execute('''
+print=function()end;groups[1].candidates[2].links=0
+local E=CSC_AI_EconomyAdapters
+E.CustomerEconomicOffers(snapshot,{}) -- useful20 then losing unrelated21
+turn=21;E.CustomerEconomicOffers(snapshot,{})
+local observed={};local old=snapshot.CustomerWorld
+snapshot.CustomerWorld=function(c,d,p)observed[#observed+1]=p;return old(c,d,p)end
+turn=22;E.CustomerEconomicOffers(snapshot,{})
+assert(observed[2]==20)
+-- A linked but native-gated high quote must lose the hint to a viable rival.
+nets[20]=0;values[21]=12000;groups[1].candidates[2].links=1
+turn=23;E.CustomerEconomicOffers(snapshot,{})
+observed={};turn=24;E.CustomerEconomicOffers(snapshot,{})
+assert(observed[2]==21)
+''')
+
+    def test_pair_first_covers_eight_groups_and_skips_singletons(self):
+        self.vm().execute('''
+print=function()end;groups={}
+for i=1,12 do groups[i]={city=i,district=6,reference={plot=10,links=0},candidates={
+ {plot=20,adjacency=2,links=1},{plot=21,adjacency=2,links=1},{plot=22,adjacency=2,links=0}}}end
+values[22]=8000;nets[22]=5000
+groups[13]={city=99,district=6,reference={plot=10},candidates={{plot=10,links=1}}}
+local rows,stats=CSC_AI_EconomyAdapters.CustomerEconomicOffers(snapshot,{})
+assert(stats.groups==8 and stats.forecasts==16 and stats.singletons==1)
+local seen={};for _,r in ipairs(rows)do seen[r.city]=true end
+turn=21;rows,stats=CSC_AI_EconomyAdapters.CustomerEconomicOffers(snapshot,{})
+for _,r in ipairs(rows)do seen[r.city]=true end
+local n=0;for _ in pairs(seen)do n=n+1 end;assert(n==12)
+''')
+
+    def test_plot_exploration_survives_incumbent_repricing_at_full_budget(self):
+        self.vm().execute('''
+print=function()end;groups={};values[22]=8000;nets[22]=5000
+for i=1,8 do groups[i]={city=i,district=6,reference={plot=10,links=0},candidates={
+ {plot=20,adjacency=2,links=1},{plot=21,adjacency=2,links=1},{plot=22,adjacency=2,links=0}}}end
+local seen={}
+for t=20,27 do turn=t;local rows,stats=CSC_AI_EconomyAdapters.CustomerEconomicOffers(snapshot,{})
+ assert(stats.forecasts==16)
+ for _,r in ipairs(rows)do if r.city==1 then seen[r.plot]=true end end
+end
+assert(seen[20]and seen[21]and seen[22])
+''')
+
+    def test_hint_requotes_new_value_and_disappears_with_illegal_candidate(self):
+        self.vm().execute('''
+print=function()end
+local E=CSC_AI_EconomyAdapters
+local rows=E.CustomerEconomicOffers(snapshot,{})
+values[20]=10010;turn=21;rows=E.CustomerEconomicOffers(snapshot,{})
+for _,r in ipairs(rows)do if r.plot==20 then assert(r.delta==10)end end
+groups[1].candidates={{plot=21,adjacency=2,links=1}};turn=22
+rows=E.CustomerEconomicOffers(snapshot,{})
+assert(#rows==1 and rows[1].plot==21 and rows[1].delta==-3000)
+''')
+
     def vm(self):
         vm=LuaRuntime(unpack_returned_tuples=True)
         vm.execute('''

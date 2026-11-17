@@ -718,6 +718,12 @@ end
 local CUSTOMER_FORECAST_BUDGET=16
 local CUSTOMER_ALTERNATIVES=3
 local CUSTOMER_RESIDUAL_LIMIT_Q8=256*256
+-- Runtime-only scheduling memory. No score, game object or native reservation
+-- survives a publication: only group/plot identities and a runner-up cursor.
+-- Current legal candidate sets revalidate every hint. Reload simply rebuilds
+-- the queue; eviction restarts a plot cursor without removing native options.
+local customerSchedules={}
+local CUSTOMER_SCHEDULE_LIMIT=128
 function E.CustomerEconomicOffers(snapshot,protectedPlots)
     -- Native building forecasts are common to a city/type. Compare two full
     -- CSC worlds for that SAME investment, retaining signed site differences
@@ -728,13 +734,55 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     local stats={groups=0,forecasts=0,unknown=0,clamped=0,offers=0,
         referenceUnavailable=0,candidateUnavailable=0,nativeUnavailable=0,nativeNonpositive=0}
     if not snapshot.CustomerCandidateSets or not snapshot.WorldQuote or not snapshot.CustomerNetValue then return {},stats end
-    local groups=snapshot.CustomerCandidateSets(protectedPlots);local offers={}
+    local source=snapshot.CustomerCandidateSets(protectedPlots);local offers={}
+    local state=customerSchedules[snapshot.id]or{groups={}}
+    customerSchedules[snapshot.id]=state
+    local groups,active={},{}
+    stats.singletons=0
+    for _,group in ipairs(source)do
+        local candidates,seen,linked={},{},{}
+        for _,candidate in ipairs(group.candidates)do
+            if candidate.plot~=group.reference.plot and not seen[candidate.plot]then
+                candidates[#candidates+1]=candidate;seen[candidate.plot]=true
+                if(candidate.links or 0)>0 then linked[candidate.plot]=true end
+            end
+        end
+        if #candidates==0 then stats.singletons=stats.singletons+1
+        else
+            local key=group.city..':'..group.district
+            local meta=state.groups[key]or{cursor=1}
+            -- A captured/occupied/protected footprint is absent from this
+            -- publication's legal set and loses its scheduling hint here.
+            if(group.reference.links or 0)>0 then linked[group.reference.plot]=true end
+            if meta.hint and not linked[meta.hint]then meta.hint=nil end
+            local foundation=snapshot.customerFoundationHints and snapshot.customerFoundationHints[key]
+            if foundation and not linked[foundation]then foundation=nil end
+            if foundation then meta.hint=foundation end
+            local work={group=group,key=key,meta=meta,candidates=candidates,used={},linked=linked,attempted=0,foundation=foundation}
+            groups[#groups+1]=work;active[key]=meta
+        end
+    end
+    state.groups=active
     local count=#groups
-    if count==0 then return offers,stats end
-    -- Reference plus at most three alternatives, max16 world forecasts/player.
-    -- Rotate the starting group so a large empire cannot starve later cities.
-    -- Bids expire with the atomic packet; every retained bid is freshly priced.
+    if count==0 then
+        print(string.format('CSC_AI_CUSTOMER_SCHEDULE turn=%d player=%d usefulGroups=0 singletonGroups=%d visitedGroups=0 forecasts=0',
+            Game.GetCurrentGameTurn(),snapshot.id,stats.singletons))
+        return offers,stats
+    end
+    table.sort(groups,function(a,b)if a.group.city~=b.group.city then return a.group.city<b.group.city end
+        return a.group.district<b.group.district end)
     local offset=(Game.GetCurrentGameTurn()+snapshot.id)%count
+    for i,work in ipairs(groups)do if work.key==state.nextKey then offset=i-1;break end end
+    local order,scheduled={},{}
+    -- At most one real-foundation hint goes first. All remaining slots follow
+    -- the regular queue, so a stream of new Quarters cannot starve older cities.
+    for _,work in ipairs(groups)do if work.foundation then
+        order[#order+1]=work;scheduled[work.key]=true;break
+    end end
+    for step=1,count do
+        local work=groups[(offset+step-1)%count+1]
+        if not scheduled[work.key]then order[#order+1]=work end
+    end
     local function quote(group,plot)
         stats.forecasts=stats.forecasts+1
         local before,after=snapshot.CustomerWorld(group.city,group.district,plot)
@@ -743,63 +791,129 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
         if value then return value,after.customer end
         return nil,problem
     end
-    for step=1,count do
-        if stats.forecasts+1>=CUSTOMER_FORECAST_BUDGET then break end
-        local group=groups[(offset+step-1)%count+1];stats.groups=stats.groups+1
-        local reference=quote(group,group.reference.plot)
-        if not reference then stats.unknown=stats.unknown+1;stats.referenceUnavailable=stats.referenceUnavailable+1
-        else
-            local attempted=0
-            for _,candidate in ipairs(group.candidates)do
-                if candidate.plot~=group.reference.plot and attempted<CUSTOMER_ALTERNATIVES
-                    and stats.forecasts<CUSTOMER_FORECAST_BUDGET then
-                    attempted=attempted+1
-                    local value,investment=quote(group,candidate.plot)
-                    local outcome,rawValue,finalDelta,netValue='candidate_unavailable',nil,nil,nil
-                    if value then
-                        local raw=value.valueQ8-reference.valueQ8
-                        rawValue=raw
-                        local delta=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw))
-                        local net=snapshot.CustomerNetValue(group.city,group.district,candidate.plot,investment.ready)
-                        netValue=net
-                        if net and net>0 then
-                            -- Building aggregation only uplifts positive raw
-                            -- cells. Keep this negative residual above zero so
-                            -- it cannot accidentally erase a large common
-                            -- building subtotal. Unknown/nonpositive raw sites
-                            -- retain native treatment. This is a publication
-                            -- estimate; final eligibility remains native.
-                            delta=math.max(delta,1-net)
-                            finalDelta=delta;outcome=delta~=0 and'offered'or'zero_difference'
-                            if delta~=raw then stats.clamped=stats.clamped+1 end
-                            if delta~=0 then
-                                offers[#offers+1]={player=snapshot.id,city=group.city,district=group.district,
-                                    plot=candidate.plot,delta=delta,customer=true,customerEconomic=true,
-                                    customerEconomicQ8=delta,referencePlot=group.reference.plot}
-                                print(string.format('CSC_AI_CUSTOMER_ECONOMIC_BID turn=%d player=%d city=%d district=%d plot=%d reference=%d rawQ8=%d deltaQ8=%d netQ8=%d afterQ8=%d referenceQ8=%d adjacency=%.3f links=%d',
-                                    Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
-                                    group.reference.plot,raw,delta,net,value.valueQ8,reference.valueQ8,candidate.adjacency,candidate.links))
-                            end
-                        else
-                            stats.unknown=stats.unknown+1
-                            outcome=net==nil and'native_unavailable'or'native_nonpositive'
-                            if net==nil then stats.nativeUnavailable=stats.nativeUnavailable+1
-                            else stats.nativeNonpositive=stats.nativeNonpositive+1 end
-                        end
-                    else stats.unknown=stats.unknown+1;stats.candidateUnavailable=stats.candidateUnavailable+1 end
-                    if Game.GetCurrentGameTurn()%25==0 then
-                        -- At most the existing15 alternative quotes/player at
-                        -- a census. Identify the priced shortlist even when a
-                        -- zero delta or native gate prevents publication.
-                        print(string.format('CSC_AI_CUSTOMER_ALTERNATIVE turn=%d player=%d city=%d district=%d plot=%d reference=%d outcome=%s rawQ8=%s deltaQ8=%s nativeQ8=%s adjacency=%.3f links=%d',
-                            Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
-                            group.reference.plot,outcome,tostring(rawValue),tostring(finalDelta),tostring(netValue),
-                            candidate.adjacency,candidate.links))
-                    end
+    local function evaluate(work,candidate,advance)
+        local group,reference=work.group,work.reference
+        work.used[candidate.plot]=true;work.attempted=work.attempted+1
+        work.meta.last=Game.GetCurrentGameTurn()
+        for i,row in ipairs(work.candidates)do if advance~=false and row.plot==candidate.plot then
+            work.meta.cursor=i%#work.candidates+1;break
+        end end
+        local value,investment=quote(group,candidate.plot)
+        local outcome,rawValue,finalDelta,netValue='candidate_unavailable',nil,nil,nil
+        if value then
+            local raw=value.valueQ8-reference.valueQ8
+            rawValue=raw
+            local delta=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw))
+            local net=snapshot.CustomerNetValue(group.city,group.district,candidate.plot,investment.ready)
+            netValue=net
+            if net and net>0 then
+                -- Building aggregation only uplifts positive raw
+                -- cells. Keep this negative residual above zero so
+                -- it cannot accidentally erase a large common
+                -- building subtotal. Unknown/nonpositive raw sites
+                -- retain native treatment. This is a publication
+                -- estimate; final eligibility remains native.
+                delta=math.max(delta,1-net)
+                finalDelta=delta;outcome=delta~=0 and'offered'or'zero_difference'
+                if delta~=raw then stats.clamped=stats.clamped+1 end
+                if delta~=0 then
+                    offers[#offers+1]={player=snapshot.id,city=group.city,district=group.district,
+                        plot=candidate.plot,delta=delta,customer=true,customerEconomic=true,
+                        customerEconomicQ8=delta,referencePlot=group.reference.plot}
+                    print(string.format('CSC_AI_CUSTOMER_ECONOMIC_BID turn=%d player=%d city=%d district=%d plot=%d reference=%d rawQ8=%d deltaQ8=%d netQ8=%d afterQ8=%d referenceQ8=%d adjacency=%.3f links=%d',
+                        Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
+                        group.reference.plot,raw,delta,net,value.valueQ8,reference.valueQ8,candidate.adjacency,candidate.links))
                 end
+            else
+                stats.unknown=stats.unknown+1
+                outcome=net==nil and'native_unavailable'or'native_nonpositive'
+                if net==nil then stats.nativeUnavailable=stats.nativeUnavailable+1
+                else stats.nativeNonpositive=stats.nativeNonpositive+1 end
+            end
+        else stats.unknown=stats.unknown+1;stats.candidateUnavailable=stats.candidateUnavailable+1 end
+        if Game.GetCurrentGameTurn()%25==0 then
+            -- At most the existing15 alternative quotes/player at
+            -- a census. Identify the priced shortlist even when a
+            -- zero delta or native gate prevents publication.
+            print(string.format('CSC_AI_CUSTOMER_ALTERNATIVE turn=%d player=%d city=%d district=%d plot=%d reference=%d outcome=%s rawQ8=%s deltaQ8=%s nativeQ8=%s adjacency=%.3f links=%d',
+                Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
+                group.reference.plot,outcome,tostring(rawValue),tostring(finalDelta),tostring(netValue),
+                candidate.adjacency,candidate.links))
+        end
+        -- Collect fresh actionable evidence for the group, then choose once.
+        -- A later unrelated loser must not erase a useful incumbent; a raw
+        -- economic winner with no native-positive admission is not a hint.
+        if value and netValue and netValue>0 and value.valueQ8>reference.valueQ8
+            and(candidate.links or 0)>0 and(not work.bestValue or value.valueQ8>work.bestValue
+                or value.valueQ8==work.bestValue and candidate.plot<work.bestPlot)then
+            work.bestValue=value.valueQ8;work.bestPlot=candidate.plot
+        end
+    end
+    local visited={}
+    for _,work in ipairs(order)do
+        if stats.forecasts+2>CUSTOMER_FORECAST_BUDGET then break end
+        local group=work.group
+        work.reference=quote(group,group.reference.plot)
+        stats.groups=stats.groups+1;visited[work.key]=true
+        work.meta.visits=(work.meta.visits or 0)+1
+        if not work.reference then
+            stats.unknown=stats.unknown+1;stats.referenceUnavailable=stats.referenceUnavailable+1
+            work.meta.hint=nil
+        else
+            local candidate
+            -- Alternate the strongest/hinted challenger with a rotating plot.
+            -- Even when eight groups consume the entire budget, lower-ranked
+            -- alternatives eventually get a fresh comparison.
+            if work.foundation or work.meta.visits%2==1 then
+                for _,row in ipairs(work.candidates)do if row.plot==work.meta.hint then candidate=row;break end end
+                if not candidate then for _,row in ipairs(work.candidates)do
+                    if ((row.links or 0)>0)~=((group.reference.links or 0)>0)then candidate=row;break end
+                end end
+            end
+            local preferred=candidate~=nil
+            candidate=candidate or work.candidates[(work.meta.cursor-1)%#work.candidates+1]
+            -- Repricing an incumbent must not reset the exploration cursor.
+            evaluate(work,candidate,not preferred or work.meta.visits==1)
+        end
+    end
+    -- Everyone gets a reference/challenger pair before third/fourth plots.
+    -- Extra comparisons are round-robin, not all spent on the first city.
+    for pass=2,CUSTOMER_ALTERNATIVES do
+        for _,work in ipairs(order)do
+            if stats.forecasts>=CUSTOMER_FORECAST_BUDGET then break end
+            if work.reference and work.attempted<pass then
+                local candidate
+                for n=1,#work.candidates do
+                    local row=work.candidates[(work.meta.cursor+n-2)%#work.candidates+1]
+                    if not work.used[row.plot]then candidate=row;break end
+                end
+                if candidate then evaluate(work,candidate)end
             end
         end
     end
+    for _,work in ipairs(groups)do
+        local incumbent=work.meta.hint
+        if incumbent and incumbent~=work.group.reference.plot and not work.used[incumbent]
+            and work.linked[incumbent]then
+            -- Identity only: its fresh value will be checked on the next
+            -- incumbent pass. No score is copied into this packet.
+        else work.meta.hint=work.bestPlot end
+    end
+    state.nextKey=nil
+    for step=1,count do
+        local work=groups[(offset+step-1)%count+1]
+        if not visited[work.key]then state.nextKey=work.key;break end
+    end
+    if not state.nextKey then state.nextKey=groups[(offset+1)%count+1].key end
+    -- Bound hints independently of the number of eligible city/type groups.
+    -- Group fairness uses nextKey and therefore survives hint eviction.
+    if count>CUSTOMER_SCHEDULE_LIMIT then
+        local oldest={};for key,meta in pairs(state.groups)do oldest[#oldest+1]={key=key,last=meta.last or-1}end
+        table.sort(oldest,function(a,b)if a.last~=b.last then return a.last>b.last end;return a.key<b.key end)
+        for i=CUSTOMER_SCHEDULE_LIMIT+1,#oldest do state.groups[oldest[i].key]=nil end
+    end
+    print(string.format('CSC_AI_CUSTOMER_SCHEDULE turn=%d player=%d usefulGroups=%d singletonGroups=%d visitedGroups=%d forecasts=%d next=%s',
+        Game.GetCurrentGameTurn(),snapshot.id,count,stats.singletons,stats.groups,stats.forecasts,tostring(state.nextKey)))
     stats.offers=#offers
     print(string.format('CSC_AI_CUSTOMER_ECONOMIC_WORK turn=%d player=%d groups=%d totalGroups=%d forecasts=%d offers=%d unknown=%d clamped=%d quotes=%d',
         Game.GetCurrentGameTurn(),snapshot.id,stats.groups,count,stats.forecasts,#offers,stats.unknown,stats.clamped,snapshot.QuoteCount and snapshot.QuoteCount()or 0))
@@ -1133,6 +1247,18 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     for _,entry in ipairs(early)do if not managed[entry.district]then result[#result+1]=entry end end
     if snapshot.CustomerFirstOptions then
         result=E.MergeCustomerOffers(result,E.CustomerOffers(snapshot,result,protectedPlots))
+    end
+    -- A founded Quarter can continue the geometric customer hint identified
+    -- by its prior offer. Current candidate legality rechecks the target below;
+    -- no Quarter score, spent-cost bonus or native reservation is transferred.
+    snapshot.customerFoundationHints={}
+    for _,entry in ipairs(previous or{})do
+        local host=snapshot.districts and snapshot.districts[entry.plot]
+        if entry.player==snapshot.id and entry.economy and host and host.type==entry.district and host.city==entry.city then
+            for _,link in ipairs(entry.customerLayout or{})do
+                snapshot.customerFoundationHints[link.city..':'..link.district]=link.plot
+            end
+        end
     end
     if snapshot.CustomerCandidateSets then result=E.MergeCustomerOffers(result,E.CustomerEconomicOffers(snapshot,protectedPlots))end
     if snapshot.WorldStats then
