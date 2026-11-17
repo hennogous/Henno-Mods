@@ -1,22 +1,45 @@
 # Ordinary-economy implementation goal
 
-Active16 November2026. Scope: Bakers/Tailors, roadmap1.4/2.1/2.2. Services stay
-deferred. Agent implementation, regression, native reception and performance
-checks precede the human QA handoff. Henno subsequently authorized three250-turn
-efficacy games after implementation/checks, then Problems3–6 research. Manual QA
-remains for Henno; it does not block those games under the revised objective.
-Keep the full scope below until every item is verified.
+Updated 17 November 2026. The numbered roadmap remains the spine: Problems
+1.1–1.8 (worthwhile Quarter placement and follow-through) and 2.1–2.2 (related
+district placement and material protection). Support Bakers and Tailors through
+shared mechanisms that can extend to future Quarters.
+
+The goal is a reasonable reflection of the major gameplay-defined economic
+channels. Reuse completed migrations and working guidance. Read materials,
+partners, buildings, amounts and eligibility from gameplay definitions; named
+tuning weights and documented forecast assumptions remain appropriate. Adapt
+gameplay only where a demonstrated bug or missing shared contract requires it.
+Exact vanilla component parity and exhaustive edge-case qualification are not
+completion requirements.
+
+Represent adjacency, material exchanges, producer/customer transactions,
+population scaling and relevant observed trade/staffing. Prospective Service
+valuation remains deferred. Keep ordinary district value and native competition,
+and avoid materially duplicated income or inflated bids.
+
+Next sequence: fix short-interval pricing; demonstrate one representative
+customer-site evaluation consumed by a native comparison; integrate remaining
+major placement/protection channels; then run three fresh stock-AI Online games
+through turn250 using only main-mod tuning and the shared controller, with
+15-minute checks. Report placements, materials, customers, buildings, Services,
+baseline comparisons and practical overhead. Finish with exact gameplay changes
+and a focused manual QA checklist for Henno. Subsequent Problems3–6 research is
+outside this goal. Consult Astra at meaningful checkpoints and maintain comments,
+roadmap, reusable engine findings and scoped commits/pushes.
+
+The G labels below track implementation dependencies within Problems1 and2;
+they do not replace or expand the numbered roadmap.
 
 | Requirement | Completion evidence | Current state |
 | --- | --- | --- |
 | G1 Fixed external/local exchanges | Gameplay-owned headers/legs and native gate templates; UI/AI readers; baseline graph parity, replacements/alternatives/amount tests | Verified: corrected replay matches all10,954 native rows,137 fixed rows and67-city population refresh; closed/restored |
 | G2 Directional materials | Data-owned inputs/returns, registered hosts, Base/Spec, M&C2/3 totals, ownership/worked/pillage behavior, protection consumes actual legs | Verified: Gold/M&C graph parity, end-to-end protection/owner tests,30 live lifecycle observations and final current-reader22-chain smoke pass; native10,954-row graph unchanged |
-| G3 Joint customer economy | All adjacent suppliers evaluated together; adjacency/provider changes, shared queues/rounding; observed routes/staffing; no duplicate costs | Shared ledger/staffing qualified. Joint route events/pooled amenities pass22-chain/five-player mature replay with43 routes/226 evaluations; graph/property parity and closure pass. Live affected-customer closure and adjacency counterfactuals remain open |
-| G4 Native residual | Component attribution measures CSC overlap; late delta retains native ordinary district value; received/compared in bounded matched replay | Open |
+| G3 Joint customer economy | A coherent shared model covers affected suppliers, adjacency/provider changes, shared queues/rounding and observed routes/staffing | Owned-customer worlds implemented;12 actual-SQL/Core/Facts/Model tests pass. Corrected CE interval pricing passes15 real cases and8/8 mature-world customer quotes; graph/reader parity and closure pass. Routine publication and remaining new-Quarter integration open |
+| G4 Native residual | Representative overlap check avoids substantial duplication; correction retains ordinary district value and is consumed by a native comparison | Open; first complete native path is the priority |
 | G5 Bounded work | Definition caches, targeted updates and measured mature-empire overhead | Fixed argument cache restricted; full measurement open |
 | G6 Review and handoff | Astra review, maintained findings/roadmap/skill, scoped pushes, exact gameplay change list and manual QA cases | Ongoing |
 | G7 Three250-turn efficacy games | After G1–G6, run integrated-only stock AI games on Online speed through shared controller;15-minute checks; regular placement, chain, Service and economy comparisons | Added by Henno; follows implementation and agent checks |
-| G8 Subsequent Problems3–6 research | After G7, investigate material development, producer/customer buildings and Service-unlock decisions; record native eligibility, timing, score units and available adapters | Added by Henno; follows the efficacy games |
 
 ## Fixed slice
 

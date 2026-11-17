@@ -1,5 +1,17 @@
 # Current CSC AI status
 
+**1.4 / 2.1 / 2.2,17 November — real customer-world pricing now works.**
+The shared before/after model prices8/8 sampled owned customer footprints in the
+mature world. New CE interval APIs fix the one-turn route pricing blocker;
+15 real price cases and249 native checks pass. All10,954 gameplay rows still
+match; replay exits0 and restores. Astra reviewed the implementation. Next:
+one guarded customer adjustment consumed at the native comparison, followed by
+remaining major channel integration and the three Online250 games.
+[Scope, evidence and current limits](../research/mods/csc-customer-world-pricing-20261117.md).
+The updated [goal](ordinary-economy-goal.md) prioritises reasonable economic
+coverage for Problems1 and2; exact native parity and exhaustive qualification
+are unnecessary.
+
 **G3,17 November — joint route events and amenity pooling implemented.**
 The shared scheduler now feeds one observed-network evaluation. Material
 thresholds come from native definitions; future jobs reuse central ETAs. Native

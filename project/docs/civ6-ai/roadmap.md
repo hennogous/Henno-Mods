@@ -1,5 +1,15 @@
 # CSC AI roadmap
 
+**17 November scope clarification — Problems1 and2 remain the spine.**
+Aim for coherent coverage of major gameplay-defined economic channels, reusing
+the completed migrations and working guidance. Reasonable documented estimates
+suffice; exhaustive edge-case qualification and exact vanilla component parity
+are unnecessary. First fix short-interval pricing and demonstrate an actual
+customer adjustment consumed natively, then finish the important placement and
+material-protection channels and run the three Online250 games. Human gameplay
+QA follows the implementation/results handoff.
+[Current goal and dependencies](ordinary-economy-goal.md).
+
 **17 November G3 route dependency:** shared native-definition route arithmetic
 now qualifies on67 cities/43 actual routes, preserving all10,954 native rows.
 Connect it once per joint plan, with amenity totals priced relative to the
@@ -29,7 +39,8 @@ and identify existing native CSC forecast contributions. Only then enable a
 customer residual adapter. Prospective Services stay deferred14.3. Scope stays
 Problems1 and2; no new building/Builder/research execution work in this pass.
 Henno extended the goal: after implementation/checks and the QA handoff, run
-three Online250 stock-AI games with15-minute check-ins, then research Problems3–6.
+three Online250 stock-AI games with15-minute check-ins. Problems3–6 research
+follows under a separate future scope.
 Manual gameplay QA remains Henno's next step and does not block those games.
 [Coverage and regression contract](../integrations/csc-economic-contract.md).
 The native Hub replay corrects the old Napata adjacency reconstruction and
