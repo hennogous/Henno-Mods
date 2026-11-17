@@ -15,8 +15,10 @@ reads native citizen-yield definitions and actual assignments; the mature smoke
 observes28 workers and30 ordinary streams.17 November adds shared native route
 definitions and one route-network pass after shared scheduling, with city-level
 amenity pooling. The affected-customer world now builds and prices real candidate
-footprints (8/8 sampled native quotes); native residual delivery remains active
-work. Explicit recurring-interval quotes preserve the native weights while
+footprints (8/8 sampled native quotes). Routine signed customer differences
+now retain ordinary type-level value, while new Quarters use the same marginal
+world model. Mature bounded-work qualification passes; fresh full-game delivery
+and outcomes are next. Explicit recurring-interval quotes preserve the native weights while
 correcting the time-zero origin. [Customer worlds and pricing](../research/mods/csc-customer-world-pricing-20261117.md).
 [Route implementation](../research/mods/csc-joint-route-economy-20261117.md).
 [Contract](../integrations/csc-economic-contract.md).
@@ -30,10 +32,10 @@ flowchart LR
     MODEL["Central economic ledger<br/>actual legs, recipients, timing, rounding"]
     Q["Quarter bid adapter"]
     P["Material protection adapter"]
-    C["Joint customer residual<br/>implementation in progress"]
+    C["Signed customer residual<br/>same-city/type reference"]
     R["Observed routes<br/>actual endpoints and paid counters"]
     T["Joint scheduling then route network<br/>pooled amenity counterfactuals"]
-    W["Shared before/after customer worlds<br/>footprint, partners, suppliers, queues"]
+    W["Shared before/after candidate worlds<br/>Quarter/customer, suppliers, queues"]
     PRICE["Native interval quotes<br/>yield weights / city happiness / discount"]
     N["Native comparisons<br/>selection and execution"]
     DECL --> GEN
@@ -50,7 +52,8 @@ flowchart LR
     MODEL --> W
     T --> W
     W --> PRICE
-    PRICE -.-> C -.-> N
+    PRICE --> C --> N
+    PRICE --> Q
 ```
 
 **16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed

@@ -49,3 +49,24 @@ Next implement routinecustomer adapter +newQuarter jointworld/trade coverage,
 warmperformance, then3freshOnline250integratedonlygames. No fullgamesstarted.
 
 Source uncommitted art/UI/Pedia/Taxes work belongs to other work; preserve it.
+
+
+## Integrated policy/performance checkpoint,17 November
+
+Goal remains active Problems1.1–1.8/2.1–2.2, three fresh stock-AI Online250 games
+next. Signed customer/reference deltas and newQuarter shared worlds integrated.
+Local affected-plan search+16 customer worlds/player+128 route timeline memo.
+123 economy/82 transaction/16 timing-controller-packaging tests pass. Astra
+review passed; packet version guard added. CE native251+4 hook checks pass;
+release SHA b7194a83569283033a7c9687ae6d92c33cef7b7d04daaf8e115c641077cd7da9
+adds read-only CE_AIMonotonicSeconds. Mature zero-turn integrated-policy250-04
+closed/restored0; precise planning passes across fiveAI3.851612/3.489519seconds.
+Same Quarter/customer offers as optimized03. Main publisher logs fullwall/perAI
+and prior native managed counters; controller samples terminal packet. Full
+finish writes ai-processing-time.json averages/max/coverage, retries summed,
+missing partial turns excluded. User specifically requests this nextfullgame.
+See performance.md and customer-world report. No new gameplaychanges thisslice.
+Freeze accepted gameplay+committed economy registry+currentAI+newCE; no unrelated
+UI/art/Pedia WIP. planning_campaign supports explicit freeze/SHA/policyqualification;
+serial seeds preselected Continents18461107/29461107,Pangaea18431267/28681391,
+Fractal19672039/29812257, sharedcontroller15minchecks,mainCSCpolicyonly.

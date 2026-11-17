@@ -1,5 +1,16 @@
 # Current CSC AI status
 
+**1.4 / 2.1 / 2.2,17 November — routine economic integration implemented.**
+Quarter worlds and signed customer-site differences now share the complete
+ordinary-economy model. Local affected-plan search and a bounded route memo
+preserve mature-smoke offers while sharply reducing work.123 economy/82
+transaction/16 timing-controller-packaging tests pass. Precise turn timing and
+average/max reports are implemented. Precise mature planning totals are
+3.85/3.49 seconds across five players; the replay closes/restores0.
+Next: three fresh integrated-only Online250 games.
+[Implementation](../research/mods/csc-customer-world-pricing-20261117.md) ·
+[Timing scope](performance.md).
+
 **1.4 / 2.1 / 2.2,17 November — real customer-world pricing now works.**
 The shared before/after model prices8/8 sampled owned customer footprints in the
 mature world. New CE interval APIs fix the one-turn route pricing blocker;

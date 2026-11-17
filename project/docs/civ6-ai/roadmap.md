@@ -1,5 +1,15 @@
 # CSC AI roadmap
 
+**17 November1.4 / 2.1 / 2.2 implementation checkpoint.**
+The shared candidate-world model now feeds new Quarter bids and signed
+customer-site differences; material losses enter the same marginal economy.
+Major ordinary channels are integrated. Mature smoke keeps offers stable with
+bounded local-plan search and route memoization. Complete the precise clock
+qualification, then the three fresh Online250 games. Report average/max
+guidance wall time per turn and coverage alongside placement outcomes.
+[Implementation/evidence](../research/mods/csc-customer-world-pricing-20261117.md)
+· [Timing method](performance.md).
+
 **17 November scope clarification — Problems1 and2 remain the spine.**
 Aim for coherent coverage of major gameplay-defined economic channels, reusing
 the completed migrations and working guidance. Reasonable documented estimates

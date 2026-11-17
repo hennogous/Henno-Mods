@@ -28,6 +28,11 @@ and a focused manual QA checklist for Henno. Subsequent Problems3–6 research i
 outside this goal. Consult Astra at meaningful checkpoints and maintain comments,
 roadmap, reusable engine findings and scoped commits/pushes.
 
+Performance is a release requirement. The next and subsequent full games must
+report average/max guidance processing time per turn across all AI players,
+per-player breakdowns and slowest turns, with explicit clock coverage.
+See [measurement scope and bounded work](performance.md).
+
 The G labels below track implementation dependencies within Problems1 and2;
 they do not replace or expand the numbered roadmap.
 
@@ -35,9 +40,9 @@ they do not replace or expand the numbered roadmap.
 | --- | --- | --- |
 | G1 Fixed external/local exchanges | Gameplay-owned headers/legs and native gate templates; UI/AI readers; baseline graph parity, replacements/alternatives/amount tests | Verified: corrected replay matches all10,954 native rows,137 fixed rows and67-city population refresh; closed/restored |
 | G2 Directional materials | Data-owned inputs/returns, registered hosts, Base/Spec, M&C2/3 totals, ownership/worked/pillage behavior, protection consumes actual legs | Verified: Gold/M&C graph parity, end-to-end protection/owner tests,30 live lifecycle observations and final current-reader22-chain smoke pass; native10,954-row graph unchanged |
-| G3 Joint customer economy | A coherent shared model covers affected suppliers, adjacency/provider changes, shared queues/rounding and observed routes/staffing | Owned-customer worlds implemented;12 actual-SQL/Core/Facts/Model tests pass. Corrected CE interval pricing passes15 real cases and8/8 mature-world customer quotes; graph/reader parity and closure pass. Routine publication and remaining new-Quarter integration open |
-| G4 Native residual | Representative overlap check avoids substantial duplication; correction retains ordinary district value and is consumed by a native comparison | Early transport qualified: model59,110 adjustment reaches fresh NetValue,125,288 native building uplift is retained, actual comparator reads790,083. Routine signed site differences/reference selection remain to implement; no extra reader API needed initially |
-| G5 Bounded work | Definition caches, targeted updates and measured mature-empire overhead | Fixed argument cache restricted; full measurement open |
+| G3 Joint customer economy | A coherent shared model covers affected suppliers, adjacency/provider changes, shared queues/rounding and observed routes/staffing | Owned-customer worlds implemented;12 actual-SQL/Core/Facts/Model tests pass. Corrected CE interval pricing passes15 real cases and8/8 mature-world customer quotes; graph/reader parity and closure pass. Routine customer differences and shared new-Quarter worlds implemented; bounded mature smoke passes; fresh integrated publication/results next |
+| G4 Native residual | Representative overlap check avoids substantial duplication; correction retains ordinary district value and is consumed by a native comparison | Early transport qualified: model59,110 adjustment reaches fresh NetValue,125,288 native building uplift is retained, actual comparator reads790,083. Routine signed site differences/reference selection implemented, including unlinked alternatives and native zero-gate guard; full-game reception next |
+| G5 Bounded work | Definition caches, targeted updates and measured mature-empire overhead | Local affected-plan search,16 customer worlds/player,128 route timelines/publication; mature smoke preserves offers with large speedup. Precise wall clock and average/max full-run report implemented; full-game measurement next |
 | G6 Review and handoff | Astra review, maintained findings/roadmap/skill, scoped pushes, exact gameplay change list and manual QA cases | Ongoing |
 | G7 Three250-turn efficacy games | After G1–G6, run integrated-only stock AI games on Online speed through shared controller;15-minute checks; regular placement, chain, Service and economy comparisons | Added by Henno; follows implementation and agent checks |
 

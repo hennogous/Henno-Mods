@@ -75,7 +75,7 @@ Source binary XP2 SHA092abfbb; Ghidra reference SHA324c51e9 has identical releva
 instructions. Private evidence root:
 `Desktop/Codex/csc-ai-ordinary-economy-20261116`.
 
-## Next dependency and gameplay QA
+## Native delivery qualification and gameplay QA
 
 The narrow observer now records native GetBestDistrict's actual comparison at
 RVA3e4b2c: ECX is the candidate score, EDI its reservation threshold, EBX the
@@ -119,8 +119,7 @@ stable ordinary-preferred reference footprint. That retains native type-level
 value and cancels common terms without an exact native component reconstruction.
 Keep custom CSC receiving adjacency unless a specific native overlap is shown.
 The full marginal in the transport diagnostic is not the proposed routine bid.
-Bound the shortlist and check CE write/trace headroom. Shipping integration and
-its recurring budget remain implementation work.
+Bound the shortlist and check CE write/trace headroom. The routine implementation and recurring budget are described below.
 
 The early path preserves native invalid sentinels, but permits valid negative
 raw scores. A routine negative differential should account for the aggregation
@@ -133,3 +132,60 @@ This slice changes AI facts/pricing only. It changes no gameplay payout, buildin
 availability, transaction rate or material gate. Earlier definition migrations
 and preview corrections retain their separate gameplay QA lists. The final goal
 handoff will consolidate those lists for Henno.
+
+
+## Routine Problems1/2 integration and performance
+
+The main CSC adapter now computes signed customer-site differences against a
+stable ordinary-preferred reference in the same city/district type. It includes
+unlinked alternatives, so a useful linked reference can also demote a less useful
+site. The adjustment preserves native type-level value and the positive raw-score
+gate for ordinary building aggregation. Same-key spatial, protection and economic
+entries are merged before publication; the transport remains the qualified early
+Entry API. Actual construction remains native competition.
+
+New Quarter candidates now use the same before/after player economy as existing
+customer sites. Worlds account for covered suppliers, actual Core adjacency,
+customer/provider links, shared physical buildings, queues, population rounding,
+observed staffing and the relevant observed route network. Only the proposed
+Quarter receives its calibrated missing-building depth premium. Its own stream
+list is kept for purchase/displacement diagnostics. Joint-world supplier losses
+replace the duplicate economic SupplyValue deduction; the explicit policy floor
+against covering a Quarter's own materials remains.
+
+A global search at every candidate was too slow in the mature save. The first
+policy-only two-pass check took1.85/21.66/36.69/91.57/48.56 host seconds across
+players1–5. These include console/source loading and are not per-turn guidance
+measurements. Keeping unaffected discrete investment choices, reconsidering
+shared customer investments, and limiting customer worlds to16/player/publication
+reduced those values to1.82/6.36/14.91/13.66/15.63. Every candidate still recomputes
+queue times, physical building deduplication, pooled amenities and rounding.
+
+The publication now observes only routes touching its own cities, retaining
+foreign endpoints and currently ineligible routes that may activate. It shares
+at most128 distinct route timelines. Chronological no-op events are normalized
+only after validation; restoration, explicit route removal, incoming foreign
+routes and32-contributor wrap behavior remain covered. This lowers the third
+host two-pass check to1.83/2.60/3.94/3.61/4.21 seconds. Quarter offers stay2/6/1/6
+for players2–5 and economic customer offers6/3/5/8. All three replays exit0 and
+restore their sessions. The third replay's route cache hit/miss counts are
+194/18,462/27,440/30,545/39, with no overflow or unknown/budget failures.
+
+The native clock build is now
+`b7194a83569283033a7c9687ae6d92c33cef7b7d04daaf8e115c641077cd7da9`.
+It adds only a read-only steady clock to CE;251 native checks and four hook-layer
+checks pass. Precise mature-save qualification `integrated-policy250-04` passes: cold/warm
+planning totals across five players are3,851.612/3,489.519 milliseconds. These
+cover the diagnostic planning calculation; complete publication overhead is
+measured in the upcoming full games. The zero-turn replay closes/restores0. Main-mod timing
+records include the complete publication, per-player partitions and cumulative
+managed native refresh. Full runs automatically write average/max and coverage
+to `ai-processing-time.json`; [measurement details](../../civ6-ai/performance.md).
+123 economy tests,82 transaction tests and16 timing/controller/packaging tests
+pass. Astra approves the bounded route memo and timing approach; the packet-version
+attribution guard from that review is included. Three fresh
+Online250 outcome games remain the next integration evidence.
+
+These routine changes alter AI calculation and observability only. Gameplay
+payouts, transaction eligibility and building availability are unchanged by this
+slice. Earlier contract migrations retain their documented manual QA cases.

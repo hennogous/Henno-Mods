@@ -39,6 +39,35 @@ local previousOffers
 local previousOwnershipScopes = {}
 local reportedOwnershipUnavailable = false
 
+local function wallClock()
+    -- Optional read-only CE clock. A missing timer never disables policy or
+    -- masquerades as zero overhead; logs mark that measurement unavailable.
+    if type(CE_AIMonotonicSeconds)~='function'then return nil end
+    local ok,value=pcall(CE_AIMonotonicSeconds)
+    if ok and(type(value)=='number'or type(value)=='integer')and value>=0 and value<math.huge then return value end
+end
+local function elapsedMicros(started,finished)
+    if started==nil or finished==nil or finished<started then return -1 end
+    return math.floor((finished-started)*1000000+.5)
+end
+
+function CSC_AI_ReportNativeProcessing()
+    -- Read the current packet before replacement, and once at the final inactive
+    -- test boundary. CE accumulates managed refresh microseconds per version;
+    -- the offline report keeps the largest observation of each packet. Reading
+    -- it never publishes policy, clears counters or changes a native decision.
+    if not previousOffers then return end
+    local ok,status=pcall(bridge.Status)
+    if not ok or type(status)~='string'then return end
+    local version=tonumber(status:match('"version":(%d+)'))
+    -- A failure between native Commit and Lua tracking must not assign the new
+    -- packet's work to the previous turn. Preserve that gap as missing evidence.
+    if version~=previousOffers.version then return end
+    print(string.format('CSC_AI_NATIVE_PROCESSING turn=%d version=%d managedMicros=%d',
+        previousOffers.turn or -1,version,
+        tonumber(status:match('"managedMicroseconds":(%d+)'))or -1))
+end
+
 local function readReceipt(getter, ...)
     -- Observability is optional on older CE builds. A readback fault must
     -- not prevent the next valid policy packet from being published.
@@ -155,6 +184,7 @@ local function refresh(turn)
     assert(tonumber(status:match('"ready":(%d+)')) == 1, 'CE district scoring is unavailable')
     assert(tonumber(status:match('"faults":(%d+)')) == 0, 'CE district scoring has faulted')
     local version = assert(tonumber(status:match('"version":(%d+)')))
+    CSC_AI_ReportNativeProcessing()
     reportReceipts(turn, version, status)
     -- The next commit resets CE's per-publication counters.
     local matched = tonumber(status:match('"matched":(%d+)')) or 0
@@ -213,6 +243,7 @@ local function refresh(turn)
     end
     local allowances, stageTwo = 0, {}
     for _, id in ipairs(players) do
+        local playerWall,playerLuaClock=wallClock(),os.clock()
         local player = Players[id]
         local playerEntries={}
         local economy,playerUI=nil,ui
@@ -317,6 +348,8 @@ local function refresh(turn)
             if chain.workingBase then totals.supplied = totals.supplied + 1 end
             if chain.active then totals.active = totals.active + 1 end
         end
+        print(string.format('CSC_AI_PLAYER_PROCESSING turn=%d player=%d wallMicros=%d luaClockMicros=%d entries=%d',
+            turn,id,elapsedMicros(playerWall,wallClock()),elapsedMicros(playerLuaClock,os.clock()),#playerEntries))
     end
     -- Retain structural protection first and the strongest positive Quarter
     -- investments next. Managed defaults cover omitted pairs: table pressure
@@ -408,7 +441,7 @@ local function refresh(turn)
     local siteBids, weakSites, customerSites = 0, 0, 0
     -- Save the exact published identities for readback on the next boundary.
     -- Receipt caps limit logging work. They do not limit what CE receives.
-    local tracked = {version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes}
+    local tracked = {turn=turn,version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes}
     for _, entry in ipairs(entries) do
         if entry.finalQ8~=nil then tracked.economy[#tracked.economy+1]=entry end
         if entry.weak then
@@ -485,6 +518,7 @@ local function onBoundary()
     -- UI read bridge was unavailable during startup.
     local turn = Game.GetCurrentGameTurn()
     if lastTurn == turn then return end
+    local wallStarted,luaClockStarted=wallClock(),os.clock()
     local ok, published = pcall(refresh, turn)
     if ok and published then
         lastTurn = turn
@@ -492,6 +526,11 @@ local function onBoundary()
         bridge.Disable()
         print('CSC_AI_BAKERS_DISTRICTS_FAILED ' .. tostring(published))
     end
+    -- Whole policy envelope: facts, model, receipts, all AI players, staging and
+    -- continuity writes. Record failed/retried startup attempts too, so analysis
+    -- can sum ACTUAL work per turn rather than average only successful packets.
+    print(string.format('CSC_AI_PROCESSING turn=%d published=%d ok=%d wallMicros=%d luaClockMicros=%d',
+        turn,published==true and 1 or 0,ok and 1 or 0,elapsedMicros(wallStarted,wallClock()),elapsedMicros(luaClockStarted,os.clock())))
 end
 
 if bridge.Available() then

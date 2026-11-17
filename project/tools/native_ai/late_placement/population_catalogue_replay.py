@@ -146,6 +146,11 @@ def run(args):
     native_baseline=getattr(args,'customer_native_baseline',False)
     native_treatment=getattr(args,'customer_native_treatment',None)
     native_mode=getattr(args,'customer_native_mode','late')
+    policy_smoke=getattr(args,'policy_smoke',False)
+    if policy_smoke:
+        require(args.route_smoke and args.joint_route_smoke and args.model_smoke,'Integrated policy smoke requires route/model/joint facts')
+        from integrated_economy_probe import inputs as policy_inputs
+        inputs.extend(policy_inputs())
     require(not(native_baseline and native_treatment),'Choose one native customer diagnostic arm')
     if native_baseline or native_treatment:
         require(args.customer_world_smoke and ce_dll,'Customer native probe requires corrected CE and customer-world quotes')
@@ -204,6 +209,7 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
         legacy_refresh_isolated=True,no_orders=True,source_pins=pins,lgd=False,
         model_smoke_isolated=bool(smoke),ui_economy_facts_overlay=bool(smoke),model_smoke_price='zero diagnostic; no bids',
         ce_overlay_sha256=ce_sha,customer_native_baseline=native_baseline,
+        integrated_policy_smoke=bool(policy_smoke),
         customer_native_treatment=str(native_treatment)if native_treatment else None,
         diagnostic_ordinary_turns_advanced=(2 if native_mode=='early'and native_treatment else 1)if native_baseline or native_treatment else 0))
     c=make_probe_controller(out,user_root=plan.user_root)
@@ -286,6 +292,10 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
         if native_baseline or native_treatment:
             from customer_native_probe import run as native_probe
             native_probe(s,c,out/'customer-native',args.dependencies,route_result['customer_world'],native_treatment,native_mode)
+        if policy_smoke:
+            from integrated_economy_probe import run as policy_probe
+            observed=json.loads((out/'routes/observed.json').read_text())
+            policy_probe(c,out/'integrated-economy',observed,plan.identity['original_ai'])
         write_json(out/'complete.json',proof)
     finally:
         if s.owner is not None and s.owner.poll()is None:
@@ -307,6 +317,7 @@ if __name__=='__main__':
     p.add_argument('--customer-native-baseline',action='store_true',help='One ordinary turn with passive customer comparison receipts; holds normal CE publication')
     p.add_argument('--customer-native-treatment',type=Path,help='Matched baseline result for one guarded diagnostic customer adjustment and one ordinary turn')
     p.add_argument('--customer-native-mode',choices=('late','early'),default='late',help='Diagnostic transport; early arm advances two turns to include fresh evaluation')
+    p.add_argument('--policy-smoke',action='store_true',help='Calculate current integrated packets twice per player without publishing; measure cold/warm work')
     p.add_argument('--model-smoke',action='store_true',help='Isolated current Facts/Model pass over actual saved-world chains; no bids')
     p.add_argument('--joint-route-smoke',action='store_true',help='With --route-smoke --model-smoke, qualify current joint route ledger using zero diagnostic prices')
     p.add_argument('--customer-world-smoke',action='store_true',help='Also quote admitted customer footprints with the real CE pricing API; no published bids')

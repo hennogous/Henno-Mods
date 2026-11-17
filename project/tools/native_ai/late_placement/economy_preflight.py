@@ -11,6 +11,13 @@ def inspect(controller, output):
     raw = controller.cmd('''
 local status=assert(CE_AIEconomyStatus)()
 print('CSC_ECONOMY_STATUS='..status)
+if type(CE_AIMonotonicSeconds)=='function'then
+ local first=CE_AIMonotonicSeconds()
+ local second=CE_AIMonotonicSeconds()
+ assert(type(first)=='number'and first>=0 and second>=first and second<math.huge,
+  'Invalid monotonic profiling clock')
+ print('CSC_ECONOMY_TIMING_CLOCK_OK')
+end
 local function flag(value)return value==true or value==1 end
 assert(flag(GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER.RequiresPopulation))
 assert(flag(GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER.RequiresPopulation))
@@ -39,7 +46,8 @@ print('CSC_ECONOMY_PREFLIGHT_OK='..count)
     require(status['pricingReady']==status['finalReady']==1,'Economic interface not ready')
     require('CSC_ECONOMY_PREFLIGHT_OK=' in raw,'Economic preflight did not complete')
     write_json(output/'economy-preflight.json',dict(verified=True,status=status,
-        read_only=True,construction_or_service_claim=False))
+        read_only=True,profiling_clock='CSC_ECONOMY_TIMING_CLOCK_OK'in raw,
+        construction_or_service_claim=False))
     facts=controller.cmd('''
 local ui=assert(ExposedMembers.CSC_Adjacency)
 assert(type(ui.GetDistrictCapacity)=='function','District capacity UI reader unavailable')

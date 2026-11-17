@@ -107,12 +107,17 @@ print('CSC_DISTRICT_CATALOGUE_END')
         raw=controller.cmd(ui_code,'PlotInfo','install-passive-ui-district-adjacency')
         require('CSC_DISTRICT_UI_INSTALLED'in raw and 'CSC_DISTRICT_UI_FAULT'not in raw,
                 'UI district observer failed to initialize')
-    for name in('full_game_census.lua','full_game_preflight.lua','full_game_observation.py','storekeeper_runtime.lua'):
+    for name in('full_game_census.lua','full_game_preflight.lua','full_game_observation.py',
+                'processing_time_summary.py','storekeeper_runtime.lua'):
         (out/name).write_bytes((HERE/name).read_bytes())
 
 
 def finish(out,endpoint=250,*,start=1):
     log=read(out/'Lua.log')
+    # Ordinary main-mod measurements, including failed/retried publications.
+    # Older and untuned runs receive an explicit empty-coverage report.
+    from processing_time_summary import summarise
+    write_json(out/'ai-processing-time.json',summarise(log,first=max(1,start),last=endpoint))
     for failure in('CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED',
             'CSC_FULL_RUN_OBSERVATION_FAILED','CSC_QUARTER_WATCH_FAULT','CSC_PLANNING_FAULT',
             'CSC_PLANNING_LIMIT','CSC_DISTRICT_UI_FAULT'):
@@ -225,7 +230,11 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,obser
                 native_directory=saves,archive=out/('turn-'+str(boundary)+'.Civ6Save'))
             write_json(out/('checkpoint-'+str(boundary)+'.json'),checkpoint)
         cursor=boundary
-    raw=controller.cmd("CSC_QUARTER_PLACEMENT_WATCH.Drain();print('CSC_QUARTER_WATCH_DRAINED')",
+    # The final packet has no successor to collect its native timing counter.
+    # Share the existing journal read; this optional getter never clears state.
+    raw=controller.cmd("CSC_QUARTER_PLACEMENT_WATCH.Drain();"
+        "if type(CSC_AI_ReportNativeProcessing)=='function'then CSC_AI_ReportNativeProcessing()end;"
+        "print('CSC_QUARTER_WATCH_DRAINED')",
         'CSC_AI_BakersGameplay','drain-final-placement-journal')
     require('CSC_QUARTER_WATCH_DRAINED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw,
         'Final Quarter journal read failed')
