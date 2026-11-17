@@ -1,13 +1,16 @@
 # CSC AI handoff — 17 November 2026
 
-**Later continuation:** Henno authorized one post-restructure Continents250 run,
-now active as `csc-ai-restructure-regression-20261117/continents250-02`. The shared
-controller exclusively owns the session; do not start another connection/game.
-Government and Policies passed their actual UI check at25. On completion report
-both directions of customer planning and survey usable Dockmaster layouts on
-this and earlier maps. See [current run](../research/mods/csc-ai-restructure-regression-20261117.md).
-The stopped three-map campaign itself remains stopped; earlier pause/no-run
-statements below describe the previous checkpoint.
+**Later continuation completed:** post-restructure Continents250 closes/restores
+normally:23 foundations,21 at+3+,eight Storekeepers/three Innkeepers, guidance
+1.97s average/3.86s maximum. Government/Policies UI passes at25.24 non-City-Center
+customer/provider links include15 Quarter-first/nine customer-first. See
+[completed regression](../research/mods/csc-ai-restructure-regression-20261117.md).
+Read-only current50/250 and earlier Fractal250 surveys also close/restore.
+[Dockmaster survey](../research/mods/csc-dockmaster-opportunity-survey-20261117.md)
+finds two good owned Fractal layouts and a current Perth follow-through case:
+improved Base+Harbor/Lighthouse,+3 unbuilt Quarter,42 acknowledged native writes.
+No game/controller remains active; do not automatically resume any campaign.
+The stopped three-map campaign itself remains stopped.
 
 This is the starting point for continuing the research in a new chat. Read this
 page, [STATUS](STATUS.md), the opening of the [roadmap](roadmap.md), and the
@@ -17,7 +20,7 @@ superseded next-step lists are not instructions to restart that work.
 Follow-up: Henno chose to continue in this chat and requested Astra's review.
 [Problems1/2 capability audit](../research/mods/csc-ai-continents-capability-audit-20261117.md)
 records additional native receipt counts, customer code boundaries and the
-recommended matched post-restructure regression. No new game has started.
+recommended post-restructure regression, now completed as summarized above.
 
 ## Scope and architecture
 

@@ -1,0 +1,1252 @@
+{
+  "finding": "AI-C210",
+  "samples": {
+    "current_continents_50": {
+      "schema": "csc-dockmaster-opportunities-v1",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-restructure-regression-20261117\\coast50-current-01\\tailors-coast-survey.txt",
+      "summary": {
+        "raw_base_deposits": 40,
+        "resource_free_sea_layouts": 50,
+        "quarter_footprints": 31,
+        "usable_coastal_base_deposits": 15,
+        "coastal_material_clusters": 15,
+        "player_city_native_pairs": 0,
+        "owned_geometry_pairs": 0,
+        "currently_admitted_pairs": 0,
+        "owned_harbor_quality_known": 0,
+        "owned_harbor_gold_at_least2": null,
+        "owned_pairs_matching_best_harbor": null,
+        "existing_quarter_harbor_pairs": 0,
+        "fully_equipped_pairs": null
+      },
+      "layouts": [
+        {
+          "quarter": 391,
+          "harbor": 317,
+          "basePlots": [
+            392
+          ]
+        },
+        {
+          "quarter": 407,
+          "harbor": 408,
+          "basePlots": [
+            481
+          ]
+        },
+        {
+          "quarter": 480,
+          "harbor": 553,
+          "basePlots": [
+            481
+          ]
+        },
+        {
+          "quarter": 716,
+          "harbor": 642,
+          "basePlots": [
+            790
+          ]
+        },
+        {
+          "quarter": 716,
+          "harbor": 643,
+          "basePlots": [
+            790
+          ]
+        },
+        {
+          "quarter": 791,
+          "harbor": 792,
+          "basePlots": [
+            790
+          ]
+        },
+        {
+          "quarter": 797,
+          "harbor": 722,
+          "basePlots": [
+            870
+          ]
+        },
+        {
+          "quarter": 869,
+          "harbor": 795,
+          "basePlots": [
+            870
+          ]
+        },
+        {
+          "quarter": 869,
+          "harbor": 868,
+          "basePlots": [
+            870
+          ]
+        },
+        {
+          "quarter": 941,
+          "harbor": 867,
+          "basePlots": [
+            942
+          ]
+        },
+        {
+          "quarter": 943,
+          "harbor": 868,
+          "basePlots": [
+            942
+          ]
+        },
+        {
+          "quarter": 1215,
+          "harbor": 1216,
+          "basePlots": [
+            1289
+          ]
+        },
+        {
+          "quarter": 1313,
+          "harbor": 1314,
+          "basePlots": [
+            1239
+          ]
+        },
+        {
+          "quarter": 1313,
+          "harbor": 1387,
+          "basePlots": [
+            1239
+          ]
+        },
+        {
+          "quarter": 1313,
+          "harbor": 1388,
+          "basePlots": [
+            1239
+          ]
+        },
+        {
+          "quarter": 1363,
+          "harbor": 1364,
+          "basePlots": [
+            1289
+          ]
+        },
+        {
+          "quarter": 1363,
+          "harbor": 1436,
+          "basePlots": [
+            1289
+          ]
+        },
+        {
+          "quarter": 1507,
+          "harbor": 1508,
+          "basePlots": [
+            1580
+          ]
+        },
+        {
+          "quarter": 1581,
+          "harbor": 1508,
+          "basePlots": [
+            1580
+          ]
+        },
+        {
+          "quarter": 1581,
+          "harbor": 1582,
+          "basePlots": [
+            1580
+          ]
+        },
+        {
+          "quarter": 1581,
+          "harbor": 1656,
+          "basePlots": [
+            1580
+          ]
+        },
+        {
+          "quarter": 1655,
+          "harbor": 1656,
+          "basePlots": [
+            1580
+          ]
+        },
+        {
+          "quarter": 1682,
+          "harbor": 1608,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1682,
+          "harbor": 1681,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1684,
+          "harbor": 1609,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1684,
+          "harbor": 1757,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1684,
+          "harbor": 1758,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1756,
+          "harbor": 1757,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1756,
+          "harbor": 1830,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1756,
+          "harbor": 1831,
+          "basePlots": [
+            1683
+          ]
+        },
+        {
+          "quarter": 1885,
+          "harbor": 1811,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1885,
+          "harbor": 1812,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1885,
+          "harbor": 1884,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1887,
+          "harbor": 1813,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1887,
+          "harbor": 1814,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1960,
+          "harbor": 2033,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 2336,
+          "harbor": 2262,
+          "basePlots": [
+            2337
+          ]
+        },
+        {
+          "quarter": 2336,
+          "harbor": 2263,
+          "basePlots": [
+            2337
+          ]
+        },
+        {
+          "quarter": 2336,
+          "harbor": 2335,
+          "basePlots": [
+            2337
+          ]
+        },
+        {
+          "quarter": 2338,
+          "harbor": 2264,
+          "basePlots": [
+            2337
+          ]
+        },
+        {
+          "quarter": 2338,
+          "harbor": 2265,
+          "basePlots": [
+            2337
+          ]
+        },
+        {
+          "quarter": 2676,
+          "harbor": 2750,
+          "basePlots": [
+            2749
+          ]
+        },
+        {
+          "quarter": 2682,
+          "harbor": 2755,
+          "basePlots": [
+            2683
+          ]
+        },
+        {
+          "quarter": 2708,
+          "harbor": 2781,
+          "basePlots": [
+            2709
+          ]
+        },
+        {
+          "quarter": 2748,
+          "harbor": 2747,
+          "basePlots": [
+            2749
+          ]
+        },
+        {
+          "quarter": 2748,
+          "harbor": 2823,
+          "basePlots": [
+            2749
+          ]
+        },
+        {
+          "quarter": 2756,
+          "harbor": 2755,
+          "basePlots": [
+            2683
+          ]
+        },
+        {
+          "quarter": 2757,
+          "harbor": 2832,
+          "basePlots": [
+            2683
+          ]
+        },
+        {
+          "quarter": 2782,
+          "harbor": 2781,
+          "basePlots": [
+            2709
+          ]
+        },
+        {
+          "quarter": 2947,
+          "harbor": 2948,
+          "basePlots": [
+            2946
+          ]
+        }
+      ],
+      "native_pairs": [],
+      "scope": "Late-world free geometry and current native opportunities; not original map or promised future builds.",
+      "map": "Continents",
+      "map_seed": 18461107,
+      "game_seed": 29461107,
+      "turn": 50,
+      "capture_sha256": "def5587de1c3d48b0124e370efc5da08d97c33dd8296284fe2fe75b54e0f2b99",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      }
+    },
+    "current_continents_250": {
+      "schema": "csc-dockmaster-opportunities-v1",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-restructure-regression-20261117\\coast250-current-01\\tailors-coast-survey.txt",
+      "summary": {
+        "raw_base_deposits": 35,
+        "resource_free_sea_layouts": 18,
+        "quarter_footprints": 12,
+        "usable_coastal_base_deposits": 8,
+        "coastal_material_clusters": 8,
+        "player_city_native_pairs": 5,
+        "owned_geometry_pairs": 1,
+        "currently_admitted_pairs": 1,
+        "owned_harbor_quality_known": 1,
+        "owned_harbor_gold_at_least2": 0,
+        "owned_pairs_matching_best_harbor": 1,
+        "existing_quarter_harbor_pairs": 0,
+        "fully_equipped_pairs": 0
+      },
+      "layouts": [
+        {
+          "quarter": 391,
+          "harbor": 317,
+          "basePlots": [
+            392
+          ]
+        },
+        {
+          "quarter": 406,
+          "harbor": 480,
+          "basePlots": [
+            481
+          ]
+        },
+        {
+          "quarter": 407,
+          "harbor": 408,
+          "basePlots": [
+            481
+          ]
+        },
+        {
+          "quarter": 797,
+          "harbor": 722,
+          "basePlots": [
+            870
+          ]
+        },
+        {
+          "quarter": 869,
+          "harbor": 795,
+          "basePlots": [
+            870
+          ]
+        },
+        {
+          "quarter": 869,
+          "harbor": 868,
+          "basePlots": [
+            870
+          ]
+        },
+        {
+          "quarter": 1313,
+          "harbor": 1314,
+          "basePlots": [
+            1239
+          ]
+        },
+        {
+          "quarter": 1313,
+          "harbor": 1387,
+          "basePlots": [
+            1239
+          ]
+        },
+        {
+          "quarter": 1885,
+          "harbor": 1811,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1885,
+          "harbor": 1812,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1885,
+          "harbor": 1884,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1887,
+          "harbor": 1813,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1887,
+          "harbor": 1814,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 1960,
+          "harbor": 2033,
+          "basePlots": [
+            1886
+          ]
+        },
+        {
+          "quarter": 2748,
+          "harbor": 2747,
+          "basePlots": [
+            2749
+          ]
+        },
+        {
+          "quarter": 2748,
+          "harbor": 2823,
+          "basePlots": [
+            2749
+          ]
+        },
+        {
+          "quarter": 2756,
+          "harbor": 2755,
+          "basePlots": [
+            2683
+          ]
+        },
+        {
+          "quarter": 2947,
+          "harbor": 2948,
+          "basePlots": [
+            2946
+          ]
+        }
+      ],
+      "native_pairs": [
+        {
+          "player": 1,
+          "city": 327681,
+          "quarterPlot": 391,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "392",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 327681,
+          "harborPlot": 317,
+          "harborOwner": 1,
+          "harborExists": false,
+          "harborLegal": true,
+          "lighthouseWorks": false,
+          "harborGold": 0.0,
+          "bestLegalHarborGold": 0.0,
+          "cityName": "Adrianople",
+          "harborCityName": "Adrianople",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 4,
+          "city": 327684,
+          "quarterPlot": 1313,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": false,
+          "quarterLegal": false,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "1239",
+          "quarterForecastAdjacency": 3.0,
+          "harborCity": 327684,
+          "harborPlot": 1387,
+          "harborOwner": 4,
+          "harborExists": true,
+          "harborLegal": false,
+          "lighthouseWorks": true,
+          "harborGold": 2.0,
+          "bestLegalHarborGold": null,
+          "cityName": "Perth",
+          "harborCityName": "Perth",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 5,
+          "city": 917508,
+          "quarterPlot": 1960,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "1886",
+          "quarterForecastAdjacency": 1.0,
+          "harborCity": 917508,
+          "harborPlot": 2033,
+          "harborOwner": -1,
+          "harborExists": false,
+          "harborLegal": false,
+          "lighthouseWorks": false,
+          "harborGold": 1.0,
+          "bestLegalHarborGold": 2.0,
+          "cityName": "Chicago",
+          "harborCityName": "Chicago",
+          "workingBase": 0,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 5,
+          "city": 720905,
+          "quarterPlot": 2756,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": false,
+          "quarterLegal": false,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "2683",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 720905,
+          "harborPlot": 2755,
+          "harborOwner": 5,
+          "harborExists": false,
+          "harborLegal": true,
+          "lighthouseWorks": false,
+          "harborGold": 4.0,
+          "bestLegalHarborGold": 4.0,
+          "cityName": "Dallas",
+          "harborCityName": "Dallas",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 5,
+          "city": 720905,
+          "quarterPlot": 2756,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": false,
+          "quarterLegal": false,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "2683",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 720905,
+          "harborPlot": 2830,
+          "harborOwner": 5,
+          "harborExists": false,
+          "harborLegal": true,
+          "lighthouseWorks": false,
+          "harborGold": 0.0,
+          "bestLegalHarborGold": 4.0,
+          "cityName": "Dallas",
+          "harborCityName": "Dallas",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        }
+      ],
+      "scope": "Late-world free geometry and current native opportunities; not original map or promised future builds.",
+      "map": "Continents",
+      "map_seed": 18461107,
+      "game_seed": 29461107,
+      "turn": 250,
+      "capture_sha256": "17bb6a2890ba3e5cbb666a826e8eca1e14fcabee3046fe37f4ff6fff143767af",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      }
+    },
+    "earlier_continents_250": {
+      "schema": "csc-dockmaster-opportunities-v1",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-first-continents-20261116\\coast250-02\\tailors-coast-survey.txt",
+      "summary": {
+        "raw_base_deposits": 21,
+        "resource_free_sea_layouts": 17,
+        "quarter_footprints": 10,
+        "usable_coastal_base_deposits": 6,
+        "coastal_material_clusters": 6,
+        "player_city_native_pairs": 3,
+        "owned_geometry_pairs": 1,
+        "currently_admitted_pairs": 1,
+        "owned_harbor_quality_known": 0,
+        "owned_harbor_gold_at_least2": null,
+        "owned_pairs_matching_best_harbor": null,
+        "existing_quarter_harbor_pairs": 0,
+        "fully_equipped_pairs": null
+      },
+      "layouts": [
+        {
+          "quarter": 270,
+          "harbor": 197,
+          "basePlots": [
+            345
+          ]
+        },
+        {
+          "quarter": 271,
+          "harbor": 197,
+          "basePlots": [
+            345
+          ]
+        },
+        {
+          "quarter": 271,
+          "harbor": 198,
+          "basePlots": [
+            345
+          ]
+        },
+        {
+          "quarter": 286,
+          "harbor": 212,
+          "basePlots": [
+            360
+          ]
+        },
+        {
+          "quarter": 286,
+          "harbor": 213,
+          "basePlots": [
+            360
+          ]
+        },
+        {
+          "quarter": 286,
+          "harbor": 285,
+          "basePlots": [
+            360
+          ]
+        },
+        {
+          "quarter": 434,
+          "harbor": 433,
+          "basePlots": [
+            360
+          ]
+        },
+        {
+          "quarter": 1024,
+          "harbor": 950,
+          "basePlots": [
+            1099
+          ]
+        },
+        {
+          "quarter": 1024,
+          "harbor": 1023,
+          "basePlots": [
+            1099
+          ]
+        },
+        {
+          "quarter": 1098,
+          "harbor": 1023,
+          "basePlots": [
+            1099
+          ]
+        },
+        {
+          "quarter": 1102,
+          "harbor": 1176,
+          "basePlots": [
+            1101
+          ]
+        },
+        {
+          "quarter": 1175,
+          "harbor": 1176,
+          "basePlots": [
+            1101
+          ]
+        },
+        {
+          "quarter": 1175,
+          "harbor": 1249,
+          "basePlots": [
+            1101
+          ]
+        },
+        {
+          "quarter": 1175,
+          "harbor": 1250,
+          "basePlots": [
+            1101
+          ]
+        },
+        {
+          "quarter": 1527,
+          "harbor": 1452,
+          "basePlots": [
+            1601
+          ]
+        },
+        {
+          "quarter": 1527,
+          "harbor": 1526,
+          "basePlots": [
+            1601
+          ]
+        },
+        {
+          "quarter": 2244,
+          "harbor": 2318,
+          "basePlots": [
+            2317
+          ]
+        }
+      ],
+      "native_pairs": [
+        {
+          "player": 5,
+          "city": 720905,
+          "quarterPlot": 434,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "360",
+          "quarterForecastAdjacency": 1.0,
+          "harborCity": 720905,
+          "harborPlot": 433,
+          "harborOwner": 5,
+          "harborExists": false,
+          "harborLegal": true,
+          "lighthouseWorks": false,
+          "harborGold": null,
+          "bestLegalHarborGold": null,
+          "cityName": "Dumbarton",
+          "harborCityName": "Dumbarton",
+          "workingBase": null,
+          "workshopWorks": null,
+          "navalTradition": null
+        },
+        {
+          "player": 5,
+          "city": 786442,
+          "quarterPlot": 271,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": false,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "345",
+          "quarterForecastAdjacency": 1.0,
+          "harborCity": 786442,
+          "harborPlot": 198,
+          "harborOwner": -1,
+          "harborExists": false,
+          "harborLegal": false,
+          "lighthouseWorks": false,
+          "harborGold": null,
+          "bestLegalHarborGold": null,
+          "cityName": "Selkirk",
+          "harborCityName": "Selkirk",
+          "workingBase": null,
+          "workshopWorks": null,
+          "navalTradition": null
+        },
+        {
+          "player": 5,
+          "city": 786442,
+          "quarterPlot": 271,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": false,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "345",
+          "quarterForecastAdjacency": 1.0,
+          "harborCity": 786442,
+          "harborPlot": 197,
+          "harborOwner": -1,
+          "harborExists": false,
+          "harborLegal": false,
+          "lighthouseWorks": false,
+          "harborGold": null,
+          "bestLegalHarborGold": null,
+          "cityName": "Selkirk",
+          "harborCityName": "Selkirk",
+          "workingBase": null,
+          "workshopWorks": null,
+          "navalTradition": null
+        }
+      ],
+      "scope": "Late-world free geometry and current native opportunities; not original map or promised future builds.",
+      "map": "Continents",
+      "map_seed": 22051116,
+      "game_seed": 32251116,
+      "turn": 250,
+      "capture_sha256": "1eea28c8e478a675cdea09d2a82d85f0c6c19bb3fc048cada52cd08db798a7bb",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      }
+    },
+    "earlier_fractal_250": {
+      "schema": "csc-dockmaster-opportunities-v1",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-restructure-regression-20261117\\coast250-fractal-01\\tailors-coast-survey.txt",
+      "summary": {
+        "raw_base_deposits": 14,
+        "resource_free_sea_layouts": 13,
+        "quarter_footprints": 9,
+        "usable_coastal_base_deposits": 5,
+        "coastal_material_clusters": 5,
+        "player_city_native_pairs": 8,
+        "owned_geometry_pairs": 3,
+        "currently_admitted_pairs": 3,
+        "owned_harbor_quality_known": 3,
+        "owned_harbor_gold_at_least2": 2,
+        "owned_pairs_matching_best_harbor": 1,
+        "existing_quarter_harbor_pairs": 0,
+        "fully_equipped_pairs": 0
+      },
+      "layouts": [
+        {
+          "quarter": 478,
+          "harbor": 551,
+          "basePlots": [
+            479
+          ]
+        },
+        {
+          "quarter": 546,
+          "harbor": 620,
+          "basePlots": [
+            473
+          ]
+        },
+        {
+          "quarter": 546,
+          "harbor": 621,
+          "basePlots": [
+            473
+          ]
+        },
+        {
+          "quarter": 547,
+          "harbor": 621,
+          "basePlots": [
+            473
+          ]
+        },
+        {
+          "quarter": 547,
+          "harbor": 622,
+          "basePlots": [
+            473
+          ]
+        },
+        {
+          "quarter": 2857,
+          "harbor": 2858,
+          "basePlots": [
+            2931
+          ]
+        },
+        {
+          "quarter": 2932,
+          "harbor": 2858,
+          "basePlots": [
+            2931
+          ]
+        },
+        {
+          "quarter": 2932,
+          "harbor": 2859,
+          "basePlots": [
+            2931
+          ]
+        },
+        {
+          "quarter": 2936,
+          "harbor": 2937,
+          "basePlots": [
+            3010
+          ]
+        },
+        {
+          "quarter": 3083,
+          "harbor": 3082,
+          "basePlots": [
+            3010
+          ]
+        },
+        {
+          "quarter": 3083,
+          "harbor": 3158,
+          "basePlots": [
+            3010
+          ]
+        },
+        {
+          "quarter": 3084,
+          "harbor": 3158,
+          "basePlots": [
+            3010
+          ]
+        },
+        {
+          "quarter": 3120,
+          "harbor": 3194,
+          "basePlots": [
+            3045
+          ]
+        }
+      ],
+      "native_pairs": [
+        {
+          "player": 4,
+          "city": 393221,
+          "quarterPlot": 478,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "479",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 393221,
+          "harborPlot": 551,
+          "harborOwner": 4,
+          "harborExists": false,
+          "harborLegal": true,
+          "lighthouseWorks": false,
+          "harborGold": 3.0,
+          "bestLegalHarborGold": 3.0,
+          "cityName": "Opis",
+          "harborCityName": "Opis",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 4,
+          "city": 720904,
+          "quarterPlot": 546,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "473",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 720904,
+          "harborPlot": 621,
+          "harborOwner": -1,
+          "harborExists": false,
+          "harborLegal": false,
+          "lighthouseWorks": false,
+          "harborGold": 0.0,
+          "bestLegalHarborGold": null,
+          "cityName": "Karkar",
+          "harborCityName": "Karkar",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 4,
+          "city": 720904,
+          "quarterPlot": 546,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "473",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 720904,
+          "harborPlot": 620,
+          "harborOwner": 4,
+          "harborExists": true,
+          "harborLegal": false,
+          "lighthouseWorks": true,
+          "harborGold": 3.0,
+          "bestLegalHarborGold": null,
+          "cityName": "Karkar",
+          "harborCityName": "Karkar",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 4,
+          "city": 720904,
+          "quarterPlot": 547,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "473",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 720904,
+          "harborPlot": 622,
+          "harborOwner": -1,
+          "harborExists": false,
+          "harborLegal": false,
+          "lighthouseWorks": false,
+          "harborGold": 1.0,
+          "bestLegalHarborGold": null,
+          "cityName": "Karkar",
+          "harborCityName": "Karkar",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 4,
+          "city": 720904,
+          "quarterPlot": 547,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "473",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 720904,
+          "harborPlot": 621,
+          "harborOwner": -1,
+          "harborExists": false,
+          "harborLegal": false,
+          "lighthouseWorks": false,
+          "harborGold": 0.0,
+          "bestLegalHarborGold": null,
+          "cityName": "Karkar",
+          "harborCityName": "Karkar",
+          "workingBase": 1,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 5,
+          "city": 458757,
+          "quarterPlot": 2857,
+          "quarterOwned": true,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": true,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "2931",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 458757,
+          "harborPlot": 2858,
+          "harborOwner": 5,
+          "harborExists": false,
+          "harborLegal": true,
+          "lighthouseWorks": false,
+          "harborGold": 0.0,
+          "bestLegalHarborGold": 4.0,
+          "cityName": "Kinchassa",
+          "harborCityName": "Kinchassa",
+          "workingBase": 0,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 5,
+          "city": 720905,
+          "quarterPlot": 2932,
+          "quarterOwned": false,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": false,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "2931",
+          "quarterForecastAdjacency": 1.0,
+          "harborCity": 458757,
+          "harborPlot": 2858,
+          "harborOwner": 5,
+          "harborExists": false,
+          "harborLegal": true,
+          "lighthouseWorks": false,
+          "harborGold": 0.0,
+          "bestLegalHarborGold": 4.0,
+          "cityName": "Mbanza Mpangu",
+          "harborCityName": "Kinchassa",
+          "workingBase": 0,
+          "workshopWorks": false,
+          "navalTradition": true
+        },
+        {
+          "player": 5,
+          "city": 720905,
+          "quarterPlot": 3083,
+          "quarterOwned": false,
+          "quarterExists": false,
+          "quarterGeometry": true,
+          "quarterLegal": false,
+          "base": 1,
+          "spec": 0,
+          "basePlots": "3010",
+          "quarterForecastAdjacency": 2.0,
+          "harborCity": 720905,
+          "harborPlot": 3082,
+          "harborOwner": -1,
+          "harborExists": false,
+          "harborLegal": false,
+          "lighthouseWorks": false,
+          "harborGold": -1.0,
+          "bestLegalHarborGold": 2.0,
+          "cityName": "Mbanza Mpangu",
+          "harborCityName": "Mbanza Mpangu",
+          "workingBase": 0,
+          "workshopWorks": false,
+          "navalTradition": true
+        }
+      ],
+      "scope": "Late-world free geometry and current native opportunities; not original map or promised future builds.",
+      "map": "Fractal",
+      "map_seed": 19672039,
+      "game_seed": 29812257,
+      "turn": 250,
+      "capture_sha256": "34c33f57ce9d9de052582c4c3dc99ac5c3127c60d1239e1f357f2f9b94caab30",
+      "closure": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      }
+    }
+  },
+  "policy_changes": false,
+  "scope": "Read-only completed map surveys. Coastal material clusters group overlapping footprints; good site cases retain native Harbor quality and actual investment state."
+}

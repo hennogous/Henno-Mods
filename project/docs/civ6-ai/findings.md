@@ -1,5 +1,38 @@
 # CSC findings and evidence
 
+## AI-C210 — Coastal Tailors opportunities are sparse, with concrete missed layouts
+
+17 November2026, Problems1/2. Shared-controller zero-turn surveys of current
+Continents50/250 and earlier Fractal250 close/restore exit0; a previous complete
+Continents capture supplies a third map. Coastal material clusters with room
+for Quarter/sea Harbor number15→8 on the current world, six on earlier
+Continents and five on Fractal. Current50 has no usable owned pair. Fractal250
+has two good owned/currently admitted layouts: Opis with a best-equal+3 Harbor,
+and Karkar with existing+3 Harbor/Lighthouse and improved Base. Neither has its
+Quarter. Current Perth has improved Base and Harbor/Lighthouse beside a+3
+Quarter candidate, with42 native score writes but no foundation by250. Dallas's
+best-equal+4 Harbor layout is first offered249. Current/earlier Continents'
+fully owned/currently admitted pairs instead have weak0-Gold Harbors.
+No surveyed world has an actual adjacent Tailors/Harbor pair. Investigate Perth
+follow-through before broad bonuses or coastal resource assistance.
+[Survey, case plots and provenance](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
+
+## AI-C209 — Restructured package preserves live guidance and opens Government/Policies
+
+17 November2026, Problems1/2. Same-initial-world Online Continents250 completes
+and closes/restores exit0.23 foundations all have Base;21 rate+3+,seven+4+,
+three both-material.36/36 native Quarter BEST values exactly match published
+bids. Signed customer adjustments record1,204 native writes/zero readback errors.
+24 non-City-Center Quarter/customer-provider links include15 Quarter-first and
+nine customer-first;11 customer foundations expose the native SQL private yield,
+five links have prior economic offers, two exact reverse and two logged forward
+layout matches. Eight Storekeepers/three Innkeepers operate at250; no Tailors
+Harbor link or Dockmaster. Guidance averages1.975s/max3.865s with250-turn coverage.
+Actual Government/Policies UI callbacks pass at25 with BRS/EPC and no Lua errors.
+The maintained source/action restructure and passive diagnostics are qualified;
+durable customer layouts and alternative coverage remain useful follow-ups.
+[Results, comparison and diagnostics](../research/mods/csc-ai-restructure-regression-20261117.md).
+
 ## AI-C208 — Ordinary-economy guidance completes Continents250 with live delivery and measured cost
 
 17 November2026, Problems1.1–1.8/2.1–2.2. Integrated-only stock-AI Online250

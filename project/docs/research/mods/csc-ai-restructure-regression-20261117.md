@@ -1,5 +1,94 @@
 # Post-restructure Continents regression
 
+**Completed turn250 and closed/restored normally.** The restructured package
+still delivers Quarter bids and customer adjustments. Government and Policies
+both opened and closed in the actual BRS/EPC UI at25, without Lua errors.
+Finding **AI-C209**; [compact results](csc-ai-restructure-regression-20261117.json).
+
+## Outcome and previous-run comparison
+
+| Measure | Previous ordinary-economy run | Post-restructure run |
+|---|---:|---:|
+| Bakers / Tailors foundations |17 /5|16 /7|
+| Base-adjacent foundations |22/22|23/23|
+| Rated+3 or better |20|21|
+| Rated+4 or better |7|7|
+| Both material classes at foundation |5|3|
+| Completed Bakers / Tailors held at250 |15 /4|14 /5|
+| Active Storekeepers / Innkeepers at250 |8 /2|8 /3|
+| Active Dockmasters / Sacristans at250 |0 /0|0 /0|
+| Native Storekeeper chain-turns |1,101|1,031|
+| Customer economic score writes, sampled |1,587|1,204|
+| Guidance average / maximum, all five AIs |2.03s /4.61s|1.97s /3.86s|
+
+All36 observed native new-Quarter BEST values exactly match published bids.
+22/23 foundations tie the best physical rating among their city/type packet's
+positive offers. The remaining Tailors foundation (player3,plot2387,turn207)
+has no matching positive packet metadata and needs reservation/delivery follow-up.
+250 turn publications have complete wall-time coverage and zero
+failed attempts; no policy/planning faults or Lua runtime errors are recorded.
+Native managed refresh separately averages14.15ms, maximum35.74ms.
+
+At250 all five Tailors have working Workshops and improved Base; none has an
+adjacent Harbor. Bakers have13 working Stage2 producers, nine working adjacent
+customer buildings and eight physically complete Stage2 chains. Stage4 Service
+properties remain zero. One original AI was eliminated; totals include its
+earlier construction, while endpoint inventory reflects surviving ownership.
+
+This is a useful package/behavior regression against the same initial world.
+Complete play diverged, and the new run adds BRS/EPC for its UI check. Small
+outcome differences should guide the next investigation rather than be assigned
+to unchanged tuning coefficients. Quarter/customer delivery remains active.
+
+### How customer guidance connects
+
+There are24 distinct Quarter/customer-provider district links, excluding18 City
+Center links.15 customers follow their Quarter; nine precede it. Eleven distinct
+customer foundations record the SQL private placement yield. Five links have a
+prior Lua economic proposal at that customer plot. Two match the exact reverse
+customer-first planned Quarter footprint; two match the latest logged forward
+Quarter layout. A link can satisfy multiple measures; these counts do not add.
+The previous run's corresponding counts are20 links,13/7 order,10 SQL readings,
+seven prior economic offers and one exact match in each planning direction.
+
+Both directions therefore meet in real construction, with incomplete persistence
+between them. The exact forward measure covers the leading two logged Quarter
+offers only. Lua economic delivery has1,204 native writes, two sampled site-win
+windows and zero readback errors. The diagnostic totals record38 unavailable
+reference quotes,18 unavailable native quotes,141 nonpositive native candidates
+and858 unvisited groups within the existing work budget. None was classified
+as a missing candidate-world quote. Preserve bounded work; investigate coverage
+and durable joint layouts before increasing blanket customer incentives.
+
+The new passive diagnostics produced49 Quarter funnel summaries,337 already-
+priced alternative records and576 Harbor-neighbour records. None of those
+Harbor-neighbour cells is water: the built Tailors are inland. Raising a native
+Harbor adjacency bonus cannot make a Harbor legal beside those Quarters.
+Across the sampled funnel visits, rejection totals are6,797 below-adjacency,
+1,247 no-Base,61 economics,13 missing facts and10 ambiguous buyer;160 visits are
+positive. These are repeated candidate visits, not distinct missed sites.
+
+### Material retention, acquisition and empire output
+
+The15 material-loss observations comprise six pillages, six ownership changes,
+two improvement removals/changes with resources retained, and one Wheat removal
+for a Wonder at48. That Wheat was a non-last Base deposit. No voluntary
+last-material resource destruction is observed. Native managed exclusion masks
+are active in227 turn windows.
+
+Native purchases spend10,860Gold on116 tiles, all debit/ownership confirmed;
+two purchases match Quarter sites. Savings offers/receipts are preserved in the
+raw financial record. The endpoint's five-seat average is582.40Production,
+1,027.80gross Gold,366.40net Gold and67.80food surplus per turn, versus the prior
+512.78/1,038.50/423.50/63.41. These reflect the diverged empires and warfare;
+the JSON retains all ten25-turn economic samples for later balancing.
+
+[Dockmaster map survey](csc-dockmaster-opportunity-survey-20261117.md) follows
+with zero-turn inspections and earlier-map comparison. No resource-placement or
+guidance values change as part of this regression.
+
+## Run qualification
+
 17 November2026. Henno authorized one fresh Continents game to250 and requested
 the additional opportunity diagnostics. Use the previous Continents map/game
 seeds18461107/29461107, Small/Prince/Online, same original AI seats, City Lights,
@@ -67,7 +156,8 @@ guidance time. The reference is the completed ordinary-economy Continents250,
 not a newly labelled untuned baseline. Extra UI dependencies are recorded.
 Do not automatically start Pangaea/Fractal after this one game.
 
-Status: `continents250-02` is running. Initial map/AI/start/unit parity passed.
+Status: `continents250-02` completed250, closed exit0 and restored preferences.
+Initial map/AI/start/unit parity passed.
 The Government and Policies pages both opened and closed successfully at25,
 with no new Lua errors. BRS initialized normally and CSC confirmed attachment.
 `government-screen-check.json` and its transcript/log delta preserve this proof.

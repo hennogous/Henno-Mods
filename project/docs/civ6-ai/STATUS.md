@@ -3,14 +3,22 @@
 **New-chat entry point: [handoff](HANDOFF.md).** It distinguishes implemented
 work from remaining AI gaps and preserves operating instructions.
 
-**Current authorized work:** one matched post-restructure Continents250 game is
-running through the shared controller (`csc-ai-restructure-regression-20261117`,
-`continents250-02`). Government and Policies opened/closed successfully at25,
-with BRS/EPC enabled and no new Lua errors. Initial world parity passed. Keep
-its worker/inputs exclusive; use15-minute checks. Pangaea/Fractal are not resumed.
-After completion, report customer-planning overlap and survey Dockmaster layouts
-on this and available earlier maps. [Run and diagnostics](../research/mods/csc-ai-restructure-regression-20261117.md)
-· [Coastal survey](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
+**Latest continuation completed:** post-restructure Continents250 closes/restores
+exit0.23 Base-adjacent foundations,21 at+3+,eight Storekeepers/three Innkeepers,
+36/36 exact native Quarter bids and1,204 customer score writes. Government and
+Policies pass at25 with BRS/EPC. Guidance averages1.97s/max3.86s over250 turns.
+Customer directions meet in24 district links (15 Quarter-first/nine customer-first).
+[Run, comparison and diagnostics](../research/mods/csc-ai-restructure-regression-20261117.md).
+
+**Dockmaster survey completed:** current50/250 and earlier Fractal250 zero-turn
+inspections all close/restore; a previous Continents capture adds a third map.
+Fractal has two good owned layouts (Opis/Karkar); current Perth has improved Base
+and Harbor/Lighthouse beside an unbuilt+3 Quarter site with42 native score writes.
+Current Dallas's promising+4 Harbor layout appears249. No actual Tailors/Harbor
+pair developed. Next useful investigation: Perth reservation/production follow-through.
+[Survey and cases](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
+**No game/controller remains active.** No further campaign, resource-placement
+change or fresh game is started automatically.
 
 **Continuation audit with Astra:** main Quarter/customer scoring and material
 protection have native uptake. The clearest code boundaries are customer land

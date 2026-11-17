@@ -4,6 +4,20 @@ For current continuation instructions, use the [handoff](HANDOFF.md). Later
 dated entries supersede earlier next-step lists; no test campaign should resume
 automatically. The latest maintenance/UI work changed no AI policy or CE binary.
 
+**17 November — restructure regression and coastal survey completed.**
+Problems1/2 remain active:23 Base-adjacent foundations,21 at+3+,36 exact native
+Quarter BEST values; eight Storekeepers/three Innkeepers at250. Customer
+directions connect in24 non-City-Center links, with native SQL readings and Lua
+economic writes. Guidance1.97s average/3.86s maximum; Government/Policies pass.
+Coastal surveys identify two good owned Fractal layouts and current Perth's
+unfinished+3 Quarter beside improved Base and Harbor/Lighthouse, despite42
+acknowledged native writes. Next1.6/2.1 investigation: Perth's remaining
+reservation/production path, followed by durable joint-layout coordination.
+Current Tailors are all inland, so a stronger adjacent-Harbor SQL signal alone
+cannot connect them. No resource-assistance change or further game is launched.
+[Regression](../research/mods/csc-ai-restructure-regression-20261117.md)
+· [Coastal cases](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
+
 **17 November — first ordinary-economy outcome analysed; games paused.**
 Problems1.1–1.4/1.8:22 Base-adjacent foundations,20 at+3+,all22 best geometry
 in their positive city/type packets;82/82 native bids consumed exactly.
