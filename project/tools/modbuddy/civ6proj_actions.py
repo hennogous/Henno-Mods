@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import ntpath
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -259,7 +260,26 @@ def canonical_data(data: dict[str, Any]) -> dict[str, Any]:
     return clone
 
 
+def duplicate_content_destinations(project_path: Path) -> dict[str, list[str]]:
+    """Find literal Content items that copy onto the same Windows destination.
+
+    Civ6.targets batches Copy by TargetPath. Repeated Content identities produce
+    two SourceFiles but one DestinationFiles value, failing before art cooking.
+    Use Windows path rules even when checking the repository on another OS.
+    """
+    groups: dict[str, list[str]] = {}
+    root = ET.fromstring(read_text(project_path))
+    for item in root.findall('.//{*}Content'):
+        filename = item.attrib.get('Include', '')
+        destination = ntpath.normcase(ntpath.normpath(filename))
+        groups.setdefault(destination, []).append(filename)
+    return {path: names for path, names in groups.items() if len(names) > 1}
+
+
 def validate(project_path: Path, json_path: Path) -> None:
+    duplicates = duplicate_content_destinations(project_path)
+    if duplicates:
+        raise ValueError(f"Duplicate project Content copy destinations: {duplicates}")
     data = json.loads(read_text(json_path))
     patched_text = patch_project_text(read_text(project_path), data)
 

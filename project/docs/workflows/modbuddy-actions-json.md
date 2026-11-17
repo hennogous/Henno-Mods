@@ -54,6 +54,11 @@ Multiple `criteria` entries become multiple `<Criteria>` child elements, which M
 - The generated CDATA remains minified because ModBuddy already stores it that way.
 - The tool patches only `ActionCriteriaData`, `FrontEndActionData`, and `InGameActionData`.
 - Adding a new file still requires both a `<Content Include="...">` entry and an action entry in the JSON.
+- Each Content copy destination must be unique. When several old files become
+  one shared file, keep one Content entry for it. The SDK Copy task otherwise
+  batches multiple SourceFiles against one DestinationFiles value and fails.
+  Both the action `check` command and Quarter content-wiring validator reject
+  duplicate destinations, including Windows case/slash aliases.
 - Do not hand-edit the generated `.modinfo`; ModBuddy overwrites it from the `.civ6proj`.
 
 ## Ordering and consolidation

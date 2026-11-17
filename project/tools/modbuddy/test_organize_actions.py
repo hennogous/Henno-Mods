@@ -1,11 +1,12 @@
 """Protect loading contracts while making the action list easier to maintain."""
 import copy
 import json
+import tempfile
 from pathlib import Path
 import unittest
 import xml.etree.ElementTree as ET
 
-from civ6proj_actions import canonical_data, export_json
+from civ6proj_actions import canonical_data, duplicate_content_destinations, export_json
 from organize_actions import organize, order
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -76,6 +77,17 @@ class ShippingManifestTests(unittest.TestCase):
             actions = self.manifest['blocks'][name]
             self.assertEqual(actions, sorted(actions, key=order))
             self.assertEqual(len(actions), len({a['id'] for a in actions}))
+
+    def test_content_copy_destinations_are_unique(self):
+        self.assertEqual(duplicate_content_destinations(self.project), {})
+
+    def test_windows_aliases_of_the_same_content_path_are_duplicates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'test.civ6proj'
+            path.write_text('<Project><ItemGroup><Content Include="Data/Schema.sql"/>'
+                            '<Content Include="data/./SCHEMA.sql"/></ItemGroup></Project>', encoding='utf-8')
+            self.assertEqual(duplicate_content_destinations(path),
+                             {'data\\schema.sql': ['Data/Schema.sql', 'data/./SCHEMA.sql']})
 
     def test_action_files_exist_and_are_packaged(self):
         tree = ET.parse(self.project)

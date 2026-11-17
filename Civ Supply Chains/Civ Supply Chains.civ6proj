@@ -197,9 +197,6 @@
     <Content Include="Data\CSC_MC_MODE_REMOVE_BONUSES.sql">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Data\CSC_Q_ALL_Schema.sql">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="Data\CSC_Q_ALL_TradeRouteReader.sql">
       <SubType>Content</SubType>
     </Content>

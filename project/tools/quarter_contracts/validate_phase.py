@@ -197,8 +197,13 @@ def validate_content_wiring(
     wiring: dict[str, Any],
     required_outputs: set[str],
 ) -> list[str]:
+    sys.path.insert(0, str(ROOT / 'project/tools/modbuddy'))
+    from civ6proj_actions import duplicate_content_destinations
     included = content_includes(project_path)
-    failures: list[str] = []
+    # Checking membership through a set used to hide repeated Content rows.
+    # The SDK copy target needs one source per destination, across all outputs.
+    failures = [f"duplicate Content copy destination {path}: {names}"
+                for path, names in duplicate_content_destinations(project_path).items()]
     for output_key, expected_file in wiring.get("content_only", {}).items():
         if output_key in required_outputs and expected_file not in included:
             failures.append(f"{output_key}: {expected_file} is not registered as Content in {project_path}")
