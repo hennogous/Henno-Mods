@@ -36,7 +36,7 @@ Default paths:
   "type": "UpdateDatabase",
   "id": "CSC_Q_ALL",
   "properties": {
-    "LoadOrder": "95"
+    "LoadOrder": "94"
   },
   "criteria": [
     "SomeCriterion"
@@ -77,7 +77,12 @@ checks JSON round-tripping; the tests also detect an out-of-date project.
 
 Settings database/text actions and icons use 100. The Pedia shared import uses 490
 so it is available before UI contexts at 500. Other established phases remain.
-File order within an action is dependency order: shared Schema before Common.
+Dependent shared inputs use distinct phases: Schema 94, Common 95. XML file
+sequence does not guarantee native execution order. The 17 November startup log
+showed Common loading before Schema inside one action; fresh-database tests now
+cover that failure. File Priority can order files within an action, and equal
+priorities use filename order in the loading model. Keep dependent actions at
+distinct LoadOrders rather than relying on their alphabetical action IDs.
 
 `organize_actions.py` is the reviewed consolidation helper. It combines only
 UpdateDatabase, UpdateText, UpdateIcons, ImportFiles and DoNothing actions with

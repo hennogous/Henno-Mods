@@ -27,7 +27,8 @@ outputs of the shared processor.
 
 ```mermaid
 flowchart TD
-    S[95: Schema then Common] --> Q[100: Quarter definitions]
+    S[94: Schema] --> C0[95: Common helpers]
+    C0 --> Q[100: Quarter definitions]
     Q --> G[101: Gold declarations]
     G --> M[Conditional M&C and venue definitions]
     M --> P[2500: Transaction processor]
@@ -45,6 +46,14 @@ These SQL passes run while Civ assembles the gameplay database. Consolidating
 files adds no per-turn work or scans. Processors remain separated by actual load
 dependencies; in particular late material hosts and final route projections must
 not move into the early transaction pass.
+
+Schema and Common use separate actions at 94 and 95. On 17 November the game
+loaded Common first inside their formerly merged action, despite Schema being
+first in the XML. That caused the startup error `no such table:
+CSC_PopulationLevels`, missing helper data and downstream modifier failures.
+The loading contract now models file priorities and filename order; a fresh
+database regression reproduces the failed merged action and verifies the split
+phases without borrowing tables from a previously populated game cache.
 
 ## What was cleaned up
 

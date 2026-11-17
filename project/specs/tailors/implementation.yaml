@@ -103,7 +103,7 @@ build_wiring:
       id: CSC_Q_ALL
       type: UpdateDatabase
       file: Data/CSC_Q_ALL_Schema.sql
-      load_order: 95
+      load_order: 94
       criteria: []
     customer_population_gameplay:
       id: CSC_CustomerPopulationReturns

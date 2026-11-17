@@ -2,6 +2,7 @@
 import copy
 import json
 import re
+import sqlite3
 from pathlib import Path
 import sys
 import tempfile
@@ -10,7 +11,7 @@ import yaml
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
-from sql_architecture import ROOT, load_contract, statements, validate_core, validate_pipeline
+from sql_architecture import ROOT, load_contract, runtime_file_paths, statements, validate_core, validate_pipeline
 from validate_phase import CONTRACTS, validate_action_wiring
 
 
@@ -74,14 +75,23 @@ class SharedPipelineTests(unittest.TestCase):
     def test_current_shared_pipeline_is_valid(self):
         self.assertEqual(self.errors(), [])
 
-    def test_common_before_schema_inside_one_action_is_rejected(self):
+    def test_xml_schema_first_does_not_guarantee_native_schema_first(self):
         action = self.owner('Data/CSC_Q_ALL_Schema.sql')
-        action['files'].reverse()
+        common = self.owner('Data/CSC_Q_ALL_Common.sql')
+        self.actions['blocks']['inGameActions'].remove(common)
+        action['files'].append('Data/CSC_Q_ALL_Common.sql')
+        action['properties']['LoadOrder'] = '95'
+        self.contract['files']['schema']['load_order'] = 95
         self.assertTrue(any('schema must load before common' in error for error in self.errors()))
 
     def test_duplicate_registration_is_rejected(self):
         self.actions['blocks']['inGameActions'].append(copy.deepcopy(self.owner('Data/CSC_Q_ALL_Common.sql')))
         self.assertTrue(any('one file registration' in error for error in self.errors()))
+
+    def test_separate_dependent_actions_cannot_share_one_load_order(self):
+        self.owner('Data/CSC_Q_ALL_Schema.sql')['properties']['LoadOrder'] = '95'
+        self.contract['files']['schema']['load_order'] = 95
+        self.assertTrue(any('distinct LoadOrders' in error for error in self.errors()))
 
     def test_optional_declarations_after_compilation_are_rejected(self):
         self.owner('Data/CSC_Q_TAILORS_MC_MODE.sql')['properties']['LoadOrder'] = '2501'
@@ -137,6 +147,48 @@ class RouteProjectionOrderTests(unittest.TestCase):
     def test_projection_before_final_route_reader_is_rejected(self):
         self.contract['build_wiring']['actions']['trade_route_yield_presentation_suk']['load_order'] = 9999000
         self.assertTrue(any('after the final route reader' in error for error in self.errors()))
+
+
+class FreshSharedBootstrapTests(unittest.TestCase):
+    """Start without any CSC tables, unlike a previously populated game cache."""
+    def database(self):
+        db = sqlite3.connect(':memory:')
+        self.addCleanup(db.close)
+        db.executescript('''
+CREATE TABLE Vocabularies(Vocabulary TEXT PRIMARY KEY);
+CREATE TABLE Types(Type TEXT PRIMARY KEY,Kind TEXT);
+CREATE TABLE DynamicModifiers(ModifierType TEXT PRIMARY KEY,CollectionType TEXT,EffectType TEXT);
+CREATE TABLE RequirementSets(RequirementSetId TEXT PRIMARY KEY,RequirementSetType TEXT);
+CREATE TABLE RequirementSetRequirements(RequirementSetId TEXT,RequirementId TEXT,PRIMARY KEY(RequirementSetId,RequirementId));
+CREATE TABLE Requirements(RequirementId TEXT PRIMARY KEY,RequirementType TEXT,Inverse INTEGER DEFAULT 0);
+CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMARY KEY(RequirementId,Name));
+''')
+        return db
+
+    def test_old_collapsed_action_reproduces_the_actual_startup_error(self):
+        action = {'files': ['Data/CSC_Q_ALL_Schema.sql', 'Data/CSC_Q_ALL_Common.sql']}
+        db = self.database()
+        with self.assertRaisesRegex(sqlite3.OperationalError, 'no such table: CSC_PopulationLevels'):
+            for filename in runtime_file_paths(action):
+                db.executescript((ROOT/'Civ Supply Chains'/filename).read_text(encoding='utf-8'))
+
+    def test_current_phases_create_and_populate_every_helper_on_a_fresh_database(self):
+        document = json.loads((ROOT/'project/modbuddy/CivSupplyChains.actions.json').read_text(encoding='utf-8'))
+        shared_files = {'Data/CSC_Q_ALL_Schema.sql', 'Data/CSC_Q_ALL_Common.sql'}
+        db = self.database()
+        for action in sorted(document['blocks']['inGameActions'], key=lambda row: int(row['properties']['LoadOrder'])):
+            for filename in runtime_file_paths(action):
+                if filename in shared_files:
+                    db.executescript((ROOT/'Civ Supply Chains'/filename).read_text(encoding='utf-8'))
+        for table, count in (('CSC_PopulationLevels', 10), ('CSC_RouteStackBits', 4),
+                             ('CSC_Stage3RateBits', 15), ('CSC_Stage4StackBits', 20)):
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM '+table).fetchone()[0], count, table)
+
+    def test_explicit_file_priority_overrides_filename_order(self):
+        files = [{'path': 'Data/CSC_Q_ALL_Common.sql', 'attributes': {'Priority': '1'}},
+                 {'path': 'Data/CSC_Q_ALL_Schema.sql', 'attributes': {'Priority': '0'}}]
+        self.assertEqual(runtime_file_paths({'files': files}),
+                         ['Data/CSC_Q_ALL_Schema.sql', 'Data/CSC_Q_ALL_Common.sql'])
 
 
 if __name__ == '__main__':

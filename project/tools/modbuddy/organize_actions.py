@@ -4,8 +4,9 @@ Order is numeric LoadOrder, action type, then action ID; every order is explicit
 Only declarative database/text/icon/import/placeholder actions are coalesced.
 Gameplay and UI contexts, replacements and their identities stay explicit.
 All properties, criteria and additional action metadata must match exactly.
-Files retain their sequence within each input action; dependency-sensitive
-shared schema/common and generator sections are never alphabetised.
+Files retain their authoring sequence within each input action. Civ's loader
+uses file Priority and filename ordering; XML sequence is not a dependency gate.
+Schema and Common therefore have distinct component LoadOrders (94 and 95).
 """
 from collections import defaultdict
 import copy

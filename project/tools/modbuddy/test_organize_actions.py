@@ -104,11 +104,14 @@ class ShippingManifestTests(unittest.TestCase):
                         self.assertIn(filename, contents)
                         self.assertTrue((self.project.parent / filename).is_file())
 
-    def test_schema_precedes_common_in_one_early_action(self):
+    def test_schema_precedes_common_in_distinct_early_phases(self):
         actions = self.manifest['blocks']['inGameActions']
         shared = next(a for a in actions if a['id'] == 'CSC_Q_ALL')
-        self.assertEqual(shared['files'], ['Data/CSC_Q_ALL_Schema.sql', 'Data/CSC_Q_ALL_Common.sql'])
-        self.assertLess(int(shared['properties']['LoadOrder']), 100)
+        common = next(a for a in actions if a['id'] == 'CSC_Q_ALL_Common')
+        self.assertEqual(shared['files'], ['Data/CSC_Q_ALL_Schema.sql'])
+        self.assertEqual(common['files'], ['Data/CSC_Q_ALL_Common.sql'])
+        self.assertEqual(int(shared['properties']['LoadOrder']), 94)
+        self.assertEqual(int(common['properties']['LoadOrder']), 95)
 
 
 if __name__ == '__main__':

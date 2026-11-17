@@ -16,6 +16,21 @@ def load_contract(root=ROOT, relative=DEFAULT_CONTRACT):
     return yaml.safe_load((root / relative).read_text(encoding='utf-8'))
 
 
+def runtime_file_paths(action):
+    """Model file priorities and filename ordering, rather than XML child order.
+
+    The 17 Nov startup log loads Common before Schema inside the same action,
+    despite the opposite XML sequence. Required cross-file dependencies therefore
+    use distinct component LoadOrders, or explicit per-file Priority values.
+    """
+    def key(entry):
+        if isinstance(entry, str):
+            return 0, entry.casefold()
+        return int(entry.get('attributes', {}).get('Priority', 0)), entry['path'].casefold()
+    return [entry if isinstance(entry, str) else entry['path']
+            for entry in sorted(action.get('files', []), key=key)]
+
+
 def statements(text):
     """Yield code tokens/positions without interpreting comments or literal contents."""
     tokens = [token for token in LEXER.finditer(text) if token.lastgroup not in ('space', 'comment')]
@@ -131,11 +146,11 @@ def validate_core(path, contract=None):
 
 
 def validate_pipeline(root, contract, actions_document):
-    """Check dependencies, including file sequence inside a consolidated action."""
+    """Check dependencies using runtime file order, independent of XML sequence."""
     actions = actions_document.get('blocks', {}).get('inGameActions', [])
     registrations = {}
     for index, action in enumerate(actions):
-        for offset, filename in enumerate(action.get('files', [])):
+        for offset, filename in enumerate(runtime_file_paths(action)):
             registrations.setdefault(filename, []).append((action, index, offset))
     positions = {}
     errors = []
@@ -162,6 +177,10 @@ def validate_pipeline(root, contract, actions_document):
     for earlier, later in zip(contract['dependency_order'], contract['dependency_order'][1:]):
         if earlier in positions and later in positions and positions[earlier] >= positions[later]:
             errors.append(f'{earlier} must load before {later}')
+        elif earlier in positions and later in positions:
+            a, b = positions[earlier], positions[later]
+            if a[0] == b[0] and a[1] != b[1]:
+                errors.append(f'{earlier} and {later} need distinct LoadOrders across separate dependent actions')
     retired = set(contract['retired_files'])
     for filename in registrations:
         if filename in retired or re.fullmatch(r'Data/CSC_Q_[A-Z]+_TRANSACTIONS(?:_GOLD)?\.sql', filename):

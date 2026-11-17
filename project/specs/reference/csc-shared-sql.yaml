@@ -2,6 +2,8 @@ schema_version: 1
 purpose: Shared SQL ownership and loading contract for every Quarter implementation.
 
 # These are inputs reused by each Quarter, not files to copy into its output.
+# Schema 94 must precede Common 95. XML file sequence in one action does not
+# guarantee this: the native loader loaded Common first at the old shared 95.
 files:
   adjacency_schema:
     file: Lua_UI/Adjacencies/CSC_AdjacencySchema.sql
@@ -13,7 +15,7 @@ files:
     criteria: []
   schema:
     file: Data/CSC_Q_ALL_Schema.sql
-    load_order: 95
+    load_order: 94
     criteria: []
   common:
     file: Data/CSC_Q_ALL_Common.sql

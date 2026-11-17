@@ -258,6 +258,11 @@ including optional mode/venue inputs. Phase wiring checks permit compatible
 siblings in a consolidated action and reject duplicate registrations, changed
 activation conditions and merged runtime contexts.
 
+Shared Schema and Common must load at 94 and 95 in separate actions. Their XML
+sequence in one action does not ensure runtime order. Pipeline tests use native
+file-priority/filename ordering, and fresh-database tests execute these two
+sources with no pre-existing CSC tables or seed data.
+
 For a focused maintenance check independent of canonical design/hash approvals:
 
 ```powershell

@@ -400,10 +400,19 @@
         "type": "UpdateDatabase",
         "id": "CSC_Q_ALL",
         "properties": {
+          "LoadOrder": "94"
+        },
+        "files": [
+          "Data/CSC_Q_ALL_Schema.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_ALL_Common",
+        "properties": {
           "LoadOrder": "95"
         },
         "files": [
-          "Data/CSC_Q_ALL_Schema.sql",
           "Data/CSC_Q_ALL_Common.sql"
         ]
       },

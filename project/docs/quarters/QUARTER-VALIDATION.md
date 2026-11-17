@@ -157,10 +157,15 @@ python project/tools/quarter_contracts/validate_sql_architecture.py tailors
 ```
 
 This checks section/table ownership, declaration batching, per-value definition
-labels, shared file registration, exact load phases and criteria, Schema-before-
-Common ordering inside grouped actions, declaration-before-compiler ordering,
+labels, shared file registration, exact load phases and criteria, separate
+Schema 94 / Common 95 phases, declaration-before-compiler ordering,
 and late material/route projections. It rejects retired SQL sidecars, copied
 persistent schema and hand-authored generated partner registries.
+
+The bootstrap tests start with no CSC state and follow file-priority/filename
+ordering rather than XML sequence. They reproduce the old Common-before-Schema
+startup failure and verify the two-phase fix. Separate dependent actions also
+need distinct LoadOrders; alphabetical action IDs are not a loading contract.
 
 The standard style/contract/phase commands invoke these checks too. The focused
 command lets maintenance proceed while an unrelated canonical document or
