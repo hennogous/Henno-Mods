@@ -14,7 +14,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 
-def freeze(repo, base, output, revision='HEAD'):
+def freeze(repo, base, output, revision='HEAD',runtime_id='d0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a17'):
     repo,base,output=(Path(p).resolve() for p in (repo,base,output))
     if output.exists():
         raise ValueError('Require a new output directory')
@@ -57,6 +57,10 @@ def freeze(repo, base, output, revision='HEAD'):
     sdk=Path("C:/Program Files (x86)/Steam/steamapps/common/Sid Meier's Civilization VI SDK/ModBuddy/Extensions/Application")
     command=[r'C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe',str(project),
         '/nologo','/verbosity:minimal','/t:Build',
+        # Distinct package identity preserves the user's installed CSC and
+        # makes exact subscription restoration unambiguous. Content/policy is
+        # unchanged; this is the same accepted controller identity as before.
+        '/p:Guid='+runtime_id,
         '/p:MSBuildLocalExtensionPath='+str(sdk)+'\\',
         '/p:Civ6_UserPath='+str(output/'isolated-user'),
         '/p:BuildDir='+str(native_output),'/p:OutputDir='+str(native_output),
@@ -70,7 +74,7 @@ def freeze(repo, base, output, revision='HEAD'):
         for file in action.findall('File'):
             if not (package/file.text).is_file():raise ValueError('Unpackaged action input '+str(file.text))
     proxy,=(frozen/'CE/Binaries/Win64').glob('GameCore_XP2_CE*.dll')
-    record=dict(commit=commit,base=str(base),content_sha256=hashes,
+    record=dict(commit=commit,base=str(base),runtime_id=runtime_id,content_sha256=hashes,
         ce_sha256=hashlib.sha256(proxy.read_bytes()).hexdigest(),
         manifest_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest(),
         sdk_exit_code=result.returncode,art_reused=True,unrelated_workspace_content_included=False)
@@ -82,4 +86,5 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('repo','base','output'):parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--revision',default='HEAD')
+    parser.add_argument('--runtime-id',default='d0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a17')
     freeze(**vars(parser.parse_args()))
