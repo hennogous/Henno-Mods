@@ -12,9 +12,12 @@ and its recorder hits the32-matrix limit129. The held game is safely closed and
 restored, with failed capture retained. Buffalo150–160 both arms qualify: the
 fresh+62.414utility residual lands in the exact156 comparison, stronger ordinary
 site still wins/founds158, and further Hub offers stop. Coverage123/164→164/164,
-same474 forecasts,100/100 types/sites retained, average2.579→2.480s. Magdeburg
-SQL0/1 bounded construction gate is next, with0 active. Passive legal-set/native
-lineage and opportunity analysis add no worlds;50 related checks pass.
+same474 forecasts,100/100 types/sites retained, average2.579→2.480s. Magdeburg's
+combined-edge0/1 gate changes the chosen Hub from unlinked2377 to linked2227;
+each founds151, both close/qualify. Zero also disables the Lua graph edge, so
+this is combined-system evidence. Six serial fresh games now compare current
+control/candidate on the three preselected maps. Passive legal-set/native
+lineage adds no worlds; opportunity/capture and retirement checks pass.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).

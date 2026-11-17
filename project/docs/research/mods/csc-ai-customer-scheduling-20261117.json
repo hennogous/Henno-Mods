@@ -1,0 +1,431 @@
+{
+  "at": 150,
+  "through": 160,
+  "changes": [
+    {
+      "identity": [
+        156,
+        4,
+        131073
+      ],
+      "control": [
+        {
+          "turn": 156,
+          "player": 4,
+          "city": 131073,
+          "district": 33,
+          "plot": 1532,
+          "totalQ8": 674737
+        }
+      ],
+      "treatment": [
+        {
+          "turn": 156,
+          "player": 4,
+          "city": 131073,
+          "district": 33,
+          "plot": 1532,
+          "totalQ8": 686194
+        }
+      ]
+    },
+    {
+      "identity": [
+        157,
+        4,
+        131073
+      ],
+      "control": [
+        {
+          "turn": 157,
+          "player": 4,
+          "city": 131073,
+          "district": 33,
+          "plot": 1532,
+          "totalQ8": 710076
+        }
+      ],
+      "treatment": [
+        {
+          "turn": 157,
+          "player": 4,
+          "city": 131073,
+          "district": 33,
+          "plot": 1532,
+          "totalQ8": 698619
+        }
+      ]
+    }
+  ],
+  "arms": [
+    {
+      "root": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\buffalo-control150-160-02",
+      "decisions": 100,
+      "visited_groups": 123,
+      "total_groups": 164,
+      "forecasts": 474,
+      "timing": {
+        "turns": 10,
+        "total_ms": 25789.488,
+        "average_ms": 2578.9488,
+        "max_ms": 3368.224,
+        "slowest": [
+          {
+            "turn": 151,
+            "ms": 3368.224
+          },
+          {
+            "turn": 155,
+            "ms": 2953.325
+          },
+          {
+            "turn": 157,
+            "ms": 2705.754
+          },
+          {
+            "turn": 158,
+            "ms": 2518.755
+          },
+          {
+            "turn": 159,
+            "ms": 2510.934
+          }
+        ]
+      },
+      "target_choices": [
+        {
+          "turn": 156,
+          "player": 5,
+          "city": 458756,
+          "district": 6,
+          "plot": 2015,
+          "q8": 470990,
+          "hubs": [
+            {
+              "plot": 2015,
+              "q8": 470990,
+              "eligible": true,
+              "owned": true,
+              "reservation": 43712530
+            },
+            {
+              "plot": 2090,
+              "q8": 463261,
+              "eligible": true,
+              "owned": true,
+              "reservation": 47382553
+            },
+            {
+              "plot": 2091,
+              "q8": 460847,
+              "eligible": true,
+              "owned": true,
+              "reservation": 25296917
+            },
+            {
+              "plot": 2165,
+              "q8": 460847,
+              "eligible": true,
+              "owned": true,
+              "reservation": -1
+            },
+            {
+              "plot": 2164,
+              "q8": 456973,
+              "eligible": true,
+              "owned": true,
+              "reservation": -1
+            },
+            {
+              "plot": 1941,
+              "q8": 454153,
+              "eligible": true,
+              "owned": true,
+              "reservation": 40173586
+            },
+            {
+              "plot": 2239,
+              "q8": 437363,
+              "eligible": true,
+              "owned": false,
+              "reservation": -1
+            },
+            {
+              "plot": 2162,
+              "q8": 435921,
+              "eligible": true,
+              "owned": false,
+              "reservation": -1
+            },
+            {
+              "plot": 2163,
+              "q8": 433593,
+              "eligible": true,
+              "owned": false,
+              "reservation": -1
+            },
+            {
+              "plot": 2017,
+              "q8": 405172,
+              "eligible": true,
+              "owned": true,
+              "reservation": 40960012
+            },
+            {
+              "plot": 1944,
+              "q8": 352421,
+              "eligible": true,
+              "owned": true,
+              "reservation": 37027861
+            },
+            {
+              "plot": 1796,
+              "q8": 348041,
+              "eligible": true,
+              "owned": true,
+              "reservation": 43188236
+            }
+          ]
+        }
+      ],
+      "loaded_modules": {
+        "GameCore_XP2_CE_AI_FinalRelease.dll": {
+          "path": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Mods\\CSC Bakers Development CE\\Binaries\\Win64\\GameCore_XP2_CE_AI_FinalRelease.dll",
+          "sha256": "b7194a83569283033a7c9687ae6d92c33cef7b7d04daaf8e115c641077cd7da9"
+        },
+        "GameCore_XP2_FinalRelease.dll": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sid Meier's Civilization VI\\DLC\\Expansion2\\Binaries\\Win64\\GameCore_XP2_FinalRelease.dll",
+          "sha256": "092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f"
+        }
+      },
+      "evidence_sha256": {
+        "Lua.log": "f7d57413c15d36071bc002acd4b4ab0f0609bb4cfdb763919a23c2073ef75b22",
+        "economy-savings.ndjson": "510e9bb1e4d6f470a64d56262c13f8ed5798675836734b399d6442175023e1fc",
+        "protocol.json": "519de0c7b074159b061983b2f3405761c53bf2f0b1f96fdeb51fff3fe92ca589",
+        "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+        "complete.json": "c3a173e6e6f099c91fbe3f8a562d910636e5f03621caaa3596ca6c4ecec2f3a0"
+      }
+    },
+    {
+      "root": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\buffalo-pairs150-160-02",
+      "decisions": 100,
+      "visited_groups": 164,
+      "total_groups": 164,
+      "forecasts": 474,
+      "timing": {
+        "turns": 10,
+        "total_ms": 24799.454,
+        "average_ms": 2479.9454,
+        "max_ms": 3191.833,
+        "slowest": [
+          {
+            "turn": 152,
+            "ms": 3191.833
+          },
+          {
+            "turn": 158,
+            "ms": 2639.305
+          },
+          {
+            "turn": 160,
+            "ms": 2559.895
+          },
+          {
+            "turn": 154,
+            "ms": 2546.941
+          },
+          {
+            "turn": 159,
+            "ms": 2538.089
+          }
+        ]
+      },
+      "target_choices": [
+        {
+          "turn": 156,
+          "player": 5,
+          "city": 458756,
+          "district": 6,
+          "plot": 2015,
+          "q8": 470990,
+          "hubs": [
+            {
+              "plot": 2015,
+              "q8": 470990,
+              "eligible": true,
+              "owned": true,
+              "reservation": 43712530
+            },
+            {
+              "plot": 2090,
+              "q8": 463261,
+              "eligible": true,
+              "owned": true,
+              "reservation": 47382553
+            },
+            {
+              "plot": 2091,
+              "q8": 460847,
+              "eligible": true,
+              "owned": true,
+              "reservation": 25296917
+            },
+            {
+              "plot": 2165,
+              "q8": 460847,
+              "eligible": true,
+              "owned": true,
+              "reservation": -1
+            },
+            {
+              "plot": 2164,
+              "q8": 456973,
+              "eligible": true,
+              "owned": true,
+              "reservation": -1
+            },
+            {
+              "plot": 1941,
+              "q8": 454153,
+              "eligible": true,
+              "owned": true,
+              "reservation": 40173586
+            },
+            {
+              "plot": 2239,
+              "q8": 437363,
+              "eligible": true,
+              "owned": false,
+              "reservation": -1
+            },
+            {
+              "plot": 2162,
+              "q8": 435921,
+              "eligible": true,
+              "owned": false,
+              "reservation": -1
+            },
+            {
+              "plot": 2163,
+              "q8": 433593,
+              "eligible": true,
+              "owned": false,
+              "reservation": -1
+            },
+            {
+              "plot": 2017,
+              "q8": 421150,
+              "eligible": true,
+              "owned": true,
+              "reservation": 40960012
+            },
+            {
+              "plot": 1944,
+              "q8": 352421,
+              "eligible": true,
+              "owned": true,
+              "reservation": 37027861
+            },
+            {
+              "plot": 1796,
+              "q8": 348041,
+              "eligible": true,
+              "owned": true,
+              "reservation": 43188236
+            }
+          ]
+        }
+      ],
+      "loaded_modules": {
+        "GameCore_XP2_CE_AI_FinalRelease.dll": {
+          "path": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Mods\\CSC Bakers Development CE\\Binaries\\Win64\\GameCore_XP2_CE_AI_FinalRelease.dll",
+          "sha256": "b7194a83569283033a7c9687ae6d92c33cef7b7d04daaf8e115c641077cd7da9"
+        },
+        "GameCore_XP2_FinalRelease.dll": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sid Meier's Civilization VI\\DLC\\Expansion2\\Binaries\\Win64\\GameCore_XP2_FinalRelease.dll",
+          "sha256": "092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f"
+        }
+      },
+      "evidence_sha256": {
+        "Lua.log": "5201a7ed32a33d002ad410b6c640c8465dd202d4e9f4ac3598d056cd72865117",
+        "economy-savings.ndjson": "9c85949bca3ba765298348abb80b397e9ff23915c7ad686c519310fd6a67c6df",
+        "protocol.json": "8358ccbe390fc78f195bd96bba1f171a3f4b97f6919aced8d01391e0d837eb79",
+        "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+        "complete.json": "c3a173e6e6f099c91fbe3f8a562d910636e5f03621caaa3596ca6c4ecec2f3a0"
+      }
+    }
+  ],
+  "schema": "csc-customer-scheduling-comparison-v1",
+  "analysis_scope": "Qualified closed150\u2013160 matched adapter-only test. Actual100site/type choices unchanged; comparison-time residual delivery improves.",
+  "combined_edge_construction_gate": [
+    {
+      "amount": 0,
+      "choice": {
+        "turn": 150,
+        "player": 3,
+        "city": 262144,
+        "district": 6,
+        "plot": 2377,
+        "totalQ8": 288287,
+        "sequence": 53
+      },
+      "foundation": {
+        "kind": "FOUNDATION",
+        "city": 262144,
+        "complete": false,
+        "completionTimeExact": false,
+        "district": 6,
+        "districtID": 1441803,
+        "districtType": "DISTRICT_COMMERCIAL_HUB",
+        "eventMissing": false,
+        "firstSeen": 151,
+        "foundationDateKnown": true,
+        "foundationTurn": 151,
+        "nativeCallTurnKnown": false,
+        "pillaged": false,
+        "player": 3,
+        "plot": 2377,
+        "sequence": 1795,
+        "source": "added",
+        "turn": 151
+      },
+      "complete_sha256": "9b39f8d1c101992b23983a5d383b9cba1628f396abb74a882ac4d19dab47e9a4",
+      "protocol_sha256": "569919979d4a262562391f73988cc9aa0a476d38c7b25db88c9bc5a26d9dec02"
+    },
+    {
+      "amount": 1,
+      "choice": {
+        "turn": 150,
+        "player": 3,
+        "city": 262144,
+        "district": 6,
+        "plot": 2227,
+        "totalQ8": 294684,
+        "sequence": 53
+      },
+      "foundation": {
+        "kind": "FOUNDATION",
+        "city": 262144,
+        "complete": false,
+        "completionTimeExact": false,
+        "district": 6,
+        "districtID": 1441803,
+        "districtType": "DISTRICT_COMMERCIAL_HUB",
+        "eventMissing": false,
+        "firstSeen": 151,
+        "foundationDateKnown": true,
+        "foundationTurn": 151,
+        "nativeCallTurnKnown": false,
+        "pillaged": false,
+        "player": 3,
+        "plot": 2227,
+        "sequence": 1795,
+        "source": "added",
+        "turn": 151
+      },
+      "complete_sha256": "63c36eb7cd417ec5c9265c00dc8af834c743c65da7fd95b68118c0debab580b2",
+      "protocol_sha256": "145a45729b3e1d406892c42ba8be3d4a2c584c1d7aac14b82617fec19a9b8618"
+    }
+  ],
+  "combined_edge_attribution": "Amount0 also removes the edge from Lua positive-rule reverse candidate routing; combined guidance ablation, not isolated SQL. Current production amount1 unchanged."
+}

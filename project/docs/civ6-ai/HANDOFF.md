@@ -1,5 +1,20 @@
 # CSC AI handoff — 17 November 2026
 
+**Current work: the customer-placement goal is active.** Start with
+[the goal, gates and preselected maps](customer-placement-goal.md) and
+[current status](STATUS.md). Main CSC's pair-first customer scheduler7ea8820a
+reaches all164 observed city/type windows in the150–160 comparison, versus123,
+at the same474 forecasts. Buffalo's fresh62.414utility residual reaches its
+actual native comparison; the stronger alternative still wins and is founded.
+No coefficients or Services changed. Current-stack Magdeburg combined-edge0/1
+changes unlinked2377 to linked2227 and each is founded151. Zero also removes
+the Lua routing edge, so this qualifies combined guidance. Three fresh matched
+Online250 comparisons remain; the runner uses six serial games with immutable
+manifests, initial parity, closed-child recovery and duplicate retirement.
+Use the shared controller, fifteen-minute checks and bounded passive diagnostics.
+[Native evidence, timing and storage retirement](../research/mods/csc-ai-customer-scheduling-20261117.md).
+Continue Problem3 research only after2.1 succeeds if usage remains. No upstream PR.
+
 **Latest Perth follow-up:** recorded native comparisons answer the delivery
 question:20/20 positive target writes equal published values and lose to higher
 district bids; zero Tailors winner/request. Perth was+2 through203, then+3;
@@ -20,8 +35,8 @@ Read-only current50/250 and earlier Fractal250 surveys also close/restore.
 [Dockmaster survey](../research/mods/csc-dockmaster-opportunity-survey-20261117.md)
 finds two good owned Fractal layouts and a current Perth follow-through case:
 improved Base+Harbor/Lighthouse,+3 unbuilt Quarter,42 acknowledged native writes.
-No game/controller remains active; do not automatically resume any campaign.
-The stopped three-map campaign itself remains stopped.
+Those surveys and the earlier stopped campaign are closed. The newer authorised
+customer-placement goal above governs current tests; do not resume older campaigns.
 
 This is the starting point for continuing the research in a new chat. Read this
 page, [STATUS](STATUS.md), the opening of the [roadmap](roadmap.md), and the

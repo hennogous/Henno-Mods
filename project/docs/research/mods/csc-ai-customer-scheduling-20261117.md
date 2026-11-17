@@ -135,9 +135,45 @@ The next bounded test uses the **current** qualified150 save and pair-first main
 CSC adapter, Magdeburg city262144. Only the Bakers→Hub private SQL amount varies
 0/1; all ordinary economic coefficients remain fixed. The zero arm is active
 under `magdeburg-sql0-150-155`. This qualifies the combined customer-placement
-mechanism; any SQL-driven switch will be attributed to SQL, with scheduler-only
-delivery already measured separately above. Final three-map comparisons still
-must demonstrate actual improvement.
+mechanism, with scheduler-only delivery measured separately above.
+
+**Both arms now pass through physical construction (AI-C216):** zero selects
+unlinked2377 at150 (288,287Q8), then founds it151. Normal1 selects linked2227
+at150 (294,684Q8), then founds it151. The corresponding competing cells are
+278,814Q8 for2227 in the zero arm and271,631Q8 for2377 in the normal arm.
+Both close/restore exit0 with qualified captures and matching save identity.
+No bid, production order or foundation was forced.
+
+**Attribution correction:** the Lua reverse partner graph currently accepts
+only positive private-yield rule rows. Setting this edge to0 therefore also
+removes Bakers→Hub from customer-first and post-Quarter candidate routing.
+This is an ablation of combined guidance for that relationship, not an isolated
+measurement of SQL versus Lua. Ordinary gameplay transactions and production
+coefficients remain unchanged. Future isolated-channel experiments must retain
+the structural partner graph independently of incentive amplitude. Normal
+production1 retains every generated relationship; this test changes no shipped
+policy. It closes the combined close-choice→foundation gate without claiming
+the scheduler alone caused that switch.
+
+## Final comparison campaign
+
+`customer_placement_campaign.py` runs fresh control/treatment pairs on the three
+preselected worlds, Online250. It checks initial-world parity, fixed package and
+optional-mod manifests before each child, all timing coverage and clean native
+closure. The current-policy Continents reference is rerun to give the new
+opportunity denominator the same coverage in both arms. Native decisions remain
+under the existing shared controller; no probe policy is enabled.
+
+Astra's runner review adds resumable offline postprocessing for already-closed
+qualified children, explicit stops for partial/live outcomes, immutable startup
+manifest checks between games and a separate-keeper deletion guard. Two archive
+retirement checks pass. Exact duplicate closed package copies are retired after
+analysis; unique inputs, all outcome records and saves remain. The campaign has
+six fresh games, not six simultaneously active games. Final three-map outcomes
+still must demonstrate improvement before the goal is complete.
+
+WildW's develop2986a746/mastere59b5aa9 remain unchanged on the pre-campaign
+GitHub branch check. Qualified CE b7194a8 remains the frozen runtime. No PR.
 
 ## Storage
 
@@ -155,6 +191,12 @@ A second retirement removed four exact duplicate package copies from the
 closed/reconciled100–130 windows: another0.758GiB recovered,38.25GiB free while
 the Buffalo control runs. Its separate ledger is
 `storage-retirement-windows-20261117.json`. Total recovery so far:2.654GiB.
+
+Six further exact Buffalo copies were retired after both sessions closed:
+another1.136GiB, cumulative3.790GiB. The check left37.77GiB free during the next
+diagnostic; see `storage-retirement-buffalo-20261117.json`. The campaign records
+free space and retirement after each closed game and requires10GiB before a new
+launch.
 
 ## Remaining goal gates
 

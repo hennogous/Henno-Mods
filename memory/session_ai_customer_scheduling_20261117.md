@@ -18,10 +18,30 @@ Control Hub125 picks2024=346627Q8 vs1949=337500;5Gold vs1Gold adjacency,
 economic bid35853Q8. Treatment diverges Boston108, so125 is no isolated switch.
 128matrix bound now targeted-only; normal fullgame scope empty.
 
-CURRENT Buffalo control150–160-02 shared worker exec43713. p5city458756,
+Buffalo control/treatment150–160-02 both complete/closed/qualified. p5city458756,
 Hub2015vs2017, Bakers1943. Earlier setup-onlycontrol serialization error closes0;
-helper now builds Lua-list code before launch. At control close, run same cases
-with --policy-package root/frozen/CSC in buffalo-pairs150-160-02. Finish both.
+helper now builds Lua-list code before launch. Treatment fresh156 residual15978
+CEgen16v7 net259564→275542ord862, cache421150ord982, winner2015=470990ord1007.
+Control candidate405172 soexact15978gain; stillloses194.688utility. Foundation158,
+scope removed159.100/100same types/sites,98scores;coverage123/164→164/164,
+474forecasts same,2.579→2.480savg/max3.368→3.192. AI-C215/37edb04b pushed.
+Magdeburg SQL0/1 150–155 both closed/qualified.0 picks2377=288287,1 picks2227=
+294684, eachphysicalfoundation151. Mainadapter identical bothSQLarms. Important:
+F.CustomerQuarterMap filtersYieldChange>0, so0alsodisablesBakersHubLuaedge;
+this is combined-edgeablation, NOTisolatedSQLcausality. No productionfix/coefs.
+CURRENT final6game serialrunner customer_placement_campaign.py is ready at
+root/final-comparisons; inspectcampaign-progress beforelaunch/restart. Uses
+preselectedseed3maps currentd6control vs7eacandidate, same5extras/CEb719, fresh
+Online250 andinitialworldparity. Two newretirementtests pass; Astrarunnerreview
+addsclosed-qualifiedchildresume/offlineanalysisretry, stoponexistingpartial/live,
+startupmanifestfreeze/per-childchecks, separatekeeper/nonjunctionguards.
+After all6close, compare opportunityconversion, quality/materialretention,
+bothfoundationorders andtiming beforedeciding2.1success. Ifnoimprovement,
+continue evidencedpolicywork; do notmarkgoalcompletejustbecausegamesfinish.
+SourcecurrentContinents250-02, target3/262144. One bounded combined-mechanism
+switch-through-foundation gate. PriorQaraqorumSQLswitch lacked foundation;
+Astra says don't combine with unrelatedMagdeburgfoundation. If thiscase fails,
+use one declared matched balanced fixture, noforcedbid/production/foundation.
 Do not edit pinned replay/customerwatch/economywatch or F/M/E while worker lives.
 New passive customer_placement_watch legal sets/removals/CLOCK + raw nativeCE
 lineage. Fullgames reuse quarterobserver pages. Astra review fixes finalsuccess
@@ -29,14 +49,16 @@ afterqualification/restoration, persistent freeze-drain failures, pagecounts.
 47 related tests+3 opportunity-analysis tests pass. New bounded analyzer
 customer_opportunity_results.py: positive sets only, captures dedup, unknown
 coverage explicit. No extra worlds/policy. c97b1113 pushed instrumentation;
-later Astra corrections pending scoped commit.
+later Astra corrections f99ba297 pushed.
 
 User requests ongoing disk monitoring/retirement. Removed ten exact duplicate
 installed-package archives from five CLOSED runs after matching manifests to
 retained frozen sources:1.896GiB recovered,38.62GiB free. Ledger in experiment
 root/storage-retirement-20261117.json. Second retirement:four duplicate package
 copies from100–130,0.758GiB, total2.654GiB freed/38.25GiBfree at check; separate
-storage-retirement-windows-20261117.json. Preserve required baselines/current saves,
+storage-retirement-windows-20261117.json. Six more closed Buffalo package copies
+retired1.136GiB, total3.790GiB/37.77GiBfree duringnextdiagnostic; separate
+storage-retirement-buffalo-20261117.json. Preserve required baselines/current saves,
 frozen packages and useful records. Never delete active test inputs.
 
 Short switched-choice/foundation, stronger ordinary control and invalidation

@@ -37,8 +37,9 @@ plus qualified CE, City Lights, Resourceful2, Suk resources and BRS/EPC UI.
 |Fractal|28061117|38061117|
 
 Control is the post-restructure current tuning frozen atd6a9114a, not disabled
-CSC guidance. The completed Continents source is an eligible matched comparison;
-Pangaea/Fractal need fresh current-policy controls. All three treatment games
+CSC guidance. The completed Continents source remains the initial-world and
+historical outcome reference; rerun its control to give the new opportunity
+diagnostics identical coverage. Pangaea/Fractal also need fresh controls. All three treatment games
 must be fresh. Freeze the final qualified treatment before the campaign. Further
 candidate changes require explicit comparison/version reporting.
 
@@ -55,8 +56,8 @@ The initial matched150–155 replay uses the completed post-restructure save and
 the same complete source packages. Only the treatment's main CSC adapter differs.
 The controller verifies structural census, modules, packages and normal closure.
 Evidence is under `Desktop/Codex/csc-ai-customer-scheduling-20261117`.
-No full comparison game has begun. Full native choice/foundation, controls,
-performance and the final three-game campaign remain open.
+The short native-choice/foundation, stronger-site, withdrawal and timing gates
+now pass as summarized below. The final repeated-outcome campaign remains open.
 
 Later:150–155 control/treatment complete and restore. Group coverage68/92→92/92
 at identical264 forecasts, all44 actual district choices/scores unchanged, linked
@@ -68,11 +69,15 @@ control/treatment150–160 complete/qualify: fresh residual15978Q8 reaches the
 actual comparison156, increases linked2017's final cell by exactly that amount,
 but stronger2015 still wins/founds158; Hub offers stop. All100 selected footprints
 are preserved with the same474 forecasts and broader123/164→164/164 coverage.
-The current Magdeburg SQL0/1 test extends the combined mechanism through a
-changed-choice/foundation gate;0 is active, current pair-first policy in both.
+Magdeburg's current combined-edge0/1 test passes changed-choice/foundation:
+unlinked2377 versus linked2227 selected150 and each founded151. Both close/
+qualify. Zero also removes the Lua graph edge, so the effect is attributed to
+combined guidance, with scheduler-specific delivery verified separately above.
+The six-game serial runner pins both packages/mods, checks initial parity,
+resumes only qualified closed children and retires exact duplicate archives.
 New passive legal-set changes and CE score lineage support native timing and
 opportunity-normalized outcomes without extra worlds. Switching/stronger-site
-gates remain open.
+short gates pass; the final repeated-outcome gate remains open.
 [Pilot results](../research/mods/csc-ai-customer-scheduling-20261117.md).
 
 Updated goal adds Problem3 research after successful completion of2.1 if usage

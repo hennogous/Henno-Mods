@@ -1,5 +1,19 @@
 # CSC findings and evidence
 
+## AI-C216 — Combined customer guidance changes a close Hub choice through foundation
+
+17 November2026,2.1. Current150 save/qualifiedCE/main7ea adapter in both arms.
+Disabling Bakers→Hub private rule amount selects unlinked2377=288287Q8 at150;
+normal1 selects linked2227=294684Q8. Each selected footprint is physically
+founded151. Both close/restore0 and qualify. No forced bid/order/foundation.
+The zero row also removes this edge from Lua's positive-rule reverse candidate
+graph, so this is combined-edge ablation, not isolated SQL causality. Gameplay
+transactions/coefs unchanged; future isolated-channel tests must preserve graph
+independently of amplitude. Buffalo separately verifies scheduler delivery,
+stronger-site preservation, post-foundation withdrawal and unchanged forecast
+budget. The preselected fresh three-map matched campaign is the remaining
+outcome gate. [Evidence and campaign](../research/mods/csc-ai-customer-scheduling-20261117.md).
+
 ## AI-C215 — Fresh customer residual reaches the comparison; stronger Buffalo site wins
 
 17 November2026,2.1. Matched main-adapter150–160 arms close/restore and qualify.
