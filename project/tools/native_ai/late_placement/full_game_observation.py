@@ -102,6 +102,11 @@ print('CSC_DISTRICT_CATALOGUE_END')
         (out/'planning-observer-install.txt').write_text(raw,encoding='utf-8')
         require('CSC_PLANNING_INSTALLED'in raw and 'CSC_PLANNING_FAULT'not in raw,
                 'Planning observer did not initialize cleanly')
+        customer=read(HERE/'customer_placement_watch.lua')
+        (out/'customer_placement_watch.lua').write_text(customer,encoding='utf-8')
+        raw=controller.cmd(customer,'CSC_AI_BakersGameplay','install-passive-customer-opportunities')
+        require('CSC_CUSTOMER_WATCH_INSTALLED'in raw and 'CSC_CUSTOMER_WATCH_FAULT'not in raw,
+                'Customer opportunity observer did not initialize cleanly')
         ui_code=read(HERE/'district_adjacency_watch.lua')
         (out/'district_adjacency_watch.lua').write_text(ui_code,encoding='utf-8')
         raw=controller.cmd(ui_code,'PlotInfo','install-passive-ui-district-adjacency')
@@ -120,8 +125,11 @@ def finish(out,endpoint=250,*,start=1):
     write_json(out/'ai-processing-time.json',summarise(log,first=max(1,start),last=endpoint))
     for failure in('CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED',
             'CSC_FULL_RUN_OBSERVATION_FAILED','CSC_QUARTER_WATCH_FAULT','CSC_PLANNING_FAULT',
-            'CSC_PLANNING_LIMIT','CSC_DISTRICT_UI_FAULT'):
+            'CSC_PLANNING_LIMIT','CSC_DISTRICT_UI_FAULT','CSC_CUSTOMER_WATCH_FAULT'):
         require(failure not in log,'Integrated run logged '+failure)
+    if (out/'customer_placement_watch.lua').exists():
+        require(re.search(r'CSC_CUSTOMER_WATCH_FINISH records=\d+ faults=0 dropped=0\b',log),
+                'Customer opportunity observation incomplete')
     snapshots=archive_censuses(log,out)
     require(set(snapshots)==set(range(25*(start//25+1),endpoint+1,25)),'Missing full-game milestone')
     write_json(out/'full-game-observation-complete.json',dict(verified=True,start=start,turns=sorted(snapshots)))
@@ -239,7 +247,10 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,obser
     require('CSC_QUARTER_WATCH_DRAINED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw,
         'Final Quarter journal read failed')
     if (out/'planning_observer.lua').exists():
-        raw=controller.cmd("CSC_AI_PLANNING_WATCH.Finish();print('CSC_PLANNING_FINISHED')",
+        raw=controller.cmd("CSC_AI_PLANNING_WATCH.Finish();"
+            "if CSC_CUSTOMER_PLACEMENT_WATCH then CSC_CUSTOMER_PLACEMENT_WATCH.Finish()end;"
+            "print('CSC_PLANNING_FINISHED')",
             'CSC_AI_BakersGameplay','finish-passive-planning-observer')
-        require('CSC_PLANNING_FINISHED'in raw and 'CSC_PLANNING_FAULT'not in raw,
+        require('CSC_PLANNING_FINISHED'in raw and 'CSC_PLANNING_FAULT'not in raw
+                and 'CSC_CUSTOMER_WATCH_FAULT'not in raw,
                 'Final passive planning observation failed')

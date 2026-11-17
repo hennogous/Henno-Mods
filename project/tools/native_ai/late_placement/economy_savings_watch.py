@@ -165,7 +165,7 @@ class EconomySavingsWatch:
             raise RuntimeError('Economic observer fault; retained journal is partial')
         return batch
 
-    def freeze(self):
+    def freeze(self, *, allow_faulted=False):
         if self.script is None or self.frozen is not None:
             return
         deadline = time.monotonic() + 5
@@ -174,7 +174,21 @@ class EconomySavingsWatch:
             self.write(self.output / 'economy-savings-frozen.json', state)
             if state['frozen']:
                 self.frozen = state
-                self.drain()
+                try:
+                    self.drain()
+                except RuntimeError as error:
+                    # A passive capture can exhaust its payload while native
+                    # pairs are safely frozen/inactive. Preserve its failed
+                    # evidence, but let an explicit cleanup restore preferences
+                    # and exit the held game. Transport/sequence errors and
+                    # active pairs remain hard failures; qualify() still rejects
+                    # the observation after cleanup.
+                    if not (allow_faulted and state.get('active') == 0
+                            and (state.get('faults') or state.get('stopReason'))
+                            and str(error) == 'Economic observer fault; retained journal is partial'):
+                        raise
+                    self.write(self.output / 'economy-savings-cleanup-fault.json',
+                               dict(error=str(error), frozen=True, active=0, observation_valid=False))
                 return
             if time.monotonic() >= deadline:
                 raise RuntimeError('Economic native pairs active; retain exact process owner')

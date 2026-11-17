@@ -61,8 +61,13 @@ performance and the final three-game campaign remain open.
 Later:150–155 control/treatment complete and restore. Group coverage68/92→92/92
 at identical264 forecasts, all44 actual district choices/scores unchanged, linked
 Hub construction preserved, no timing regression. The missed-opportunity window
-100–130 control has completed/restored; the same-source adapter-only treatment
-is running. Switching/stronger-site gates remain open.
+100–130 control completed/restored; treatment diverges from108 and its passive
+recorder hits32 matrices129. Its frozen held game closes/restores through an
+identity-checked cleanup, with observation still failed. The shorter Buffalo
+control150–160 is active: actual Hub winner2015 vs linked2017, Bakers1943.
+New passive legal-set changes and CE score lineage support native timing and
+opportunity-normalized outcomes without extra worlds. Switching/stronger-site
+gates remain open.
 [Pilot results](../research/mods/csc-ai-customer-scheduling-20261117.md).
 
 Updated goal adds Problem3 research after successful completion of2.1 if usage

@@ -256,7 +256,7 @@ def run(args):
                 'No assumption of uninterrupted RNG/decision identity with the stalled segment.']))
     sources = [Path(__file__), HERE/'ce_bakers_fresh.py', HERE/'full_game_observation.py',
                HERE/'full_game_census.lua', HERE/'full_game_preflight.lua', HERE/'planning_observer.lua',
-               HERE/'quarter_placement_watch.lua', HERE/'district_adjacency_watch.lua',
+               HERE/'quarter_placement_watch.lua', HERE/'district_adjacency_watch.lua', HERE/'customer_placement_watch.lua',
                HERE/'storekeeper_runtime.py', HERE/'storekeeper_runtime.lua',
                HERE/'economy_savings_watch.py', HERE/'economy_savings_watch.js',
                *sorted((HERE.parents[1]/'ai_baseline/full_game_controller').glob('*.py')),

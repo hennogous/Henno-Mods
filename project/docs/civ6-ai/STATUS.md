@@ -7,10 +7,11 @@ work from remaining AI gaps and preserves operating instructions.
 and131 economy checks pass, including Astra's hint/invalidation corrections.
 The matched150–155 arms completed/restored, broadening group visits68/92→92/92
 with identical forecasts and all44 choices/scores preserved. The100–130 missed-
-opportunity control100–130 completed/restored; its adapter-only treatment is
-running through the shared controller. Washington's control chooses a five-Gold
-Hub over the linked one-Gold site by35.65utility after a140.05utility economic
-offer. The matched treatment will test changed coverage against that comparison.
+opportunity control100–130 completed/restored; its treatment diverges from108
+and its recorder hits the32-matrix limit129. The held game is safely closed and
+restored, with failed capture retained. Buffalo150–160 control now runs through
+the shared controller to isolate Hub156 and its foundation. Passive legal-set
+and raw CE-lineage recording is added without extra worlds;44 related checks pass.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).

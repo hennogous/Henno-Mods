@@ -85,6 +85,20 @@ class EconomicGuards(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError,'faulted'):
                 w.qualify()
 
+    def test_faulted_frozen_capture_allows_cleanup_but_stays_failed(self):
+        for message,allowed in [('Economic observer fault; retained journal is partial',True),
+                                ('Economic journal sequence gap',False)]:
+            w=EconomySavingsWatch.__new__(EconomySavingsWatch)
+            w.output=Path('unused');w.write=Mock();w.frozen=None;w.messages=[]
+            w.drain=Mock(side_effect=RuntimeError(message))
+            state=dict(frozen=True,active=0,faults=['matrix bound'],stopReason='observation_fault')
+            w.script=SimpleNamespace(exports_sync=Mock(freeze=Mock(return_value=state)))
+            if allowed:
+                w.freeze(allow_faulted=True)
+                with self.assertRaisesRegex(RuntimeError,'faulted'):w.qualify()
+            else:
+                with self.assertRaisesRegex(RuntimeError,'sequence gap'):w.freeze(allow_faulted=True)
+
     @unittest.skipUnless(shutil.which('node'),'Node required for synthetic Frida VM')
     def test_register_memory_pairing_and_fail_closed_vm(self):
         script=Path(__file__).with_name('economy_savings_watch.js')

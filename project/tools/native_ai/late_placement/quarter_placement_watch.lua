@@ -34,6 +34,13 @@ local function drain()
   for record in page:gmatch('{[^{}]+}')do
    local kind=record:match('"k":"([^"]+)"')
    if kind then ordinal=ordinal+1 end
+   -- Optional customer diagnostics reuse this journal pass. Forward the raw
+   -- flat record so early residual writes retain their own native kind/units,
+   -- instead of being confused with the Quarter-only late final-score writes.
+   if kind and CSC_CUSTOMER_PLACEMENT_WATCH then
+    local safeCustomer=pcall(CSC_CUSTOMER_PLACEMENT_WATCH.Record,record,offset+ordinal,generation)
+    if not safeCustomer then emit('FAULT',{turn=Game.GetCurrentGameTurn(),error='Customer journal dispatch failed'})end
+   end
    if kind=='final'or kind=='best'or kind=='location'or kind=='request'or kind=='pv'or kind=='decline'then
     local row={}
     for _,name in ipairs({'version','generation','player','city','district','plot','base','result','reason','eligible'})do

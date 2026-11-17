@@ -35,19 +35,53 @@ required before the full-game comparison campaign.
 
 ## Next short window
 
-The control100–130 replay has completed/restored, and treatment is active. It
-follows a baseline unconnected capital
+The control100–130 replay has completed/restored. The treatment reached130,
+but its passive recorder exhausted the32-matrix limit at129. Its held game was
+frozen/inactive, then closed through an identity-checked shared-controller
+cleanup, exit0 with preferences restored. The test follows a baseline unconnected capital
 Hub at2024, where an alternative1949 beside Bakers2022 received positive economic
 offers. A second scope records Magdeburg's earlier alternatives. The treatment
-will use the identical source and the adapter-only package. Thirty turns include
-the turn125 decision and its subsequent physical foundation; the guard remains
+uses the identical source and the adapter-only package. Thirty turns include
+the turn125 decision; physical follow-through is recorded separately. The guard remains
 explicitly bounded. Shared-controller ownership and passive matrix recording
 continue, with no extra policy or gameplay orders. In the control, Washington
 chooses Hub2024 at125 (346,627Q8) over linked1949 (337,500Q8). Both are owned,
 eligible native rows. The former has5Gold adjacency; the latter1Gold and
 private-yield1. A35,853Q8 (+140.05utility) economic bid is published for1949
 that turn; the native final difference is9,127Q8 (35.65utility). This is a useful
-stronger-ordinary-site comparison while the treatment tests earlier coverage.
+stronger-ordinary-site comparison.
+
+### What the longer window taught us
+
+The treatment changes Boston's district comparison at108, so later empire
+development diverges before Washington's125 decision. At125 the treatment still
+prefers a CL rural district; these Washington choices no longer isolate a site
+switch. All data remains under `pairs100-130`; `failure.json` and
+`interruption-reconciled.json` distinguish failed capture from successful
+cleanup. The optional matrix payload now has a128-matrix bound for short
+targeted windows; normal full-game capture requests no full matrices. A safely
+frozen passive fault may explicitly permit cleanup, while the observation still
+fails qualification and sequence/transport faults raise.
+
+Astra recommends Buffalo156 next: baseline repeatedly priced linked2017 against
+eventual Hub winner2015 through155, then omitted it156. The current control
+replays150–160, including baseline foundation158. Native matrices and CE journal
+entries distinguish missing residuals from delivered bids that lose. Economic
+coefficients remain unchanged.
+
+### Opportunity and score-lineage diagnostics
+
+`customer_placement_watch.lua` observes the actual `CustomerCandidateSets` call:
+changed legal/owned/unprotected linked and ordinary footprints, removals,
+reference and publication freshness. It includes singleton sets, giving a
+denominator beyond the priced shortlist, without another world forecast or map
+enumeration. Native CE records retain raw kind, generation and ordinal. Full
+games reuse the Quarter observer's journal pass; short customer replays own the
+passive read. Neither path writes policy or gameplay state. Physical events and
+native selector matrices remain the later outcome records. Eligibility is at
+publication; later reservations/legality are checked separately. Diagnostic
+faults or truncation fail observation qualification.43 relevant checks and an
+additional frozen-fault cleanup check pass.
 
 ## Storage
 
@@ -60,6 +94,11 @@ freeze remain. The deletion ledger with manifests/keepers is
 Retire further closed duplicate copies as work proceeds; preserve live inputs
 and required comparison baselines. This removes redundant packages, not evidence
 needed to rerun the current experiments.
+
+A second retirement removed four exact duplicate package copies from the
+closed/reconciled100–130 windows: another0.758GiB recovered,38.25GiB free while
+the Buffalo control runs. Its separate ledger is
+`storage-retirement-windows-20261117.json`. Total recovery so far:2.654GiB.
 
 ## Remaining goal gates
 

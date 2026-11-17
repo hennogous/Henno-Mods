@@ -85,7 +85,7 @@ def run(args):
     require(not native_inventory(),'Preserve foreign Civ/Tuner session')
     out=plan.output;out.mkdir(parents=True)
     code=query(cases);(out/'diagnostic-query.lua').write_text(code,encoding='utf-8')
-    pins={str(p.resolve()):sha(p)for p in [Path(__file__),HERE/'customer_transaction_survey.lua',
+    pins={str(p.resolve()):sha(p)for p in [Path(__file__),HERE/'customer_transaction_survey.lua',HERE/'customer_placement_watch.lua',
         HERE/'economy_savings_watch.py',HERE/'economy_savings_watch.js',
         *(AI/n for n in ('CSC_AI_EconomyFacts.lua','CSC_AI_EconomyModel.lua','CSC_AI_EconomyAdapters.lua'))]}
     write_json(out/'implementation-archive.json',archive_sources(pins,out/'implementation-version'))
@@ -148,19 +148,28 @@ def run(args):
         for name in ('planning_observer.lua','district_adjacency_watch.lua'):
             raw=controller.cmd(read(HERE/name),'PlotInfo'if name.startswith('district_')else'CSC_AI_BakersGameplay',name)
             (out/(name+'.txt')).write_text(raw,encoding='utf-8')
+        customer='CSC_CUSTOMER_WATCH_TARGETS='+lua(targets)+'\n'+read(HERE/'customer_placement_watch.lua')
+        raw=controller.cmd(customer,'CSC_AI_BakersGameplay','install-passive-customer-opportunities')
+        (out/'customer_placement_watch.lua.txt').write_text(raw,encoding='utf-8')
+        require('CSC_CUSTOMER_WATCH_INSTALLED'in raw and 'CSC_CUSTOMER_WATCH_FAULT'not in raw,
+                'Customer observation did not initialise')
         survey()
         stops=sorted({*range(args.at+5,args.through+1,5),args.through,*[t for t in (110,122)if args.at<t<args.through]})
         for target in stops:
             controller.play(target);watch.drain();survey()
         state=controller.state_read('customer-final-clock')
         require(state['turn']==args.through and not state['active'],'Wrong diagnostic endpoint')
+        raw=controller.cmd("CSC_CUSTOMER_PLACEMENT_WATCH.Finish();CSC_AI_PLANNING_WATCH.Finish()",
+                           'CSC_AI_BakersGameplay','finish-passive-customer-observation')
+        require(re.search(r'CSC_CUSTOMER_WATCH_FINISH records=\d+ faults=0 dropped=0\b',raw)
+                and 'CSC_PLANNING_FAULT'not in raw,'Incomplete customer opportunity observation')
         write_json(out/'complete.json',dict(verified=True,turn=args.through))
     except Exception as error:
         write_json(out/'failure.json',dict(error=str(error),traceback=traceback.format_exc()));raise
     finally:
         if session.owner is not None and session.owner.poll()is None:
             session.close(restore_preferences=lambda:restore_preferences(controller,out),restore_package=verify,
-                before_menu=lambda:watch.freeze()if watch else None,after_native_exit=lambda:watch.after_exit()if watch else None)
+                before_menu=lambda:watch.freeze(allow_faulted=True)if watch else None,after_native_exit=lambda:watch.after_exit()if watch else None)
         if session.closed:
             for i in copied:i['install'].rename(out/i['install'].name)
             for name in LOGS:

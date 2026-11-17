@@ -120,12 +120,12 @@ function selectedValue(build,selection){
 // returns at the already-qualified selection midpoint. This reads the exact
 // cached signed-Q8 utilities and flags; it calls no engine function and writes
 // no score. No DistrictAt call means completion flags are not emptiness proofs.
-// Empty target scope is the normal full-game path. At most32 matrices/process
+// Empty target scope is the normal full-game path. At most128 matrices/process
 // and37*loaded-column-count cells/matrix bound the explicit diagnostic payload.
 let diagnosticMatrices=0;
 function selectedMatrix(build,selection){
   if(!(cfg.matrixTargets||[]).some(t=>t[0]===selection.player&&t[1]===selection.city))return null;
-  if(diagnosticMatrices>=32)throw Error('Diagnostic matrix capture bound');
+  if(diagnosticMatrices>=128)throw Error('Diagnostic matrix capture bound');
   if(!readableSpan(build,M.length+4)||cfg.districts==null)throw Error('Diagnostic matrix header unavailable');
   const identity=who(address(build,L.buildCity));
   if(identity.player!==selection.player||identity.city!==selection.city)throw Error('Diagnostic matrix identity differs');
