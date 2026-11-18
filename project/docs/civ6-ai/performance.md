@@ -43,3 +43,10 @@ rounding and shared benefits are still recomputed in each candidate world.
 
 The current mature-save qualification and resulting full-game measurements are
 recorded in the [customer-world implementation report](../research/mods/csc-customer-world-pricing-20261117.md).
+
+On 18 November, the joint search began reusing exact priced plans within each
+forecast. It keeps at most 16 states for a single world and releases them when
+that forecast ends. Revisited plans still count against the same logical
+budget. The Pangaea turn-200 comparison confirmed equality for all bids,
+plans, and detailed forecasts in two tested player passes.
+[Optimization and measurements](../research/mods/csc-ai-joint-guidance-performance-20261118.md).

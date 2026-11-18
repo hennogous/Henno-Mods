@@ -156,9 +156,11 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
  else
  -- Module construction/compilation and proof formatting are outside timers.
  local E,M=factories[arm]()
- local worlds={};local originalWorld=M.JointForecast
+ local worlds,worldSeconds={},0;local originalWorld=M.JointForecast
  M.JointForecast=function(w,p)
+  local started=clock()
   local result,problem=originalWorld(w,p)
+  worldSeconds=worldSeconds+clock()-started
   worlds[#worlds+1]={result=result or false,problem=problem or false}
   return result,problem
  end
@@ -224,7 +226,7 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
  end
  emit('CSC_CUSTOMER_TIMING='..encode({turn=turn,pass=pass,arm=arm,player=pid,
   totalSeconds=finished-started,preparationSeconds=centralStarted-started,
-  centralSeconds=finished-centralStarted,customerSeconds=customerSeconds,
+  centralSeconds=finished-centralStarted,customerSeconds=customerSeconds,worldSeconds=worldSeconds,
   customer=customerStats,work=work,nativeQuotes=snapshot.QuoteCount(),
   chains=#snapshot.chains,entries=#entries,semanticFingerprint=digest(semantics),
   serviceWorlds=(function()local n=0;for _,w in ipairs(worlds)do if w.result and not w.result.servicesExcluded then n=n+1 end end;return n end)(),

@@ -862,7 +862,8 @@ function M.JointForecast(world,price)
         if not world.includeServices and not world.evaluationMemo then value.services=nil end
         if mask%2==0 and site.third and not site.third.working and not site.third.intactOwner then value.third=nil end
         if mask<2 and site.fourth and not site.fourth.working and not site.fourth.intactOwner then value.fourth=nil end
-        value.customers={};for _,v in ipairs(site.customers or{})do value.customers[#value.customers+1]=v end
+        -- Joint venue decisions live in disabledBuildings. Each alternative
+        -- can share the immutable customer facts with the other plans.
         return {site=value,second=second or nil}
     end
     local function options(site)
@@ -877,7 +878,10 @@ function M.JointForecast(world,price)
             local candidate=plan(site,second,mask)
             local identity=table.concat({second and second.type or'',candidate.site.third and candidate.site.third.type or'',
                 candidate.site.fourth and candidate.site.fourth.type or''},'|')
-            if not seen[identity]then result[#result+1]=candidate;seen[identity]=true end
+            if not seen[identity]then
+                candidate.option=#result+1
+                result[#result+1]=candidate;seen[identity]=true
+            end
         end end
         return result
     end
@@ -963,9 +967,27 @@ function M.JointForecast(world,price)
         if context.includeServices then poolServiceHousing(result,world.serviceHousing,horizon)end
         return result
     end
-    local function evaluate(selected,disabled)
+    local variable=#nodes>0
+    for _,choices in ipairs(alternatives)do variable=variable or #choices>1 end
+    local pricedStates,pricedCount={},0
+    local function evaluate(selected,disabled,startingResult)
         evaluations=evaluations+1
         if evaluations>limit then return nil,'Joint evaluation budget exceeded'end
+        if startingResult then return startingResult end
+        -- The coordinates search revisits complete plans across seeds and
+        -- sweeps. Within this one immutable world, the selected option per
+        -- chain and the variable venue flags describe every changing input.
+        -- Price and objective are pure for this call. Reusing a quote saves
+        -- ledger construction and pricing, while still charging the same
+        -- logical evaluation so the policy's budget and tie order stay fixed.
+        local pricedKey
+        if variable then
+            local fields={}
+            for i,choice in ipairs(selected)do fields[i]=choice.option end
+            for i,node in ipairs(nodes)do fields[#selected+i]=disabled[node]and 1 or 0 end
+            pricedKey=table.concat(fields,':')
+            if pricedStates[pricedKey]then return pricedStates[pricedKey]end
+        end
         -- Only an exact shared baseline gets this publication-local memo. Both
         -- pricing modes still run the full bounded plan search; cache identical
         -- UNPRICED ledgers, never a winning plan or a candidate world's answer.
@@ -1010,14 +1032,17 @@ function M.JointForecast(world,price)
         -- This mirrors the single-site Forecast objective; other consumers
         -- continue to optimise raw economics with no policy callback.
         result.selectionQ8=world.objective and world.objective(result)or value
+        -- Keep temporary retention bounded in mature empires. Cached results
+        -- stay private during search. Only the winning one receives metadata.
+        if pricedKey and pricedCount<16 then
+            pricedStates[pricedKey]=result;pricedCount=pricedCount+1
+        end
         return result
     end
     local best
     local function better(a,b)
         return a.selectionQ8>b.selectionQ8 or a.selectionQ8==b.selectionQ8 and a.valueQ8>b.valueQ8
     end
-    local variable=#nodes>0
-    for _,choices in ipairs(alternatives)do variable=variable or #choices>1 end
     for seed=1,variable and 2 or 1 do
         local selected,disabled={},{}
         if baseline then for key,value in pairs(baseline.disabledBuildings)do disabled[key]=value end end
@@ -1025,11 +1050,13 @@ function M.JointForecast(world,price)
         for i,choices in ipairs(alternatives)do selected[i]=choices[seed==1 and 1 or #choices]end
         local current,message=evaluate(selected,disabled);if not current then return nil,message end
         for sweep=1,variable and 2 or 0 do
-            for i,site in ipairs(sites)do
+            for i=1,#sites do
                 local chosen=selected[i]
+                local startingChoice,startingResult=chosen,current
                 if #alternatives[i]>1 then for _,candidate in ipairs(alternatives[i])do
                     selected[i]=candidate
-                    local result,error=evaluate(selected,disabled);if not result then return nil,error end
+                    local result,error=evaluate(selected,disabled,candidate==startingChoice and startingResult or nil)
+                    if not result then return nil,error end
                     if better(result,current)then current,chosen=result,candidate end
                 end end
                 selected[i]=chosen

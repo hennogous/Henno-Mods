@@ -1,4 +1,4 @@
-"""Offline only: compare exact joint-search results with starting-world reuse.
+"""Offline only: compare exact joint-search results under two model versions.
 
 Does not edit the main mod, frozen packages, or the active game's policy.
 Logical evaluation/budget accounting remains identical. The reused world has
@@ -18,32 +18,15 @@ ROOT=Path(__file__).resolve().parents[3]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output-directory',type=Path,required=True,
     help='Explicit diagnostic output folder outside the source tree')
-scratch=parser.parse_args().output_directory.resolve(strict=True)
+parser.add_argument('--control-model',type=Path,required=True)
+parser.add_argument('--candidate-model',type=Path,default=ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyModel.lua')
+args=parser.parse_args()
+scratch=args.output_directory.resolve(strict=True)
 assert not scratch.is_relative_to(ROOT),'Generated prototypes belong outside the source tree'
 spec=importlib.util.spec_from_file_location('joint_tests',ROOT/'project/tools/ai_economy/test_joint_customer_economy.py')
 tests=importlib.util.module_from_spec(spec);spec.loader.exec_module(tests)
-source=tests.MODEL.read_text(encoding='utf-8')
-old='''                local chosen=selected[i]
-                if #alternatives[i]>1 then for _,candidate in ipairs(alternatives[i])do
-                    selected[i]=candidate
-                    local result,error=evaluate(selected,disabled);if not result then return nil,error end'''
-new='''                local chosen=selected[i]
-                local startingChoice,startingResult=chosen,current
-                if #alternatives[i]>1 then for _,candidate in ipairs(alternatives[i])do
-                    selected[i]=candidate
-                    local result,error
-                    if candidate==startingChoice then
-                        -- All other chain/venue choices are unchanged in this
-                        -- coordinate. Reuse its exact starting world; count the
-                        -- logical attempt so limits/failure semantics stay fixed.
-                        evaluations=evaluations+1
-                        if evaluations>limit then return nil,'Joint evaluation budget exceeded'end
-                        result=startingResult
-                    else result,error=evaluate(selected,disabled)end
-                    if not result then return nil,error end'''
-assert source.count(old)==1
-prototype=scratch/'CSC_AI_EconomyModel_starting_reuse.lua'
-prototype.write_text(source.replace(old,new),encoding='utf-8')
+control_model=args.control_model.resolve(strict=True)
+candidate_model=args.candidate_model.resolve(strict=True)
 capture='''
 __captured={};__priceCalls=0
 local function canonical(v)
@@ -94,8 +77,8 @@ def run(path):
     quotes=[row for value in vms for row in value.globals().__captured.values()]
     calls=sum(value.globals().__priceCalls for value in vms)
     return dict(tests=result.testsRun,worlds=len(quotes),sha256=hashlib.sha256('\n'.join(quotes).encode()).hexdigest(),price_calls=calls,seconds=elapsed),quotes
-baseline,qa=run(ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyModel.lua')
-candidate,qb=run(prototype)
+baseline,qa=run(control_model)
+candidate,qb=run(candidate_model)
 assert qa==qb,'Joint results, streams, readiness, plans, values or failures differ'
 sys.path.insert(0,str(ROOT/'project/tools/transactions'))
 import test_joint_route_economy as routes
@@ -112,11 +95,12 @@ def run_routes(path):
     if result.errors or result.failures:raise AssertionError(str(result.errors+result.failures))
     quotes=[row for value in vms for row in value.globals().__captured.values()]
     return dict(tests=result.testsRun,worlds=len(quotes),sha256=hashlib.sha256('\n'.join(quotes).encode()).hexdigest()),quotes
-ra,qra=run_routes(ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyModel.lua')
-rb,qrb=run_routes(prototype)
+ra,qra=run_routes(control_model)
+rb,qrb=run_routes(candidate_model)
 assert qra==qrb,'Joint route results or failure behavior differ'
-report=dict(scope='Offline prototype only; no live timing claim',baseline=baseline,prototype=candidate,route_baseline=ra,route_prototype=rb,exact_world_results_equal=True,
-            source_model_sha256=hashlib.sha256(source.encode()).hexdigest(),
-            prototype_model_sha256=hashlib.sha256(prototype.read_bytes()).hexdigest())
-(scratch/'joint-starting-reuse-results.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+report=dict(scope='Offline comparisons; no live timing claim',baseline=baseline,candidate=candidate,
+            route_baseline=ra,route_candidate=rb,exact_world_results_equal=True,
+            control_model_sha256=hashlib.sha256(control_model.read_bytes()).hexdigest(),
+            candidate_model_sha256=hashlib.sha256(candidate_model.read_bytes()).hexdigest())
+(scratch/'joint-reuse-results.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 print(json.dumps(report,indent=2))

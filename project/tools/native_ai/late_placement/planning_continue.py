@@ -143,8 +143,12 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')
+    # A same-turn structural replay needs the gameplay census, independent of
+    # treasury instrumentation. A playing continuation still needs that capture
+    # in its source so longitudinal payment and savings evidence stays aligned.
     require(all(protocol.get(k) is True for k in ('fresh_game', 'ordinary_setup',
-            'harmonised_observation', 'planning_observation', 'passive_savings_observation')) and
+            'harmonised_observation', 'planning_observation')) and
+            (read_only or protocol.get('passive_savings_observation') is True) and
             all(protocol.get(k) is False for k in ('untuned', 'external_policy', 'gameplay_interventions')) and
             not any(k.startswith('diagnostic_') and v for k, v in protocol.items()),
             'Require an ordinary original game with integrated main CSC policy only')
