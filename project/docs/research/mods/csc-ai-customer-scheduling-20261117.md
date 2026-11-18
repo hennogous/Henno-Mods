@@ -9,6 +9,7 @@ worlds provide the remaining repeated-outcome test. **AI-C214–216**.
 | Continents250 | Current control | Pair-first candidate |
 |---|---:|---:|
 |Physical links outside City Centers|20|34|
+|Bakers / Tailors links outside City Centers|11 /9|20 /14|
 |Connected foundations with confirmed competing sites|8/16|17/20|
 |Quarter-first / customer-first links|12 /8|24 /10|
 |Connected Commercial Hubs / all Hubs|3 /16|6 /23|
@@ -24,6 +25,28 @@ comparison if it recurs on the remaining maps. Services remain outside the new
 placement pricing. Endpoint properties are Storekeeper8→9, Innkeeper3→1,
 Sacristan0→1, and Bakers Stage4 Service0→1. These are downstream outcomes to track
 alongside physical connections.
+
+The Quarter-specific gains include customer-after-Quarter links: Bakers10→17,
+Tailors2→7. Customer-first links are Bakers1→3 and Tailors7→7. Tailors has seven
+Quarter foundations in both arms, so its extra connections are not explained by
+more Tailors being placed.
+
+### Offline performance candidate
+
+A diagnostic-only prototype reuses the exact starting world in each producer
+coordinate search instead of scheduling and pricing it again. The logical
+evaluation count and budget failure remain identical. On201 joint-world calls
+(13 existing regressions plus180 generated scenarios), complete canonical
+results/errors match exactly while price-function calls fall233,498→206,861.
+Another12 route regressions/23 world calls also match completely, including
+rounded payouts, queue timing and unavailable values. Wall timings are noisy
+during the running game and are not a live performance result.
+
+The prototype is in `project/.ai-test-tmp/prototype_joint_reuse.py`; its result
+JSON and separate Lua model remain beside it. Main source and frozen game
+packages are unchanged. If mature-game cost needs work after the remaining
+maps, compare old/new scheduling on the same mature save and measure this
+candidate there before integrating it.
 
 ### Pangaea controller recovery,18 November
 
