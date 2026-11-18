@@ -43,8 +43,10 @@ the lone false missing-Base flag. [Results and review](../research/mods/csc-ai-c
 Tailors foundations6→3 explain its12→6 links. Comparable connected foundations
 10/14→13/24, mean/max guidance3.028/7.044→2.638/5.821s. Both close/qualify250.
 Across two maps, links52→62 and mean guidance2.502→2.500s. Four native linked
-misses receive their corrections and still lose; one Hub scheduling window,
-two Base0 flags and the largest terrain concession are being audited. Fractal
+misses receive their corrections and still lose. Both Base0 flags are inherited
+untuned-observer Quarters; the CL+3-versus+6 tradeoff has+23.49utility of ordinary
+economic support and the other site is used later. One Hub scheduling window
+remains for follow-up if the final outcomes warrant it. Fractal
 control is running under5067. Policy remains frozen; completion is still open.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched

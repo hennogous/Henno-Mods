@@ -78,8 +78,8 @@ The existing survey's optional1..60s acknowledgement timeout never retries a sen
 |Guidance average / maximum|3.028s /7.044s|2.638s /5.821s|
 
 Both arms close/restore/qualify250 with zero native faults and drained captures.
-Tailors retains two links per founded Quarter in both arms; fewer Tailors explain
-its lower total. Candidate customer-after-Quarter connections increase despite
+Tailors' links and original-AI foundations each halve; link totals also include
+acquired Quarters. Candidate customer-after-Quarter connections increase despite
 the lower total. Across the first two maps, non-City-Center links52→62 and
 Quarter-first links28→42; mean guidance is2.502→2.500s/turn. Comparable conversion
 18/30→30/44 is a legal-alternative metric: linked sites are not automatically
@@ -98,12 +98,32 @@ actual selector calls:
 
 The first three receive fresh economic additions7693/7407/3768Q8. In the fourth,
 the linked site is the reference: the ordinary site receives-55993Q8 and still
-wins. These corrections land; ordinary adjacency alone does not explain the
+wins. Its corrected net355751 and the linked reference's329202 each receive
+exactly740379Q8 in common aggregation, preserving their26549Q8 final gap.
+These corrections land; ordinary adjacency alone does not explain the
 remaining native values. A fifth Hub case5/196610/164 has a positive28038Q8
 offer163, then no offer/same-generation linked cache164 when the ordinary site
 wins. Keep that scheduling window separate from the four delivered corrections.
-Two Base0-at-customer-foundation flags and the largest terrain concession are
-under Astra's read-only audit. No blanket bonus or policy change has been made.
+Both Base0 flags come from Quarters founded by untuned observer0, then captured
+by guided seats: Tailors2752 at130→owner2 at145; Bakers1865 at176→owner4 at204
+via free-city62. The later customer sites tie their best ordinary adjacency at+2.
+These are physical connections to acquired layouts, with no adjacent Base;
+neither came from a guided Quarter foundation or customer destruction of supply.
+
+The three-point CL concession selects an urban sales district at1503(+3), with
++6013Q8(23.49utility) ordinary economic difference over reference1501(+6).
+Native net293034→299047 matches that offer; cache/BEST448570 reaches foundation146.
+The other urban tier occupies1501 at157. This records a geometric tradeoff and
+its positive economic evidence; the exact rival cache is absent.
+
+The one resource disappearance is a Canal over a functioning Flax Farm beside
+Bakers2698 at203; another functioning Base remained. Treatment's12 supplier
+interruption records comprise seven pillages, four improvement changes/removals
+with resource retained, and that Canal. Control has six pillages/two removals.
+Both games have181 physical mapped customer foundations; comparable cases rise
+14→24, with three additional connected choices. Finish Fractal, then assess
+Quarter-first and customer-first/family outcomes separately. No blanket bonus
+or policy change follows these audits.
 [Compact native comparisons and provenance](csc-ai-customer-scheduling-20261117.json).
 
 The same-seed restart closes/restores/qualifies250. It has24 original-AI Quarter

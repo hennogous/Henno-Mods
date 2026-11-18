@@ -50,6 +50,10 @@ def run(args):
  try:
   for item in plan.packages:shutil.copytree(item['source'],item['install']);copied.append(item)
   write_json(out/'installed-manifests.json',{i['role']:i['files']for i in copied})
+  # Match the full-game archive contract so closed diagnostic package copies
+  # can be retired against these immutable keepers, rather than accumulating
+  # another complete art/CE bundle for every read-only question.
+  write_json(out/'packages.json',{str(i['source']):dict(install=str(i['install']),files=i['files'])for i in copied})
   session.start(lambda:launch(SimpleNamespace(binary=plan.binary),out));session.wait_context('MainMenu')
   configure(controller,out,csc_id=plan.protocol['ce']);enable(session,plan.protocol['csc'])
   for identity in plan.extras:enable(session,identity)

@@ -20,6 +20,22 @@ Hub2/393221t237 LINKEDREFERENCE28371069581 vs31321096130, ordinary3132gets
 forinertguidance. FifthHub5/196610t164 target2486 offer+28038at163,nooffer/cache164;
 older163cache442417vs164winner684810notmatchedclock, remainunknownwindow.
 Fullcompactaudits/provenance+TCmetrics saveddatedmainreportJSON. No policychange.
+AstraAUDITdone: bothBase0links inheritedp0untunedquarters: Tailors2752founded130
+capturedp2at145; Bakers1865founded176 viap62at194 top4at204. Physicallinksreal;
+keepseparatefrommaterial-backedchains/guidedfoundations. Bothcustomers+2ties.
+CLurban3vs6casep3/262147 site1503: economic+6013(23.49util)145net293034→299047,
+cache/BEST448570,foundation146; reference1501becomesotherCLurban157.
+Rivalcacheunknown; genuinegeometrytradeoff,noneedblanketboost. RawlossCanal2697
+203coversfunctioningFlaxFarmbesideBakers2698 non-lastBase. T12supplierrecords:
+7pillage/4improvementchangesresourcekept/1Canal; C6pillage/2removals.
+181physicalmappedcustomersboth;10additionalcomparables13vs10connectedchoices.
+SkillAI-N143(p0autoplay/captureprovenance)d176fcc pushed, AI-N142negativeHub
+commonaggregation56b982f pushed: net329202/355751 each+740379→1069581/1096130,
+declared-55993onordinarysite survives,independentselectorandphysicalfoundation.
+Latestcheck04:17:46UTC FractalC150active→155,lastverified150,faults0,disk35.74.
+Nextcheck04:32:46UTC (functionsstore next_customer_game_check alsoISOtimestamp).
+Afterall6close, read-onlybenchdriver nowwritesstandardpackages.json so
+customer_placement_campaign.retire_duplicates canremoveitsclosedduplicatecopies.
 
 Latest18Nov02:35UTC: parent exec5067 alive; Pangaea CONTROL250 closed/qualified
 and retired duplicate packages.32nonCC links(20B/12T),16Qfirst/16customerfirst,
