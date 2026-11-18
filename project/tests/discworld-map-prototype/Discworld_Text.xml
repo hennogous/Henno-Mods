@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData><LocalizedText>
+  <Row Tag="LOC_DISC_MAP_NAME" Language="en_US"><Text>Discworld — Prototype</Text></Row>
+  <Row Tag="LOC_DISC_MAP_DESCRIPTION" Language="en_US"><Text>A circular world with a snowy Hub and an impassable exterior. Fixed 48 × 56 grid; use four civilizations. Ice is placeholder Rim art.</Text></Row>
+  <Row Tag="LOC_DISC_VOID_NAME" Language="en_US"><Text>Beyond the Rim</Text></Row>
+  <Row Tag="LOC_DISC_VOID_DESCRIPTION" Language="en_US"><Text>The impassable exterior of the Disc. Prototype ice artwork.</Text></Row>
+</LocalizedText></GameData>

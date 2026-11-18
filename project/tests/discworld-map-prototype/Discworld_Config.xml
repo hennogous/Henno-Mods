@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameInfo>
+  <Maps><Row File="Discworld_Prototype.lua" Name="LOC_DISC_MAP_NAME" Description="LOC_DISC_MAP_DESCRIPTION" DisableWorldWrap="1" Image="Map_TiltedAxis" SortIndex="5"/></Maps>
+</GameInfo>
