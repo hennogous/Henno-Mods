@@ -11,6 +11,8 @@ local MAX_BUILDER_BID_Q8=64*256
 local MAX_NOMINATION_BID_Q8=512*256
 local MAX_REPAIR_CANDIDATES=256
 local MAX_OWNERSHIP_SCOPES=4096
+local MAX_WONDER_OFFERS=512
+local MAX_WONDER_OFFER_Q8=8*256
 local function integer(x,low,high)
     local kind=type(x)
     return (kind=='number' or kind=='integer') and x==math.floor(x) and x>=low and x<=high
@@ -100,6 +102,13 @@ function B.DeclineLimit(status)
     return math.min(tonumber(status:match('"capacity":(%d+)')) or 0,4096)
 end
 
+function B.WonderOfferLimit(status)
+    if type(CE_AIWonderPlacementOffer)~='function' or type(status)~='string'
+        or tonumber(status:match('"ready":(%d+)'))~=1
+        or tonumber(status:match('"faults":(%d+)'))~=0 then return 0 end
+    return math.min(MAX_WONDER_OFFERS,tonumber(status:match('"offerCapacity":(%d+)'))or 0)
+end
+
 -- District scores address a player, city, district index and plot index.
 -- Building bids address a player, city and building index. The Builder
 -- allowlist and bids address a supplier plot and an improvement index.
@@ -107,7 +116,7 @@ end
 -- in its owning city. A repair identifies an existing district footprint.
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
     builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions,ownershipScopes,ownershipLimit,
-    declines,declineLimit,managedTypes)
+    declines,declineLimit,managedTypes,wonderOffers)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -224,6 +233,19 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         if declineKeys[key] then return reject('Duplicate district decline scope') end
         declineKeys[key]=true
     end
+    if wonderOffers and (type(wonderOffers)~='table' or #wonderOffers>MAX_WONDER_OFFERS
+        or (#wonderOffers>0 and type(CE_AIWonderPlacementOffer)~='function'))then
+        return reject('Invalid Wonder placement batch')
+    end
+    local wonderKeys={}
+    for _,offer in ipairs(wonderOffers or{})do
+        if not (integer(offer.player,0,63) and allowed[offer.player] and integer(offer.city,0,2147483647)
+            and integer(offer.building,0,2147483647) and integer(offer.plot,0,width*height-1)
+            and integer(offer.deltaQ8,1,MAX_WONDER_OFFER_Q8))then return reject('Invalid Wonder placement offer') end
+        local key=offer.player..':'..offer.city..':'..offer.building..':'..offer.plot
+        if wonderKeys[key]then return reject('Duplicate Wonder placement offer')end
+        wonderKeys[key]=true
+    end
     -- Begin opens staging. Nothing here queues an action. Commit publishes
     -- the packet for later native calls. If validation or a native call fails,
     -- Disable clears the policy so an older or incomplete offer cannot linger.
@@ -256,6 +278,12 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         -- They have no separate plot list to publish.
         if protectWonders and allowanceCount>0 then
             assert(CE_AISupplierWonderProtectionStage()==1,'Native Wonder protection rejected')
+        end
+        -- A staged offer reports publication only. CE counts actual writes
+        -- after CanHaveWonder and the native positive-value check.
+        for _,offer in ipairs(wonderOffers or{})do
+            assert(CE_AIWonderPlacementOffer(offer.player,offer.city,offer.building,offer.plot,offer.deltaQ8)==1,
+                'Native Wonder placement offer rejected')
         end
         if protectHarvests and allowanceCount>0 then
             assert(CE_AIBuilderHarvestProtectionStage()==1,'Native harvest protection rejected')

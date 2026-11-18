@@ -13,6 +13,72 @@ local M=CSC_AI_EconomyModel
 local F=CSC_AI_EconomyFacts
 local C=CSC_AI_PlanContinuity
 local planStates={}
+local wonderCustomers
+
+function E.WonderOffers(player,chains,protectedPlots,limit)
+    -- The same generated sales catalogue feeds the Quarter forecast for
+    -- completed Wonders. Here it identifies the individual Wonder building
+    -- for CE's separate, native-legal plot comparison. Cache only definitions.
+    if not wonderCustomers then
+        wonderCustomers={}
+        if GameInfo.CSC_QuarterWonderSales then
+            for row in GameInfo.CSC_QuarterWonderSales()do
+                local building=GameInfo.Buildings[row.BuildingType]
+                if building and (building.IsWonder==true or building.IsWonder==1)then
+                    local list=wonderCustomers[row.QuarterKey]or{}
+                    list[#list+1]=building.Index;wonderCustomers[row.QuarterKey]=list
+                end
+            end
+        end
+    end
+    local pid=player:GetID()
+    local offers,seen={},{}
+    for _,chain in ipairs(chains or{})do
+        local mapped=wonderCustomers[chain.profile.key]
+        local supply=chain.supply
+        if mapped and chain.ready and supply and #(supply.base or{})>0 then
+            -- A working Base makes the chain more credible. Both material
+            -- classes in operation get the strongest allowance because the
+            -- Wonder Service needs both. This is a bounded siting preference
+            -- in Q8, not a second forecast of the transaction or the Service.
+            local amount=chain.workingBase and 6 or 4
+            if chain.workingBase then
+                for _,material in ipairs(supply.specialty or{})do
+                    if material.working then amount=8;break end
+                end
+            end
+            for _,plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
+                local index=plot:GetIndex()
+                local city=plot:GetOwner()==pid and plot:GetDistrictType()==-1
+                    and not protectedPlots[index] and Cities.GetPlotPurchaseCity(plot)
+                if city and city:GetOwner()==pid then
+                    for _,building in ipairs(mapped)do
+                        if not city:GetBuildings():HasBuilding(building)then
+                            local key=city:GetID()..':'..building..':'..index
+                            local offer=seen[key]
+                            if offer then offer.deltaQ8=math.max(offer.deltaQ8,amount*256)
+                            else
+                                offer={player=pid,city=city:GetID(),building=building,plot=index,deltaQ8=amount*256}
+                                seen[key]=offer;offers[#offers+1]=offer
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    -- Overlapping Quarters retain one maximum offer. Trim weaker prospects
+    -- first, with stable keys, so dense cities cannot fill the native packet.
+    table.sort(offers,function(a,b)
+        if a.deltaQ8~=b.deltaQ8 then return a.deltaQ8>b.deltaQ8 end
+        if a.city~=b.city then return a.city<b.city end
+        if a.building~=b.building then return a.building<b.building end
+        return a.plot<b.plot
+    end)
+    for i=#offers,limit+1,-1 do offers[i]=nil end
+    return offers
+end
+
 local propertyPrefix='CSC_AI_QuarterIntentV1_'
 local function planState(pid)
     if not C then return nil end

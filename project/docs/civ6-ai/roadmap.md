@@ -15,6 +15,9 @@ slice passes unchanged100/250 checks. The follow-up adds Housing and exact
 Wonder recipients for Bakers/Tailors. Live calibration, changed choices and
 full-game qualification remain open.
 [Catalogue and evidence](../research/mods/csc-ai-bakers-tailors-service-catalogue-20261118.md).
+The reverse Wonder siting direction now uses the separate native Wonder row,
+with partner identities from gameplay and a small positive-score cap.
+[Wonder site guidance](../research/mods/csc-ai-wonder-placement-20261118.md).
 
 ## Earlier campaign checkpoints (historical)
 

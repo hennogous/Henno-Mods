@@ -230,6 +230,68 @@ GameInfo={
         vm.execute((AI/'CSC_AI_EconomyFacts.lua').read_text(encoding='utf-8'))
         return vm
 
+    def test_wonder_offer_is_host_and_plot_specific_and_respects_material_protection(self):
+        vm=native_fixtures.NativeValuation().vm()
+        vm.execute('''
+GameInfo.CSC_QuarterWonderSales=function()
+ local rows={{BuildingType='BROADWAY',QuarterKey='TAILORS'},
+  {BuildingType='HUB',QuarterKey='TAILORS'}}
+ local i=0;return function()i=i+1;return rows[i]end
+end
+GameInfo.Buildings={BROADWAY={Index=77,IsWonder=1},HUB={Index=55,IsWonder=0}}
+local function plot(index,owner,district)
+ return {GetIndex=function()return index end,GetOwner=function()return owner end,
+  GetDistrictType=function()return district end}
+end
+local city={GetID=function()return 10 end,GetOwner=function()return 1 end,
+ GetBuildings=function()return{HasBuilding=function()return false end}end}
+Cities={GetPlotPurchaseCity=function()return city end}
+Map={GetAdjacentPlots=function()
+ return {plot(20,1,-1),plot(21,1,-1),plot(22,2,-1),plot(23,1,4),plot(24,1,-1)}
+end}
+local source={GetX=function()return 0 end,GetY=function()return 0 end}
+local function chain(key,working,specialty)
+ return {profile={key=key},plot=source,ready=true,workingBase=working,
+  supply={base={{}},specialty={{working=specialty}}}}
+end
+local player={GetID=function()return 1 end}
+local offers=E.WonderOffers(player,{chain('TAILORS',false,false),chain('TAILORS',true,true),
+ chain('BAKERS',true,true)}, {[21]=true},1)
+assert(#offers==1 and offers[1].city==10 and offers[1].building==77
+ and offers[1].plot==20 and offers[1].deltaQ8==8*256)
+assert(#E.WonderOffers(player,{chain('BAKERS',true,true)}, {},10)==0)
+''')
+
+    def test_wonder_offers_publish_inside_the_native_packet(self):
+        vm=LuaRuntime()
+        vm.execute((AI/'CSC_AI_DistrictBridge.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local phase=0
+CE_AIDistrictScoresBegin=function()phase=1;return 1 end
+CE_AIDistrictScoresAllow=function(player)assert(phase==1 and player==1);phase=2;return 1 end
+CE_AIDistrictScoresEntry=function() error('unexpected district row') end
+CE_AIDistrictScoresCommit=function()assert(phase==3);phase=4;return 1 end
+CE_AIDistrictScoresDisable=function()phase=-1;return 1 end
+CE_AIDistrictScoresStatus=function()return '{}' end
+local B=CSC_AI_DistrictBridge
+local ready='{"ready":1,"faults":0,"offerCapacity":512}'
+assert(B.WonderOfferLimit(ready)==0)
+CE_AIWonderPlacementOffer=function(player,city,wonder,plot,delta)
+ assert(phase==2 and player==1 and city==7 and wonder==77 and plot==9 and delta==2048)
+ phase=3;return 1
+end
+assert(B.WonderOfferLimit(ready)==512)
+assert(B.WonderOfferLimit('{"ready":1,"faults":1,"offerCapacity":512}')==0)
+local offer={player=1,city=7,building=77,plot=9,deltaQ8=2048}
+local function publish(offers)
+ local args={2,10,10,10,{1},{}}
+ args[21]=offers
+ return B.Publish(unpack(args,1,21))
+end
+assert(publish({offer}) and phase==4)
+assert(not publish({offer,offer}) and phase==-1)
+''')
+
     def test_loaded_gameplay_amount_class_unlock_and_customer_define_the_service(self):
         self.vm().execute('''
 local c=CSC_AI_EconomyFacts.ServiceCatalogue()

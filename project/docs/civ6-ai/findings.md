@@ -1,5 +1,15 @@
 # CSC findings and evidence
 
+## AI-C220 — Mapped Wonders can receive a bounded positive plot offer
+
+18 November 2026. The Lua adapter derives exact Wonder partners from the
+generated sales table and offers 4–8 utility on eligible plots beside
+functioning Quarters. CE uses the existing Wonder plot call site, caps the
+increase at 1/32 of the positive native value and applies supplier protection
+first. REA confirms the installed XP2 call and row store. Lua and native build
+checks pass. Live positive receipts and reservation changes remain open.
+[Implementation and static evidence](../research/mods/csc-ai-wonder-placement-20261118.md).
+
 ## AI-C219 — Bakers and Tailors forecasts group effects by Service and physical host
 
 18 November 2026. The loaded modifier graph plus the new shared host registry
