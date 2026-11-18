@@ -80,6 +80,14 @@ opportunity-normalized outcomes without extra worlds. Switching/stronger-site
 short gates pass; the final repeated-outcome gate remains open.
 [Pilot results](../research/mods/csc-ai-customer-scheduling-20261117.md).
 
+Continents' first full pair closes/qualifies250: non-City-Center links20→34,
+confirmed comparable connected foundations8/16→17/20, all25 new Quarters Base-
+adjacent. Average/max guidance1.976/4.025s→2.362/5.505s. Pangaea control is active.
+Keep coefficients frozen through all maps. If the late cost recurs, compare old/
+new adapters on the same mature candidate save before closing the performance
+gate. Final analysis must rerun coordination v3 on closed outputs: it corrects
+an ownership-transfer inventory artefact without any game-policy change.
+
 Updated goal adds Problem3 research after successful completion of2.1 if usage
 remains. It does not relax any customer-placement completion requirement.
 

@@ -25,6 +25,14 @@ tested observation fix records zero-request ancillary refusals and continues,
 keeping endpoint/post-request checks strict. Frozen tuning is unchanged.
 Passive legal-set/native
 lineage adds no worlds; opportunity/capture and retirement checks pass.
+
+**First matched outcome:** Continents250 completes both arms:20→34 non-City-
+Center links; confirmed comparable foundations8/16→17/20; Hubs3→6, Theaters2→4.
+All25 candidate Quarter foundations have Base,23 at+3+. Mean/max guidance rises
+1.976/4.025s→2.362/5.505s. Pangaea control is running; keep policy frozen through
+the remaining pairs, then profile the same mature state if cost recurs. Astra's
+capture-history reporting correction uses complete material totals; it resolves
+the lone false missing-Base flag. [Results and review](../research/mods/csc-ai-customer-scheduling-20261117.md).
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).

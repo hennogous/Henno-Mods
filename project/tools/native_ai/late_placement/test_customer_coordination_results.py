@@ -3,10 +3,19 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
-from customer_coordination_results import analyse, physical_summary, district_breakdown
+from customer_coordination_results import analyse, physical_summary, district_breakdown,inventory_at
 
 
 class CoordinationResults(unittest.TestCase):
+    def test_capture_totals_retain_unchanged_supply_and_future_rows_do_not_leak(self):
+        totals=[dict(turn=141,sequence=100,base=1,baseWorking=0),
+                dict(turn=144,sequence=120,base=1,baseWorking=0),
+                dict(turn=194,sequence=200,base=1,baseWorking=1)]
+        self.assertEqual(inventory_at(totals,144)['base'],1)
+        self.assertEqual(inventory_at(totals,144)['baseWorking'],0)
+        self.assertEqual(inventory_at(totals,200)['baseWorking'],1)
+        self.assertIsNone(inventory_at([],144))
+        self.assertEqual(inventory_at([dict(turn=144,base=0,baseWorking=0)],144)['base'],0)
     def test_capture_does_not_create_another_placement_and_shared_customer_counts_once(self):
         row=dict(player=1,quarter='BAKERS',quarterPlot=10,customerPlot=20,
             customerDistrict='DISTRICT_COMMERCIAL_HUB',cityCenter=False,order='quarter_first',
@@ -44,7 +53,8 @@ class CoordinationResults(unittest.TestCase):
                 'CSC_AI_SPATIAL_BID turn=4 player=1 district=43 plot=10 customerPlot1=20 customerType1=4\n'
                 'CSC_AI_CUSTOMER_ECONOMIC_BID turn=11 player=1 district=4 plot=20 deltaQ8=100\n'
                 'CSC_AI_CUSTOMER_FUTURE_LINK turn=7 player=1 district=4 plot=21 quarterPlot=11 quarterDistrict=43\n'
-                'CSC_PLANNING_MATERIAL_STATE\tplayer=1\tquarterPlot=10\tmaterialPlot=30\tturn=5\tbase=true\towner=1\tdistrict=-1\tworking=true\tcompatible=true\n')
+                'CSC_PLANNING_MATERIAL_STATE\tplayer=2\tquarterPlot=10\tmaterialPlot=30\tturn=5\tbase=true\towner=1\tdistrict=-1\tworking=true\tcompatible=true\n'
+                'CSC_PLANNING_MATERIAL_TOTAL\tplayer=1\tquarterPlot=10\tturn=12\tsequence=120\tbase=1\tbaseWorking=1\n')
             report=analyse(root);summary=report['summary']
             self.assertEqual(summary['physical_links'],3)
             self.assertEqual(summary['planned_district_links'],2)

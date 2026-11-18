@@ -1,10 +1,29 @@
 # Customer placement: native delivery and matched outcomes
 
-**Short gates pass; the first full control is complete and its candidate is
-running.** Pair-first scheduling improves fresh coverage at the same forecast
+**The first matched Online250 pair improves customer placement; Pangaea's
+control is running.** Pair-first scheduling improves fresh coverage at the same forecast
 budget; a combined-guidance ablation changes a close Hub choice through physical
 foundation. Stronger ordinary sites retain their wins. Three matched Online250
 worlds provide the remaining repeated-outcome test. **AI-C214–216**.
+
+| Continents250 | Current control | Pair-first candidate |
+|---|---:|---:|
+|Physical links outside City Centers|20|34|
+|Connected foundations with confirmed competing sites|8/16|17/20|
+|Quarter-first / customer-first links|12 /8|24 /10|
+|Connected Commercial Hubs / all Hubs|3 /16|6 /23|
+|Connected Theaters / all Theaters|2 /31|4 /28|
+|Quarter foundations, all with Base|23|25|
+|At least+3 / at least+4 adjacency|21 /7|23 /9|
+|Both material classes at foundation|3|4|
+|Guidance average / maximum|1.976s /4.025s|2.362s /5.505s|
+
+Both games close/qualify250 with complete timing and zero observer faults. The
+increase in mean guidance cost is0.386s/turn; its cause needs a same-mature-world
+comparison if it recurs on the remaining maps. Services remain outside the new
+placement pricing. Endpoint properties are Storekeeper8→9, Innkeeper3→1,
+Sacristan0→1, and Bakers Stage4 Service0→1. These are downstream outcomes to track
+alongside physical connections.
 
 The matched150–155 replay starts from the same verified post-restructure save.
 Control uses frozen d6a9114a policy; treatment changes only the main CSC economic
@@ -230,6 +249,38 @@ outcome. Exact duplicate failed-attempt packages and its redundant native50
 checkpoint are retired after hash checks; the archived save and all records
 remain. The parent runner resumes qualified controls and preserves this failed
 attempt explicitly in its progress history.
+
+The fresh retry reaches250 and closes/qualifies. Its turn100 refusal is recorded
+with zero requests and ordinary autoplay continues;150/200 and the required
+endpoint save succeed. The runner finishes candidate analysis/retirement and
+starts the preselected Pangaea control.
+
+### Astra's first full-pair review
+
+The gain is mainly Quarter-first:12→24 links. Among linked comparable choices,
+selected ordinary adjacency equals/exceeds the best ordinary alternative in
+13/17 candidate cases versus6/8 control. Largest concession is two adjacency
+points in either arm. This is terrain geometry; native site costs and economic
+streams remain part of the actual comparison. The21 candidate Harbors have no
+positive existing-Quarter opportunity observation, so their zero connections do
+not justify a larger Harbor bonus.
+
+One reported link without Base was a capture-history analysis error. Live totals
+show one owned, unimproved Wheat at both choice141 and foundation144 beside
+captured Bakers2080; it becomes a working Farm194. Changed-only per-owner
+material rows had omitted that unchanged resource after ownership transfer.
+Coordination analyser v3 uses complete `MATERIAL_TOTAL` snapshots, exposes their
+round/sequence, and leaves missing inventories unknown. Both corrected arms
+have zero links flagged without Base. Six focused analysis checks pass; this
+changes reporting only. The long-running parent has cached v2, so rerun the
+closed-arm coordination analysis with v3 before the final comparison.
+
+Customer forecasts remain10,464→10,483 (+0.18%), while group visits rise
+2,787→4,066. Additional unique work matters: route misses increase28% and recorded
+quote counters38%. Turns201–250 contribute about65 of the additional96 publisher
+seconds; late joint evaluations rise46%, quote counters84%. Keep the policy
+frozen for the remaining two map pairs, then compare adapters on the same mature
+state to distinguish scheduling cost from the larger/different economy it creates.
 
 ## Storage
 

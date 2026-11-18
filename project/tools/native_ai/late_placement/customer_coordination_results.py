@@ -6,11 +6,13 @@ labelled a controlled causal effect. Uses maintained planning chronology.
 """
 import argparse
 from collections import Counter,defaultdict
+import hashlib
 import json
 from pathlib import Path
 import re
 
 from planning_results import parse
+SOURCE_SHA256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
 def fields(text):
@@ -19,6 +21,19 @@ def fields(text):
         try:result[key]=float(value)if'.'in value else int(value)
         except ValueError:result[key]=value
     return result
+
+
+def inventory_at(totals,turn):
+    """A complete measured owner/Quarter snapshot, never a delta-row census.
+
+    MATERIAL_STATE emits changes. After capture an unchanged resource can be
+    absent from the new owner's changed-row history while MATERIAL_TOTAL still
+    records its actual supply. Select the latest measured round/sequence at or
+    before the foundation round; expose that clock and keep missing data unknown.
+    This does not claim the exact earlier native-selection instant.
+    """
+    rows=[r for r in totals if r['turn']<=turn and isinstance(r.get('base'),int)]
+    return max(rows,key=lambda r:(r['turn'],r.get('sequence',0)))if rows else None
 
 
 def physical_summary(links):
@@ -69,9 +84,9 @@ def analyse(root):
     future=[fields(s)for s in re.findall(r'CSC_AI_CUSTOMER_FUTURE_LINK ([^\r\n]+)',log)]
     layouts=[fields(s)for s in re.findall(r'CSC_AI_SPATIAL_BID ([^\r\n]+)',log)]
     economic=[fields(s)for s in re.findall(r'CSC_AI_CUSTOMER_ECONOMIC_BID ([^\r\n]+)',log)]
-    material=defaultdict(list)
+    material_totals=defaultdict(list)
     for row in parse(log,'CSC_PLANNING_'):
-        if row['kind']=='MATERIAL_STATE':material[(row['player'],row['quarterPlot'])].append(row)
+        if row['kind']=='MATERIAL_TOTAL':material_totals[(row['player'],row['quarterPlot'])].append(row)
     pairs={}
     for row in detailed['relationship_pairs']:
         if row.get('present'):
@@ -102,11 +117,9 @@ def analyse(root):
         eco=max(econ,key=lambda r:r['turn'])if econ else None
         # Latest observed supplier facts at/before customer placement. Customer-
         # first links have no existing-Quarter inventory yet, so stay unknown.
-        states={}
+        inventory=None
         if qt is not None and ct is not None and qt<=ct:
-            for r in sorted(material[(pid,qplot)],key=lambda r:(r['turn'],r.get('sequence',0))):
-                if r['turn']<=ct:states[r['materialPlot']]=r
-        bases=[r for r in states.values()if r.get('base')and r.get('owner')==pid and r.get('district',-1)<0]
+            inventory=inventory_at(material_totals[(pid,qplot)],ct)
         private=customer.get('uiAdjacency',{}).get('YIELD_CSC_AI_PLACEMENT')
         result.append(dict(player=pid,quarter=edge['quarter'],quarterPlot=qplot,
             customerPlot=cplot,customerDistrict=types.get(customer_type,str(customer_type)),
@@ -117,13 +130,17 @@ def analyse(root):
             latestQuarterLayoutMatches=planned,quarterLayoutTurn=latest['turn']if latest else None,
             priorCustomerEconomicOffer=bool(econ),economicLastTurn=eco['turn']if eco else None,
             economicLastDeltaQ8=eco.get('deltaQ8')if eco else None,
-            baseInventoryObserved=bool(states),ownedBaseAtCustomerPlacement=len(bases)if states else None,
-            workingBaseAtCustomerPlacement=sum(bool(r.get('working')and r.get('compatible'))for r in bases)if states else None))
+            baseInventoryObserved=inventory is not None,
+            ownedBaseAtCustomerPlacement=inventory['base']if inventory is not None else None,
+            workingBaseAtCustomerPlacement=inventory.get('baseWorking')if inventory is not None else None,
+            baseInventorySnapshotTurn=inventory['turn']if inventory is not None else None,
+            baseInventorySnapshotSequence=inventory.get('sequence')if inventory is not None else None,
+            baseInventoryTiming='latest_measured_at_or_before_foundation_round'))
     summary=physical_summary(result)
     database=root/'loaded-native-customer-database.json'
     mapped={r['DistrictType']for r in json.loads(database.read_text())['links']}if database.is_file()else set()
     gaps=[fields(s)for s in re.findall(r'CSC_AI_CUSTOMER_ECONOMIC_GAPS ([^\r\n]+)',log)]
-    return dict(schema='csc-customer-coordination-v2',summary=summary,links=result,
+    return dict(schema='csc-customer-coordination-v3',analysis_implementation_sha256=SOURCE_SHA256,summary=summary,links=result,
         district_placements=district_breakdown(result,detailed['constructions'],types,mapped),
         diagnostics=dict(skip_totals={key:sum(r.get(key,0)for r in gaps)for key in
             ('referenceUnavailable','candidateUnavailable','nativeUnavailable','nativeNonpositive','unvisitedGroups')}),
