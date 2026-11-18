@@ -13,7 +13,7 @@ alone. Keep unrelated art/lens/Pedia/localization work separate.
 
 Read session_ai_transaction_catalogue_20261116.md and the population migration /
 manual QA report.67-city zero-turn250 property equivalence and288 offline worlds
-pass; native customer replay100â†’125 complete/restored. Fixed/local/material/trade/
+pass; native customer replay100→125 complete/restored. Fixed/local/material/trade/
 staffing and joint customer residual remain open; SQL1 unchanged. No active game.
 
 # CURRENT: Commercial Hub retrospective complete; user session preserved,16 November
@@ -185,6 +185,68 @@ Native23745rows0faults/active/buffer. Lastcriticaldepositdestruction0;lateFlax
 pillage243notrepaired250. NextworkTailorscustomerlinks/acqcoverage/forecast
 productionfeedback/recoverylatency. No newgamesorPRs. Humanreport/AI-C185/status
 pushed ed774cc8; thismemoryhandoffandfinalauditfinishgoal. PreserveunrelatedWIP.
+
+# COMPLETED: timing-corrected freshOnline250,13 November
+
+Read session_ai_timing250_20261113.md FIRST. Completed250/closed/restored exit0,
+noactiveworker.7guidedfound(5B2T),allBase/>=3;6Base+customer,4improvedBase+customer.
+57/57nativewinners exact;153Storekeeperchainturnsallguided,TailorsStage2zero.
+All10corecensusesandnativecityCSVreproduceearlierungatedrunexactly. No newbest
+claim. FullreportAI-C180. Oldgoalpaused.NoPR.PreserveunrelateddirtySQL/art/UI.
+
+# COMPLETED: publication/growth timing fix,13 November
+
+Read session_ai_capacity_timing_20261113.md FIRST. Both50-70replays closed/restored
+exit0; noactiveworker. Same-roundgrowthAFTERglobalpubconfirmed2cities. Candidate
+Hobartbid84211positivebeforegrowth/nativewrite exact,2newQnomsvs0control,0guided
+foundationsboth. Sourcekeepsfuturebids/nativelegality; noformula/premiumincrease.
+Skill6referencespushed3b529a8 (N128+reconciledlearnings). Oldgoalpaused.NoPR.
+
+# COMPLETED: capacity-aware Online250,13 November
+
+Read session_ai_capacity_20261113.md FIRST. Fresh250 under Desktop/Codex/
+csc-ai-capacity-20261113 completed/closed/restored exit0. No active testworker.
+8/8nativeBakerswinners exact;4guidedfoundationsvs7previous,0newTailors.3/4have
+Base+customer,2/4improvedBase+customer;155Servicechainturns includes97captured.
+Do not claim broad improvement. Post-run diagnosticfinalQ8counterfix,30testsPASS.
+Oldgoal stayspaused. NoPR. PreserveunrelateddirtySQL/art/UI work.
+
+# COMPLETED: native delivery fix and fresh Online250,13 November
+
+Read session_ai_coverage_fix.md FIRST. Test completed250/closed/restored; no
+ownedtestworker remains. All7AI-foundedQuarters actual>=3/Baseat250;57/57exact
+nativecomparisons,153Storekeeperchainturns. See outcome report AI-C176. Oldgoal
+staysPAUSED. NoPR/newgame. PreserveunrelateddirtySQL/art/UI work. EarlierACTIVE
+headings below are historical and superseded.
+
+# ACTIVE: fresh Online250 outcome, shared controller owns console
+
+Read session_ai_coverage_fix.md FIRST. Worker60300 is runningfresh250-01 under
+Desktop/Codex/csc-ai-placement-coverage-20261113. No secondconsole/importedsource
+edits. MainCSCbe00cad9, CEdbfb93b/DLL400e6755frozen03. Checkabout15min. Replay04
+completed175 deliveryqualified4exactcomparisons,0newAIfoundations; nooutcomeclaim.
+Native243/regressionsPASS. Oldgoalpaused; thisfreshgameisexplicitlyauthorised.
+
+# ACTIVE: fix misidentified district flag before new game
+
+Read session_ai_coverage_fix.md FIRST. No game active. Replay03finished175/restored
+butfoundRow50=improvement, notdistrict. CorrectCE243checksbuilding64143, neednew
+DLL/package/shortqualifier04beforefullOnline250. Do NOTusea95/91f2830f asqualified.
+Oldgoalpaused; userexplicitlyauthorisesnewfix/test. NoPR. MainCSCdirtysource/docs
+notyetcommitted; skill2bdcf6cpushed. See detailedcurrentnotes.
+
+# ACTIVE: managed delivery qualification, 13 November
+
+Read session_ai_coverage_fix.md FIRST. Shared controller owns replay150-175-03,
+worker70224/process7864; no second console. New Online250 stillpending. CEa95e697
+and skill2bdcf6c pushed; CSC changes/docs await scoped commit. User values output
+quality over architecture subject to performance. Old goal paused; new test
+explicitly authorised. Earlier stop notes below are superseded for this task.
+
+# ACTIVE: authorised delivery fixes and new test game
+
+Read session_ai_coverage_fix.md FIRST. Latest go-ahead supersedes earlier stop.
+No game currently active. Candidate fixes under review; do not run until gated.
 
 # ACTIVE: REA investigation; all game tests stopped by user, 13 November
 

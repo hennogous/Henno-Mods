@@ -29,3 +29,8 @@ project/art-export-contracts/
 
 # Local diagnostic logs are retained on disk, not versioned.
 *.log
+
+# Native self-test intermediates and disposable AI investigation work.
+/*.obj
+/district-scores-selftest.exe
+/project/.ai-test-tmp/

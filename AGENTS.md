@@ -224,6 +224,11 @@ Working docs, tools, and reference material live in `project/` at the repo root.
 
 ## Testing via FireTuner
 
+**Shadow host restriction:** Henno reaffirmed on 9 November 2026 that agents
+must not use Computer Use or desktop automation on Shadow. Use command-line
+tools and documented app APIs such as FireTuner for Civ VI testing. Leave any
+required desktop interaction to Henno.
+
 The game exposes a TCP debug console on `127.0.0.1:4318`. A working Python client and test harness live in `project/tools/firetuner/`.
 
 - `run_csc_demo.py` — kill → Steam launch → new game → 50-turn autoplay → snapshot (~90s end-to-end, confirmed working). Requires one human click on "Begin Game".
