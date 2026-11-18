@@ -18,6 +18,22 @@ ROOT = Path(__file__).resolve().parents[3]
 MOD = ROOT / "Civ Supply Chains"
 
 
+def dds_rgba_mips(image):
+    """Write a complete RGBA DDS chain, including the full-size level."""
+    count = int(math.log2(max(image.size))) + 1
+    header = [124, 0x21007, image.height, image.width, 0, 1, count] + [0x54585246] + [0] * 10
+    header += [32, 0x41, 0, 32, 0xff, 0xff00, 0xff0000, 0xff000000, 0x401008, 0, 0, 0, 0]
+    data = io.BytesIO()
+    data.write(b"DDS " + struct.pack("<31I", *header))
+    mip = image
+    while True:
+        data.write(mip.tobytes("raw", "RGBA"))
+        if mip.size == (1, 1):
+            break
+        mip = mip.resize((max(1, mip.width // 2), max(1, mip.height // 2)), Image.Resampling.LANCZOS)
+    return data.getvalue()
+
+
 def xml_bytes(root):
     ET.indent(root, space="  ")
     return ET.tostring(root, encoding="utf-8", xml_declaration=True) + b"\n"
@@ -61,6 +77,7 @@ def outputs():
         "BASE": ("BASE_UNIMPROVED", "BASE_IMPROVED"),
         "SPEC": ("SPEC_UNIMPROVED", "SPEC_IMPROVED"),
         "SALE": ("SALE_UNREADY", "SALE_DISTRICT"),
+        "GOODS": ("GOODS_UNREADY", "GOODS"),
         "QUARTER": ("QUARTER_EMPTY", "QUARTER"),
     }
     for color, in db.execute("SELECT ColorType FROM CSC_LensQuarterColors ORDER BY QuarterKey"):
@@ -70,48 +87,21 @@ def outputs():
     def rgba(suffix):
         return colors["COLOR_CSC_LENS_" + suffix]
 
-    # Reuse the actual check-mark notification cells, not job/building icons or
-    # a redrawn approximation. Padding to a power of two preserves every source
-    # pixel while allowing the native overlay texture cook's full mip chain.
-    icons = sqlite3.connect(":memory:")
-    icons.executescript("""
-        CREATE TABLE IconTextureAtlases(Name TEXT, IconSize INTEGER, IconsPerRow INTEGER,
-            IconsPerColumn INTEGER, Filename TEXT, Baseline INTEGER);
-        CREATE TABLE IconDefinitions(Name TEXT, Atlas TEXT, 'Index' INTEGER);
-    """)
-    icons.executescript((MOD / "Icons/CSC_ALL_ICONS.sql").read_text(encoding="utf-8-sig"))
-    icons.executescript((MOD / "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons.sql").read_text(encoding="utf-8-sig"))
-    service_icons = {}
-    for name, index, size, columns, filename in icons.execute("""
-        SELECT d.Name, d.'Index', a.IconSize, a.IconsPerRow, a.Filename
-        FROM IconDefinitions d JOIN IconTextureAtlases a ON a.Name=d.Atlas
-        WHERE d.Name LIKE 'ICON_NOTIFICATION_CSC_%_EFFECT_NEW' AND a.IconSize=100
-        ORDER BY d.Name
-    """):
-        key = name.removeprefix("ICON_NOTIFICATION_CSC_").removesuffix("_EFFECT_NEW")
-        atlas = Image.open(MOD / "Textures" / (filename + ".dds")).convert("RGBA")
-        x, y = (index % columns) * size, (index // columns) * size
-        icon = atlas.crop((x, y, x + size, y + size))
-        padded = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
-        padded.paste(icon, ((128-size)//2, (128-size)//2))
-        service_icons[key] = with_drop_shadow(padded, (3, 4), 2)
-    icons.close()
-
     # Bold open chevrons replace the rectangular conveyor slats. Native waves
     # still own movement/fading; V=0 points forward in the verified native quad.
     # At every cross-path position the stroke occupies 67% of the 8-unit pitch,
     # preserving a 33% gap while making the direction explicit.
     conveyor_fill = .67
-    wave_stride, chevron_rise = 8, 2
+    wave_stride, chevron_rise = 8, 2.2
 
     def chevron_mask(width, height, quad_length, offset):
         scale = 15
         center = .5 - offset / quad_length
         half_stroke = conveyor_fill * wave_stride / (2 * quad_length)
+        image = Image.new("RGBA", (width*scale, height*scale), (255, 255, 255, 0))
+        draw = ImageDraw.Draw(image)
         half_rise = chevron_rise / (2 * quad_length)
         left, middle, right = width * 3/16, width/2, width * 13/16
-        # Leading and trailing edges are parallel chevrons. Symmetric rise
-        # around center preserves the whole glyph's centroid and border offset.
         points = [
             (left, center + half_rise - half_stroke),
             (middle, center - half_rise - half_stroke),
@@ -120,19 +110,13 @@ def outputs():
             (middle, center - half_rise + half_stroke),
             (left, center + half_rise + half_stroke),
         ]
-        image = Image.new("RGBA", (width*scale, height*scale), (255, 255, 255, 0))
-        ImageDraw.Draw(image).polygon(
-            [(round(x*scale), round(v*height*scale)) for x, v in points],
-            fill=(255, 255, 255, 255))
+        draw.polygon([(round(x*scale), round(v*height*scale)) for x, v in points],
+                     fill=(255, 255, 255, 255))
         image = image.resize((width, height), Image.Resampling.LANCZOS)
         # Scale the small shadow offset to the quad's authored proportions.
         # The native wave shader fades this shadow with the chevron itself.
         offset = (round(.42 * width / 18), round(.56 * height / quad_length))
         return with_drop_shadow(image, offset, 2 * width / 128)
-
-    # Centered source-art reference; the padded runtime texture below is the
-    # one used by the native material, with the same physical chevron shape.
-    conveyor = chevron_mask(64, 128, 16, 0)
 
     # Native waves fade over a 32-unit band with offset32. A quad with length48
     # and its glyph centred at V=1/6 moves the visible artwork +16 along travel:
@@ -143,16 +127,12 @@ def outputs():
     # fixed: texture opacity follows the glyph, not a stationary end crop.
     wave_quad_length, wave_offset = 48, 16
     conveyor_wave = chevron_mask(128, 256, wave_quad_length, wave_offset)
+    wave_textures = {"ConveyorWaves": ("CSC_Lens_ConveyorWave", conveyor_wave)}
+    flow_styles = ("Chevrons", "Trade", *wave_textures)
 
     # A white alpha mask: palette tint is declared once per style below. Keeping
     # the square mask uncut lets native HEX_GEO do the clipping, as in Firaxis art.
     scale = 4
-    image = Image.new("RGBA", (512 * scale, 512 * scale), (255, 255, 255, 0))
-    draw = ImageDraw.Draw(image)
-    for y in range(-96, 620, 88):
-        points = [(-16, y), (256, y + 76), (528, y), (528, y + 22), (256, y + 98), (-16, y + 22)]
-        draw.polygon([(x * scale, yy * scale) for x, yy in points], fill=(255, 255, 255, 195))
-    image = image.resize((512, 512), Image.Resampling.LANCZOS)
     # Match the native HexPlace_ValidFill_Overlay UV footprint. Keep only a thin
     # edge, with a fully transparent centre: no placement gradient, badge or
     # chevrons. HEX_GEO supplies the game's actual terrain-following hex mesh.
@@ -163,10 +143,21 @@ def outputs():
     inset = [(256 + (x - 256) * 0.94, 256 + (y - 256) * 0.94) for x, y in points]
     outline_draw.polygon([(round(x * scale), round(y * scale)) for x, y in inset], fill=(255, 255, 255, 0))
     outline = outline.resize((512, 512), Image.Resampling.LANCZOS)
+    outline_textures = {"CSC_Lens_HexOutline": outline}
+    for state, opacity in (("Dim", .4), ("Faint", .3)):
+        mask = outline.copy()
+        mask.putalpha(outline.getchannel("A").point(lambda alpha: round(alpha * opacity)))
+        outline_textures["CSC_Lens_HexOutline" + state] = mask
     # Appeal's native coloured-hex dispatcher forces alpha to 0x80. Manual
     # fallback sprites therefore bake the palette's alpha into their masks.
     # Keep the fill inside the edge mask so sprite ordering cannot dull it.
-    fill_textures = {}
+    def fill_mask(alpha):
+        fill = Image.new("RGBA", (512 * scale, 512 * scale), (255, 255, 255, 0))
+        ImageDraw.Draw(fill).polygon([(round(x * scale), round(y * scale)) for x, y in inset],
+                                     fill=(255, 255, 255, alpha))
+        return fill.resize((512, 512), Image.Resampling.LANCZOS)
+
+    fill_textures = {"Dim": fill_mask(102), "FocusReady": fill_mask(77), "FocusUnready": fill_mask(26)}
     fill_masks = {}
     for kind, suffixes in fill_colors.items():
         for index, state in enumerate(("Unready", "Ready")):
@@ -177,27 +168,7 @@ def outputs():
             mask = state if alpha == shared_alpha else kind.title() + state
             fill_masks[kind, state] = mask
             if mask not in fill_textures:
-                fill = Image.new("RGBA", (512 * scale, 512 * scale), (255, 255, 255, 0))
-                ImageDraw.Draw(fill).polygon([(round(x * scale), round(y * scale)) for x, y in inset],
-                                             fill=(255, 255, 255, alpha))
-                fill_textures[mask] = fill.resize((512, 512), Image.Resampling.LANCZOS)
-    # Firaxis exports a complete RGBA mip chain; its TEX mip field is the last
-    # mip index (9), while the DDS header counts all ten levels. Pillow's simple
-    # one-level DDS is insufficient for this native overlay cook.
-    def dds(image):
-        count = int(math.log2(max(image.size))) + 1
-        header = [124, 0x21007, image.height, image.width, 0, 1, count] + [0x54585246] + [0] * 10
-        header += [32, 0x41, 0, 32, 0xff, 0xff00, 0xff0000, 0xff000000, 0x401008, 0, 0, 0, 0]
-        assert len(header) == 31
-        data = io.BytesIO(b"DDS " + struct.pack("<31I", *header))
-        data.seek(0, 2)
-        mip = image
-        while True:
-            data.write(mip.tobytes("raw", "RGBA"))
-            if mip.size == (1, 1): break
-            mip = mip.resize((max(1, mip.width // 2), max(1, mip.height // 2)), Image.Resampling.LANCZOS)
-        return data.getvalue()
-
+                fill_textures[mask] = fill_mask(alpha)
     texture = ET.Element("AssetObjects..TextureInstance")
     settings = ET.SubElement(texture, "m_ExportSettings")
     for key, value in {"ePixelformat": "PF_R8G8B8A8_UNORM", "eFilterType": "FT_LANCZOS6",
@@ -214,25 +185,21 @@ def outputs():
     files = ET.SubElement(texture, "m_DataFiles")
     row = ET.SubElement(files, "Element")
     node(row, "m_ID", "DDS")
-    node(row, "m_RelativePath", "CSC_Lens_Chevrons.dds")
-    node(texture, "m_Name", "CSC_Lens_Chevrons")
+    node(row, "m_RelativePath", "")
+    node(texture, "m_Name", "")
 
     xlp = ET.Element("AssetObjects..XLP")
     node(xlp, "m_ClassName", "OverlayTexture")
     node(xlp, "m_PackageName", "Overlay/CSC_LensPatterns")
-    row = ET.SubElement(ET.SubElement(xlp, "m_Entries"), "Element")
-    node(row, "m_EntryID", "CSC_Lens_Chevrons")
-    node(row, "m_ObjectName", "CSC_Lens_Chevrons")
-    row = ET.SubElement(xlp.find("m_Entries"), "Element")
-    node(row, "m_EntryID", "CSC_Lens_BaseReady")
-    node(row, "m_ObjectName", "CSC_Lens_BaseReady")
-    row = ET.SubElement(xlp.find("m_Entries"), "Element")
-    node(row, "m_EntryID", "CSC_Lens_HexOutline")
-    node(row, "m_ObjectName", "CSC_Lens_HexOutline")
+    ET.SubElement(xlp, "m_Entries")
+    for name in outline_textures:
+        row = ET.SubElement(xlp.find("m_Entries"), "Element")
+        node(row, "m_EntryID", name)
+        node(row, "m_ObjectName", name)
     row = ET.SubElement(xlp.find("m_Entries"), "Element")
     node(row, "m_EntryID", "CSC_Lens_FlowArrow")
     node(row, "m_ObjectName", "CSC_Lens_FlowArrow")
-    for name in ["CSC_Lens_Conveyor", "CSC_Lens_ConveyorWave"] + ["CSC_Lens_Service_" + key for key in service_icons]:
+    for name in [name for name, _ in wave_textures.values()]:
         row = ET.SubElement(xlp.find("m_Entries"), "Element")
         node(row, "m_EntryID", name)
         node(row, "m_ObjectName", name)
@@ -259,11 +226,16 @@ def outputs():
             name = row.find("m_ParamName").get("text")
             if name == "Type": row.find("m_Value").set("text", "SpriteOverlay")
             elif name == "Material": row.find("m_Value").set("text", "")
-            elif name == "Priority": row.find("m_fValue").text = "0"
+            # Draw tile tints and outlines with the terrain below 3D models.
+            elif name == "Pass": row.find("m_nValue").text = "0"
+            elif name == "Priority": row.find("m_fValue").text = "16" if owner == "Lens" else "0"
             elif name == "ShowOnMap": row.find("m_bValue").text = "false"
         layers.append(layer)
         fill_layer = copy.deepcopy(layer)
         fill_layer.find("m_Name").set("text", "CSC_Quarter" + owner + "_Fill")
+        for row in fill_layer.findall("m_Fields/m_Values/Element"):
+            if row.find("m_ParamName").get("text") == "Priority":
+                row.find("m_fValue").text = "15" if owner == "Lens" else "0"
         layers.append(fill_layer)
         tint_layer = copy.deepcopy(layer)
         tint_layer.find("m_Name").set("text", "CSC_Quarter" + owner + "_Tint")
@@ -272,44 +244,40 @@ def outputs():
             if name == "Type": row.find("m_Value").set("text", "HexHighlightOverlay")
             elif name == "Priority": row.find("m_fValue").text = "15"
         layers.append(tint_layer)
-        service_layer = copy.deepcopy(layer)
-        service_layer.find("m_Name").set("text", "CSC_Quarter" + owner + "_Services")
-        for row in service_layer.findall("m_Fields/m_Values/Element"):
-            name = row.find("m_ParamName").get("text")
-            # Pass 2 is the native late overlay stage used by map labels. In
-            # the terrain stage, landmarks occlude these functional badges.
-            if name == "Pass": row.find("m_nValue").text = "2"
-            elif name == "Priority": row.find("m_fValue").text = "25"
-        layers.append(service_layer)
+        if owner == "Placement":
+            continue
+        shade_layer = copy.deepcopy(tint_layer)
+        shade_layer.find("m_Name").set("text", "CSC_QuarterLens_Shade")
+        priority = next(row for row in shade_layer.findall("m_Fields/m_Values/Element")
+                        if row.find("m_ParamName").get("text") == "Priority")
+        priority.find("m_fValue").text = "14"
+        layers.append(shade_layer)
         flow = copy.deepcopy(layer)
         flow.find("m_Name").set("text", "CSC_Quarter" + owner + "_Flow")
         for row in flow.findall("m_Fields/m_Values/Element"):
             name = row.find("m_ParamName").get("text")
             if name == "Type": row.find("m_Value").set("text", "PressureOverlay")
-            elif name == "Pass": row.find("m_nValue").text = "0"
-            # Pass 1 changes render stages when Religion's desaturation reaches
-            # zero. Keep our flows in stable Pass 0 and order them above Tint
-            # (15) and fallback BorderOverlay (15.5) using priority instead.
+            elif name == "Pass": row.find("m_nValue").text = "1"
+            # Draw lens flows in the same full-colour pass as the tile overlays.
             elif name == "Priority": row.find("m_fValue").text = "20"
             elif name == "Material": row.find("m_Value").set("text", "CSC_Lens_FlowArrow")
         layers.append(flow)
-        for style in ("Chevrons", "Trade", "Conveyor"):
+        for style in flow_styles:
             path = copy.deepcopy(flow)
             path.find("m_Name").set("text", "CSC_Quarter" + owner + "_Flow" + style)
             for row in path.findall("m_Fields/m_Values/Element"):
                 name = row.find("m_ParamName").get("text")
                 if name == "Type": row.find("m_Value").set("text", "PathOverlay")
-                elif name == "Pass": row.find("m_nValue").text = "0"
+                elif name == "Pass": row.find("m_nValue").text = "1"
                 elif name == "Material": row.find("m_Value").set("text", "CSC_Lens_Path" + style)
                 elif name == "Visible": row.find("m_bValue").text = "false"
-            if style == "Conveyor":
+            if style in wave_textures:
                 # New identity avoids calling wave methods on an old cooked
                 # PathOverlay when only Lua has been rebuilt.
-                path.find("m_Name").set("text", "CSC_Quarter" + owner + "_FlowConveyorWaves")
                 values = {r.find("m_ParamName").get("text"): r for r in path.findall("m_Fields/m_Values/Element")}
                 values["Type"].find("m_Value").set("text", "PressureOverlay")
-                values["Pass"].find("m_nValue").text = "0"
-                values["Material"].find("m_Value").set("text", "CSC_Lens_ConveyorWaves")
+                values["Pass"].find("m_nValue").text = "1"
+                values["Material"].find("m_Value").set("text", "CSC_Lens_" + style)
             layers.append(path)
     for row in list(collections):
         if row.find("m_CollectionName").get("text") == "Overlays": collections.remove(row)
@@ -342,7 +310,7 @@ def outputs():
     # The comparison uses the same terrain-following PathOverlay as Firaxis's
     # trade route display. Filled art replaces the old thin floating UI strokes.
     # Private copies keep the game's real trade routes and normal CSC waves intact.
-    for kind in ("Chevrons", "Trade", "Conveyor"):
+    for kind in flow_styles:
         path_style = copy.deepcopy(arrow_style)
         path_name = "CSC_Lens_Path" + kind
         path_style.find("m_Name").set("text", path_name)
@@ -359,34 +327,19 @@ def outputs():
             native.find("m_EntryName").set("text", "TradeRoutePrimary")
             native.find("m_XLPPath").set("text", "Overlay.xlp")
             native.find("m_BLPPackage").set("text", "Overlay")
-        elif kind == "Conveyor":
+        elif kind in wave_textures:
             # Native PressureOverlay supplies the chevrons' quartic endpoint
             # fade. Its texture V runs along travel; PathOverlay uses U instead.
-            path_style.find("m_Name").set("text", "CSC_Lens_ConveyorWaves")
-            path_entry.find("m_Name").set("text", "CSC_Lens_ConveyorWaves")
-            values["SplineTexture"].find("m_EntryName").set("text", "CSC_Lens_ConveyorWave")
+            path_style.find("m_Name").set("text", "CSC_Lens_" + kind)
+            path_entry.find("m_Name").set("text", "CSC_Lens_" + kind)
+            values["SplineTexture"].find("m_EntryName").set("text", wave_textures[kind][0])
             # The long transparent quad shifts its visible slat forward16;
             # the visible slat is 5.36 units long at an 8-unit stride.
             values["SplineSegmentLength"].find("m_fValue").text = str(wave_quad_length)
-            values["SplineScrollSpeed"].find("m_fValue").text = "0.10"
+            values["SplineScrollSpeed"].find("m_fValue").text = "0.11"
             # PressureOverlay reads per-wave colour, not this Border-only alpha.
             values["Color_Alpha"].find("m_nValue").text = "255"
         overlays.append(path_style)
-    base_rgb = tuple(round(v * 255) for v in rgba("BASE_IMPROVED")[:3])
-    badge = Image.new("RGBA", (512, 512), (0, 0, 0, 0))
-    badge_draw = ImageDraw.Draw(badge)
-    badge_draw.ellipse((25, 25, 487, 487), fill=(13, 35, 56, 235))
-    badge_draw.ellipse((40, 40, 472, 472), fill=base_rgb + (245,), outline=(224, 243, 255, 245), width=12)
-    badge_draw.line([(147, 265), (225, 343), (375, 183)], fill=(255, 255, 255, 255), width=45, joint="curve")
-    badge = badge.resize((128, 128), Image.Resampling.LANCZOS)
-    badge_texture = copy.deepcopy(texture)
-    for key in ("m_Height", "m_Width"): badge_texture.find(key).text = "128"
-    badge_texture.find("m_NumMipMaps").text = "7"
-    badge_texture.find("m_Name").set("text", "CSC_Lens_BaseReady")
-    badge_texture.find("m_DataFiles/Element/m_RelativePath").set("text", "CSC_Lens_BaseReady.dds")
-    outline_texture = copy.deepcopy(texture)
-    outline_texture.find("m_Name").set("text", "CSC_Lens_HexOutline")
-    outline_texture.find("m_DataFiles/Element/m_RelativePath").set("text", "CSC_Lens_HexOutline.dds")
     arrow_texture = copy.deepcopy(texture)
     arrow_texture.find("m_Width").text = "128"
     arrow_texture.find("m_Height").text = "64"
@@ -417,79 +370,72 @@ def outputs():
         for element in (entry, style):
             node(element, "m_Name", "CSC_Lens_Ready_" + kind)
             ET.SubElement(element, "m_AppendMergedParameterCollections").text = "false"
-        for state, suffix in zip(("Unready", "Ready"), fill_colors[kind]):
+        for state in ("Dim", "Faint"):
+            outline_style = copy.deepcopy(style)
+            name = "CSC_Lens_" + state + "_" + kind
+            outline_style.find("m_Name").set("text", name)
+            outline_entry = outline_style.find("m_ChildCollections/Element/Element")
+            outline_entry.find("m_Name").set("text", name)
+            outline_entry.find(".//m_EntryName").set("text", "CSC_Lens_HexOutline" + state)
+            overlays.append(outline_style)
+        states = {"Unready": fill_masks[kind, "Unready"], "Ready": fill_masks[kind, "Ready"],
+                  "Faint": "Unready", "Dim": "Dim",
+                  "FocusReady": "FocusReady", "FocusUnready": "FocusUnready"}
+        for state, mask in states.items():
             fill_style = copy.deepcopy(style)
             name = "CSC_Lens_Fill_" + kind + "_" + state
             fill_style.find("m_Name").set("text", name)
             fill_entry = fill_style.find("m_ChildCollections/Element/Element")
             fill_entry.find("m_Name").set("text", name)
             fill_values = {r.find("m_ParamName").get("text"): r for r in fill_entry.findall("m_Fields/m_Values/Element")}
-            fill_values["StaticTexture"].find("m_EntryName").set("text", "CSC_Lens_HexFill_" + fill_masks[kind, state])
-            rgb = rgba(suffix)[:3]
+            fill_values["StaticTexture"].find("m_EntryName").set("text", "CSC_Lens_HexFill_" + mask)
+            rgb = rgba(fill_colors[kind][state == "Ready"])[:3]
             for channel, value in zip(("m_r", "m_g", "m_b"), rgb):
                 fill_values["TintColor"].find(channel).text = str(round(float(value) * 255))
             overlays.append(fill_style)
     result = {
-        MOD / "Textures/CSC_Lens_Chevrons.dds": dds(image),
-        MOD / "Textures/CSC_Lens_Chevrons.tex": xml_bytes(texture),
-        MOD / "Textures/CSC_Lens_BaseReady.dds": dds(badge),
-        MOD / "Textures/CSC_Lens_BaseReady.tex": xml_bytes(badge_texture),
-        MOD / "Textures/CSC_Lens_HexOutline.dds": dds(outline),
-        MOD / "Textures/CSC_Lens_HexOutline.tex": xml_bytes(outline_texture),
         MOD / "Textures/CSC_Lens_FlowArrow.tex": xml_bytes(arrow_texture),
         MOD / "XLPs/CSC_LensPatterns.xlp": xml_bytes(xlp),
         artpath: xml_bytes(art),
     }
-    for state, fill in fill_textures.items():
-        name = "CSC_Lens_HexFill_" + state
+    overlay_masks = dict(outline_textures)
+    overlay_masks.update({"CSC_Lens_HexFill_" + state: fill for state, fill in fill_textures.items()})
+    for name, mask in overlay_masks.items():
         metadata = copy.deepcopy(texture)
         metadata.find("m_Name").set("text", name)
         metadata.find("m_DataFiles/Element/m_RelativePath").set("text", name + ".dds")
-        result[MOD / ("Textures/" + name + ".dds")] = dds(fill)
+        result[MOD / ("Textures/" + name + ".dds")] = dds_rgba_mips(mask)
         result[MOD / ("Textures/" + name + ".tex")] = xml_bytes(metadata)
-    custom = {"CSC_Lens_Conveyor": conveyor, "CSC_Lens_ConveyorWave": conveyor_wave}
-    custom.update({"CSC_Lens_Service_" + key: icon for key, icon in service_icons.items()})
-    for name, image in custom.items():
+    for name, image in wave_textures.values():
         metadata = copy.deepcopy(texture)
         metadata.find("m_Name").set("text", name)
         metadata.find("m_DataFiles/Element/m_RelativePath").set("text", name + ".dds")
         metadata.find("m_Width").text = str(image.width)
         metadata.find("m_Height").text = str(image.height)
         metadata.find("m_NumMipMaps").text = str(int(math.log2(max(image.size))))
-        result[MOD / ("Textures/" + name + ".dds")] = dds(image)
+        result[MOD / ("Textures/" + name + ".dds")] = dds_rgba_mips(image)
         result[MOD / ("Textures/" + name + ".tex")] = xml_bytes(metadata)
-    for key in service_icons:
-        # The same terrain-following rectangular sprites as native map markers;
-        # a single centered icon needs no invented per-sprite offset API.
-        style = ET.SubElement(overlays, "Element")
-        ET.SubElement(ET.SubElement(style, "m_Fields"), "m_Values")
-        collection = ET.SubElement(ET.SubElement(style, "m_ChildCollections"), "Element")
-        node(collection, "m_CollectionName", "Texture")
-        ET.SubElement(collection, "m_ReplaceMergedCollectionElements").text = "false"
-        entry = ET.SubElement(collection, "Element")
-        values = ET.SubElement(ET.SubElement(entry, "m_Fields"), "m_Values")
-        field(values, "BLPEntryValue", "StaticTexture", m_EntryName="CSC_Lens_Service_" + key,
-              m_XLPClass="OverlayTexture", m_XLPPath="CSC_LensPatterns.xlp",
-              m_BLPPackage="Overlay/CSC_LensPatterns", m_LibraryName="OverlayTexture")
-        field(values, "BoolValue", "RotateToAlign", m_bValue=False).find("m_bValue").text = "false"
-        field(values, "Coord2DValue", "RectDims", m_x=48, m_y=48)
-        field(values, "StringValue", "GeomType", m_Value="RECT_GEO")
-        field(values, "Coord2DValue", "NumTiles", m_x=1, m_y=1)
-        field(values, "RGBValue", "TintColor", m_r=255, m_g=255, m_b=255)
-        ET.SubElement(entry, "m_ChildCollections")
-        for element in (style, entry):
-            node(element, "m_Name", "CSC_Lens_Service_" + key)
-            ET.SubElement(element, "m_AppendMergedParameterCollections").text = "false"
-    # Service styles are appended after the other generated material families.
     result[artpath] = xml_bytes(art)
     return result
+
+
+def focus_extension_dds(source):
+    with Image.open(source) as texture:
+        assert texture.size == (1254, 1254) and "A" in texture.getbands()
+        # Register the approved extension against the stock circle.
+        extension = texture.crop((-28, 62, 1148, 1238)).resize((256, 256), Image.Resampling.LANCZOS)
+    return dds_rgba_mips(extension)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--focus-extension-source", type=Path, help="Approved transparent focus extension on its original 1254px canvas")
     args = parser.parse_args()
-    for path, data in outputs().items():
+    generated = outputs()
+    if args.focus_extension_source:
+        generated[MOD / "Textures/CSC_ServiceFocusExtension.dds"] = focus_extension_dds(args.focus_extension_source)
+    for path, data in generated.items():
         if args.check:
             assert path.read_bytes() == data, "Regenerate " + str(path)
         elif not path.exists() or path.read_bytes() != data:

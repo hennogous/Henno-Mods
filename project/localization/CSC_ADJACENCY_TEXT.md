@@ -25,3 +25,10 @@ nearby
 
 ## LOC_CSC_ADJ_SOURCE_GENERIC
 matching object
+
+
+## LOC_CSC_ADJ_MILL_TERRAIN
+{1_Amount} {2_Yield} from the local {4_Source} terrain ({5_Mill}).
+
+## LOC_CSC_ADJ_MILL_RIVER
+{1_Amount} {2_Yield} from {3_Count} adjacent {4_Source} ({5_Mill}).

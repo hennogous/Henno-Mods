@@ -6,6 +6,18 @@
       {
         "tag": "Criteria",
         "attributes": {
+          "id": "DetailedMapTacksMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "4ecfcc62-5471-4435-b295-590df213e8d8"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
           "id": "CSC_CE_SupplierExclusion"
         },
         "children": [
@@ -883,13 +895,12 @@
       {
         "type": "ImportFiles",
         "id": "CSC_SharedModules",
-        "properties": {
-          "LoadOrder": "490"
-        },
         "files": [
+          "Lua_UI/Pedia/CivilopediaPage_CSC_QuarterDistricts.lua",
           "Lua_UI/Adjacencies/CSC_AdjacencyCore.lua",
           "Lua_UI/Adjacencies/CSC_AdjacencyPresentation.lua",
           "Lua_UI/Adjacencies/CSC_StockAdjacencyBonusSupport.lua",
+          "Lua_UI/Adjacencies/ToolTipLoader_CSCQuarterCustomers.lua",
           "Lua_UI/Adjacencies/CSC_AdjacencyUI.lua",
           "Lua_UI/AI/CSC_AI_AdjacencyScan.lua",
           "Lua_UI/AI/CSC_AI_QuarterPlacement.lua",
@@ -903,9 +914,18 @@
           "Lua_UI/Lenses/CSC_QuarterFlowTrial.lua",
           "Lua_UI/Notifications_Suk_MCUIS/CSC_ServicePresentation.lua",
           "Lua_UI/Lenses/CSC_QuarterServicePins.lua",
+          "Lua_UI/Lenses/CSC_BakersPlacementTerrain.lua",
+          "Lua_UI/Lenses/CSC_QuarterTooltip.lua",
+          "Textures/CSC_ServiceMedallionGray.dds",
+          "Textures/CSC_ServiceMedallion.dds",
+          "Textures/CSC_QuarterLensBacking.dds",
+          "Textures/CSC_QuarterLensBackingGray.dds",
           "Lua_UI/TradeRoutes/CSC_TradeRouteCore.lua",
           "Lua_UI/TradeRoutes/CSC_TradeRouteFacts.lua"
-        ]
+        ],
+        "properties": {
+          "LoadOrder": "490"
+        }
       },
       {
         "type": "AddUserInterfaces",
@@ -1097,6 +1117,17 @@
       },
       {
         "type": "AddUserInterfaces",
+        "id": "CSC_BakersPlacementTerrain",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "504"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_BakersPlacementTerrain.xml"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
         "id": "CSC_WonderServiceCityBreakdown",
         "properties": {
           "LoadOrder": "504",
@@ -1270,6 +1301,18 @@
         "files": [
           "Text/CSC_ADJACENCY_TEXT.sql",
           "Text/CSC_ADJACENCY_SOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_DetailedMapTacksForecast",
+        "properties": {
+          "LoadOrder": "12346",
+          "LuaContext": "dmt_yieldcalculator",
+          "LuaReplace": "Lua_UI/Adjacencies/CSC_DetailedMapTacks.lua"
+        },
+        "criteria": [
+          "DetailedMapTacksMod"
         ]
       },
       {

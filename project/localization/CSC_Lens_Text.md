@@ -2,17 +2,35 @@
 output: Civ Supply Chains/Lua_UI/Lenses/CSC_Lens_Text.sql
 language: en_US
 
+## LOC_CSC_LENS_QUARTER_ADJACENCY
+Adjacency Bonuses
+
+## LOC_CSC_LENS_QUARTER_TRANSACTIONS
+Transactions
+
+## LOC_CSC_LENS_QUARTER_SERVICES
+Services
+
+## LOC_CSC_LENS_QUARTER_SPECIALISTS
+Specialists ({1_Num})
+
+## LOC_CSC_LENS_QUARTER_AMENITIES
+{1_Amount} Amenities
+
+## LOC_CSC_LENS_QUARTER_MAINTENANCE
+Maintenance
+
 ## LOC_HUD_CSC_SUPPLY_CHAINS_LENS
 Supply Chains
 
 ## LOC_HUD_CSC_SUPPLY_CHAINS_LENS_TOOLTIP
-Choose a Quarter to highlight its materials and points of sale. Hold Q and press 1 for Bakers' or 2 for Tailors'. Outlines mark [ICON_CSC_BASE] Base materials, [ICON_CSC_SPEC] Specialty materials, and [ICON_CSC_SALES] customer districts. Improved materials, functioning customer buildings, and completed customer Wonders have a stronger tile fill. Unimproved [ICON_CSC_BASE] Base materials have a 30% tile fill; other unimproved or empty sites have a 20% fill; improved or functioning sites have a 60% fill. All relevant sites have an opaque outline. Quarters use their own colours, with a 20% fill until they contain a functioning building and 60% thereafter. Animated arrows run from improved materials to their matching buyer building, and from producer buildings to matching customers. Arrow colours show the delivered yield: orange for Production, green for Food, and purple for Culture.
+Choose a Quarter to highlight its materials, [ICON_CSC_GOODS] Goods Providers and customers. Hold Q and press 1 for Bakers' or 2 for Tailors'. Improved materials and functioning sites have a stronger fill. Click a Quarter or Service icon to focus its supply chain. Click it again to restore the full lens.
 
 ## LOC_HUD_CSC_BAKERS_LENS
 Bakers' Quarter
 
 ## LOC_HUD_CSC_BAKERS_LENS_TOOLTIP
-Shows Bakers' Quarters in green, [ICON_CSC_BASE] base materials in dark brown, [ICON_CSC_SPEC] specialty materials in orange, and points of sale in yellow. Hold Q and press 1 to open this lens. All relevant sites have opaque outlines, with 30% fills for unimproved [ICON_CSC_BASE] Base materials, 20% for other unimproved or empty sites, and 60% for improved or functioning sites. Quarters follow the same rule, depending on whether they contain a functioning building. Animated arrows run from improved materials to their matching buyer building, and from producer buildings to matching customers. Arrow colours show the delivered yield: orange for Production, green for Food, and purple for Culture.
+Shows Bakers' Quarters in green, [ICON_CSC_BASE] Base materials in brown, [ICON_CSC_SPEC] Specialty materials in orange and [ICON_CSC_SALES] customers in yellow. City Lights [ICON_CSC_GOODS] Goods Providers appear in light grey when available. Hold Q and press 1 to open this lens.
 
 ## LOC_TOOLTIP_CSC_LENS_BAKERS_QUARTER
 Bakers' Quarter
@@ -21,7 +39,7 @@ Bakers' Quarter
 Tailors' Quarter
 
 ## LOC_HUD_CSC_TAILORS_LENS_TOOLTIP
-Shows Tailors' Quarters in purple, [ICON_CSC_BASE] base materials in dark brown, [ICON_CSC_SPEC] specialty materials in orange, and points of sale in yellow. Hold Q and press 2 to open this lens. All relevant sites have opaque outlines, with 30% fills for unimproved [ICON_CSC_BASE] Base materials, 20% for other unimproved or empty sites, and 60% for improved or functioning sites, including completed customer Wonders. Quarters follow the same rule, depending on whether they contain a functioning building. Animated arrows run from improved materials to their matching buyer building, and from producer buildings to matching customers. Arrow colours show the delivered yield: orange for Production, green for Food, and purple for Culture.
+Shows Tailors' Quarters in purple, [ICON_CSC_BASE] Base materials in brown, [ICON_CSC_SPEC] Specialty materials in orange and [ICON_CSC_SALES] customers in yellow, including mapped Wonders. City Lights [ICON_CSC_GOODS] Goods Providers appear in light grey when available. Hold Q and press 2 to open this lens.
 
 ## LOC_TOOLTIP_CSC_LENS_TAILORS_QUARTER
 Tailors' Quarter
@@ -49,3 +67,6 @@ Customer District
 
 ## LOC_TOOLTIP_CSC_LENS_SALE_READY
 Customer Building / Wonder
+
+## LOC_TOOLTIP_CSC_LENS_GOODS
+Goods Provider

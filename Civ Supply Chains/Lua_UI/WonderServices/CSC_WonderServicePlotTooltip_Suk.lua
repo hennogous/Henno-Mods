@@ -51,6 +51,7 @@ function FetchData(pPlot:table)
 end
 
 local BASE_CSC_WONDER_SERVICES_GetDetails = GetDetails;
+include('CSC_ServicePresentation');
 
 function GetDetails(data:table)
     -- Show actual co-located Service buildings, including persistent inactive
@@ -60,18 +61,13 @@ function GetDetails(data:table)
 
     if data.WonderType ~= nil and data.BuildingTypes ~= nil then
         for _, serviceType in ipairs(SERVICE_TYPES) do
-            local service:table = GameInfo.Buildings[serviceType];
+            local service:table = CSC_ServicePresentation.FindServiceOnPlot(data.BuildingTypes, serviceType);
             if service ~= nil then
-                for _, buildingIndex in ipairs(data.BuildingTypes) do
-                    if buildingIndex == service.Index then
-                        if not foundService then
-                            table.insert(details, Locale.Lookup('LOC_CSC_WONDER_SERVICES_PLOT_TOOLTIP_HEADER'));
-                            foundService = true;
-                        end
-                        table.insert(details, '- ' .. Locale.Lookup(service.Name));
-                        break;
-                    end
+                if not foundService then
+                    table.insert(details, Locale.Lookup('LOC_CSC_WONDER_SERVICES_PLOT_TOOLTIP_HEADER'));
+                    foundService = true;
                 end
+                table.insert(details, '- ' .. Locale.Lookup(service.Name));
             end
         end
     end

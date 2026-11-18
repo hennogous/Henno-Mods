@@ -69,8 +69,10 @@ def main():
         path = source_textures/(name+'.dds')
         return Image.open(path).convert('RGBA')
 
-    service_path = ROOT/'Civ Supply Chains/Textures/CSC_Lens_Service_BAKERS.dds'
-    service = Image.open(service_path).convert('RGBA')
+    service_path = ROOT/'Civ Supply Chains/Textures/CSC_Effect_Notifications_100.dds'
+    service = Image.new('RGBA', (128, 128))
+    with Image.open(service_path) as atlas:
+        service.alpha_composite(atlas.crop((0, 0, 100, 100)).convert('RGBA'), (14, 14))
     def glyph(size):
         return service.resize((size,size),Image.Resampling.LANCZOS)
     def base():

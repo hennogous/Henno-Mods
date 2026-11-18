@@ -6,6 +6,7 @@ import argparse
 import json
 import re
 import sqlite3
+import struct
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -52,7 +53,7 @@ def main():
     shared = sql(MOD / "Data/CSC_Q_ALL_Schema.sql")
     db.executescript(re.search(r"CREATE TABLE IF NOT EXISTS CSC_QuarterMaterialAdjacencyConfig.*?;", shared, re.S)[0])
     db.executescript(re.search(r"CREATE TABLE IF NOT EXISTS CSC_QuarterWonderSales.*?;", shared, re.S)[0])
-    for name in ("CSC_Stage3CustomerTransactions", "CSC_QuarterCustomerBuildings", "CSC_QuarterFlowBuildings", "CSC_AbilityAttachModifiers"):
+    for name in ("CSC_Stage3CustomerTransactions", "CSC_QuarterCustomerBuildings", "CSC_QuarterFlowBuildings", "CSC_AbilityAttachModifiers", "CSC_QuarterWonderServices"):
         db.executescript(re.search(r"CREATE TABLE IF NOT EXISTS " + name + r".*?;", shared, re.S)[0])
     for key in ("BAKERS", "TAILORS"):
         for statement in re.findall(r"INSERT (?:OR IGNORE )?INTO (?:TypeTags|CSC_QuarterMaterialAdjacencyConfig|CSC_QuarterWonderSales|CSC_Stage3CustomerTransactions|CSC_QuarterCustomerBuildings|CSC_QuarterFlowBuildings|CSC_AbilityAttachModifiers)\b.*?;",
@@ -63,7 +64,7 @@ def main():
     sys.path.insert(0, str(ROOT / "project/tools/transactions"))
     from population_catalogue_fixture import compile_catalogue
     catalogue = compile_catalogue(lgd=True)
-    for name in ("CSC_QuarterWonderSales", "CSC_Stage3CustomerTransactions",
+    for name in ("CSC_QuarterWonderSales", "CSC_QuarterWonderServices", "CSC_Stage3CustomerTransactions",
                  "CSC_QuarterCustomerBuildings", "CSC_QuarterFlowBuildings"):
         rows = catalogue.execute("SELECT * FROM " + name).fetchall()
         db.execute("DELETE FROM " + name)
@@ -96,6 +97,16 @@ def main():
         db.executescript(statement)
     processor = sql(MOD / "Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql")
     db.executescript(re.search(r"INSERT OR IGNORE INTO TypeTags\b.*?;", processor, re.S)[0])
+    city_lights = sqlite3.connect(":memory:")
+    city_lights.row_factory = sqlite3.Row
+    city_lights.executescript("""CREATE TABLE TypeTags(Type TEXT, Tag TEXT, PRIMARY KEY(Type,Tag));
+        CREATE TABLE CSC_AdjacencyObjects(CustomAdjacentObject TEXT PRIMARY KEY, Name TEXT, ArtdefOverlayEntry TEXT);""")
+    for statement in re.findall(r"INSERT OR IGNORE INTO TypeTags\b.*?;", sql(MOD / "ModSupport/ModSupport_CL.sql"), re.S):
+        city_lights.executescript(statement)
+    for statement in re.findall(r"INSERT OR IGNORE INTO CSC_AdjacencyObjects\b.*?;", processor, re.S):
+        city_lights.executescript(statement)
+    goods_tags = [dict(row) for row in city_lights.execute("SELECT * FROM TypeTags WHERE Tag LIKE '%_GOODS_PROVIDER'")]
+    goods_objects = [dict(row) for row in city_lights.execute("SELECT * FROM CSC_AdjacencyObjects WHERE CustomAdjacentObject LIKE '%_GOODS_PROVIDER'")]
     db.executescript((LENSES / "CSC_Lens_Colors.sql").read_text(encoding="utf-8-sig"))
     db.executescript((LENSES / "CSC_Lens_Text.sql").read_text(encoding="utf-8-sig"))
     # Native colour buckets use packed RGBA, so equal colours across readiness
@@ -115,11 +126,16 @@ def main():
     wonder_rows.append({"BuildingType": "BUILDING_UNMAPPED_WONDER", "Index": len(wonder_rows), "IsWonder": True})
     customer_types = {row[0] for row in db.execute("SELECT BuildingType FROM CSC_QuarterCustomerBuildings UNION SELECT CustomerBuildingType FROM CSC_Stage3CustomerTransactions UNION SELECT SellerBuildingType FROM CSC_Stage3CustomerTransactions UNION SELECT BuildingType FROM CSC_QuarterFlowBuildings UNION SELECT CivUniqueBuildingType FROM BuildingReplaces")}
     customer_types.update({'BUILDING_CSC_BAKERS_RIVER_ACCESS', 'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'})
+    customer_types.update(row[0] for row in db.execute("SELECT AbilityIconTarget FROM CSC_AbilityAttachModifiers WHERE AbilityIconTarget LIKE '%_SERVICE%'") if row[0])
     buildings = wonder_rows + [{"BuildingType": name, "Index": i + len(wonder_rows), "IsWonder": False} for i, name in enumerate(sorted(customer_types))]
     service_source = (MOD / "Lua_UI/WonderServices/CSC_WonderServicePlacement.lua").read_text()
-    assert {row[0] for row in db.execute("SELECT BuildingType FROM CSC_QuarterWonderSales WHERE QuarterKey='TAILORS'")} == set(re.findall(r'HostType\s*=\s*"([^"]+)"', service_source))
+    # Placement reads the authored registry; hosts are no longer Lua literals.
+    assert "GameInfo.CSC_QuarterWonderServices()" in service_source
+    assert {row[0] for row in db.execute("SELECT BuildingType FROM CSC_QuarterWonderSales WHERE QuarterKey='TAILORS'")} == {
+        row[0] for row in db.execute("SELECT HostType FROM CSC_QuarterWonderServices")
+    }
 
-    def runtime():
+    def runtime(with_city_lights=False):
         lua = LuaRuntime(unpack_returned_tuples=True)
         lua.execute((ROOT / "project/tests/adjacencies/world.lua").read_text(encoding="utf-8"))
         # Remove permissive missing-table behavior to match native GameInfo.
@@ -131,8 +147,14 @@ def main():
                 for _,p in ipairs(world) do p.wonder=-1; p.complete=false end
             end
         ''')
+        districts_for_run = district_rows[:]
+        tags_for_run = [dict(row) for row in db.execute("SELECT * FROM TypeTags")]
+        if with_city_lights:
+            for name in sorted({row['Type'] for row in goods_tags}):
+                districts_for_run.append({'DistrictType': name, 'Index': len(districts_for_run)})
+            tags_for_run.extend(goods_tags)
         for name, rows in (
-            ("Resources", resources), ("Districts", district_rows),
+            ("Resources", resources), ("Districts", districts_for_run),
             ("Buildings", buildings),
             ("DistrictReplaces", [dict(row) for row in db.execute("SELECT * FROM DistrictReplaces")]),
             ("BuildingReplaces", [dict(row) for row in db.execute("SELECT * FROM BuildingReplaces")]),
@@ -142,7 +164,8 @@ def main():
             ("CSC_LensFlowYieldColors", [dict(row) for row in db.execute("SELECT * FROM CSC_LensFlowYieldColors")]),
             ("CSC_LensQuarterColors", [dict(row) for row in db.execute("SELECT * FROM CSC_LensQuarterColors")]),
             ("CSC_Stage3CustomerTransactions", [dict(row) for row in db.execute("SELECT * FROM CSC_Stage3CustomerTransactions")]),
-            ("TypeTags", [dict(row) for row in db.execute("SELECT * FROM TypeTags")]),
+            ("TypeTags", tags_for_run),
+            ("CSC_AdjacencyObjects", goods_objects),
             ("CSC_QuarterWonderSales", [dict(row) for row in db.execute("SELECT * FROM CSC_QuarterWonderSales")]),
             ("CSC_QuarterMaterialAdjacencyConfig", [dict(row) for row in db.execute("SELECT * FROM CSC_QuarterMaterialAdjacencyConfig")]),
         ):
@@ -159,15 +182,16 @@ def main():
             outlines={}; missingTint=true -- Existing suites also cover older cooked-art fallback.
             function GetTestOverlay(name)
                 if missingArt then return nil end
+                local isTint=name:match('_Tint$') or name:match('Shade$')
                 if missingTint and name:match('_Tint$') then return nil end
                 if missingFill and name:match('_Fill$') then return nil end
                 if missingLegacy and name=='CSC_QuarterPlacement' then return nil end
                 if not outlines[name] then outlines[name]={channels={},colors={},styles={},visible=false,
                     ClearPlotChannel=function(self) assert(not name:match('_Ready$')); self.channels={} end,
-                    ClearAll=function(self) assert(name:match('_Ready$') or name:match('_Fill$') or name:match('_Tint$') or name:match('_Services$')); self.channels={}; self.styles={}; self.tints={}; self.clears=(self.clears or 0)+1 end,
+                    ClearAll=function(self) assert(name:match('_Ready$') or name:match('_Fill$') or isTint or name:match('_Services$')); self.channels={}; self.styles={}; self.tints={}; self.clears=(self.clears or 0)+1 end,
                     CreateSprites=function(self,plots,style,channel) assert(name:match('_Ready$') or name:match('_Fill$') or name:match('_Services$')); self.channels[channel]=plots; self.styles[channel]=style; self.creates=(self.creates or 0)+1 end,
-                    HighlightColoredHexes=function(self,plots,color,channel) assert(name:match('_Tint$') and channel==0); self.tints[color]=plots; self.creates=(self.creates or 0)+1 end,
-                    SetChannelOn=function(self,ch) assert(name:match('_Tint$') and ch==0); self.enabledChannel=ch end,
+                    HighlightColoredHexes=function(self,plots,color,channel) assert(isTint and channel==0); self.tints[color]=plots; self.creates=(self.creates or 0)+1 end,
+                    SetChannelOn=function(self,ch) assert(isTint and ch==0); self.enabledChannel=ch end,
                     ResetAllWaves=function(self) assert(name:match('_Flow$')); self.waves={}; self.resets=(self.resets or 0)+1 end,
                     CreateLinearWaves=function(self,waves) assert(name:match('_Flow$')); self.waves=waves; self.creates=(self.creates or 0)+1 end,
                     SetVisible=function(self,v) self.visible=v; self.visibilityCalls=(self.visibilityCalls or 0)+1 end,
@@ -294,6 +318,35 @@ def main():
     assert all(file in contents for file in chooser["files"])
     imports = next(row for row in source["blocks"]["inGameActions"] if "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua" in row.get("files", []))
     assert "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua" in imports["files"]
+    overlays = next(row for row in source["blocks"]["inGameActions"] if "Lua_UI/Lenses/CSC_QuarterTooltip.lua" in row.get("files", []))
+    tooltip = "Lua_UI/Lenses/CSC_QuarterTooltip.lua"
+    assert tooltip in overlays["files"] and tooltip in contents and (MOD / tooltip).is_file()
+    assert not any("CSC_ServicePinGlyph" in path or "CSC_QuarterLensFace_" in path for path in contents)
+    for name in ("CSC_ServiceFocusExtension.dds", "CSC_QuarterLensClose.dds"):
+        assert f"Textures/{name}" not in overlays["files"] and f"Textures/{name}" not in contents
+    textures = ("CSC_ServiceMedallion.dds", "CSC_ServiceMedallionGray.dds",
+                "CSC_QuarterLensBacking.dds", "CSC_QuarterLensBackingGray.dds")
+    for name in textures:
+        path = f"Textures/{name}"
+        assert path in overlays["files"] and path in contents and (MOD/path).is_file()
+        data = (MOD / path).read_bytes()
+        assert data[:4] == b"DDS " and struct.unpack_from("<II", data, 12) == (256, 256), name
+        assert struct.unpack_from("<I", data, 28)[0] == 9, name
+        assert len(data) == 128 + 4 * sum((256 >> level) ** 2 for level in range(9)), name
+    for quarter in ("BAKERS", "TAILORS"):
+        atlas = f"CSC_{quarter}_256"
+        data = (MOD / f"Textures/{atlas}.dds").read_bytes()
+        assert data[:4] == b"DDS " and struct.unpack_from("<II", data, 12) == (1024, 1024), atlas
+        assert struct.unpack_from("<I", data, 28)[0] == 11, atlas
+        assert len(data) == 128 + 4 * sum((1024 >> level) ** 2 for level in range(11)), atlas
+        assert ET.parse(MOD / f"Textures/{atlas}.tex").findtext("m_NumMipMaps") == "10", atlas
+        definitions = (MOD / f"Icons/CSC_{quarter}_ICONS.sql").read_text(encoding="utf-8-sig")
+        slots = dict(re.findall(rf"'(ICON_\w+)',\s*'ICON_ATLAS_CSC_{quarter}',\s*(\d+)", definitions))
+        assert slots[f"ICON_DISTRICT_CSC_{quarter}_QUARTER"] == "0"
+        assert slots[f"ICON_DISTRICT_CSC_{quarter}_QUARTER_GRAY"] == "2"
+        if quarter == "BAKERS":
+            assert slots["ICON_BUILDING_CSC_BAKERS_RIVER_ACCESS"] == "14"
+            assert slots["ICON_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS"] == "15"
     assert not imports.get("criteria")
     assert not any("ModLens_CSC_Quarters.lua" in path for path in contents)
     assert not any(row.get("properties",{}).get("LuaContext") in ("MinimapPanel", "ModalLensPanel") for row in source["blocks"]["inGameActions"])
@@ -328,7 +381,7 @@ def main():
         test_placement(args.game, tint_runtime, colors)
         if args.more_lenses:
             test_placement(args.game, tint_runtime, colors, args.more_lenses, True)
-    test_supply_chain_flows(runtime, args.game)
+    test_supply_chain_flows(lambda: runtime(with_city_lights=True), args.game)
     if args.gameplay_database:
         runtime_db = sqlite3.connect(args.gameplay_database.resolve().as_uri() + "?mode=ro", uri=True)
         schema = runtime_db.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name='Colors'").fetchone()[0]
@@ -336,15 +389,18 @@ def main():
         fixture.executescript(schema)
         fixture.executescript((LENSES / "CSC_Lens_Colors.sql").read_text(encoding="utf-8-sig"))
         rows = fixture.execute("SELECT Type, Red, Green, Blue, Alpha FROM Colors WHERE Type LIKE 'COLOR_CSC_LENS_%'").fetchall()
-        assert len(rows) == 48
+        assert len(rows) == 52
         assert all(all(channel is not None and 0 <= channel <= 1 for channel in row[1:]) for row in rows)
         palette = {row[0]: row[1:] for row in rows}
+        assert palette['COLOR_CSC_LENS_BACKGROUND_SHADE'][:3] == (0,0,0)
         for kind in ('BASE', 'SPEC'):
             faint, ready, edge = (palette[f'COLOR_CSC_LENS_{kind}_{suffix}'] for suffix in ('UNIMPROVED', 'IMPROVED', 'OUTLINE'))
             assert faint[:3] == ready[:3] and faint[3] == (0.30 if kind=='BASE' else 0.20) and ready[3] == 0.60
             assert edge[3] == 1 and edge[:3] == ready[:3]
         assert palette['COLOR_CSC_LENS_SALE_UNREADY'][3] == 0.20
         assert palette['COLOR_CSC_LENS_SALE_DISTRICT'][3] == 0.60
+        assert palette['COLOR_CSC_LENS_GOODS_UNREADY'][3] == 0.20
+        assert palette['COLOR_CSC_LENS_GOODS'][3] == 0.60
         for kind in ('QUARTER','BASE','SPEC','SALE'):
             assert palette[f'COLOR_CSC_LENS_LEGEND_{kind}'][3] == 1
         assert palette['COLOR_CSC_LENS_QUARTER'][:3] == (1.0, 1.0, 1.0)
@@ -353,7 +409,8 @@ def main():
         assert palette['COLOR_CSC_LENS_QUARTER_OUTLINE'] == (1,1,1,1)
         def rgb_hex(name):
             return ''.join(f'{round(v*255):02x}' for v in palette[name][:3])
-        for kind, value in {'BASE':'7a3700','SPEC':'ea8706','SALE':'b6a835'}.items():
+        assert rgb_hex('COLOR_CSC_LENS_GOODS_OUTLINE') == '999999'
+        for kind, value in {'BASE':'813a00','SPEC':'ea8706','SALE':'b6a835'}.items():
             assert rgb_hex(f'COLOR_CSC_LENS_{kind}_OUTLINE') == value
             assert rgb_hex(f'COLOR_CSC_LENS_LEGEND_{kind}') == value
         quarters = {'BAKERS':'5f821c','TAILORS':'9037aa','APOTHECARIES':'0e54a9',
@@ -489,19 +546,22 @@ def test_ready_styling(runtime, colors):
             else assert(not fill.visible and next(fill.channels)==nil) end
             do
                 local textured=outlines['CSC_Quarter'..owner..'_Fill']
+                local faint=owner=='Lens' and '_Unready' or '_Faint'
+                local solid=owner=='Lens' and '_Ready' or '_Dim'
                 assert(textured.visible and table.count(textured.channels)==5)
-                assert(textured.styles[0]=='CSC_Lens_Fill_BASE_Unready' and textured.channels[0][1]==2)
-                assert(textured.styles[1]=='CSC_Lens_Fill_BASE_Ready' and textured.channels[1][1]==0)
-                assert(textured.styles[2]=='CSC_Lens_Fill_SPEC_Ready' and textured.channels[2][1]==1)
-                assert(textured.styles[3]=='CSC_Lens_Fill_SALE_Unready' and textured.channels[3][1]==3)
-                assert(textured.styles[4]=='CSC_Lens_Fill_SALE_Ready' and textured.channels[4][1]==4)
+                assert(textured.styles[0]=='CSC_Lens_Fill_BASE'..faint and textured.channels[0][1]==2)
+                assert(textured.styles[1]=='CSC_Lens_Fill_BASE'..solid and textured.channels[1][1]==0)
+                assert(textured.styles[2]=='CSC_Lens_Fill_SPEC'..solid and textured.channels[2][1]==1)
+                assert(textured.styles[3]=='CSC_Lens_Fill_SALE'..faint and textured.channels[3][1]==3)
+                assert(textured.styles[4]=='CSC_Lens_Fill_SALE'..solid and textured.channels[4][1]==4)
             end
+            local edge=owner=='Lens' and 'CSC_Lens_Ready_' or 'CSC_Lens_Dim_'
             assert(pattern.visible and table.count(pattern.channels)==3)
             assert(pattern.styleCount==nil and pattern.borderColors==nil)
-            assert(pattern.channels[0][1]==0 and pattern.styles[0]=='CSC_Lens_Ready_BASE')
+            assert(pattern.channels[0][1]==0 and pattern.styles[0]==edge..'BASE')
             assert(pattern.channels[0][2]==2) -- Pillaged resource keeps its edge.
-            assert(pattern.channels[1][1]==1 and pattern.styles[1]=='CSC_Lens_Ready_SPEC')
-            assert(pattern.channels[2][1]==3 and pattern.channels[2][2]==4 and pattern.styles[2]=='CSC_Lens_Ready_SALE')
+            assert(pattern.channels[1][1]==1 and pattern.styles[1]==edge..'SPEC')
+            assert(pattern.channels[2][1]==3 and pattern.channels[2][2]==4 and pattern.styles[2]==edge..'SALE')
             assert(entries[3].ready==false and entries[4].ready==false)
             assert(entries[1].ready and entries[2].ready and entries[5].ready)
             assert(entries[4].color==UI.GetColorValue('COLOR_CSC_LENS_SALE_UNREADY'))
@@ -529,14 +589,19 @@ def test_ready_styling(runtime, colors):
     layers = next(row for row in art.findall('m_RootCollections/Element') if row.find('m_CollectionName').get('text')=='Layers')
     assert {row.find('m_Name').get('text') for row in layers.findall('Element')} == {
         'CSC_Quarter'+owner+suffix for owner in ('Lens','Placement')
-        for suffix in ('','_Ready','_Flow','_Fill','_Tint','_Services','_FlowChevrons','_FlowTrade','_FlowConveyorWaves')}
+        for suffix in ('','_Ready','_Fill','_Tint')} | {
+        'CSC_QuarterLens'+suffix for suffix in ('_Flow','_FlowChevrons','_FlowTrade','_FlowConveyorWaves',
+                                              '_Shade')}
     for row in layers.findall('Element'):
         if row.find('m_Name').get('text').endswith(('_Ready','_Fill')):
             params = {x.find('m_ParamName').get('text'):x for x in row.findall('m_Fields/m_Values/Element')}
             assert params['Type'].find('m_Value').get('text') == 'SpriteOverlay'
             assert params['Material'].find('m_Value').get('text') == ''
-            assert params['Priority'].find('m_fValue').text == '0'
-    for kind in ('BASE','SPEC','SALE','QUARTER'):
+            name = row.find('m_Name').get('text')
+            priority = 16 if name == 'CSC_QuarterLens_Ready' else 15 if name == 'CSC_QuarterLens_Fill' else 0
+            assert int(params['Priority'].find('m_fValue').text) == priority
+            assert params['Pass'].find('m_nValue').text == '0'
+    for kind in ('BASE','SPEC','SALE','QUARTER','GOODS'):
         sprite = next(row for row in art.findall('.//m_ChildCollections/Element/Element')
                       if row.find('m_Name').get('text') == 'CSC_Lens_Ready_' + kind)
         fields = {row.find('m_ParamName').get('text'):row for row in sprite.findall('m_Fields/m_Values/Element')}
@@ -549,14 +614,17 @@ def test_ready_styling(runtime, colors):
     assert mask.size == (512,512) and mask.getpixel((256,256)) == 0
     assert mask.getpixel((40,256)) == 255 and mask.getpixel((10,256)) == 0
     assert 0.05 < sum(v*count for v,count in enumerate(mask.histogram()))/(255*512*512) < 0.15
+    for state, alpha in (('Dim',102),('Faint',76)):
+        edge = Image.open(MOD/f'Textures/CSC_Lens_HexOutline{state}.dds').getchannel('A')
+        assert edge.getpixel((40,256)) == alpha and edge.getpixel((256,256)) == 0
     # Opacity is part of the DDS, independent of Appeal's forced alpha. Both
     # readiness masks use the same geometry and stay clear of the bright edge.
-    for state, alpha in (('Unready',51),('Ready',153),('BaseUnready',round(.30*255))):
+    for state, alpha in (('Unready',51),('Ready',153),('BaseUnready',round(.30*255)),('FocusReady',77),('FocusUnready',26)):
         fill = Image.open(MOD/f'Textures/CSC_Lens_HexFill_{state}.dds')
         assert fill.getpixel((256,256)) == (255,255,255,alpha)
         assert fill.getpixel((40,256))[3] == 0 and fill.getpixel((10,256))[3] == 0
         if state == 'BaseUnready': continue
-        for kind, suffix in {'BASE':'BASE_IMPROVED','SPEC':'SPEC_IMPROVED','SALE':'SALE_DISTRICT','QUARTER':'QUARTER'}.items():
+        for kind, suffix in {'BASE':'BASE_IMPROVED','SPEC':'SPEC_IMPROVED','SALE':'SALE_DISTRICT','QUARTER':'QUARTER','GOODS':'GOODS'}.items():
             style = next(row for row in art.findall('.//m_ChildCollections/Element/Element')
                          if row.find('m_Name').get('text') == f'CSC_Lens_Fill_{kind}_{state}')
             fields = {row.find('m_ParamName').get('text'):row for row in style.findall('m_Fields/m_Values/Element')}
@@ -567,6 +635,8 @@ def test_ready_styling(runtime, colors):
             assert tuple(int(fields['TintColor'].find('m_'+c).text) for c in ('r','g','b')) == tuple((expected>>s)&255 for s in (0,8,16))
     panel = ET.parse(LENSES/'CSC_SupplyChainsLensPanel.xml')
     assert not panel.findall(".//*[@ID='LegendTint']")
+    legend = panel.find(".//Grid[@ID='LegendPanel']")
+    assert legend.find("./Stack[@ID='LegendStack']") is not None and legend.find(".//ScrollPanel") is None
     lua.execute("""
         missingArt=false
         resetWorld(2,1)
@@ -684,9 +754,13 @@ def test_direct_rgba(runtime, colors):
             assert(ok and stats.tintAvailable and stats.tintPlots==4 and stats.tintRebuilt)
             local tint=outlines['CSC_Quarter'..owner..'_Tint']
             assert(tint.visible and tint.enabledChannel==0)
-            assert(tint.tints[UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED')][1]==0)
-            assert(tint.tints[UI.GetColorValue('COLOR_CSC_LENS_BASE_UNIMPROVED')][1]==1)
-            assert(tint.tints[UI.GetColorValue('COLOR_CSC_LENS_SPEC_IMPROVED')][1]==2)
+            local function color(name, placementAlpha)
+                local rgba=UI.GetColorValue(name)
+                return owner=='Lens' and rgba or rgba%0x1000000+placementAlpha*0x1000000
+            end
+            assert(tint.tints[color('COLOR_CSC_LENS_BASE_IMPROVED',102)][1]==0)
+            assert(tint.tints[color('COLOR_CSC_LENS_BASE_UNIMPROVED',51)][1]==1)
+            assert(tint.tints[color('COLOR_CSC_LENS_SPEC_IMPROVED',102)][1]==2)
             assert(tint.tints[UI.GetColorValue('COLOR_CSC_LENS_SALE_UNREADY')][1]==3)
             assert(not outlines['CSC_Quarter'..owner..'_Fill'].visible)
             assert(outlines['CSC_Quarter'..owner..'_Ready'].visible)
@@ -714,12 +788,13 @@ def test_direct_rgba(runtime, colors):
         assert(not fallback.tintAvailable and outlines.CSC_QuarterPlacement_Fill.visible)
     """)
     art=ET.parse(MOD/'ArtDefs/CSC_QuarterResourceBorders.artdef')
-    for owner in ('Lens','Placement'):
-        layer=next(e for e in art.findall('m_RootCollections/Element/Element') if e.find('m_Name').get('text')==f'CSC_Quarter{owner}_Tint')
+    for name, priority in (('Lens_Tint',15),('Placement_Tint',15),('Lens_Shade',14)):
+        layer=next(e for e in art.findall('m_RootCollections/Element/Element') if e.find('m_Name').get('text')==f'CSC_Quarter{name}')
         params={e.find('m_ParamName').get('text'):e for e in layer.findall('m_Fields/m_Values/Element')}
         assert params['Type'].find('m_Value').get('text')=='HexHighlightOverlay'
         assert params['Material'].find('m_Value').get('text')==''
         assert params['Pass'].find('m_nValue').text=='0'
+        assert int(params['Priority'].find('m_fValue').text)==priority
     print('Passed direct RGBA fills: both native owners, separate 20/60 alpha buckets, channel 0 enabled, unchanged assignment cache, pillage, independent exits and old-art sprite fallback.')
 
 
@@ -876,6 +951,9 @@ def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
             if moreMini then assert(moreMini.m_CurrentModdedLensOn==nil and morePaints==0 and #moreDiagnostics==0) end
             for _,call in ipairs(log) do assert(call=='clear:Map_Hex_Mask',call) end
         end
+        function PlacementColor(name, alpha)
+            return UI.GetColorValue(name)%0x1000000+alpha*0x1000000
+        end
         function PlacementPlots(color)
             local result={}
             local tint=outlines.CSC_QuarterPlacement_Tint
@@ -884,8 +962,9 @@ def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
             local colors={BASE={'BASE_UNIMPROVED','BASE_IMPROVED'},SPEC={'SPEC_UNIMPROVED','SPEC_IMPROVED'},SALE={'SALE_UNREADY','SALE_DISTRICT'},QUARTER={'QUARTER_EMPTY','QUARTER'}}
             for channel,plots in pairs(overlay.channels) do
                 local kind,state=overlay.styles[channel]:match('CSC_Lens_Fill_([%u_]+)_(%a+)$')
-                local suffix=colors[kind] and colors[kind][state=='Ready' and 2 or 1] or kind..(state=='Ready' and '' or '_EMPTY')
-                if UI.GetColorValue('COLOR_CSC_LENS_'..suffix)==color then
+                local ready=state=='Dim'
+                local suffix=colors[kind] and colors[kind][ready and 2 or 1] or kind..(ready and '' or '_EMPTY')
+                if PlacementColor('COLOR_CSC_LENS_'..suffix,ready and 102 or 51)==color then
                     for _,index in ipairs(plots) do result[#result+1]=index end
                 end
             end
@@ -909,8 +988,8 @@ def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
         assert(OutlineContains('Placement',1))
         assert(OutlineContains('Placement',2)) -- Harbor uses the faint fill without a customer building.
         assert(outlines.CSC_QuarterPlacement_Improved==nil)
-        assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))[1]==1)
-        assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_UNREADY'))[1]==2)
+        assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_BASE_IMPROVED',102))[1]==1)
+        assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_SALE_UNREADY',51))[1]==2)
         CheckPlacementIsolation()
         -- Relevant sites remain visible in the selected city and all other
         -- territories, across every category and after city/tile ownership swaps.
@@ -930,11 +1009,11 @@ def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
             world[4].purchaseCity=foreignCity
             focusedCity=firstCity
             LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-            assert(#PlacementPlots(UI.GetColorValue(quarter.quarterColor))==0)
-            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))[1]==1)
-            assert(PlacementPlots(UI.GetColorValue(quarter.quarterEmptyColor))[1]==0)
-            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_UNREADY'))[1]==2 and OutlineContains('Placement',2))
-            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SPEC_IMPROVED'))[1]==3)
+            assert(#PlacementPlots(PlacementColor(quarter.quarterColor,102))==0)
+            assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_BASE_IMPROVED',102))[1]==1)
+            assert(PlacementPlots(PlacementColor(quarter.quarterEmptyColor,51))[1]==0)
+            assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_SALE_UNREADY',51))[1]==2 and OutlineContains('Placement',2))
+            assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_SPEC_IMPROVED',102))[1]==3)
             assert(#areas.Map_Hex_Mask==4)
             assert(areas.Map_Hex_Mask[1]==0)
             local manualCount=0
@@ -942,16 +1021,16 @@ def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
             assert(manualCount==4) -- Manual lens still includes this city's materials/districts.
             world[4].purchaseCity=nil -- Unclaimed material remains highlighted.
             LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SPEC_IMPROVED'))[1]==3)
+            assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_SPEC_IMPROVED',102))[1]==3)
             focusedCity=secondCity -- Changing focus must not hide that city's customers.
             LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_UNREADY'))[1]==2)
-            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))[1]==1)
-            assert(PlacementPlots(UI.GetColorValue(quarter.quarterEmptyColor))[1]==0)
+            assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_SALE_UNREADY',51))[1]==2)
+            assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_BASE_IMPROVED',102))[1]==1)
+            assert(PlacementPlots(PlacementColor(quarter.quarterEmptyColor,51))[1]==0)
             assert(#areas.Map_Hex_Mask==4)
             world[2].purchaseCity=secondCity -- A tile swap must not hide its materials.
             LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))[1]==1)
+            assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_BASE_IMPROVED',102))[1]==1)
             focusedCity=firstCity
             for _,plot in ipairs(world) do plot.purchaseCity=firstCity end
             LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
@@ -972,8 +1051,8 @@ def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
         world[4].wonder=GameInfo.Buildings.BUILDING_BROADWAY.Index; world[4].complete=true
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
         assert(#areas.Map_Hex_Mask==4)
-        assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_UNREADY'))[1]==2)
-        assert(#PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_DISTRICT'))==1) -- Only the Wonder has a fill.
+        assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_SALE_UNREADY',51))[1]==2)
+        assert(#PlacementPlots(PlacementColor('COLOR_CSC_LENS_SALE_DISTRICT',102))==1) -- Only the Wonder has a fill.
         assert(OutlineContains('Placement',2) and OutlineContains('Placement',3))
         local lighthouse=GameInfo.Buildings.BUILDING_LIGHTHOUSE.Index
         world[3].purchaseCity={
@@ -991,7 +1070,7 @@ def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
         world[4].complete=false; world[2].pillaged=true
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
         assert(#areas.Map_Hex_Mask==3)
-        assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_UNIMPROVED'))[1]==1)
+        assert(PlacementPlots(PlacementColor('COLOR_CSC_LENS_BASE_UNIMPROVED',51))[1]==1)
         assert(OutlineContains('Placement',1))
         assert(fill.visible and outlines.CSC_QuarterPlacement_Ready.visible)
         chosen=GameInfo.Districts.DISTRICT_CAMPUS.Index

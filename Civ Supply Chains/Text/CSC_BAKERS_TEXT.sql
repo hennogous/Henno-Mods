@@ -158,12 +158,6 @@ CREATE TEMP TABLE BAKERS_RESOURCES (
     ResourceCategory TEXT
 );
 
-CREATE TEMP TABLE BAKERS_SALES_DISTRICTS (
-    DistrictType TEXT,
-    NameTag TEXT,
-    SortIndex INTEGER
-);
-
 INSERT INTO BAKERS_RESOURCES
         (   ResourceName,          ResourceCategory   )
 VALUES
@@ -184,13 +178,6 @@ VALUES
         (   'RESOURCE_SPICES',     'CLASS_CSC_BAKERS_SPEC'   ),
         (   'RESOURCE_SUGAR',      'CLASS_CSC_BAKERS_SPEC'   ),
         (   'RESOURCE_TEA',        'CLASS_CSC_BAKERS_SPEC'   );
-
-INSERT INTO BAKERS_SALES_DISTRICTS
-        (   DistrictType,                             NameTag,                                           SortIndex   )
-VALUES  (   'DISTRICT_CITY_CENTER',                   'LOC_DISTRICT_CITY_CENTER_NAME',                   10   ),
-        (   'DISTRICT_COMMERCIAL_HUB',                'LOC_DISTRICT_COMMERCIAL_HUB_NAME',                20   ),
-        (   'DISTRICT_ENTERTAINMENT_COMPLEX',         'LOC_DISTRICT_ENTERTAINMENT_COMPLEX_NAME',         30   ),
-        (   'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',   'LOC_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_NAME',   40   );
 
 -- Raw SQL 2
 INSERT OR REPLACE INTO LocalizedText
@@ -214,24 +201,6 @@ FROM
 GROUP BY
     ResourceCategory;
 
--- Raw SQL 3
-INSERT OR REPLACE INTO LocalizedText
-        (   Language,   Tag,                                                                              Text   )
-VALUES  (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCGOODS_PARA_1',   ''   );
-
--- Raw SQL 4
-INSERT OR REPLACE INTO LocalizedText
-        (   Language,   Tag,   Text   )
-SELECT
-    'en_US',
-    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_PARA_1',
-    '[ICON_BULLET]' || GROUP_CONCAT('[ICON_' || DistrictType || '] {' || NameTag || '}', ' [NEWLINE][ICON_BULLET]')
-FROM (
-    SELECT DistrictType, NameTag
-    FROM BAKERS_SALES_DISTRICTS
-    ORDER BY SortIndex
-);
-
 -- Raw SQL 5
 INSERT OR REPLACE INTO LocalizedText
         (   Language,   Tag,   Text   )
@@ -249,7 +218,6 @@ FROM BAKERS_RESOURCES;
 
 -- Raw SQL 6
 DROP TABLE BAKERS_RESOURCES;
-DROP TABLE BAKERS_SALES_DISTRICTS;
 
 -- Raw SQL 7
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

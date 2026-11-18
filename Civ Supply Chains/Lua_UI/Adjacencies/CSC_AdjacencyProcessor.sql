@@ -396,7 +396,7 @@ VALUES
         (   'CLASS_CSC_BAKERS_SPEC',             'LOC_CLASS_CSC_SPEC_NAME',                'CSC_Spec_Materials'   ),
         (   'CLASS_CSC_BAKERS_SALES',            'LOC_CLASS_CSC_SALES_NAME',               'CSC_Sales'   ),
         (   'DISTRICT_CSC_BAKERS_QUARTER',       'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',   'CSC_Goods'   ),
-        (   'CLASS_CSC_BAKERS_GOODS_PROVIDER',   'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',      'CSC_Goods_Provider'   );
+        (   'CLASS_CSC_BAKERS_GOODS_PROVIDER',   'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',      'CSC_Goods'   );
 
 INSERT OR IGNORE INTO CSC_AdjacencyObjects
         (   CustomAdjacentObject,                 Name,                                      ArtdefOverlayEntry   )
@@ -404,4 +404,4 @@ VALUES  (   'CLASS_CSC_TAILORS_BASE',             'LOC_CLASS_CSC_BASE_NAME',    
         (   'CLASS_CSC_TAILORS_SPEC',             'LOC_CLASS_CSC_SPEC_NAME',                 'CSC_Spec_Materials'   ),
         (   'CLASS_CSC_TAILORS_SALES',            'LOC_CLASS_CSC_SALES_NAME',                'CSC_Sales'   ),
         (   'DISTRICT_CSC_TAILORS_QUARTER',       'LOC_DISTRICT_CSC_TAILORS_QUARTER_NAME',   'CSC_Goods'   ),
-        (   'CLASS_CSC_TAILORS_GOODS_PROVIDER',   'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',       'CSC_Goods_Provider'   );
+        (   'CLASS_CSC_TAILORS_GOODS_PROVIDER',   'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',       'CSC_Goods'   );

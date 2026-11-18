@@ -120,3 +120,78 @@ Lua/text plus removal of the loader from the existing manifest (no art rebuild).
 Focused placement text and manifest/localization checks pass. Workspace-wide
 diff whitespace check reports unrelated existing art/SQL whitespace; scoped
 checks are used for this change.
+
+9 November 2026, Detailed Map Tacks source review. Workshop 2428969051's
+calculator already resolves adjacent tacks into projected plot features, but its
+modifier allowlist omits the effect used by CSC SelfBonus. An optional calculator
+wrapper can add CSC SelfBonus rows for all affected district tacks using the
+bundled evaluator with a hypothetical plot/ownership reader. Keep future local
+Mill choices separate from the ordinary district total. DMT has no public yield
+provider hook in the inspected build. Conditional replacement of only its
+calculator context is a proposed integration and needs in-game verification.
+Building and Service forecasts require explicit assumptions beyond district tacks.
+
+9 November implementation and native test. CSC conditionally wraps the Steam
+calculator by context and imports the original DMT Lua. FireTuner exercised
+actual DMT pin events and a native Wheat purchase. Five before/after district
+yield comparisons passed for Bakers, Tailors and Commercial Hub, including
+ordinary Hub Gold. Both future Mill options were shown separately, and a built
+Wind Mill raised forecast and native Production from two to three. CSC also
+started normally in a fresh game with DMT disabled. Test receipts are in
+`Desktop/Codex/csc-dmt-20261109/`. Henno reaffirmed the Shadow Computer Use
+restriction, now explicit in project AGENTS.md. Testing used FireTuner only.
+
+9 November screenshot audit. Reloaded the screenshot map's turn-one autosave.
+Cairo's City Center (plot 930) retained owned Flax, which supplies both Quarters.
+Bakers had two Production from Wheat and Flax, then one from Flax after the
+Campus consumed the Wheat. Tailors had three from Cotton, Flax and two river
+edges. Settled DMT forecasts and completed native districts agreed before and
+after. The earlier UI receipt predated synchronization of the fixture writes.
+See `Desktop/Codex/csc-dmt-20261109/screenshot-yield-audit.txt`.
+
+9 November DMT follow-up. Henno wants neutral tiles treated as future local
+holdings in the badge, with no claim preamble. DMT uses its own Mill tooltip
+format while CSC placement keeps its existing text. Preload the edited tack's
+projected features before checking its neighbors so the old tack does not
+trigger a false occupied-district warning. Focused checks using Workshop Lua
+passed for edits both ways, real blockers, material visibility, and both Mill
+lines. Three revised files were installed in CSC's local mod directory.
+
+9 November DMT Sales correction. Henno confirmed DMT's conventions govern the
+projection and CSC only adds its yields. The prior extra clearing and placement
+checks rejected a Holy Site tack on Olives that DMT accepted. CSC now reads the
+same projected tile features as DMT, with no placement checks, cache priming,
+or separate refresh listeners. Verified on Henno's live plan without changing
+the pins: Tailors at (20,24) receives +1 Gold and keeps +3 Production, and
+Bakers at (21,24) loses the Olives Production while keeping +2 Gold. Installed
+the updated CSC adapter on disk for the next game load.
+
+
+## 16 November 2026: native policy badge correction
+
+Henno supplied vanilla +2 Gold/+3 Production badges alongside 4 Gold/6 Production
+plot tooltips. Shipped badge code directly formats GetAdjacencyYield; old CSC
+comment claiming native policy percentages were included was incorrect. User
+requested accurate policy-adjusted badges including doubled CSC returns. Stock
+formatter now discovers direct policy adjacency effects and simple type gates,
+applies active receiving-player percentages to native base only, then adds CSC
+totals (already policy-adjusted). No gameplay change. Updated policy regression
+runs Lua 5.1 and covers all12 direct vanilla effects, native-only/unique districts,
+foreign policy, removal, mixed CSC/native and additive stacking:251cases PASS.
+Durable details: project/docs/integrations/csc-adjacencies.md. Source only; no
+rebuild/deployment/live confirmation. Existing unrelated WIP preserved.
+
+
+## 16 November 2026: Extended Policy Cards estimates
+
+User requested Quarter policy returns in EPC. Added optional
+CSC_PolicyCardEstimates.lua RMA context wrapper, conditional BRS ModId
+6f2888d4-79dc-415f-a8ff-f9d81d7afb53, LoadOrder12347. Original installed analyser
+and native estimates retained. Exact CSC attachment IDs use shared live forecast
+once per rule; other bit wrappers return zero, avoiding live policy/property
+gates on unslotted cards. Additional card yield only, not postdoubling total.
+RMA7.0 formatting omits Food0 with ipairs; numerical formatter probe handles
+Food for affected summaries without duplication on corrected versions.
+80Lua51 real-RMA aggregation/formatter fixtures + mixedGold/Food/Culture PASS;
+actions JSON roundtrip PASS. No Workshop edits/gameplay changes/runtime deploy.
+See durable csc-adjacencies.md. Existing WIP preserved.

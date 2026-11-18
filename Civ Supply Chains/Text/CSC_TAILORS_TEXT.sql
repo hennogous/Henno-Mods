@@ -68,9 +68,7 @@ VALUES  (   'en_US',    'LOC_DISTRICT_CSC_TAILORS_QUARTER_NAME',                
         (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCSPEC_TITLE',                     'Specialty Materials'   ),
         (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCSPEC_PARA_1',                    ''   ),
         (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCGOODS_TITLE',                    'Goods Providers'   ),
-        (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCGOODS_PARA_1',                   ''   ),
         (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCSALES_TITLE',                    'Sales Districts'   ),
-        (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCSALES_PARA_1',                   ''   ),
         (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_HISTORY_TITLE',                     'Historical Context'   ),
         (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_HISTORY_PARA_1',                    'Textile making was among the most widespread urban industries long before the factory age. Spinning, weaving, dyeing, fulling and finishing demanded distinct skills, tools, and dependable supplies of fibre, color, water and trade. In medieval and early modern towns these crafts often gathered around workshops, markets and waterfronts, where merchants could turn local materials into cloth that travelled much farther than the field or flock that supplied it. The Tailors'' Quarter represents that first concentration: a practical neighborhood of makers transforming raw material into a durable, valuable good.'   ),
         (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_HISTORY_PARA_2',                    'Fibres processed in a workshop become tailored consumer goods, then fashion and performance goods sold into the institutions where a city presents itself to its people and the wider world. And so, as the chain develops, cloth becomes more than a necessity: tailors serve religious ceremony, civic display, theaters and commerce; fine dyes, silk, silver and gold make dress a visible language of wealth, office and taste.'   ),
@@ -158,8 +156,6 @@ CREATE TEMP TABLE TAILORS_RESOURCES (
 
 CREATE TEMP TABLE TAILORS_SALES_DISTRICTS (
     DistrictType TEXT,
-    NameTag TEXT,
-    SortIndex INTEGER,
     Overview TEXT
 );
 
@@ -173,11 +169,11 @@ VALUES  (   'RESOURCE_COTTON',     'CLASS_CSC_TAILORS_BASE',   'Cotton'   ),
         (   'RESOURCE_SILVER',     'CLASS_CSC_TAILORS_SPEC',   'Silver'   );
 
 INSERT INTO TAILORS_SALES_DISTRICTS
-        (   DistrictType,                NameTag,                              SortIndex,   Overview   )
-VALUES  (   'DISTRICT_HARBOR',           'LOC_DISTRICT_HARBOR_NAME',           10,          'Bales of cloth move naturally through the Harbor, where dockside demand and overseas trade draw the work of nearby textile makers toward the waterfront.[NEWLINE][NEWLINE]An adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold, and the Harbor gains +1 [ICON_Production] Production in return.'   ),
-        (   'DISTRICT_COMMERCIAL_HUB',   'LOC_DISTRICT_COMMERCIAL_HUB_NAME',   20,          'The Commercial Hub brings staple provisions and finished cloth into the same busy exchange, giving bakers and tailors a common place to reach the city''s buyers.[NEWLINE][NEWLINE]An adjacent Bakers'' Quarter gains +1 [ICON_Gold] Gold and the Commercial Hub gains +1 [ICON_Food] Food in return; an adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold and the Commercial Hub gains +1 [ICON_Culture] Culture in return.'   ),
-        (   'DISTRICT_HOLY_SITE',        'LOC_DISTRICT_HOLY_SITE_NAME',        30,          'Vestments, hangings and ceremonial cloth tie the work of the Tailors'' Quarter to the ritual and visual life of the Holy Site.[NEWLINE][NEWLINE]An adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold, and the Holy Site gains +1 [ICON_Culture] Culture in return.'   ),
-        (   'DISTRICT_THEATER',          'LOC_DISTRICT_THEATER_NAME',          40,          'Costumes, drapery and fashionable display make the Tailors'' Quarter a natural partner to the stages and audiences of the Theater Square.[NEWLINE][NEWLINE]An adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold, and the Theater Square gains +1 [ICON_Culture] Culture in return.'   );
+        (   DistrictType,                Overview   )
+VALUES  (   'DISTRICT_HARBOR',           'Bales of cloth move naturally through the Harbor, where dockside demand and overseas trade draw the work of nearby textile makers toward the waterfront.[NEWLINE][NEWLINE]An adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold, and the Harbor gains +1 [ICON_Production] Production in return.'   ),
+        (   'DISTRICT_COMMERCIAL_HUB',   'The Commercial Hub brings staple provisions and finished cloth into the same busy exchange, giving bakers and tailors a common place to reach the city''s buyers.[NEWLINE][NEWLINE]An adjacent Bakers'' Quarter gains +1 [ICON_Gold] Gold and the Commercial Hub gains +1 [ICON_Food] Food in return; an adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold and the Commercial Hub gains +1 [ICON_Culture] Culture in return.'   ),
+        (   'DISTRICT_HOLY_SITE',        'Vestments, hangings and ceremonial cloth tie the work of the Tailors'' Quarter to the ritual and visual life of the Holy Site.[NEWLINE][NEWLINE]An adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold, and the Holy Site gains +1 [ICON_Culture] Culture in return.'   ),
+        (   'DISTRICT_THEATER',          'Costumes, drapery and fashionable display make the Tailors'' Quarter a natural partner to the stages and audiences of the Theater Square.[NEWLINE][NEWLINE]An adjacent Tailors'' Quarter gains +1 [ICON_Gold] Gold, and the Theater Square gains +1 [ICON_Culture] Culture in return.'   );
 
 INSERT OR REPLACE INTO LocalizedText
         (   Language,   Tag,   Text   )
@@ -189,16 +185,6 @@ SELECT 'en_US',
     '[ICON_BULLET]' || GROUP_CONCAT('[ICON_' || ResourceName || '] ' || DisplayName, ' [NEWLINE][ICON_BULLET]')
 FROM TAILORS_RESOURCES
 GROUP BY ResourceCategory;
-
-INSERT OR REPLACE INTO LocalizedText
-        (   Language,   Tag,                                                                               Text   )
-VALUES  (   'en_US',    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCGOODS_PARA_1',   ''   );
-
-INSERT OR REPLACE INTO LocalizedText
-        (   Language,   Tag,   Text   )
-SELECT 'en_US', 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCSALES_PARA_1',
-    '[ICON_BULLET]' || GROUP_CONCAT('[ICON_' || DistrictType || '] {' || NameTag || '}', ' [NEWLINE][ICON_BULLET]')
-FROM (SELECT DistrictType, NameTag FROM TAILORS_SALES_DISTRICTS ORDER BY SortIndex);
 
 UPDATE LocalizedText
 SET Text = Text || '[NEWLINE][ICON_BULLET] [ICON_TAILORS] Tailors'' Quarter'

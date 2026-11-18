@@ -21,8 +21,8 @@ locked_sources:
     sha256: a094f999d54d1250ac15284dde611a13b3ae4af6c7e94515548e3dbc13f53b16
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
-    # Reviewed 17 November: correct Amenities icon and identify Bakery/Cafe route returns.
-    sha256: 37fa04bd152a28dbe5ffeecc9abfb0f11ac6c459dd7eede3c66b8fbe835a8c4b
+    # Reviewed 17 November: trade-route wording/icon; local Civilopedia UI work retained.
+    sha256: 5ef0b26038342f27818d23c77f5151ce7606d2f764dd92bb0cea801ba39468b3
 
 contract_approvals:
   design_transcription:

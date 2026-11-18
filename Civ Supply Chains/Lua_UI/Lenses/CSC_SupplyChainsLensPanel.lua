@@ -11,11 +11,14 @@ for _, quarter in pairs(S.Quarters) do table.insert(quarters, quarter) end
 table.sort(quarters, function(a, b) return a.id < b.id end)
 local selected = quarters[1] and quarters[1].id
 local active, shuttingDown = false, false
+local lensFocus = nil
+local quarterData = {}
+local serviceEffects, serviceRevision = nil, 0
+local mapDirty, servicesDirty, refreshQueued = false, false, false
 -- Mirror the native radio value while its control and callback owner are live.
 -- SetCheck fires native/Lua callbacks even for a redundant false assignment;
 -- never initiate that callback path while the UI context is being destroyed.
 local entryChecked = Controls.SupplyChainsLensEntry:IsChecked() == true
-local lastDrawSummary = nil
 local FinishActivation = nil
 local activationPending, settingCarrier = false, false
 local entryUncheckedPending = false
@@ -28,23 +31,21 @@ local appealLayer = UILens.CreateLensLayerHash("Hex_Coloring_Appeal_Level")
 local hotkeyQuarters = {[tonumber(Keys["1"])] = "BAKERS", [tonumber(Keys["2"])] = "TAILORS"}
 local qHeld, qUsed = false, false
 local keysDown, capturedKeys = {}, {}
-local DEBUG = true
-local function Debug(format, ...)
-    if DEBUG then print("CSC Lenses: " .. string.format(format, ...)) end
+-- Opt in when investigating the native input dispatcher.
+local DEBUG_HOTKEYS = false
+local function HotkeyDebug(format, ...)
+    if DEBUG_HOTKEYS then print("CSC Hotkeys: " .. string.format(format, ...)) end
 end
 
 local function SetEntryChecked(checked, reason)
     checked = checked == true
     if shuttingDown then
-        Debug("entry check skipped during shutdown desired=%s reason=%s", tostring(checked), reason or "reset")
         return
     end
     if entryChecked == checked then return end
     -- Publish first: native SetCheck may synchronously call our check handler.
     entryChecked = checked
-    Debug("entry check begin value=%s reason=%s", tostring(checked), reason or "reset")
     Controls.SupplyChainsLensEntry:SetCheck(checked)
-    Debug("entry check end value=%s", tostring(checked))
 end
 
 -- The global callback observes input before UI roots and the action matcher.
@@ -58,7 +59,6 @@ local function ReleaseInputMask()
         Input.PopContext()
         inputMaskOwned = false
         Events.SystemUpdateUI.Remove(ReleaseInputMask)
-        Debug("restored input context=%s", tostring(Input.GetActiveContext()))
     end
 end
 
@@ -68,7 +68,7 @@ local function ResetHotkeys()
 end
 
 local function CancelHotkeys(reason)
-    if qHeld then Debug("cancelled Q prefix reason=%s", reason or "interrupted") end
+    if qHeld then HotkeyDebug("cancelled Q prefix reason=%s", reason or "interrupted") end
     qHeld, qUsed = false, false
     keysDown = {}
     -- Still consume releases from keys captured before a mode/focus change.
@@ -120,7 +120,7 @@ local function TogglePlainQ()
         UserConfiguration.ShowMapResources(not UserConfiguration.ShowMapResources())
         UI.PlaySound("Play_UI_Click")
         LuaEvents.MinimapPanel_RefreshMinimapOptions()
-        Debug("plain Q: resource icons=%s", tostring(UserConfiguration.ShowMapResources()))
+        HotkeyDebug("plain Q: resource icons=%s", tostring(UserConfiguration.ShowMapResources()))
     end
 end
 
@@ -157,12 +157,12 @@ end
 local function Close(exitMode, nativeTakeover, reason)
     if FinishActivation then Events.SystemUpdateUI.Remove(FinishActivation) end
     activationPending = false
+    refreshQueued = false
     entryUncheckedPending = false
     ContextPtr:ClearUpdate()
-    if active then Debug("close quarter=%s reason=%s mode=%s", tostring(selected), reason or "reset", tostring(UI.GetInterfaceMode())) end
     active = false
+    lensFocus = nil
     RestoreNativeHeader()
-    lastDrawSummary = nil
     ClearFills(nativeTakeover)
     SetEntryChecked(false, reason or "close")
     Controls.SupplyChainsLensPanel:SetHide(true)
@@ -189,57 +189,114 @@ local function SetLegend()
         entry.LegendLabel:LocalizeAndSetText(row[1])
     end
     Controls.LegendStack:CalculateSize()
-    Controls.LegendScroll:CalculateSize()
+    -- Allow 54 px above the rows for the header and 14 px below them.
+    Controls.LegendPanel:SetSizeY(Controls.LegendStack:GetSizeY() + 68)
+    Controls.LegendStack:ReprocessAnchoring()
+end
+
+local function SharedServiceEffects(playerID)
+    if serviceEffects == nil then serviceEffects = S.CollectServiceEffects(playerID) end
+    return serviceEffects
 end
 
 local function Refresh(forceBackground)
     if not active or selected == nil then return end
     if UI.GetInterfaceMode() ~= InterfaceModeTypes.VIEW_MODAL_LENS then Close(false); return end
-    local entries = S.GetPlotEntries(selected)
-    local painted, stats = S.DrawOverlay("Lens", entries, forceBackground == true or activationPending)
-    local categories = {}
-    for _, entry in ipairs(entries) do categories[entry.category] = (categories[entry.category] or 0) + 1 end
-    local summary = selected .. ":" .. tostring(#entries) .. ":" .. tostring(painted)
-        .. ":" .. tostring(stats and stats.outlines) .. ":" .. tostring(stats and stats.flows) .. ":" .. tostring(stats and stats.palette)
-        .. ":" .. tostring(stats and stats.flowSignature)
-        .. ":" .. tostring(stats and stats.fillRebuilt) .. ":" .. tostring(stats and stats.outlinesRebuilt)
-        .. ":" .. tostring(stats and stats.backgroundRepainted)
-        .. ":" .. tostring(stats and stats.tintRebuilt)
-        .. ":" .. tostring(stats and stats.services)
-    if summary ~= lastDrawSummary then
-        Debug("draw quarter=%s plots=%s fillAvailable=%s", selected, tostring(#entries), tostring(painted))
-        if stats then
-            Debug("functional service pins=%s presentationAvailable=%s rebuilt=%s", tostring(stats.services), tostring(stats.servicesAvailable), tostring(stats.servicesRebuilt))
-            Debug("fill styles=%s channels=%s outlined=%s base=%s specialty=%s sales=%s ignored=%s", tostring(stats.styles), tostring(stats.channels), tostring(stats.outlines), tostring((categories.BASE_IMPROVED or 0) + (categories.BASE_UNIMPROVED or 0)), tostring((categories.SPEC_IMPROVED or 0) + (categories.SPEC_UNIMPROVED or 0)), tostring(categories.SALE or 0), tostring(categories.IGNORE or 0))
-            Debug("fill packed-colour=plot-count: %s", stats.palette)
-            Debug("fill backend=%s carrierOn=%s", stats.backend, tostring(UILens.IsLayerOn(appealLayer)))
-            Debug("direct RGBA fill layerAvailable=%s plots=%s alpha=Base30%%/otherUnready20%%/ready60%% rebuilt=%s", tostring(stats.tintAvailable), tostring(stats.tintPlots), tostring(stats.tintRebuilt))
-            Debug("texture fill layerAvailable=%s plots=%s alpha=Base30%%/otherUnready20%%/ready60%% rebuilt=%s outlinesRebuilt=%s backgroundRepainted=%s", tostring(stats.textureFillAvailable), tostring(stats.textureFillPlots), tostring(stats.fillRebuilt), tostring(stats.outlinesRebuilt), tostring(stats.backgroundRepainted))
-            Debug("outline layerAvailable=%s material=%s styles=%s", tostring(stats.readyAvailable), stats.readyMaterial, tostring(stats.readyStyles))
-            Debug("working supply-chain connections=%s layerAvailable=%s links(source:target:type)=%s", tostring(stats.flows), tostring(stats.flowAvailable), string.sub(stats.flowSignature or "", 1, 512))
+    local overlayData = quarterData[selected]
+    local servicesOnly = false
+    if overlayData == nil then
+        local background = {}
+        overlayData = S.PrepareOverlay(S.GetPlotEntries(selected, false, background), false, SharedServiceEffects)
+        overlayData.background = background
+        overlayData.serviceRevision = serviceRevision
+        quarterData[selected] = overlayData
+    elseif overlayData.serviceRevision ~= serviceRevision then
+        overlayData.markers = S.GetServiceMarkers(selected, overlayData.entries, SharedServiceEffects)
+        overlayData.serviceRevision = serviceRevision
+        servicesOnly = S.ActiveLensData == overlayData
+    end
+    if lensFocus then
+        local marker
+        if lensFocus.isQuarter then
+            marker = overlayData.quarterPins[lensFocus.index]
+        else
+            marker = S.FindServiceMarker(overlayData.markers, lensFocus)
         end
-        lastDrawSummary = summary
+        if marker == nil then
+            lensFocus = nil
+            servicesOnly = false
+        end
+    end
+    if servicesOnly and not forceBackground and not activationPending then
+        S.PublishPreparedServicePins(overlayData)
+    else
+        S.DrawPreparedOverlay("Lens", overlayData, forceBackground == true or activationPending, lensFocus)
     end
     SyncNativeHeader()
+end
+
+local function Invalidate(full)
+    if full then quarterData = {} end
+    serviceEffects = nil
+    serviceRevision = serviceRevision + 1
+end
+
+local function OnWorldChanged()
+    Invalidate(true)
+    Refresh()
+end
+
+local function MarkMapDirty() mapDirty = true end
+local function MarkServicesDirty() servicesDirty = true end
+
+local mapEvents = {
+    "PlotVisibilityChanged", "CityTileOwnershipChanged", "CityAddedToMap", "CityRemovedFromMap", "CityTransfered",
+    "ResourceAddedToMap", "ResourceChanged", "ResourceRemovedFromMap",
+    "ImprovementAddedToMap", "ImprovementChanged", "ImprovementRemovedFromMap",
+    "DistrictAddedToMap", "DistrictBuildProgressChanged", "DistrictPillaged", "DistrictRemovedFromMap",
+    "BuildingAddedToMap", "BuildingChanged", "BuildingRemovedFromMap", "TechCompleted", "CivicCompleted",
+}
+local serviceEvents = {"CityNameChanged", "CityPopulationChanged", "GovernmentPolicyChanged"}
+
+local function BindInvalidationEvents(method)
+    for _, name in ipairs(mapEvents) do
+        if Events[name] then Events[name][method](MarkMapDirty) end
+    end
+    for _, name in ipairs(serviceEvents) do
+        if Events[name] then Events[name][method](MarkServicesDirty) end
+    end
+end
+
+local function OnGameCorePublish()
+    -- Unknown publications can change visibility, supply or readiness too.
+    Invalidate(mapDirty or not servicesDirty)
+    mapDirty, servicesDirty = false, false
+    if active and not refreshQueued then
+        refreshQueued = true
+        ContextPtr:RequestRefresh()
+    end
+end
+
+local function OnPinFocus(owner, key, index, target, isQuarter)
+    if shuttingDown or not active or owner ~= "Lens" or key ~= selected then return end
+    lensFocus = index ~= nil and {index = index, target = target, isQuarter = isQuarter} or nil
+    Refresh()
 end
 
 local function ShowLensControls()
     -- Reparenting our radio does not join MinimapPanel's context-local radio
     -- group. Clear its live choices without clicking them or changing modes.
-    local cleared = 0
     local function clearOthers(parent)
         for _, child in ipairs(parent:GetChildren()) do
             if child ~= Controls.SupplyChainsLensEntry then
                 if child.IsChecked and child.SetCheck and child:IsChecked() then
                     child:SetCheck(false)
-                    cleared = cleared + 1
                 end
                 clearOthers(child)
             end
         end
     end
     if menuStack then clearOthers(menuStack) end
-    if cleared > 0 then Debug("cleared previous lens menu selections=%s", tostring(cleared)) end
     Controls.SupplyChainsLensPanel:SetHide(false)
     Controls.SupplyChainsLensDisplay:SetHide(false)
     SyncNativeHeader()
@@ -257,7 +314,6 @@ FinishActivation = function()
     -- that native minimap cleanup can hide during the intermediate mode exit.
     ShowLensControls()
     Refresh(true)
-    Debug("activation settled quarter=%s; menu restored and overlay repainted", tostring(selected))
 end
 
 local function QueueActivation()
@@ -268,11 +324,10 @@ end
 
 local function SelectQuarter(key)
     if S.Quarters[key] == nil then return end
+    if selected ~= key then lensFocus = nil end
     selected = key
     for id, button in pairs(buttons) do
-        Debug("choice check begin quarter=%s value=%s", tostring(id), tostring(id == key))
         button:SetCheck(id == key)
-        Debug("choice check end quarter=%s", tostring(id))
     end
     SetLegend()
     Refresh()
@@ -284,7 +339,6 @@ local function Attach()
     local panel = ContextPtr:LookUpControl("/InGame/MinimapPanel/LensPanel")
     local hud = ContextPtr:LookUpControl("/InGame/HUD")
     if stack == nil or panel == nil or hud == nil then
-        Debug("attach blocked stack=%s panel=%s HUD=%s", tostring(stack ~= nil), tostring(panel ~= nil), tostring(hud ~= nil))
         return false
     end
     if menuStack ~= stack then
@@ -314,14 +368,28 @@ local function Attach()
     return true
 end
 
+local function OnLayerOn(layer)
+    -- A native or other mod's lens takes over. Preserve all of its layer data.
+    -- Unrelated map-label layers can turn on while our Appeal carrier is active.
+    if not active then return end
+    if entryUncheckedPending or not entryChecked then Close(false, true, "another lens selected")
+    elseif not UILens.IsLensActive("Appeal") then Close(false, true, "native layer " .. tostring(layer))
+    elseif layer == appealLayer then
+        -- Native minimap and modal callbacks just painted Appeal. Reclaim the
+        -- shared layer and heading here, even if our context update has already
+        -- run or is skipped while its controls are reparented.
+        ShowLensControls()
+        Refresh(true)
+        QueueActivation()
+    end
+end
+
 local function Open(key)
-    Debug("open request quarter=%s mode=%s", tostring(key or selected), tostring(UI.GetInterfaceMode()))
     if not Attach() or (key ~= nil and S.Quarters[key] == nil) then return end
     if active and UI.GetInterfaceMode() == InterfaceModeTypes.VIEW_MODAL_LENS and UILens.IsLensActive("Appeal") then
         SelectQuarter(key or selected)
         ShowLensControls()
         QueueActivation()
-        Debug("switched active Quarter=%s without restarting modal mode", tostring(selected))
         return
     end
     -- Follow More Lenses: replace the active lens directly and enter modal mode
@@ -334,6 +402,10 @@ local function Open(key)
     LuaEvents.ML_CloseLensPanels()
     LuaEvents.MinimapPanel_SetActiveModLens("VANILLA_APPEAL")
     settingCarrier = false
+    -- Join after the stock or More Lenses callbacks, which can register after
+    -- our context loads. Later layer-on events must finish with CSC's paint.
+    Events.LensLayerOn.Remove(OnLayerOn)
+    Events.LensLayerOn.Add(OnLayerOn)
     UILens.SetActive("Appeal")
     if UI.GetInterfaceMode() ~= InterfaceModeTypes.VIEW_MODAL_LENS then
         UI.SetInterfaceMode(InterfaceModeTypes.VIEW_MODAL_LENS)
@@ -346,11 +418,9 @@ local function Open(key)
     ShowLensControls()
     Refresh()
     QueueActivation()
-    Debug("opened quarter=%s active=%s mode=%s", tostring(selected), tostring(active), tostring(UI.GetInterfaceMode()))
 end
 
 local function OnEntryClick()
-    Debug("Supply Chains clicked checked=%s active=%s", tostring(entryChecked), tostring(active))
     if active and not entryChecked then Close(true) else Open() end
 end
 
@@ -360,21 +430,11 @@ local function OnModeChanged(_, newMode)
     -- Selection event arrives. Never close the new lens for the old event.
     local currentMode = UI.GetInterfaceMode()
     if newMode ~= currentMode then
-        Debug("ignored stale mode notification=%s current=%s active=%s", tostring(newMode), tostring(currentMode), tostring(active))
         return
     end
     if not CanUseLensShortcutMode(newMode) then CancelHotkeys("interface mode " .. tostring(newMode)) end
     if newMode ~= InterfaceModeTypes.VIEW_MODAL_LENS then Close(false, false, "mode " .. tostring(newMode))
     elseif active then Refresh() end
-end
-
-local function OnLayerOn(layer)
-    -- A native or other mod's lens takes over. Preserve all of its layer data.
-    -- Unrelated map-label layers can turn on while our Appeal carrier is active.
-    if not active then return end
-    if entryUncheckedPending or not entryChecked then Close(false, true, "another lens selected")
-    elseif not UILens.IsLensActive("Appeal") then Close(false, true, "native layer " .. tostring(layer))
-    elseif layer == appealLayer then QueueActivation() end
 end
 
 local function OnLayerOff(layer)
@@ -392,7 +452,13 @@ for _, name in ipairs({"LensReligion", "LensContinent", "LensAppeal", "LensSettl
     if id ~= nil and id ~= -1 then nativeLensActions[id] = true end
 end
 local function OnNativeLensAction(id)
-    if not active or not nativeLensActions[id] then return end
+    if not nativeLensActions[id] then return end
+    if DEBUG_HOTKEYS and (active or qHeld) then
+        HotkeyDebug("native lens action=%s quarter=%s active=%s Q=%s captured1=%s captured2=%s", tostring(id),
+            tostring(selected), tostring(active), tostring(qHeld), tostring(capturedKeys[Keys["1"]] == true),
+            tostring(capturedKeys[Keys["2"]] == true))
+    end
+    if not active then return end
     Close(false, true, "native lens hotkey")
     if id == nativeAppealAction and UILens.IsLensActive("Appeal") then
         -- Our carrier is already Appeal, so vanilla SetActive("Appeal") is a
@@ -401,7 +467,6 @@ local function OnNativeLensAction(id)
         -- would queue WorldInput cleanup over the replacement's fresh colours.
         UILens.SetActive("Default")
         UILens.SetActive("Appeal")
-        Debug("native Appeal handoff: carrier restarted for native tile paint")
     end
 end
 local function OnEntryChecked(checked)
@@ -411,7 +476,12 @@ local function OnEntryChecked(checked)
     if entryUncheckedPending then RestoreNativeHeader(); ContextPtr:RequestRefresh() end
 end
 
-local function OnPlayerChanged() CancelHotkeys("local player changed"); Close(true) end
+local function OnPlayerChanged()
+    Invalidate(true)
+    mapDirty, servicesDirty = false, false
+    CancelHotkeys("local player changed")
+    Close(true)
+end
 local function OnInput(input)
     local message, key = input:GetMessageType(), input:GetKey()
     if message ~= KeyEvents.KeyDown and message ~= KeyEvents.KeyUp then return false end
@@ -427,8 +497,8 @@ local function OnInput(input)
     if key == Keys.Q or hotkeyQuarters[key] or qHeld then
         local usable, reason = CanUseHotkeys()
         if input:IsControlDown() or input:IsAltDown() or input:IsShiftDown() then usable, reason = false, "modifier" end
-        if (message == KeyEvents.KeyDown and not wasDown) or (message == KeyEvents.KeyUp and wasDown) then
-            Debug("key=%s message=%s Q=%s captured=%s context=%s mode=%s eligible=%s reason=%s", tostring(key), tostring(message), tostring(qHeld), tostring(captured == true), tostring(Input.GetActiveContext()), tostring(UI.GetInterfaceMode()), tostring(usable), reason or "world")
+        if DEBUG_HOTKEYS and ((message == KeyEvents.KeyDown and not wasDown) or (message == KeyEvents.KeyUp and wasDown)) then
+            HotkeyDebug("key=%s message=%s Q=%s captured=%s context=%s mode=%s eligible=%s reason=%s", tostring(key), tostring(message), tostring(qHeld), tostring(captured == true), tostring(Input.GetActiveContext()), tostring(UI.GetInterfaceMode()), tostring(usable), reason or "world")
         end
         if not usable then
             -- Retain captured releases until delivered, but abandon the prefix.
@@ -450,8 +520,11 @@ local function OnInput(input)
             local quarter = hotkeyQuarters[key]
             if quarter and S.Quarters[quarter] and not wasDown then
                 capturedKeys[key] = true
-                Debug("shortcut Q+%s -> %s", quarter == "BAKERS" and "1" or "2", quarter)
+                HotkeyDebug("shortcut Q+%s -> %s", quarter == "BAKERS" and "1" or "2", quarter)
                 Open(quarter)
+                if DEBUG_HOTKEYS then
+                    HotkeyDebug("shortcut result quarter=%s active=%s mode=%s", quarter, tostring(active), tostring(UI.GetInterfaceMode()))
+                end
                 return true
             elseif captured then return true end
         end
@@ -467,17 +540,23 @@ local function OnInput(input)
 end
 
 local function OnGlobalInput(input)
+    local key = input:GetKey()
+    local message, edge
+    if DEBUG_HOTKEYS then
+        message = input:GetMessageType()
+        edge = (message == KeyEvents.KeyDown and not keysDown[key]) or (message == KeyEvents.KeyUp and keysDown[key])
+    end
     -- A fresh event can arrive before the queued refresh. Release our previous
     -- event's mask first; never pop a popup's newer context from above ours.
     ReleaseInputMask()
     -- Let focused text/popups consume Escape before the local UI handler.
-    if input:GetKey() == Keys.VK_ESCAPE then return end
+    if key == Keys.VK_ESCAPE then return end
     if OnInput(input) and Input.GetActiveContext() == InputContext.World then
         Input.PushActiveContext(shortcutInputContext)
         inputMaskOwned = true
         Events.SystemUpdateUI.Add(ReleaseInputMask)
         ContextPtr:RequestRefresh()
-        Debug("masked World actions for key=%s message=%s", tostring(input:GetKey()), tostring(input:GetMessageType()))
+        if edge then HotkeyDebug("masked World actions for key=%s message=%s", tostring(key), tostring(message)) end
     elseif inputMaskOwned then
         ContextPtr:RequestRefresh()
     end
@@ -491,7 +570,7 @@ local observerRepairQueued = false
 local function InstallShortcutObserver(reason)
     if shuttingDown then return end
     UIManager:SetGlobalInputHandler(OnGlobalInput)
-    Debug("shortcut observer v4 installed reason=%s Q=%s one=%s two=%s", reason,
+    HotkeyDebug("shortcut observer v4 installed reason=%s Q=%s one=%s two=%s", reason,
         tostring(Keys.Q), tostring(Keys["1"]), tostring(Keys["2"]))
 end
 local function FinishObserverRepair()
@@ -507,6 +586,8 @@ local function RepairShortcutObserver(reason)
     end
 end
 local function OnLoadScreenClose()
+    Invalidate(true)
+    mapDirty, servicesDirty = false, false
     Attach()
     RepairShortcutObserver("load screen closed")
 end
@@ -522,7 +603,11 @@ local function OnInputRefresh()
     if entryUncheckedPending and active and not entryChecked then
         Close(false, true, "another lens selected")
     end
-    if activationPending and active then ShowLensControls(); Refresh() end
+    if activationPending and active then ShowLensControls() end
+    if refreshQueued or (activationPending and active) then
+        refreshQueued = false
+        Refresh()
+    end
 end
 
 local function OnContextInput(input)
@@ -537,7 +622,6 @@ end
 
 local function OnShutdown()
     shuttingDown = true
-    Debug("shutdown begin active=%s entry=%s", tostring(active), tostring(entryChecked))
     ResetHotkeys()
     ReleaseInputMask()
     Events.SystemUpdateUI.Remove(ReleaseInputMask)
@@ -548,14 +632,16 @@ local function OnShutdown()
     Close(false, false, "shutdown")
     if nativeModal and UI.GetInterfaceMode() == InterfaceModeTypes.VIEW_MODAL_LENS then nativeModal:SetHide(false) end
     LuaEvents.CSC_SupplyChainsLens_OpenPanel.Remove(Open)
-    LuaEvents.CSC_SupplyChainsLens_Refresh.Remove(Refresh)
+    LuaEvents.CSC_SupplyChainsLens_Refresh.Remove(OnWorldChanged)
+    LuaEvents.CSC_QuarterServiceFocus.Remove(OnPinFocus)
     Events.InterfaceModeChanged.Remove(OnModeChanged)
     Events.LensLayerOn.Remove(OnLayerOn)
     Events.LensLayerOff.Remove(OnLayerOff)
     Events.InputActionTriggered.Remove(OnNativeLensAction)
     LuaEvents.MinimapPanel_ModdedLensOn.Remove(OnMoreLensSelected)
     Events.LocalPlayerChanged.Remove(OnPlayerChanged)
-    Events.GameCoreEventPublishComplete.Remove(Refresh)
+    Events.GameCoreEventPublishComplete.Remove(OnGameCorePublish)
+    BindInvalidationEvents("Remove")
     Events.LoadScreenClose.Remove(OnLoadScreenClose)
     rows:ResetInstances()
     legendRows:ResetInstances()
@@ -565,7 +651,6 @@ local function OnShutdown()
         if menuPanel:GetSizeY() == attachedMenuHeight then menuPanel:SetSizeY(originalMenuHeight) end
     end
     if displayParent then displayParent:DestroyChild(Controls.SupplyChainsLensDisplay) end
-    Debug("shutdown complete")
 end
 
 for _, quarter in ipairs(quarters) do
@@ -574,11 +659,8 @@ for _, quarter in ipairs(quarters) do
     buttons[key] = button
     button:GetTextButton():LocalizeAndSetText(quarter.locName)
     button:SetToolTipString(Locale.Lookup(quarter.locTooltip))
-    Debug("choice init begin quarter=%s", tostring(key))
     button:SetCheck(key == selected)
-    Debug("choice init end quarter=%s", tostring(key))
     button:RegisterCallback(Mouse.eLClick, function()
-        Debug("Quarter choice clicked=%s active=%s", key, tostring(active))
         Open(key)
     end)
 end
@@ -597,16 +679,18 @@ ContextPtr:SetShutdown(OnShutdown)
 ContextPtr:SetInputHandler(OnContextInput, true)
 ContextPtr:SetRefreshHandler(OnInputRefresh)
 InstallShortcutObserver("startup")
-Debug("loaded; quarters=%s; global shortcut observer installed; Q+1=BAKERS Q+2=TAILORS", tostring(#quarters))
+HotkeyDebug("loaded; quarters=%s; global shortcut observer installed; Q+1=BAKERS Q+2=TAILORS", tostring(#quarters))
 ContextPtr:SetAppLostFocusHandler(function() CancelHotkeys("app lost focus") end)
 ContextPtr:SetAppRegainedFocusHandler(OnAppRegainedFocus)
 LuaEvents.CSC_SupplyChainsLens_OpenPanel.Add(Open)
-LuaEvents.CSC_SupplyChainsLens_Refresh.Add(Refresh)
+LuaEvents.CSC_SupplyChainsLens_Refresh.Add(OnWorldChanged)
+LuaEvents.CSC_QuarterServiceFocus.Add(OnPinFocus)
 Events.InterfaceModeChanged.Add(OnModeChanged)
 Events.LensLayerOn.Add(OnLayerOn)
 Events.LensLayerOff.Add(OnLayerOff)
 Events.InputActionTriggered.Add(OnNativeLensAction)
 LuaEvents.MinimapPanel_ModdedLensOn.Add(OnMoreLensSelected)
 Events.LocalPlayerChanged.Add(OnPlayerChanged)
-Events.GameCoreEventPublishComplete.Add(Refresh)
+Events.GameCoreEventPublishComplete.Add(OnGameCorePublish)
+BindInvalidationEvents("Add")
 Events.LoadScreenClose.Add(OnLoadScreenClose)

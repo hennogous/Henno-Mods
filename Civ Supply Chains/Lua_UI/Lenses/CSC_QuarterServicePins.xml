@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Screen-space, camera-facing UI: buildings cannot cover these markers.
-     Native gold medallion chrome; no player map-pin objects are created. -->
+<!-- Camera-facing world UI. The anchor scales the whole badge and its hit
+     areas with zoom. The controls draw whole 256px atlas slots at the
+     Flax-matched map size. -->
 <Context Layer="WorldAnchor">
   <Container ID="ServicePins"/>
   <Instance Name="QuarterServicePin">
-    <WorldAnchor ID="Anchor">
-      <Container ID="PinRoot" Anchor="C,B" Size="80,80">
-        <Image Texture="CityBannerProdCircle" Size="60,60" Anchor="C,C"/>
-        <Button ID="ServiceButton" Size="60,60" Anchor="C,C" NoDefaultSound="1">
-          <!-- Keep the smaller Service glyph; centre it in the new circular
-               frame with the requested 2px leftward adjustment. -->
-          <Image ID="ServiceIcon" Size="38,38" Anchor="C,C" Offset="-2,0"/>
+    <WorldAnchor ID="Anchor" Scaling="1" UnitsPerPixel="0.037" Billboard="1">
+      <Container ID="PinRoot" Anchor="C,C" Size="510,510">
+        <Image ID="Backing" Texture="CSC_ServiceMedallion.dds" Size="383,383" Anchor="C,C" StretchMode="Fill"/>
+        <Button ID="ServiceButton" Size="383,383" Anchor="C,C" NoDefaultSound="1">
+          <Image ID="ServiceIcon" Size="256,256" Anchor="C,C" Offset="0,-6"/>
+          <Image ID="QuarterIcon" Size="256,256" Anchor="C,C"
+                 Hidden="1" ConsumeMouse="0"/>
         </Button>
       </Container>
     </WorldAnchor>

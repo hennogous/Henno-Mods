@@ -7,10 +7,10 @@ INSERT OR REPLACE INTO Colors
 VALUES  (   'COLOR_CSC_LENS_QUARTER',                1.000000000,   1.000000000,   1.000000000,   0.60   ),
         (   'COLOR_CSC_LENS_QUARTER_EMPTY',          1.000000000,   1.000000000,   1.000000000,   0.20   ),
         (   'COLOR_CSC_LENS_QUARTER_OUTLINE',        1.000000000,   1.000000000,   1.000000000,   1.00   ),
-        (   'COLOR_CSC_LENS_BASE_IMPROVED',          0.478431373,   0.215686275,   0.000000000,   0.60   ),
-        (   'COLOR_CSC_LENS_BASE_UNIMPROVED',        0.478431373,   0.215686275,   0.000000000,   0.30   ),
-        (   'COLOR_CSC_LENS_BASE_OUTLINE',           0.478431373,   0.215686275,   0.000000000,   1.00   ),
-        (   'COLOR_CSC_LENS_LEGEND_BASE',            0.478431373,   0.215686275,   0.000000000,   1.00   ),
+        (   'COLOR_CSC_LENS_BASE_IMPROVED',          0.505882353,   0.227450980,   0.000000000,   0.60   ),
+        (   'COLOR_CSC_LENS_BASE_UNIMPROVED',        0.505882353,   0.227450980,   0.000000000,   0.30   ),
+        (   'COLOR_CSC_LENS_BASE_OUTLINE',           0.505882353,   0.227450980,   0.000000000,   1.00   ),
+        (   'COLOR_CSC_LENS_LEGEND_BASE',            0.505882353,   0.227450980,   0.000000000,   1.00   ),
         (   'COLOR_CSC_LENS_SPEC_IMPROVED',          0.917647059,   0.529411765,   0.023529412,   0.60   ),
         (   'COLOR_CSC_LENS_SPEC_UNIMPROVED',        0.917647059,   0.529411765,   0.023529412,   0.20   ),
         (   'COLOR_CSC_LENS_SPEC_OUTLINE',           0.917647059,   0.529411765,   0.023529412,   1.00   ),
@@ -19,9 +19,13 @@ VALUES  (   'COLOR_CSC_LENS_QUARTER',                1.000000000,   1.000000000,
         (   'COLOR_CSC_LENS_SALE_UNREADY',           0.713725490,   0.658823529,   0.207843137,   0.20   ),
         (   'COLOR_CSC_LENS_SALE_OUTLINE',           0.713725490,   0.658823529,   0.207843137,   1.00   ),
         (   'COLOR_CSC_LENS_LEGEND_SALE',            0.713725490,   0.658823529,   0.207843137,   1.00   ),
+        (   'COLOR_CSC_LENS_GOODS',                  0.6,           0.6,           0.6,           0.60   ),
+        (   'COLOR_CSC_LENS_GOODS_UNREADY',          0.6,           0.6,           0.6,           0.20   ),
+        (   'COLOR_CSC_LENS_GOODS_OUTLINE',          0.6,           0.6,           0.6,           1.00   ),
         (   'COLOR_CSC_LENS_OUTLINE_BACK',           0.03,          0.04,          0.06,          0.75   ),
         (   'COLOR_CSC_LENS_LEGEND_QUARTER',         1.000000000,   1.000000000,   1.000000000,   1.00   ),
         (   'COLOR_CSC_LENS_IGNORE',                 0.25,          0.25,          0.25,          0.50   ),
+        (   'COLOR_CSC_LENS_BACKGROUND_SHADE',       0.00,          0.00,          0.00,          0.60   ),
         (   'COLOR_CSC_LENS_BAKERS_QUARTER',         0.372549020,   0.509803922,   0.109803922,   0.60   ),
         (   'COLOR_CSC_LENS_TAILORS_QUARTER',        0.564705882,   0.215686275,   0.666666667,   0.60   ),
         (   'COLOR_CSC_LENS_APOTHECARIES_QUARTER',   0.054901961,   0.329411765,   0.662745098,   0.60   ),
@@ -37,19 +41,23 @@ VALUES  (   'COLOR_CSC_LENS_QUARTER',                1.000000000,   1.000000000,
         (   'COLOR_CSC_LENS_FLOW_SCIENCE',           0.031372549,   0.450980392,   0.882352941,   1.00   ),
         (   'COLOR_CSC_LENS_FLOW_FAITH',             0.654901961,   0.745098039,   0.870588235,   1.00   );
 
--- Quarter identity colours. This table does not enable unimplemented lenses;
--- a Quarter still needs its normal material/adjacency configuration to appear.
+-- Lens colours and the yield represented by incoming Base/Specialty flows.
+-- Material flow colours are independent of gameplay's Production adjacencies.
 CREATE TABLE IF NOT EXISTS CSC_LensQuarterColors
 (
 QuarterKey TEXT PRIMARY KEY NOT NULL,
-ColorType TEXT NOT NULL
+ColorType TEXT NOT NULL,
+MaterialYieldType TEXT NOT NULL DEFAULT 'YIELD_PRODUCTION'
 );
 
 INSERT OR REPLACE INTO CSC_LensQuarterColors
+        (   QuarterKey,   ColorType,                           MaterialYieldType   )
+VALUES  (   'BAKERS',     'COLOR_CSC_LENS_BAKERS_QUARTER',     'YIELD_FOOD'         ),
+        (   'TAILORS',    'COLOR_CSC_LENS_TAILORS_QUARTER',    'YIELD_CULTURE'      );
+
+INSERT OR REPLACE INTO CSC_LensQuarterColors
         (   QuarterKey,       ColorType   )
-VALUES  (   'BAKERS',         'COLOR_CSC_LENS_BAKERS_QUARTER'   ),
-        (   'TAILORS',        'COLOR_CSC_LENS_TAILORS_QUARTER'   ),
-        (   'APOTHECARIES',   'COLOR_CSC_LENS_APOTHECARIES_QUARTER'   ),
+VALUES  (   'APOTHECARIES',   'COLOR_CSC_LENS_APOTHECARIES_QUARTER'   ),
         (   'CARPENTERS',     'COLOR_CSC_LENS_CARPENTERS_QUARTER'   ),
         (   'STONEMASONS',    'COLOR_CSC_LENS_STONEMASONS_QUARTER'   ),
         (   'BLACKSMITHS',    'COLOR_CSC_LENS_BLACKSMITHS_QUARTER'   ),

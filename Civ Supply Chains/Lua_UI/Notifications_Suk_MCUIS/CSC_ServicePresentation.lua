@@ -13,6 +13,17 @@ if GameInfo.CSC_AbilityAttachModifiers then
     end
 end
 
+-- The tooltip, City Details and the lens all identify a Wonder Service by
+-- the building stored on its exact host plot. They decide activity separately.
+function P.FindServiceOnPlot(buildingsAtPlot, serviceType)
+    local service = GameInfo.Buildings[serviceType]
+    if service == nil then return nil end
+    for _, index in ipairs(buildingsAtPlot or {}) do
+        if index == service.Index then return service end
+    end
+    return nil
+end
+
 function P.Collect(playerID, cityID)
     local cities = {}
     if playerID == -1 or GameEffects == nil then return cities end

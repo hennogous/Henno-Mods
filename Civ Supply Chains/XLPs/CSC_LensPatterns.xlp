@@ -4,36 +4,36 @@
   <m_PackageName text="Overlay/CSC_LensPatterns" />
   <m_Entries>
     <Element>
-      <m_EntryID text="CSC_Lens_Chevrons" />
-      <m_ObjectName text="CSC_Lens_Chevrons" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_Lens_BaseReady" />
-      <m_ObjectName text="CSC_Lens_BaseReady" />
-    </Element>
-    <Element>
       <m_EntryID text="CSC_Lens_HexOutline" />
       <m_ObjectName text="CSC_Lens_HexOutline" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_HexOutlineDim" />
+      <m_ObjectName text="CSC_Lens_HexOutlineDim" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_HexOutlineFaint" />
+      <m_ObjectName text="CSC_Lens_HexOutlineFaint" />
     </Element>
     <Element>
       <m_EntryID text="CSC_Lens_FlowArrow" />
       <m_ObjectName text="CSC_Lens_FlowArrow" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_Lens_Conveyor" />
-      <m_ObjectName text="CSC_Lens_Conveyor" />
-    </Element>
-    <Element>
       <m_EntryID text="CSC_Lens_ConveyorWave" />
       <m_ObjectName text="CSC_Lens_ConveyorWave" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_Lens_Service_BAKERS" />
-      <m_ObjectName text="CSC_Lens_Service_BAKERS" />
+      <m_EntryID text="CSC_Lens_HexFill_Dim" />
+      <m_ObjectName text="CSC_Lens_HexFill_Dim" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_Lens_Service_TAILORS" />
-      <m_ObjectName text="CSC_Lens_Service_TAILORS" />
+      <m_EntryID text="CSC_Lens_HexFill_FocusReady" />
+      <m_ObjectName text="CSC_Lens_HexFill_FocusReady" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_HexFill_FocusUnready" />
+      <m_ObjectName text="CSC_Lens_HexFill_FocusUnready" />
     </Element>
     <Element>
       <m_EntryID text="CSC_Lens_HexFill_BaseUnready" />

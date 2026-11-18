@@ -76,8 +76,11 @@ CSC owns the heading, legend, menu and shortcuts; no More Lenses registration or
 UI replacement is required. When More Lenses is present, activation requests its
 normal `VANILLA_APPEAL` carrier through `MinimapPanel_SetActiveModLens` and closes
 its old auxiliary panels through `ML_CloseLensPanels`. This avoids stale modded
-lens painters and missing-entry diagnostics. CSC paints after native/More carrier
-callbacks, and repeats via a one-shot `ContextPtr:SetUpdate` after deferred hooks.
+lens painters and missing-entry diagnostics. On activation CSC registers its
+layer-on listener after the loaded native or More Lenses listeners. If Appeal
+fires again while CSC owns the carrier, CSC clears the stock colors and restores
+the Quarter title in that event. A one-shot `ContextPtr:SetUpdate` still handles
+deferred hooks.
 The native context refresh also repaints while activation is pending. The latest
 runtime log contained no earlier `SystemUpdateUI` finalization receipt, so that
 was not retained as the activation renderer's only scheduling path.
@@ -185,21 +188,21 @@ native callback ordering; replacement colours survive CSC cleanup.
 
 ### Diagnostics
 
-`DEBUG = true` in `CSC_SupplyChainsLensPanel.lua` enables `CSC Lenses:` messages
-in Lua.log. They report script load and Quarter count; parent/Quarter clicks;
-open requests, draw counts/art availability and completed activation; close
-reasons; ignored stale mode notifications; candidate key/message, World context, interface mode and eligibility
-reason; recognized shortcut; temporary mask and restored context. Look for
-`shortcut Q+1 -> BAKERS` or `shortcut Q+2 -> TAILORS`, followed by `opened` and
-`restored input context=16`. No per-frame logging is added.
-`shortcut observer v3 installed` records startup/load/focus/reload and the settled
-handoff, including native Q/1/2 key codes. Cancellation logs identify the reason
-a held Q prefix was abandoned. Edge diagnostics include whether the key was
-captured; duplicate releases do not repeat the full eligibility diagnostic.
-Fill diagnostics now include allocated styles, colour channels, ready sprites,
-material/sales/ignored category counts and packed-colour-to-plot-count buckets.
-`activation settled` records the deferred repaint/menu restoration. Pixel
-visibility remains a user-observed result, not something these counters prove.
+Hotkey diagnostics are off by default. Set `DEBUG_HOTKEYS = true` in
+`CSC_SupplyChainsLensPanel.lua` to trace observer
+installation/reattachment; physical key edges and eligibility reasons; recognized
+Q+1/Q+2 shortcuts and their activation result; plain-Q resource toggles;
+cancelled prefixes; and native-lens actions while a Quarter or Q prefix is active.
+Look for `shortcut Q+1 -> BAKERS` followed by
+`shortcut result quarter=BAKERS active=true`.
+
+Mask diagnostics occur once per physical key edge, even when the native bridge
+delivers that same edge repeatedly. Routine context-restoration, overlay palette,
+fill/outline, service-marker counts, animation rebuilds and menu/lifecycle traces
+are silent. Their debug-only summaries/counters were removed. Service UI and
+MCUIS startup/Civilopedia-click traces are also silent. Invalid explicit flow
+style commands still print their usage warning. Tests verify that repeated
+refreshes and duplicate key delivery stay quiet with the default setting.
 
 Read-only native inspection used `CivilizationVI.exe` SHA256
 `E7450823CC8E00468CFF7B9D7B97C63140EAE38AE1D774BA4EFA437556C42D63`.
@@ -215,10 +218,10 @@ to World context, and XP2's `InGame.lua` demonstrates paired context push/pop.
 
 `PlotInfo_CSC_QuarterPlacement.lua` preserves native PlotInfo and augments Quarter
 placement only. Its separate `CSC_QuarterPlacement_Tint` HexHighlightOverlay and
-`CSC_QuarterPlacement_Ready` hex-edge SpriteOverlay use the same styling as
-manual lenses, including improved-material and ready-sales outlines. Standard district and Wonder placement pass
-through. Native placement validation, purchase markers, adjacency previews and
-queue operations remain native.
+`CSC_QuarterPlacement_Ready` hex-edge SpriteOverlay draw 40% outlines on
+every relevant tile, with 40% fill for ready tiles and 20% for unready tiles.
+Standard district and Wonder placement pass through. Placement validation,
+purchase markers, adjacency previews and queue operations remain native.
 
 Automatic placement highlights all relevant revealed plots, including the focused
 city's own materials, customer sites and Quarters, other cities and unclaimed
@@ -227,14 +230,21 @@ plots extend the brightness mask only, including the faint fill on
 unready sites. These plots never become legal placement
 or purchase tiles. Confirmation, cancellation, direct switches and shutdown clear
 placement's own fills and outlines. Missing fill art preserves ordinary native
-placement; missing outline art leaves CSC fills available.
-Manual lenses include relevant revealed plots inside and outside city territory.
+placement; missing outline art leaves CSC fills available. Placement shows only
+static fills, outlines and the native adjacency preview. Service medallions and
+animated links are exclusive to the manual lens.
+
+The manual lens preserves the map's saturation. A 45% black shade sits below
+the coloured fills and outlines on revealed unrelated tiles and tiles outside
+the selected Service chain. The shade, fills and outlines use terrain Pass 0,
+like the placement overlays, so 3D models draw above the tile highlights.
 
 ## Shared data and palette
 
-The approved palette (31 October) is shared by both overlay views and their
-legend: Base `#7a3700`, Specialty `#ea8706`, Sales `#b6a835`. The same RGB is
-used for faint fills, strong fills, opaque edges and opaque legend swatches.
+Both overlay views and the legend share Base `#813a00`, Specialty `#ea8706` and
+Sales `#b6a835`. Goods Providers use grey `#999999` when their
+Quarter has City Lights Goods Provider tags. The same RGB is used for the
+placement and lens fills, edges and legend swatches.
 Unimproved Base uses 30% opacity; other unready sites use 20%, and ready sites use 60%. Quarter identity colours are:
 
 | Quarter | Colour |
@@ -259,8 +269,10 @@ to direct unique district replacements.
 `CSC_QuarterWonderSales` in `Data/CSC_Q_ALL.sql` maps Quarter keys to Wonder
 building types. Tailors' SQL declares Bolshoi Theatre, Broadway and Sydney Opera
 House, matching its existing Stage 4 Wonder customer Services. The classifier
-uses `GetWonderType()` and `IsWonderComplete()` to paint their specific revealed,
-completed plots yellow in both views. Unknown/incomplete Wonders are excluded.
+paints their revealed, completed plots yellow in both views. It accepts the
+plot completion flag or the city's ownership of the Wonder identified by the
+plot, as the stock tooltip does. On a Wonder district with no plot Wonder type,
+the city's exact-plot building list can supply the completed mapped Wonder.
 This planning metadata grants no adjacency or Service. Additional mappings belong
 in owning Quarter or compatibility SQL, without Lua edits.
 
@@ -309,7 +321,7 @@ and outline sprites. A readiness change replaces only the affected sprite layer;
 Quarter switches and close/reopen invalidate the relevant assignments. Native
 grey background assignments are also retained when unchanged, with an explicit
 settled activation repaint after deferred Firaxis/More Lenses callbacks.
-Debug output reports fill/outline rebuilds and background repainting. This
+Fill/outline diagnostics were retired in the 4 November log cleanup. Caching
 addresses repeated teardown/recreation found after Henno reported stationary
 flickering in Bakers' while Tailors' remained fine; native confirmation is pending.
 
@@ -319,8 +331,8 @@ Their centre pixels have alpha 51 and 153 (20% and 60%). Base unready styles
 use a separate `CSC_Lens_HexFill_BaseUnready` mask with 30% alpha (76/255),
 so the sprite fallback matches the direct RGBA fill. They stop
 inside the outline ring so render order cannot soften its opaque colour.
-If the new fill layer is unavailable, Lua falls back to native coloured hexes and
-logs that fixed-alpha fallback explicitly. A full art rebuild/restart is required
+If the new fill layer is unavailable, Lua falls back to native coloured hexes.
+Routine fallback diagnostics are silent. A full art rebuild/restart is required
 to review the corrected opacity; a Lua-only update cannot supply new artwork.
 Placement owns `CSC_QuarterPlacement_Tint` independently of the manual tint layer.
 Both native tint layers cache exact colour/plot assignments. The `_Fill` sprite
@@ -387,9 +399,10 @@ the arrows over both. A full ArtDef rebuild is required for this ordering change
 - Completed mapped Tailors Wonder → treated as a customer endpoint supplied
   by the adjacent Fashion House; the animated direction is Quarter → Wonder.
 
-Arrow colours describe the delivered yield, independently of the tile colours:
-both improved Base and Specialty inputs use Production. Outgoing district links
-read `CLASS_CSC_<QUARTER>_SALES_<YIELD>` tags, the same return-yield tags used by
+Arrow colours describe the delivered yield, independently of the tile colours.
+Base and Specialty inputs use the Quarter's material flow yield from
+`CSC_LensQuarterColors`: Food for Bakers and Culture for Tailors. Outgoing
+district links read `CLASS_CSC_<QUARTER>_SALES_<YIELD>` tags, the same return-yield tags used by
 the adjacency processor, including propagated unique districts. Bakers' Granary/
 Market flows use Food; Zoo/Ferris Wheel/Garden use Culture. Tailors' Lighthouse
 uses Production; Market/Temple/Amphitheater use Culture. `CSC_LensFlowYieldColors`
@@ -424,8 +437,8 @@ fields independently of the renderer.
 Per-owner sorted signatures prevent repeated UI refreshes from restarting an
 unchanged effect. Changing a connection resets/rebuilds it once; leaving a lens,
 placing/cancelling a district or shutting down clears that owner's waves. Missing
-flow art leaves static colours/outlines usable. Debug logs include effect-layer
-availability, link counts and source:target:category:yield:colour signatures.
+flow art leaves static colours/outlines usable. Effect-layer and connection
+signatures remain available internally; routine rendering logs are silent.
 
 The narrower native-arrow material uses the unchanged shipped FormCorpsArrow
 texture recovered from the installed BLP, including all eight mip levels. The
@@ -438,18 +451,17 @@ matched the SDK HexPlace texture's pixels exactly.
 Native CreateLinearWaves positions remain integer plot indices; there is no wave
 offset/scale parameter. Native v2 trial QA confirmed visible world-line chevrons,
 but reported thin/fast strokes and offset crossings. The v3 comparison replaces
-them with private native PathOverlay comparison layers. The current V9 default is a row
-of thick, shallow forward chevrons. The stroke occupies 67% of each 8-unit repeat
-at every cross-path position; the point rises 2 world units from the arms. V5 uses the native chevrons'
-PressureOverlay renderer and its quartic fade-in/out. Width18, scroll.10
-and native wave density3 give an 8-unit stride; each repeat contains
-67% solid slat and 33% gap. Per-wave RGBA carries alpha102 (40% peak opacity), updated on 2 November.
+them with private native PathOverlay comparison layers. The current default uses
+thick forward chevrons on native PressureOverlay with its quartic fade. Width 18
+and wave density 3 give an 8-unit stride with 67% stroke and 33% gap. The
+6 November update increased the point rise from 2 to 2.2 world units and the
+material scroll from 0.10 to 0.11. Per-wave RGBA defaults to alpha 128 (50% peak).
 The 48-unit quad's transparent padding shifts its visible 5.36-unit slat forward16.
 This compensates the native wave footprint and places the fade band across the
 shared edge: fade in on the origin side, peak at the border, fade out on the
 destination side. The shader and quad/UV mapping are verified from native files;
 exact terrain appearance still needs native review. V9 uses white RGB for the
-conveyor, with alpha102 and the same fade. Existing logical endpoints and
+conveyor. Existing logical endpoints and
 chain gates remain; yield colours are retained in the semantic link records and
 the optional earlier comparison styles.
 No per-frame UI Lines or host sizing code is active.
@@ -481,8 +493,8 @@ therefore changed stages mid-animation. Pressure clocks are per-layer, and
 ResetAllWaves clears only the addressed layer's records, not a shared clock.
 V7 puts both conveyor and fallback flows in Pass0, priority20 above fills15/15.5.
 Activation is immediate; the V6 delay is removed (the human log showed it
-starting without finishing in the logic-only context). Rebuild-only diagnostics
-include layer, count, links and clock time. Static native evidence and cook
+starting without finishing in the logic-only context). The temporary rebuild
+counts and clock traces were removed in the 4 November logging cleanup. Static native evidence and cook
 checks pass; native visual confirmation remains pending.
 
 Use `LuaEvents.CSC_QuarterFlowTrial_SetStyle("trade")` or `("chevrons")` in a UI
@@ -498,23 +510,39 @@ A full art rebuild/restart is required for the V7 pass changes.
 
 ### Functional Service pins � current, 1 November 2026
 
-Manual and placement views use camera-facing **gold medallions** (contact-sheet
-option 3), with the actual registered `AbilityIcon` for each working Service.
-The frame is the native `CityBannerProdCircle`, confirmed in the base Windows
-`UI/InWorld.blp` package. Its 60x60 screen-pixel circle contains the smaller
-38px Service icon, centred vertically with the requested 2px left adjustment.
-The earlier pin-specific downward glyph offset is retired with its pointed frame.
-The marker's bottom anchors at the plot centre. One Service is centred; two sit
-side by side, three form a triangle, four a square. Centre spacing is 88px to
-keep the circular frames apart. Only the selected Quarter's Services appear.
+The manual lens uses camera-facing **hinge-free notification circles**
+(option B from the 2 November backing comparison, selected 4 November), with the
+actual registered `AbilityIcon` for each working Service. The native frame is
+`ActionPanel_Notification2`, also used by the game's own Action/Notification UI.
+Quarter and Service image controls use `SetIcon(name, 256)`, so the
+game picks the registered slot from the existing Quarter atlas. The GIMP atlas
+exporter adds all 11 mip levels to the 1024 px sheet with 256 px icon slots.
+The four 256 px map atlases use the UI texture cook parameter
+`IsScalable=true` to match stock resources. The Windows cooker otherwise
+packs only the base level into its UI block format, even when the DDS has a
+full chain. The scalable cook generates its own mip pixels from the base.
+A 9 November control test replaced the source lower levels with magenta
+and produced the same cooked payload. The complete cooked package contains
+10 levels for Flax and Flax FOW and 11 for Bakers and Tailors.
+Smaller sheets serve other UI contexts and have one level. Both backings draw
+the brass from a bevel profile, with the stock texture sampled only for the
+navy gradient. The hex rim uses a single bevel highlight. Backings have their
+own 256 px mip chains.
+Both pin types use the stock resource icon's world position (`worldY - 16`)
+and a scaled, camera-facing WorldAnchor. A 256 px image control at 0.037
+world units per pixel keeps the visible badge footprint close to Flax. The
+383 px backing control preserves the earlier 120 px control at 0.118 world
+units per pixel. One Service is
+centred at the anchor. Two sit side by side, three form a triangle and four
+form a square. Their spacing scales with the pins. Only the selected Quarter's
+Services appear.
 
 `CSC_QuarterServicePins` remains the internal WorldAnchor context name. It draws
 UI above district models, without saved player map-pin objects. It joins
 `/InGame/WorldViewControls` and explicitly calls `SetHide(false)`: native InGame
 loads added UI contexts hidden. `LoadScreenClose` retries a missing parent.
-Logs record `attached WorldViewControls contextVisible=true` and v3 gold-medallion
-initialization. Human screenshots confirmed the prior pointed pins render;
-medallion placement and visual proportions still require in-game review.
+Routine marker initialization and attachment logs are silent as of 4 November. Human screenshots confirmed the prior pointed pins render;
+notification-circle placement and visual proportions still require in-game review.
 
 `CSC_ServicePresentation.lua` is the shared reader and formatter for MCUIS and
 pins. It reads the existing `CSC_AbilityAttachModifiers` registry and active
@@ -533,20 +561,110 @@ that Service's pin combines their existing MCUIS tooltip sections. It does not
 invent a separate benefit calculation. Right-click sends `OpenCivilopedia` with
 that same `AbilityIconTarget`, just like the MCUIS icon.
 
-The lens/placement owners publish UI-only marker snapshots for context load
-ordering and independent cleanup. Existing instances are retained across refreshes;
-tooltips and active recipient state refresh after GameCore publishes. There is
-no per-frame animation or polling. Placement takes visual ownership while both
-views overlap; clearing it restores an active manual lens's pins. Pool release
-clears old tooltip/right-click state, and shutdown unregisters callbacks without
-calling native controls. The legacy flat `_Services` SpriteOverlay is hidden;
-its V9 cooked art remains a valid unused asset. Conveyor rendering is unchanged.
+Left-click focuses the exact Service and customer plot. Clicking the focused
+pin again restores the full lens. Clicking another pin switches focus.
+Removing the selected Service also clears focus. Other medallions use a
+grayscale copy of the SDK notification backing with their glyphs at 50% opacity.
+
+The flow registry identifies adjacent working producers for the Service stage.
+Stages 2 and 3 include improved, unpillaged Base feeders. Stage 4 also includes
+improved, unpillaged Specialty feeders. A Stage 3 or 4 producer without a working
+Stage 2 building still gets its Base feed during focus. Focused tiles retain
+their ordinary fills and outlines. Other relevant tiles, including unimproved
+and pillaged materials, use 30% outlines over the shaded terrain. Ready tiles
+have 30% fills and unready tiles have 10% fills. Chevrons peak at 80% for
+the selected chain and 10% elsewhere.
+
+Each highlighted Quarter tile also has a camera-facing district icon. Clicking
+it focuses that exact plot and adjacent materials, Goods Providers and
+customers, including unready sites. Only working transaction links touching the
+selected Quarter get focused animations. Quarter focus and Service focus share
+one selection. Quarter pins use the 256px atlas faces inside their brass hex
+frames. Bakers and Tailors use slot 0 for the color face and slot 2 for the
+grayscale face. Unfocused Quarters switch both the icon and frame to grayscale.
+The 12 November round-glyph trial was reverted on 16 November. Re-export the
+Quarter XCFs with the Civ VI atlas exporter when changing the icon artwork.
+Regenerate the custom backings with
+`project/tools/lenses/build_quarter_badges.py` and the SDK's
+`ActionPanel_Notification2.dds` as input.
+
+The Quarter tooltip builds on hover and is cached for the current lens snapshot.
+Adjacency reads CSC's encoded amounts once. Only registered stock adjacency
+rules use the native plot query, since the built-district read can already include
+CSC's effects. Outbound contributions are attributed to this plot. Transactions use active yield
+modifiers with a Quarter building as a source or receiver. Direct adjacent
+payouts are read from the gameplay attachments and matched to the working
+producer and the exact recipient plot. This includes Gold and Production
+paid to improvements and the Food paid by a Mill to a Granary. Each direct
+payout is counted once even if the same effect appears in the UI's active
+modifier list. Stage 3 reads the
+rates encoded by CustomerPopulationReturns and decodes them against the city
+receiving that effect. The customer population sets the original target on both
+sides. Customer aggregates and trade imports are apportioned across their
+eligible suppliers. The Service list joins active recipient pins to the exact
+Quarter's outgoing stage links and checks the producer eligibility property.
+Ordinary district Services can also use the mirrored art flag if the source
+property is unavailable. Wonder Services use the Fashion House's separate
+eligibility property.
+Specialist yields use the stock plot-tooltip worker count and per-worker yield.
+Maintenance uses district and building costs from their database rows, as in
+Better Report Screen's building expense breakdown.
+Trade-import Food, Culture and Amenities read the active route-count leaves,
+including the BIT_2/4/8/16 companions. Their native amounts already include the
+bit weight. Attribution to supplying Quarters is proportional to eligible route
+counts, rather than just counting distinct supplier cities.
+
+The Amenities line includes local building amenities and regional amenities
+received across the owner's cities. Regional totals use distance from each
+building's district to each recipient City Center, extra regional range and
+entertainment, pillage state and powered bonuses. For the same building type,
+each recipient takes the strongest in-range source. Equally strong sources
+share attribution evenly in the ledger. This is a UI accounting convention;
+the game supplies one benefit without assigning a unique source. Regional
+attribution is cached per owner/building in the current lens snapshot.
+
+Native evidence for this rule is the reference XP2 Windows GameCore
+City::Growth::GetAmenitiesFromEntertainment, RVA 0x1239a0, SHA-256
+324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c.
+Its regional branch scans the receiving player's cities, checks each working
+copy's building-plot distance plus district extra range, and retains the maximum
+entertainment for each building type, including power and district bonuses.
+The installed 12 November GameCore has SHA-256
+092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f;
+the native inspection used the reference binary. Lua regression tests cover
+route bits, route weighting, regional overlap, range, extra entertainment,
+power, pillage and snapshot caching. Live-save comparison remains outstanding.
+
+Service medallion tooltips show current effects and supply-chain details
+regardless of focus.
+
+White chevrons use the native wave renderer and peak at 50% without focus.
+
+Mapped Wonder links use the completed host plot and the producer stage. A
+functional Wonder pin requires an active benefit and its co-located Service
+building. The lens, map tooltip and City Details share the exact-plot Service
+lookup. The tooltip and City Details also show persistent inactive Services. Goods
+Providers come from the City Lights adjacency tags. They have a static lens
+highlight and use the existing Goods art for placement adjacency. Lens
+animations represent transactions.
+
+The manual lens reads each Quarter on first open. GameCore publishes coalesce
+into one UI refresh. Map changes and unclassified publishes invalidate the
+map snapshots. Name, population and policy updates can refresh Service
+medallions alone. A single active-modifier read is shared across Quarter
+snapshots until the next publish.
+
+The lens caches each Service's chain with its Quarter snapshot. A single shade
+layer covers unrelated and unfocused Quarter tiles. The background assignment
+key is cached with the Quarter snapshot. Native waves animate without
+per-frame Lua polling. The pin UI reads the published Service snapshot and
+reuses pooled controls.
 
 Offline validation covers actual registry metadata, exact recipient gates,
 MCUIS/pin icon and cumulative tooltip equality, right-click page targets, cold
-context snapshots, pooling, layouts, both owners, current-effect changes and
-teardown. The new UI needs a normal ModBuddy rebuild/reload for native review;
-no new art cook is required specifically for the pins.
+context snapshots, pooling, layouts, both owners, Stage 2-4 focus and opacity,
+current-effect changes and teardown. Native review requires a full ModBuddy
+rebuild and reload to include the updated chevron art.
 
 ### Action wiring
 

@@ -41,7 +41,8 @@ def run(args, wrapper_source=None):
     lua.execute('''
         GameInfo.Yields=info({{Index=0,YieldType='YIELD_FOOD'}, {Index=5,YieldType='YIELD_FAITH'}});
         GameInfo.Districts=info({{Index=0,DistrictType='DISTRICT_TEST'},
-            {Index=1,DistrictType='DISTRICT_WONDER'}, {Index=2,DistrictType='DISTRICT_CSC_TAILORS_QUARTER'}});
+            {Index=1,DistrictType='DISTRICT_WONDER'}, {Index=2,DistrictType='DISTRICT_CSC_TAILORS_QUARTER'},
+            {Index=3,DistrictType='DISTRICT_CSC_BAKERS_QUARTER'}});
         AdjacencyBonusTypes={NO_ADJACENCY=0,ADJACENCY_DISTRICT=1,ADJACENCY_RESOURCE=2,
             ADJACENCY_RESOURCE_CLASS=3,ADJACENCY_RIVER=4};
         GameInfo.Tags=info({{Tag='CLASS_CSC_TAILORS_BASE',Vocabulary='RESOURCE_CLASS'},
@@ -202,6 +203,26 @@ def run(args, wrapper_source=None):
         river.ModifierOwner='BuildingModifiers'; river.WhoIsTheOwner='BUILDING_MILL';
         river.CollectionType='COLLECTION_PLAYER_DISTRICTS';
         assert(collectEdge(1)==''); otherCity.mill=true; assert(collectEdge(1)=='Terrain_River');
+        -- The selected Bakers' Quarter gets river arrows before its Water Mill.
+        -- A foreign far bank is still a river face of the candidate tile.
+        prepareEdges(); center.riverE=true; center.riverCount=1;
+        local bakers='DISTRICT_CSC_BAKERS_QUARTER';
+        river.ID='CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER';
+        river.DistrictType=bakers; river.MustOwn=1;
+        river.CollectionType='COLLECTION_CITY_DISTRICTS';
+        CSC_Adjacency.ByDistrict[bakers]={river};
+        local east=Map.GetAdjacentPlot(center.x,center.y,1); east.owner=1;
+        InterfaceModeTypes={DISTRICT_PLACEMENT=1}; CityOperationTypes={PARAM_DISTRICT_TYPE=1};
+        local mode, selected=1,3;
+        UI={GetInterfaceMode=function() return mode end, GetInterfaceModeParameter=function() return selected end};
+        local hints=AddAdjacentPlotBonuses(center,bakers,city,{});
+        local edge=face(hints,east,1);
+        assert(edge and edge.outBonus and edge.iconArtdef=='Terrain_River');
+        assert(not face(hints,Map.GetAdjacentPlot(center.x,center.y,2),2));
+        local icons,tooltip=CSC_Adjacency.Preview(bakers,center,city);
+        assert(icons=='' and tooltip=='','A placement hint must not show a yield');
+        selected=2; assert(next(AddAdjacentPlotBonuses(center,bakers,city,{}))==nil);
+        selected=3; mode=0; assert(next(AddAdjacentPlotBonuses(center,bakers,city,{}))==nil);
         -- Wrapped neighbors can repeat, but their different faces must survive.
         prepareEdges(2,2,true); CSC_Adjacency.ByDistrict.DISTRICT_TEST={edgeRule('FROM_RINGS_TYPETAG_RESOURCE','CLASS_CSC_TAILORS_BASE')};
         for _,p in ipairs(world) do p.resource=0; end
@@ -210,6 +231,47 @@ def run(args, wrapper_source=None):
             local p=Map.GetAdjacentPlot(center.x,center.y,direction);
             assert(face(wrapped,p,direction).iconArtdef=='CSC_Base_Materials');
         end
+    ''')
+
+    # Exercise the center marker through the same native events as placement.
+    lua.execute('''
+        function event()
+            return {Add=function(fn) return fn end, Remove=function() end};
+        end
+        local function capture()
+            local e=event(); e.Add=function(fn) e.fire=fn end; return e;
+        end
+        addMarker=capture(); clearMarker=capture(); changeMode=capture();
+        LuaEvents={StrategicView_MapPlacement_AddDistrictPlacementShadowHexes=addMarker,
+            StrategicView_MapPlacement_ClearDistrictPlacementShadowHexes=clearMarker};
+        Events={InterfaceModeChanged=changeMode,LocalPlayerChanged=event()};
+        ContextPtr={LookUpControl=function() return {} end, ChangeParent=function() end,
+            SetHide=function() end, SetShutdown=function() end};
+        Controls={Markers={}};
+        InstanceManager={new=function()
+            return {ResetInstances=function() marks={} end,GetInstance=function()
+                local mark={}; marks[#marks+1]=mark;
+                return {Anchor={SetWorldPositionVal=function(_,x,y) mark.x=x; mark.y=y end},
+                    Icon={SetIcon=function(_,icon) mark.icon=icon end}};
+            end};
+        end};
+        UI.GridToWorld=function(index) return index*10,index*20 end;
+        districtSelected=3;
+        UI.GetInterfaceMode=function() return 1 end;
+        UI.GetInterfaceModeParameter=function() return districtSelected end;
+        GameInfo.Terrains=info({{Index=0,TerrainType='TERRAIN_PLAINS_HILLS'}});
+        prepareEdges(); world[2].flags.IsHills=false;
+    ''')
+    g.include = lambda name: None if name == 'InstanceManager' else include(name)
+    lua.execute((ROOT / 'Civ Supply Chains/Lua_UI/Lenses/CSC_BakersPlacementTerrain.lua').read_text(encoding='utf-8'))
+    lua.execute('''
+        addMarker.fire({0,1});
+        assert(#marks==1 and marks[1].x==0 and marks[1].y==0);
+        assert(marks[1].icon=='ICON_TERRAIN_PLAINS_HILLS');
+        changeMode.fire(1,0); assert(#marks==0);
+        addMarker.fire({0}); assert(#marks==1);
+        districtSelected=2; addMarker.fire({0}); assert(#marks==0);
+        districtSelected=3; addMarker.fire({0}); clearMarker.fire(); assert(#marks==0);
     ''')
 
     # Check the selected names through Overlay -> XLP -> AST -> material -> TEX.
@@ -234,7 +296,7 @@ def run(args, wrapper_source=None):
                              (f'CLASS_CSC_{quarter}_{role}',)).fetchone()
             assert row and row[0] == 'CSC_' + art
     print(f'PASS: {g.roleCases} role/native-conflict cases; {g.filterCases} ring/ownership/visibility cases; '
-          f'{g.riverCases} fork river-edge comparisons; signed river totals; cache deduplication; wrapped faces; art links')
+          f'{g.riverCases} fork river-edge comparisons; Bakers placement hints; signed river totals; cache deduplication; wrapped faces; art links')
 
 
 def main():

@@ -27,7 +27,7 @@ WHERE Tag = 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION'
 - +1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Food] Food from each adjacent [ICON_CSC_SPEC] Specialty Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold for every 5 [ICON_Citizen] Citizens in the city from each adjacent Zoo, Ferris Wheel and Garden, in exchange for +1 [ICON_Culture] Culture.
-- +1 [ICON_Food] Food and +1 [ICON_Amenity] Amenity bonus to trade routes to the city, and +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Quarter in return, if the Café is locally supplied and the origin city does not have a Bakers' Quarter.
+- +1 [ICON_Food] Food and +1 [ICON_Amenities] Amenity bonus to trade routes to the city, and +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Quarter in return, if the Café is locally supplied and the origin city does not have a Bakers' Quarter.
 
 At Urbanization, a supplied Café can establish services in adjacent Entertainment Complexes with Zoos, Water Parks with Ferris Wheels and Gardens with Conservatories.
 
@@ -75,15 +75,6 @@ The sales interaction of a Café with the local Zoo, Ferris Wheel, or Garden is 
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_CSCHAIN_PARA_1
 The Café procures flour from the Water Mill or Wind Mill in the Quarter, as well as various [ICON_CSC_SPEC] Specialty Materials from adjacent improvements on those specific resources, and transforms them into fine baked goods and drinks for sale to select customers visiting the adjacent Entertainment Complex, Water Park or Garden.
-
-## Raw SQL 1
-mode: raw
-
-```sql
-UPDATE LocalizedText
-SET Text = Text || '[NEWLINE][ICON_BULLET][ICON_DISTRICT_LEU_GARDEN] {LOC_DISTRICT_LEU_GARDEN_NAME}'
-WHERE Tag = 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_PARA_1';
-```
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_LEU_GARDEN_CHAPTER_CSCHAIN_TITLE
 Supply Chains

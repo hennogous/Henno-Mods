@@ -5,8 +5,8 @@
 -- Width/repeat/scroll/alpha are authored by build_chevron_art.py; the native
 -- renderer animates them. No per-frame Lua timer or gameplay writes are needed.
 local STYLES = {conveyor="ConveyorWaves", chevrons="Chevrons", trade="Trade"}
-local OWNERS = {"Lens", "Placement"}
-local owners, signatures, rebuildCounts = {}, {}, {}
+local OWNERS = {"Lens"}
+local owners, signatures = {}, {}
 -- The default now uses CSC's thick chevron texture. Keep the earlier native-art
 -- styles available for comparison, with PressureOverlay as the old-art fallback.
 local state = {Enabled=true, Ready=false, Style="conveyor"}
@@ -16,19 +16,17 @@ local function Name(owner, style)
     return "CSC_Quarter" .. owner .. "_Flow" .. STYLES[style]
 end
 
-local function IsWave(style) return style == "conveyor" end
+local function IsWave(style) return style ~= "chevrons" and style ~= "trade" end
 
 local function Reset(overlay, style)
     if IsWave(style) then overlay:ResetAllWaves() else overlay:ClearAllPaths() end
 end
 
-local function ConveyorWave(wave)
-    -- The native wave shader multiplies the texture by this RGBA directly;
-    -- BorderOverlay's Color_Alpha material field does not control its opacity.
-    -- White conveyor trial: keep the native fade and 40% peak opacity, while
-    -- leaving semantic yield colours on the original/comparison flow records.
-    return {pos1=wave.pos1, pos2=wave.pos2, type=wave.type,
-        speed=3, color=0x66ffffff}
+local function ConveyorWave(wave, alpha)
+    -- The native wave color supplies the chevrons' white tint and peak opacity.
+    -- Speed 3 controls wave spacing. The material scroll controls travel speed.
+    return {pos1=wave.pos1, pos2=wave.pos2,
+        type=wave.type, speed=3, color=alpha * 0x1000000 + 0xffffff}
 end
 
 local function Clear(owner, style)
@@ -40,7 +38,6 @@ local function Clear(owner, style)
 end
 
 local function Rebuild()
-    local count, missing = 0, {}
     local ready = state.Enabled
     for _, owner in ipairs(OWNERS) do
         local waves = owners[owner] or {}
@@ -52,21 +49,19 @@ local function Rebuild()
                 local overlay = UILens.GetOverlay(name)
                 if overlay == nil then
                     ready = false
-                    table.insert(missing,name)
                 else
                     local parts = {}
                     for _, wave in ipairs(waves) do
-                        table.insert(parts,wave.pos1..":"..wave.pos2..":"..tostring(wave.color))
+                        table.insert(parts,wave.pos1..":"..wave.pos2..":"..tostring(wave.color)..":"..tostring(wave.peakAlpha or ""))
                     end
                     local signature = table.concat(parts,"|")
                     if signatures[name] ~= signature then
-                        rebuildCounts[name] = (rebuildCounts[name] or 0) + 1
-                        print("CSC Flow Trial: rebuild layer="..name.." count="..rebuildCounts[name]
-                            .." links="..#waves.." time="..string.format("%.3f",os.clock()))
                         Reset(overlay, style)
-                        if IsWave(style) then
+                        if style == "conveyor" then
                             local fading = {}
-                            for _, wave in ipairs(waves) do fading[#fading+1] = ConveyorWave(wave) end
+                            for _, wave in ipairs(waves) do
+                                fading[#fading+1] = ConveyorWave(wave, wave.peakAlpha or 128)
+                            end
                             overlay:CreateLinearWaves(fading)
                         else
                             for _, wave in ipairs(waves) do
@@ -76,7 +71,6 @@ local function Rebuild()
                         signatures[name] = signature
                     end
                     overlay:SetVisible(true)
-                    count = count + #waves
                 end
             end
         end
@@ -90,18 +84,11 @@ local function Rebuild()
         local native = UILens.GetOverlay("CSC_Quarter"..owner.."_Flow")
         if native then native:SetVisible(not (state.Enabled and ready) and #(owners[owner] or {})>0) end
     end
-    print("CSC Flow Trial: v10 enabled="..tostring(state.Enabled).." style="..state.Style
-        .." ready="..tostring(ready).." links="..count.." missing="..table.concat(missing,",")
-        .." width=18 quadLength="..(state.Style=="conveyor" and "48 stride=8 glyphOffset=16" or "32")
-        .." scroll="..(state.Style=="conveyor" and "0.10" or "0.13")
-        .." alpha="..(state.Style=="conveyor" and "102" or "224")
-        .." fade="..(state.Style=="conveyor" and "native-quartic" or "none")
-        .." tint="..(state.Style=="conveyor" and "white" or "yield")
-        .." shape="..(state.Style=="conveyor" and "thick-chevron nativeSpan=32" or "comparison"))
+
 end
 
 local function OnUpdate(owner,waves)
-    if shuttingDown or (owner~="Lens" and owner~="Placement") then return end
+    if shuttingDown or owner ~= "Lens" then return end
     owners[owner] = waves
     Rebuild()
 end
@@ -114,11 +101,12 @@ end
 
 local function OnStyle(style)
     if shuttingDown then return end
-    if type(style) ~= "string" or STYLES[style:lower()] == nil then
+    style = type(style) == "string" and style:lower() or nil
+    if style ~= "conveyor" and style ~= "chevrons" and style ~= "trade" then
         print("CSC Flow Trial: choose style conveyor, chevrons or trade")
         return
     end
-    state.Style = style:lower()
+    state.Style = style
     state.Enabled = true
     Rebuild()
 end
@@ -142,4 +130,3 @@ ContextPtr:SetShutdown(function()
     -- Existing owner shutdown clears its records. The engine destroys overlays;
     -- do not call native controls or restart effects while contexts are exiting.
 end)
-print("CSC Flow Trial: loaded v10 (white shadowed chevrons; 40% peak; native 32-unit band)")

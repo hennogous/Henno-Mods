@@ -70,8 +70,8 @@ def lua_world(db: sqlite3.Connection):
     lua.execute(r'''
 GameInfo.Districts=info({{Index=77,DistrictType='DISTRICT_CSC_BAKERS_QUARTER',OnePerCity=1}})
 GameInfo.Buildings=info({
- {Index=101,BuildingType='BUILDING_CSC_BAKERS_WIND_MILL',PrereqDistrict='DISTRICT_CSC_BAKERS_QUARTER'},
- {Index=102,BuildingType='BUILDING_CSC_BAKERS_WATER_MILL',PrereqDistrict='DISTRICT_CSC_BAKERS_QUARTER'}})
+ {Index=101,BuildingType='BUILDING_CSC_BAKERS_WIND_MILL',Name='Wind Mill',PrereqDistrict='DISTRICT_CSC_BAKERS_QUARTER'},
+ {Index=102,BuildingType='BUILDING_CSC_BAKERS_WATER_MILL',Name='Water Mill',PrereqDistrict='DISTRICT_CSC_BAKERS_QUARTER'}})
 center.owner=0;center.district=77;center.riverCount=0
 center.IsRiver=function(self)return self.riverCount>0 end
 otherCenter=Map.GetPlot(5,5);otherCenter.owner=0;otherCenter.district=77
@@ -290,6 +290,85 @@ end
         self.assertEqual(planned.current.production, 3)
         _, _, totals = g.CSC_Adjacency.Preview(QUARTER, g.center, g.city)
         self.assertEqual(totals["SelfBonus:YIELD_PRODUCTION"].Amount, 3)
+
+    def test_placement_badge_displays_only_positive_mill_potential(self):
+        lua, rules = lua_world(self.base)
+        g = lua.globals()
+        g.include = lambda name: None
+        lua.execute((CODE / "CSC_AdjacencyPresentation.lua").read_text(encoding="utf-8-sig"))
+        lua.execute('''
+            GameInfo.Yields=info({{YieldType='YIELD_PRODUCTION',Name='Production',IconString='[ICON_Production]'}})
+            GameInfo.Terrains=info({{Index=0,TerrainType='TERRAIN_GRASS_HILLS'},
+                {Index=1,TerrainType='TERRAIN_PLAINS_HILLS'}, {Index=2,TerrainType='TERRAIN_DESERT_HILLS'},
+                {Index=3,TerrainType='TERRAIN_TUNDRA_HILLS'}, {Index=4,TerrainType='TERRAIN_SNOW_HILLS'}})
+            InterfaceModeTypes={DISTRICT_PLACEMENT=1}; CityOperationTypes={PARAM_DISTRICT_TYPE=1};
+            mode=1; selected=77;
+            UI={GetInterfaceMode=function() return mode end, GetInterfaceModeParameter=function() return selected end};
+            stockBadge='[ICON_Food]+1';
+            function GetAdjacentYieldBonusString(_,_,_,yields)
+                assert(next(yields)==nil,'Future Mill yield must not enter the native totals');
+                return stockBadge,'Current bonus',nil;
+            end
+        ''')
+        lua.execute((CODE / "AdjacencyBonusSupport.lua").read_text(encoding="utf-8-sig"))
+        g.center.riverCount = 5
+        badge, tooltip, _ = g.GetAdjacentYieldBonusString(77, g.city, g.center)
+        production = "[ICON_CSC_MILL_PRODUCTION][COLOR:Gray]"
+        self.assertEqual(badge, f"{production}+2[ENDCOLOR] [ICON_CSC_MILL_RIVER]  [COLOR:Gray]/[ENDCOLOR]  "
+                         f"{production}+1[ENDCOLOR] [ICON_CSC_MILL_GRASS_HILLS][NEWLINE][ICON_Food]+1")
+        preview = g.CSC_Adjacency.PreviewLine
+        hills_line = preview(rules[WIND], 1, 1, True)
+        self.assertEqual(tooltip, f"{preview(rules[WATER], 2, 5, True)}[NEWLINE]{hills_line}[NEWLINE]Current bonus")
+
+        g.stockBadge = ""
+        g.center.riverCount = 1
+        for index, terrain in enumerate(("GRASS", "PLAINS", "DESERT", "TUNDRA", "SNOW")):
+            with self.subTest(terrain=terrain):
+                g.center.terrain = index
+                badge, tooltip, _ = g.GetAdjacentYieldBonusString(77, g.city, g.center)
+                self.assertEqual(badge, f"{production}+1[ENDCOLOR] [ICON_CSC_MILL_{terrain}_HILLS]")
+                self.assertEqual(tooltip, f"{hills_line}[NEWLINE]Current bonus")
+        g.center.flags.IsHills = False
+        self.assertEqual(g.GetAdjacentYieldBonusString(77, g.city, g.center)[0], "")
+
+        g.center.riverCount = 6
+        self.assertEqual(g.GetAdjacentYieldBonusString(77, g.city, g.center)[0],
+                         f"{production}+3[ENDCOLOR] [ICON_CSC_MILL_RIVER]")
+        g.selected = 99
+        self.assertEqual(g.GetAdjacentYieldBonusString(77, g.city, g.center)[0], "")
+        g.selected, g.mode = 77, 0
+        self.assertEqual(g.GetAdjacentYieldBonusString(77, g.city, g.center)[0], "")
+
+        lua.execute('''
+            dmtHasCurrentBonus=true;
+            function GetBonusYields()
+                if dmtHasCurrentBonus then return {YIELD_FOOD=1},'DMT current bonus' end
+                return {},'';
+            end
+            function ConvertToYieldString(yields)
+                return yields.YIELD_FOOD and '[ICON_Food]+1 ' or '';
+            end
+            function GetRealizedPlotFeatures() return {} end
+            function GetMapPinSubject() return nil end
+            function IsPlotRevealedToPlayer() return true end
+            center.district=-1;
+        ''')
+        lua.execute((CODE / "CSC_DetailedMapTacks.lua").read_text(encoding="utf-8-sig"))
+        pin = lua.table_from(dict(Type="DISTRICT", Key=QUARTER, X=g.center.x, Y=g.center.y))
+        yields, tooltip = g.GetBonusYields(0, pin)
+        self.assertEqual(dict(yields.items()), {"YIELD_FOOD": 1})
+        self.assertEqual(tooltip, f"{preview(rules[WATER], 3, 6, True)}[NEWLINE]DMT current bonus")
+        self.assertEqual(g.ConvertToYieldString(yields), "[ICON_Food]+1 ")
+
+        g.dmtHasCurrentBonus = False
+        yields, tooltip = g.GetBonusYields(0, pin)
+        self.assertEqual(dict(yields.items()), {})
+        self.assertEqual(tooltip, preview(rules[WATER], 3, 6, True))
+        self.assertEqual(g.ConvertToYieldString(yields), f"{production}+3[ENDCOLOR] [ICON_CSC_MILL_RIVER]")
+
+        g.center.riverCount = 1
+        yields, tooltip = g.GetBonusYields(0, pin)
+        self.assertEqual((g.ConvertToYieldString(yields), tooltip), ("", ""))
 
     def test_invalid_bounds_fail_before_property_publication(self):
         lua, rules = lua_world(self.base)

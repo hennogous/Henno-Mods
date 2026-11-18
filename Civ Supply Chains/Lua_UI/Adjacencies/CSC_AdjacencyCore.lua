@@ -396,7 +396,7 @@ source('FROM_UI_RINGS_SURPLUS_AIR_SLOTS',function(p) return airSlots(p)-airUnits
 source('FROM_RIVER_CROSSING',function(p) return p:GetRiverCrossingCount(); end,false);
 source('FROM_UNCONDITIONAL_BONUS',function() return 1; end,false);
 
-function A.Count(rule, center, city, playerID)
+function A.Count(rule, center, city, playerID, projectPlot)
     -- Return source quantity, before YieldChange multiplication or bit encoding.
     -- A source may contribute a quantity (workers, property value), not just 0/1.
     local entry = A.Sources[rule.AdjacencyType];
@@ -411,8 +411,12 @@ function A.Count(rule, center, city, playerID)
     else plots={center}; end
     local total = 0;
     local context = {PlayerID=playerID,City=city};
-    for _,plot in ipairs(plots) do
-        if not entry.Ownership or not flag(rule.MustOwn) or plot:GetOwner() == playerID then
+    for _,nativePlot in ipairs(plots) do
+        -- The tack calculator can replace a tile's observed facts or hide it.
+        -- Traversal still uses the real map, including wrap and ring distances.
+        local plot = nativePlot;
+        if projectPlot then plot = projectPlot(nativePlot, rule); end
+        if plot and (not entry.Ownership or not flag(rule.MustOwn) or plot:GetOwner() == playerID) then
             total=total+(entry.Quantity(plot,rule.CustomAdjacentObject,context) or 0);
         end
     end

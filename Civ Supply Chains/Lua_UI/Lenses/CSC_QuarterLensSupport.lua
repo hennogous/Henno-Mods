@@ -5,14 +5,15 @@ if CSC_Adjacency == nil then include("CSC_AdjacencyCore") end
 
 CSC_QuarterLensSupport = { Quarters = {}, ByDistrict = {}, FlowSignatures = {}, SpriteSignatures = {} }
 local S = CSC_QuarterLensSupport
+local overlayKinds = {"BASE", "SPEC", "SALE", "QUARTER", "GOODS"}
 
 include("CSC_ServicePresentation")
 local Presentation = CSC_ServicePresentation
 
 -- Exact UI palettes are shared by the manual lens and placement renderer.
-local quarterColors = {}
+local quarterPalette = {}
 if GameInfo.CSC_LensQuarterColors then
-    for row in GameInfo.CSC_LensQuarterColors() do quarterColors[row.QuarterKey] = row.ColorType end
+    for row in GameInfo.CSC_LensQuarterColors() do quarterPalette[row.QuarterKey] = row end
 end
 S.FlowYieldColors = {}
 if GameInfo.CSC_LensFlowYieldColors then
@@ -40,18 +41,20 @@ if GameInfo.CSC_QuarterMaterialAdjacencyConfig ~= nil then
         if GameInfo.Districts[districtType] then
             local quarter = S.Quarters[key]
             if not quarter then
-                local quarterColor = quarterColors[key] or "COLOR_CSC_LENS_QUARTER"
+                local palette = quarterPalette[key]
+                local quarterColor = palette and palette.ColorType or "COLOR_CSC_LENS_QUARTER"
                 quarter = {
                     id = key, districtType = districtType,
                     locName = "LOC_HUD_CSC_" .. key .. "_LENS",
                     locTooltip = "LOC_HUD_CSC_" .. key .. "_LENS_TOOLTIP",
                     colorPrefix = "COLOR_CSC_LENS",
                     quarterColor = quarterColor,
+                    materialYield = palette and palette.MaterialYieldType or "YIELD_PRODUCTION",
                     quarterEmptyColor = quarterColor .. "_EMPTY",
                     quarterOutlineColor = quarterColor .. "_OUTLINE",
                     quarterStyle = quarterColor:gsub("^COLOR_CSC_LENS_", ""),
                     locLegendQ = "LOC_TOOLTIP_CSC_LENS_" .. key .. "_QUARTER",
-                    baseSet = {}, specSet = {}, saleSet = {}, wonderSaleSet = {}, customerBuildings = {},
+                    baseSet = {}, specSet = {}, saleSet = {}, goodsSet = {}, wonderSaleSet = {}, customerBuildings = {},
                     flowStages = {}, flowCustomers = {}, wonderProducerStages = {},
                     customerYields = {}, wonderYields = {},
                 }
@@ -77,6 +80,9 @@ for key, quarter in pairs(S.Quarters) do
     for row in GameInfo.TypeTags() do
         if row.Tag == "CLASS_CSC_" .. key .. "_SALES" and GameInfo.Districts[row.Type] then
             quarter.saleSet[row.Type] = true
+        end
+        if row.Tag == "CLASS_CSC_" .. key .. "_GOODS_PROVIDER" and GameInfo.Districts[row.Type] then
+            quarter.goodsSet[row.Type] = true
         end
         local suffix = row.Tag:match("^CLASS_CSC_" .. key .. "_SALES_(.+)$")
         if suffix and GameInfo.Districts[row.Type] then
@@ -126,7 +132,7 @@ end
 
 -- Reuse the gameplay transaction registry, then supplement missing stages with
 -- UI-only venue metadata. Expand direct unique replacements exactly once.
-local function AddCustomer(quarter, districtType, buildingType, producers)
+local function AddCustomer(quarter, districtType, buildingType, producers, stage)
     if quarter == nil or GameInfo.Districts[districtType] == nil or GameInfo.Buildings[buildingType] == nil then return end
     local districts, buildings = {districtType}, {GameInfo.Buildings[buildingType].Index}
     if GameInfo.DistrictReplaces then
@@ -148,20 +154,20 @@ local function AddCustomer(quarter, districtType, buildingType, producers)
         if producers and next(producers) then
             local customers = {}
             for _, building in ipairs(buildings) do customers[building] = true end
-            table.insert(quarter.flowCustomers, {districtType = district, customers = customers, producers = producers})
+            table.insert(quarter.flowCustomers, {districtType = district, customers = customers, producers = producers, stage = stage})
         end
     end
 end
 
 if GameInfo.CSC_Stage3CustomerTransactions then
     for row in GameInfo.CSC_Stage3CustomerTransactions() do
-        AddCustomer(S.ByDistrict[row.SellerDistrictType], row.CustomerDistrictType, row.CustomerBuildingType, BuildingFamily(row.SellerBuildingType))
+        AddCustomer(S.ByDistrict[row.SellerDistrictType], row.CustomerDistrictType, row.CustomerBuildingType, BuildingFamily(row.SellerBuildingType), 3)
     end
 end
 if GameInfo.CSC_QuarterCustomerBuildings then
     for row in GameInfo.CSC_QuarterCustomerBuildings() do
         local quarter = S.Quarters[row.QuarterKey]
-        AddCustomer(quarter, row.DistrictType, row.BuildingType, quarter and quarter.flowStages[row.ProducerStage])
+        AddCustomer(quarter, row.DistrictType, row.BuildingType, quarter and quarter.flowStages[row.ProducerStage], row.ProducerStage)
     end
 end
 
@@ -189,6 +195,39 @@ end
 
 local HasAny, WorkingBuildings
 
+local function CompletedMappedWonder(quarter, plot, districtType)
+    local wonder = GameInfo.Buildings[plot:GetWonderType()]
+    if wonder then
+        if not quarter.wonderSaleSet[wonder.BuildingType] then return nil end
+        if plot:IsWonderComplete() then return wonder end
+    elseif districtType ~= "DISTRICT_WONDER" or next(quarter.wonderSaleSet) == nil then
+        return nil
+    end
+
+    -- The stock tooltip also recognizes completion when the city owns the
+    -- unique Wonder identified by the plot, even if the plot flag is false.
+    local city = Cities.GetPlotPurchaseCity(plot)
+    local buildings = city and city:GetBuildings()
+    if buildings == nil then return nil end
+    if wonder then return buildings:HasBuilding(wonder.Index) and wonder or nil end
+
+    -- When there is no plot Wonder type, use the exact plot's building list
+    -- so a Wonder elsewhere in the city cannot match this tile.
+    for _, index in ipairs(buildings:GetBuildingsAtLocation(plot:GetIndex())) do
+        local building = GameInfo.Buildings[index]
+        if building and quarter.wonderSaleSet[building.BuildingType] and buildings:HasBuilding(index) then
+            return building
+        end
+    end
+end
+
+local function WorkingWonder(plot, playerID, wonder)
+    -- The plot entry already confirms the mapped Wonder is complete.
+    if plot:GetOwner() ~= playerID then return false end
+    local city = Cities.GetPlotPurchaseCity(plot)
+    return city ~= nil and city:GetOwner() == playerID and not city:GetBuildings():IsPillaged(wonder.Index)
+end
+
 function S.GetLensLegend(key)
     local quarter = S.Quarters[key]
     if quarter == nil then return nil end
@@ -196,7 +235,7 @@ function S.GetLensLegend(key)
         local color = UI.GetColorValue(fill)
         return {text, outline and UI.GetColorValue(outline) or color, outlined = outline ~= nil}
     end
-    return {
+    local result = {
         LensTextKey = quarter.locName,
         Legend = {
             -- UI swatches need opaque colours against the blue key backing;
@@ -211,6 +250,10 @@ function S.GetLensLegend(key)
             entry("LOC_TOOLTIP_CSC_LENS_SALE_READY", "COLOR_CSC_LENS_LEGEND_SALE"),
         },
     }
+    if next(quarter.goodsSet) then
+        table.insert(result.Legend, entry("LOC_TOOLTIP_CSC_LENS_GOODS", "COLOR_CSC_LENS_GOODS_OUTLINE"))
+    end
+    return result
 end
 
 local function QuarterHasBuilding(quarter, plot)
@@ -226,7 +269,7 @@ end
 
 -- Share material/customer classification and ready markers between both views.
 -- This is planning data, not a prediction of ownership-gated adjacency yields.
-function S.GetPlotEntries(key, includeIgnored)
+function S.GetPlotEntries(key, includeIgnored, background)
     local quarter = S.Quarters[key]
     local playerID = Game.GetLocalPlayer()
     local visibility = PlayersVisibility[playerID]
@@ -240,8 +283,10 @@ function S.GetPlotEntries(key, includeIgnored)
         SPEC_UNIMPROVED = UI.GetColorValue(quarter.colorPrefix .. "_SPEC_UNIMPROVED"),
         SALE = UI.GetColorValue("COLOR_CSC_LENS_SALE_DISTRICT"),
         SALE_UNREADY = UI.GetColorValue("COLOR_CSC_LENS_SALE_UNREADY"),
+        GOODS = UI.GetColorValue("COLOR_CSC_LENS_GOODS"),
+        GOODS_UNREADY = UI.GetColorValue("COLOR_CSC_LENS_GOODS_UNREADY"),
     }
-    -- Placement leaves irrelevant tiles to the native overlay; manual lenses grey them.
+    -- The lens collects background plot indices separately from its entries.
     if includeIgnored ~= false then colors.IGNORE = UI.GetColorValue("COLOR_CSC_LENS_IGNORE") end
     local result = {}
     local width, height = Map.GetGridSize()
@@ -250,9 +295,7 @@ function S.GetPlotEntries(key, includeIgnored)
         if visibility:IsRevealed(plot:GetX(), plot:GetY()) then
             local district = GameInfo.Districts[plot:GetDistrictType()]
             local districtType = district and district.DistrictType
-            local wonder = GameInfo.Buildings[plot:GetWonderType()]
-            local wonderSale = wonder and quarter.wonderSaleSet[wonder.BuildingType]
-                and plot:IsWonderComplete()
+            local wonder = CompletedMappedWonder(quarter, plot, districtType)
             local resourceType = nil
             if CSC_Adjacency.ResourceVisible(playerID, plot:GetResourceType()) then
                 resourceType = GameInfo.Resources[plot:GetResourceType()].ResourceType
@@ -261,9 +304,13 @@ function S.GetPlotEntries(key, includeIgnored)
             -- resource on the same plot, and Base wins a shared Base/Spec match.
             local category = nil
             if districtType == quarter.districtType then category = "QUARTER"
-            elseif wonderSale or quarter.saleSet[districtType] then category = "SALE"
+            elseif quarter.goodsSet[districtType] then category = "GOODS"
+            elseif wonder or quarter.saleSet[districtType] then category = "SALE"
             elseif quarter.baseSet[resourceType] then category = "BASE"
             elseif quarter.specSet[resourceType] then category = "SPEC" end
+            if category == nil and background then
+                background[#background + 1] = index
+            end
             if category == "BASE" or category == "SPEC" then
                 local improved = plot:GetImprovementType() ~= -1 and not plot:IsImprovementPillaged()
                 category = category .. (improved and "_IMPROVED" or "_UNIMPROVED")
@@ -271,16 +318,18 @@ function S.GetPlotEntries(key, includeIgnored)
             local readyStyle = nil
             if category == "BASE_IMPROVED" then readyStyle = "BASE"
             elseif category == "SPEC_IMPROVED" then readyStyle = "SPEC"
-            elseif category == "SALE" and (wonderSale or HasCustomerBuilding(quarter, districtType, plot)) then readyStyle = "SALE" end
+            elseif category == "SALE" and (wonder or HasCustomerBuilding(quarter, districtType, plot)) then readyStyle = "SALE"
+            elseif category == "GOODS" and WorkingBuildings(plot, plot:GetOwner()) then readyStyle = "GOODS" end
             local color = category == "SALE" and readyStyle == nil and colors.SALE_UNREADY or colors[category or "IGNORE"]
+            if category == "GOODS" and readyStyle == nil then color = colors.GOODS_UNREADY end
             local isReady = readyStyle ~= nil
             if category == "QUARTER" then
                 isReady = QuarterHasBuilding(quarter, plot)
                 color = isReady and colors.QUARTER or colors.QUARTER_EMPTY
             end
             if color ~= nil then
-                local definition = (category == "QUARTER" or category == "SALE")
-                    and (wonderSale and wonder or district) or (resourceType and GameInfo.Resources[resourceType])
+                local definition = (category == "QUARTER" or category == "SALE" or category == "GOODS")
+                    and (wonder or district) or (resourceType and GameInfo.Resources[resourceType])
                 table.insert(result, {
                     index = index, quarterKey = key, category = category or "IGNORE", color = color,
                     readyStyle = readyStyle,
@@ -288,10 +337,11 @@ function S.GetPlotEntries(key, includeIgnored)
                     -- unready Base, 20% for other unready sites, 60% ready.
                     outlineStyle = category and (category:match("^BASE_") and "BASE"
                         or category:match("^SPEC_") and "SPEC" or category == "SALE" and "SALE"
-                        or category == "QUARTER" and "QUARTER"),
+                        or category == "QUARTER" and "QUARTER" or category == "GOODS" and "GOODS"),
                     ready = isReady,
                     icon = definition and "ICON_" .. (definition.BuildingType or definition.DistrictType or definition.ResourceType),
                     name = definition and definition.Name,
+                    wonder = wonder,
                     pillaged = plot:IsImprovementPillaged(),
                 })
             end
@@ -314,6 +364,10 @@ function S.GetColorPlotTable(key, includeIgnored)
     end
     result[UI.GetColorValue("COLOR_CSC_LENS_SALE_DISTRICT")] = {}
     result[UI.GetColorValue("COLOR_CSC_LENS_SALE_UNREADY")] = {}
+    if next(quarter.goodsSet) then
+        result[UI.GetColorValue("COLOR_CSC_LENS_GOODS")] = {}
+        result[UI.GetColorValue("COLOR_CSC_LENS_GOODS_UNREADY")] = {}
+    end
     if includeIgnored ~= false then result[UI.GetColorValue("COLOR_CSC_LENS_IGNORE")] = {} end
     for _, entry in ipairs(S.GetPlotEntries(key, includeIgnored)) do
         table.insert(result[entry.color], entry.index)
@@ -336,10 +390,7 @@ WorkingBuildings = function(plot, playerID)
     local district = GameInfo.Districts[plot:GetDistrictType()]
     if district == nil then return nil end
     local districts = city:GetDistricts()
-    local wonder = GameInfo.Buildings[plot:GetWonderType()]
-    if wonder and (wonder.IsWonder == true or wonder.IsWonder == 1) then
-        if not plot:IsWonderComplete() then return nil end
-    elseif districts.IsComplete == nil or not districts:IsComplete(district.Index, plot:GetIndex()) then return nil end
+    if districts.IsComplete == nil or not districts:IsComplete(district.Index, plot:GetIndex()) then return nil end
     if districts:IsPillaged(district.Index, plot:GetIndex()) then return nil end
     local buildings, present = city:GetBuildings(), {}
     for _, index in ipairs(buildings:GetBuildingsAtLocation(plot:GetIndex())) do
@@ -360,13 +411,18 @@ function S.GetFlowLinks(key, entries)
         if buildingCache[index] == nil then buildingCache[index] = WorkingBuildings(plot, playerID) or false end
         return buildingCache[index] or nil
     end
-    local function add(source, target, kind, yieldType)
+    local function add(source, target, kind, yieldType, stage)
         -- An unmapped customer yield must not invent a gold/production delivery.
         if yieldType == nil or S.FlowYieldColors[yieldType] == nil then return end
         local id = source .. ":" .. target .. ":" .. kind .. ":" .. yieldType
         if not seen[id] then
-            seen[id] = true
-            table.insert(links, {source = source, target = target, kind = kind, yieldType = yieldType})
+            seen[id] = {source = source, target = target, kind = kind, yieldType = yieldType}
+            table.insert(links, seen[id])
+        end
+        if stage then
+            local link = seen[id]
+            link.stages = link.stages or {}
+            link.stages[stage] = true
         end
     end
     for _, entry in ipairs(entries) do
@@ -378,31 +434,36 @@ function S.GetFlowLinks(key, entries)
                     local neighbor = byPlot[adjacent:GetIndex()]
                     -- Entries already enforce revelation/discovery. Both ends
                     -- must be owned by this player, within the actual adjacency
-                    -- ring; no arrows to an unbuilt placement/hover candidate.
+                    -- ring. Goods Providers grant adjacency only, so they
+                    -- appear in the overlay without a transaction link.
                     if neighbor and adjacent:GetOwner() == playerID then
                         if neighbor.readyStyle == "BASE" and HasAny(quarter.flowStages[2], producerBuildings) then
-                            add(neighbor.index, entry.index, "BASE", "YIELD_PRODUCTION")
+                            add(neighbor.index, entry.index, "BASE", quarter.materialYield)
                         elseif neighbor.readyStyle == "SPEC" and HasAny(quarter.flowStages[4], producerBuildings) then
-                            add(neighbor.index, entry.index, "SPEC", "YIELD_PRODUCTION")
+                            add(neighbor.index, entry.index, "SPEC", quarter.materialYield)
                         elseif neighbor.category == "SALE" and neighbor.readyStyle == "SALE" then
-                            local customerBuildings = buildings(adjacent)
-                            if customerBuildings then
+                            local wonder = neighbor.wonder
+                            if wonder then
+                                -- A Wonder's plot is authoritative. Native Wonder
+                                -- tiles need not expose a normal district/building list.
+                                local stage = quarter.wonderProducerStages[wonder.BuildingType]
+                                if stage and WorkingWonder(adjacent, playerID, wonder)
+                                    and HasAny(quarter.flowStages[stage], producerBuildings) then
+                                    add(entry.index, neighbor.index, "SALE", quarter.wonderYields[wonder.BuildingType], stage)
+                                end
+                            else
+                                local customerBuildings = buildings(adjacent)
                                 local district = GameInfo.Districts[adjacent:GetDistrictType()]
                                 for _, mapping in ipairs(quarter.flowCustomers) do
-                                    if district and mapping.districtType == district.DistrictType
+                                    if customerBuildings and district and mapping.districtType == district.DistrictType
                                         and HasAny(mapping.producers, producerBuildings)
                                         and HasAny(mapping.customers, customerBuildings) then
                                         -- Same return-yield tags as the adjacency processor,
                                         -- including its already-propagated unique districts.
                                         for yieldType in pairs(quarter.customerYields[district.DistrictType] or {}) do
-                                            add(entry.index, neighbor.index, "SALE", yieldType)
+                                            add(entry.index, neighbor.index, "SALE", yieldType, mapping.stage)
                                         end
                                     end
-                                end
-                                local wonder = GameInfo.Buildings[adjacent:GetWonderType()]
-                                local stage = wonder and quarter.wonderProducerStages[wonder.BuildingType]
-                                if stage and customerBuildings[wonder.Index] and HasAny(quarter.flowStages[stage], producerBuildings) then
-                                    add(entry.index, neighbor.index, "SALE", quarter.wonderYields[wonder.BuildingType])
                                 end
                             end
                         end
@@ -422,24 +483,34 @@ end
 
 -- Exact customer identity restricts placement, while the tooltip deliberately
 -- reports the same cumulative city effect as the corresponding MCUIS icon.
-function S.GetServiceMarkers(key, entries)
+function S.GetServiceMarkers(key, entries, collect)
     local playerID = Game.GetLocalPlayer()
     if playerID == -1 then return {} end
-    local current = Presentation.Collect(playerID)
+    local current
     local markers = {}
     for _, entry in ipairs(entries or S.GetPlotEntries(key, false)) do
         if entry.category == "SALE" and entry.readyStyle == "SALE" then
             local plot = Map.GetPlotByIndex(entry.index)
             local city = plot and Cities.GetPlotPurchaseCity(plot)
-            if city and plot:GetOwner() == playerID then
+            if city and plot:GetOwner() == playerID and (not entry.wonder or WorkingWonder(plot, playerID, entry.wonder)) then
+                current = current or (collect or Presentation.Collect)(playerID)
                 local effects = current[city:GetID()] or {}
                 local groups = {}
+                local buildings, buildingsAtPlot
                 for effectID, effect in pairs(effects) do
                     local row = effect.row
                     local target = row.AbilityIconTarget
-                    if row.NotificationQuarter == key and target and target:find("_SERVICE", 1, true)
-                        and effect.districts[plot:GetDistrictID()] then
-                        groups[target] = true
+                    if row.NotificationQuarter == key and target and target:find("_SERVICE", 1, true) then
+                        if entry.wonder then
+                            -- Use the same location check as the other Wonder
+                            -- UIs. Live effects still gate lens pins, unlike tooltips.
+                            buildings = buildings or city:GetBuildings()
+                            buildingsAtPlot = buildingsAtPlot or buildings:GetBuildingsAtLocation(entry.index)
+                            local service = Presentation.FindServiceOnPlot(buildingsAtPlot, target)
+                            if service and not buildings:IsPillaged(service.Index) then groups[target] = true end
+                        elseif effect.districts[plot:GetDistrictID()] then
+                            groups[target] = true
+                        end
                     end
                 end
                 for target in pairs(groups) do
@@ -452,9 +523,13 @@ function S.GetServiceMarkers(key, entries)
                     table.sort(ids)
                     for _, effectID in ipairs(ids) do
                         local data = Presentation.Format(effectID, effects[effectID].count, playerID)
-                        if data then icon = data.icon; table.insert(tooltip, data.tooltip) end
+                        if data then
+                            icon = data.icon
+                            table.insert(tooltip, data.tooltip)
+                        end
                     end
-                    markers[#markers+1] = {index=entry.index, target=target, icon=icon,
+                    local stage = tonumber(target:match("^BUILDING_CSC_" .. key .. "_STAGE_([234])_SERVICE"))
+                    markers[#markers+1] = {index=entry.index, target=target, icon=icon, stage=stage, isWonder=entry.wonder ~= nil,
                         tooltip=table.concat(tooltip, "[NEWLINE][NEWLINE]")}
                 end
             end
@@ -474,46 +549,142 @@ function S.GetServicePlots(key, entries)
     return plots
 end
 
-local function PublishServicePins(owner, key, markers)
+local function PublishServicePins(owner, key, markers, links)
     -- Keep a small UI-only snapshot for a context loaded after its first draw.
     -- No map pins, gameplay properties, or saved player configuration are made.
     if ExposedMembers then
         ExposedMembers.CSC_QuarterServicePins = ExposedMembers.CSC_QuarterServicePins or {}
-        ExposedMembers.CSC_QuarterServicePins[owner] = {key=key, markers=markers}
+        ExposedMembers.CSC_QuarterServicePins[owner] = {key=key, markers=markers, links=links}
     end
     if LuaEvents and LuaEvents.CSC_QuarterServicePins_Update then
-        LuaEvents.CSC_QuarterServicePins_Update(owner, key, markers)
+        LuaEvents.CSC_QuarterServicePins_Update(owner, key, markers, links)
     end
 end
 
-local function DrawFlows(owner, entries)
+-- Start at the exact customer plot and follow only sales from its Service stage.
+-- Then look one ring around each producer for improved, unpillaged materials.
+function S.FindServiceMarker(markers, selection)
+    if selection == nil then return nil end
+    for _, candidate in ipairs(markers) do
+        if candidate.index == selection.index and candidate.target == selection.target and candidate.icon and candidate.stage then
+            return candidate
+        end
+    end
+end
+
+local function ServiceFocus(selection, markers, entries, links, quarter, cached)
+    local marker = quarter and S.FindServiceMarker(markers, selection)
+    if marker == nil then return nil end
+    local serviceKey = marker.index .. ":" .. marker.target
+    if cached[serviceKey] then return cached[serviceKey] end
+
+    local plots, producers, byPlot = {[marker.index] = true}, {}, {}
+    local baseLinks, additionalLinks = {}, {}
+    for _, entry in ipairs(entries) do byPlot[entry.index] = entry end
+    for _, link in ipairs(links) do
+        if link.kind == "BASE" then baseLinks[link.source .. ":" .. link.target] = true end
+    end
+    local playerID = Game.GetLocalPlayer()
+    for _, link in ipairs(links) do
+        if link.target == marker.index and link.stages and link.stages[marker.stage] and not producers[link.source] then
+            local producer = Map.GetPlotByIndex(link.source)
+            producers[link.source], plots[link.source] = true, true
+            for _, adjacent in ipairs(Map.GetAdjacentPlots(producer:GetX(), producer:GetY())) do
+                local feeder = byPlot[adjacent:GetIndex()]
+                if feeder and adjacent:GetOwner() == playerID
+                    and (feeder.readyStyle == "BASE" or (marker.stage == 4 and feeder.readyStyle == "SPEC")) then
+                    plots[feeder.index] = true
+                    -- Later Services also require Base. The ordinary map only
+                    -- animates Base into a working stage 2 building, which can
+                    -- be pillaged even while a later Service still uses Base.
+                    if feeder.readyStyle == "BASE" and not baseLinks[feeder.index .. ":" .. link.source] then
+                        additionalLinks[#additionalLinks + 1] = {
+                            source = feeder.index, target = link.source, kind = "BASE", yieldType = quarter.materialYield,
+                        }
+                    end
+                end
+            end
+        end
+    end
+    local focus = {plots = plots, producers = producers, index = marker.index, stage = marker.stage, additionalLinks = additionalLinks}
+    cached[serviceKey] = focus
+    return focus
+end
+
+local function QuarterLinkPlot(link, index)
+    if link.kind == "SALE" then
+        if link.source == index then return link.target end
+    elseif link.target == index then
+        return link.source
+    end
+end
+
+local function QuarterFocus(selection, data)
+    local index = selection.index
+    if not data.quarterPins[index] then return nil end
+    if data.focusByQuarter[index] then return data.focusByQuarter[index] end
+    -- Adjacent materials and sites stay visible even before they can trade.
+    -- DrawFlows independently checks which working links touch this Quarter.
+    local plots = {[index] = true}
+    local plot = Map.GetPlotByIndex(index)
+    for _, adjacent in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
+        local adjacentIndex = adjacent:GetIndex()
+        if data.quarterNeighbors[adjacentIndex] then plots[adjacentIndex] = true end
+    end
+    local focus = {index = index, plots = plots, isQuarter = true}
+    data.focusByQuarter[index] = focus
+    return focus
+end
+
+local function WithAlpha(color, alpha)
+    local rgba = color % 0x1000000 + alpha * 0x1000000
+    return rgba >= 0x80000000 and rgba - 0x100000000 or rgba
+end
+
+local function DrawFlows(owner, key, links, focus)
     local overlay = UILens.GetOverlay("CSC_Quarter" .. owner .. "_Flow")
-    if overlay == nil then S.FlowSignatures[owner] = nil; return 0, false end
-    local key = entries[1] and entries[1].quarterKey
-    local links = S.GetFlowLinks(key, entries)
     local signature, waves = {key or ""}, {}
     for _, link in ipairs(links) do
         local color = UI.GetColorValue(S.FlowYieldColors[link.yieldType])
-        table.insert(signature, link.source .. ":" .. link.target .. ":" .. link.kind .. ":" .. link.yieldType .. ":" .. tostring(color))
+        local peakAlpha
+        if focus then
+            local focused
+            if focus.isQuarter then
+                focused = QuarterLinkPlot(link, focus.index) ~= nil
+            elseif link.kind == "SALE" then
+                focused = link.target == focus.index and link.stages and link.stages[focus.stage]
+            else
+                focused = focus.producers[link.target] and focus.plots[link.source]
+                    and (link.kind == "BASE" or focus.stage == 4)
+            end
+            peakAlpha = focused and 204 or 26
+            color = WithAlpha(color, peakAlpha)
+        end
+        table.insert(signature, link.source .. ":" .. link.target .. ":" .. link.kind .. ":" .. link.yieldType
+            .. ":" .. tostring(color) .. ":" .. tostring(peakAlpha or ""))
         -- Native in-game review confirms positive-speed arrows travel from
         -- pos1 to pos2. Anchor the effect on the semantic source tile itself.
         table.insert(waves, {pos1 = link.source, pos2 = link.target,
             color = color,
-            speed = 2, type = "CIVILIZATION_UNKNOWN"})
+            speed = 2, type = "CIVILIZATION_UNKNOWN", peakAlpha = peakAlpha})
     end
     local nextSignature = table.concat(signature, "|")
-    if S.FlowSignatures[owner] ~= nextSignature then
-        overlay:ResetAllWaves()
-        if #waves > 0 then overlay:CreateLinearWaves(waves) end
+    local available = overlay ~= nil
+    if S.FlowSignatures[owner] ~= nextSignature or S.FlowOverlayAvailable ~= available then
+        if overlay then
+            overlay:ResetAllWaves()
+            if #waves > 0 then overlay:CreateLinearWaves(waves) end
+        end
         S.FlowSignatures[owner] = nextSignature
+        S.FlowOverlayAvailable = available
         if LuaEvents and LuaEvents.CSC_QuarterFlowTrial_Update then
             LuaEvents.CSC_QuarterFlowTrial_Update(owner, waves)
         end
     end
     -- Repeated UI refreshes must not continually restart an unchanged effect.
     local trial = ExposedMembers and ExposedMembers.CSC_QuarterFlowTrial
-    overlay:SetVisible(#waves > 0 and not (trial and trial.Enabled and trial.Ready))
-    return #waves, true
+    if overlay then overlay:SetVisible(#waves > 0 and not (trial and trial.Enabled and trial.Ready)) end
+    return #waves, available
 end
 
 function S.ClearOverlay(owner, preserveSharedFill)
@@ -530,18 +701,20 @@ function S.ClearOverlay(owner, preserveSharedFill)
     if textureFill then textureFill:ClearAll(); textureFill:SetVisible(false) end
     local tint = UILens.GetOverlay("CSC_Quarter" .. owner .. "_Tint")
     if tint then tint:ClearAll(); tint:SetVisible(false) end
-    local services = UILens.GetOverlay("CSC_Quarter" .. owner .. "_Services")
-    if services then services:ClearAll(); services:SetVisible(false) end
-    local flow = UILens.GetOverlay("CSC_Quarter" .. owner .. "_Flow")
-    if flow then flow:ResetAllWaves(); flow:SetVisible(false) end
-    if LuaEvents and LuaEvents.CSC_QuarterFlowTrial_Update then LuaEvents.CSC_QuarterFlowTrial_Update(owner, {}) end
-    S.FlowSignatures[owner] = nil
     S.SpriteSignatures[owner .. "_Fill"] = nil
     S.SpriteSignatures[owner .. "_Ready"] = nil
     S.SpriteSignatures[owner .. "_Tint"] = nil
-    S.SpriteSignatures[owner .. "_Services"] = nil
-    PublishServicePins(owner, nil, {})
-    if owner == "Lens" then S.NativeFillSignature = nil end
+    if owner == "Lens" then
+        local shade = UILens.GetOverlay("CSC_QuarterLens_Shade")
+        if shade then shade:ClearAll(); shade:SetVisible(false) end
+        S.BackgroundShadeSignature, S.FocusShadeSignature = nil, nil
+        local flow = UILens.GetOverlay("CSC_QuarterLens_Flow")
+        if flow then flow:ResetAllWaves(); flow:SetVisible(false) end
+        if LuaEvents and LuaEvents.CSC_QuarterFlowTrial_Update then LuaEvents.CSC_QuarterFlowTrial_Update(owner, {}) end
+        PublishServicePins(owner, nil, {})
+        S.FlowSignatures[owner], S.FlowOverlayAvailable = nil, nil
+        S.ActiveLensData, S.ActiveLensMarkers, S.NativeFillSignature = nil, nil, nil
+    end
 end
 
 -- GameCore publishes and deferred activation can refresh an unchanged lens.
@@ -573,8 +746,7 @@ end
 -- Firaxis Black Death/WorldBuilder use this direct RGBA path. It avoids the
 -- Appeal dispatcher's forced alpha and keeps terrain-following native hexes.
 -- As with sprites, retain unchanged assignments to avoid render churn.
-local function DrawTintGroups(owner, overlay, groups)
-    local key = owner .. "_Tint"
+local function DrawTintGroups(key, overlay, groups)
     if overlay == nil then S.SpriteSignatures[key] = nil; return 0, false end
     local parts, count, order = {}, 0, {}
     for color in pairs(groups) do table.insert(order, color) end
@@ -594,9 +766,82 @@ local function DrawTintGroups(owner, overlay, groups)
     return count, true
 end
 
-function S.DrawOverlay(owner, entries, forceBackground)
+local emptyShade = {}
+local function DrawBackgroundShade(data, dimPatterns)
+    local shade = UILens.GetOverlay("CSC_QuarterLens_Shade")
+    if shade == nil then
+        S.BackgroundShadeSignature, S.FocusShadeSignature = nil, nil
+        return 0
+    end
+    local background = data.background or emptyShade
+    local outside = {}
+    if dimPatterns then
+        for _, kind in ipairs(overlayKinds) do
+            for _, index in ipairs(dimPatterns[kind]) do outside[#outside + 1] = index end
+        end
+    end
+    -- Use the same native layer for both sets. Cache the background key so
+    -- switching focus only has to compare the much shorter set of changed tiles.
+    data.backgroundShadeSignature = data.backgroundShadeSignature or table.concat(background, ",")
+    local focusSignature = table.concat(outside, ",")
+    local count = #background + #outside
+    if S.BackgroundShadeSignature ~= data.backgroundShadeSignature or S.FocusShadeSignature ~= focusSignature then
+        local plots = background
+        if #outside > 0 then
+            plots = {}
+            for _, index in ipairs(background) do plots[#plots + 1] = index end
+            for _, index in ipairs(outside) do plots[#plots + 1] = index end
+        end
+        shade:ClearAll()
+        if count > 0 then
+            shade:HighlightColoredHexes(plots, UI.GetColorValue("COLOR_CSC_LENS_BACKGROUND_SHADE"), 0)
+            shade:SetChannelOn(0)
+        end
+        shade:SetVisible(count > 0)
+        S.BackgroundShadeSignature, S.FocusShadeSignature = data.backgroundShadeSignature, focusSignature
+    end
+    return count
+end
+
+function S.CollectServiceEffects(playerID)
+    return Presentation.Collect(playerID)
+end
+
+function S.PublishPreparedServicePins(data)
+    local markers = data.markers or {}
+    if S.ActiveLensData == data and S.ActiveLensMarkers == markers then return end
+    S.ActiveLensData, S.ActiveLensMarkers = data, markers
+    local pins = {}
+    for _, marker in ipairs(markers) do pins[#pins + 1] = marker end
+    for _, marker in pairs(data.quarterPins or {}) do pins[#pins + 1] = marker end
+    PublishServicePins("Lens", data.key, pins, data.links)
+end
+
+function S.PrepareOverlay(entries, staticOnly, collect)
+    local key = entries[1] and entries[1].quarterKey
+    if staticOnly then return {entries = entries, key = key} end
+    local quarterPins, quarterNeighbors = {}, {}
+    local quarter = S.Quarters[key]
+    if quarter then
+        for _, entry in ipairs(entries) do
+            if entry.category == "QUARTER" then
+                quarterPins[entry.index] = {
+                    index = entry.index, icon = "ICON_" .. quarter.districtType, isQuarter = true,
+                }
+            elseif entry.outlineStyle then
+                quarterNeighbors[entry.index] = true
+            end
+        end
+    end
+    return {entries = entries, key = key, links = S.GetFlowLinks(key, entries),
+        quarterPins = quarterPins, quarterNeighbors = quarterNeighbors, focusByQuarter = {}, focusByService = {},
+        markers = key and S.GetServiceMarkers(key, entries, collect) or {}}
+end
+
+function S.DrawPreparedOverlay(owner, data, forceBackground, selection)
     if owner ~= "Lens" and owner ~= "Placement" then return false end
-    local quarter = S.Quarters[entries[1] and entries[1].quarterKey]
+    local key, entries = data.key, data.entries
+    local quarter = S.Quarters[key]
     local function spriteKind(kind)
         return kind == "QUARTER" and quarter and quarter.quarterStyle or kind
     end
@@ -604,23 +849,53 @@ function S.DrawOverlay(owner, entries, forceBackground)
     local textureFill = UILens.GetOverlay("CSC_Quarter" .. owner .. "_Fill")
     local tint = UILens.GetOverlay("CSC_Quarter" .. owner .. "_Tint")
     if owner == "Placement" and fill == nil and textureFill == nil and tint == nil then S.ClearOverlay(owner); return false end
+    local isLens = owner == "Lens"
+    local links, markers = data.links or {}, data.markers or {}
+    local focus
+    if isLens and selection then
+        if selection.isQuarter then
+            focus = QuarterFocus(selection, data)
+        else
+            data.focusByService = data.focusByService or {}
+            focus = ServiceFocus(selection, markers, entries, links, quarter, data.focusByService)
+        end
+    end
+    if focus and focus.additionalLinks and #focus.additionalLinks > 0 then
+        -- Keep the normal snapshot intact for later selection changes.
+        links = {}
+        for _, link in ipairs(data.links) do links[#links + 1] = link end
+        for _, link in ipairs(focus.additionalLinks) do links[#links + 1] = link end
+    end
     if fill then fill:ClearPlotChannel(); fill:SetVisible(false) end
-    local colors, patterns = {}, {BASE = {}, SPEC = {}, SALE = {}, QUARTER = {}}
+    local colors, patterns, dimPatterns = {}, {}, {}
+    for _, kind in ipairs(overlayKinds) do patterns[kind], dimPatterns[kind] = {}, {} end
     local texturedPlots, tintPlots = {}, {}
     for _, entry in ipairs(entries) do
-        local color = entry.color
-        if tint and entry.outlineStyle then
+        local kind, color = entry.outlineStyle, entry.color
+        local dim = focus and kind and not focus.plots[entry.index]
+        local state = entry.ready and "Ready" or "Unready"
+        if kind then
+            local group = dim and dimPatterns or patterns
+            table.insert(group[kind], entry.index)
+            if dim then
+                state = entry.ready and "FocusReady" or "FocusUnready"
+                color = WithAlpha(color, entry.ready and 77 or 26)
+            elseif not isLens then
+                state = entry.ready and "Dim" or "Faint"
+                color = WithAlpha(color, entry.ready and 102 or 51)
+            end
+        end
+        if tint and kind then
             tintPlots[color] = tintPlots[color] or {}
             table.insert(tintPlots[color], entry.index)
-        elseif textureFill and entry.outlineStyle then
-            local style = "CSC_Lens_Fill_" .. spriteKind(entry.outlineStyle) .. (entry.ready and "_Ready" or "_Unready")
+        elseif textureFill and kind then
+            local style = "CSC_Lens_Fill_" .. spriteKind(kind) .. "_" .. state
             texturedPlots[style] = texturedPlots[style] or {}
             table.insert(texturedPlots[style], entry.index)
-        elseif color ~= nil then
+        elseif kind and color ~= nil then
             colors[color] = colors[color] or {}
             table.insert(colors[color], entry.index)
         end
-        if entry.outlineStyle then table.insert(patterns[entry.outlineStyle], entry.index) end
     end
     -- Native BorderOverlay colours are stored in allocated style slots. A
     -- non-nil overlay object alone does not prove those slots exist. Reserve 0
@@ -628,7 +903,7 @@ function S.DrawOverlay(owner, entries, forceBackground)
     -- slot with the native InitializeStyles(count, materialHash) API first.
     local count = 0
     for _ in pairs(colors) do count = count + 1 end
-    local nativeFill = owner == "Lens" and UILens.CreateLensLayerHash("Hex_Coloring_Appeal_Level") or nil
+    local nativeFill = isLens and UILens.CreateLensLayerHash("Hex_Coloring_Appeal_Level") or nil
     local nativeSignature, repaintNative = nil, false
     if nativeFill then
         -- Keep unchanged background assignments too. Activation explicitly
@@ -663,13 +938,14 @@ function S.DrawOverlay(owner, entries, forceBackground)
     if nativeFill then S.NativeFillSignature = nativeSignature end
     if not nativeFill and fill then fill:SetVisible(count > 0) end
     -- The native Appeal dispatcher strips supplied alpha and forces 0x80.
-    -- Only unrelated grey plots use it now. Direct native hex highlights supply
-    -- category RGBA. Keep the stable texture path as a missing-new-art fallback.
+    -- Direct native hex highlights supply category RGBA. Keep the texture
+    -- path as a missing-new-art fallback.
+    local shadedCount = isLens and DrawBackgroundShade(data, focus and dimPatterns) or 0
     local texturedCount, textureChannel, fillRebuilt = 0, 0, false
     local fillGroups = {}
     if textureFill then
-        for _, kind in ipairs({"BASE", "SPEC", "SALE", "QUARTER"}) do
-            for _, state in ipairs({"Unready", "Ready"}) do
+        for _, kind in ipairs(overlayKinds) do
+            for _, state in ipairs({"Unready", "Ready", "Faint", "Dim", "FocusReady", "FocusUnready"}) do
                 local style = "CSC_Lens_Fill_" .. spriteKind(kind) .. "_" .. state
                 local plots = texturedPlots[style]
                 if plots then
@@ -682,7 +958,7 @@ function S.DrawOverlay(owner, entries, forceBackground)
         end
     end
     texturedCount, fillRebuilt = DrawSpriteGroups(owner, "_Fill", textureFill, fillGroups)
-    local tintCount, tintRebuilt = DrawTintGroups(owner, tint, tintPlots)
+    local tintCount, tintRebuilt = DrawTintGroups(owner .. "_Tint", tint, tintPlots)
     for color, plots in pairs(tintPlots) do
         table.insert(palette, "directRGBA:" .. tostring(color) .. "=" .. tostring(#plots))
     end
@@ -694,35 +970,42 @@ function S.DrawOverlay(owner, entries, forceBackground)
         -- placement Texture/HEX_GEO path. The spline layer accepted assignments
         -- but stayed invisible in repeated native review. Each sprite is one
         -- plot, so adjacent relevant plots keep their shared edge as well.
-        for index, kind in ipairs({"BASE", "SPEC", "SALE", "QUARTER"}) do
+        for index, kind in ipairs(overlayKinds) do
             if #patterns[kind] > 0 then
-                table.insert(outlineGroups, {plots = patterns[kind], style = "CSC_Lens_Ready_" .. spriteKind(kind), channel = index - 1})
+                local prefix = isLens and "CSC_Lens_Ready_" or "CSC_Lens_Dim_"
+                table.insert(outlineGroups, {plots = patterns[kind], style = prefix .. spriteKind(kind), channel = index - 1})
+            end
+            if #dimPatterns[kind] > 0 then
+                table.insert(outlineGroups, {plots = dimPatterns[kind], style = "CSC_Lens_Faint_" .. spriteKind(kind), channel = index - 1 + #overlayKinds})
             end
         end
     end
     local outlined, outlinesRebuilt = DrawSpriteGroups(owner, "_Ready", ready, outlineGroups)
-    -- Retire the flat SpriteOverlay even when an older art package still has it.
-    local services = UILens.GetOverlay("CSC_Quarter" .. owner .. "_Services")
-    if services then services:SetVisible(false) end
-    local key = entries[1] and entries[1].quarterKey
-    local markers = key and S.GetServiceMarkers(key, entries) or {}
-    PublishServicePins(owner, key, markers)
-    local serviceCount, servicesRebuilt = #markers, false
+    local flows, flowAvailable, serviceCount = 0, false, 0
     table.sort(palette)
-    local flows, flowAvailable = DrawFlows(owner, entries)
-    return count > 0 or texturedCount > 0 or tintCount > 0 or (ready ~= nil and outlined > 0) or flows > 0, {
+    if isLens then
+        flows, flowAvailable = DrawFlows(owner, key, links, focus)
+        serviceCount = #markers
+        -- A cached Quarter becomes the current publisher again when reopened.
+        -- Publish last because removing a focused pin can repaint synchronously.
+        S.PublishPreparedServicePins(data)
+    end
+    return count > 0 or texturedCount > 0 or tintCount > 0 or shadedCount > 0 or (ready ~= nil and outlined > 0) or flows > 0, {
         channels = count, styles = nativeFill and 0 or count + 1,
         outlines = ready and outlined or 0,
         flows = flows, flowAvailable = flowAvailable, flowSignature = S.FlowSignatures[owner],
-        services = serviceCount, servicesAvailable = true, servicesRebuilt = servicesRebuilt,
-        readyAvailable = ready ~= nil, readyMaterial = readyMaterial, readyStyles = ready and 4 or 0,
+        services = serviceCount, servicesAvailable = isLens, servicesRebuilt = false,
+        readyAvailable = ready ~= nil, readyMaterial = readyMaterial, readyStyles = ready and #outlineGroups or 0,
         textureFillAvailable = textureFill ~= nil, textureFillPlots = texturedCount,
         fillRebuilt = fillRebuilt, outlinesRebuilt = outlinesRebuilt,
         tintAvailable = tint ~= nil, tintPlots = tintCount, tintRebuilt = tintRebuilt,
         backgroundRepainted = repaintNative,
         palette = table.concat(palette, ","),
-        backend = tint and "HexHighlightOverlay (Base 30%, other unready 20%, ready 60%)"
-            or textureFill and "textured hexes (Base 30%, other unready 20%, ready 60%)"
+        backend = tint and "HexHighlightOverlay" or textureFill and "textured hexes"
             or (nativeFill and "native coloured hexes (fallback: fixed alpha)" or "BorderOverlay (fallback)"),
     }
+end
+
+function S.DrawOverlay(owner, entries, forceBackground, selection)
+    return S.DrawPreparedOverlay(owner, S.PrepareOverlay(entries, owner == "Placement"), forceBackground, selection)
 end

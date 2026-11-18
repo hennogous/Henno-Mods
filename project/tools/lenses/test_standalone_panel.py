@@ -62,7 +62,8 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             } end}
             Controls={}
             for _,name in ipairs({'SupplyChainsLensEntry','SupplyChainsLensPanel','SupplyChainsLensDisplay',
-                'LensHeader','QuarterChoices','QuarterScroll','LegendStack','LegendScroll','LensTitle','CloseButton'}) do Controls[name]=control() end
+                'LensHeader','QuarterChoices','QuarterScroll','LegendStack','LegendPanel','LensTitle','CloseButton'}) do Controls[name]=control() end
+            Controls.LegendStack.CalculateSize=function(self) self.height=36*#legends+2*math.max(0,#legends-1) end
             -- Instrument the single native radio binding implicated in teardown;
             -- other controls retain the existing ordinary fixture behavior.
             entrySetCheckCalls=0; entryIsCheckedCalls=0; teardownBegun=false
@@ -158,7 +159,7 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
                 end
                 return consumed
             end
-            mode=0; engineLens='Default'; setActiveCalls={}; nativeAreas={}; layers={}
+            mode=0; engineLens='Default'; setActiveCalls={}; nativeAreas={}; layers={}; desaturation=0
             InterfaceModeTypes={SELECTION=0,VIEW_MODAL_LENS=9,DISTRICT_PLACEMENT=7,
                 BUILDING_PLACEMENT=8,CINEMATIC=10,FULLSCREEN_MAP=11,DEBUG=12,
                 CITY_MANAGEMENT=13,CITY_SELECTION=14,MOVE_TO=15}
@@ -187,6 +188,7 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             UILens={GetOverlay=GetTestOverlay,CreateLensLayerHash=function(name) return name end,
                 IsLensActive=function(name) return engineLens==name end,
                 IsLayerOn=function(layer) return layers[layer] or false end,
+                SetDesaturation=function(value) desaturation=value end,
                 SetActive=function(name)
                     engineLens=name; if not nativeReset then setActiveCalls[#setActiveCalls+1]=name end
                     local carrier='Hex_Coloring_Appeal_Level'
@@ -309,6 +311,7 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             assert(mode==9 and engineLens=='Appeal' and not Controls.SupplyChainsLensDisplay.hidden)
             assert(not Controls.SupplyChainsLensPanel.hidden and not nativeModal.hidden and Controls.LensHeader.hidden and nativeKeyPanel.hidden)
             assert(Controls.LensTitle.text=="BAKERS' QUARTER" and #legends==8)
+            assert(Controls.LegendPanel:GetSizeY()==370)
             assert(nativeTitle.text=="BAKERS' QUARTER")
             assert(legends[1].LegendColor.color==UI.GetColorValue('COLOR_CSC_LENS_BAKERS_QUARTER_OUTLINE'))
             assert(legends[1].LegendColor.texture=='Controls_KeySwatchHexEmpty')
@@ -320,7 +323,11 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             assert(layers.Hex_Coloring_Appeal_Level and not outlines.CSC_QuarterLens.visible)
             assert(OutlineContains('Lens',0))
             assert(not empireRadio.checked and not optionalRadio.checked and Controls.SupplyChainsLensEntry.checked)
+            local tailorsGoods=CSC_QuarterLensSupport.Quarters.TAILORS.goodsSet
+            tailorsGoods.TEST_GOODS=true
             choices[2].click()
+            assert(#legends==9 and Controls.LegendPanel:GetSizeY()==408)
+            tailorsGoods.TEST_GOODS=nil
             assert(Controls.LensTitle.text=="TAILORS' QUARTER")
             assert(legends[1].LegendColor.color==UI.GetColorValue('COLOR_CSC_LENS_TAILORS_QUARTER_OUTLINE'))
             -- Match More Lenses: no Selection round trip while changing a
@@ -350,19 +357,82 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             -- delivered after that exit cannot repaint or reopen the overlay.
             choices[1].click(); UI.SetInterfaceMode(0); flushModeNotifications()
             assert(not manualVisible() and Controls.SupplyChainsLensDisplay.hidden)
-            assert(mode==0)
+            assert(mode==0 and desaturation==0)
             deferModeNotifications=false; choices[2].click()
+            assert(desaturation==0)
             assert(fillContains(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'),1))
             assert(fillContains(UI.GetColorValue('COLOR_CSC_LENS_SALE_DISTRICT'),2))
             assert(OutlineContains('Lens',1))
+            local s=CSC_QuarterLensSupport
+            local originalPrepare,prepares=s.PrepareOverlay,0
+            s.PrepareOverlay=function(...) prepares=prepares+1; return originalPrepare(...) end
+            choices[1].click(); choices[2].click()
+            assert(prepares==0 and desaturation==0) -- A→B→A reuses each Quarter's snapshot.
+            LuaEvents.CSC_QuarterServiceFocus('Lens','TAILORS',2,'UNRESOLVED_SERVICE')
+            LuaEvents.CSC_QuarterServiceFocus('Lens','TAILORS')
+            if frameUpdate then frameUpdate() end
+            assert(prepares==0) -- Focus and activation repaint reuse current world data.
             Events.LensLayerOn('MapLabels_Deserts')
             assert(manualVisible()) -- Labels are not a lens switch.
-            world[2].pillaged=true; Events.GameCoreEventPublishComplete()
+            world[2].pillaged=true
+            Events.GameCoreEventPublishComplete(); Events.GameCoreEventPublishComplete()
+            assert(prepares==0 and refreshPending)
+            inputRefresh()
+            assert(prepares==1)
+            choices[1].click(); choices[2].click()
+            assert(prepares==2); s.PrepareOverlay=originalPrepare
+            local originalCollect,originalMarkers,originalDraw=s.CollectServiceEffects,s.GetServiceMarkers,s.DrawPreparedOverlay
+            local collections,draws=0,0
+            s.CollectServiceEffects=function() collections=collections+1; return {} end
+            s.GetServiceMarkers=function(key,entries,collect) collect(0); return originalMarkers(key,entries,collect) end
+            LuaEvents.CSC_SupplyChainsLens_Refresh()
+            choices[1].click(); choices[2].click()
+            if frameUpdate then frameUpdate() end
+            assert(collections==1)
+            s.DrawPreparedOverlay=function(...) draws=draws+1; return originalDraw(...) end
+            Events.CityNameChanged(); Events.GameCoreEventPublishComplete()
+            Events.CityPopulationChanged(); Events.GameCoreEventPublishComplete()
+            assert(collections==1 and draws==0 and refreshPending)
+            inputRefresh()
+            assert(collections==2 and draws==0)
+            s.CollectServiceEffects,s.GetServiceMarkers,s.DrawPreparedOverlay=originalCollect,originalMarkers,originalDraw
+            s.PrepareOverlay=function(entries)
+                local data=originalPrepare(entries)
+                data.markers={{index=2,target='BUILDING_CSC_TAILORS_STAGE_3_SERVICE',icon='ICON_TEST',
+                    stage=3}}
+                return data
+            end
+            LuaEvents.CSC_SupplyChainsLens_Refresh()
+            local shade=outlines.CSC_QuarterLens_Shade
+            local function shaded(layer,index)
+                local color=UI.GetColorValue('COLOR_CSC_LENS_BACKGROUND_SHADE')
+                for _,plot in ipairs(layer.tints[color] or {}) do if plot==index then return true end end
+                return false
+            end
+            local shadeCreates=shade.creates
+            assert(shade.visible and shaded(shade,0) and not shaded(shade,1) and not shaded(shade,2))
+            LuaEvents.CSC_QuarterServiceFocus('Lens','TAILORS',2,'BUILDING_CSC_TAILORS_STAGE_3_SERVICE')
+            assert(shade.creates==shadeCreates+1 and shaded(shade,0) and shaded(shade,1) and not shaded(shade,2))
+            LuaEvents.CSC_QuarterServiceFocus('Lens','TAILORS',2,'BUILDING_CSC_TAILORS_STAGE_3_SERVICE')
+            assert(shade.creates==shadeCreates+1)
+            LuaEvents.CSC_QuarterServiceFocus('Lens','TAILORS')
+            assert(shade.creates==shadeCreates+2 and shaded(shade,0) and not shaded(shade,1) and not shaded(shade,2))
+            s.PrepareOverlay=originalPrepare
+            LuaEvents.CSC_SupplyChainsLens_Refresh()
             assert(OutlineContains('Lens',1))
             assert(not fillContains(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'),1))
             assert(fillContains(UI.GetColorValue('COLOR_CSC_LENS_BASE_UNIMPROVED'),1))
             assert(not fillContains(UI.GetColorValue('COLOR_CSC_LENS_IGNORE'),1))
-            world[2].pillaged=false; Events.GameCoreEventPublishComplete()
+            world[2].pillaged=false; Events.GameCoreEventPublishComplete(); inputRefresh()
+            -- Native Religion and Loyalty may already own the grayscale when
+            -- the shared carrier hands control over to them.
+            for _,layer in ipairs({'Hex_Coloring_Religion','Cultural_Identity_Lens'}) do
+                engineLens='Other'; layers[layer]=true; UILens.SetDesaturation(1); Events.LensLayerOn(layer)
+                assert(not manualVisible() and desaturation==1)
+                assert(not shade.visible)
+                layers[layer]=nil; desaturation=0; choices[2].click()
+                assert(manualVisible() and desaturation==0 and shade.visible)
+            end
             -- Closing the main menu hides its child chooser, without clearing the map.
             menuPanel:SetHide(true); assert(manualVisible())
             -- A vanilla lens takes ownership, including a switch directly to Appeal.
@@ -436,6 +506,12 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
                 assert(engineLens=='Religion' and nativeDigits>digitsBefore)
                 Controls.CloseButton.click()
             end
+            inputDispatchPasses=3
+            local logsBefore=#debugLines
+            assert(key(1,81) and key(1,49) and key(2,49) and key(2,81))
+            assert(#debugLines==logsBefore,'Routine shortcuts must stay quiet')
+            for i=1,3 do Events.GameCoreEventPublishComplete(); Events.SystemUpdateUI() end
+            assert(#debugLines==logsBefore,'Ordinary lens refreshes must stay quiet')
             inputDispatchPasses=nil
             Controls.CloseButton.click(); before=#setActiveCalls
             -- Native TunerUtilities can replace UIManager's single global slot
@@ -588,6 +664,29 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
                 assert(not CSC_QuarterLensSupport.NativeLensFillOwned and nativeAreas.Hex_Coloring_Appeal_Level[777][1]==1)
             end
             assert(frameUpdate==nil)
+            -- The native panel can register after CSC and receive a late
+            -- Appeal layer-on after CSC's activation update has finished.
+            -- Restore both the carrier colors and title without another tick.
+            local function paintLateAppeal(layer)
+                if layer=='Hex_Coloring_Appeal_Level' then
+                    nativeTitle:SetText('APPEAL')
+                    nativeKeyPanel:SetHide(false)
+                    nativeAreas[layer]={[888]={2}}
+                end
+            end
+            Events.LensLayerOn.Add(paintLateAppeal)
+            nativeReset=true; UILens.SetActive('Religion'); nativeReset=false
+            LuaEvents.CSC_SupplyChainsLens_OpenPanel('BAKERS')
+            if frameUpdate then frameUpdate() end
+            Events.LensLayerOn('Hex_Coloring_Appeal_Level')
+            assert(nativeAreas.Hex_Coloring_Appeal_Level[888]==nil)
+            assert(nativeTitle.text=="BAKERS' QUARTER" and nativeKeyPanel.hidden)
+            assert(fillContains(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'),0))
+            -- A real Appeal takeover cancels the newly queued CSC repaint.
+            Events.InputActionTriggered(Input.GetActionId('LensAppeal'))
+            assert(frameUpdate==nil and nativeTitle.text=='APPEAL' and not nativeKeyPanel.hidden)
+            assert(nativeAreas.Hex_Coloring_Appeal_Level[888][1]==2)
+            Events.LensLayerOn.Remove(paintLateAppeal)
             -- Clicking our already-checked parent off must close, even though
             -- its check handler runs before its click handler.
             LuaEvents.CSC_SupplyChainsLens_OpenPanel('BAKERS')
@@ -596,8 +695,8 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             if moreMini then
                 -- Exercise delayed actual More Lenses callbacks: its vanilla
                 -- Appeal painter runs after our initial draw; the queued native
-                -- context update must then restore the grey background. Private
-                -- texture fills survive this shared native-layer repaint.
+                -- context update must clear the carrier's stale colours.
+                -- Private fills survive this shared native-layer repaint.
                 deferMoreCallbacks=true
                 LuaEvents.CSC_SupplyChainsLens_OpenPanel('BAKERS')
                 assert(fillContains(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'),0))
@@ -624,13 +723,9 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             assert(globalInstalls==installsAtShutdown)
             assert(globalInput==nil and activeContext==16 and #contextStack==0)
             assert(Events.SystemUpdateUI.Count()==0)
-            local sawChoice,sawShortcut,sawMask=false,false,false
             for _,line in ipairs(debugLines) do
-                if line:find('Quarter choice clicked=TAILORS',1,true) then sawChoice=true end
-                if line:find('shortcut Q+1 -> BAKERS',1,true) then sawShortcut=true end
-                if line:find('masked World actions',1,true) then sawMask=true end
+                assert(not line:find('CSC Hotkeys: ',1,true),'Shortcut diagnostics are opt-in')
             end
-            assert(sawChoice and sawShortcut and sawMask)
             assert(not manualVisible() and not outlines.CSC_QuarterLens_Ready.visible)
             assert(Controls.SupplyChainsLensEntry.destroyed and Controls.SupplyChainsLensPanel.destroyed and Controls.SupplyChainsLensDisplay.destroyed)
             assert(menuPanel.height==300)
@@ -639,4 +734,4 @@ def test_supply_chains_panel(runtime, colors, more_lenses=None, install_more=Non
             assert(LuaEvents.CSC_SupplyChainsLens_OpenPanel.Count()==0 and LuaEvents.CSC_SupplyChainsLens_Refresh.Count()==0)
             for _,name in ipairs(setActiveCalls) do assert(name=='Default' or name=='Appeal') end
         ''')
-        print('Passed standalone lens panel ' + ('with actual More Lenses callbacks' if with_more else 'without More Lenses') + ': texture-alpha fills despite native alpha clamp, direct modal switching, deferred carrier repaint, takeover preserves new colours, Q+1/Q+2, uppercase/submenu, debug logs and cleanup.')
+        print('Passed standalone lens panel ' + ('with actual More Lenses callbacks' if with_more else 'without More Lenses') + ': texture-alpha fills despite native alpha clamp, direct modal switching, deferred carrier repaint, takeover preserves new colours, Q+1/Q+2, uppercase/submenu, quiet logging and cleanup.')

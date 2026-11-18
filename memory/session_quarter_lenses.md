@@ -1608,3 +1608,252 @@ Desktop/Codex/service-backing-variants-20261102/service-backing-comparison.png
 3xdetails+screen-sizecomposite; exactframe/glyphchecksPASS. Sourcegenerator
 project/tools/lenses/service_backing_variants.py. No selectionimplemented, no
 mod/runtime/gamechanges.
+
+
+4 November: humanselects backingoptionB. ImplementednativeActionPanel_Notification2
+frame60px (wasCityBannerProdCircle), glyph38px/-2,0 and80pxroot unchanged.
+Bothmanual/placementviews sharecontext; tooltip/Pedia/lifecycle remain.
+Loadedv4hingefreecirclelog. ExistingfullSQL/nativePlotInfo/MoreLenses/input/
+service/flow regression suite PASS. Normalhumanrebuild/reload, no newartcook;
+no installedmod/game/settingschanges.
+
+
+4 November opticalcenteringfollowup: humanscreenshotsStage2/3glyphslow+left.
+38pxatlasStage2centroid18.72,20.87;Stage3 17.8,20.83 vs18.5cellcentre.
+Changedglobalglyphoffset -2,0 ->0,-2 (2pxright+2pxup); frame60/glyph38
+unchanged. XMLverified, existingcontractassertion/docsupdated. No runtimeedits.
+
+
+4 November loggingcleanup: humanwants onlyhotkeydiagnostics, sayshotkeysfine.
+PanelnowDEBUG_HOTKEYS=true/CSCHotkeys prefix; retainobserver/keyedgeeligibility/
+recognizedchord+result/plainQ/cancellation/nativeLensactiondiagnostics. Masklog
+onlyfirstphysicaledge evennative2/3duplicates; no repeatedrestorelog. Removed
+rendercategories/palette/drawsummary, menu/radio/lifecycletraces andtheironly
+counters. Flow rebuild/clock/status/startuplogs+debugcountsremoved, invalidstyle
+usagewarningretained. Pin counts/signature/attachment/startuplogsremoved; real
+instance/icon/flowcaches intact. MCUISstartup/Pedia-clickprintsalso removed.
+No inputmask/capture/timing/renderbehaviorchanges. ExistingfullSQL/nativePlotInfo/
+actualMoreLenses/input/service/flow suite PASS; 21FashionHouse/MCUIS testsPASS.
+New regression: triple-edge chord yields4masklogs; repeatedpublish/UIticksquiet.
+Doccurrentdiagnosticcontractupdated. Normalrebuild/reload, no artcook required;
+no installed/game/settingschanges.
+
+6 November Service focus: Base #813a00 and white chevrons at 50% normal peak.
+The native material scroll is .11 (was .10); the art rises 2.2 (was 2.0).
+Hover uses the active Service stage and exact district subject. Follow eligible
+adjacent Quarter producers to improved Base, plus improved Specialty for Stage
+4. Unimproved and pillaged materials drop out. Focused fills/arrows 80% and
+unrelated fills/arrows 20%, with outlines only on focus. Each owner repaints
+through the shared renderer. Offline lens suite and isolated art cook passed.
+Full ModBuddy rebuild/reload and native review pending.
+
+6 November click-focus follow-up: native 21px X, switch by clicking another
+Service, grayscale backing/50% glyph for others, glyph offset 0,-1. Focused
+tiles keep normal opacity, unrelated tiles keep 20% tint/outline, and unfocused
+chevrons peak at 10%. Wonder links use completed plot instead of a normal
+district collection, pins use active effect and exact co-located Service.
+City Lights Goods Providers use tagged districts, grey #d0d0d0 and existing
+CSC_Goods edge art. Base #813a00 shared with placement. Native chevrons have
+stationary role badges over the shared hex edge. Focus and settled activation
+reuse the owner's data snapshot; removed duplicate pin-side world/effects scan.
+Isolated art cook passed. Native visual review and timings remain pending.
+
+Wonder pin host lookup is shared with the map tooltip and City Details. The
+lens keeps its active-effect gate. Routine hotkey logs are now opt-in.
+
+Service focus close now uses stock ClosePanelButtonSmall (26 px), at offset
+6,7 from the upper-right anchor so it overlaps the notification circle.
+
+Option C resized to 20 px from 26 px. Each of the four SDK close-button states
+is resampled separately and imported as a UI texture. Offset 10,11 keeps the
+smaller control overlapping the upper-right rim.
+
+Focused Service medallion uses the user's curved brass design. Keep the exact
+stock ActionPanel_Notification2 backing and the live 38 px Service atlas glyph.
+ImageGen isolated and softened the curved brass and red X. Only that extension
+is imported as CSC_ServiceFocusExtension.dds. The whole extension and its
+matching invisible close hit area moved one pixel left and down. The last
+preview confirms the blue face is pixel-identical in both states.
+Moved the focused brass extension and its close hit area one pixel right, retaining the one-pixel downward shift.
+
+Manual lens grayscale uses UILens.SetDesaturation and colour pass 1 for
+highlights and flows. Release on close preserves native Religion/Loyalty
+handoff. Unfocused Quarter fills and outlines are 40%. Edge badges are 34px
+UI copies of placement role art and publish independently of flow styles.
+Each Quarter snapshot survives UI switches until GameCore publishes. Placement
+is static and skips marker/flow reads. Close X uses stock hover glow without
+a tooltip. Offline lens tests and isolated SDK cook passed.
+Brightened the red X hover with a stronger, more saturated warm glow on the stock Controls_Glow texture.
+Manual lens value badges are centered on supplier or customer tiles, use the
+overlay palette, and move down 14 px when a Service medallion shares the tile.
+Unfocused lens tiles use 40% outlines and 20% fills. Placement uses 40%
+outlines for all Quarter tiles with 40% ready and 20% unready fills.
+Outside the selected Service chain, ready tiles now use 20% outlines and
+20% fills. Unready tiles use 20% outlines and 10% fills.
+
+6 Nov 15:24 DX11 crash, PID 2748, thread 20952. Firaxis package
+59072ADBDBCA3A6016 and the later 15:29 Steam-directory dump record the
+same 0xc0000006 execute fault at CivilizationVI.exe+0x761e30 (.text),
+with underlying 0xc0000001. Offline exception unwind contains six Civ
+frames then Windows thread startup. No CSC Lua runtime error in the
+session log. Windows System recorded four Disk 51 paging errors at
+14:54, none at 15:24. Evidence points to page-in I/O; the failing
+storage component is unresolved. No CSC change for this crash.
+
+Retired the map lens value badges at Henno's request. Service medallions,
+conveyors, and native placement adjacency icons still have their own paths.
+
+Service focus moves the selected supporting supply lines from the lens
+tooltips into a bottom-right details window. The submenu detail toggle
+starts on Low and persists across lens closes. High uses mirrored native
+wave masks for two reverse payment lanes and one forward yield lane.
+
+High conveyor peak is 60% with no focus, and its reverse Production lane
+is #de7700. Base and Specialty flow hues are Food for Bakers and Culture
+for Tailors. The detail button now names the mode it switches to.
+
+When a plot's Wonder completion flag is false, lens classification can
+use the city building record. A Wonder district without a plot Wonder type
+falls back to the exact-plot building list. Markers still require the
+co-located active Service. Recheck on Henno's affected save after rebuild.
+
+High detail now animates stock yield icons. A shared reverse texture carries
+Production and Gold, and the forward wave selects a native-font glyph by
+yield type. Low stays on white chevrons. Native waves own motion and fade.
+
+The Supply Chains lens now sets the native map desaturation target to 0.5.
+
+High Detail icon waves peak at 80% with no Service selected, 100% on
+the selected Service chain and 40% on other links.
+The lens key now sizes itself to its legend rows, including City Lights Goods Providers, and has no scrollbar.
+
+The lens retains 70% map saturation (native desaturation 0.3). A separate
+50% black shade under the lens fills covers revealed unrelated plots and
+plots outside a selected Service chain. Background indices are cached
+with each Quarter snapshot.
+
+The manual lens keeps native map colour. Its black background is now 40%,
+and tile shade, fills and outlines use terrain Pass 0 below models.
+Unfocused outlines are 10%, with 10% ready and 5% unready fills.
+
+Service focus hides all medallion tooltips. The details window title uses
+the host city and Service name, with effects above the supply-chain text.
+
+Focus details now size to the unwrapped content and uppercase the city.
+Retired High Detail and removed its art plus unused prototype masks and
+flat medallions. GameCore publishes coalesce through the UI refresh handler.
+Known Service-only changes reuse map snapshots and one modifier scan;
+focus caches chains and paints a separate shade layer.
+
+Retired the details window and restored full medallion tooltips in both
+focus states. Unrelated and unfocused plots use the same native shade
+layer again, with the background assignment key cached per Quarter.
+
+7 November: native Appeal colors and title could remain over the CSC overlay
+when entering from another lens. CSC now joins the layer-on event after loaded
+native listeners on entry and repaints if the shared carrier fires again. The
+late-event regression fails against the installed old panel and passes against
+the new source, including native Appeal takeover. Live visual check pending.
+
+8 November: Quarter atlas icons share the camera-facing Service pin layer.
+Quarter focus uses the selected plot's working links from the lens snapshot.
+Other Quarter icons use 50% opacity. The selected Quarter uses a standalone
+stock red close button. Added focus-switch and exact-plot regression coverage.
+
+8 November: approved 60 px Bakers/Tailors brass badges with 1 px inset now use
+a dedicated lens DDS atlas. Unfocused states use grayscale with identical alpha.
+The VFS import and full lens regression suite pass. Live lens rendering awaits
+a ModBuddy rebuild and game reload.
+
+8 November: Quarter hover accounting uses encoded adjacency, active modifier
+sources/targets, trade counterparts, active Service anchors and native specialist
+plot yields. Stage 3 decodes the live receiving-city rate while keeping the
+customer's population as the original transaction basis. Added a 10-pop buyer
+versus 4-pop seller fixture. Centered the stock bevel's inner boundary per bearing.
+
+8 November: the live Quarter hover failed at GetBuildingLocation, which is
+gameplay-only. The tooltip now indexes the UI's exact-plot building lists once
+per city per snapshot. The tooltip fixture omits the gameplay method and the
+full lens suite passes.
+
+8 November Quick Save maintenance audit: parsed exact building locations in the
+single-player save. Niani Bakers -8, Niani Tailors -6, Tawdenni Bakers -8 and
+Timbuktu Tailors -3 agree with the loaded district and building costs. Fixed
+overlap between the tooltip's built-district adjacency read and CSC encoded
+amounts. The loaded DB has no stock adjacency rules for either Quarter. The
+regression covers overlapping Production/Gold and a separate native rule.
+
+8 November: Quarter transaction totals now include direct outbound improvement
+and customer-building payouts from the loaded attachment rules. Exact neighbor
+and building checks cover Granary Food, material Production/Gold, and conditional
+Industry/Corporation supplements. The modifier scan does not re-add these leaves.
+
+8 November: Quarter tooltip Service lists use active recipient pins, exact
+outgoing stage links and the producer eligibility properties. This avoids the
+UI modifier-owner join that was dropping the list. Ordinary district Services
+can read the mirrored art flag when the source property is unavailable.
+
+8 November: Quarter and Service pins now use the native resource icon's
+worldY - 16 position. WorldAnchor billboard scaling applies to badge art,
+group offsets and hit areas at 0.22 world units per pixel. Live check pending.
+
+8 November: switched Service glyphs to the registered 80 px atlases, rebuilt
+120 px Quarter badges from the 256 px source icons and regenerated the
+160 px Service focus extension from its approved original. WorldAnchor scale
+0.121 gives a 10% larger badge footprint while retaining the resource anchor.
+
+8 November: rebuilt the round Service and hex Quarter backings as dedicated
+256 px textures, in color and grayscale. Quarter faces remain in their 120 px
+atlas and are layered over the shared brass backing. World size stays at the
+previously requested +10 percent. Assets are regenerated by build_quarter_badges.
+
+8 November: redrew both 256 px brass backings from continuous round/hex
+contours and a shared bevel profile. The stock texture still supplies the
+navy well. Review sheet compares the previous and redrawn edges at two scales.
+
+8 November: Quarter faces now sample standalone 256 px DDS textures at the
+existing world size. Both rims have stronger lighting on the upper bevel.
+The superseded 120 px Quarter face atlas is no longer packaged.
+
+8 November: simplified the hex brass bevel to remove its inner highlight line.
+Pin backings, Quarter faces and the Service focus extension use 128 px DDS
+with complete mip chains, following the native resource atlas sampling setup.
+World size and 80 px Service atlas glyphs stay as before.
+
+8 November: set the Quarter and Service pin scale to 0.118 using the visible
+Flax map icon as reference. The map requests the 256 px Flax slot regardless
+of zoom. Pins retain their 128 px mipmapped art and zoom-scaled WorldAnchor.
+
+8 November: restored the pin artwork to a 256 px base level with a full
+nine-level DDS chain. Service glyphs now use standalone mipmapped exports
+from the existing Quarter atlases. World size still matches Flax.
+
+8 November: moved Quarter faces and Service glyphs to direct 256 px atlas
+lookup. Slot 2 is grayscale in both XCFs. Bakers' river flags moved to 14/15.
+GIMP exports eleven mip levels on the 1024 px sheet only, and the pin
+layout preserves the Flax-matched footprint.
+
+9 November: extended the GIMP atlas exporter to CSC_Resources.xcf's 2x2 grid. The master now has a hidden FOW layer preserving the existing artwork. Re-exported and verified all eight resource sheets. Only the 256px normal and FOW sheets have ten mip levels.
+
+9 November: decoded the installed Windows icon BLP. Flax, FOW, Bakers and
+Tailors were all cooked as base-only UI blocks, unlike stock Silver. Added
+IsScalable=true and verified the full Windows XLP cook has 10/10/11/11
+levels. A magenta-source-mip comparison proved the cooker regenerates them.
+
+10 November: the dimmed Bakers' placement glyphs rendered blue. The Pillow DDS
+used BGRA bytes while its TEX declared RGBA. Re-encoded the atlas with the
+existing icon exporter's normalization and verified byte order, decoded colors
+and 70% alpha against the source. In-game review needs a rebuilt icon package.
+
+10 November: left-click now toggles focus for both Quarter and Service pins.
+Clicking another pin switches focus directly. Removed the red X controls and
+their texture imports, with the source art retained for possible reuse.
+
+10 November: City Lights Goods Providers still show their grey lens highlight and placement adjacency, but no longer create lens conveyors. Quarter focus follows transaction links only.
+
+10 November: unfocused Quarter-related tiles use a 30% outline and 30% ready or 10% unready fills over the existing background shade. Updated the direct tint and baked masks.
+
+10 November: Quarter pin focus keeps all adjacent mapped materials, customers and Goods Providers at normal readiness opacity. Animated links still use transaction eligibility. Service focus remains limited to active feeders.
+12 November: Quarter ledger includes bit-encoded route-import Amenities and regional building benefits across recipient cities. Route totals attribute by route multiplicity; overlapping equal regional sources split attribution. Per-snapshot regional cache. Native reference evidence and live-build scope in csc-quarter-lenses.md.
+12 November: Bakers/Tailors Quarter pin trial uses Effects/bakers_test.png and tailors_test.png in the Service round medallion. Added two standalone 256px DDS imports with full mips from the 100px sources. Both pin types use the same backing/dim treatment and click focus toggle. Full lens tests pass.
+16 November: reverted Quarter lens pins to their 256px color/grayscale atlas icons in brass hex frames. Removed the round-glyph trial DDS files, imports and generator option. Retained current focus toggle and Quarter ledger logic. Full lens suite and ModBuddy action checks passed.

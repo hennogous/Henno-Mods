@@ -9,6 +9,7 @@
 
 include('InstanceManager');
 include('ToolTipHelper');
+include('CSC_ServicePresentation');
 
 local SERVICE_HOSTS :table = {
     { ServiceType = 'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI', HostType = 'BUILDING_BOLSHOI_THEATRE' },
@@ -26,17 +27,15 @@ local m_WaitingForLoad:boolean = false;
 -- CityBuildings:GetBuildingLocation is exposed to gameplay scripts but not to
 -- this UI context. Resolve the stored location the same way CitySupport does:
 -- inspect every city-district plot's building list.
-local function FindBuildingPlot(pCity:table, buildingIndex:number)
+local function FindServicePlot(pCity:table, serviceType:string)
     local pBuildings:table = pCity:GetBuildings();
 
     for _, pDistrict in pCity:GetDistricts():Members() do
         local pPlot:table = Map.GetPlot(pDistrict:GetX(), pDistrict:GetY());
         if pPlot ~= nil then
             local plotIndex:number = pPlot:GetIndex();
-            for _, candidateIndex in ipairs(pBuildings:GetBuildingsAtLocation(plotIndex)) do
-                if candidateIndex == buildingIndex then
-                    return plotIndex;
-                end
+            if CSC_ServicePresentation.FindServiceOnPlot(pBuildings:GetBuildingsAtLocation(plotIndex), serviceType) then
+                return plotIndex;
             end
         end
     end
@@ -136,7 +135,7 @@ local function Render()
     for pairIndex, pair in ipairs(SERVICE_HOSTS) do
         local service:table = GameInfo.Buildings[pair.ServiceType];
         if service ~= nil and pBuildings:HasBuilding(service.Index) then
-            local servicePlot:number = FindBuildingPlot(pCity, service.Index);
+            local servicePlot:number = FindServicePlot(pCity, service.BuildingType);
             local actualWonder:table, actualIndex:number = FindWonderByPlot(wonders, servicePlot);
             if actualWonder ~= nil then
                 ConfigureServiceRow(

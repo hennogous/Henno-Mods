@@ -51,6 +51,25 @@ action check/patch tools. Localization is regenerated with `loc_md_to_sql.py`.
 The old `Lua_UI/Ruivo_Adjacencies/` directory remains historical reference but
 is unregistered and absent from the new package, including `patch_mab.py`.
 
+## Detailed Map Tacks
+
+When the Steam Workshop mod (item 2428969051) is active, CSC replaces its
+`dmt_yieldcalculator` entry point with `CSC_DetailedMapTacks.lua`. The wrapper
+loads DMT's own exported calculator and adds CSC's district base yields after
+DMT computes ordinary adjacency and its multipliers. DMT owns pin updates,
+placement warnings, cache and display. CSC reads the same projected district
+and resource types as DMT's own yield calculator, including resource removal
+when a tack replaces a luxury. Neutral tiles count as future local holdings
+for CSC's ownership gate. Mill options appear as tooltip lines with the Mill name in
+parentheses. A functioning local Mill contributes to the ordinary tack total.
+
+In a disposable turn-one game with the Steam version, FireTuner exercised real
+pin add/remove events, a planned Campus consuming Wheat, a native tile purchase,
+river rounding, and a local Wind Mill. The Bakers', Tailors' and Commercial Hub
+forecasts matched the actual completed districts in the fixture, including the
+Hub's normal Gold adjacency. The adapter covers district yields. Building
+transactions and Services need a separate forecast with their own assumptions.
+
 ## Coverage matrix
 
 | Behavior | Implementation | Evidence |
@@ -151,9 +170,11 @@ events as well as `GovernmentChanged`; the old `PolicyChanged` name was incorrec
 The policy-owned attachment also supplies the native activation/removal gate.
 
 Placement previews expose numeric custom totals to the Firaxis yield formatter
-through an optional fourth argument. It adds them to `GetAdjacencyYield` before
-formatting one icon/amount per yield; the native API remains responsible for its
-own policy multipliers. No localized strings are parsed. Quarter base and policy
+through an optional fourth argument. It adds them to the native adjacency before
+formatting one icon/amount per yield. Correction, 16 November: the native
+`GetAdjacencyYield` badge query returns base adjacency, so the shared formatter
+now applies active vanilla policy percentages to that native amount first; CSC
+additions already contain their policy returns and are added afterwards. No localized strings are parsed. Quarter base and policy
 contributions share one source-detail sentence. Non-yield providers stay separate;
 ordinary native-only callers and Housing previews retain their existing behavior.
 The retired district tooltip appendix remains absent.
@@ -278,6 +299,12 @@ The focused tooltip check still compares placement sentences to MAB and verifies
 the retired loader is absent from both source actions and the ModBuddy project.
 The installed CSC package received only the affected Lua/text and manifest changes.
 
+Customer district info tooltips use `ToolTipLoader_CSCQuarterCustomers.lua`
+to append base sales returns to the stock adjacency list with its localization
+template. The loader reads the generated rules, so it picks up unique replacements
+and enabled mod integrations. Policy doubling remains conditional and is shown
+in placement previews.
+
 ### Tooltip regression corrected (2 October)
 
 Henno's screenshot caught a wording regression: the initial placement line omitted
@@ -344,6 +371,36 @@ Firaxis `TunerMapPanel.lua:136` startup error.
   materials/stage2 and stage3 independently.
 
 No Workshop publication or Git commit was made by this implementation.
+
+
+### Native policy adjacency badges - 16 November 2026
+
+Henno's vanilla screenshots establish that the ordinary lens badge reports +2
+Gold / +3 Production while plot tooltips report the policy-adjusted 4 / 6.
+The shipped `DistrictPlotIconManager.lua` calls `GetAdjacentYieldBonusString`,
+which formats `plot:GetAdjacencyYield` without applying policy percentages.
+The previous CSC wrapper comment claiming that query included them was wrong.
+
+`CSC_StockAdjacencyBonusSupport.lua` now discovers direct
+`COLLECTION_PLAYER_DISTRICTS` / `EFFECT_ADJUST_DISTRICT_YIELD_MODIFIER` policy
+links from GameInfo. It accepts unrestricted subjects or a single non-inverted
+district-type requirement, reads Amount/YieldType, and handles direct unique
+replacements. Unknown compound or owner requirements are excluded. Static
+configuration is cached; the receiving player's active policies are checked on
+every badge draw. Policy percentages add together before CSC's already-adjusted
+flat contributions are added. This covers native-only districts as well as CSC
+customers, without changing gameplay yields or the native source-breakdown text.
+For example, Town Charters shows +4 Gold and +2 Food for base +2 Gold and one
+adjacent Bakers Quarter. Five-Year Plan plus Collectivism shows +9 Production
+from base +3, retaining unrelated yields.
+
+The current gameplay database supplies all 12 vanilla direct policy effects.
+Executed Lua 5.1 / in-memory SQL regression passes 251 gameplay/UI cases,
+including policy on/off, foreign-player isolation, all direct unique replacements,
+native-only districts, mixed native/CSC yields, stacked percentages and Housing.
+This is source/offline validation; a ModBuddy rebuild and in-game check remain
+pending. No installed game files or gameplay modifiers were changed.
+
 
 ### Extended Policy Cards / Better Report Screen estimates - 16 November 2026
 

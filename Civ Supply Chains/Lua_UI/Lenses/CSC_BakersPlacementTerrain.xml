@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Layer="WorldAnchor" ConsumeMouse="0">
+  <Container ID="Markers" ConsumeMouse="0"/>
+  <Instance Name="BakersPlacementHill">
+    <!-- Match the river pip's visible width, about 9.35 world units on a
+         64-unit hex. The terrain hex occupies 36px of the 50px image. -->
+    <WorldAnchor ID="Anchor" Scaling="1" UnitsPerPixel="0.26" Billboard="1" ConsumeMouse="0">
+      <Image ID="Icon" Size="50,50" Anchor="C,C" ConsumeMouse="0"/>
+    </WorldAnchor>
+  </Instance>
+</Context>

@@ -61,7 +61,8 @@ end
 function A.SourceName(rule,count)
     local key = rule.CustomAdjacentObject;
     local icon='';
-    if (GameInfo.Resources and GameInfo.Resources[key]) or (GameInfo.Districts and GameInfo.Districts[key]) then
+    -- Name district sources in the badge tooltip without a second icon.
+    if GameInfo.Resources and GameInfo.Resources[key] then
         icon='[ICON_'..key..']';
     end
     local object = A.Objects[key];
@@ -83,7 +84,26 @@ local namedSources={
     CAO_IMPROVEMENT='IMPROVEMENT',CAO_DISTRICT='DISTRICT',TYPETAG_DISTRICT='DISTRICT',
     CAO_FEATURE='FEATURE',CAO_TERRAIN='TERRAIN',CAO_TERRAIN_SETS='TERRAIN'
 };
-function A.PreviewLine(rule,amount,count)
+-- The badge and tooltip can render white with an inline alpha value. Use
+-- the stock Gray color so forecast text visibly differs from active yields.
+local millForecastColor = '[COLOR:Gray]';
+local millForecastProduction = '[ICON_CSC_MILL_PRODUCTION]';
+
+function A.PreviewLine(rule,amount,count,isForecast)
+    -- The same Mill line is used for placement forecasts and active bonuses.
+    if A.UnitSteps[rule.ID] then
+        local key = rule.AdjacencyType == 'FROM_RIVER_CROSSING'
+            and 'LOC_CSC_ADJ_MILL_RIVER' or 'LOC_CSC_ADJ_MILL_TERRAIN';
+        local mill = GameInfo.Buildings[rule.WhoIsTheOwner];
+        local yieldText = A.YieldText(rule,amount);
+        if isForecast then
+            -- The atlas supplies the icon's alpha. Dim the surrounding text separately.
+            yieldText = '[ENDCOLOR]' .. millForecastProduction .. millForecastColor .. A.YieldName(rule);
+        end
+        local text = Locale.Lookup(key,A.AmountText(rule,amount),yieldText,
+            count,A.SourceName(rule,count),Locale.Lookup(mill.Name));
+        return isForecast and millForecastColor .. text .. '[ENDCOLOR]' or text;
+    end
     local first,last=A.Bounds(rule);
     local distance='LOC_CSC_ADJ_DISTANCE_NEARBY';
     if last==0 then distance='LOC_CSC_ADJ_DISTANCE_LOCAL';
@@ -139,11 +159,38 @@ function A.Preview(districtType, plot, city)
             end
         end
     end
+    local quarter = districtType:match('^DISTRICT_CSC_(%w+)_QUARTER$');
+    local classPrefix = quarter and 'CLASS_CSC_' .. quarter;
+    local terrainLines = {};
+    local goodsLine, lastMaterialLine;
     for _,key in ipairs(detailKeys) do
         local detail=details[key];
-        if detail.Amount ~= 0 then lines[#lines+1]=A.PreviewLine(detail.Rule,detail.Amount,detail.Count); end
+        if detail.Amount ~= 0 then
+            local rule = detail.Rule;
+            local source = rule.CustomAdjacentObject;
+            local line = A.PreviewLine(rule,detail.Amount,detail.Count);
+            -- Put the Quarter's tile terrain bonuses before its supply sources.
+            if quarter and (rule.AdjacencyType == 'FROM_RIVER_CROSSING'
+                or (rule.AdjacencyType == 'FROM_RINGS_CAO_TERRAIN_SETS' and source == 'IsHills')) then
+                terrainLines[#terrainLines+1] = line;
+            else
+                lines[#lines+1] = line;
+                if classPrefix and source == classPrefix .. '_GOODS_PROVIDER' then
+                    goodsLine = #lines;
+                elseif classPrefix and (source == classPrefix .. '_BASE' or source == classPrefix .. '_SPEC') then
+                    lastMaterialLine = #lines;
+                end
+            end
+        end
     end
-    return A.TotalIcons(totals),table.concat(lines,'[NEWLINE]'),totals;
+    -- Move the Quarter's goods-provider line after the last visible material.
+    -- Other lines retain their order, including when no materials contribute.
+    if goodsLine and lastMaterialLine and goodsLine < lastMaterialLine then
+        local line = table.remove(lines, goodsLine);
+        table.insert(lines, lastMaterialLine, line);
+    end
+    for _,line in ipairs(lines) do terrainLines[#terrainLines+1] = line; end
+    return A.TotalIcons(totals),table.concat(terrainLines,'[NEWLINE]'),totals;
 end
 
 function A.RiverEdge(center, neighbor, direction)
@@ -159,6 +206,43 @@ function A.RiverEdge(center, neighbor, direction)
     return false;
 end
 
+local millHillsIcons = {
+    TERRAIN_GRASS_HILLS = '[ICON_CSC_MILL_GRASS_HILLS]',
+    TERRAIN_PLAINS_HILLS = '[ICON_CSC_MILL_PLAINS_HILLS]',
+    TERRAIN_DESERT_HILLS = '[ICON_CSC_MILL_DESERT_HILLS]',
+    TERRAIN_TUNDRA_HILLS = '[ICON_CSC_MILL_TUNDRA_HILLS]',
+    TERRAIN_SNOW_HILLS = '[ICON_CSC_MILL_SNOW_HILLS]'
+};
+
+function A.MillPlacementText(plot, city, playerID)
+    local options, lines = {}, {};
+    playerID = playerID or city:GetOwner();
+    -- The two local unit-step rules describe alternative Mills. Read their
+    -- terrain and amounts without the functioning-Mill gate used by A.Preview.
+    -- Skip any already-active rule and keep these figures out of live totals.
+    for _,rule in ipairs(A.ByDistrict.DISTRICT_CSC_BAKERS_QUARTER or {}) do
+        if A.UnitSteps[rule.ID] and not A.Eligible(rule,city,playerID) then
+            local count = A.Count(rule,plot,city,playerID);
+            local amount = A.Amount(rule,count);
+            if amount > 0 then
+                local value = A.AmountText(rule,amount);
+                local terrainIcon = '[ICON_CSC_MILL_RIVER]';
+                if rule.AdjacencyType ~= 'FROM_RIVER_CROSSING' then
+                    local terrain = GameInfo.Terrains[plot:GetTerrainType()];
+                    terrainIcon = terrain and millHillsIcons[terrain.TerrainType] or millHillsIcons.TERRAIN_GRASS_HILLS;
+                end
+                -- Atlas glyphs have their own alpha. Color only the text
+                -- so the inline icon renderer cannot dim the glyphs twice.
+                options[#options+1] = millForecastProduction .. millForecastColor .. value
+                    .. '[ENDCOLOR] ' .. terrainIcon;
+                lines[#lines+1] = A.PreviewLine(rule,amount,count,true);
+            end
+        end
+    end
+    if #options == 0 then return '', ''; end
+    return table.concat(options,'  ' .. millForecastColor .. '/[ENDCOLOR]  '), table.concat(lines,'[NEWLINE]');
+end
+
 -- Property and aggregate sources do not have a tile-edge representation.
 local edgeSources = {
     FROM_RINGS_TYPETAG_RESOURCE=true,FROM_RINGS_CAO_RESOURCE=true,
@@ -172,12 +256,16 @@ local edgeSources = {
     FROM_ADJACENT_DISTRICT_AND_WONDER=true,FROM_RINGS_SPECIFIC_WONDER=true
 };
 
-function A.EdgeIcon(districtType, center, neighbor, city, direction)
+function A.EdgeIcon(districtType, center, neighbor, city, direction, showMillPotential)
     local fallback='';
     for _,rule in ipairs(A.ByDistrict[districtType] or {}) do
         local first,last = A.Bounds(rule);
-        if first <= 1 and last >= 1 and A.Eligible(rule,city,city:GetOwner())
-            and (not (rule.MustOwn == true or rule.MustOwn == 1) or neighbor:GetOwner() == city:GetOwner()) then
+        -- In placement, preview every Water Mill river face on the candidate
+        -- tile. The river belongs to the face even if the far bank is unowned.
+        -- A.Preview still checks the functioning Mill for amounts and tooltips.
+        local plannedRiver = showMillPotential and rule.ID == 'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER';
+        if first <= 1 and last >= 1 and (plannedRiver or (A.Eligible(rule,city,city:GetOwner())
+            and (not (rule.MustOwn == true or rule.MustOwn == 1) or neighbor:GetOwner() == city:GetOwner()))) then
             local match = false;
             if rule.AdjacencyType == 'FROM_RIVER_CROSSING' then
                 match=A.RiverEdge(center,neighbor,direction);

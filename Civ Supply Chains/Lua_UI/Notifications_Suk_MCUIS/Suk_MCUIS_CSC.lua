@@ -4,7 +4,6 @@
 -- Suk_MCUIS_CSC UI Script
 --==========================================================================================================================
 
-print('Suk_MCUIS_CSC UI Script loaded!!!')
 
 -- City-panel counterpart to CSC_UI_Notifications.lua: the same SQL registry
 -- supplies effect identity, per-stack text and icons. This view displays current
@@ -72,7 +71,6 @@ function OnSuk_MCUIS_RequestedIcon(sContext, sName, tInstance)
         local sIconTarget = row and row.AbilityIconTarget
         if sIconTarget then
             tInstance.IconFrame:RegisterCallback(Mouse.eRClick, function()
-                print("Opening Civilopedia for:", sIconTarget)
                 LuaEvents.OpenCivilopedia(sIconTarget)
             end)
         end

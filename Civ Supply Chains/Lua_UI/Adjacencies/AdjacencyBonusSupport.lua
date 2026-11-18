@@ -1,10 +1,18 @@
--- Preserve Firaxis behavior, then add only rules owned by CSC.
+-- Correct native policy badge totals, then add rules owned by CSC.
 include('CSC_StockAdjacencyBonusSupport');
 include('CSC_AdjacencyPresentation');
 local A=CSC_Adjacency;
 local stockYieldString=GetAdjacentYieldBonusString;
 local stockBonuses=AddAdjacentPlotBonuses;
 local stockIcon=GetAdjacentIconArtdefName;
+
+local function IsBakersPlacement(districtType)
+    if districtType ~= 'DISTRICT_CSC_BAKERS_QUARTER'
+        or UI.GetInterfaceMode() ~= InterfaceModeTypes.DISTRICT_PLACEMENT then return false; end
+    -- PlotInfo also collects every district for the general adjacency lens.
+    local selected = GameInfo.Districts[UI.GetInterfaceModeParameter(CityOperationTypes.PARAM_DISTRICT_TYPE)];
+    return selected and selected.DistrictType == districtType;
+end
 
 function GetAdjacentYieldBonusString(districtIndex,city,plot)
     local definition=GameInfo.Districts[districtIndex];
@@ -14,22 +22,29 @@ function GetAdjacentYieldBonusString(districtIndex,city,plot)
     for _,total in pairs(totals) do
         if total.Rule.ProvideType=='SelfBonus' then baseYields[total.Rule.YieldType]=total.Amount; end
     end
-    -- Supply numeric additions before Firaxis formats its icons. Native policy
-    -- multipliers are already included by GetAdjacencyYield; never apply them
-    -- again to either the native total or the policy-owned CSC additions.
+    -- Supply numeric additions before the shared formatter renders its icons.
+    -- It adjusts native base adjacency for active policies BEFORE adding these
+    -- CSC totals, which already include their separate policy-owned returns.
     local icons,tooltip,required=stockYieldString(districtIndex,city,plot,baseYields);
     local customIcons=A.TotalIcons(totals,true);
     if customIcons~='' then icons=(icons~='' and icons..'[NEWLINE]' or '')..customIcons; end
     if customTooltip~='' then tooltip=(tooltip~='' and tooltip..'[NEWLINE]' or '')..customTooltip; end
+    if IsBakersPlacement(definition.DistrictType) then
+        local potential, potentialTooltip = A.MillPlacementText(plot,city);
+        if potential~='' then
+            icons=potential..(icons~='' and '[NEWLINE]'..icons or '');
+            tooltip=potentialTooltip..(tooltip~='' and '[NEWLINE]'..tooltip or '');
+        end
+    end
     return icons,tooltip,required;
 end
 
 -- The placement plot is needed for directional river tests. An eligible CSC
 -- source's authored icon identifies the supply-chain role more precisely than
 -- the native district/resource icon; native art is the fallback for other edges.
-function GetAdjacentIconArtdefName(districtType,neighbor,city,direction,center)
+function GetAdjacentIconArtdefName(districtType,neighbor,city,direction,center,showMillPotential)
     if center then
-        local icon=A.EdgeIcon(districtType,center,neighbor,city,direction);
+        local icon=A.EdgeIcon(districtType,center,neighbor,city,direction,showMillPotential);
         if icon~='' then return icon; end
     end
     return stockIcon(districtType,neighbor,city,direction);
@@ -52,10 +67,11 @@ function AddAdjacentPlotBonuses(center,districtType,city,current)
     -- the center and can reserve the same face with a generic icon. Select once,
     -- with the placement context, just as the fork's five-argument path did.
     local bonuses={};
+    local showMillPotential = IsBakersPlacement(districtType);
     for direction,reverse in pairs(opposite) do
         local neighbor=Map.GetAdjacentPlot(center:GetX(),center:GetY(),direction);
         if neighbor then
-            local icon=GetAdjacentIconArtdefName(districtType,neighbor,city,direction,center);
+            local icon=GetAdjacentIconArtdefName(districtType,neighbor,city,direction,center,showMillPotential);
             if icon and icon~='' then
                 local view=bonuses[neighbor:GetIndex()] or GetViewPlotInfo(neighbor,current);
                 local existing=nil;

@@ -17,18 +17,16 @@
       <Label ID="LensTitle" Style="FontFlair22" SmallCaps="26" FontStyle="glow" ColorSet="WonderHeader" Anchor="L,C" Offset="25,0"/>
       <Button ID="CloseButton" Texture="Controls_CloseButtonAlt" Size="32,32" Anchor="R,C" Offset="2,0"/>
     </Grid>
-    <Grid Anchor="R,T" Offset="10,86" Size="255,430" Texture="Controls_PanelBlue" SliceCorner="25,28" SliceSize="33,18" SliceTextureSize="83,75" ConsumeAllMouse="1">
+    <Grid ID="LegendPanel" Anchor="R,T" Offset="10,86" Size="255,68" Texture="Controls_PanelBlue" SliceCorner="25,28" SliceSize="33,18" SliceTextureSize="83,75" ConsumeAllMouse="1">
       <Line Start="20,16" End="235,16" Color="55,95,126,255" Width="2"/>
       <Label Anchor="C,T" Offset="0,20" Style="FontFlair16" SmallCaps="20" String="LOC_TREE_KEY" Color0="78,119,151,255" Color1="0,0,0,0" Color2="25,65,96,255"/>
       <Line Start="20,40" End="235,40" Color="55,95,126,255" Width="2"/>
-      <ScrollPanel ID="LegendScroll" Offset="16,54" Size="223,360" Style="ScrollPanelWithRightBar">
-        <Stack ID="LegendStack" StackGrowth="Down" StackPadding="8"/>
-      </ScrollPanel>
+      <Stack ID="LegendStack" Anchor="L,T" Offset="16,54" StackGrowth="Down" StackPadding="2"/>
     </Grid>
   </Container>
   <Instance Name="QuarterLegendInstance">
     <Image ID="LegendColor" Size="32,36" Texture="Controls_KeySwatchHex">
-      <Label ID="LegendLabel" Style="FontNormal14" WrapWidth="172" Anchor="L,C" Offset="38,0"/>
+      <Label ID="LegendLabel" Style="FontNormal14" WrapWidth="185" Anchor="L,C" Offset="38,0"/>
     </Image>
   </Instance>
   <Instance Name="QuarterChoiceInstance">

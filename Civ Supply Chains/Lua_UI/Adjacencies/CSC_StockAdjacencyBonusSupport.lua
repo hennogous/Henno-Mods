@@ -7,6 +7,100 @@ include( "Civ6Common" );		-- GetYieldString()
 include( "MapEnums" );
 
 
+-- Badge-only correction: the native adjacency query returns base adjacency,
+-- while district yield output includes active policy percentages. Cache only
+-- database definitions; query policy state on every redraw so swapping cards or
+-- viewing another player's city cannot retain a previous player's multiplier.
+-- Restrict discovery to direct player-district adjacency effects and simple
+-- district-type gates used by vanilla. Unknown/conditional mod effects are left
+-- to the engine instead of guessing at their activation. CSC flat policy returns
+-- are added AFTER this percentage, since their evaluator already doubles them.
+local m_AdjacencyPolicyBonuses = {};
+do
+    local function Arguments(tableName, idColumn)
+        local result = {};
+        for row in GameInfo[tableName]() do
+            local id = row[idColumn];
+            result[id] = result[id] or {};
+            result[id][row.Name] = row.Value;
+        end
+        return result;
+    end
+    if GameInfo.PolicyModifiers and GameInfo.Modifiers and GameInfo.DynamicModifiers
+        and GameInfo.ModifierArguments and GameInfo.RequirementSets
+        and GameInfo.RequirementSetRequirements and GameInfo.Requirements
+        and GameInfo.RequirementArguments then
+        local arguments = Arguments('ModifierArguments', 'ModifierId');
+        local requirementArguments = Arguments('RequirementArguments', 'RequirementId');
+        local districtGates, members = {}, {};
+        for member in GameInfo.RequirementSetRequirements() do
+            local list = members[member.RequirementSetId] or {};
+            list[#list + 1] = member.RequirementId;
+            members[member.RequirementSetId] = list;
+        end
+        for set in GameInfo.RequirementSets() do
+            local list = members[set.RequirementSetId] or {};
+            local count, districtType = #list, nil;
+            if count == 1 then
+                local requirement = GameInfo.Requirements[list[1]];
+                local args = requirementArguments[list[1]] or {};
+                if requirement and requirement.RequirementType == 'REQUIREMENT_DISTRICT_TYPE_MATCHES'
+                    and not (requirement.Inverse == true or requirement.Inverse == 1) then
+                    districtType = args.DistrictType;
+                end
+            end
+            -- A single type test has identical ALL/ANY semantics. Multi-test
+            -- sets may include population, buildings or other unsupported gates.
+            if count == 1 then districtGates[set.RequirementSetId] = districtType; end
+        end
+        local seen = {};
+        for link in GameInfo.PolicyModifiers() do
+            local modifier = GameInfo.Modifiers[link.ModifierId];
+            local dynamic = modifier and GameInfo.DynamicModifiers[modifier.ModifierType];
+            local args = arguments[link.ModifierId] or {};
+            local policy = GameInfo.Policies[link.PolicyType];
+            local districtType = modifier and districtGates[modifier.SubjectRequirementSetId];
+            local identity = link.PolicyType .. ':' .. link.ModifierId;
+            if policy and dynamic and dynamic.EffectType == 'EFFECT_ADJUST_DISTRICT_YIELD_MODIFIER'
+                and dynamic.CollectionType == 'COLLECTION_PLAYER_DISTRICTS'
+                and not modifier.OwnerRequirementSetId
+                and (not modifier.SubjectRequirementSetId or districtType)
+                and args.YieldType and tonumber(args.Amount) and not seen[identity] then
+                seen[identity] = true;
+                m_AdjacencyPolicyBonuses[#m_AdjacencyPolicyBonuses + 1] = {
+                    PolicyIndex=policy.Index, DistrictType=districtType,
+                    YieldType=args.YieldType, Amount=tonumber(args.Amount)
+                };
+            end
+        end
+    end
+end
+
+local function PolicyAdjustedAdjacency(amount, districtType, yieldType, playerID)
+    local player = Players[playerID];
+    local culture = player and player:GetCulture();
+    if not culture then return amount; end
+    local baseType = districtType;
+    if GameInfo.DistrictReplaces then
+        for replacement in GameInfo.DistrictReplaces() do
+            if replacement.CivUniqueDistrictType == districtType then
+                baseType = replacement.ReplacesDistrictType;
+                break;
+            end
+        end
+    end
+    local percent = 0;
+    for _,bonus in ipairs(m_AdjacencyPolicyBonuses) do
+        if bonus.YieldType == yieldType
+            and (not bonus.DistrictType or bonus.DistrictType == districtType or bonus.DistrictType == baseType)
+            and culture:IsPolicyActive(bonus.PolicyIndex) then
+            percent = percent + bonus.Amount;
+        end
+    end
+    -- Policy adjacency percentages stack additively, not multiplicatively.
+    return amount * (100 + percent) / 100;
+end
+
 -- ===========================================================================
 --	CONSTANTS
 -- ===========================================================================
@@ -184,21 +278,23 @@ function GetAdjacentYieldBonusString( eDistrict:number, pkCity:table, plot:table
 	local requiredText	:string = "";
 	local isFirstEntry	:boolean = true;	
 	local iconString:string = "";
+	local district = GameInfo.Districts[eDistrict];
+	local isRepeatable = district.OnePerCity == false;
+	local hasAdditionalYields = additionalYields ~= nil and next(additionalYields) ~= nil;
 	
-	-- Special handling for Neighborhoods
-	if (GameInfo.Districts[eDistrict].OnePerCity == false) then
+	-- Repeatable districts use the native Neighborhood tooltip path. Their CSC
+	-- yields still need formatting even though this path skips native yield reads.
+	if isRepeatable then
 
 		tooltipText, requiredText = plot:GetAdjacencyBonusTooltip(Game.GetLocalPlayer(), pkCity:GetID(), eDistrict, 0);
-		-- Ensure required text is NIL if none was returned.
-		if requiredText ~= nil and string.len(requiredText) < 1 then
-			requiredText = nil;
-		end
+	end
 
-	-- Normal handling for all other districts
-	else
-		-- Check each neighbor if it matches criteria with the adjacency rules
+	if not isRepeatable or hasAdditionalYields then
 		for iBonusYield = START_INDEX, END_INDEX do
-			local iBonus:number = plot:GetAdjacencyYield(Game.GetLocalPlayer(), pkCity:GetID(), eDistrict, iBonusYield); 
+			local iBonus:number = 0;
+			if not isRepeatable then
+				iBonus = plot:GetAdjacencyYield(Game.GetLocalPlayer(), pkCity:GetID(), eDistrict, iBonusYield);
+			end
 			if (iBonus > 0) then
 				local yieldTooltip, yieldRequireText = plot:GetAdjacencyBonusTooltip(Game.GetLocalPlayer(), pkCity:GetID(), eDistrict, iBonusYield);
 				if tooltipText == "" then
@@ -215,6 +311,7 @@ function GetAdjacentYieldBonusString( eDistrict:number, pkCity:table, plot:table
 			local yieldType:string = GameInfo.Yields[iBonusYield].YieldType;
 			-- CSC supplies numeric additions here so cancellation and negative totals
 			-- are resolved before the shared icon formatter renders the final amount.
+			iBonus = PolicyAdjustedAdjacency(iBonus, district.DistrictType, yieldType, pkCity:GetOwner());
 			iBonus = iBonus + (additionalYields and additionalYields[yieldType] or 0);
 			if (iBonus > 0 or (additionalYields ~= nil and iBonus ~= 0)) then
 				local yieldString:string = GetYieldString( yieldType, iBonus );
@@ -226,34 +323,49 @@ function GetAdjacentYieldBonusString( eDistrict:number, pkCity:table, plot:table
 			end
 		end
 			
-		-- Ensure required text is NIL if none was returned.
-		if requiredText ~= nil and string.len(requiredText) < 1 then
-			requiredText = nil;
-		end
-	end	
+	end
+	if requiredText ~= nil and string.len(requiredText) < 1 then
+		requiredText = nil;
+	end
 
 	-- Housing effects from districts (both one-per and normal)
 	local iAppeal = plot:GetAppeal();
-	local iBaseHousing = GameInfo.Districts[eDistrict].Housing;
+	local iBaseHousing = district.Housing;
 
 	-- Default is Mbanza case (no appeal change)
 	local iTotalHousing:number = iBaseHousing;
 
 	for row in GameInfo.AppealHousingChanges() do
-		if (row.DistrictType == GameInfo.Districts[eDistrict].DistrictType) then
+		if (row.DistrictType == district.DistrictType) then
 			local iMinimumValue = row.MinimumValue;
 			local iAppealChange = row.AppealChange;
 			local szDescription = row.Description;
 			if (iAppeal >= iMinimumValue) then
 				iTotalHousing = iBaseHousing + iAppealChange;
-				tooltipText = Locale.Lookup("LOC_DISTRICT_ZONE_NEIGHBORHOOD_TOOLTIP", iBaseHousing + iAppealChange, szDescription);
+				local housingTooltip = Locale.Lookup("LOC_DISTRICT_ZONE_NEIGHBORHOOD_TOOLTIP", iTotalHousing, szDescription);
+				-- Keep the breakdown when the badge also shows native yields.
+				-- Repeatable districts already use the native Housing tooltip path.
+				if not isRepeatable and hasAdditionalYields and iconString ~= "" and tooltipText and tooltipText ~= "" then
+					housingTooltip = housingTooltip .. "[NEWLINE]" .. tooltipText;
+				end
+				tooltipText = housingTooltip;
 				break;
 			end
 		end
 	end
 
 	if iTotalHousing ~= 0 then
-		iconString = "[ICON_Housing]+" .. tostring(iTotalHousing);
+		-- Flat Housing (for example, a Rural Community) may have no native
+		-- tooltip. Supply its amount before CSC appends any adjacency details.
+		if not tooltipText or tooltipText == "" then
+			tooltipText = Locale.Lookup("LOC_TYPE_TRAIT_HOUSING", iTotalHousing);
+		end
+		local housingString = "[ICON_Housing]+" .. tostring(iTotalHousing);
+		-- Housing leads the badge. Keep yield rows when CSC contributed to it.
+		if hasAdditionalYields and iconString ~= "" then
+			housingString = housingString .. "[NEWLINE]" .. iconString;
+		end
+		iconString = housingString;
 	end
 
 	return iconString, tooltipText, requiredText;

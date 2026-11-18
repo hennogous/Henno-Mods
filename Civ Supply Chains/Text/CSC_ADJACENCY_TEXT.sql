@@ -12,4 +12,6 @@ VALUES  (   'en_US',    'LOC_CSC_ADJ_PREVIEW_LINE',             '{1_Amount} {2_Y
         (   'en_US',    'LOC_CSC_ADJ_DISTANCE_ADJACENT',        'adjacent'   ),
         (   'en_US',    'LOC_CSC_ADJ_DISTANCE_LOCAL',           'local'   ),
         (   'en_US',    'LOC_CSC_ADJ_DISTANCE_NEARBY',          'nearby'   ),
-        (   'en_US',    'LOC_CSC_ADJ_SOURCE_GENERIC',           'matching object'   );
+        (   'en_US',    'LOC_CSC_ADJ_SOURCE_GENERIC',           'matching object'   ),
+        (   'en_US',    'LOC_CSC_ADJ_MILL_TERRAIN',             '{1_Amount} {2_Yield} from the local {4_Source} terrain ({5_Mill}).'   ),
+        (   'en_US',    'LOC_CSC_ADJ_MILL_RIVER',               '{1_Amount} {2_Yield} from {3_Count} adjacent {4_Source} ({5_Mill}).'   );
