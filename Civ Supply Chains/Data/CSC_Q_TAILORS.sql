@@ -175,7 +175,7 @@ VALUES
         /* Aqueduct,                   */  0,
         /* InternalOnly,               */  0,
         /* NoAdjacentCity,             */  0,
-        /* PlunderType,                */  'PLUNDER_HEAL',
+        /* PlunderType,                */  'PLUNDER_GOLD',
         /* PlunderAmount,              */  50,
         /* Appeal,                     */  1,
         /* OnePerCity,                 */  1,
