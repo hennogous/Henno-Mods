@@ -15,7 +15,7 @@ local C=CSC_AI_PlanContinuity
 local planStates={}
 local wonderCustomers
 
-function E.WonderOffers(player,chains,protectedPlots,limit)
+function E.WonderOffers(player,chains,protectedPlots,limit,maxOfferQ8)
     -- The same generated sales catalogue feeds the Quarter forecast for
     -- completed Wonders. Here it identifies the individual Wonder building
     -- for CE's separate, native-legal plot comparison. Cache only definitions.
@@ -39,14 +39,16 @@ function E.WonderOffers(player,chains,protectedPlots,limit)
         if mapped and chain.ready and supply and #(supply.base or{})>0 then
             -- A working Base makes the chain more credible. Both material
             -- classes in operation get the strongest allowance because the
-            -- Wonder Service needs both. This is a bounded siting preference
-            -- in Q8, not a second forecast of the transaction or the Service.
-            local amount=chain.workingBase and 6 or 4
+            -- Wonder Service needs both. Each step of supplier readiness adds
+            -- eight utility before CE applies its proportional cap.
+            local amount=chain.workingBase and 16 or 8
             if chain.workingBase then
                 for _,material in ipairs(supply.specialty or{})do
-                    if material.working then amount=8;break end
+                    if material.working then amount=24;break end
                 end
             end
+            -- Older CE accepts at most 8 utility. Keep its packet valid.
+            local deltaQ8=math.min(amount*256,maxOfferQ8)
             for _,plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
                 local index=plot:GetIndex()
                 local city=plot:GetOwner()==pid and plot:GetDistrictType()==-1
@@ -56,9 +58,9 @@ function E.WonderOffers(player,chains,protectedPlots,limit)
                         if not city:GetBuildings():HasBuilding(building)then
                             local key=city:GetID()..':'..building..':'..index
                             local offer=seen[key]
-                            if offer then offer.deltaQ8=math.max(offer.deltaQ8,amount*256)
+                            if offer then offer.deltaQ8=math.max(offer.deltaQ8,deltaQ8)
                             else
-                                offer={player=pid,city=city:GetID(),building=building,plot=index,deltaQ8=amount*256}
+                                offer={player=pid,city=city:GetID(),building=building,plot=index,deltaQ8=deltaQ8}
                                 seen[key]=offer;offers[#offers+1]=offer
                             end
                         end

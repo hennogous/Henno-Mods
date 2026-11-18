@@ -214,7 +214,7 @@ local function refresh(turn)
     local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
     local wonderStatus = bridge.WonderStatus()
     local protectWonders = wonderStatus and wonderStatus:match('"ready":1') and wonderStatus:match('"faults":0')
-    local wonderLimit = bridge.WonderOfferLimit(wonderStatus)
+    local wonderLimit, maxWonderOfferQ8 = bridge.WonderOfferLimit(wonderStatus)
     local wonderOffers = {}
     local harvestStatus = bridge.BuilderHarvestStatus()
     local protectHarvests = protectBuilders and harvestStatus
@@ -288,7 +288,7 @@ local function refresh(turn)
             builderSites[#builderSites + 1] = site
             allowances = allowances + #site.improvements
         end
-        if wonderLimit>0 and CSC_AI_EconomyAdapters then
+        if wonderLimit>0 and maxWonderOfferQ8>0 and CSC_AI_EconomyAdapters then
             -- The native Wonder consumer uses the same publication as the
             -- supplier guard. Exclude known threats here even if capacity
             -- prevents publishing the entire Builder allowlist this turn.
@@ -298,7 +298,7 @@ local function refresh(turn)
             for _,site in ipairs(threatened or{})do wonderProtected[site.plot]=true end
             local limit=math.min(128,wonderLimit-#wonderOffers)
             if limit>0 then
-                for _,offer in ipairs(CSC_AI_EconomyAdapters.WonderOffers(player,chains,wonderProtected,limit))do
+                for _,offer in ipairs(CSC_AI_EconomyAdapters.WonderOffers(player,chains,wonderProtected,limit,maxWonderOfferQ8))do
                     wonderOffers[#wonderOffers+1]=offer
                 end
             end

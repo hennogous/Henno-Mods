@@ -2,7 +2,8 @@
 
 **18 November: positive Wonder site guidance is implemented.**
 Mapped Wonders get a bounded preference beside supplied or supply-ready
-Quarters, through CE's existing legal Wonder plot score path. Material
+Quarters, through CE's existing legal Wonder plot score path. The stronger
+calibration offers 8, 16 or 24 utility, capped at 1/12 of the native score. Material
 protection has priority. The native build and Lua tests pass. Live receipts
 and site selection remain to be checked.
 [Trace, score limits and verification](../research/mods/csc-ai-wonder-placement-20261118.md).

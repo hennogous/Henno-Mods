@@ -1,5 +1,16 @@
 # Guidance for mapped Wonder sites
 
+The current calibration offers **8 utility** with a Base deposit, **16** with a
+working Base improvement, and **24** with working Base and Specialty. CE caps
+the increase at one twelfth of the positive native score (about 8.33%).
+A site with a native score of 200 utility and both materials working can thus
+gain about 16.7 utility, up from 6.25 in the first version. The publisher reads
+CE's maximum offer amount so an older build can still accept the packet.
+All 158 economy and 259 native score checks pass. The calibrated CE Release
+DLL SHA256 is
+`9f774e61cf8387b49f45cc46d5a9380884c444b4234b4728489047ca6c4af7aa`.
+The original implementation and evidence are described below.
+
 The CSC publisher offers a small siting preference for mapped Wonders beside
 completed, functioning and materially viable Quarters. Bolshoi Theatre,
 Broadway and Sydney Opera House currently use it through the Tailors' Wonder

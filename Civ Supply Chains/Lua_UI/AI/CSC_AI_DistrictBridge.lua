@@ -12,7 +12,8 @@ local MAX_NOMINATION_BID_Q8=512*256
 local MAX_REPAIR_CANDIDATES=256
 local MAX_OWNERSHIP_SCOPES=4096
 local MAX_WONDER_OFFERS=512
-local MAX_WONDER_OFFER_Q8=8*256
+local MAX_WONDER_OFFER_Q8=24*256
+local LEGACY_WONDER_OFFER_Q8=8*256
 local function integer(x,low,high)
     local kind=type(x)
     return (kind=='number' or kind=='integer') and x==math.floor(x) and x>=low and x<=high
@@ -106,7 +107,10 @@ function B.WonderOfferLimit(status)
     if type(CE_AIWonderPlacementOffer)~='function' or type(status)~='string'
         or tonumber(status:match('"ready":(%d+)'))~=1
         or tonumber(status:match('"faults":(%d+)'))~=0 then return 0 end
-    return math.min(MAX_WONDER_OFFERS,tonumber(status:match('"offerCapacity":(%d+)'))or 0)
+    -- Builds with the original offer API can still publish safely at eight.
+    local maximum=tonumber(status:match('"maxOfferQ8":(%d+)'))or LEGACY_WONDER_OFFER_Q8
+    return math.min(MAX_WONDER_OFFERS,tonumber(status:match('"offerCapacity":(%d+)'))or 0),
+        math.min(MAX_WONDER_OFFER_Q8,maximum)
 end
 
 -- District scores address a player, city, district index and plot index.

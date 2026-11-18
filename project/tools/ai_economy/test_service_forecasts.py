@@ -256,10 +256,13 @@ local function chain(key,working,specialty)
 end
 local player={GetID=function()return 1 end}
 local offers=E.WonderOffers(player,{chain('TAILORS',false,false),chain('TAILORS',true,true),
- chain('BAKERS',true,true)}, {[21]=true},1)
+ chain('BAKERS',true,true)}, {[21]=true},1,24*256)
 assert(#offers==1 and offers[1].city==10 and offers[1].building==77
- and offers[1].plot==20 and offers[1].deltaQ8==8*256)
-assert(#E.WonderOffers(player,{chain('BAKERS',true,true)}, {},10)==0)
+ and offers[1].plot==20 and offers[1].deltaQ8==24*256)
+assert(#E.WonderOffers(player,{chain('BAKERS',true,true)}, {},10,24*256)==0)
+assert(E.WonderOffers(player,{chain('TAILORS',true,false)}, {},1,24*256)[1].deltaQ8==16*256)
+assert(E.WonderOffers(player,{chain('TAILORS',false,false)}, {},1,24*256)[1].deltaQ8==8*256)
+assert(E.WonderOffers(player,{chain('TAILORS',true,true)}, {},1,8*256)[1].deltaQ8==8*256)
 ''')
 
     def test_wonder_offers_publish_inside_the_native_packet(self):
@@ -277,12 +280,16 @@ local B=CSC_AI_DistrictBridge
 local ready='{"ready":1,"faults":0,"offerCapacity":512}'
 assert(B.WonderOfferLimit(ready)==0)
 CE_AIWonderPlacementOffer=function(player,city,wonder,plot,delta)
- assert(phase==2 and player==1 and city==7 and wonder==77 and plot==9 and delta==2048)
+ assert(phase==2 and player==1 and city==7 and wonder==77 and plot==9 and delta==6144)
  phase=3;return 1
 end
-assert(B.WonderOfferLimit(ready)==512)
+local count,legacy=B.WonderOfferLimit(ready)
+assert(count==512 and legacy==2048)
+local max
+count,max=B.WonderOfferLimit('{"ready":1,"faults":0,"offerCapacity":512,"maxOfferQ8":6144}')
+assert(count==512 and max==6144)
 assert(B.WonderOfferLimit('{"ready":1,"faults":1,"offerCapacity":512}')==0)
-local offer={player=1,city=7,building=77,plot=9,deltaQ8=2048}
+local offer={player=1,city=7,building=77,plot=9,deltaQ8=6144}
 local function publish(offers)
  local args={2,10,10,10,{1},{}}
  args[21]=offers
