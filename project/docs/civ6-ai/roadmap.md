@@ -7,7 +7,8 @@ gain post-Quarter links; customer-first totals stay30. Mean overhead adds0.130s
 per turn; source/input/v3 and same-mature-state timing checks pass. Short native
 choice/foundation, stronger-site and invalidation gates complete the loop.
 No fourth seed or new premium is needed. [Completion audit and results](../research/mods/csc-ai-customer-scheduling-20261117.md).
-Initial **Problem3** material/Builder research is next; no new full game is scheduled.
+Initial **Problem3** material/Builder research is complete; no new full game is scheduled.
+[Seven current supplier gaps and the next exact Tailors job trace](../research/mods/csc-ai-material-development-audit-20261118.md).
 
 ## Earlier campaign checkpoints (historical)
 
@@ -989,6 +990,11 @@ until the active check closes or an explicit dependency needs attention.
 - **3.1 Exact job and timing.** Prioritize Base work when the Stage 2 buyer
   functions and Specialty work when the Stage 4 buyer functions. Put the
   intended plot and improvement into native job allocation and observe the work.
+  Initial18 November audit finds seven treatment endpoint producer/supplier gaps.
+  Next: trace Tailors1753/Sheep1680 from Pangaea100 through native job selection,
+  Builder availability and physical work. Existing producer-only support is26
+  utility, rising to56 with a working Stage2 customer; diagnose the first actual
+  barrier before increasing it. [Audit](../research/mods/csc-ai-material-development-audit-20261118.md).
 - **3.2 Assignment and supply.** Use a reachable Builder with charges,
   including across cities. Value another Builder when useful work exceeds
   available capacity. In Melbourne's opening replay the AI already

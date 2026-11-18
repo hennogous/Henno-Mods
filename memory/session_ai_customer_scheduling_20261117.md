@@ -1,5 +1,17 @@
 # Active customer-placement goal,17 November
 
+LATEST18Nov: GOALCOMPLETE after initialProblem3 source/data audit. Read
+project/docs/research/mods/csc-ai-material-development-audit-20261118.md/json.
+Seven treatment endpoint healthy producers lack workingBase:5Bakers2Tailors;
+Pangaea p1/c65536 Tailors1753/Sheep1680 repeats100–250. Current shared26utility
+producer-only/56producer+customer already exists, repair-first onejob/class,
+supplier-purchase-city join. Next separate3.1 task: checkpoint100 max12turn exact
+job→native reservation→worker/recruitment→physical supplier/exchange, first barrier.
+No new game/policy/CE/PR. Astra recommends this bounded trace, no globalbonus.
+Disk35.35GiB; noCiv/Tuner. Allsix2.1results committed; don'tresume campaigns.
+Preserve unrelated art/UI/memory changes. Usermainvalueinstruction: no further
+ordering/prototype/perfect-parity rabbit hole;2.1 has completed practical gains.
+
 LATEST18Nov06:53UTC: Problem2.1 COMPONENT COMPLETE; goaltoolstillactivefor
 conditionalinitialProblem3research. All6freshOnline250 CLOSED/qualified0,
 parent5067exit0. Freshv3ALL6reconciled, frozenmanifests/binaries/initialmaps,

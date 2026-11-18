@@ -1,0 +1,350 @@
+{
+  "scope": "Initial Problem3 source/data research; no game or policy change",
+  "endpoint_screen": [
+    {
+      "map": "continents",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\continents-treatment250\\full-census-250.json",
+      "sha256": "0df0442218fce26f6fbb39dac2e4f326ed44d732e61a8d3711a11531f9550b46",
+      "cases": [
+        {
+          "family": "BAKERS",
+          "player": 3,
+          "city": 393220,
+          "quarter": 2532,
+          "complete": true,
+          "pillaged": false,
+          "base": 1,
+          "working_base": 0,
+          "producer": true,
+          "customer": false
+        }
+      ]
+    },
+    {
+      "map": "pangaea",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\pangaea-treatment250\\full-census-250.json",
+      "sha256": "a15ac0a9eeb216109c56b5379d152c6c44f37b961a8942046dff7471ae5db612",
+      "cases": [
+        {
+          "family": "TAILORS",
+          "player": 1,
+          "city": 65536,
+          "quarter": 1753,
+          "complete": true,
+          "pillaged": false,
+          "base": 1,
+          "working_base": 0,
+          "producer": true,
+          "customer": false
+        },
+        {
+          "family": "BAKERS",
+          "player": 3,
+          "city": 262147,
+          "quarter": 1576,
+          "complete": true,
+          "pillaged": false,
+          "base": 1,
+          "working_base": 0,
+          "producer": true,
+          "customer": false
+        }
+      ]
+    },
+    {
+      "map": "fractal",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\fractal-treatment250\\full-census-250.json",
+      "sha256": "348f118729bbba489ee4a3a00bb9ce588ffcf6aa1c2ef7caa743affbac933878",
+      "cases": [
+        {
+          "family": "BAKERS",
+          "player": 1,
+          "city": 65536,
+          "quarter": 926,
+          "complete": true,
+          "pillaged": false,
+          "base": 1,
+          "working_base": 0,
+          "producer": true,
+          "customer": true
+        },
+        {
+          "family": "TAILORS",
+          "player": 1,
+          "city": 65536,
+          "quarter": 853,
+          "complete": true,
+          "pillaged": false,
+          "base": 1,
+          "working_base": 0,
+          "producer": true,
+          "customer": false
+        },
+        {
+          "family": "BAKERS",
+          "player": 1,
+          "city": 131073,
+          "quarter": 924,
+          "complete": true,
+          "pillaged": false,
+          "base": 1,
+          "working_base": 0,
+          "producer": true,
+          "customer": true
+        },
+        {
+          "family": "BAKERS",
+          "player": 3,
+          "city": 196610,
+          "quarter": 772,
+          "complete": true,
+          "pillaged": false,
+          "base": 1,
+          "working_base": 0,
+          "producer": true,
+          "customer": true
+        }
+      ]
+    }
+  ],
+  "first_case": {
+    "map": "pangaea-treatment250",
+    "player": 1,
+    "city": 65536,
+    "quarter": 1753,
+    "resource_plot": 1680,
+    "resource": "RESOURCE_SHEEP",
+    "next_checkpoint_turn": 100,
+    "maximum_followup_turns": 12
+  },
+  "timeline": [
+    {
+      "turn": 100,
+      "sha256": "28458176b3c3bf8a379de928003b1defd0765bbddc5c6bd768d34be78a646f32",
+      "rows": [
+        [
+          "QUARTER",
+          "TAILORS\t1\t65536\t1753\ttrue\tfalse\ttrue\t0\t0\t0"
+        ],
+        [
+          "PRODUCER",
+          "1753\t2\tBUILDING_CSC_TAILORS_TEXTILE_WORKSHOP\t2"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1754\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ],
+        [
+          "MATERIAL",
+          "1753\t1680\tBASE\tRESOURCE_SHEEP\tfalse"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1679\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ]
+      ]
+    },
+    {
+      "turn": 125,
+      "sha256": "976bb9906420f3ffef7571ca70f99b538cb2f19cf3867d93d9066808f9297eba",
+      "rows": [
+        [
+          "QUARTER",
+          "TAILORS\t1\t65536\t1753\ttrue\tfalse\ttrue\t0\t0\t0"
+        ],
+        [
+          "PRODUCER",
+          "1753\t2\tBUILDING_CSC_TAILORS_TEXTILE_WORKSHOP\t2"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1754\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ],
+        [
+          "MATERIAL",
+          "1753\t1680\tBASE\tRESOURCE_SHEEP\tfalse"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1679\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ]
+      ]
+    },
+    {
+      "turn": 150,
+      "sha256": "b0a01e86e3fabdc3844cbd028611c96816d40121eca06576d3764eddf35f64d9",
+      "rows": [
+        [
+          "QUARTER",
+          "TAILORS\t1\t65536\t1753\ttrue\tfalse\ttrue\t0\t0\t0"
+        ],
+        [
+          "PRODUCER",
+          "1753\t3\tBUILDING_CSC_TAILORS_TAILOR\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t2\tBUILDING_CSC_TAILORS_TEXTILE_WORKSHOP\t2"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1754\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ],
+        [
+          "MATERIAL",
+          "1753\t1680\tBASE\tRESOURCE_SHEEP\tfalse"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1679\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ]
+      ]
+    },
+    {
+      "turn": 175,
+      "sha256": "03313b2613a9eb0a6f5f1edc8d6044571692cecbddd1a2a5fc5d3e6a5ca6c6cf",
+      "rows": [
+        [
+          "QUARTER",
+          "TAILORS\t1\t65536\t1753\ttrue\tfalse\ttrue\t0\t0\t0"
+        ],
+        [
+          "PRODUCER",
+          "1753\t4\tBUILDING_CSC_TAILORS_FASHION_HOUSE\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t3\tBUILDING_CSC_TAILORS_TAILOR\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t2\tBUILDING_CSC_TAILORS_TEXTILE_WORKSHOP\t2"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1754\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ],
+        [
+          "MATERIAL",
+          "1753\t1680\tBASE\tRESOURCE_SHEEP\tfalse"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1679\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ]
+      ]
+    },
+    {
+      "turn": 200,
+      "sha256": "02c41df0bd2e76f6eb4ba18c17256c7665dcf1caae6ad57dfcb9e6b34fb7b0f9",
+      "rows": [
+        [
+          "QUARTER",
+          "TAILORS\t1\t65536\t1753\ttrue\tfalse\ttrue\t0\t0\t0"
+        ],
+        [
+          "PRODUCER",
+          "1753\t4\tBUILDING_CSC_TAILORS_FASHION_HOUSE\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t3\tBUILDING_CSC_TAILORS_TAILOR\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t2\tBUILDING_CSC_TAILORS_TEXTILE_WORKSHOP\t2"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1754\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ],
+        [
+          "MATERIAL",
+          "1753\t1680\tBASE\tRESOURCE_SHEEP\tfalse"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1679\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ]
+      ]
+    },
+    {
+      "turn": 225,
+      "sha256": "1fb5d4be8cdccd9b3e719c92c14462a88034b2719f6bf676fd9f743e04b84593",
+      "rows": [
+        [
+          "QUARTER",
+          "TAILORS\t1\t65536\t1753\ttrue\tfalse\ttrue\t0\t0\t0"
+        ],
+        [
+          "PRODUCER",
+          "1753\t4\tBUILDING_CSC_TAILORS_FASHION_HOUSE\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t3\tBUILDING_CSC_TAILORS_TAILOR\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t2\tBUILDING_CSC_TAILORS_TEXTILE_WORKSHOP\t2"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1754\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ],
+        [
+          "MATERIAL",
+          "1753\t1680\tBASE\tRESOURCE_SHEEP\tfalse"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1679\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ]
+      ]
+    },
+    {
+      "turn": 250,
+      "sha256": "a15ac0a9eeb216109c56b5379d152c6c44f37b961a8942046dff7471ae5db612",
+      "rows": [
+        [
+          "QUARTER",
+          "TAILORS\t1\t65536\t1753\ttrue\tfalse\ttrue\t0\t0\t0"
+        ],
+        [
+          "PRODUCER",
+          "1753\t4\tBUILDING_CSC_TAILORS_FASHION_HOUSE\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t3\tBUILDING_CSC_TAILORS_TAILOR\t2"
+        ],
+        [
+          "PRODUCER",
+          "1753\t2\tBUILDING_CSC_TAILORS_TEXTILE_WORKSHOP\t2"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1754\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ],
+        [
+          "MATERIAL",
+          "1753\t1680\tBASE\tRESOURCE_SHEEP\tfalse"
+        ],
+        [
+          "CUSTOMER",
+          "1753\t1679\t3\tDISTRICT_HOLY_SITE\ttrue\t2"
+        ]
+      ]
+    }
+  ],
+  "source_policy": [
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_QuarterPlacement.lua",
+      "sha256": "f67353a26ce9bc9e19d682132d5e151a89e0f1bbbfe645445b0d415b788fd715"
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_DistrictBridge.lua",
+      "sha256": "67e8da2c412fe37c2fc13e05d719a3e6dcc8928d978cb0f6a071ef8136991102"
+    }
+  ]
+}

@@ -9,7 +9,11 @@ invalidation checks plus two mature same-state timing checks complete the audit.
 Astra recommends closure; no more policy changes/games are needed for2.1.
 [Final results and limits](../research/mods/csc-ai-customer-scheduling-20261117.md).
 
-The requested next step is initial Problem3 research. There is no running game.
+The requested initial Problem3 research is complete: seven endpoint cases lack
+working Base supply despite operating producers. Start a later3.1 diagnostic with
+Pangaea Tailors1753/Sheep1680 from100, following the existing26-utility job offer
+through worker assignment or recruitment. [Source/data audit and next experiment](../research/mods/csc-ai-material-development-audit-20261118.md).
+The customer-placement goal is complete; no new replay has started. There is no running game.
 Parent5067 and saved-world timing sessions are closed. Main F/M/E policy text
 matches the qualified candidate; the model-reuse prototype stays unintegrated.
 Keep unrelated art/UI work intact and review any CE PR with Henno first.

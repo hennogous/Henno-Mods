@@ -1,5 +1,18 @@
 # CSC findings and evidence
 
+## AI-C217 — Current supplier policy has persistent producer-only Tailors cases
+
+18 November2026. Source audit and three completed treatment250 censuses.
+Seven completed, healthy Quarters have an operating Stage2 producer and recorded
+Base, but no working Base improvement: five Bakers and two Tailors. Pangaea's
+Tailors1753 has a working Workshop and non-working Sheep1680 in every census
+from100 through250. The shared policy already supports producer-only work at26
+utility, rising to56 with a working Stage2 customer. The next3.1 investigation
+follows this exact job through eligibility, publication, assignment/recruitment
+and physical work. No policy change or new game was made in this initial audit.
+
+[Cases, source path and bounded next experiment](../research/mods/csc-ai-material-development-audit-20261118.md).
+
 ## AI-C216 — Combined customer guidance changes a close Hub choice through foundation
 
 17 November2026,2.1. Current150 save/qualifiedCE/main7ea adapter in both arms.

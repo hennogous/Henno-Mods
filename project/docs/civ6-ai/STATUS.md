@@ -9,8 +9,13 @@ source/input/v3 audits pass. Fractal produces an active Dockmaster and Sacristan
 Astra agrees with closure. No additional tuning change or full run is needed.
 [Results, map variation and completion audit](../research/mods/csc-ai-customer-scheduling-20261117.md).
 
-Next: initial **3.1–3.3 material development/Builder research**, using the current
-implementation and retained traces. No fresh full game is scheduled. The qualified
+Initial **3.1–3.3 research is written up**: seven treatment endpoint Quarters have
+working Stage2 producers but no working Base supplier. Both families already
+offer26 utility for producer-only supply and56 with a working customer too.
+Next diagnostic: Pangaea Tailors1753/Sheep1680 from the retained100 checkpoint,
+to locate the first job, worker or unlock bottleneck. [Initial audit](../research/mods/csc-ai-material-development-audit-20261118.md).
+The customer-placement goal, including this initial research, is complete.
+No fresh full game is scheduled. The qualified
 CE fork remains necessary; no upstream PR has been made. Keep the follow-ups on
 customer-first efficacy, coastal opportunities and Service pricing on the roadmap.
 
