@@ -10,7 +10,7 @@ Large results and cloned packages belong in an explicit Desktop output folder.
 from pathlib import Path
 from types import SimpleNamespace
 import argparse,json,shutil
-from planning_continue import prepare,enable,parse_census,compare_structure
+from planning_continue import prepare,enable,parse_census,compare_structure,package_identity
 from driver import NativeSession,HeldProcess,make_probe_controller,native_inventory,launch,configure,flags,read,write_json,manifest,sha,restore_preferences,lua,require,archive_sources
 from ce_replay import verify_modules,DLL,HOTFIX_SHA
 from ce_bakers_fresh import LOGS
@@ -23,6 +23,20 @@ def run(args):
  require(type(query_timeout)is int and 1<=query_timeout<=60,'Read-only query timeout must be1..60 seconds')
  plan=prepare(args.source,args.output,args.at,args.at,args.dependencies,read_only=True)
  require(not native_inventory(),'Foreign session must be preserved')
+ # An explicit saved-world qualification may use a NEW frozen API/Lua package.
+ # Keep original provenance/checkpoint checks above; pin the candidate separately
+ # and still require the same mod identity and unchanged structural game facts.
+ # This option never edits the original immutable comparison packages.
+ candidates={}
+ for role in ('ce','csc'):
+  candidate=getattr(args,'candidate_'+role,None)
+  if candidate:
+   candidate=Path(candidate).resolve(strict=True)
+   target=next(p for p in plan.packages if p['role']==role)
+   identity,_=package_identity(candidate)
+   require(identity==target['id'],'Candidate mod identity differs')
+   target['source']=candidate;target['files']=manifest(candidate)
+   candidates[role]=dict(source=str(candidate),files=target['files'])
  out=plan.output;out.mkdir(parents=True)
  controller=make_probe_controller(out,user_root=plan.user_root)
  controller.study_endpoint=args.at;controller.autoplay_interval_seconds=900
@@ -31,7 +45,7 @@ def run(args):
  query=args.query or Path(__file__).with_name('tailors_coast_survey.lua')
  pins={str(p.resolve()):sha(p)for p in (Path(__file__),query)}
  write_json(out/'implementation-archive.json',archive_sources(pins,out/'implementation-version'))
- write_json(out/'protocol.json',dict(diagnostic=True,read_only=True,source=str(plan.source),turn=args.at,checkpoint=plan.checkpoint,world_edits=False,turns_advanced=0,query_timeout_seconds=query_timeout))
+ write_json(out/'protocol.json',dict(diagnostic=True,read_only=True,source=str(plan.source),turn=args.at,checkpoint=plan.checkpoint,world_edits=False,turns_advanced=0,query_timeout_seconds=query_timeout,candidate_packages=candidates))
  def verify():
   for item in copied:
    require(manifest(item['install'])==item['files'],'Installed package changed')
@@ -83,4 +97,6 @@ if __name__=='__main__':
  p.add_argument('--at',type=int,default=250)
  p.add_argument('--query',type=Path)
  p.add_argument('--query-timeout-seconds',type=int,default=15)
+ p.add_argument('--candidate-ce',type=Path)
+ p.add_argument('--candidate-csc',type=Path)
  run(p.parse_args())

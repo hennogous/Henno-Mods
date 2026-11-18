@@ -5,6 +5,8 @@
 -- completion, supply and quotes never persist past this snapshot.
 -- The customer-first reader reverses the generated gameplay partner graph and
 -- exposes concrete customer/Quarter/material footprints to the policy adapter.
+-- Service attachments/gates compile once; recipient and supplier readiness is
+-- rebuilt each publication for the Service-aware Quarter investment adapter.
 CSC_AI_EconomyFacts={}
 local F=CSC_AI_EconomyFacts
 local INF=math.huge
@@ -12,6 +14,244 @@ local catalogue
 local customerQuarterMap
 local districtParents
 local routeCatalogue
+local serviceCatalogue
+
+function F.ServiceCatalogue()
+    -- Compile only definitions, once per loaded game. Follow the SAME producer
+    -- attachments, child effects and requirements as gameplay: no second list
+    -- of Service amounts, customer buildings or civic names lives in AI policy.
+    -- Display-building grants, slots and properties are not recurring benefits.
+    if serviceCatalogue then return serviceCatalogue end
+    local result={byProducer={},omissions={},replacements={}}
+    if not GameInfo.BuildingModifiers or not GameInfo.Modifiers or not GameInfo.DynamicModifiers
+        or not GameInfo.Requirements or not GameInfo.RequirementArguments
+        or not GameInfo.RequirementSetRequirements then return result end
+    if GameInfo.BuildingReplaces then for row in GameInfo.BuildingReplaces()do
+        result.replacements[row.CivUniqueBuildingType]=row.ReplacesBuildingType
+    end end
+    local kinds={EFFECT_ADJUST_CITY_GROWTH='GROWTH',
+        EFFECT_ADJUST_DISTRICT_GREAT_PERSON_POINTS='PSEUDOYIELD',
+        EFFECT_ADJUST_DISTRICT_TOURISM_CHANGE='TOURISM',
+        EFFECT_ADJUST_CITY_YIELD_MODIFIER='YIELD_PERCENT',
+        EFFECT_ADJUST_UNIT_TAG_ERA_PRODUCTION='NAVAL_PRODUCTION_PERCENT',
+        EFFECT_ADJUST_BUILDING_HOUSING='HOUSING'}
+    local stages,roots,children,wanted,args={},{},{},{},{}
+    for row in GameInfo.CSC_QuarterFlowBuildings()do stages[row.BuildingType]=row end
+    for row in GameInfo.BuildingModifiers()do if stages[row.BuildingType]then
+        roots[#roots+1]=row;wanted[row.ModifierId]=true
+    end end
+    for row in GameInfo.ModifierArguments()do if row.Name=='ModifierId'then children[row.ModifierId]=row.Value end end
+    local paths={}
+    for _,root in ipairs(roots)do
+        local id=root.ModifierId;local path={}
+        for depth=1,8 do
+            local modifier=GameInfo.Modifiers[id]
+            local definition=modifier and GameInfo.DynamicModifiers[modifier.ModifierType]
+            if not definition then break end
+            path[#path+1]=modifier;wanted[id]=true
+            if kinds[definition.EffectType]then
+                paths[#paths+1]={root=root,path=path,kind=kinds[definition.EffectType],leaf=id};break
+            elseif definition.EffectType=='EFFECT_ATTACH_MODIFIER'and children[id]then id=children[id]
+            else break end
+        end
+    end
+    for row in GameInfo.ModifierArguments()do if wanted[row.ModifierId]then
+        args[row.ModifierId]=args[row.ModifierId]or{};args[row.ModifierId][row.Name]=row.Value
+    end end
+    -- These temporary indices are discarded after compilation. They make the
+    -- bounded recursive gate walk linear in loaded rows, not a database scan
+    -- for every candidate. Property aliases can expand their producer-owned
+    -- setter's requirements; unrecognized property gates remain omissions.
+    local members,reqArgs,propertyOwners={},{},{}
+    for row in GameInfo.RequirementSetRequirements()do
+        local list=members[row.RequirementSetId]or{};members[row.RequirementSetId]=list;list[#list+1]=row.RequirementId
+    end
+    for row in GameInfo.RequirementArguments()do
+        local a=reqArgs[row.RequirementId]or{};reqArgs[row.RequirementId]=a;a[row.Name]=row.Value
+    end
+    for _,root in ipairs(roots)do
+        local a=args[root.ModifierId]or{};local m=GameInfo.Modifiers[root.ModifierId]
+        if a.Key and tonumber(a.Amount)==1 and m then propertyOwners[a.Key]=m.OwnerRequirementSetId end
+    end
+    local requirementKinds={REQUIREMENT_PLAYER_HAS_CIVIC=true,REQUIREMENT_PLAYER_HAS_TECHNOLOGY=true,
+        REQUIREMENT_COLLECTION_COUNT_ATLEAST=true,REQUIREMENT_REQUIREMENTSET_IS_MET=true,
+        REQUIREMENT_PLOT_RESOURCE_TAG_MATCHES=true,REQUIREMENT_PLOT_ADJACENT_TO_OWNER=true,
+        REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES=true,REQUIREMENT_CITY_HAS_BUILDING=true,
+        REQUIREMENT_PLOT_PROPERTY_MATCHES=true,REQUIREMENT_CITY_HAS_X_POPULATION=true}
+    local function witnessed(set,witness,visiting)
+        -- Partial Boolean evaluation: this exact receiving host proves its own
+        -- subject set. It can therefore prove one branch of a customer ANY,
+        -- without satisfying unrelated Wonder branches or discarding extra
+        -- gates from an ALL. No amount/research/material gate is skipped here.
+        if set==witness then return true end
+        if not set or not members[set]then return false end
+        visiting=visiting or{};if visiting[set]then return false end
+        visiting[set]=true
+        local d=GameInfo.RequirementSets and GameInfo.RequirementSets[set]
+        local any=d and d.RequirementSetType=='REQUIREMENTSET_TEST_ANY'
+        local passed=not any
+        for _,id in ipairs(members[set])do
+            local r,a=GameInfo.Requirements[id],reqArgs[id]or{}
+            local nested=r and r.RequirementType=='REQUIREMENT_REQUIREMENTSET_IS_MET'
+                or r and r.RequirementType=='REQUIREMENT_COLLECTION_COUNT_ATLEAST'
+                    and a.CollectionType=='COLLECTION_PLAYER_DISTRICTS'and(tonumber(a.Count)or 1)<=1
+            local ok=r and not(r.Inverse==1 or r.Inverse==true)
+                and(r.RequirementType=='REQUIREMENT_PLOT_ADJACENT_TO_OWNER'
+                    or nested and witnessed(a.RequirementSetId,witness,visiting))
+            if any then passed=passed or ok else passed=passed and ok end
+        end
+        visiting[set]=nil;return passed==true
+    end
+    local function gates(set,output,visiting,minimumCount)
+        if not set then return end
+        visiting=visiting or{}
+        if visiting[set]then output.unknown=true;return end
+        local definition=GameInfo.RequirementSets and GameInfo.RequirementSets[set]
+        if output.owner and definition and definition.RequirementSetType=='REQUIREMENTSET_TEST_ANY'
+            and witnessed(set,output.witness)then return end
+        if not members[set]or definition and definition.RequirementSetType~='REQUIREMENTSET_TEST_ALL'then
+            output.unknown=true;return
+        end
+        visiting[set]=true
+        for _,id in ipairs(members[set]or{})do
+            local r=GameInfo.Requirements[id];local a=reqArgs[id]or{}
+            if not r or not requirementKinds[r.RequirementType]then output.unknown=true end
+            if r and(r.Inverse==1 or r.Inverse==true)then output.unknown=true end
+            if a.CivicType then output.civics[a.CivicType]=true end
+            if a.TechnologyType then output.techs[a.TechnologyType]=true end
+            if a.TechType then output.techs[a.TechType]=true end
+            if a.BuildingType then output.buildings[a.BuildingType]=true end
+            if a.DistrictType then output.districts[a.DistrictType]=true end
+            for _,name in ipairs({'Tag','ResourceClassType','ResourceClass'})do
+                if a[name]then output.tags[a[name]]=math.max(output.tags[a[name]]or 0,minimumCount or 1)end
+            end
+            if r and r.RequirementType=='REQUIREMENT_CITY_HAS_X_POPULATION'then
+                local count=tonumber(a.Amount or a.Population)
+                if count then output.population=math.max(output.population or 0,count)else output.unknown=true end
+            end
+            if a.RequirementSetId then
+                if output.owner and a.CollectionType=='COLLECTION_PLAYER_DISTRICTS'then
+                    -- The root's "some customer exists" gate is satisfied by
+                    -- this contribution's own admitted recipient. Expanding an
+                    -- ANY of other venues/Wonders would wrongly require all of
+                    -- them, or let an unrelated unknown Wonder disable Theater.
+                    if(tonumber(a.Count)or 1)>1 or not witnessed(a.RequirementSetId,output.witness)then output.unknown=true end
+                elseif a.CollectionType and a.CollectionType~='COLLECTION_PLAYER_IMPROVEMENTS'then output.unknown=true
+                else gates(a.RequirementSetId,output,visiting,tonumber(a.Count)or minimumCount)end
+            end
+            if a.PropertyName then
+                local owner=propertyOwners[a.PropertyName]
+                if owner then gates(owner,output,visiting)else output.unknown=true end
+            end
+        end
+        visiting[set]=nil
+    end
+    local function gate(set,owner,witness)
+        local g={civics={},techs={},tags={},buildings={},districts={},owner=owner,witness=witness};gates(set,g);return g
+    end
+    for _,p in ipairs(paths)do
+        local root=p.path[1];local a=args[p.leaf]or{};local stage=stages[p.root.BuildingType]
+        local owner,subject=gate(root.OwnerRequirementSetId,true,root.SubjectRequirementSetId),gate(root.SubjectRequirementSetId,false)
+        local leaf=p.path[#p.path];local amount=tonumber(a.Amount)
+        local rootType=GameInfo.DynamicModifiers[root.ModifierType]
+        local leafType=GameInfo.DynamicModifiers[leaf.ModifierType]
+        local buyerCount=0;for _ in pairs(subject.buildings)do buyerCount=buyerCount+1 end
+        local shape=#p.path==2 and rootType.CollectionType=='COLLECTION_PLAYER_DISTRICTS'
+            and leafType.CollectionType=='COLLECTION_OWNER'and not leaf.OwnerRequirementSetId
+        if next(owner.buildings)or next(subject.civics)or next(subject.techs)or next(subject.tags)then shape=false end
+        -- Only explicit district recipients with a required buyer are currently
+        -- planned. Wonder-ready plot properties need a separate forecast reader;
+        -- they are reported, never treated as an unconditional future Wonder.
+        if shape and amount and amount>0 and root.OwnerRequirementSetId and not owner.unknown and not subject.unknown
+            and buyerCount==1 and leaf.SubjectRequirementSetId==nil then
+            local row={id=root.ModifierId..'/'..p.leaf,root=root.ModifierId,leaf=p.leaf,
+                source=p.root.BuildingType,quarter=stage.QuarterKey,stage=stage.Stage,kind=p.kind,
+                amount=amount,owner=owner,subject=subject,yield=a.YieldType,
+                unitClass=a.UnitPromotionClass,era=a.EraType}
+            if p.kind=='PSEUDOYIELD'then
+                local gp=GameInfo.GreatPersonClasses and GameInfo.GreatPersonClasses[a.GreatPersonClassType]
+                row.pseudoYield=gp and gp.PseudoYieldType
+            elseif p.kind=='TOURISM'then row.kind='PSEUDOYIELD';row.pseudoYield='PSEUDOYIELD_TOURISM'end
+            local list=result.byProducer[row.source]or{};result.byProducer[row.source]=list;list[#list+1]=row
+        else result.omissions[#result.omissions+1]=p.root.ModifierId..': unmodeled Service gate'end
+    end
+    for _,list in pairs(result.byProducer)do table.sort(list,function(a,b)return a.id<b.id end)end
+    serviceCatalogue=result;return result
+end
+
+function F.ServiceRecords(site,profile,snapshot,research)
+    -- Turn static gameplay leaves into plain, recipient-specific opportunities.
+    -- No native pricing/world reads occur in the model. The same immutable
+    -- records can enter both counterfactuals; the model schedules their gates.
+    local catalog=F.ServiceCatalogue();local records,seen={},{}
+    local replacements=catalog.replacements
+    local sources={}
+    for _,s in ipairs(site.seconds or{})do sources[#sources+1]=s end
+    if site.third then sources[#sources+1]=site.third end
+    if site.fourth then sources[#sources+1]=site.fourth end
+    for _,source in ipairs(sources)do
+        for _,definition in ipairs(catalog.byProducer[replacements[source.type]or source.type]or{})do
+            local unlocked=0
+            for civic in pairs(definition.owner.civics)do unlocked=math.max(unlocked,research('civic',civic))end
+            for tech in pairs(definition.owner.techs)do unlocked=math.max(unlocked,research('tech',tech))end
+            for _,customer in ipairs(site.customers or{})do
+                local canonical=replacements[customer.type]or customer.type
+                local stamp=source.type..':'..definition.id..':'..customer.plot
+                local buyer=GameInfo.Buildings and GameInfo.Buildings[customer.type]
+                local district=customer.districtType or buyer and buyer.PrereqDistrict
+                local matches=not next(definition.subject.districts)or district and definition.subject.districts[district]
+                if definition.stage==customer.stage and definition.subject.buildings[canonical]and matches and not seen[stamp]then
+                    local receiver=snapshot.cities[customer.city]
+                    local record={id=stamp,root=definition.root,leaf=definition.leaf,producer=source.type,
+                        stage=definition.stage,customer=customer,city=customer.city,plot=customer.plot,
+                        kind=definition.kind,amount=definition.amount,pseudoYield=definition.pseudoYield,
+                        yieldType=definition.yield,unlock=unlocked,materials={}}
+                    for tag,count in pairs(definition.owner.tags)do
+                        if tag==profile.base then record.materials.base=count end
+                        if tag==profile.specialty then record.materials.specialty=count end
+                        if tag~=profile.base and tag~=profile.specialty then record.unsupportedMaterial=true end
+                    end
+                    -- Services require an improved Base. Do not turn an unknown
+                    -- material-tag path into free income; the catalogue audit
+                    -- exposes any relationship that needs a richer gate reader.
+                    record.known=receiver~=nil and record.materials.base~=nil and not record.unsupportedMaterial
+                        and(site.population or 0)>=(definition.owner.population or 0)
+                        and(receiver and receiver.population or 0)>=(definition.subject.population or 0)
+                        and(not next(definition.owner.districts)or definition.owner.districts[profile.district.DistrictType])
+                    if definition.kind=='YIELD_PERCENT'and receiver then
+                        receiver.yieldRates=receiver.yieldRates or{}
+                        local yield=GameInfo.Yields[definition.yield]
+                        if yield and receiver.yieldRates[definition.yield]==nil then
+                            receiver.yieldRates[definition.yield]=snapshot.ServiceYield(customer.city,yield.Index)
+                        end
+                        -- Immutable current-output proxy: each prospective
+                        -- source uses the same rate, never another source's
+                        -- already-increased forecast. Native yield pricing
+                        -- supplies utility; a future-output forecast is later.
+                        record.base=receiver.yieldRates[definition.yield]
+                        -- The native city-yield-percentage child46b390 caps its
+                        -- observed yield basis at100 before applying Amount.
+                        -- Keep that coarse investment band, while every source
+                        -- uses the SAME immutable basis rather than compounding
+                        -- another prospective source's percentage increase.
+                        if record.base then record.base=math.min(100,record.base)end
+                        record.known=record.known and record.base~=nil
+                    elseif definition.kind=='NAVAL_PRODUCTION_PERCENT'then
+                        record.base=0
+                        if receiver and receiver.currentUnitClass==definition.unitClass
+                            and receiver.currentUnitEra==definition.era then
+                            record.base=receiver.navalProduction or 0
+                            record.finish=receiver.currentUnitTurns or 10
+                        end
+                    end
+                    if not snapshot.serviceKinds or not snapshot.serviceKinds[record.kind]then record.known=false end
+                    records[#records+1]=record;seen[stamp]=true
+                end
+            end
+        end
+    end
+    return records
+end
 
 function F.DistrictFamily(index)
     -- Definition-only lookup, shared by existing-footprint and customer-first
@@ -220,7 +460,7 @@ local function definitions()
     if GameInfo.CSC_QuarterWonderSales then
         -- These are ordinary Fashion House/customer exchanges, distinct from
         -- the Wonder's separately gated Service. Existing completed Wonders
-        -- must enter the same ledger even while Service valuation is deferred.
+        -- must enter the ordinary ledger independently of Service coverage.
         for row in GameInfo.CSC_QuarterWonderSales()do
             local definition=GameInfo.Buildings[row.BuildingType]
             if definition and definition.PrereqDistrict then
@@ -295,7 +535,7 @@ end
 function F.New(player,placement,ui,context)
     local c=definitions();local pid=player:GetID()
     local snapshot={player=player,id=pid,cities={},districts={},supplies={},research={},sites={},quotes={},
-        nativeSiteStats={native=0,empty=0,unavailable=0}}
+        nativeSiteStats={native=0,empty=0,unavailable=0},serviceKinds=context and context.serviceKinds or{}}
     local numericFacts,plotFacts={},{}
     local tradeFacts,tradeProblem,tradeRead
     function snapshot.TradeRoutes()
@@ -372,6 +612,10 @@ function F.New(player,placement,ui,context)
             end
         end
         numericFacts[key]=value or false;return value
+    end
+    snapshot.ServiceYield=function(cityID,yield)
+        local city=snapshot.cities[cityID]
+        return city and cityNumber(city.object,'yield',yield)
     end
     local function readPlot(plot)
         local index=plot:GetIndex()
@@ -484,6 +728,20 @@ function F.New(player,placement,ui,context)
             buildings=city:GetBuildings(),production=cityNumber(city,'yield',GameInfo.Yields.YIELD_PRODUCTION.Index),
             foodSurplus=growthSurplus(city),
             navalProduction=cityNumber(city,'navalProduction',0)}
+        if snapshot.serviceKinds.NAVAL_PRODUCTION_PERCENT then
+            -- A present eligible queue is a bounded demand observation, not a
+            -- forecast of permanent shipbuilding. No extra UI request is made.
+            local index=cityNumber(city,'currentUnit',0)
+            local unit=index and GameInfo.Units and GameInfo.Units[index]
+            if unit then
+                row.currentUnitClass=unit.PromotionClass
+                local tech=unit.PrereqTech and GameInfo.Technologies[unit.PrereqTech]
+                local civic=unit.PrereqCivic and GameInfo.Civics[unit.PrereqCivic]
+                local era=tech and tech.EraType or civic and civic.EraType
+                row.currentUnitEra=unit.EraType or era
+                row.currentUnitTurns=cityNumber(city,'unitTurns',unit.Index)
+            end
+        end
         snapshot.cities[row.id]=row
         local ds=city:GetDistricts()
         row.populationDistricts=0
@@ -748,6 +1006,8 @@ function F.New(player,placement,ui,context)
     local function customerRecord(profile,buyer,definition,plot,stage)
         local customer=futureCustomer(buyer,definition,plot)
         customer.stage=stage
+        local host=snapshot.districts[plot]
+        customer.districtType=host and F.DistrictFamily(host.type)
         customer.serviceActive=profile.service and type(buyer.object.GetProperty)=='function'
             and(buyer.object:GetProperty(profile.service.property)or 0)>0 or false
         customer.serviceInputKnown=profile.key=='BAKERS'and buyer.foodSurplus~=nil
@@ -1069,7 +1329,7 @@ function F.New(player,placement,ui,context)
             quarterWork=not functioning and finite(qReady)and {unlock=qUnlock,turns=qReady-qUnlock}or nil,
             maintenance=profile.district.Maintenance or 0,existing=exists,materialYield=family.yield,
             direct={},suppliers={},customers={},seconds={},omissions={
-                'Future worker assignments, trade routes, GPP and Stage3/4 Service premiums are not priced'}}
+                'Future worker assignments and unplanned routes are not projected; Service coverage is decision-specific'}}
         if context and context.nativeSite and profile.service and profile.service.civic then
             local amount=profile.key=='BAKERS'and c.amounts.MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER
                 or c.amounts.MOD_CSC_TAILORS_DOCKMASTER_EFFECT_ANCIENT_NAVAL_MELEE
@@ -1374,6 +1634,7 @@ function F.New(player,placement,ui,context)
             if a.plot~=b.plot then return a.plot<b.plot end
             return a.building<b.building
         end)
+        if next(snapshot.serviceKinds)then site.services=F.ServiceRecords(site,profile,snapshot,research)end
         snapshot.sites[key]=site;return site
     end
     -- Existing chains and candidate sites share the same supply and district
@@ -1503,6 +1764,14 @@ function F.New(player,placement,ui,context)
         if #snapshot.chains>64 then return nil,'Affected chain budget exceeded'end
         local world={player=pid,horizon=context and context.horizon or 50,
             sites={},populationBaselines={},extraStreams={}}
+        if next(snapshot.serviceKinds)then
+            -- Install before the FIRST ordinary baseline quote, which can be
+            -- requested by material protection before Quarter placement. This
+            -- one immutable physical world can then reuse its unpriced plans
+            -- when the Service-aware Quarter baseline is requested later.
+            world.ledgerMemoToken={}
+            world.evaluationMemo={token=world.ledgerMemoToken,entries={},count=0,hits=0}
+        end
         for _,chain in ipairs(snapshot.chains)do
             if not chain.economy then return nil,'Existing Quarter economy unavailable'end
             world.sites[#world.sites+1]=chain.economy

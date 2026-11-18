@@ -2,7 +2,9 @@
 -- available investments and relative ready times; this module owns transaction
 -- application, recipients, alternatives and marginal values. It never reads a game
 -- object, publishes a bid, grants anything or assumes an unbuilt district.
--- A pricing adapter converts recurring yields/amenities to native Q8 utility.
+-- A pricing adapter converts recurring yields/amenities and admitted Service
+-- effects to native Q8 utility. Quarter worlds opt into Service forecasting;
+-- ordinary customer worlds retain their separate, Service-free comparison.
 -- Keep that conversion outside the rules so district and building decisions
 -- can consume the same ledger without maintaining separate CSC economies.
 CSC_AI_EconomyModel = {}
@@ -67,7 +69,7 @@ local function finishLedger(context)
     end
     for _,stream in ipairs(result.streams)do
         local depthKey=context.joint and stream.investmentKey or stream.building
-        if not stream.existingIncome and stream.amount>0 and stream.yield:find('YIELD_',1,true)==1
+        if not stream.service and not stream.existingIncome and stream.amount>0 and stream.yield:find('YIELD_',1,true)==1
             and depthKey and result.futureDepths[depthKey]~=nil then
             stream.forecastDepth=result.futureDepths[depthKey]
         end
@@ -392,7 +394,7 @@ local function ledger(site, second, shared)
     -- credible Base supplier and civic ETA must all fit. Keep percentage units
     -- here; the decision adapter prices growth/naval capacity in yield utility.
     -- One recipient benefit is counted once even with duplicate mapping rows.
-    if site.service then
+    if site.service and not context.joint then
         local supplierReady=INF
         for _,supplier in ipairs(site.suppliers or{})do if supplier.kind=='base'then
             supplierReady=math.min(supplierReady,supplier.ready or INF)
@@ -415,9 +417,40 @@ local function ledger(site, second, shared)
             end
         end
     end
-    -- Future specialist assignments, trade and later Services are not free income.
-    -- Facts/adapter diagnostics expose these omissions; retain the separate
-    -- Service-aware nomination policy until those economic channels are priced.
+    if context.joint and context.includeServices then
+        -- Each contribution belongs to one physical producer, attachment root
+        -- and recipient PLOT. Same leaves can legitimately pay from different
+        -- sources/stages; duplicated venue mappings cannot pay twice. Keep
+        -- active benefits in both worlds so shared income cancels, and losing
+        -- the actual last supplier removes the benefit in the after-world.
+        for _,service in ipairs(site.services or{})do
+            local producer=service.stage==2 and second or service.stage==3 and site.third or site.fourth
+            local ready=maximum(stages[service.stage]or INF,customerTimes[service.customer]or INF,service.unlock or INF)
+            for kind,count in pairs(service.materials or{})do
+                local times={}
+                for _,supplier in ipairs(site.suppliers or{})do if supplier.kind==kind then times[#times+1]=supplier.ready or INF end end
+                table.sort(times);ready=maximum(ready,times[count]or INF)
+            end
+            if service.known and producer and producer.type==service.producer then
+                local yield,amount=service.kind,service.amount
+                if yield=='YIELD_PERCENT'or yield=='NAVAL_PRODUCTION_PERCENT'then
+                    amount=(service.base or 0)*amount/100
+                    yield=yield=='YIELD_PERCENT'and service.yieldType or'YIELD_PRODUCTION'
+                end
+                if ready<math.min(site.horizon,service.finish or site.horizon)then
+                    local stream=emit('service:'..service.id,yield,amount,ready,service.city)
+                    if stream then
+                        stream.service=true;stream.pseudoYield=service.pseudoYield
+                        stream.finish=service.finish;stream.recipientPlot=service.plot
+                        stream.serviceRoot=service.root;stream.serviceLeaf=service.leaf
+                    end
+                end
+            elseif not service.known then omit('service:'..service.id,'Service input or optional price capability unavailable')end
+        end
+    end
+    -- Future staffing and unplanned routes are not free income. Service-aware
+    -- worlds price only declared, supported attachments; Housing and unresolved
+    -- Wonder-property gates remain explicit omissions in this first slice.
     for _,reason in ipairs(site.omissions or {})do omit('coverage',reason)end
     -- Attribution is metadata for a decision adapter, never extra production.
     -- Existing investments, amenities, costs and immediate site yields receive
@@ -624,6 +657,13 @@ function M.Price(result,price,horizon)
     local total,bid=result.siteAdjustmentQ8 or 0,result.siteAdjustmentQ8 or 0
     for _,stream in ipairs(result.streams)do
         local value,weighted=price(stream, horizon)
+        if stream.service and not numeric(value)then
+            -- A newly optional native Service consumer can be unavailable on
+            -- a particular definition/context. Preserve the qualified ordinary
+            -- economy and expose the omission rather than disable all bids.
+            result.omissions[#result.omissions+1]={id=stream.id,reason='Optional native Service quote unavailable'}
+            value,weighted=0,0;stream.priceUnavailable=true
+        end
         if not numeric(value) or value~=math.floor(value)then
             return nil,'Native price unavailable for '..stream.id
         end
@@ -697,8 +737,8 @@ function M.Forecast(site,price,placementObjective)
 end
 
 -- A proposed customer can affect several Quarters and their city's shared
--- production queue. This diagnostic entry evaluates them in one context; it
--- does not publish native packets. The facts adapter must include the complete
+-- production queue. Live decision adapters evaluate them in this pure context;
+-- packet publication is separate. The facts adapter must include the complete
 -- affected closure and every contributor to its population properties.
 -- Minimal and all-enabled seeds let jointly profitable shared venues enter the
 -- search even when each producer alone cannot cover their upkeep. Two sweeps
@@ -764,6 +804,7 @@ function M.JointForecast(world,price)
     end
     local function plan(site,second,mask)
         local value=copy(site);value.service=nil
+        if not world.includeServices and not world.evaluationMemo then value.services=nil end
         if mask%2==0 and site.third and not site.third.working and not site.third.intactOwner then value.third=nil end
         if mask<2 and site.fourth and not site.fourth.working and not site.fourth.intactOwner then value.fourth=nil end
         value.customers={};for _,v in ipairs(site.customers or{})do value.customers[#value.customers+1]=v end
@@ -831,11 +872,10 @@ function M.JointForecast(world,price)
         end
     end
     table.sort(nodes)
-    local function evaluate(selected,disabled)
-        evaluations=evaluations+1
-        if evaluations>limit then return nil,'Joint evaluation budget exceeded'end
+    local function buildLedger(selected,disabled)
         local context=newLedger(sites[1]or{},nil)
-        context.joint=true;context.result.siteAdjustmentQ8=0;context.result.chainStages={}
+        context.joint=true;context.includeServices=world.includeServices==true or world.evaluationMemo~=nil
+        context.result.siteAdjustmentQ8=0;context.result.chainStages={}
         context.populationBaselines=world.populationBaselines or{}
         context.disabledBuildings=disabled
         for city,ready in pairs(world.queueReady or{})do
@@ -865,9 +905,49 @@ function M.JointForecast(world,price)
             result,problem=M.RouteLedger(result,world.trade,world.player,horizon)
         else result,problem=M.PoolAmenities(result,{},horizon)end
         if not result then return nil,problem end
+        return result
+    end
+    local function evaluate(selected,disabled)
+        evaluations=evaluations+1
+        if evaluations>limit then return nil,'Joint evaluation budget exceeded'end
+        -- Only an exact shared baseline gets this publication-local memo. Both
+        -- pricing modes still run the full bounded plan search; cache identical
+        -- UNPRICED ledgers, never a winning plan or a candidate world's answer.
+        -- Keep at most16 states and copy priced stream headers so the ordinary
+        -- consumer cannot mutate the Service consumer's cached contribution.
+        local memo,key=world.evaluationMemo
+        if memo then
+            if memo.token~=world.ledgerMemoToken then return nil,'Baseline ledger memo identity differs'end
+            local fields={}
+            for _,v in ipairs(selected)do
+                fields[#fields+1]=v.second and v.second.type or'~'
+                fields[#fields+1]=v.site.third and v.site.third.type or'~'
+                fields[#fields+1]=v.site.fourth and v.site.fourth.type or'~'
+            end
+            for _,node in ipairs(nodes)do if disabled[node]then fields[#fields+1]='disabled:'..node end end
+            key=table.concat(fields,'|')
+        end
+        local full=memo and memo.entries[key]
+        if full then memo.hits=memo.hits+1 else
+            local problem;full,problem=buildLedger(selected,disabled)
+            if not full then return nil,problem end
+            if memo and memo.count<16 then memo.entries[key]=full;memo.count=memo.count+1 end
+        end
+        local result=full
+        if memo then
+            result=copy(full);result.streams={};result.omissions={}
+            for _,s in ipairs(full.streams)do if world.includeServices or not s.service then result.streams[#result.streams+1]=copy(s)end end
+            for _,o in ipairs(full.omissions)do
+                if world.includeServices or o.id:sub(1,8)~='service:'then result.omissions[#result.omissions+1]=o end
+            end
+        end
         local value,error=M.Price(result,price,horizon)
         if not value then return nil,error end
-        result.valueQ8=value;result.servicesExcluded=true;result.modelOnly=true
+        result.valueQ8=value;result.servicesExcluded=not world.includeServices;result.modelOnly=true
+        result.serviceValueQ8=0;result.serviceStreams=0
+        for _,s in ipairs(result.streams)do if s.service then
+            result.serviceValueQ8=result.serviceValueQ8+s.valueQ8;result.serviceStreams=result.serviceStreams+1
+        end end
         result.disabledBuildings={};for key,disabled in pairs(disabled)do if disabled then result.disabledBuildings[key]=true end end
         -- The placement adapter may rank producer alternatives by its final
         -- calibrated bid while retaining physical income/valueQ8 unchanged.

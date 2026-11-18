@@ -1,0 +1,347 @@
+"""Service activation/stacking in the real shared Lua ledger, without game orders."""
+from pathlib import Path
+import unittest
+from lupa.lua51 import LuaRuntime
+import test_joint_customer_economy as joint_fixtures
+import test_native_valuation as native_fixtures
+
+AI=Path(__file__).resolve().parents[3]/'Civ Supply Chains/Lua_UI/AI'
+
+
+class ServiceForecasts(unittest.TestCase):
+    def vm(self):
+        vm=joint_fixtures.JointEconomy().vm()
+        vm.execute('''
+function supplied(key,city)
+ local a=chain(key,city)
+ a.suppliers={{kind='base',plot=11,ready=0}}
+ a.customers={{type='BUYER',building=5,plot=100,city=3,stage=2,working=true,complete=true}}
+ a.services={{id='ROOT/LEAF:100',root='ROOT',leaf='LEAF',producer='MILL',stage=2,
+  customer=a.customers[1],city=3,plot=100,kind='PSEUDOYIELD',pseudoYield='PSEUDOYIELD_GPP_ENGINEER',
+  amount=1,unlock=0,materials={base=1},known=true}}
+ return a
+end
+function withServices(sites) local w=world(sites);w.includeServices=true;return w end
+''')
+        return vm
+
+    def test_active_service_cancels_between_identical_worlds(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+local before=assert(M.JointForecast(withServices({a}),price))
+local after=assert(M.JointForecast(withServices({a}),price))
+assert(before.serviceStreams==1 and before.serviceValueQ8==30*256)
+assert(after.valueQ8-before.valueQ8==0 and not before.servicesExcluded)
+''')
+
+    def test_exact_last_supplier_loss_removes_service(self):
+        self.vm().execute('''
+local a=supplied('A',1);local b=supplied('A',1);b.suppliers={}
+local before=assert(M.JointForecast(withServices({a}),price))
+local after=assert(M.JointForecast(withServices({b}),price))
+assert(before.serviceStreams==1 and after.serviceStreams==0)
+assert(before.serviceValueQ8-after.serviceValueQ8==30*256)
+''')
+
+    def test_civic_and_supplier_delay_control_service_interval(self):
+        self.vm().execute('''
+local a=supplied('A',1);a.suppliers[1].ready=8;a.services[1].unlock=20
+local r=assert(M.JointForecast(withServices({a}),price))
+assert(r.serviceValueQ8==10*256)
+a.services[1].unlock=30
+assert(M.JointForecast(withServices({a}),price).serviceStreams==0)
+''')
+
+    def test_two_physical_producers_can_pay_one_recipient(self):
+        self.vm().execute('''
+local a,b=supplied('A',1),supplied('B',2)
+local r=assert(M.JointForecast(withServices({a,b}),price))
+assert(r.serviceStreams==2 and r.serviceValueQ8==60*256)
+''')
+
+    def test_shared_engineer_leaf_under_stage_two_and_four_roots_pays_both(self):
+        self.vm().execute('''
+local a=supplied('A',1);a.fourth={type='CAFE',working=true}
+a.suppliers[2]={kind='specialty',plot=12,ready=0}
+a.customers[2]={type='ZOO',plot=101,city=3,stage=4,working=true,complete=true}
+a.services[2]={id='ROOT4/LEAF:101',root='ROOT4',leaf='LEAF',producer='CAFE',stage=4,
+ customer=a.customers[2],city=3,plot=101,kind='PSEUDOYIELD',amount=1,unlock=0,
+ materials={base=1,specialty=1},known=true}
+local r=assert(M.JointForecast(withServices({a}),price))
+assert(r.serviceStreams==2)
+table.remove(a.suppliers,2)
+assert(M.JointForecast(withServices({a}),price).serviceStreams==1)
+''')
+
+    def test_service_does_not_receive_future_building_depth_multiplier(self):
+        self.vm().execute('''
+local a=supplied('A',1);a.seconds[1]={type='MILL',unlock=0,turns=2,forecastDepth=3}
+a.services[1].kind='YIELD_PERCENT';a.services[1].yieldType='YIELD_FAITH'
+a.services[1].amount=10;a.services[1].base=20
+local function weighted(s,h)
+ local raw=price(s,h);return raw,raw*(1+2*(s.forecastDepth or 0))
+end
+local r=assert(M.JointForecast(withServices({a}),weighted))
+assert(r.serviceStreams==1)
+for _,s in ipairs(r.streams)do if s.service then assert(not s.forecastDepth and s.valueQ8==s.bidValueQ8)end end
+''')
+
+    def test_ordinary_customer_world_keeps_services_excluded(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+local r=assert(M.JointForecast(world({a}),price))
+assert(r.servicesExcluded and r.serviceStreams==0 and #a.services==1)
+''')
+
+    def test_unavailable_optional_quote_preserves_ordinary_income(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+local ordinary=assert(M.JointForecast(world({a}),price))
+local function missing(s,h)if s.service then return nil end;return price(s,h)end
+local r=assert(M.JointForecast(withServices({a}),missing))
+assert(r.valueQ8==ordinary.valueQ8 and r.serviceValueQ8==0 and #r.omissions>0)
+''')
+
+    def test_no_ship_demand_still_values_admiral_points(self):
+        self.vm().execute('''
+local a=supplied('A',1);a.services[2]=copy(a.services[1])
+a.services[2].id='SHIP:100';a.services[2].kind='NAVAL_PRODUCTION_PERCENT'
+a.services[2].amount=20;a.services[2].base=0;a.services[2].finish=10
+assert(M.JointForecast(withServices({a}),price).serviceStreams==1)
+a.services[2].base=20;a.services[2].unlock=12
+assert(M.JointForecast(withServices({a}),price).serviceStreams==1)
+''')
+
+    def test_only_selected_mutually_exclusive_producer_has_a_service(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+a.seconds={{type='MILL',working=true},{type='OTHER',unlock=0,turns=1}}
+a.services[2]=copy(a.services[1]);a.services[2].id='OTHER:100'
+a.services[2].producer='OTHER';a.services[2].amount=100
+local r=assert(M.JointForecast(withServices({a}),price))
+assert(r.serviceStreams==1 and r.chainStages.A.second=='MILL')
+''')
+
+    def test_shared_unpriced_ledger_keeps_both_optima_and_priced_results_independent(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+a.third={type='BAKERY',unlock=0,turns=1,maintenance=10}
+a.customers={{type='MARKET',plot=100,city=3,stage=3,working=true,complete=true}}
+a.services={{id='BAKERY_GPP:100',root='ROOT3',leaf='GPP',producer='BAKERY',stage=3,
+ customer=a.customers[1],city=3,plot=100,kind='PSEUDOYIELD',amount=20,
+ unlock=0,materials={base=1},known=true}}
+local token={};local memo={token=token,entries={},count=0,hits=0}
+local ordinary=world({a});ordinary.evaluationMemo=memo;ordinary.ledgerMemoToken=token
+local enabled=withServices({a});enabled.evaluationMemo=memo;enabled.ledgerMemoToken=token
+local plain=assert(M.JointForecast(world({a}),price))
+local full=assert(M.JointForecast(withServices({a}),price))
+local off=assert(M.JointForecast(ordinary,price));local on=assert(M.JointForecast(enabled,price))
+assert(off.valueQ8==plain.valueQ8 and on.valueQ8==full.valueQ8)
+assert(off.evaluations==plain.evaluations and on.evaluations==full.evaluations)
+assert(off.chainStages.A.third==nil and on.chainStages.A.third=='BAKERY')
+assert(off.serviceStreams==0 and on.serviceStreams==1 and memo.hits>0 and memo.count<=16)
+on.streams[1].amount=99999
+assert(M.JointForecast(enabled,price).valueQ8==full.valueQ8)
+''')
+
+    def test_mismatched_shared_ledger_identity_fails_closed(self):
+        self.vm().execute('''
+local w=withServices({supplied('A',1)})
+w.evaluationMemo={token={},entries={},count=0,hits=0};w.ledgerMemoToken={}
+local r,reason=M.JointForecast(w,price)
+assert(not r and reason:find('identity',1,true))
+''')
+
+
+class ServiceDefinitions(unittest.TestCase):
+    def vm(self):
+        vm=LuaRuntime(unpack_returned_tuples=True)
+        vm.execute('''
+function info(rows,key)
+ local t={};for _,v in ipairs(rows)do if key then t[v[key]]=v end end
+ return setmetatable(t,{__call=function()local i=0;return function()i=i+1;return rows[i]end end})
+end
+GameInfo={
+ CSC_QuarterFlowBuildings=info({{QuarterKey='NEW_FAMILY',Stage=3,BuildingType='PRODUCER'}}),
+ BuildingModifiers=info({{BuildingType='PRODUCER',ModifierId='ROOT'}}),
+ Modifiers=info({{ModifierId='ROOT',ModifierType='ATTACH',OwnerRequirementSetId='OWNER',SubjectRequirementSetId='SUBJECT'},
+  {ModifierId='LEAF',ModifierType='GPP'}},'ModifierId'),
+ DynamicModifiers=info({{ModifierType='ATTACH',EffectType='EFFECT_ATTACH_MODIFIER',CollectionType='COLLECTION_PLAYER_DISTRICTS'},
+  {ModifierType='GPP',EffectType='EFFECT_ADJUST_DISTRICT_GREAT_PERSON_POINTS',CollectionType='COLLECTION_OWNER'}},'ModifierType'),
+ ModifierArguments=info({{ModifierId='ROOT',Name='ModifierId',Value='LEAF'},
+  {ModifierId='LEAF',Name='Amount',Value='3'},
+  {ModifierId='LEAF',Name='GreatPersonClassType',Value='ARTIST'}}),
+ Requirements=info({{RequirementId='CIVIC',RequirementType='REQUIREMENT_PLAYER_HAS_CIVIC'},
+  {RequirementId='TAG',RequirementType='REQUIREMENT_PLOT_RESOURCE_TAG_MATCHES'},
+  {RequirementId='BUYER',RequirementType='REQUIREMENT_CITY_HAS_BUILDING'},
+  {RequirementId='MATCH_BUYER',RequirementType='REQUIREMENT_REQUIREMENTSET_IS_MET'},
+  {RequirementId='UNKNOWN_REF',RequirementType='REQUIREMENT_REQUIREMENTSET_IS_MET'},
+  {RequirementId='ANY_CUSTOMER',RequirementType='REQUIREMENT_COLLECTION_COUNT_ATLEAST'},
+  {RequirementId='UNKNOWN',RequirementType='REQUIREMENT_PLOT_PROPERTY_MATCHES'}},'RequirementId'),
+ RequirementSetRequirements=info({{RequirementSetId='OWNER',RequirementId='CIVIC'},
+  {RequirementSetId='OWNER',RequirementId='TAG'},
+  {RequirementSetId='OWNER',RequirementId='ANY_CUSTOMER'},
+  {RequirementSetId='ANY_SET',RequirementId='MATCH_BUYER'},
+  {RequirementSetId='ANY_SET',RequirementId='UNKNOWN_REF'},
+  {RequirementSetId='UNKNOWN_SET',RequirementId='UNKNOWN'},
+  {RequirementSetId='SUBJECT',RequirementId='BUYER'}}),
+ RequirementArguments=info({{RequirementId='CIVIC',Name='CivicType',Value='MODDED_CIVIC'},
+  {RequirementId='TAG',Name='Tag',Value='MODDED_BASE'},
+  {RequirementId='BUYER',Name='BuildingType',Value='BUYER'},
+  {RequirementId='ANY_CUSTOMER',Name='CollectionType',Value='COLLECTION_PLAYER_DISTRICTS'},
+  {RequirementId='ANY_CUSTOMER',Name='RequirementSetId',Value='ANY_SET'},
+  {RequirementId='MATCH_BUYER',Name='RequirementSetId',Value='SUBJECT'},
+  {RequirementId='UNKNOWN_REF',Name='RequirementSetId',Value='UNKNOWN_SET'},
+  {RequirementId='UNKNOWN',Name='PropertyName',Value='UNKNOWN_WONDER'}}),
+ RequirementSets=info({{RequirementSetId='ANY_SET',RequirementSetType='REQUIREMENTSET_TEST_ANY'}},'RequirementSetId'),
+ GreatPersonClasses=info({{GreatPersonClassType='ARTIST',PseudoYieldType='PSEUDOYIELD_GPP_ARTIST'}},'GreatPersonClassType'),
+ BuildingReplaces=info({{CivUniqueBuildingType='UNIQUE_BUYER',ReplacesBuildingType='BUYER'}}),
+}
+''')
+        vm.execute((AI/'CSC_AI_EconomyFacts.lua').read_text(encoding='utf-8'))
+        return vm
+
+    def test_loaded_gameplay_amount_class_unlock_and_customer_define_the_service(self):
+        self.vm().execute('''
+local c=CSC_AI_EconomyFacts.ServiceCatalogue()
+local r=c.byProducer.PRODUCER[1]
+assert(r.amount==3 and r.pseudoYield=='PSEUDOYIELD_GPP_ARTIST')
+assert(r.owner.civics.MODDED_CIVIC and r.subject.buildings.BUYER and r.owner.tags.MODDED_BASE==1)
+assert(#c.omissions==0) -- an unrelated Wonder ANY cannot disable an admitted buyer
+assert(c==CSC_AI_EconomyFacts.ServiceCatalogue())
+''')
+
+    def test_duplicate_and_unique_buyer_mappings_pay_once_per_physical_host(self):
+        self.vm().execute('''
+local c={type='UNIQUE_BUYER',stage=3,city=5,plot=20,complete=true}
+local s={third={type='PRODUCER'},customers={c,c}}
+local snapshot={cities={[5]={}},serviceKinds={PSEUDOYIELD=true}}
+local records=CSC_AI_EconomyFacts.ServiceRecords(s,{base='MODDED_BASE'},snapshot,function(kind,name)
+ assert(kind=='civic'and name=='MODDED_CIVIC');return 7 end)
+assert(#records==1 and records[1].known and records[1].unlock==7 and records[1].amount==3)
+''')
+
+    def test_inverted_or_unknown_recipient_gate_is_an_omission(self):
+        vm=self.vm()
+        vm.execute('''
+GameInfo.Requirements.BUYER.Inverse=1
+local c=CSC_AI_EconomyFacts.ServiceCatalogue()
+assert(not c.byProducer.PRODUCER and #c.omissions==1)
+''')
+
+    def test_percentage_service_keeps_native_current_output_cap(self):
+        self.vm().execute('''
+GameInfo.DynamicModifiers.GPP.EffectType='EFFECT_ADJUST_CITY_YIELD_MODIFIER'
+GameInfo.Yields={FAITH={Index=5}}
+local original=GameInfo.ModifierArguments
+local rows={};for row in original()do rows[#rows+1]=row end
+rows[#rows+1]={ModifierId='LEAF',Name='YieldType',Value='FAITH'}
+GameInfo.ModifierArguments=info(rows)
+local c={type='BUYER',stage=3,city=5,plot=20,complete=true}
+local s={third={type='PRODUCER'},customers={c}}
+local snapshot={cities={[5]={}},serviceKinds={YIELD_PERCENT=true},ServiceYield=function()return 1000 end}
+local r=CSC_AI_EconomyFacts.ServiceRecords(s,{base='MODDED_BASE'},snapshot,function()return 0 end)
+assert(#r==1 and r[1].known and r[1].base==100)
+''')
+
+    def test_unrecognized_requirement_is_not_silently_satisfied(self):
+        self.vm().execute('''
+GameInfo.Requirements.CIVIC.RequirementType='REQUIREMENT_MODDED_RESTRICTION'
+local c=CSC_AI_EconomyFacts.ServiceCatalogue()
+assert(not c.byProducer.PRODUCER and #c.omissions==1)
+''')
+
+    def test_unrelated_customer_boolean_is_not_proved_by_this_recipient(self):
+        self.vm().execute('''
+GameInfo.Requirements.MATCH_BUYER.Inverse=1
+local c=CSC_AI_EconomyFacts.ServiceCatalogue()
+assert(not c.byProducer.PRODUCER and #c.omissions==1)
+''')
+
+    def test_recipient_any_set_and_leaf_owner_gate_are_not_discarded(self):
+        for mutation in [
+            "GameInfo.RequirementSets={SUBJECT={RequirementSetType='REQUIREMENTSET_TEST_ANY'}}",
+            "GameInfo.Modifiers.LEAF.OwnerRequirementSetId='OWNER'",
+        ]:
+            vm=self.vm();vm.execute(mutation)
+            vm.execute("local c=CSC_AI_EconomyFacts.ServiceCatalogue();assert(not c.byProducer.PRODUCER and #c.omissions==1)")
+
+    def test_native_price_cache_distinguishes_gpp_classes_and_growth_percentage_units(self):
+        vm=native_fixtures.NativeValuation().vm()
+        vm.execute('''
+GameInfo.PseudoYields={ART={Index=7},ENGINEER={Index=8}}
+local count=0
+CE_AIPseudoYieldIntervalValue=function(pid,city,kind,amount,r,h,d)
+ count=count+1;assert(pid==1 and city==10 and amount==256);return kind*256 end
+local first=snapshot.Price({service=true,city=10,yield='PSEUDOYIELD',pseudoYield='ART',amount=1,ready=3},100)
+local second=snapshot.Price({service=true,city=10,yield='PSEUDOYIELD',pseudoYield='ENGINEER',amount=1,ready=3},100)
+assert(first==7*256 and second==8*256 and count==2)
+assert(snapshot.Price({service=true,city=10,yield='PSEUDOYIELD',pseudoYield='ART',amount=1,ready=3},100)==first and count==2)
+CE_AIGrowthIntervalValue=function(pid,city,percent,r,h,d)
+ assert(percent==2560 and r==4 and h==100);return 1234 end
+local raw,bid=snapshot.Price({service=true,city=10,yield='GROWTH',amount=10,ready=4,forecastDepth=3},100)
+assert(raw==1234 and bid==raw)
+''')
+
+    def test_actual_ui_numeric_entry_observes_only_eligible_ship_work(self):
+        vm=LuaRuntime()
+        vm.execute('''
+ExposedMembers={};hash=123
+local queue={GetCurrentProductionTypeHash=function()return hash end,GetTurnsLeft=function()return 4 end}
+CityManager={GetCity=function()return{GetBuildQueue=function()return queue end,GetYield=function()return 20 end}end}
+GameInfo={Units={[123]={Index=7,UnitType='GALLEY',Domain='DOMAIN_SEA',PromotionClass='PROMOTION_CLASS_NAVAL_MELEE',PrereqTech='SAILING'},
+ [124]={Index=8,UnitType='WARRIOR',Domain='DOMAIN_LAND',PromotionClass='PROMOTION_CLASS_MELEE'}},
+ Technologies={SAILING={EraType='ERA_ANCIENT'}},Civics={},
+ Eras={ERA_ANCIENT={Index=0},ERA_RENAISSANCE={Index=3}},Yields={YIELD_PRODUCTION={Index=1}}}
+''')
+        vm.execute((AI.parent/'Adjacencies/CSC_AdjacencyUI.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local read=ExposedMembers.CSC_Adjacency.GetEconomyCityNumber
+assert(read(1,5,'navalProduction',0)==20 and read(1,5,'currentUnit',0)==7)
+assert(read(1,5,'unitTurns',7)==4 and read(1,5,'unitTurns',8)==nil)
+hash=124;assert(read(1,5,'navalProduction',0)==0)
+assert(read(1,5,'buildingTurns',7)==nil) -- retain existing timing behavior
+''')
+
+    def test_quarter_enables_both_service_worlds_without_mutating_customer_baseline(self):
+        vm=native_fixtures.NativeValuation().vm()
+        vm.execute('''
+local before={sites={}},after
+after={sites={},baselineWorld=before}
+snapshot.serviceKinds={PSEUDOYIELD=true}
+snapshot.QuarterWorld=function()return before,after end
+local seen
+snapshot.WorldQuote=function(w)
+ assert(w.includeServices)
+ if not w.baselineWorld then seen=w;return{valueQ8=1000,serviceValueQ8=50,siteAdjustmentQ8=0}end
+ assert(w.baselineWorld==seen)
+ return{valueQ8=1100,bidValueQ8=1100,serviceValueQ8=75,serviceStreams=2,servicesExcluded=false,siteAdjustmentQ8=0,
+  chainStages={new={second='Mill'}},streams={},evaluations=1,affectedChains=1}
+end
+local s=site();s.key='new'
+local city={GetID=function()return 10 end};local plot={GetIndex=function()return 20 end}
+local q=E.QuarterForecast(snapshot,city,plot,{district={Index=7}},s,0,false)
+assert(q.valueQ8==100 and q.serviceValueQ8==25 and not q.servicesExcluded)
+assert(not before.includeServices and not after.includeServices and after.baselineWorld==before)
+''')
+
+    def test_service_is_added_once_after_ordinary_cap_and_cannot_bypass_site_quality(self):
+        native_fixtures.NativeValuation().vm().execute('''
+local s=site();s.comparisonReferenceQ8=600*256;s.baseCount=1
+local plain={valueQ8=100000,bidValueQ8=100000,adjacency=2}
+local positive={valueQ8=105000,bidValueQ8=105000,adjacency=2,serviceValueQ8=5000}
+local negative={valueQ8=95000,bidValueQ8=95000,adjacency=2,serviceValueQ8=-5000}
+local base=E.PlacementValue(plain,s,0,false)
+assert(base==300*256)
+assert(E.PlacementValue(positive,s,0,false)==base+5000)
+assert(E.PlacementValue(negative,s,0,false)==base-5000)
+s.comparisonReferenceQ8=nil
+assert(E.PlacementValue(positive,s,0,false)==E.PlacementValue(plain,s,0,false)+5000)
+assert(E.PlacementValue({valueQ8=-1,bidValueQ8=999999,adjacency=2,serviceValueQ8=100000},s,0,false)==-1)
+positive.adjacency=1
+assert(E.PlacementValue(positive,s,0,false)==E.DeferredQuarterQ8)
+''')
+
+
+if __name__=='__main__':
+    unittest.main()

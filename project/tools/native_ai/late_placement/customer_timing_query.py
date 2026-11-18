@@ -17,7 +17,7 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parents[3]
 
 
-def build(control,candidate,prototype=None,players=(5,)):
+def build(control,candidate,prototype=None,players=(5,),service_comparison=False):
     assert 1<=len(players)<=2 and len(set(players))==len(players) and all(type(p)is int and 1<=p<=5 for p in players)
     control,candidate=Path(control)/'Lua_UI/AI',Path(candidate)/'Lua_UI/AI'
     facts='CSC_AI_EconomyFacts.lua';model='CSC_AI_EconomyModel.lua';adapter='CSC_AI_EconomyAdapters.lua'
@@ -26,6 +26,9 @@ def build(control,candidate,prototype=None,players=(5,)):
     arms={'A':[control/facts,control/model,control/adapter],
           'B':[candidate/facts,candidate/model,candidate/adapter]}
     names={'A':'control_adapter','B':'candidate_adapter'}
+    if service_comparison:
+        assert not prototype and control.resolve()==candidate.resolve(),'Service mode requires identical current sources'
+        names={'A':'services_excluded','B':'services_included'}
     if prototype:
         arms={'A':[candidate/facts,candidate/model,candidate/adapter],
               'B':[candidate/facts,Path(prototype),candidate/adapter]}
@@ -49,6 +52,12 @@ local factories={}
     pins={}
     for arm,paths in arms.items():
         code+='\nfactories.'+arm+'=function()\n local print=function()end\n'
+        if service_comparison and arm=='A':
+            code+=''' local actualStatus=CE_AIEconomyStatus
+ local CE_AIEconomyStatus=function()
+  return (actualStatus():gsub('"servicePricingReady":1','"servicePricingReady":0'))
+ end
+'''
         code+=' local CSC_AI_EconomyFacts,CSC_AI_EconomyModel,CSC_AI_EconomyAdapters\n'
         for path in paths:
             text=path.read_text(encoding='utf-8')
@@ -90,6 +99,28 @@ local prior,priorObjects,common,proofs={},{},{},{}
 local order={'B','A','A','B'}
 local players='''+'{'+','.join(map(str,players))+'}'+'''
 local modelEquality='''+('true'if prototype else'false')+'''
+local serviceComparison='''+('true'if service_comparison else'false')+'''
+if serviceComparison then
+ assert(CE_AIEconomyStatus():find('"servicePricingReady":1',1,true),'Native Service quotes unavailable')
+ local player=Players[5];local city;local surplus=-math.huge
+ for _,c in player:GetCities():Members()do
+  local value=c:GetGrowth():GetFoodSurplus()
+  if value>surplus then city,surplus=c,value end
+ end
+ assert(city,'No quote recipient')
+ local context=CE_AIEvaluationContext();local discount=assert(tonumber(context:match('"discountQ8":(%d+)')))
+ for _,name in ipairs({'PSEUDOYIELD_GPP_ENGINEER','PSEUDOYIELD_TOURISM'})do
+  local kind=assert(GameInfo.PseudoYields[name]).Index
+  local one=assert(CE_AIPseudoYieldIntervalValue(5,city:GetID(),kind,256,0,1,discount))
+  local tail=assert(CE_AIPseudoYieldIntervalValue(5,city:GetID(),kind,256,1,2,discount))
+  local both=assert(CE_AIPseudoYieldIntervalValue(5,city:GetID(),kind,256,0,2,discount))
+  assert(one+tail==both,'Pseudo-yield interval subdivision failed')
+  emit('CSC_SERVICE_QUOTE='..encode({kind=name,one=one,tail=tail,both=both}))
+ end
+ local growth=assert(CE_AIGrowthIntervalValue(5,city:GetID(),2560,0,2,discount))
+ assert(CE_AIPseudoYieldIntervalValue(5,city:GetID(),1024,256,0,2,discount)==nil,'Invalid pseudo type accepted')
+ emit('CSC_SERVICE_QUOTE='..encode({kind='GROWTH_PERCENT10',value=growth,city=city:GetID(),foodSurplus=surplus}))
+end
 local function digest(text)
  local value=0;for i=1,#text do value=(value*65599+text:byte(i))%4294967291 end
  return string.format('%.0f/%d',value,#text)
@@ -172,6 +203,22 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
   error('Same-arm cold-history result changed')
  end
  prior[identity]=semantics;priorObjects[identity]=semanticObject
+ if serviceComparison and not proofs[identity]then
+  local values={}
+  for _,e in ipairs(entries)do if e.finalQ8 and e.finalQ8>0 then
+   values[#values+1]={city=e.city,district=e.district,plot=e.plot,finalQ8=e.finalQ8}
+  end end
+  local serviceValues={}
+  for _,w in ipairs(worlds)do if w.result and not w.result.servicesExcluded then
+   local effects={}
+   for _,s in ipairs(w.result.streams)do if s.service then
+    effects[#effects+1]={id=s.id,yield=s.yield,city=s.city,amount=s.amount,ready=s.ready,valueQ8=s.valueQ8}
+   end end
+   serviceValues[#serviceValues+1]={totalQ8=w.result.valueQ8,serviceQ8=w.result.serviceValueQ8,effects=effects}
+  end end
+  emit('CSC_SERVICE_BIDS='..encode({arm=arm,player=pid,entries=values,worlds=serviceValues}))
+  proofs[identity]=true
+ end
  if modelEquality then
   if proofs[pid]then assert(proofs[pid]==semantics,'Model optimization changes bids, plans or economic outcomes')else proofs[pid]=semantics end
  end
@@ -180,6 +227,8 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
   centralSeconds=finished-centralStarted,customerSeconds=customerSeconds,
   customer=customerStats,work=work,nativeQuotes=snapshot.QuoteCount(),
   chains=#snapshot.chains,entries=#entries,semanticFingerprint=digest(semantics),
+  serviceWorlds=(function()local n=0;for _,w in ipairs(worlds)do if w.result and not w.result.servicesExcluded then n=n+1 end end;return n end)(),
+  serviceStreams=(function()local n=0;for _,w in ipairs(worlds)do if w.result then n=n+(w.result.serviceStreams or 0)end end;return n end)(),
   semanticBytes=#semantics,earlyFingerprint=digest(earlyText),coldHistory=true}))
  end
 end end
@@ -191,7 +240,7 @@ emit('CSC_CUSTOMER_TIMING_COMPLETE='..encode({turn=turn,verified=true,passes=4,p
 emit('CSC_COAST_END\\t'..turn)
 '''
     return code,dict(scope='Cold-history integrated economic pass; no Builder nominations/repairs/publication',
-                     arms=names,order=['B','A','A','B'],players=list(players),sources=pins)
+                     arms=names,order=['B','A','A','B'],players=list(players),sources=pins,service_comparison=service_comparison)
 
 
 if __name__=='__main__':
@@ -199,7 +248,8 @@ if __name__=='__main__':
     for name in ('control','candidate','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--prototype-model',type=Path)
     p.add_argument('--players',type=int,nargs='+',default=[5])
-    args=p.parse_args();code,meta=build(args.control,args.candidate,args.prototype_model,args.players)
+    p.add_argument('--service-comparison',action='store_true')
+    args=p.parse_args();code,meta=build(args.control,args.candidate,args.prototype_model,args.players,args.service_comparison)
     args.output.write_text(code,encoding='utf-8')
     args.output.with_suffix('.inputs.json').write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(output=str(args.output),bytes=len(code.encode()),**meta),indent=2))

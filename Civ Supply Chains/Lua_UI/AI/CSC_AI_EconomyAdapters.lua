@@ -4,6 +4,9 @@
 -- policy, and exposes the same marginal valuation to building/job consumers.
 -- Native SQL customer adjacency, supplier protection and purchase/commitment
 -- machinery remain separate consumers, not duplicate sources of income.
+-- Quarter investments also price the shared world's marginal Services through
+-- optional CE growth/pseudo-yield quotes. Customer placement remains ordinary
+-- economics; its native overlap needs separate Service-aware qualification.
 CSC_AI_EconomyAdapters={}
 local E=CSC_AI_EconomyAdapters
 local M=CSC_AI_EconomyModel
@@ -92,11 +95,11 @@ function E.Available()
     local ok,status=pcall(CE_AIEconomyStatus)
     if not ok or type(status)~='string'or not status:match('"pricingReady":1')
         or not status:match('"finalReady":1')then return false,'CE economic API is not qualified'end
-    return true
+    return true,nil,status
 end
 
 function E.Snapshot(player,placement,ui)
-    local available,reason=E.Available();if not available then return nil,reason end
+    local available,reason,status=E.Available();if not available then return nil,reason end
     -- Actual initialized engine parameters, including speed scaling. Older CE
     -- retains the previous explicit Online calibration; new APIs are adopted
     -- together so site costs and ready-time pricing share one context.
@@ -107,6 +110,13 @@ function E.Snapshot(player,placement,ui)
         local function field(name)return tonumber(raw:match('"'..name..'":(%d+)'))end
         context={horizon=field('ordinaryHorizon'),discountQ8=field('discountQ8'),nativeSite=true}
         if not context.horizon or not context.discountQ8 then return nil,'Incomplete native evaluation context'end
+    end
+    if context and status and status:match('"servicePricingReady":1')
+        and type(CE_AIPseudoYieldIntervalValue)=='function'and type(CE_AIGrowthIntervalValue)=='function'then
+        -- Optional scalar consumers add no hooks. Older CE keeps the qualified
+        -- ordinary economy, consistently excluding Services in both worlds.
+        -- Housing's nonlinear city quote is a separate qualification step.
+        context.serviceKinds={GROWTH=true,PSEUDOYIELD=true,YIELD_PERCENT=true,NAVAL_PRODUCTION_PERCENT=true}
     end
     local snapshot=F.New(player,placement,ui,context)
     snapshot.evaluationContext=context or{horizon=50,discountQ8=4*256,nativeSite=false}
@@ -121,7 +131,8 @@ function E.Snapshot(player,placement,ui)
         local yield=stream.yield
         horizon=math.min(horizon,stream.finish or horizon)
         if stream.ready>=horizon then return 0 end
-        if yield=='GROWTH'or yield=='NAVAL_PRODUCTION_PERCENT'then
+        local nativeGrowth=stream.service and yield=='GROWTH'
+        if not nativeGrowth and(yield=='GROWTH'or yield=='NAVAL_PRODUCTION_PERCENT')then
             local city=snapshot.cities[stream.city]
             local base
             if city then
@@ -136,10 +147,17 @@ function E.Snapshot(player,placement,ui)
             yield=yield=='GROWTH'and'YIELD_FOOD'or'YIELD_PRODUCTION'
         end
         local units=amount>=0 and math.floor(amount*256+.5)or-math.floor(-amount*256+.5)
-        local key=table.concat({stream.city,yield,units,stream.ready,horizon,tostring(stream.fixed==true)},':')
+        local key=table.concat({stream.city,yield,stream.pseudoYield or'',units,stream.ready,horizon,tostring(stream.fixed==true),tostring(nativeGrowth==true)},':')
         if quotes[key]~=nil then return quotes[key]end
         local value
-        if yield=='AMENITY'then
+        if nativeGrowth then
+            value=CE_AIGrowthIntervalValue(snapshot.id,stream.city,units,stream.ready,horizon,discount)
+        elseif yield=='PSEUDOYIELD'then
+            local definition=GameInfo.PseudoYields and GameInfo.PseudoYields[stream.pseudoYield]
+            if definition and type(CE_AIPseudoYieldIntervalValue)=='function'then
+                value=CE_AIPseudoYieldIntervalValue(snapshot.id,stream.city,definition.Index,units,stream.ready,horizon,discount)
+            end
+        elseif yield=='AMENITY'then
             value=CE_AIAmenityIntervalValue(snapshot.id,stream.city,amount,stream.ready,horizon,discount)
         else
             local definition=GameInfo.Yields[yield]
@@ -161,7 +179,7 @@ function E.Snapshot(player,placement,ui)
         local raw=rawPrice(stream,horizon,stream.amount)
         if raw==nil then return nil end
         local depth=stream.forecastDepth or 0
-        if not context or depth<=0 or stream.amount<=0 or stream.yield=='AMENITY'or stream.fixed then return raw,raw end
+        if stream.service or not context or depth<=0 or stream.amount<=0 or stream.yield=='AMENITY'or stream.fixed then return raw,raw end
         -- GameCore BuildingValue weights an early building-income subtotal by
         -- 1+2d, then deducts upkeep and discounts it. CSC maps its missing
         -- producer's ordinary exchange income to that effective-income slot.
@@ -377,8 +395,9 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     -- An admitted +1 Harbor/Tailors uses the minimum siting band and the same
     -- weak-site cap as +2. Keep the real +1 in the ledger/logs; extrapolating
     -- the +2..+3 formula backwards would create a negative preference. This
-    -- small exception earns no Dockmaster income and cannot lift a losing
-    -- economic ledger into a bid. Stronger Quarters retain their usual bands.
+    -- exception adds no automatic Dockmaster income. Only separately admitted
+    -- gameplay Service attachments can earn that value; total economics must
+    -- still be positive. Stronger Quarters retain their usual siting bands.
     local sitingAdjacency=math.max(E.MinimumAdjacency,quote.adjacency)
     if reference then
         -- Spatial policy, kept separate from actual economic income. At the
@@ -402,17 +421,24 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
         materials=materials+64+math.min(2,site.specialtyCount-1)*16
     end
     local layout=site.spatialPlan and site.spatialPlan.preference or 0
-    local proposed=value+premium+(materials+layout)*256
+    local service=quote.serviceValueQ8 or 0
+    -- The adjacency-based ceiling was calibrated against ordinary future
+    -- income/amenities, before Services were priced. Cap that SAME portion;
+    -- then add the native-priced marginal Service once. Otherwise a capped
+    -- good site would ignore every real Service benefit. Quality/Base gates,
+    -- lost-supplier costs and the final CE score ceiling still apply.
+    local proposed=value-service+premium+(materials+layout)*256
     local qualityCap
     if reference then
         local extra=math.max(0,math.min(4,sitingAdjacency-2))
         qualityCap=reference*(.5+.65*math.min(1,extra)+.6*math.max(0,extra-1))
         proposed=math.min(proposed,qualityCap)
     end
+    proposed=proposed+service
     local bid=math.floor(math.max(-4096*256,math.min(4096*256,proposed))+.5)
     return bid,'positive',{adjacencyQ8=math.floor(premium+.5),materialsQ8=materials*256,
         layoutQ8=layout*256,penaltyQ8=penalty,forecastQ8=(quote.bidValueQ8 or quote.valueQ8)-quote.valueQ8,
-        qualityCapQ8=qualityCap and math.floor(qualityCap+.5),
+        qualityCapQ8=qualityCap and math.floor(qualityCap+.5),serviceQ8=service,
         capAdjustmentQ8=bid-value-math.floor(premium+.5)-(materials+layout)*256}
 end
 
@@ -512,6 +538,29 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
     end
     local before,after=snapshot.QuarterWorld(city,plot,profile,site)
     if not before then return nil,after end
+    if next(snapshot.serviceKinds or{})then
+        -- Ordinary customer worlds deliberately retain their old baseline.
+        -- Clone WORLD identities, not records, so enabling Services for Quarter
+        -- investment cannot mutate a cached ordinary customer comparison. Both
+        -- Service arms share the same pricing mode and active income cancels.
+        snapshot.serviceWorlds=snapshot.serviceWorlds or{}
+        local source=before
+        if not snapshot.serviceWorlds[source]then
+            -- These two modes price exactly the same physical baseline. Reuse
+            -- at most16 unpriced plan ledgers; still optimize each objective
+            -- independently. Candidate worlds never inherit this baseline memo.
+            if not source.evaluationMemo then
+                source.ledgerMemoToken={}
+                source.evaluationMemo={token=source.ledgerMemoToken,entries={},count=0,hits=0}
+            end
+            local value={};for k,v in pairs(source)do value[k]=v end
+            value.includeServices=true;snapshot.serviceWorlds[source]=value
+        end
+        before=snapshot.serviceWorlds[source]
+        local value={};for k,v in pairs(after)do value[k]=v end
+        value.includeServices=true;value.baselineWorld=before
+        value.evaluationMemo=nil;value.ledgerMemoToken=nil;after=value
+    end
     local baseline,problem=snapshot.WorldQuote(before)
     if not baseline then return nil,problem end
     site.jointEconomy=true
@@ -534,7 +583,8 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
             adjacency=(site.adjacency or 0)+terrain,streams=streams,omissions=result.omissions,
             siteAdjustmentQ8=result.siteAdjustmentQ8-baseline.siteAdjustmentQ8,
             forecastAdjustmentQ8=premium,jointEconomy=true,
-            affectedChains=result.affectedChains,jointEvaluations=result.evaluations,servicesExcluded=true,
+            affectedChains=result.affectedChains,jointEvaluations=result.evaluations,servicesExcluded=result.servicesExcluded,
+            serviceValueQ8=(result.serviceValueQ8 or 0)-(baseline.serviceValueQ8 or 0),serviceStreams=result.serviceStreams or 0,
             second=stages and stages.second}
     end
     after.objective=function(result)return E.PlacementValue(marginal(result),site,protectionQ8,covers)end
@@ -545,9 +595,9 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
     -- shared buildings/rounding and current route income cancel against the
     -- common baseline; the footprint's losses and import-blocking flag remain.
     -- Native site costs enter once through the new site's existing accounting.
-    print(string.format('CSC_AI_QUARTER_WORLD turn=%d player=%d city=%d district=%d plot=%d chains=%d evaluations=%d beforeQ8=%d afterQ8=%d marginalQ8=%d bidQ8=%d',
+    print(string.format('CSC_AI_QUARTER_WORLD turn=%d player=%d city=%d district=%d plot=%d chains=%d evaluations=%d beforeQ8=%d afterQ8=%d marginalQ8=%d bidQ8=%d serviceQ8=%d',
         Game.GetCurrentGameTurn(),snapshot.id,city:GetID(),profile.district.Index,plot:GetIndex(),
-        result.affectedChains,result.evaluations,baseline.valueQ8,result.valueQ8,quote.valueQ8,quote.bidValueQ8))
+        result.affectedChains,result.evaluations,baseline.valueQ8,result.valueQ8,quote.valueQ8,quote.bidValueQ8,quote.serviceValueQ8 or 0))
     return quote
 end
 
@@ -568,10 +618,10 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         if site.nativeSiteAdjustmentQ8~=nil then site.footprintCostMode='native_site'end
         site.spatialPlan=E.SpatialPlan(snapshot.CustomerOptions
             and snapshot.CustomerOptions(city,plot,profile,protected)or{})
-        -- District siting currently prices ordinary CSC transactions only.
-        -- Service opportunity/demand valuation is deferred for BOTH Quarters
-        -- and customer districts. Copy the cached site so actual building/
-        -- repair marginals retain their existing narrow Stage2 Service input.
+        -- The legacy single-chain Stage2 estimate must not stack with the new
+        -- attachment-driven joint Service ledger. Copy the cached site so
+        -- building/repair marginals retain their narrow existing Stage2 input;
+        -- joint Quarter worlds use site.services when qualified CE is present.
         local transactionSite={};for k,v in pairs(site)do transactionSite[k]=v end
         transactionSite.service=nil
         local ok,value,message=pcall(E.QuarterForecast,snapshot,city,plot,profile,transactionSite,protectionQ8,covers)
@@ -581,6 +631,7 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
             bid,details.reason,parts=E.PlacementValue(quote,site,protectionQ8,covers)
             details.economicQ8=quote.valueQ8;details.afterProtectionQ8=quote.valueQ8-(parts and parts.penaltyQ8 or math.max(protectionQ8 or 0,covers and 256*256 or 0))
             details.forecastAdjustmentQ8=quote.forecastAdjustmentQ8 or 0
+            details.serviceQ8=quote.serviceValueQ8 or 0
             details.nativeSiteAdjustmentQ8=site.nativeSiteAdjustmentQ8
             details.adjacency=quote.adjacency;details.base=site.baseCount
             details.footprintWorkers=site.footprintWorkers

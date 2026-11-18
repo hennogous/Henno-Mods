@@ -40,30 +40,6 @@ ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets = function(playerID, cityID
     local city = CityManager.GetCity(playerID, cityID);
     if not city then return {}; end
     local queue = city:GetBuildQueue();
-    if kind == 'buildingTurns' then
-        local row=GameInfo.Buildings[index];
-        return row and economyNumber(queue,'GetTurnsLeft',row.BuildingType);
-    end;
-    if kind == 'districtTurns' then
-        local row=GameInfo.Districts[index];
-        return row and economyNumber(queue,'GetTurnsLeft',row.DistrictType);
-    end;
-    if kind == 'navalProduction' then
-        -- Value Dockmaster's Production only against observed eligible naval
-        -- work, not as a permanent bonus to all of this city's production.
-        local hash=economyNumber(queue,'GetCurrentProductionTypeHash');
-        local unit=hash and GameInfo.Units[hash];
-        local classes={PROMOTION_CLASS_NAVAL_MELEE=true,PROMOTION_CLASS_NAVAL_RANGED=true,PROMOTION_CLASS_NAVAL_RAIDER=true};
-        local last=GameInfo.Eras.ERA_RENAISSANCE;
-        if not unit or unit.Domain~='DOMAIN_SEA'or not classes[unit.PromotionClass]or not last then return 0; end;
-        for _,pair in ipairs({{'PrereqTech','Technologies'},{'PrereqCivic','Civics'}})do
-            local name=unit[pair[1]];
-            local unlock=name and GameInfo[pair[2]][name];
-            local era=unlock and GameInfo.Eras[unlock.EraType];
-            if name and(not era or era.Index>last.Index)then return 0; end;
-        end;
-        return economyNumber(city,'GetYield',GameInfo.Yields.YIELD_PRODUCTION.Index);
-    end;
     if queue:HasBeenPlaced(districtHash) or not queue:CanProduce(districtHash, false, true) then
         return {};
     end
@@ -147,6 +123,34 @@ ExposedMembers.CSC_Adjacency.GetEconomyCityNumber = function(playerID, cityID, k
     local queue = city:GetBuildQueue();
     if kind == 'building' then return economyNumber(queue, 'GetBuildingCost', index); end
     if kind == 'district' then return economyNumber(queue, 'GetDistrictCost', index); end
+
+    -- Queue demand belongs in this numeric reader, not district-target lookup.
+    -- Return definition IDs/turns only; Gameplay never borrows a UI unit/queue.
+    if kind == 'currentUnit' or kind == 'unitTurns' then
+        local hash=economyNumber(queue,'GetCurrentProductionTypeHash');
+        local unit=hash and GameInfo.Units[hash];
+        if not unit then return nil; end;
+        if kind == 'currentUnit' then return unit.Index; end;
+        if unit.Index~=index then return nil; end; -- queue changed since snapshot
+        return economyNumber(queue,'GetTurnsLeft',unit.UnitType);
+    end;
+    if kind == 'navalProduction' then
+        -- Value Dockmaster's Production only against observed eligible naval
+        -- work, not as a permanent bonus to all of this city's production.
+        local hash=economyNumber(queue,'GetCurrentProductionTypeHash');
+        local unit=hash and GameInfo.Units[hash];
+        local classes={PROMOTION_CLASS_NAVAL_MELEE=true,PROMOTION_CLASS_NAVAL_RANGED=true,PROMOTION_CLASS_NAVAL_RAIDER=true};
+        local last=GameInfo.Eras.ERA_RENAISSANCE;
+        if not unit or unit.Domain~='DOMAIN_SEA'or not classes[unit.PromotionClass]or not last then return 0; end;
+        for _,pair in ipairs({{'PrereqTech','Technologies'},{'PrereqCivic','Civics'}})do
+            local name=unit[pair[1]];
+            local unlock=name and GameInfo[pair[2]][name];
+            local era=unlock and GameInfo.Eras[unlock.EraType];
+            if name and(not era or era.Index>last.Index)then return 0; end;
+        end;
+        return economyNumber(city,'GetYield',GameInfo.Yields.YIELD_PRODUCTION.Index);
+    end;
+
 end;
 
 -- Population-limited district admission is exposed only by the UI cache.
