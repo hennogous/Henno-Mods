@@ -10,6 +10,10 @@
 	<m_PackageName text="UI/CSC_Icons"/>
 	<m_Entries>
 		<Element>
+			<m_EntryID text="CSC_MillPlacementIcons"/>
+			<m_ObjectName text="CSC_MillPlacementIcons"/>
+		</Element>
+		<Element>
 			<m_EntryID text="CSC_Effect_Notifications_100"/>
 			<m_ObjectName text="CSC_Effect_Notifications_100"/>
 		</Element>

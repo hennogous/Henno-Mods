@@ -1,6 +1,8 @@
 Write a GIMP Python script for the currently open XCF.
 
-The source file is a 4x4 Civ VI icon atlas. The original full atlas is 1024x1024, representing IconSize 256.
+Quarter source files use a 4x4 grid. The full 1024x1024 atlas represents IconSize 256.
+
+`CSC_Resources.xcf` uses a 2x2 grid on a 512x512 canvas. Export the visible resource art at 256, 64, 50, 38, 32, and 22 px per slot. Export the separate top-level `FOW` artwork at 256 and 64 px per slot, with `_FOW` after the size in the filename. Keep that layer hidden in the normal atlas. Both resource sheets at IconSize 256 have ten levels, from 512x512 to 1x1. Use the existing sharpening settings for the shared sizes and a radius of 0.8, amount 0.5, and threshold 0 for 64 px slots.
 
 Do not modify the original image. Work only on duplicate images and close/discard them when done.
 
@@ -9,7 +11,7 @@ Example: `CSC_BAKERS_Icons.xcf` exports files named `CSC_BAKERS_256.dds`, `CSC_B
 
 Create a flattened master duplicate by merging all visible layers. The layer named `Background` should be included as the bottom/background layer. Hidden layers other than `Background` should not be included. The original XCF must remain unmerged.
 
-Export the following DDS files from the flattened master, scaling directly from the 1024x1024 master for each output size:
+For Quarter art, export the following DDS files from the flattened master, scaling directly from the 1024x1024 master for each output size:
 
 | IconSize | Atlas size | Output filename | Sharpening |
 |---:|---:|---|---|
@@ -30,5 +32,5 @@ Use the DDS settings that have been verified to work for these Civ VI icon atlas
 - Format: RGBA8
 - Save type: All visible layers
 - Flip image vertically on export: unchecked
-- Mipmaps: No mipmaps
+- Mipmaps: Generate mipmaps with the Box filter for `PREFIX_256.dds` and `PREFIX_256_FOW.dds`. Use No mipmaps for all smaller atlases.
 - Perceptual error metric, gamma correction, sRGB, and alpha coverage options: disabled/unchecked

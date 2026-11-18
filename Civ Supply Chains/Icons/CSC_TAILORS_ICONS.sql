@@ -35,6 +35,7 @@ VALUES  (   'ICON_DISTRICT_CSC_TAILORS_QUARTER',                    'ICON_ATLAS_
         (   'DISTRICT_CSC_TAILORS_QUARTER',                         'ICON_ATLAS_CSC_TAILORS',   0   ),
         (   'TAILORS',                                              'ICON_ATLAS_CSC_TAILORS',   0   ),
         (   'ICON_DISTRICT_CSC_TAILORS_QUARTER_FOW',                'ICON_ATLAS_CSC_TAILORS',   1   ),
+        (   'ICON_DISTRICT_CSC_TAILORS_QUARTER_GRAY',               'ICON_ATLAS_CSC_TAILORS',   2   ),
         (   'ICON_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',           'ICON_ATLAS_CSC_TAILORS',   4   ),
         (   'ICON_BUILDING_CSC_TAILORS_TAILOR',                     'ICON_ATLAS_CSC_TAILORS',   5   ),
         (   'ICON_BUILDING_CSC_TAILORS_FASHION_HOUSE',              'ICON_ATLAS_CSC_TAILORS',   6   ),

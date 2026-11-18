@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 r"""
-GIMP 3.x Python plug-in: export a Civ VI 4x4 icon atlas to DDS sizes.
+GIMP 3.x Python plug-in: export Civ VI Quarter and resource icon atlases.
 
 Install for GIMP 3.2.x on Windows:
   C:\Users\Shadow\AppData\Roaming\GIMP\3.2\plug-ins\export_civ6_icon_atlas_dds\export_civ6_icon_atlas_dds.py
@@ -12,16 +12,18 @@ Use:
 
 Outputs, beside the source XCF:
   CSC_BAKERS_256.dds, CSC_BAKERS_128.dds, ... CSC_BAKERS_22.dds
+  CSC_Resources.xcf uses a 2x2 grid and a hidden FOW layer or group.
 
 Notes:
   - The original XCF is not modified.
   - The script works from duplicate images only.
   - DDS export uses the verified GIMP settings: Compression=None, Format=RGBA8,
-    Save type=All visible layers, No mipmaps.
+    Save type=All visible layers. Only the 256 px icon atlas has mipmaps.
 """
 
 import os
 import re
+import struct
 import sys
 import traceback
 
@@ -47,6 +49,9 @@ EXPORT_SPECS = [
     (32,   128, 1.7, 0.5, 0.0),
     (22,    88, 1.8, 0.5, 0.0),
 ]
+RESOURCE_SIZES = (256, 64, 50, 38, 32, 22)
+RESOURCE_FOW_SIZES = (256, 64)
+FOW_LAYER_NAME = "FOW"
 
 
 def _success(procedure):
@@ -82,7 +87,8 @@ def _derive_prefix_and_folder(image):
         prefix = match.group(1)
     else:
         prefix = os.path.splitext(base)[0]
-        Gimp.message("Filename does not end in _Icons.xcf; using '%s' as the DDS prefix." % prefix)
+        if prefix.casefold() != "csc_resources":
+            Gimp.message("Filename does not end in _Icons.xcf; using '%s' as the DDS prefix." % prefix)
 
     return prefix, folder
 
@@ -110,19 +116,25 @@ def _lower_layer_to_bottom(image, layer):
         pass
 
 
-def _prepare_flattened_master(source_image):
+def _prepare_flattened_master(source_image, resource_variant=None):
     """Return a duplicate image with visible layers merged into one layer."""
     image = source_image.duplicate()
     image.undo_disable()
 
-    background = _find_layer_by_name(image, "Background")
-    if background is not None:
-        background.set_visible(True)
-        _lower_layer_to_bottom(image, background)
+    if resource_variant == "fow":
+        for layer in image.get_layers():
+            layer.set_visible(_get_layer_name(layer) == FOW_LAYER_NAME)
+    else:
+        if resource_variant == "normal":
+            _find_layer_by_name(image, FOW_LAYER_NAME).set_visible(False)
+        background = _find_layer_by_name(image, "Background")
+        if background is not None:
+            background.set_visible(True)
+            _lower_layer_to_bottom(image, background)
 
-    # Remove hidden non-background root layers so they cannot affect export.
+    # Remove hidden root layers so they cannot affect export.
     for layer in list(image.get_layers()):
-        if _get_layer_name(layer) != "Background" and not layer.get_visible():
+        if not layer.get_visible():
             image.remove_layer(layer)
 
     visible_layers = [layer for layer in image.get_layers() if layer.get_visible()]
@@ -157,7 +169,29 @@ def _apply_unsharp_mask(drawable, radius, amount, threshold):
     drawable.merge_filter(filt)
 
 
-def _save_dds(image, outfile):
+def _normalize_dds(outfile):
+    """Match the RGBA byte order and header used by Civ VI UI atlases."""
+    with open(outfile, "rb") as source:
+        data = bytearray(source.read())
+    header = list(struct.unpack_from("<31I", data, 4))
+    if data[:4] != b"DDS " or header[18:22] != [32, 0x41, 0, 32]:
+        raise RuntimeError("Unexpected uncompressed DDS format: " + outfile)
+    bgra_masks = [0xff0000, 0xff00, 0xff, 0xff000000]
+    rgba_masks = [0xff, 0xff00, 0xff0000, 0xff000000]
+    if header[22:26] == bgra_masks:
+        data[128::4], data[130::4] = data[130::4], data[128::4]
+    elif header[22:26] != rgba_masks:
+        raise RuntimeError("Unexpected DDS channel masks: " + outfile)
+    header[1] = 0x21007
+    header[4:7] = [0, 1, max(1, header[6])]
+    header[7:18] = [0x54585446] + [0] * 10
+    header[22:27] = [*rgba_masks, 0x401008]
+    struct.pack_into("<31I", data, 4, *header)
+    with open(outfile, "wb") as output:
+        output.write(data)
+
+
+def _save_dds(image, outfile, mipmaps):
     """Export DDS using the verified manual settings from GIMP 3.2.x."""
     layers = image.get_selected_layers()
     if not layers:
@@ -183,7 +217,7 @@ def _save_dds(image, outfile):
     config.set_property("file", Gio.File.new_for_path(outfile))
 
     # Verified working settings from the GIMP 3.2.4 DDS export dialog:
-    # Compression=None, Format=RGBA8, Save type=All visible layers, No mipmaps.
+    # Compression=None, Format=RGBA8, Save type=All visible layers.
     config.set_property("compression-format", "none")
     config.set_property("perceptual-metric", False)
     config.set_property("format", "rgba8")
@@ -191,8 +225,8 @@ def _save_dds(image, outfile):
     config.set_property("flip-image", False)
     config.set_property("transparent-color", False)
     config.set_property("transparent-index", 0)
-    config.set_property("mipmaps", "none")
-    config.set_property("mipmap-filter", "default")
+    config.set_property("mipmaps", "generate" if mipmaps else "none")
+    config.set_property("mipmap-filter", "box" if mipmaps else "default")
     config.set_property("mipmap-wrap", "default")
     config.set_property("gamma-correct", False)
     config.set_property("srgb", False)
@@ -204,9 +238,10 @@ def _save_dds(image, outfile):
     status = result.index(0)
     if status != Gimp.PDBStatusType.SUCCESS:
         raise RuntimeError("DDS export failed for %s with status %s" % (outfile, status))
+    _normalize_dds(outfile)
 
 
-def _export_one(master_image, prefix, folder, icon_size, atlas_px, radius, amount, threshold):
+def _export_one(master_image, prefix, folder, icon_size, atlas_px, radius, amount, threshold, suffix=""):
     work = master_image.duplicate()
     work.undo_disable()
 
@@ -225,11 +260,37 @@ def _export_one(master_image, prefix, folder, icon_size, atlas_px, radius, amoun
         if radius is not None:
             _apply_unsharp_mask(drawable, radius, amount, threshold)
 
-        outfile = os.path.join(folder, "%s_%s.dds" % (prefix, icon_size))
-        _save_dds(work, outfile)
+        outfile = os.path.join(folder, "%s_%s%s.dds" % (prefix, icon_size, suffix))
+        _save_dds(work, outfile, mipmaps=icon_size == 256)
         return outfile
     finally:
         work.delete()
+
+
+def _export_atlases(image):
+    prefix, folder = _derive_prefix_and_folder(image)
+    resource = prefix.casefold() == "csc_resources"
+    if resource:
+        if (image.get_width(), image.get_height()) != (512, 512):
+            raise RuntimeError("CSC_Resources.xcf must have a 512 × 512 canvas for its 2 × 2 atlas.")
+        if _find_layer_by_name(image, FOW_LAYER_NAME) is None:
+            raise RuntimeError("CSC_Resources.xcf needs a top-level FOW layer or group.")
+        sharpening = {size: (radius, amount, threshold) for size, _, radius, amount, threshold in EXPORT_SPECS}
+        sharpening[64] = (0.8, 0.5, 0.0)
+        jobs = (("normal", "", RESOURCE_SIZES), ("fow", "_FOW", RESOURCE_FOW_SIZES))
+    else:
+        jobs = ((None, "", ()),)
+
+    exported = []
+    for variant, suffix, sizes in jobs:
+        master = _prepare_flattened_master(image, variant)
+        try:
+            specs = [(size, 2 * size, *sharpening[size]) for size in sizes] if resource else EXPORT_SPECS
+            for spec in specs:
+                exported.append(_export_one(master, prefix, folder, *spec, suffix=suffix))
+        finally:
+            master.delete()
+    return exported
 
 
 class Civ6IconAtlasExporter(Gimp.PlugIn):
@@ -252,24 +313,15 @@ class Civ6IconAtlasExporter(Gimp.PlugIn):
         procedure.add_menu_path(MENU_PATH)
         procedure.set_documentation(
             "Export Civ VI icon atlas DDS sizes",
-            "Exports 256/128/80/70/50/38/32/22 DDS atlases from the current XCF without modifying it.",
+            "Exports DDS atlases from the current XCF. Supports 4x4 Quarter sheets and 2x2 CSC resource sheets with FOW.",
             name,
         )
         procedure.set_attribution("Henno + Bill", "Henno + Bill", "2026")
         return procedure
 
     def run(self, procedure, run_mode, image, drawables, config, run_data):
-        master = None
-        exported = []
-
         try:
-            prefix, folder = _derive_prefix_and_folder(image)
-            master = _prepare_flattened_master(image)
-
-            for spec in EXPORT_SPECS:
-                icon_size, atlas_px, radius, amount, threshold = spec
-                exported.append(_export_one(master, prefix, folder, icon_size, atlas_px, radius, amount, threshold))
-
+            exported = _export_atlases(image)
             Gimp.message("Exported %d DDS icon atlases:\n%s" % (len(exported), "\n".join(exported)))
             return _success(procedure)
 
@@ -277,9 +329,5 @@ class Civ6IconAtlasExporter(Gimp.PlugIn):
             traceback.print_exc(file=sys.stderr)
             return _failure(procedure, "Civ VI DDS atlas export failed:\n%s" % exc)
 
-        finally:
-            if master is not None:
-                master.delete()
-
-
-Gimp.main(Civ6IconAtlasExporter.__gtype__, sys.argv)
+if __name__ == "__main__":
+    Gimp.main(Civ6IconAtlasExporter.__gtype__, sys.argv)

@@ -38,8 +38,7 @@ node project/tools/blender/csc_generate_pbr_maps.mjs `
 
 ### Building icon
 
-py -3 "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\blender\render_ae_asset.py" `
-  "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\Assets\CSC_TAILORS_Textile_Workshop.ast"
+py -3 "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\blender\render_ae_asset.py" ` "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\CSC_BAKERS_Wind_Mill_2D.ast" --L1
 
 mean curvature blur 20 steps
 sharpen amount 1.5
