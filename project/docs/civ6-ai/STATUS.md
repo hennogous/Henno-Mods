@@ -1,10 +1,17 @@
 # Current CSC AI status
 
-**Next priority,18 November:14.3 Service valuation in Quarter forecasts.**
-Henno requests native pricing where possible, with calibrated proxies for the
-remaining effects. [Initial options and implementation sequence](../research/mods/csc-ai-service-valuation-options-20261118.md).
-No new game or policy change yet. The initial3.1 supplier case remains ready
-for later investigation.
+**18 November:14.3 first Service-valuation slice is implemented and native-checked.**
+Gameplay attachments supply the effects/gates; native growth/pseudo-yield quotes
+price growth, class-specific GPP and ordinary venue Tourism. Faith/eligible ship
+output use bounded current-output estimates and native yield prices. At100,
+two Bakers calculated bids gain11.79utility; two Tailors lose2.68 by delaying
+another chain two turns. Shared-controller100/250 checks close/restore at0turns;
+154 economy and13 timing/controller checks pass. Housing, Wonder-property gates
+and live changed-choice/full-game qualification remain next. Diagnostic cost adds
+0.069s at100 and0.425s in a nine-chain mature player pass; whole-turn cost awaits
+the next full run. Requires the new optional CE APIs; older CE keeps ordinary
+forecasts. [Implementation/results](../research/mods/csc-ai-service-valuation-implementation-20261118.md).
+No game is running. The3.1 supplier case remains available for later work.
 
 **18 November: Problem2.1 is complete at the integrated Bakers/Tailors scope.**
 All six matched Online250 games qualify/restore. Physical links75→86; customer

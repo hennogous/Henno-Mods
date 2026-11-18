@@ -1,9 +1,13 @@
 # CSC AI handoff — 18 November 2026
 
 Henno's latest priority is **14.3 prospective Service value in Quarter bids**.
-Start with [native mechanisms, missing pieces and the implementation sequence](../research/mods/csc-ai-service-valuation-options-20261118.md).
-This new investigation supersedes the3.1 next-task suggestion below. No new
-game, policy change or upstream PR has started.
+The first slice is implemented and qualified for native prices/calculated bids
+in unchanged saved100/250 worlds. [Implementation, costs and remaining work](../research/mods/csc-ai-service-valuation-implementation-20261118.md).
+Use matching CE development build00edf646; source and frozen03 are recorded there.
+Native source branch is `codex/native-quarter-valuation`; no upstream PR.
+Next: Housing/linked-Wonder coverage and changed-choice/full-game qualification,
+including whole-guidance timing. All test sessions are closed. This supersedes
+the3.1 next-task suggestion below.
 
 **Problem2.1 is closed.** All six preselected fresh Online250 comparisons qualify,
 restore and pass fresh v3 accounting. Links75→86; customer-after-Quarter45→56

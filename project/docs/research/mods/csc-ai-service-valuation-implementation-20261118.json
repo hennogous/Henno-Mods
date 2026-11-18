@@ -1,0 +1,1237 @@
+{
+  "scope": "Zero-turn native pricing and calculated bids, no policy publication or construction",
+  "candidate_ce_sha256": "00edf646d8b32e3a03730b7902e64a9e7469124c03abe7985d31c9682293d356",
+  "worlds": [
+    {
+      "directory": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-service-valuation-20261118\\saved250-03",
+      "timing": [
+        {
+          "arm": "B",
+          "centralSeconds": 2.0140093,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 0.9323485,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 101,
+          "nativeQuotes": 1206,
+          "pass": 1,
+          "player": 5,
+          "preparationSeconds": 0.1082543,
+          "semanticBytes": 1515242,
+          "semanticFingerprint": "2539331114/1515242",
+          "serviceStreams": 26,
+          "serviceWorlds": 3,
+          "totalSeconds": 2.1222636,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 18,
+            "evaluations": 574,
+            "routeEntries": 114,
+            "routeHits": 434,
+            "routeMisses": 114,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 20
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 1.6102367,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 0.64737770000001,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 101,
+          "nativeQuotes": 1190,
+          "pass": 2,
+          "player": 5,
+          "preparationSeconds": 0.11705000000001,
+          "semanticBytes": 1430536,
+          "semanticFingerprint": "2402619414/1430536",
+          "serviceStreams": 0,
+          "serviceWorlds": 0,
+          "totalSeconds": 1.7272867,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 432,
+            "routeEntries": 114,
+            "routeHits": 318,
+            "routeMisses": 114,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 1.6529871,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 0.6797887,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 101,
+          "nativeQuotes": 1190,
+          "pass": 3,
+          "player": 5,
+          "preparationSeconds": 0.0984756,
+          "semanticBytes": 1430536,
+          "semanticFingerprint": "2402619414/1430536",
+          "serviceStreams": 0,
+          "serviceWorlds": 0,
+          "totalSeconds": 1.7514627,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 432,
+            "routeEntries": 114,
+            "routeHits": 318,
+            "routeMisses": 114,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          }
+        },
+        {
+          "arm": "B",
+          "centralSeconds": 2.1005054,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 1.0980199,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 101,
+          "nativeQuotes": 1206,
+          "pass": 4,
+          "player": 5,
+          "preparationSeconds": 0.1060245,
+          "semanticBytes": 1515242,
+          "semanticFingerprint": "2539331114/1515242",
+          "serviceStreams": 26,
+          "serviceWorlds": 3,
+          "totalSeconds": 2.2065299,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 18,
+            "evaluations": 574,
+            "routeEntries": 114,
+            "routeHits": 434,
+            "routeMisses": 114,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 20
+          }
+        }
+      ],
+      "quotes": [
+        {
+          "both": 0,
+          "kind": "PSEUDOYIELD_GPP_ENGINEER",
+          "one": 0,
+          "tail": 0
+        },
+        {
+          "both": 465,
+          "kind": "PSEUDOYIELD_TOURISM",
+          "one": 256,
+          "tail": 209
+        },
+        {
+          "city": 458756,
+          "foodSurplus": 14,
+          "kind": "GROWTH_PERCENT10",
+          "value": 628
+        }
+      ],
+      "bids": {
+        "B": {
+          "arm": "B",
+          "entries": [],
+          "player": 5,
+          "worlds": [
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 0,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 524294,
+                  "id": "5:524294:BAKERS:2537/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2463",
+                  "ready": 0,
+                  "valueQ8": 5929,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 524294,
+                  "id": "5:524294:BAKERS:2537/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2463",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 589831,
+                  "id": "5:589831:BAKERS:2685/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2759",
+                  "ready": 0,
+                  "valueQ8": 4855,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 589831,
+                  "id": "5:589831:BAKERS:2685/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2759",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 10784,
+              "totalQ8": 1916456
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 0,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 524294,
+                  "id": "5:524294:BAKERS:2537/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2463",
+                  "ready": 0,
+                  "valueQ8": 5929,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 524294,
+                  "id": "5:524294:BAKERS:2537/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2463",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 589831,
+                  "id": "5:589831:BAKERS:2685/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2759",
+                  "ready": 0,
+                  "valueQ8": 4855,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 589831,
+                  "id": "5:589831:BAKERS:2685/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2759",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 10784,
+              "totalQ8": 1908920
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 655368,
+                  "id": "5:655368:BAKERS:2095/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2094",
+                  "ready": 2,
+                  "valueQ8": 2468,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 655368,
+                  "id": "5:655368:BAKERS:2095/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2094",
+                  "ready": 2,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 0,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 524294,
+                  "id": "5:524294:BAKERS:2537/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2463",
+                  "ready": 0,
+                  "valueQ8": 5929,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 524294,
+                  "id": "5:524294:BAKERS:2537/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2463",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 589831,
+                  "id": "5:589831:BAKERS:2685/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2759",
+                  "ready": 0,
+                  "valueQ8": 4855,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 589831,
+                  "id": "5:589831:BAKERS:2685/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2759",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 0,
+                  "valueQ8": 0,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 13252,
+              "totalQ8": 1885665
+            }
+          ]
+        },
+        "A": {
+          "arm": "A",
+          "entries": [],
+          "player": 5,
+          "worlds": []
+        }
+      },
+      "proof": {
+        "coldHistory": true,
+        "modelEquality": false,
+        "noPublishedPackets": true,
+        "passes": 4,
+        "players": 1,
+        "turn": 250,
+        "verified": true
+      },
+      "complete": {
+        "verified": true,
+        "turn": 250,
+        "turns_advanced": 0
+      },
+      "session-closed": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "source-structure-comparison": {
+        "verified": true,
+        "expected_rows": 289,
+        "actual_rows": 289,
+        "missing": [],
+        "unexpected": [],
+        "ignored_kinds": [
+          "ADJACENCY",
+          "END",
+          "TREASURY"
+        ],
+        "retained_partial_columns": {
+          "CITY": 3,
+          "QUARTER": 7
+        }
+      },
+      "performance": {
+        "A": {
+          "mean_seconds": 1.7393747,
+          "max_seconds": 1.7514627
+        },
+        "B": {
+          "mean_seconds": 2.16439675,
+          "max_seconds": 2.2065299
+        }
+      },
+      "changed_positive_bids": []
+    },
+    {
+      "directory": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-service-valuation-20261118\\control100-03",
+      "timing": [
+        {
+          "arm": "B",
+          "centralSeconds": 0.4270439,
+          "chains": 2,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 8,
+            "groups": 2,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 4,
+            "referenceUnavailable": 0,
+            "singletons": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.068086100000002,
+          "earlyFingerprint": "294553776/16998",
+          "entries": 73,
+          "nativeQuotes": 369,
+          "pass": 1,
+          "player": 5,
+          "preparationSeconds": 0.039903199999998,
+          "semanticBytes": 375548,
+          "semanticFingerprint": "1792062826/375548",
+          "serviceStreams": 40,
+          "serviceWorlds": 9,
+          "totalSeconds": 0.4669471,
+          "turn": 100,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 22,
+            "evaluations": 486,
+            "routeEntries": 5,
+            "routeHits": 431,
+            "routeMisses": 5,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 18
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 0.3533494,
+          "chains": 2,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 8,
+            "groups": 2,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 4,
+            "referenceUnavailable": 0,
+            "singletons": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.0563401,
+          "earlyFingerprint": "294553776/16998",
+          "entries": 73,
+          "nativeQuotes": 353,
+          "pass": 2,
+          "player": 5,
+          "preparationSeconds": 0.038354700000006,
+          "semanticBytes": 341510,
+          "semanticFingerprint": "4102907280/341510",
+          "serviceStreams": 0,
+          "serviceWorlds": 0,
+          "totalSeconds": 0.39170410000001,
+          "turn": 100,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 23,
+            "evaluations": 432,
+            "routeEntries": 5,
+            "routeHits": 427,
+            "routeMisses": 5,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 17
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 0.3334223,
+          "chains": 2,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 8,
+            "groups": 2,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 4,
+            "referenceUnavailable": 0,
+            "singletons": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.045593700000005,
+          "earlyFingerprint": "294553776/16998",
+          "entries": 73,
+          "nativeQuotes": 353,
+          "pass": 3,
+          "player": 5,
+          "preparationSeconds": 0.035339899999997,
+          "semanticBytes": 341510,
+          "semanticFingerprint": "4102907280/341510",
+          "serviceStreams": 0,
+          "serviceWorlds": 0,
+          "totalSeconds": 0.3687622,
+          "turn": 100,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 23,
+            "evaluations": 432,
+            "routeEntries": 5,
+            "routeHits": 427,
+            "routeMisses": 5,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 17
+          }
+        },
+        {
+          "arm": "B",
+          "centralSeconds": 0.3694872,
+          "chains": 2,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 8,
+            "groups": 2,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 4,
+            "referenceUnavailable": 0,
+            "singletons": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.062687799999999,
+          "earlyFingerprint": "294553776/16998",
+          "entries": 73,
+          "nativeQuotes": 369,
+          "pass": 4,
+          "player": 5,
+          "preparationSeconds": 0.062316600000003,
+          "semanticBytes": 375548,
+          "semanticFingerprint": "1792062826/375548",
+          "serviceStreams": 40,
+          "serviceWorlds": 9,
+          "totalSeconds": 0.4318038,
+          "turn": 100,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 22,
+            "evaluations": 486,
+            "routeEntries": 5,
+            "routeHits": 431,
+            "routeMisses": 5,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 18
+          }
+        }
+      ],
+      "quotes": [
+        {
+          "both": 395,
+          "kind": "PSEUDOYIELD_GPP_ENGINEER",
+          "one": 204,
+          "tail": 191
+        },
+        {
+          "both": 465,
+          "kind": "PSEUDOYIELD_TOURISM",
+          "one": 256,
+          "tail": 209
+        },
+        {
+          "city": 196610,
+          "foodSurplus": 11,
+          "kind": "GROWTH_PERCENT10",
+          "value": 488
+        }
+      ],
+      "bids": {
+        "B": {
+          "arm": "B",
+          "entries": [
+            {
+              "city": 458756,
+              "district": 42,
+              "finalQ8": 77317,
+              "plot": 2017
+            },
+            {
+              "city": 458756,
+              "district": 42,
+              "finalQ8": 86217,
+              "plot": 1943
+            },
+            {
+              "city": 196610,
+              "district": 43,
+              "finalQ8": 39489,
+              "plot": 1503
+            },
+            {
+              "city": 196610,
+              "district": 43,
+              "finalQ8": 40538,
+              "plot": 1428
+            }
+          ],
+          "player": 5,
+          "worlds": [
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 4649,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 16500,
+              "totalQ8": 324387
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 4649,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 16500,
+              "totalQ8": 350729
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 458756,
+                  "id": "5:458756:BAKERS:2017/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2016",
+                  "ready": 17,
+                  "valueQ8": 925,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 458756,
+                  "id": "5:458756:BAKERS:2017/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2016",
+                  "ready": 17,
+                  "valueQ8": 2093,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 4649,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 19518,
+              "totalQ8": 351738
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 458756,
+                  "id": "5:458756:BAKERS:1943/service:BUILDING_CSC_BAKERS_WATER_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER:2016",
+                  "ready": 17,
+                  "valueQ8": 925,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 458756,
+                  "id": "5:458756:BAKERS:1943/service:BUILDING_CSC_BAKERS_WATER_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2016",
+                  "ready": 17,
+                  "valueQ8": 2093,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 4649,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 19518,
+              "totalQ8": 354494
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 5,
+                  "valueQ8": 4649,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 16500,
+              "totalQ8": 323389
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 7,
+                  "valueQ8": 4275,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 7,
+                  "valueQ8": 3497,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 15813,
+              "totalQ8": 329674
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 7,
+                  "valueQ8": 4275,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 7,
+                  "valueQ8": 3497,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 15813,
+              "totalQ8": 328675
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 7,
+                  "valueQ8": 4275,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 7,
+                  "valueQ8": 3497,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 15813,
+              "totalQ8": 315565
+            },
+            {
+              "effects": [
+                {
+                  "amount": 10,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:1652",
+                  "ready": 7,
+                  "valueQ8": 4275,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 196610,
+                  "id": "5:196610:BAKERS:1726/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:1652",
+                  "ready": 7,
+                  "valueQ8": 3497,
+                  "yield": "PSEUDOYIELD"
+                },
+                {
+                  "amount": 10,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND/MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND:2023",
+                  "ready": 5,
+                  "valueQ8": 4231,
+                  "yield": "GROWTH"
+                },
+                {
+                  "amount": 1,
+                  "city": 65536,
+                  "id": "5:65536:BAKERS:2022/service:BUILDING_CSC_BAKERS_WIND_MILL:MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY/MOD_CSC_BAKERS_STAGE_2+4_GPP:2023",
+                  "ready": 5,
+                  "valueQ8": 3810,
+                  "yield": "PSEUDOYIELD"
+                }
+              ],
+              "serviceQ8": 15813,
+              "totalQ8": 315293
+            }
+          ]
+        },
+        "A": {
+          "arm": "A",
+          "entries": [
+            {
+              "city": 458756,
+              "district": 42,
+              "finalQ8": 74299,
+              "plot": 2017
+            },
+            {
+              "city": 458756,
+              "district": 42,
+              "finalQ8": 83199,
+              "plot": 1943
+            },
+            {
+              "city": 196610,
+              "district": 43,
+              "finalQ8": 40176,
+              "plot": 1503
+            },
+            {
+              "city": 196610,
+              "district": 43,
+              "finalQ8": 41225,
+              "plot": 1428
+            }
+          ],
+          "player": 5,
+          "worlds": []
+        }
+      },
+      "proof": {
+        "coldHistory": true,
+        "modelEquality": false,
+        "noPublishedPackets": true,
+        "passes": 4,
+        "players": 1,
+        "turn": 100,
+        "verified": true
+      },
+      "complete": {
+        "verified": true,
+        "turn": 100,
+        "turns_advanced": 0
+      },
+      "session-closed": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "source-structure-comparison": {
+        "verified": true,
+        "expected_rows": 112,
+        "actual_rows": 112,
+        "missing": [],
+        "unexpected": [],
+        "ignored_kinds": [
+          "ADJACENCY",
+          "END",
+          "TREASURY"
+        ],
+        "retained_partial_columns": {
+          "CITY": 3,
+          "QUARTER": 7
+        }
+      },
+      "performance": {
+        "A": {
+          "mean_seconds": 0.380233150000005,
+          "max_seconds": 0.39170410000001
+        },
+        "B": {
+          "mean_seconds": 0.44937545,
+          "max_seconds": 0.4669471
+        }
+      },
+      "changed_positive_bids": [
+        {
+          "city": 196610,
+          "district": 43,
+          "plot": 1428,
+          "beforeQ8": 41225,
+          "afterQ8": 40538,
+          "deltaQ8": -687
+        },
+        {
+          "city": 196610,
+          "district": 43,
+          "plot": 1503,
+          "beforeQ8": 40176,
+          "afterQ8": 39489,
+          "deltaQ8": -687
+        },
+        {
+          "city": 458756,
+          "district": 42,
+          "plot": 1943,
+          "beforeQ8": 83199,
+          "afterQ8": 86217,
+          "deltaQ8": 3018
+        },
+        {
+          "city": 458756,
+          "district": 42,
+          "plot": 2017,
+          "beforeQ8": 74299,
+          "afterQ8": 77317,
+          "deltaQ8": 3018
+        }
+      ]
+    }
+  ],
+  "source_files": {
+    "Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyFacts.lua": "1d7b10585aede8d7028e1b2c7e3714be2301deac1ea5633e81d9160b1f374463",
+    "Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyModel.lua": "87ef4c768598c7053086513f12b27df392da0ab96f5917cbd8d64809ce0302b4",
+    "Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyAdapters.lua": "ddbe3d6a0c6cf76a61ab30528643a9dc3f30c01c025ebeb228efc68d3731d765",
+    "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyUI.lua": "fc9c7c2dd96b86e2a2429aa6a6735caa798b0bbc8659ec1ddcef2b7e47b25cd4"
+  },
+  "catalogue": {
+    "database": "C:\\Users\\Shadow\\AppData\\Local\\Firaxis Games\\Sid Meier's Civilization VI\\Cache\\DebugGameplay.sqlite",
+    "database_sha256": "244f4fb7b19bd723888c6d5092a0765bd4d585bc127032c466bbedbc4c634dd7",
+    "facts_sha256": "1d7b10585aede8d7028e1b2c7e3714be2301deac1ea5633e81d9160b1f374463",
+    "counts": {
+      "BAKERS:2:GROWTH": 2,
+      "BAKERS:2:PSEUDOYIELD": 2,
+      "BAKERS:3:HOUSING": 1,
+      "BAKERS:3:PSEUDOYIELD": 1,
+      "BAKERS:4:PSEUDOYIELD": 4,
+      "TAILORS:2:NAVAL_PRODUCTION_PERCENT": 12,
+      "TAILORS:2:PSEUDOYIELD": 1,
+      "TAILORS:3:PSEUDOYIELD": 1,
+      "TAILORS:3:YIELD_PERCENT": 1,
+      "TAILORS:4:PSEUDOYIELD": 2
+    },
+    "omissions": [
+      "MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BOLSHOI: unmodeled Service gate",
+      "MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BROADWAY: unmodeled Service gate",
+      "MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_SYDNEY: unmodeled Service gate",
+      "MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BOLSHOI: unmodeled Service gate",
+      "MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BROADWAY: unmodeled Service gate",
+      "MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_SYDNEY: unmodeled Service gate"
+    ]
+  },
+  "commits": {
+    "csc_implementation": "f821425f",
+    "ce_api": "0222f05",
+    "civ6_ai_skill": "fcb4b76"
+  }
+}

@@ -1,5 +1,10 @@
 # Prospective Service pricing: native mechanisms and CSC forecasting
 
+Follow-up: the [first implementation and native checks](csc-ai-service-valuation-implementation-20261118.md)
+now qualify growth/pseudo-yield quotes and their marginal Quarter bids. The
+options below retain the original investigation context; Housing and linked
+Wonder-property coverage remain open.
+
 18 November2026. Roadmap14.3, applying initially to Quarter investment1.4.
 Source/maintained-native-evidence audit; no game, gameplay change or new hook.
 

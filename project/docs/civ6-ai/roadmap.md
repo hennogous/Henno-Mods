@@ -10,6 +10,10 @@ No fourth seed or new premium is needed. [Completion audit and results](../resea
 Initial **Problem3** material/Builder research is complete; no new full game is scheduled.
 [Seven current supplier gaps and the next exact Tailors job trace](../research/mods/csc-ai-material-development-audit-20261118.md).
 
+**Current priority:14.3 Service valuation.** Its first native-backed Quarter-bid
+slice passes unchanged100/250 checks. Housing, Wonder gates and changed-choice/
+full-game qualification remain open. [Implementation/results](../research/mods/csc-ai-service-valuation-implementation-20261118.md).
+
 ## Earlier campaign checkpoints (historical)
 
 For current continuation instructions, use the [handoff](HANDOFF.md). Later
@@ -1110,13 +1114,24 @@ until the active check closes or an explicit dependency needs attention.
   variant when two working Mills share its host. The packet fixture passes.
   Shared-supplier valuation and live shared-customer follow-through remain open.
 
-- **14.3 Prospective Service value in spatial investment (investigation started18 November).**
+- **14.3 Prospective Service value in spatial investment (first slice implemented18 November).**
+  Native-backed growth/GPP/Tourism and current-output Faith/naval estimates now
+  enter shared Quarter worlds and their signed marginal bid once, outside the
+  ordinary heuristic quality cap. Gameplay supplies27 effect bindings; Housing
+  is discovered/unpriced and six Wonder-property branches remain omitted.
+  Native zero-turn100/250 checks repeat all bids/plans: Bakers+3018Q8, Tailors−687Q8
+  from two-turn Service delay. Mean diagnostic player-pass cost0.380→0.449s at100,
+  1.739→2.164s at250; measure whole-turn overhead on the next full run. Customer
+  placement retains its ordinary baseline.154 economy and13 controller/timing
+  checks pass. Next qualify Housing's nonlinear intervals, Wonder gates and a
+  changed native choice/foundation/full-game outcome. This capability remains open.
+  [Implementation and native evidence](../research/mods/csc-ai-service-valuation-implementation-20261118.md).
   Henno prioritizes this after the2.1 results. Use the central model for Service
   gates, recipients, demand and timing, with native effect pricing where usable
-  and calibrated proxies for remaining channels. Existing yield/amenity APIs
-  work; native growth/GPP children need dedicated quotes, Housing/Tourism need
-  focused investigation. Current joint spatial forecasts explicitly strip
-  Services, so integrating the ledger is required as well as exposing prices.
+  and calibrated proxies for remaining channels. Native yield/amenity,
+  pseudo-yield and growth quote APIs now support the ledger. Housing and
+  Wonder-property gates need focused follow-up; joint customer Service valuation
+  remains separately deferred.
   [Initial native/proxy options and implementation sequence](../research/mods/csc-ai-service-valuation-options-20261118.md).
   Extend the
   central economy model's narrow Stage2 readiness/current-output estimates to

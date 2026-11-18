@@ -1,5 +1,24 @@
 # CSC findings and evidence
 
+## AI-C218 — Native-priced Services change complete Quarter bids and queue opportunity cost
+
+18 November2026. Main CSC/qualified CE00edf646, unchanged saved-world checks at100
+and250. Gameplay attachment discovery supplies27 Service bindings; ordinary
+Quarter worlds price growth, GPP, venue Tourism and current-output Faith/naval
+benefits. Two Bakers calculated entries gain3018Q8 each. Two Tailors entries
+lose687Q8: another Bakers chain's growth/Engineer streams move from relative5
+to7. Both Service pricing modes repeat their complete results B/A/A/B; no native
+packet or world order is published. Final native sessions close/restore with0
+turns advanced and source structure matched.
+
+The ordinary heuristic cap excludes signed Service marginal before capping and
+adds it once after. Base/quality/economics/material and CE limits remain. Mean
+diagnostic economic player pass rises0.380→0.449s at100 and1.739→2.164s at250;
+whole-turn overhead is unmeasured. Housing and Wonder-property coverage, actual
+changed native selection/foundation and full-game outcomes remain open14.3.
+
+[Implementation, source identities and results](../research/mods/csc-ai-service-valuation-implementation-20261118.md).
+
 ## AI-C217 — Current supplier policy has persistent producer-only Tailors cases
 
 18 November2026. Source audit and three completed treatment250 censuses.
