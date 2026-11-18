@@ -1,5 +1,32 @@
 # Active customer-placement goal,17 November
 
+LATEST18Nov06:53UTC: Problem2.1 COMPONENT COMPLETE; goaltoolstillactivefor
+conditionalinitialProblem3research. All6freshOnline250 CLOSED/qualified0,
+parent5067exit0. Freshv3ALL6reconciled, frozenmanifests/binaries/initialmaps,
+AIstarts+units/timing/nativefaults/drain auditPASS. AggregateC→T75→86links,
+Qfirst45→56,CF30flat,comparable28/50→39/61, Q63→69allBase,+3=60→66,+4=32→33,
+both12→15. FamiliesB47→58(Qfirst35→42,CF12→16);T28flat(Qfirst10→14,CF18→14).
+ServicespropertiesStore23flat,Dock0→1,Sac0→2,Inn9→6,BStage4tourism0→1.
+FractalT has1Dockmaster+1Sacristan. Wholeguidancemean2.320909→2.451312s
+(+.1304/5.6%),max7.0438→5.8823. Astraapproves2.1closure; mainvaluenotperfectmaps.
+MainF/M/EsourceequalsqualifiedfrozencandidateLuaTEXT; Facts/ModelCRLFvsLFonly,
+Adapterexact80414c6. No mainpolicychangeafter7ea8820a,unusedmodelreuseparked.
+Twofinal0turntimingchecks CLOSED/PASS:81779(controlworldnormalized03),44883
+(treatmentworldnormalized). Original33760anddiff33516failedONLYpricedstream
+appendorder inHavokpairs; proofnowdeepcopies/sortsFULLpricedstreams+dense
+recordcontributorsafterclock. Densebooleanmaps/investment/plan/worldorderpreserved;
+4meaningfulregressionspass(inclprice-swapidentitywithsameTotalrejected).
+Allrepeatedrealbids/plans/prices nowexact. p5coldBAAB: controlworld6chains old/new
+total1.006→1.055sec,central.933→.985,groups6→8,16forecasts,384→408eval,701→703quotes.
+Treatmentworld9chains1.341→1.769,central1.239→1.679,groups5→8,16forecasts,
+281→432eval,800→1190quotes. Broadergroupscostsrealbutbounded; nooptimization
+neededforcurrentclosureperusermain-valueinstruction. Metadata/sixfullresults
+andfullcompletionauditindatedmainreportJSON. Read-onlydupall4timingpackages
+retired. Disk35.36GiB,NOgame/consoleowners. No PR. Upstreamrechecked06:21UTC
+develop2986/mastere59unchanged. Next: boundedinitialProblem3researchusingcurrent
+code+sixgamelogs/retainedengineknowledge; don'tstartanotherfullgame. Thenfinish
+goaltoolonlyonceconditionalresearchhasconcretewrittenresult. PreserveuserWIP.
+
 LATEST05:03:53UTC18Nov: parent5067live, finalFractalTREATMENT50inactiveboundary,
 lastverified45,worker18644,nativefaults0,disk35.51GiB. Next05:18:53UTC (store).
 FractalCONTROL250qualifies0/drained22938native rows, v3coordinationrerun:

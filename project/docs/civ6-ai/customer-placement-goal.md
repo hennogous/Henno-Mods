@@ -1,4 +1,15 @@
-# Active goal: worthwhile customer placement
+# Completed: worthwhile customer placement — 18 November2026
+
+Problem2.1 closes for the integrated Bakers/Tailors system. Six fresh matched
+Online250 games qualify and restore: physical links75→86, customer-after-Quarter
+links45→56, classified connections28/50→39/61. Both families gain connections
+after existing Quarters; customer-first totals remain30. Mean guidance2.321→2.451s
+(+0.130s), maximum7.044→5.882s. Short changed-choice/foundation, stronger-site,
+invalidation, full input/source and mature timing checks are complete. Maps are
+mixed and retained individually. [Final results and completion audit](../research/mods/csc-ai-customer-scheduling-20261117.md).
+
+The original acceptance contract follows. Initial Problem3 research is the next
+requested work; it does not reopen this placement closure.
 
 Solve Problem2.1 for Bakers and Tailors through shared gameplay-defined
 relationships, with mechanisms reusable by future Quarters. Improve actual

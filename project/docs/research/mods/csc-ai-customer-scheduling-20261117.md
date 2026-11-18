@@ -1,5 +1,80 @@
 # Customer placement: native delivery and matched outcomes
 
+**Problem2.1 closes at the integrated Bakers/Tailors scope on18 November.**
+All six preselected fresh Online250 games qualify, close and restore. A fresh
+v3 reconciliation verifies identical initial maps/AI starts/units within each
+pair, unchanged frozen packages/optional mods/native binaries, complete timing
+and zero observer faults. Only the reviewed main-CSC adapter differs.
+
+| Final three-map result | Current control | Pair-first candidate |
+|---|---:|---:|
+|Mapped non-City-Center Quarter/district links|75|86|
+|Customer after Quarter / customer before Quarter|45 /30|56 /30|
+|Connected choices with observed competing sites|28 /50|39 /61|
+|Bakers links: after / before Quarter|35 /12|42 /16|
+|Tailors links: after / before Quarter|10 /18|14 /14|
+|Original-AI Quarter foundations, all with Base|63|69|
+|At least+3 / at least+4|60 /32|66 /33|
+|Both material classes at foundation|12|15|
+|Storekeeper / Dockmaster endpoint properties|23 /0|23 /1|
+|Innkeeper / Sacristan endpoint properties|9 /0|6 /2|
+|Bakers Stage4 Service endpoint property|0|1|
+|Whole guidance average / maximum|2.321s /7.044s|2.451s /5.882s|
+
+The result is11 additional physical links(+14.7%), all net gain after Quarter
+foundation. Both families gain those connections. Customer-first links remain30;
+their Bakers/Tailors distribution changes. The classified connection rate rises
+56.0%→63.9% over different sets of opportunities as the games develop. Maps are
+mixed: Continents20→34 links, Pangaea32→28, Fractal23→24. This is useful integrated
+improvement, supported by the short native choice/foundation and stronger-site
+tests below. It is not a claim that every layout or seed improves.
+
+These physical counts deduplicate conquest and include mapped City Lights goods
+providers. Service counts are positive endpoint properties, not cumulative active
+turns. All69 original-AI Quarter foundations retain mapped Base; the two Base-free
+acquired links are attributed below. Three treatment resource removals versus one
+control removal all concern non-last Base deposits. Those finite-cost tradeoffs
+and pillage remain separate from a customer consuming the last material.
+
+The average cost increases0.130s/turn(5.6%); report that alongside the lower
+observed maximum. The mature same-state player5 checks also close/restore at250
+without advancing or publishing. On the six-chain control world, old/new central
+calculation is0.933/0.985s; on the nine-chain treatment world,1.239/1.679s. Both
+use16 customer forecasts, reaching6→8 and5→8 city/type groups. Different groups
+can touch more shared chains, so a fixed world budget does not imply constant
+cost. All repeated bids, economic values and plans match within each arm. The
+proof compares full priced stream records without imposing their hash-dependent
+append order; four regressions preserve prices, intervals, identities, multiplicity
+and selected plans. The initial ordering-only failures are kept as diagnostic
+history. Main tuning did not change, and the unused model-reuse prototype remains
+parked. No additional game or coefficient change is needed for this closure.
+
+Astra reviewed the full results and recommends closure after the completed input,
+v3 and timing audits. Further customer-first efficacy, coastal opportunities,
+prospective Service pricing and the one unobserved Hub window are follow-ups.
+The next requested work is initial Problem3 material/Builder research.
+
+## Completion evidence
+
+- Discovery/units/delivery: pair-first coverage at the same16-world budget,
+  signed native net→cache→selector arithmetic, including a-55993Q8 correction
+  surviving common aggregation. Source AI modules match the tested candidate;
+  Facts/Model differ only in line endings in the working tree.
+- Changed decision/construction: the current-stack combined SQL/Lua edge test
+  switches Magdeburg's Hub and reaches foundation151. The effect belongs to the
+  combined guidance. Buffalo preserves the stronger ordinary site through
+  foundation158, then removes the no-longer-eligible group.
+- Full outcomes: three fixed seed pairs, exact package/binary/input checks and
+  fresh v3 capture accounting. Both placement orders and families are reported.
+- Competition/materials: native production remains responsible for the action;
+  no scripted construction, research grant or order is used. Actual losing
+  corrections and inherited weak layouts are audited below.
+- Delivery/maintenance: live policy is main CSC with the qualified CE fork;
+  no probe policy or upstream PR. Comments, source tools, engine findings and
+  scoped commits are maintained. Closed duplicate packages are retired.
+
+## Earlier experiment detail
+
 **Two matched Online250 pairs are complete. Connections improve overall;
 Pangaea is mixed. Fractal's control is complete and its treatment is running.** Pair-first scheduling improves fresh coverage at the same forecast
 budget; a combined-guidance ablation changes a close Hub choice through physical

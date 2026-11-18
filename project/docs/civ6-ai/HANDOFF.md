@@ -1,5 +1,21 @@
 # CSC AI handoff — 18 November 2026
 
+**Problem2.1 is closed.** All six preselected fresh Online250 comparisons qualify,
+restore and pass fresh v3 accounting. Links75→86; customer-after-Quarter45→56
+(Bakers35→42, Tailors10→14); customer-first30 unchanged. Mean/max guidance
+2.321/7.044→2.451/5.882s. All69 guided foundations have Base; Fractal has the
+first campaign Dockmaster. Short changed-choice/foundation, stronger-site and
+invalidation checks plus two mature same-state timing checks complete the audit.
+Astra recommends closure; no more policy changes/games are needed for2.1.
+[Final results and limits](../research/mods/csc-ai-customer-scheduling-20261117.md).
+
+The requested next step is initial Problem3 research. There is no running game.
+Parent5067 and saved-world timing sessions are closed. Main F/M/E policy text
+matches the qualified candidate; the model-reuse prototype stays unintegrated.
+Keep unrelated art/UI work intact and review any CE PR with Henno first.
+
+## Earlier handoff checkpoints (historical)
+
 **Current work: the customer-placement goal is active.** Start with
 [the goal, gates and preselected maps](customer-placement-goal.md) and
 [current status](STATUS.md). Main CSC's pair-first customer scheduler7ea8820a

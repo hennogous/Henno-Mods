@@ -1,5 +1,21 @@
 # Current CSC AI status
 
+**18 November: Problem2.1 is complete at the integrated Bakers/Tailors scope.**
+All six matched Online250 games qualify/restore. Physical links75→86; customer
+after Quarter45→56, with Bakers35→42 and Tailors10→14. Customer-first totals stay30.
+Classified connections28/50→39/61. All69 guided Quarter foundations have Base.
+Mean guidance2.321→2.451s(+0.130s); maximum7.044→5.882s. Same-state timing and full
+source/input/v3 audits pass. Fractal produces an active Dockmaster and Sacristan.
+Astra agrees with closure. No additional tuning change or full run is needed.
+[Results, map variation and completion audit](../research/mods/csc-ai-customer-scheduling-20261117.md).
+
+Next: initial **3.1–3.3 material development/Builder research**, using the current
+implementation and retained traces. No fresh full game is scheduled. The qualified
+CE fork remains necessary; no upstream PR has been made. Keep the follow-ups on
+customer-first efficacy, coastal opportunities and Service pricing on the roadmap.
+
+## Earlier checkpoints (historical)
+
 **New-chat entry point: [handoff](HANDOFF.md).** It distinguishes implemented
 work from remaining AI gaps and preserves operating instructions.
 

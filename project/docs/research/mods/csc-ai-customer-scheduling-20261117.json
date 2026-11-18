@@ -1232,5 +1232,2704 @@
       }
     ],
     "scope": "Final cached linked cells before the matching native BEST; independent actual native selection required. Missing same-generation cell remains unknown."
+  },
+  "final_six_game_reconciliation": {
+    "verified": true,
+    "coordination_schema": "v3",
+    "initial_identity_parity": true,
+    "modules": {
+      "GameCore_XP2_CE_AI_FinalRelease.dll": "b7194a83569283033a7c9687ae6d92c33cef7b7d04daaf8e115c641077cd7da9",
+      "GameCore_XP2_FinalRelease.dll": "092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f"
+    },
+    "implementation": {
+      "project\\tools\\native_ai\\late_placement\\customer_coordination_results.py": "77f51788b1d855d13df9e5c3fafda705e21579051e05afd383667c98c7973883",
+      "project\\tools\\native_ai\\late_placement\\customer_opportunity_results.py": "757844b12f89fe6fb6efaa7c90a066106d347ea778e8b89636693d8c01caba83"
+    },
+    "games": [
+      {
+        "map": "Continents",
+        "arm": "control",
+        "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\continents-control250",
+        "connections": {
+          "physical_links": 35,
+          "planned_district_links": 20,
+          "city_center_links": 15,
+          "order": {
+            "quarter_first": 12,
+            "customer_first": 8
+          },
+          "owner_scoped_links": 42,
+          "owner_scoped_planned_links": 24,
+          "exact_prior_customer_first_links": 2,
+          "latest_quarter_layout_matches": 2,
+          "links_with_prior_economic_offer": 5,
+          "customer_foundations_with_private_yield": 11,
+          "existing_quarter_links_observed_without_base": 0
+        },
+        "family_orders": {
+          "BAKERS": {
+            "quarter_first": 10,
+            "customer_first": 1
+          },
+          "TAILORS": {
+            "quarter_first": 2,
+            "customer_first": 7
+          }
+        },
+        "quality": {
+          "BAKERS": {
+            "foundations": 16,
+            "at_least3": 15,
+            "at_least4": 5,
+            "base": 16,
+            "spec": 3,
+            "both": 3,
+            "distinct_geometry_qualified_candidates": 399,
+            "distinct_positive_offers": 85
+          },
+          "TAILORS": {
+            "foundations": 7,
+            "at_least3": 6,
+            "at_least4": 2,
+            "base": 7,
+            "spec": 0,
+            "both": 0,
+            "distinct_geometry_qualified_candidates": 247,
+            "distinct_positive_offers": 71
+          }
+        },
+        "district_types": {
+          "DISTRICT_CITY_CENTER": {
+            "foundations": 53,
+            "adjacent_district_sites": 15,
+            "quarter_district_pairs": 15,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "foundations": 16,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 4,
+            "customer_placed_after_quarter": 3,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "foundations": 19,
+            "adjacent_district_sites": 6,
+            "quarter_district_pairs": 7,
+            "customer_placed_after_quarter": 4,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "foundations": 7,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "foundations": 2,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "foundations": 7,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_HARBOR": {
+            "foundations": 13,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_HIPPODROME": {
+            "foundations": 3,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_HOLY_SITE": {
+            "foundations": 7,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "foundations": 21,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 3,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "foundations": 3,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "foundations": 13,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_THEATER": {
+            "foundations": 31,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "foundations": 10,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          }
+        },
+        "opportunity_by_type": {
+          "DISTRICT_COMMERCIAL_HUB": {
+            "physical_customer_sites": 16,
+            "adjacent_at_foundation": 3,
+            "founded_with_observed_competing_sites": 5,
+            "selected_linked_when_comparable": 3,
+            "physically_connected_when_comparable": 3,
+            "coverage": {
+              "no_positive_group_observation": 9,
+              "comparable": 5,
+              "selected_plot_outside_observed_set": 2
+            }
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "physical_customer_sites": 19,
+            "adjacent_at_foundation": 4,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 2,
+            "physically_connected_when_comparable": 2,
+            "coverage": {
+              "no_positive_group_observation": 13,
+              "comparable": 3,
+              "selected_plot_outside_observed_set": 1,
+              "linked_only": 2
+            }
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "physical_customer_sites": 7,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 6,
+              "linked_only": 1
+            }
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "physical_customer_sites": 2,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 2
+            }
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 7,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 3,
+              "comparable": 3,
+              "native_choice_unobserved": 1
+            }
+          },
+          "DISTRICT_HARBOR": {
+            "physical_customer_sites": 13,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 13
+            }
+          },
+          "DISTRICT_HIPPODROME": {
+            "physical_customer_sites": 3,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 3
+            }
+          },
+          "DISTRICT_HOLY_SITE": {
+            "physical_customer_sites": 7,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 5,
+              "native_choice_unobserved": 2
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "physical_customer_sites": 21,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "comparable": 3,
+              "no_positive_group_observation": 18
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "physical_customer_sites": 3,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "comparable": 1,
+              "no_positive_group_observation": 2
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "physical_customer_sites": 13,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 12,
+              "linked_only": 1
+            }
+          },
+          "DISTRICT_THEATER": {
+            "physical_customer_sites": 31,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 23,
+              "comparable": 1,
+              "native_choice_unobserved": 7
+            }
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 10
+            }
+          }
+        },
+        "opportunity_by_order": {
+          "unconnected": {
+            "no_positive_group_observation": 113,
+            "native_choice_unobserved": 10,
+            "comparable": 8,
+            "selected_plot_outside_observed_set": 3
+          },
+          "quarter_first": {
+            "linked_only": 4,
+            "comparable": 8
+          },
+          "customer_first_only": {
+            "no_positive_group_observation": 6
+          }
+        },
+        "comparable": 16,
+        "comparable_connected": 8,
+        "services_properties": {
+          "BAKERS:2": 8,
+          "BAKERS:3": 3
+        },
+        "guidance_seconds": {
+          "average": 1.97582422,
+          "maximum": 4.024525
+        },
+        "material": {
+          "raw_resource_loss_events": 1,
+          "working_supplier_loss_events": 14,
+          "usable_material_exhaustions_by_role": {
+            "baseWorking": 11,
+            "base": 7,
+            "spec": 2,
+            "specWorking": 2
+          }
+        },
+        "provenance": {
+          "source.json": "6916d995ea7f37077e006790fcdc109920ea4a2c6714d3104a5a304a15a44246",
+          "result.json": "31e26b69d2d54db557d1432d386d1e322e2974a9704df55063df10dc37773dd4",
+          "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+          "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+          "planning-results.json": "4b94e4cebe3ff9b06d6e96e3ef6bb51e20a95d0ba384a09f215fed7bfcdc3395",
+          "customer-coordination-results.json": "fffa40317363180bc39ba3c47ad01116c944d4e281702cf09f415affc44c1dfa",
+          "customer-opportunity-results.json": "ea4d276d9aa73ea9ec2ccb61c7204d299bab0a9a733a31324edcdb9ca7004818",
+          "ai-processing-time.json": "d1eeb41e57c9be7f79e706c5a5d19cc9601bee851216ce8929d209c0b2235ecd",
+          "economy-savings-frozen.json": "ae0191021e0dd88ad8dad6dcdc1187e3e5a230e5f697efc562e571326741c515"
+        }
+      },
+      {
+        "map": "Continents",
+        "arm": "treatment",
+        "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\continents-treatment250",
+        "connections": {
+          "physical_links": 50,
+          "planned_district_links": 34,
+          "city_center_links": 16,
+          "order": {
+            "quarter_first": 24,
+            "customer_first": 10
+          },
+          "owner_scoped_links": 51,
+          "owner_scoped_planned_links": 34,
+          "exact_prior_customer_first_links": 6,
+          "latest_quarter_layout_matches": 3,
+          "links_with_prior_economic_offer": 16,
+          "customer_foundations_with_private_yield": 23,
+          "existing_quarter_links_observed_without_base": 0
+        },
+        "family_orders": {
+          "BAKERS": {
+            "quarter_first": 17,
+            "customer_first": 3
+          },
+          "TAILORS": {
+            "quarter_first": 7,
+            "customer_first": 7
+          }
+        },
+        "quality": {
+          "BAKERS": {
+            "foundations": 18,
+            "at_least3": 17,
+            "at_least4": 6,
+            "base": 18,
+            "spec": 3,
+            "both": 3,
+            "distinct_geometry_qualified_candidates": 383,
+            "distinct_positive_offers": 98
+          },
+          "TAILORS": {
+            "foundations": 7,
+            "at_least3": 6,
+            "at_least4": 3,
+            "base": 7,
+            "spec": 1,
+            "both": 1,
+            "distinct_geometry_qualified_candidates": 209,
+            "distinct_positive_offers": 57
+          }
+        },
+        "district_types": {
+          "DISTRICT_CITY_CENTER": {
+            "foundations": 51,
+            "adjacent_district_sites": 16,
+            "quarter_district_pairs": 16,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "foundations": 23,
+            "adjacent_district_sites": 6,
+            "quarter_district_pairs": 7,
+            "customer_placed_after_quarter": 5,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "foundations": 17,
+            "adjacent_district_sites": 8,
+            "quarter_district_pairs": 9,
+            "customer_placed_after_quarter": 8,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "foundations": 8,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "foundations": 4,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "foundations": 7,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 3,
+            "customer_placed_after_quarter": 3,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_HARBOR": {
+            "foundations": 21,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_HIPPODROME": {
+            "foundations": 4,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_HOLY_SITE": {
+            "foundations": 8,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "foundations": 23,
+            "adjacent_district_sites": 5,
+            "quarter_district_pairs": 8,
+            "customer_placed_after_quarter": 3,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "foundations": 11,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_THEATER": {
+            "foundations": 28,
+            "adjacent_district_sites": 4,
+            "quarter_district_pairs": 4,
+            "customer_placed_after_quarter": 4,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "foundations": 10,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          }
+        },
+        "opportunity_by_type": {
+          "DISTRICT_COMMERCIAL_HUB": {
+            "physical_customer_sites": 23,
+            "adjacent_at_foundation": 5,
+            "founded_with_observed_competing_sites": 6,
+            "selected_linked_when_comparable": 4,
+            "physically_connected_when_comparable": 4,
+            "coverage": {
+              "no_positive_group_observation": 17,
+              "comparable": 6
+            }
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "physical_customer_sites": 17,
+            "adjacent_at_foundation": 8,
+            "founded_with_observed_competing_sites": 5,
+            "selected_linked_when_comparable": 5,
+            "physically_connected_when_comparable": 5,
+            "coverage": {
+              "linked_only": 3,
+              "no_positive_group_observation": 9,
+              "comparable": 5
+            }
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 8
+            }
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "physical_customer_sites": 4,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 4
+            }
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 7,
+            "adjacent_at_foundation": 3,
+            "founded_with_observed_competing_sites": 2,
+            "selected_linked_when_comparable": 2,
+            "physically_connected_when_comparable": 2,
+            "coverage": {
+              "no_positive_group_observation": 4,
+              "comparable": 2,
+              "selected_plot_outside_observed_set": 1
+            }
+          },
+          "DISTRICT_HARBOR": {
+            "physical_customer_sites": 21,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 21
+            }
+          },
+          "DISTRICT_HIPPODROME": {
+            "physical_customer_sites": 4,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 4
+            }
+          },
+          "DISTRICT_HOLY_SITE": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 6,
+              "native_choice_unobserved": 2
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "physical_customer_sites": 23,
+            "adjacent_at_foundation": 3,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 3,
+            "physically_connected_when_comparable": 3,
+            "coverage": {
+              "comparable": 3,
+              "no_positive_group_observation": 19,
+              "selected_plot_outside_observed_set": 1
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "physical_customer_sites": 11,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 10,
+              "linked_only": 1
+            }
+          },
+          "DISTRICT_THEATER": {
+            "physical_customer_sites": 28,
+            "adjacent_at_foundation": 4,
+            "founded_with_observed_competing_sites": 4,
+            "selected_linked_when_comparable": 3,
+            "physically_connected_when_comparable": 3,
+            "coverage": {
+              "no_positive_group_observation": 24,
+              "comparable": 4
+            }
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 10
+            }
+          }
+        },
+        "opportunity_by_order": {
+          "unconnected": {
+            "no_positive_group_observation": 129,
+            "native_choice_unobserved": 2,
+            "comparable": 3,
+            "selected_plot_outside_observed_set": 1
+          },
+          "quarter_first": {
+            "linked_only": 4,
+            "comparable": 17,
+            "no_positive_group_observation": 2,
+            "selected_plot_outside_observed_set": 1
+          },
+          "customer_first_only": {
+            "no_positive_group_observation": 5
+          }
+        },
+        "comparable": 20,
+        "comparable_connected": 17,
+        "services_properties": {
+          "BAKERS:2": 9,
+          "BAKERS:4": 1,
+          "TAILORS:3": 1,
+          "BAKERS:3": 1
+        },
+        "guidance_seconds": {
+          "average": 2.36172772,
+          "maximum": 5.504944
+        },
+        "material": {
+          "raw_resource_loss_events": 2,
+          "working_supplier_loss_events": 8,
+          "usable_material_exhaustions_by_role": {
+            "baseWorking": 6,
+            "base": 1
+          }
+        },
+        "provenance": {
+          "source.json": "6916d995ea7f37077e006790fcdc109920ea4a2c6714d3104a5a304a15a44246",
+          "result.json": "ff97f7ea665a06cfb45370f79c3632227389a106723685c5ebda55aaef10f782",
+          "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+          "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+          "planning-results.json": "1b1aaa3896429dc3a4e0b2b2e675c65cc41925c7eb69e217fc9e4635a467e9b8",
+          "customer-coordination-results.json": "717731751a4618f89ef676aba82d5a4d80b3138b156491e8c932f00c9e1a987a",
+          "customer-opportunity-results.json": "8521a75cf76dea9fbfa5adb07295b321c38a2ea1fadd7db2eefa01d88a78186b",
+          "ai-processing-time.json": "c72771549266b0965fc3ca643c49fd8ee3176a9cbaf8dde5f7b8a99253a08f1d",
+          "economy-savings-frozen.json": "974470345365fa9504fb19f61c6fceadded3d0244af2a90d5c1c2969b4667a07"
+        }
+      },
+      {
+        "map": "Pangaea",
+        "arm": "control",
+        "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\pangaea-control250",
+        "connections": {
+          "physical_links": 47,
+          "planned_district_links": 32,
+          "city_center_links": 15,
+          "order": {
+            "quarter_first": 16,
+            "customer_first": 16
+          },
+          "owner_scoped_links": 47,
+          "owner_scoped_planned_links": 32,
+          "exact_prior_customer_first_links": 3,
+          "latest_quarter_layout_matches": 2,
+          "links_with_prior_economic_offer": 10,
+          "customer_foundations_with_private_yield": 15,
+          "existing_quarter_links_observed_without_base": 0
+        },
+        "family_orders": {
+          "BAKERS": {
+            "quarter_first": 12,
+            "customer_first": 8
+          },
+          "TAILORS": {
+            "quarter_first": 4,
+            "customer_first": 8
+          }
+        },
+        "quality": {
+          "BAKERS": {
+            "foundations": 18,
+            "at_least3": 18,
+            "at_least4": 15,
+            "base": 18,
+            "spec": 5,
+            "both": 5,
+            "distinct_geometry_qualified_candidates": 541,
+            "distinct_positive_offers": 130
+          },
+          "TAILORS": {
+            "foundations": 6,
+            "at_least3": 5,
+            "at_least4": 3,
+            "base": 6,
+            "spec": 1,
+            "both": 1,
+            "distinct_geometry_qualified_candidates": 291,
+            "distinct_positive_offers": 57
+          }
+        },
+        "district_types": {
+          "DISTRICT_CITY_CENTER": {
+            "foundations": 58,
+            "adjacent_district_sites": 15,
+            "quarter_district_pairs": 15,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "foundations": 20,
+            "adjacent_district_sites": 6,
+            "quarter_district_pairs": 7,
+            "customer_placed_after_quarter": 6,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "foundations": 12,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "foundations": 8,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "foundations": 2,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "foundations": 11,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 2,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_HARBOR": {
+            "foundations": 13,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_HOLY_SITE": {
+            "foundations": 9,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "foundations": 38,
+            "adjacent_district_sites": 8,
+            "quarter_district_pairs": 10,
+            "customer_placed_after_quarter": 3,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "foundations": 23,
+            "adjacent_district_sites": 4,
+            "quarter_district_pairs": 6,
+            "customer_placed_after_quarter": 2,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "foundations": 9,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_THEATER": {
+            "foundations": 26,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 3,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "foundations": 11,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          }
+        },
+        "opportunity_by_type": {
+          "DISTRICT_COMMERCIAL_HUB": {
+            "physical_customer_sites": 20,
+            "adjacent_at_foundation": 6,
+            "founded_with_observed_competing_sites": 4,
+            "selected_linked_when_comparable": 4,
+            "physically_connected_when_comparable": 4,
+            "coverage": {
+              "comparable": 4,
+              "no_positive_group_observation": 15,
+              "selected_plot_outside_observed_set": 1
+            }
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "physical_customer_sites": 11,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 10,
+              "linked_only": 1
+            }
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 7,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "physical_customer_sites": 2,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 2
+            }
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 11,
+            "adjacent_at_foundation": 2,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 2,
+            "physically_connected_when_comparable": 2,
+            "coverage": {
+              "no_positive_group_observation": 8,
+              "comparable": 3
+            }
+          },
+          "DISTRICT_HARBOR": {
+            "physical_customer_sites": 13,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 13
+            }
+          },
+          "DISTRICT_HOLY_SITE": {
+            "physical_customer_sites": 9,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "native_choice_unobserved": 1,
+              "no_positive_group_observation": 7,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "physical_customer_sites": 38,
+            "adjacent_at_foundation": 3,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 2,
+            "physically_connected_when_comparable": 2,
+            "coverage": {
+              "no_positive_group_observation": 35,
+              "comparable": 3
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "physical_customer_sites": 23,
+            "adjacent_at_foundation": 2,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 22,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "physical_customer_sites": 9,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 9
+            }
+          },
+          "DISTRICT_THEATER": {
+            "physical_customer_sites": 26,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 24,
+              "native_choice_unobserved": 1,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 11,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 11
+            }
+          }
+        },
+        "opportunity_by_order": {
+          "unconnected": {
+            "native_choice_unobserved": 2,
+            "no_positive_group_observation": 150,
+            "comparable": 4
+          },
+          "quarter_first": {
+            "no_positive_group_observation": 4,
+            "linked_only": 1,
+            "comparable": 10,
+            "selected_plot_outside_observed_set": 1
+          },
+          "customer_first_only": {
+            "no_positive_group_observation": 9
+          }
+        },
+        "comparable": 14,
+        "comparable_connected": 10,
+        "services_properties": {
+          "BAKERS:2": 10,
+          "BAKERS:3": 3
+        },
+        "guidance_seconds": {
+          "average": 3.028179,
+          "maximum": 7.043801
+        },
+        "material": {
+          "raw_resource_loss_events": 0,
+          "working_supplier_loss_events": 8,
+          "usable_material_exhaustions_by_role": {
+            "baseWorking": 5,
+            "specWorking": 1
+          }
+        },
+        "provenance": {
+          "source.json": "2af49113e85cbb3b24860940744111005eff029bfd459baa64768bbab17a352e",
+          "result.json": "9dbd8f20fef639894c5cb29849e51bd9202cbff1a3140793fca75b53614112f1",
+          "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+          "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+          "planning-results.json": "6049c03247cc38b9165dcb1b12a7357e18e8c07beafec2da8be801a5b9f995aa",
+          "customer-coordination-results.json": "6e75b85c22f8c26bcc3dd4a2e47b1439d91c485dd392b192b2feced173e711cc",
+          "customer-opportunity-results.json": "4ccb00b87cde76f83fcf91b0b51a7d84b17df9208aea88f9f6f2e10ec641a893",
+          "ai-processing-time.json": "887fe312d935cc15227f045a207323ceb0fd390452909ec9a36d906324399a5a",
+          "economy-savings-frozen.json": "35acfdb3d37af1ba717a47f1c18f396355727a74cd58291ec398320670871fca"
+        }
+      },
+      {
+        "map": "Pangaea",
+        "arm": "treatment",
+        "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\pangaea-treatment250",
+        "connections": {
+          "physical_links": 46,
+          "planned_district_links": 28,
+          "city_center_links": 18,
+          "order": {
+            "quarter_first": 18,
+            "customer_first": 10
+          },
+          "owner_scoped_links": 47,
+          "owner_scoped_planned_links": 28,
+          "exact_prior_customer_first_links": 6,
+          "latest_quarter_layout_matches": 2,
+          "links_with_prior_economic_offer": 10,
+          "customer_foundations_with_private_yield": 18,
+          "existing_quarter_links_observed_without_base": 2
+        },
+        "family_orders": {
+          "BAKERS": {
+            "quarter_first": 14,
+            "customer_first": 8
+          },
+          "TAILORS": {
+            "quarter_first": 4,
+            "customer_first": 2
+          }
+        },
+        "quality": {
+          "BAKERS": {
+            "foundations": 21,
+            "at_least3": 21,
+            "at_least4": 14,
+            "base": 21,
+            "spec": 5,
+            "both": 5,
+            "distinct_geometry_qualified_candidates": 512,
+            "distinct_positive_offers": 122
+          },
+          "TAILORS": {
+            "foundations": 3,
+            "at_least3": 2,
+            "at_least4": 2,
+            "base": 3,
+            "spec": 1,
+            "both": 1,
+            "distinct_geometry_qualified_candidates": 278,
+            "distinct_positive_offers": 51
+          }
+        },
+        "district_types": {
+          "DISTRICT_CITY_CENTER": {
+            "foundations": 61,
+            "adjacent_district_sites": 18,
+            "quarter_district_pairs": 18,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "foundations": 16,
+            "adjacent_district_sites": 6,
+            "quarter_district_pairs": 6,
+            "customer_placed_after_quarter": 5,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "foundations": 12,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 3,
+            "customer_placed_after_quarter": 2,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "foundations": 8,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "foundations": 3,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 2,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "foundations": 12,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_HARBOR": {
+            "foundations": 15,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_HOLY_SITE": {
+            "foundations": 8,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "foundations": 36,
+            "adjacent_district_sites": 8,
+            "quarter_district_pairs": 8,
+            "customer_placed_after_quarter": 6,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "foundations": 22,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 2,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "foundations": 11,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_THEATER": {
+            "foundations": 28,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "foundations": 10,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          }
+        },
+        "opportunity_by_type": {
+          "DISTRICT_COMMERCIAL_HUB": {
+            "physical_customer_sites": 16,
+            "adjacent_at_foundation": 5,
+            "founded_with_observed_competing_sites": 6,
+            "selected_linked_when_comparable": 4,
+            "physically_connected_when_comparable": 4,
+            "coverage": {
+              "comparable": 6,
+              "no_positive_group_observation": 10
+            }
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "physical_customer_sites": 12,
+            "adjacent_at_foundation": 2,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 10,
+              "linked_only": 1,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 2,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 6,
+              "comparable": 2
+            }
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "physical_customer_sites": 3,
+            "adjacent_at_foundation": 2,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "linked_only": 1,
+              "no_positive_group_observation": 2
+            }
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 12,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 9,
+              "comparable": 3
+            }
+          },
+          "DISTRICT_HARBOR": {
+            "physical_customer_sites": 15,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 15
+            }
+          },
+          "DISTRICT_HOLY_SITE": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "native_choice_unobserved": 1,
+              "no_positive_group_observation": 6,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "physical_customer_sites": 36,
+            "adjacent_at_foundation": 6,
+            "founded_with_observed_competing_sites": 8,
+            "selected_linked_when_comparable": 6,
+            "physically_connected_when_comparable": 6,
+            "coverage": {
+              "no_positive_group_observation": 28,
+              "comparable": 8
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "physical_customer_sites": 22,
+            "adjacent_at_foundation": 2,
+            "founded_with_observed_competing_sites": 2,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 20,
+              "comparable": 2
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "physical_customer_sites": 11,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 11
+            }
+          },
+          "DISTRICT_THEATER": {
+            "physical_customer_sites": 28,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 27,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 10
+            }
+          }
+        },
+        "opportunity_by_order": {
+          "unconnected": {
+            "native_choice_unobserved": 1,
+            "no_positive_group_observation": 143,
+            "comparable": 9
+          },
+          "quarter_first": {
+            "no_positive_group_observation": 3,
+            "linked_only": 2,
+            "comparable": 13
+          },
+          "customer_first_only": {
+            "no_positive_group_observation": 8,
+            "comparable": 2
+          }
+        },
+        "comparable": 24,
+        "comparable_connected": 13,
+        "services_properties": {
+          "BAKERS:3": 4,
+          "BAKERS:2": 10
+        },
+        "guidance_seconds": {
+          "average": 2.6380154479999995,
+          "maximum": 5.8205919999999995
+        },
+        "material": {
+          "raw_resource_loss_events": 1,
+          "working_supplier_loss_events": 12,
+          "usable_material_exhaustions_by_role": {
+            "baseWorking": 10,
+            "base": 2,
+            "spec": 2,
+            "specWorking": 1
+          }
+        },
+        "provenance": {
+          "source.json": "2af49113e85cbb3b24860940744111005eff029bfd459baa64768bbab17a352e",
+          "result.json": "96f3539eb6425726e441f9dac2ec316fa560fdd899711924e80ee65c3445de61",
+          "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+          "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+          "planning-results.json": "22613c6f798966929c3aea6d30814bb53a775fdfcd944b89d3cf0d84c0ee9613",
+          "customer-coordination-results.json": "4473cab83c56f718f785a273eebb063cf37f5bed1ccda6a87bf28f18edc5ce92",
+          "customer-opportunity-results.json": "3d33ac1895ac4dae93c35f829e0ad1b5b03b69a45538c932fd2dae10c07bc50a",
+          "ai-processing-time.json": "081b5ce2bf5e942ade0a0e245bc9d8694d7a3de53bde0bb06e36978cefb6bf8b",
+          "economy-savings-frozen.json": "cb80e31b4ed89c393d13b2ae936d9ef16251fe5f1b8a21028111503e0115e623"
+        }
+      },
+      {
+        "map": "Fractal",
+        "arm": "control",
+        "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\fractal-control250",
+        "connections": {
+          "physical_links": 34,
+          "planned_district_links": 23,
+          "city_center_links": 11,
+          "order": {
+            "quarter_first": 17,
+            "customer_first": 6
+          },
+          "owner_scoped_links": 34,
+          "owner_scoped_planned_links": 23,
+          "exact_prior_customer_first_links": 1,
+          "latest_quarter_layout_matches": 1,
+          "links_with_prior_economic_offer": 7,
+          "customer_foundations_with_private_yield": 14,
+          "existing_quarter_links_observed_without_base": 0
+        },
+        "family_orders": {
+          "BAKERS": {
+            "quarter_first": 13,
+            "customer_first": 3
+          },
+          "TAILORS": {
+            "quarter_first": 4,
+            "customer_first": 3
+          }
+        },
+        "quality": {
+          "BAKERS": {
+            "foundations": 12,
+            "at_least3": 12,
+            "at_least4": 6,
+            "base": 12,
+            "spec": 2,
+            "both": 2,
+            "distinct_geometry_qualified_candidates": 312,
+            "distinct_positive_offers": 71
+          },
+          "TAILORS": {
+            "foundations": 4,
+            "at_least3": 4,
+            "at_least4": 1,
+            "base": 4,
+            "spec": 1,
+            "both": 1,
+            "distinct_geometry_qualified_candidates": 219,
+            "distinct_positive_offers": 67
+          }
+        },
+        "district_types": {
+          "DISTRICT_ACROPOLIS": {
+            "foundations": 5,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_CITY_CENTER": {
+            "foundations": 43,
+            "adjacent_district_sites": 11,
+            "quarter_district_pairs": 11,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "foundations": 16,
+            "adjacent_district_sites": 6,
+            "quarter_district_pairs": 6,
+            "customer_placed_after_quarter": 5,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "foundations": 16,
+            "adjacent_district_sites": 5,
+            "quarter_district_pairs": 6,
+            "customer_placed_after_quarter": 5,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "foundations": 11,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "foundations": 5,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREX_FRONTIER_TOWN": {
+            "foundations": 9,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 4,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "foundations": 8,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_HARBOR": {
+            "foundations": 10,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_HOLY_SITE": {
+            "foundations": 6,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "foundations": 10,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "foundations": 7,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "foundations": 9,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_THEATER": {
+            "foundations": 16,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "foundations": 8,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          }
+        },
+        "opportunity_by_type": {
+          "DISTRICT_ACROPOLIS": {
+            "physical_customer_sites": 5,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 5
+            }
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "physical_customer_sites": 16,
+            "adjacent_at_foundation": 5,
+            "founded_with_observed_competing_sites": 6,
+            "selected_linked_when_comparable": 3,
+            "physically_connected_when_comparable": 3,
+            "coverage": {
+              "no_positive_group_observation": 9,
+              "comparable": 6,
+              "selected_plot_outside_observed_set": 1
+            }
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "physical_customer_sites": 16,
+            "adjacent_at_foundation": 5,
+            "founded_with_observed_competing_sites": 4,
+            "selected_linked_when_comparable": 3,
+            "physically_connected_when_comparable": 3,
+            "coverage": {
+              "no_positive_group_observation": 12,
+              "comparable": 4
+            }
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "physical_customer_sites": 11,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 10,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "physical_customer_sites": 5,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 4,
+              "linked_only": 1
+            }
+          },
+          "DISTRICT_COREX_FRONTIER_TOWN": {
+            "physical_customer_sites": 9,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 7,
+              "linked_only": 1,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 7,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_HARBOR": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 10
+            }
+          },
+          "DISTRICT_HOLY_SITE": {
+            "physical_customer_sites": 6,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 4,
+              "native_choice_unobserved": 2
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 9,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "physical_customer_sites": 7,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "comparable": 3,
+              "no_positive_group_observation": 4
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "physical_customer_sites": 9,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 8,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_THEATER": {
+            "physical_customer_sites": 16,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 2,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 14,
+              "comparable": 2
+            }
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 8
+            }
+          }
+        },
+        "opportunity_by_order": {
+          "unconnected": {
+            "no_positive_group_observation": 104,
+            "comparable": 10,
+            "native_choice_unobserved": 1
+          },
+          "customer_first_only": {
+            "no_positive_group_observation": 4,
+            "native_choice_unobserved": 1
+          },
+          "quarter_first": {
+            "no_positive_group_observation": 3,
+            "comparable": 10,
+            "linked_only": 2,
+            "selected_plot_outside_observed_set": 1
+          }
+        },
+        "comparable": 20,
+        "comparable_connected": 10,
+        "services_properties": {
+          "BAKERS:3": 3,
+          "BAKERS:2": 5
+        },
+        "guidance_seconds": {
+          "average": 1.958725144,
+          "maximum": 4.291657
+        },
+        "material": {
+          "raw_resource_loss_events": 0,
+          "working_supplier_loss_events": 6,
+          "usable_material_exhaustions_by_role": {
+            "baseWorking": 5,
+            "specWorking": 1
+          }
+        },
+        "provenance": {
+          "source.json": "31372867df63f18cd65fc32ca7dacf0e4a77fb4ac215ba5fc272d4fe8da83258",
+          "result.json": "a543e3fc3166ba07379bf98074f3eb1b7af1bc096e308951eabdf99c87662935",
+          "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+          "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+          "planning-results.json": "6d1b752711081b92b987f16d7841f1bd22f7535793c400593c0b891bd2387afc",
+          "customer-coordination-results.json": "fd691079b3642bdb1de3df6bb4dfa16cafd8e707eb3136e9c39ab9c9b3a3901b",
+          "customer-opportunity-results.json": "55995aa418b3dc26c4b908515a567429f4634cd913a79b652c2a8ecff8b9cb5e",
+          "ai-processing-time.json": "9447ba2012e3ced9ca3e279713bb03ea8e9f9332a6508ac06e8fdcab12247972",
+          "economy-savings-frozen.json": "816cc3107acf228813048db6973585c13db8d3f1bbbb2edb693117f2948984ff"
+        }
+      },
+      {
+        "map": "Fractal",
+        "arm": "treatment",
+        "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\fractal-treatment250",
+        "connections": {
+          "physical_links": 36,
+          "planned_district_links": 24,
+          "city_center_links": 12,
+          "order": {
+            "customer_first": 10,
+            "quarter_first": 14
+          },
+          "owner_scoped_links": 39,
+          "owner_scoped_planned_links": 25,
+          "exact_prior_customer_first_links": 1,
+          "latest_quarter_layout_matches": 1,
+          "links_with_prior_economic_offer": 8,
+          "customer_foundations_with_private_yield": 12,
+          "existing_quarter_links_observed_without_base": 0
+        },
+        "family_orders": {
+          "BAKERS": {
+            "quarter_first": 11,
+            "customer_first": 5
+          },
+          "TAILORS": {
+            "quarter_first": 3,
+            "customer_first": 5
+          }
+        },
+        "quality": {
+          "BAKERS": {
+            "foundations": 14,
+            "at_least3": 14,
+            "at_least4": 7,
+            "base": 14,
+            "spec": 2,
+            "both": 2,
+            "distinct_geometry_qualified_candidates": 366,
+            "distinct_positive_offers": 76
+          },
+          "TAILORS": {
+            "foundations": 6,
+            "at_least3": 6,
+            "at_least4": 1,
+            "base": 6,
+            "spec": 3,
+            "both": 3,
+            "distinct_geometry_qualified_candidates": 254,
+            "distinct_positive_offers": 67
+          }
+        },
+        "district_types": {
+          "DISTRICT_ACROPOLIS": {
+            "foundations": 5,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_CITY_CENTER": {
+            "foundations": 51,
+            "adjacent_district_sites": 12,
+            "quarter_district_pairs": 12,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "foundations": 17,
+            "adjacent_district_sites": 4,
+            "quarter_district_pairs": 4,
+            "customer_placed_after_quarter": 2,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "foundations": 16,
+            "adjacent_district_sites": 4,
+            "quarter_district_pairs": 6,
+            "customer_placed_after_quarter": 4,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "foundations": 12,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "sales"
+            ]
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "foundations": 4,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_COREX_FRONTIER_TOWN": {
+            "foundations": 10,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 4,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "foundations": 8,
+            "adjacent_district_sites": 3,
+            "quarter_district_pairs": 3,
+            "customer_placed_after_quarter": 2,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_HARBOR": {
+            "foundations": 10,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_HOLY_SITE": {
+            "foundations": 6,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 0,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "foundations": 10,
+            "adjacent_district_sites": 2,
+            "quarter_district_pairs": 2,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "goodsProvider"
+            ]
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "foundations": 1,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "foundations": 11,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          },
+          "DISTRICT_THEATER": {
+            "foundations": 21,
+            "adjacent_district_sites": 1,
+            "quarter_district_pairs": 1,
+            "customer_placed_after_quarter": 1,
+            "roles": [
+              "customer",
+              "sales"
+            ]
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "foundations": 7,
+            "adjacent_district_sites": 0,
+            "quarter_district_pairs": 0,
+            "customer_placed_after_quarter": 0,
+            "roles": []
+          }
+        },
+        "opportunity_by_type": {
+          "DISTRICT_ACROPOLIS": {
+            "physical_customer_sites": 5,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 5
+            }
+          },
+          "DISTRICT_COMMERCIAL_HUB": {
+            "physical_customer_sites": 17,
+            "adjacent_at_foundation": 2,
+            "founded_with_observed_competing_sites": 6,
+            "selected_linked_when_comparable": 2,
+            "physically_connected_when_comparable": 2,
+            "coverage": {
+              "no_positive_group_observation": 11,
+              "comparable": 6
+            }
+          },
+          "DISTRICT_COREEXPANSIONA": {
+            "physical_customer_sites": 16,
+            "adjacent_at_foundation": 4,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 2,
+            "physically_connected_when_comparable": 2,
+            "coverage": {
+              "no_positive_group_observation": 13,
+              "comparable": 3
+            }
+          },
+          "DISTRICT_COREEXPANSIONB": {
+            "physical_customer_sites": 12,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 2,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 10,
+              "comparable": 2
+            }
+          },
+          "DISTRICT_COREEXPANSIONC": {
+            "physical_customer_sites": 4,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 4
+            }
+          },
+          "DISTRICT_COREX_FRONTIER_TOWN": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 8,
+              "linked_only": 1,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 8,
+            "adjacent_at_foundation": 2,
+            "founded_with_observed_competing_sites": 3,
+            "selected_linked_when_comparable": 2,
+            "physically_connected_when_comparable": 2,
+            "coverage": {
+              "no_positive_group_observation": 5,
+              "comparable": 3
+            }
+          },
+          "DISTRICT_HARBOR": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 9,
+              "comparable": 1
+            }
+          },
+          "DISTRICT_HOLY_SITE": {
+            "physical_customer_sites": 6,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 4,
+              "native_choice_unobserved": 2
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYA": {
+            "physical_customer_sites": 10,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 9,
+              "linked_only": 1
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYB": {
+            "physical_customer_sites": 1,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 1
+            }
+          },
+          "DISTRICT_RURALCOMMUNITYC": {
+            "physical_customer_sites": 11,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 11
+            }
+          },
+          "DISTRICT_THEATER": {
+            "physical_customer_sites": 21,
+            "adjacent_at_foundation": 1,
+            "founded_with_observed_competing_sites": 1,
+            "selected_linked_when_comparable": 1,
+            "physically_connected_when_comparable": 1,
+            "coverage": {
+              "no_positive_group_observation": 18,
+              "comparable": 1,
+              "native_choice_unobserved": 2
+            }
+          },
+          "DISTRICT_WATER_ENTERTAINMENT_COMPLEX": {
+            "physical_customer_sites": 7,
+            "adjacent_at_foundation": 0,
+            "founded_with_observed_competing_sites": 0,
+            "selected_linked_when_comparable": 0,
+            "physically_connected_when_comparable": 0,
+            "coverage": {
+              "no_positive_group_observation": 7
+            }
+          }
+        },
+        "opportunity_by_order": {
+          "unconnected": {
+            "no_positive_group_observation": 106,
+            "comparable": 8,
+            "native_choice_unobserved": 3
+          },
+          "customer_first_only": {
+            "no_positive_group_observation": 7,
+            "native_choice_unobserved": 1
+          },
+          "quarter_first": {
+            "no_positive_group_observation": 2,
+            "comparable": 9,
+            "linked_only": 2
+          }
+        },
+        "comparable": 17,
+        "comparable_connected": 9,
+        "services_properties": {
+          "BAKERS:2": 4,
+          "TAILORS:2": 1,
+          "BAKERS:3": 1,
+          "TAILORS:3": 1
+        },
+        "guidance_seconds": {
+          "average": 2.354193696,
+          "maximum": 5.882293
+        },
+        "material": {
+          "raw_resource_loss_events": 0,
+          "working_supplier_loss_events": 11,
+          "usable_material_exhaustions_by_role": {
+            "baseWorking": 7,
+            "specWorking": 3,
+            "base": 2,
+            "spec": 1
+          }
+        },
+        "provenance": {
+          "source.json": "31372867df63f18cd65fc32ca7dacf0e4a77fb4ac215ba5fc272d4fe8da83258",
+          "result.json": "3e588bd1065d5e8bee9e74510d0d4e6549db56fde925203d54cd8d1c21e0e1b8",
+          "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+          "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+          "planning-results.json": "0fb4e557796e969df7faf9bd79a86c06534cc21a6249680095e3c63c3a467269",
+          "customer-coordination-results.json": "3f7bc9fd23e09b9653bbe6d5eabe6f91ff11a8d97177d3f78ec99d6d5cec51c4",
+          "customer-opportunity-results.json": "ede1f3c3e78a195d2ef8c2574fdf3342eeb852c076f468704650f1664d94d2e5",
+          "ai-processing-time.json": "fe81d8c258efbf03abe2f8a064ee0771b501a9313daf300438c8bcdf97d0dabf",
+          "economy-savings-frozen.json": "51146511becd56da4985e5f6fee4e8ff87abc02324b49ef936d722ec1f72aecd"
+        }
+      }
+    ]
+  },
+  "mature_same_state_timing": [
+    {
+      "world": "control",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\timing\\continents-control250-old-new-p5-normalized03",
+      "arms": {
+        "A": {
+          "total_seconds": 1.0064236000000002,
+          "central_seconds": 0.9333029,
+          "customer_seconds": 0.32469614999999497,
+          "chains": 6,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 6,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 6,
+            "referenceUnavailable": 0,
+            "unknown": 0
+          },
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 25,
+            "evaluations": 384,
+            "routeEntries": 55,
+            "routeHits": 329,
+            "routeMisses": 55,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 22
+          },
+          "native_quotes": 701
+        },
+        "B": {
+          "total_seconds": 1.0551789,
+          "central_seconds": 0.9848351,
+          "customer_seconds": 0.38310615000001,
+          "chains": 6,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 25,
+            "evaluations": 408,
+            "routeEntries": 57,
+            "routeHits": 351,
+            "routeMisses": 57,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 22
+          },
+          "native_quotes": 703
+        }
+      },
+      "records": [
+        {
+          "arm": "B",
+          "centralSeconds": 1.0383358,
+          "chains": 6,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 0.39831810000001,
+          "earlyFingerprint": "50370276/17398",
+          "entries": 125,
+          "nativeQuotes": 703,
+          "pass": 1,
+          "player": 5,
+          "preparationSeconds": 0.070722899999993,
+          "semanticBytes": 1271593,
+          "semanticFingerprint": "649901281/1271593",
+          "totalSeconds": 1.1090587,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 25,
+            "evaluations": 408,
+            "routeEntries": 57,
+            "routeHits": 351,
+            "routeMisses": 57,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 22
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 0.941895,
+          "chains": 6,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 6,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 6,
+            "referenceUnavailable": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.3343058,
+          "earlyFingerprint": "50370276/17398",
+          "entries": 123,
+          "nativeQuotes": 701,
+          "pass": 2,
+          "player": 5,
+          "preparationSeconds": 0.070086900000007,
+          "semanticBytes": 1272089,
+          "semanticFingerprint": "2059215964/1272089",
+          "totalSeconds": 1.0119819,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 25,
+            "evaluations": 384,
+            "routeEntries": 55,
+            "routeHits": 329,
+            "routeMisses": 55,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 22
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 0.9247108,
+          "chains": 6,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 6,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 6,
+            "referenceUnavailable": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.31508649999999,
+          "earlyFingerprint": "50370276/17398",
+          "entries": 123,
+          "nativeQuotes": 701,
+          "pass": 3,
+          "player": 5,
+          "preparationSeconds": 0.076154500000001,
+          "semanticBytes": 1272089,
+          "semanticFingerprint": "2059215964/1272089",
+          "totalSeconds": 1.0008653,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 25,
+            "evaluations": 384,
+            "routeEntries": 55,
+            "routeHits": 329,
+            "routeMisses": 55,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 22
+          }
+        },
+        {
+          "arm": "B",
+          "centralSeconds": 0.9313344,
+          "chains": 6,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 0.36789420000001,
+          "earlyFingerprint": "50370276/17398",
+          "entries": 125,
+          "nativeQuotes": 703,
+          "pass": 4,
+          "player": 5,
+          "preparationSeconds": 0.0699647,
+          "semanticBytes": 1271593,
+          "semanticFingerprint": "649901281/1271593",
+          "totalSeconds": 1.0012991,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 25,
+            "evaluations": 408,
+            "routeEntries": 57,
+            "routeHits": 351,
+            "routeMisses": 57,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 22
+          }
+        }
+      ],
+      "scope": "One original AI player5, cold-history integrated QuarterBids path, no turns or packets, priced unordered record normalization only",
+      "all_semantics_repeat": true
+    },
+    {
+      "world": "treatment",
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\timing\\continents-treatment250-old-new-p5-normalized",
+      "arms": {
+        "A": {
+          "total_seconds": 1.3406144,
+          "central_seconds": 1.23929,
+          "customer_seconds": 0.24921474999999998,
+          "chains": 9,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 5,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 7,
+            "referenceUnavailable": 0,
+            "unknown": 0
+          },
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 281,
+            "routeEntries": 88,
+            "routeHits": 193,
+            "routeMisses": 88,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          },
+          "native_quotes": 800
+        },
+        "B": {
+          "total_seconds": 1.7693142499999999,
+          "central_seconds": 1.6791045,
+          "customer_seconds": 0.6772019,
+          "chains": 9,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 432,
+            "routeEntries": 114,
+            "routeHits": 318,
+            "routeMisses": 114,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          },
+          "native_quotes": 1190
+        }
+      },
+      "records": [
+        {
+          "arm": "B",
+          "centralSeconds": 1.7462534,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 0.7363677,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 101,
+          "nativeQuotes": 1190,
+          "pass": 1,
+          "player": 5,
+          "preparationSeconds": 0.092153299999993,
+          "semanticBytes": 1427392,
+          "semanticFingerprint": "3694381269/1427392",
+          "totalSeconds": 1.8384067,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 432,
+            "routeEntries": 114,
+            "routeHits": 318,
+            "routeMisses": 114,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 1.1973323,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 5,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 7,
+            "referenceUnavailable": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.26548940000001,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 100,
+          "nativeQuotes": 800,
+          "pass": 2,
+          "player": 5,
+          "preparationSeconds": 0.10389819999999,
+          "semanticBytes": 1432722,
+          "semanticFingerprint": "1663373942/1432722",
+          "totalSeconds": 1.3012305,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 281,
+            "routeEntries": 88,
+            "routeHits": 193,
+            "routeMisses": 88,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          }
+        },
+        {
+          "arm": "A",
+          "centralSeconds": 1.2812477,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 5,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 7,
+            "referenceUnavailable": 0,
+            "unknown": 0
+          },
+          "customerSeconds": 0.23294009999999,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 100,
+          "nativeQuotes": 800,
+          "pass": 3,
+          "player": 5,
+          "preparationSeconds": 0.098750600000002,
+          "semanticBytes": 1432722,
+          "semanticFingerprint": "1663373942/1432722",
+          "totalSeconds": 1.3799983,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 281,
+            "routeEntries": 88,
+            "routeHits": 193,
+            "routeMisses": 88,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          }
+        },
+        {
+          "arm": "B",
+          "centralSeconds": 1.6119556,
+          "chains": 9,
+          "coldHistory": true,
+          "customer": {
+            "candidateUnavailable": 0,
+            "clamped": 0,
+            "forecasts": 16,
+            "groups": 8,
+            "nativeNonpositive": 0,
+            "nativeUnavailable": 0,
+            "offers": 8,
+            "referenceUnavailable": 0,
+            "singletons": 2,
+            "unknown": 0
+          },
+          "customerSeconds": 0.6180361,
+          "earlyFingerprint": "1264404904/11954",
+          "entries": 101,
+          "nativeQuotes": 1190,
+          "pass": 4,
+          "player": 5,
+          "preparationSeconds": 0.088266200000007,
+          "semanticBytes": 1427392,
+          "semanticFingerprint": "3694381269/1427392",
+          "totalSeconds": 1.7002218,
+          "turn": 250,
+          "work": {
+            "budgetFailures": 0,
+            "cacheHits": 19,
+            "evaluations": 432,
+            "routeEntries": 114,
+            "routeHits": 318,
+            "routeMisses": 114,
+            "routeOverflow": 0,
+            "unknown": 0,
+            "worlds": 19
+          }
+        }
+      ],
+      "scope": "One original AI player5, cold-history integrated QuarterBids path, no turns or packets, priced unordered record normalization only",
+      "all_semantics_repeat": true
+    }
+  ],
+  "completion_audit": {
+    "problem": "2.1",
+    "complete": true,
+    "date": "2026-11-18",
+    "main_source": {
+      "CSC_AI_EconomyFacts.lua": {
+        "same_lua_text": true,
+        "source_sha256": "44ea5f8d9269ba92b51172ce5f8cfd4e23675419620d2640f9e77e3948622667",
+        "tested_sha256": "f9f022e8589a7e1d74bcad28487c2caabd1897be2e44d52c3a466cc186507772",
+        "line_endings_only": true
+      },
+      "CSC_AI_EconomyModel.lua": {
+        "same_lua_text": true,
+        "source_sha256": "f414a6436b1520d97429ac59b8e76e2584a5504e07a474adeb52145cd4fb9d37",
+        "tested_sha256": "d3efff5656e3d7e6a7946969830421bd2fb3fead365dcb21771cd30a86126a88",
+        "line_endings_only": true
+      },
+      "CSC_AI_EconomyAdapters.lua": {
+        "same_lua_text": true,
+        "source_sha256": "80414c6bc35772e8f9d1b2ec534f487d043abd553cd909e3c372ff37de3ae9b8",
+        "tested_sha256": "80414c6bc35772e8f9d1b2ec534f487d043abd553cd909e3c372ff37de3ae9b8",
+        "line_endings_only": false
+      }
+    },
+    "six_fresh_games_verified": true,
+    "paired_initial_worlds_equal": true,
+    "independent_native_choice_and_foundation_gates": true,
+    "stronger_site_and_invalidation_gates": true,
+    "main_csc_only_no_external_policy": true,
+    "v3_conquest_accounting": true,
+    "whole_turn_timing": true,
+    "same_mature_state_timing": true,
+    "astra_review": "Close representative integrated B/T scope; no new coefficient or fourth seed required",
+    "limits": [
+      "customer-first efficacy not improved in aggregate",
+      "conditional coastal opportunities",
+      "prospective Service valuation deferred",
+      "one unobserved Hub comparison window"
+    ],
+    "next": "Initial Problem3 material/Builder research"
   }
 }

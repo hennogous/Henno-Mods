@@ -56,6 +56,27 @@ local factories={}
             code+='\ndo\n'+text+'\nend\n'
             pins[str(path.resolve())]=hashlib.sha256(path.read_bytes()).hexdigest()
         code+='\n return CSC_AI_EconomyAdapters,CSC_AI_EconomyModel\nend\n'
+    code+='''
+local function proofCopy(value,field,depth)
+ depth=depth or 0;assert(depth<20,'Proof copy depth bound')
+ if type(value)~='table'then return value end
+ local result,count={},0
+ for key,item in pairs(value)do result[key]=proofCopy(item,key,depth+1);count=count+1 end
+ if field=='streams'or field=='contributors'then
+  -- Finished priced streams are independent flows. Population attribution is
+  -- also a list of records; amenity contributors can instead be ID->true sets.
+  -- Normalize only dense record arrays, retaining every full record/duplicate.
+  local dense=true
+  for i=1,count do if type(result[i])~='table'then dense=false;break end end
+  if dense and count==#result then
+   local keyed={};for _,item in ipairs(result)do keyed[#keyed+1]={value=item,key=encode(item)}end
+   table.sort(keyed,function(a,b)return a.key<b.key end)
+   for i,row in ipairs(keyed)do result[i]=row.value end
+  end
+ end
+ return result
+end
+'''
     # The marker lets offline tests initialise every private factory without
     # reaching the native-read section below; Havok has no setfenv/_G helpers.
     code+='\n-- CSC_TIMING_NATIVE_BEGIN\n'+'''
@@ -65,7 +86,7 @@ local P=assert(CSC_AI_QuarterPlacement)
 local ui=assert(ExposedMembers.CSC_Adjacency)
 local emit=print
 local print=function()end
-local prior,common,proofs={},{},{}
+local prior,priorObjects,common,proofs={},{},{},{}
 local order={'B','A','A','B'}
 local players='''+'{'+','.join(map(str,players))+'}'+'''
 local modelEquality='''+('true'if prototype else'false')+'''
@@ -79,6 +100,21 @@ local function sortedEntries(entries)
  table.sort(rows,function(a,b)local x,y=key(a),key(b)
   return x<y or x==y and encode(a)<encode(b)end)
  return rows
+end
+local function firstDifference(a,b,path,depth)
+ depth=depth or 0;assert(depth<20,'Difference depth bound')
+ if type(a)~='table'or type(b)~='table'then
+  if a~=b then return {path=path,left=tostring(a):sub(1,120),right=tostring(b):sub(1,120)}end
+  return nil
+ end
+ local keys,seen={},{}
+ for k in pairs(a)do keys[#keys+1]=k;seen[k]=true end
+ for k in pairs(b)do if not seen[k]then keys[#keys+1]=k end end
+ table.sort(keys,function(x,y)return tostring(x)<tostring(y)end)
+ for _,k in ipairs(keys)do
+  local result=firstDifference(a[k],b[k],path..'/'..tostring(k),depth+1)
+  if result then return result end
+ end
 end
 for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
  assert(Game.GetCurrentGameTurn()==turn,'Timing world advanced')
@@ -120,9 +156,22 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
  local work=snapshot.WorldStats()
  local earlyText=encode({entries=sortedEntries(early),protected=protected})
  if common[pid]then assert(common[pid]==earlyText,'Common early/protection inputs differ')else common[pid]=earlyText end
- local semantics=encode({entries=sortedEntries(entries),status=status,worlds=worlds})
+ -- Native Havok hash traversal can change the append order of finished
+ -- population/amenity streams. Compare their full multiset after pricing,
+ -- outside timing. Queue investments, world order, plans and errors keep order.
+ local semanticObject={entries=sortedEntries(entries),status=status,worlds=proofCopy(worlds)}
+ local semantics=encode(semanticObject)
  local identity=arm..':'..pid
- if prior[identity]then assert(prior[identity]==semantics,'Same-arm cold-history result changed')else prior[identity]=semantics end
+ if prior[identity]and prior[identity]~=semantics then
+  -- Diagnose the first actual field before stopping. In particular, an
+  -- unordered stream/contributor list must not be mistaken for a new bid.
+  emit('CSC_CUSTOMER_TIMING_DIFFERENCE='..encode({arm=arm,pass=pass,player=pid,
+   difference=firstDifference(priorObjects[identity],semanticObject,'result'),
+   currentTotalSeconds=finished-started,currentCentralSeconds=finished-centralStarted,
+   currentCustomerSeconds=customerSeconds,currentCustomer=customerStats,currentWork=work}))
+  error('Same-arm cold-history result changed')
+ end
+ prior[identity]=semantics;priorObjects[identity]=semanticObject
  if modelEquality then
   if proofs[pid]then assert(proofs[pid]==semantics,'Model optimization changes bids, plans or economic outcomes')else proofs[pid]=semantics end
  end

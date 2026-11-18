@@ -1,5 +1,16 @@
 # CSC AI roadmap
 
+**18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
+Three fresh Online250 seed pairs qualify/restore, with physical links75→86,
+customer-after-Quarter45→56 and comparable connections28/50→39/61. Both families
+gain post-Quarter links; customer-first totals stay30. Mean overhead adds0.130s
+per turn; source/input/v3 and same-mature-state timing checks pass. Short native
+choice/foundation, stronger-site and invalidation gates complete the loop.
+No fourth seed or new premium is needed. [Completion audit and results](../research/mods/csc-ai-customer-scheduling-20261117.md).
+Initial **Problem3** material/Builder research is next; no new full game is scheduled.
+
+## Earlier campaign checkpoints (historical)
+
 For current continuation instructions, use the [handoff](HANDOFF.md). Later
 dated entries supersede earlier next-step lists. The active customer-placement
 goal below authorises its serial tests; earlier stopped campaigns stay stopped.
@@ -940,7 +951,12 @@ until the active check closes or an explicit dependency needs attention.
 
 ### 2. Other district placement
 
-- **2.1 Customer placement.** Favor a site adjacent to a provider Quarter
+- **2.1 Customer placement.** **Closed18 November2026:** the integrated Bakers/Tailors capability is complete
+  at the reviewed representative scope, with the short native tests and three
+  matched full-game outcomes above. Further coastal/conditional opportunities,
+  customer-first efficacy and Service pricing remain follow-ups. The objective
+  below continues to describe the capability for future extensions.
+  Favor a site adjacent to a provider Quarter
   or a credible specific future Quarter footprint. Preserve the district's
   standalone value when comparing placements. Customer-first guidance reverses
   the loaded gameplay partner graph to feasible Quarter and material footprints,
