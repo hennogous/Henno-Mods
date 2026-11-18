@@ -3931,5 +3931,90 @@
       "one unobserved Hub comparison window"
     ],
     "next": "Initial Problem3 material/Builder research"
+  },
+  "expanded_endpoint_comparison": {
+    "scope": "Original AI players at250, acquired Quarters included, completed Quarters for building/material counts, compatible and unpillaged for working; city food surplus summed",
+    "control": {
+      "complete_quarters": 59,
+      "base": 58,
+      "working_base": 49,
+      "both": 11,
+      "both_working": 6,
+      "producer2": 57,
+      "producer3": 47,
+      "producer4": 28,
+      "mapped_completed_host": 53,
+      "customer2": 29,
+      "customer3": 17,
+      "customer4": 7,
+      "healthy_stage2_chain": 23,
+      "pillaged_quarters": 0,
+      "cities": 155,
+      "population": 1893,
+      "production": 8978.51171875,
+      "gross_gold": 12920.89453125,
+      "maintenance": 9766,
+      "food_surplus": 1026.9765625
+    },
+    "treatment": {
+      "complete_quarters": 68,
+      "base": 65,
+      "working_base": 52,
+      "both": 16,
+      "both_working": 12,
+      "producer2": 60,
+      "producer3": 48,
+      "producer4": 35,
+      "mapped_completed_host": 62,
+      "customer2": 30,
+      "customer3": 19,
+      "customer4": 8,
+      "healthy_stage2_chain": 24,
+      "pillaged_quarters": 3,
+      "cities": 174,
+      "population": 1965,
+      "production": 8515.83984375,
+      "gross_gold": 14212.5234375,
+      "maintenance": 10088,
+      "food_surplus": 1114.4921875
+    },
+    "sources": [
+      {
+        "map": "continents",
+        "arm": "control",
+        "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\continents-control250\\full-census-250.json",
+        "sha256": "f93d6825c514e476e7f4b63a6932a3830935f6c2b570a4ff2fca84bae1389888"
+      },
+      {
+        "map": "continents",
+        "arm": "treatment",
+        "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\continents-treatment250\\full-census-250.json",
+        "sha256": "0df0442218fce26f6fbb39dac2e4f326ed44d732e61a8d3711a11531f9550b46"
+      },
+      {
+        "map": "pangaea",
+        "arm": "control",
+        "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\pangaea-control250\\full-census-250.json",
+        "sha256": "17efa04b234d8f862f5b4fba74dac6f1e499764a1371d747ccb30dc9af6f0c08"
+      },
+      {
+        "map": "pangaea",
+        "arm": "treatment",
+        "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\pangaea-treatment250\\full-census-250.json",
+        "sha256": "a15ac0a9eeb216109c56b5379d152c6c44f37b961a8942046dff7471ae5db612"
+      },
+      {
+        "map": "fractal",
+        "arm": "control",
+        "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\fractal-control250\\full-census-250.json",
+        "sha256": "513f9453f4fcf61374588cd4de71c865c8d945217656cb3fcd05bbbff4c011da"
+      },
+      {
+        "map": "fractal",
+        "arm": "treatment",
+        "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\fractal-treatment250\\full-census-250.json",
+        "sha256": "348f118729bbba489ee4a3a00bb9ce588ffcf6aa1c2ef7caa743affbac933878"
+      }
+    ]
   }
 }

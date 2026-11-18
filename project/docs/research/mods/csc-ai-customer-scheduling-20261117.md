@@ -73,6 +73,49 @@ The next requested work is initial Problem3 material/Builder research.
   no probe policy or upstream PR. Comments, source tools, engine findings and
   scoped commits are maintained. Closed duplicate packages are retired.
 
+## Expanded turn250 comparison
+
+18 November follow-up. These are combined endpoint censuses for the original
+AI players across the three maps. They include acquired Quarters and omit lost
+ones, whereas the foundation counts above describe construction during play.
+Material/building rows below count completed Quarters, including damaged ones.
+Working means compatible and unpillaged.
+
+| Turn250 stock | Control | Candidate |
+|---|---:|---:|
+|Completed Quarters|59|68|
+|With adjacent Base / working Base|58 /49|65 /52|
+|With both Base and Spec / both working|11 /6|16 /12|
+|With working Stage2 producer|57|60|
+|With working Stage3 producer|47|48|
+|With working Stage4 producer|28|35|
+|With completed mapped customer/sales district beside it|53|62|
+|With working adjacent Stage2 customer building|29|30|
+|With working adjacent Stage3 customer building|17|19|
+|With working adjacent Stage4 customer building|7|8|
+|Healthy Quarter + working Base + Stage2 producer/customer|23|24|
+|Pillaged Quarters|0|3|
+
+Construction produces more connected layouts, but the additional Stage2 supply
+chains are still limited. Working Base coverage is49/59(83%) versus52/68(76%);
+working Stage2 customer coverage29/59(49%) versus30/68(44%). This supports moving
+to material development and chain completion rather than increasing placement
+bonuses again.
+
+Customer district foundations adjacent to a mapped Quarter, out of all recorded
+foundations of that type, are Commercial Hubs15/52→16/56, Harbors0/36→1/46,
+Holy Sites4/22→4/22, Entertainment Complexes including Hippodromes4/29→8/31,
+and Theater Squares including Acropolises6/78→5/82. A district counts once here
+even if it connects to two Quarters. Physical link totals above count each
+Quarter/district pair. City Lights urban sales districts connect15/82→19/84;
+rural/Frontier goods providers22/142→24/135.
+
+The combined original-AI endpoint economies have155→174 cities,
+population1893→1965, Production8979→8516 per turn, gross Gold12921→14213 per
+turn, maintenance9766→10088, and combined city Food surplus1027→1114 per turn.
+These are endpoint snapshots of divergent games; use them to track balance,
+with Production's decline alongside higher Gold and Food.
+
 ## Earlier experiment detail
 
 **Two matched Online250 pairs are complete. Connections improve overall;
