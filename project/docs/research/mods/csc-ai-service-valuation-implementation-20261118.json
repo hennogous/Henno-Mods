@@ -1233,5 +1233,15 @@
     "csc_implementation": "f821425f",
     "ce_api": "0222f05",
     "civ6_ai_skill": "fcb4b76"
+  },
+  "storage": {
+    "intermediate_runs_retired": true,
+    "retained_candidate": "frozen03",
+    "retained_checks": [
+      "saved250-03",
+      "control100-03"
+    ],
+    "free_gib_after": 32.75,
+    "original_baselines_retained": true
   }
 }
