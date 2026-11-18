@@ -18,7 +18,7 @@ title: Bakers' Quarter
 
 ---
 
-* +1 {{production}} Production from every 2 adjacent river segments once the Water Mill is built, or +1 {{production}} Production if built on Hills terrain once the Wind Mill is built.
+* +1 {{production}} Production from every 2 adjacent River segments once the Water Mill is built, or +1 {{production}} Production if built on Hills terrain once the Wind Mill is built.
 * +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain.
 * +1 {{gold}} Gold from each adjacent {{sales}} City Center and Commercial Hub, and +1 {{food}} Food in return.
 * +1 {{gold}} Gold from each adjacent {{sales}} Entertainment Complex, Water Park and Garden district (Leugi), and +1 {{culture}} Culture in return.
@@ -67,7 +67,7 @@ River-powered milling becomes available in the Classical era. Wind power extends
 * At Medieval Faires, a Bakery adjacent to an improved {{base}} Base Materials resource unlocks:
    * An Innkeeper is established in an adjacent Commercial Hub with a Market.
    * The Innkeeper provides the city with +2 {{housing}} Housing, +1 {{citizen}} Citizen slot and +1 {{merchant}} Great Merchant point per turn.
-* +1 {{food}} Food and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Bakery is locally supplied and the origin city does not have a Bakers' Quarter.
+* +1 {{food}} Food and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Bakery in return, if it is locally supplied and the origin city does not have a Bakers' Quarter.
 
 ## 4. Café
 
@@ -86,4 +86,4 @@ River-powered milling becomes available in the Classical era. Wind power extends
    * A Groundskeeper is established in an adjacent Entertainment Complex with a Zoo, a Ride Technician in a Water Park with a Ferris Wheel, and a Horticulturist in a Garden district with a Conservatory (Leugi).
    * The Groundskeeper, Ride Technician and Horticulturist each provide the city with +2 {{tourism}} Tourism and +1 {{citizen}} Citizen slot.
    * The Groundskeeper and Ride Technician provide +1 {{engineer}} Great Engineer point per turn, while the Horticulturist provides +1 {{artist}} Great Artist point per turn.
-* +1 {{food}} Food and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Café is locally supplied and the origin city does not have a Bakers' Quarter.
+* +1 {{food}} Food and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Café in return, if it is locally supplied and the origin city does not have a Bakers' Quarter.
