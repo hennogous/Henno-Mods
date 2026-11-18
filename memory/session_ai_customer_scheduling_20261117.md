@@ -8,6 +8,21 @@ v3coordination rerun fresh process for this closed output. Pangaea TREATMENT
 starting~02:32UTC usesfreshcontrolinitialreference. Nextcheck~02:47UTC.
 Remaining3games then finalfreshv3analysis ALL6, performance same-mature-state
 test if costrecurs. Main/frozen policies remain unchanged. Disk36.92GiB atclose.
+Lastcheck02:54UTC: PangaeaT129active→130,lastverified125,nativefaults0,
+disk36.07GiB,parent5067alive. Next~03:09UTC.
+Performance source tools promoted out ofscratch: project/tools/ai_economy/
+prototype_joint_reuse.py requires--output-directory outsideRepo; generatedLua/
+JSON movedto Desktop experimentroot/prototypes/. project/tools/native_ai/
+late_placement/customer_timing_query.py buildsdiagnostic-onlyquery for existing
+tailors_coast_survey.py (new--query-timeout-seconds1..60,noresend). Astrareview:
+ONEintegratedQuarterBids path, nestedcustomertimer, FMEreset perplayer/arm,
+realcommonmaterial+legacyearlyvectorsassertsame, previous{}coldhistory.
+BAABorder, defaultpreselectedplayer5, bothmatureContinents250worlds aftercampaign.
+Allworldresults/status/bidvectorscompareexactwithinarm; optionalprototypevs
+current exactsemanticsrequired. Fullproofformattingoutsideclock; p5onlylimits
+memory/timeout. EncoderfixacceptsHavokintegerandchecksEXACTdense1..narrays,
+sparseprotectedplot0setsretained. Offlinecompile/isolation/sparsefixturespass;
+no nativebenchmarkrunyet. Mainmodel/policy stillunchanged. Don'trunalongsidegame.
 
 Start with project/docs/civ6-ai/customer-placement-goal.md and STATUS.md.
 The active get_goal objective supersedes older memory's no-active-goal notes.

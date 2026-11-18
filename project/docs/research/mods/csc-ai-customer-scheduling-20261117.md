@@ -42,11 +42,26 @@ Another12 route regressions/23 world calls also match completely, including
 rounded payouts, queue timing and unavailable values. Wall timings are noisy
 during the running game and are not a live performance result.
 
-The prototype is in `project/.ai-test-tmp/prototype_joint_reuse.py`; its result
-JSON and separate Lua model remain beside it. Main source and frozen game
+The source tool is `project/tools/ai_economy/prototype_joint_reuse.py`; its result
+JSON and separate Lua model are under the experiment's Desktop `prototypes/`
+folder. The tool requires an explicit output directory outside the source tree.
+Main source and frozen game
 packages are unchanged. If mature-game cost needs work after the remaining
 maps, compare old/new scheduling on the same mature save and measure this
 candidate there before integrating it.
+
+The prepared `customer_timing_query.py` uses the existing read-only survey
+lifecycle after this campaign. Astra's review narrowed its first measurement to
+preselected player5 on both mature Continents saves, with B/A/A/B order. Each
+replicate resets private F/M/E modules, supplies real common material/early
+inputs, and times `QuarterBids` plus its nested customer call. Complete results
+must repeat within an arm; a model-only comparison must preserve all bids,
+world plans and unavailable outcomes. Proof formatting is outside timers.
+This is a cold-history placement pass without Builder/repair assistance or
+packet publication. Full-game timing remains the whole-guidance measurement.
+The query compiles and preserves active modules offline; native measurement
+is pending. Its proof encoder retains sparse plot sets and Havok integer IDs.
+The existing survey's optional1..60s acknowledgement timeout never retries a send.
 
 ### Pangaea control250
 

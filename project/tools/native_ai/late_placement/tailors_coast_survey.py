@@ -16,6 +16,11 @@ from ce_replay import verify_modules,DLL,HOTFIX_SHA
 from ce_bakers_fresh import LOGS
 
 def run(args):
+ # Custom read-only economic benchmarks can exceed the usual short query.
+ # This bounds acknowledgement waiting only: it never retries a transmission,
+ # changes the saved world, or permits a second console owner.
+ query_timeout=getattr(args,'query_timeout_seconds',15)
+ require(type(query_timeout)is int and 1<=query_timeout<=60,'Read-only query timeout must be1..60 seconds')
  plan=prepare(args.source,args.output,args.at,args.at,args.dependencies,read_only=True)
  require(not native_inventory(),'Foreign session must be preserved')
  out=plan.output;out.mkdir(parents=True)
@@ -26,7 +31,7 @@ def run(args):
  query=args.query or Path(__file__).with_name('tailors_coast_survey.lua')
  pins={str(p.resolve()):sha(p)for p in (Path(__file__),query)}
  write_json(out/'implementation-archive.json',archive_sources(pins,out/'implementation-version'))
- write_json(out/'protocol.json',dict(diagnostic=True,read_only=True,source=str(plan.source),turn=args.at,checkpoint=plan.checkpoint,world_edits=False,turns_advanced=0))
+ write_json(out/'protocol.json',dict(diagnostic=True,read_only=True,source=str(plan.source),turn=args.at,checkpoint=plan.checkpoint,world_edits=False,turns_advanced=0,query_timeout_seconds=query_timeout))
  def verify():
   for item in copied:
    require(manifest(item['install'])==item['files'],'Installed package changed')
@@ -53,7 +58,7 @@ def run(args):
    contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay','CSC_AdjacencyGameplay'),eligibility=gate)
   ce=next(i for i in copied if i['role']=='ce')
   verify_modules(session,ce['install']/'Binaries/Win64'/DLL,out,HOTFIX_SHA)
-  raw=controller.cmd(read(query),'CSC_AI_BakersGameplay','tailors-coast-survey')
+  raw=controller.cmd(read(query),'CSC_AI_BakersGameplay','tailors-coast-survey',wait=query_timeout)
   (out/'tailors-coast-survey.txt').write_text(raw,encoding='utf-8')
   require('CSC_COAST_END\t'+str(args.at)in raw,'Coast survey incomplete')
   state=controller.state_read('coast-survey-final-clock')
@@ -73,4 +78,5 @@ if __name__=='__main__':
  for k in('source','output','dependencies'):p.add_argument('--'+k,type=Path,required=True)
  p.add_argument('--at',type=int,default=250)
  p.add_argument('--query',type=Path)
+ p.add_argument('--query-timeout-seconds',type=int,default=15)
  run(p.parse_args())
