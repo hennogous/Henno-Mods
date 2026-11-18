@@ -427,5 +427,72 @@
       "protocol_sha256": "145a45729b3e1d406892c42ba8be3d4a2c584c1d7aac14b82617fec19a9b8618"
     }
   ],
-  "combined_edge_attribution": "Amount0 also removes the edge from Lua positive-rule reverse candidate routing; combined guidance ablation, not isolated SQL. Current production amount1 unchanged."
+  "combined_edge_attribution": "Amount0 also removes the edge from Lua positive-rule reverse candidate routing; combined guidance ablation, not isolated SQL. Current production amount1 unchanged.",
+  "full_games": {
+    "pangaea_control250": {
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\pangaea-control250",
+      "closed": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "connections": {
+        "physical_links": 47,
+        "planned_district_links": 32,
+        "city_center_links": 15,
+        "order": {
+          "quarter_first": 16,
+          "customer_first": 16
+        },
+        "owner_scoped_links": 47,
+        "owner_scoped_planned_links": 32,
+        "exact_prior_customer_first_links": 3,
+        "latest_quarter_layout_matches": 2,
+        "links_with_prior_economic_offer": 10,
+        "customer_foundations_with_private_yield": 15,
+        "existing_quarter_links_observed_without_base": 0
+      },
+      "quality": {
+        "BAKERS": {
+          "foundations": 18,
+          "at_least3": 18,
+          "at_least4": 15,
+          "base": 18,
+          "spec": 5,
+          "both": 5,
+          "distinct_geometry_qualified_candidates": 541,
+          "distinct_positive_offers": 130
+        },
+        "TAILORS": {
+          "foundations": 6,
+          "at_least3": 5,
+          "at_least4": 3,
+          "base": 6,
+          "spec": 1,
+          "both": 1,
+          "distinct_geometry_qualified_candidates": 291,
+          "distinct_positive_offers": 57
+        }
+      },
+      "comparable_foundations": 14,
+      "comparable_connected": 10,
+      "guidance_seconds": {
+        "average": 3.028179,
+        "maximum": 7.043801
+      },
+      "source_sha256": {
+        "source.json": "2af49113e85cbb3b24860940744111005eff029bfd459baa64768bbab17a352e",
+        "result.json": "9dbd8f20fef639894c5cb29849e51bd9202cbff1a3140793fca75b53614112f1",
+        "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+        "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+        "planning-results.json": "6049c03247cc38b9165dcb1b12a7357e18e8c07beafec2da8be801a5b9f995aa",
+        "customer-coordination-results.json": "6e75b85c22f8c26bcc3dd4a2e47b1439d91c485dd392b192b2feced173e711cc",
+        "customer-opportunity-results.json": "4ccb00b87cde76f83fcf91b0b51a7d84b17df9208aea88f9f6f2e10ec641a893",
+        "ai-processing-time.json": "887fe312d935cc15227f045a207323ceb0fd390452909ec9a36d906324399a5a",
+        "economy-savings-frozen.json": "35acfdb3d37af1ba717a47f1c18f396355727a74cd58291ec398320670871fca"
+      }
+    }
+  }
 }

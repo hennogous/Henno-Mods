@@ -1,7 +1,7 @@
 # Customer placement: native delivery and matched outcomes
 
 **The first matched Online250 pair improves customer placement; Pangaea's
-control is restarting on the same seed.** Pair-first scheduling improves fresh coverage at the same forecast
+control is complete and its treatment is running.** Pair-first scheduling improves fresh coverage at the same forecast
 budget; a combined-guidance ablation changes a close Hub choice through physical
 foundation. Stronger ordinary sites retain their wins. Three matched Online250
 worlds provide the remaining repeated-outcome test. **AI-C214–216**.
@@ -47,6 +47,19 @@ JSON and separate Lua model remain beside it. Main source and frozen game
 packages are unchanged. If mature-game cost needs work after the remaining
 maps, compare old/new scheduling on the same mature save and measure this
 candidate there before integrating it.
+
+### Pangaea control250
+
+The same-seed restart closes/restores/qualifies250. It has24 original-AI Quarter
+foundations(18 Bakers/six Tailors), all Base-adjacent,23 at+3+,18 at+4+, and six
+with both material classes. Its32 physical non-City-Center links split20 Bakers/
+12 Tailors and16 Quarter-first/16 customer-first. Confirmed comparable customer
+foundations connect10/14. There are no raw resource losses; eight working-supplier
+interruptions are recorded. Endpoint Service properties show10 Storekeepers and
+three Innkeepers. Mean/max guidance is3.028/7.044s, with complete250-turn coverage,
+zero native faults and all final native records drained. Another0.378GiB of exact
+duplicate package archives was retired. Treatment uses the same initial-world
+reference and unchanged frozen candidate.
 
 ### Pangaea controller recovery,18 November
 

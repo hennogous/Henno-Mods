@@ -1,5 +1,14 @@
 # Active customer-placement goal,17 November
 
+Latest18Nov02:35UTC: parent exec5067 alive; Pangaea CONTROL250 closed/qualified
+and retired duplicate packages.32nonCC links(20B/12T),16Qfirst/16customerfirst,
+comparable10/14, Quarter24(18B6T)allBase/23+3/18+4/6both. Guidance3.028avg/
+7.044max,0faults, drainedall30358native rows. Servicesproperty10Store3Inn.
+v3coordination rerun fresh process for this closed output. Pangaea TREATMENT
+starting~02:32UTC usesfreshcontrolinitialreference. Nextcheck~02:47UTC.
+Remaining3games then finalfreshv3analysis ALL6, performance same-mature-state
+test if costrecurs. Main/frozen policies remain unchanged. Disk36.92GiB atclose.
+
 Start with project/docs/civ6-ai/customer-placement-goal.md and STATUS.md.
 The active get_goal objective supersedes older memory's no-active-goal notes.
 Main7ea8820a pushed: pair-first16-world customer schedule, identity-only hints,

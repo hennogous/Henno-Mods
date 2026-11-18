@@ -82,7 +82,9 @@ short gates pass; the final repeated-outcome gate remains open.
 
 Continents' first full pair closes/qualifies250: non-City-Center links20→34,
 confirmed comparable connected foundations8/16→17/20, all25 new Quarters Base-
-adjacent. Average/max guidance1.976/4.025s→2.362/5.505s. Pangaea control is active.
+adjacent. Average/max guidance1.976/4.025s→2.362/5.505s. Pangaea control completes
+250 with32 links,24 Base-adjacent foundations and10/14 comparable connected
+foundations. Its treatment is running; both Fractal games follow.
 Keep coefficients frozen through all maps. If the late cost recurs, compare old/
 new adapters on the same mature candidate save before closing the performance
 gate. Final analysis must rerun coordination v3 on closed outputs: it corrects

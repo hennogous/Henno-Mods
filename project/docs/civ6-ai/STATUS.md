@@ -29,11 +29,13 @@ lineage adds no worlds; opportunity/capture and retirement checks pass.
 **First matched outcome:** Continents250 completes both arms:20→34 non-City-
 Center links; confirmed comparable foundations8/16→17/20; Hubs3→6, Theaters2→4.
 All25 candidate Quarter foundations have Base,23 at+3+. Mean/max guidance rises
-1.976/4.025s→2.362/5.505s. Pangaea control is restarting on its same seed after
-read-only context discovery timed out during resumed simulation. The shared
-controller now defers that pre-Lua failure within existing time bounds;76 focused
-tests pass (one skipped). The partial run closed/restored0 and is preserved;
-its exact duplicate packages/checkpoints were retired. Keep policy frozen through
+1.976/4.025s→2.362/5.505s. Pangaea control now completes/qualifies250:24 Base-
+adjacent Quarter foundations,23 at+3+,32 non-City-Center links,10/14 comparable
+connected foundations; guidance3.028s average/7.044s maximum. Its matched
+treatment is running under parent5067. The earlier read-only context-discovery
+interruption is preserved; controllerc7bf6b2b handles it within existing bounds
+(76 focused tests, one skipped). Exact duplicate closed packages and redundant
+failed-attempt checkpoint saves were retired. Keep policy frozen through
 the remaining pairs, then profile the same mature state if cost recurs. Astra's
 capture-history reporting correction uses complete material totals; it resolves
 the lone false missing-Base flag. [Results and review](../research/mods/csc-ai-customer-scheduling-20261117.md).
@@ -41,11 +43,12 @@ Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).
 
-**Astra's proposed next2.1 slice:** prioritize fresh reference/challenger pairs
+**Astra's implemented2.1 slice:** prioritize fresh reference/challenger pairs
 across more city/types at the same16-world budget; preserve candidate identities
 with fresh validation, SQL+1 and normal competition. Short matched replays should
 qualify comparison-time coverage and selected foundations before broader joint
-planning/acquisition. Services stay deferred. No code/game change for this review.
+planning/acquisition. Those short gates now pass above; full outcomes are being
+measured. Services stay deferred.
 [Recommendation](../research/mods/csc-ai-customer-coordination-review-20261117.md).
 
 **Perth trace completed, Problems1.4/1.6/2.1:** all20 matched positive Tailors
