@@ -1,5 +1,11 @@
 # Current CSC AI status
 
+**Next priority,18 November:14.3 Service valuation in Quarter forecasts.**
+Henno requests native pricing where possible, with calibrated proxies for the
+remaining effects. [Initial options and implementation sequence](../research/mods/csc-ai-service-valuation-options-20261118.md).
+No new game or policy change yet. The initial3.1 supplier case remains ready
+for later investigation.
+
 **18 November: Problem2.1 is complete at the integrated Bakers/Tailors scope.**
 All six matched Online250 games qualify/restore. Physical links75→86; customer
 after Quarter45→56, with Bakers35→42 and Tailors10→14. Customer-first totals stay30.

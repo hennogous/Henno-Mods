@@ -1110,7 +1110,15 @@ until the active check closes or an explicit dependency needs attention.
   variant when two working Mills share its host. The packet fixture passes.
   Shared-supplier valuation and live shared-customer follow-through remain open.
 
-- **14.3 Prospective Service value in spatial investment (queued).** Extend the
+- **14.3 Prospective Service value in spatial investment (investigation started18 November).**
+  Henno prioritizes this after the2.1 results. Use the central model for Service
+  gates, recipients, demand and timing, with native effect pricing where usable
+  and calibrated proxies for remaining channels. Existing yield/amenity APIs
+  work; native growth/GPP children need dedicated quotes, Housing/Tourism need
+  focused investigation. Current joint spatial forecasts explicitly strip
+  Services, so integrating the ledger is required as well as exposing prices.
+  [Initial native/proxy options and implementation sequence](../research/mods/csc-ai-service-valuation-options-20261118.md).
+  Extend the
   central economy model's narrow Stage2 readiness/current-output estimates to
   credible future Services, including Stage3/4. Expose one marginal value to
   Quarter siting, customer placement and missing-link investments; avoid paying
