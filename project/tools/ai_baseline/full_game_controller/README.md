@@ -483,6 +483,21 @@ Focused regressions: `python -B -m unittest -v full_game_controller.test_present
 from `project/tools/ai_baseline`. The actual saved-game verification and its
 limits are recorded in the native Quarter placement-choice report.
 
+## Busy discovery during autoplay — 18 November 2026
+
+The Pangaea customer-placement control progressed from130 through135 after a
+Wonder popup closed, while a later optional guard could not obtain a fresh
+Tuner context list. The controller now defers only `StateDiscoveryUnavailable`
+inside progress polling and optional presentation checks. That exception means
+the failed discovery transmitted no Lua. The next loop reads fresh progress on
+the existing finite autoplay operation. Activation is never repeated; guard
+reservations remain intact. Ambiguous sends and native Lua errors still fail.
+
+The original interval deadline and ten-minute confirmed-progress bound remain.
+If discovery stays unavailable, the latter reports missing confirmation rather
+than diagnosing a native stall. Tests include an acknowledged popup close,
+failure discovering the next context, and normal completion with one close.
+
 ## UI control lag and probe handoff — 4 November 2026
 
 During the Quarter-penalty game at75, Core proved active finite autoplay with

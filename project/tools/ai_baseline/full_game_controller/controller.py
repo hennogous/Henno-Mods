@@ -315,7 +315,16 @@ class FullGameController:
   while time.monotonic()<deadline:
    time.sleep(.5 if last is None else 1) # Poll state only; never resend activation.
    if(self.root/'native-fault-signal.json').exists():raise RuntimeError('Watchdog observed native fault')
-   row=self.state_read('progress');turn=row['turn']
+   try:row=self.state_read('progress')
+   except StateDiscoveryUnavailable:
+    # LSQ failed before any Lua was sent. A busy native turn may outlast the
+    # short discovery attempts; keep observing the existing finite operation.
+    # Neither its activation nor a potentially transmitted command is retried.
+    # The original interval deadline and ten-minute progress bound still apply.
+    self.diagnostics.journal('autoplay-readonly-discovery-deferred',target=target,phase='progress',no_control_replayed=True)
+    if time.monotonic()-changed>600:raise RuntimeError('No confirmed progress for ten minutes; tuner discovery unavailable')
+    continue
+   turn=row['turn']
    if row.get('player0_alive')is False:raise ObserverEliminated('Original observer eliminated; preserve and exit without another activation')
    if turn!=last:last=turn;changed=time.monotonic()
    self._metadata(self.root/'live-status.json',dict(row,target=target,endpoint=getattr(self,'study_endpoint',250),worker_pid=os.getpid()),'live-status-metadata-warning')
@@ -330,7 +339,16 @@ class FullGameController:
     action,inactive=self.boundary_decision(turn,target,inactive)
     if action=='done':break
    if turn>target:raise RuntimeError('Native autoplay overrun')
-   if time.monotonic()-changed>35 and time.monotonic()-release>35:self.capture_blocker(target);self.dismiss_observer_warning(target);self.release_disaster(target);release=time.monotonic()
+   if time.monotonic()-changed>35 and time.monotonic()-release>35:
+    try:
+     self.capture_blocker(target);self.dismiss_observer_warning(target);self.release_disaster(target)
+    except StateDiscoveryUnavailable:
+     # Optional presentation checks can race resumed simulation after a popup
+     # closes. Return to fresh progress discovery instead of abandoning a
+     # healthy game. Guards retain their at-most-once command reservations;
+     # ambiguous sends and native Lua errors deliberately remain fatal.
+     self.diagnostics.journal('autoplay-readonly-discovery-deferred',target=target,phase='presentation',no_control_replayed=True)
+    release=time.monotonic()
    if time.monotonic()-changed>600:raise RuntimeError('Native ten-minute turn stall')
   else:raise TimeoutError(f'Native autoplay exceeded its {interval_seconds}-second interval bound')
   self.ready(target,'after-'+str(target));self.last_interval_turn=target

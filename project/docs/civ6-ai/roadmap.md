@@ -13,7 +13,10 @@ guidance average2.579→2.480s. Magdeburg's combined relationship-guidance0/1 te
 changes an unlinked choice to a linked one, and each footprint is founded151.
 Zero also disables the Lua edge, so this proves the combined mechanism.
 
-The first fresh Continents control is running in a six-game serial campaign:
+The first Continents pair is complete: physical non-City-Center links20→34 and
+comparable connected foundations8/16→17/20. Pangaea control is restarting after
+a pre-Lua console-discovery interruption; frozen tuning is unchanged. This is a
+six-game serial campaign:
 current-policy control/treatment on three preselected Online250 worlds. Measure
 viable-opportunity conversion, actual links/both foundation orders, ordinary
 customer quality, supplier retention and average/max overhead before closing2.1.

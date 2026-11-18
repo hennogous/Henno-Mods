@@ -1,7 +1,7 @@
 # Customer placement: native delivery and matched outcomes
 
 **The first matched Online250 pair improves customer placement; Pangaea's
-control is running.** Pair-first scheduling improves fresh coverage at the same forecast
+control is restarting on the same seed.** Pair-first scheduling improves fresh coverage at the same forecast
 budget; a combined-guidance ablation changes a close Hub choice through physical
 foundation. Stronger ordinary sites retain their wins. Three matched Online250
 worlds provide the remaining repeated-outcome test. **AI-C214–216**.
@@ -24,6 +24,22 @@ comparison if it recurs on the remaining maps. Services remain outside the new
 placement pricing. Endpoint properties are Storekeeper8→9, Innkeeper3→1,
 Sacristan0→1, and Bakers Stage4 Service0→1. These are downstream outcomes to track
 alongside physical connections.
+
+### Pangaea controller recovery,18 November
+
+The first control attempt verified130 and reached135 in the archived Lua log,
+then stopped when an optional popup guard exhausted pre-Lua context discovery.
+A preceding Wonder close was acknowledged and Core proof had already advanced
+to133. Native capture has zero faults, and session exit/restoration verifies0.
+The partial is preserved as `pangaea-control250-attempt01-discovery135`.
+
+The shared controller now defers only the typed pre-Lua discovery failure during
+polling/presentation checks. It polls the same finite operation, keeping original
+interval/progress bounds, at-most-once reservations and strict ambiguous-send
+failures. Astra reviewed this boundary;76 focused tests pass, one skipped.
+The campaign restarts with identical frozen policy/seed. Duplicate package
+archives and native50/100 saves were retired against retained verified copies.
+This attempt contributes no completed-game outcome.
 
 The matched150–155 replay starts from the same verified post-restructure save.
 Control uses frozen d6a9114a policy; treatment changes only the main CSC economic

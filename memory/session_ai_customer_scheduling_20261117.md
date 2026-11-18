@@ -29,7 +29,7 @@ Magdeburg SQL0/1 150–155 both closed/qualified.0 picks2377=288287,1 picks2227=
 294684, eachphysicalfoundation151. Mainadapter identical bothSQLarms. Important:
 F.CustomerQuarterMap filtersYieldChange>0, so0alsodisablesBakersHubLuaedge;
 this is combined-edgeablation, NOTisolatedSQLcausality. No productionfix/coefs.
-CURRENT final6game serialrunner customer_placement_campaign.py RUNNING exec80845
+Historical final6game serialrunner customer_placement_campaign.py exec80845
 at root/final-comparisons. FirstContinentscontrol250completed/qualified/analysed;
 all1844orderednativechoices/scores matcholdsource,23Q16B7T allBase/21+3+,20nonCC
 links12Qfirst8customerfirst. Newopportunity8/16confirmedchoices,Hub3/5;8Store3Inn.
@@ -43,8 +43,18 @@ incl100→105 continuation andpost-requesttimeoutstaysstrict. Endpointsave stric
 No tuning/package/coefficientchanges. Astraverifiedstocksavegates +safeclosure.
 Duplicate2packagesretired; oldnative50checkpointalso removedONLYaftermatching
 historicalarchivedsave andmtime<newattemptstart, avoidingreusednamecollision.
-CURRENT freshContinentsTREATMENT250 restarted~23:30UTC, nativePID2920;
-parentexec88923. Next15mincheck~23:45UTC. Parentold80845exit1isfinished.
+ContinentsTREATMENT250 completed. Both firstpair close/qualify: links20→34,
+comparablefoundations8/16→17/20, Quarter25allBase/23+3+, guidanceavg/max
+1.976/4.025→2.362/5.505s. Rerunv3closedcoordinationfixescaptureinventoryartefact;
+ALLfinalsixoutputs needfreshprocessv3analysis(parentcachedv2).
+PangaeaCONTROLattempt01 verified130/log135, pre-LuaLSQfailsinoptionalpopupguard
+afterWonderclose/Core133. Closes/restores0/nativefaults0. Archived
+pangaea-control250-attempt01-discovery135, duplicatetwopackages+native50/100
+savesretiredagainstkeptcopies. FullGameController._await_targetdefersONLY
+StateDiscoveryUnavailableinprogress/presentationcheckswithinoriginaldeadlines.
+Noactivationresend/reservationreset/ambiguoussendcatch. Astrareview+76tests
+(1skip)pass. CURRENTparentexec5067restartsamePangaeaseed/frozenpolicy;
+old88923and80845exited1. Checkcampaign-progress beforeanylaunch.
 Rootfrozen-inputsmanifestunchanged, controlreused/analysisrepeatedsafely.
 Skill67f6186 pushed extendedAI-N040neutrality fornew1844exactfullcontrol.
 Inspectcampaign-progress beforelaunch/restart. Uses

@@ -29,7 +29,11 @@ lineage adds no worlds; opportunity/capture and retirement checks pass.
 **First matched outcome:** Continents250 completes both arms:20→34 non-City-
 Center links; confirmed comparable foundations8/16→17/20; Hubs3→6, Theaters2→4.
 All25 candidate Quarter foundations have Base,23 at+3+. Mean/max guidance rises
-1.976/4.025s→2.362/5.505s. Pangaea control is running; keep policy frozen through
+1.976/4.025s→2.362/5.505s. Pangaea control is restarting on its same seed after
+read-only context discovery timed out during resumed simulation. The shared
+controller now defers that pre-Lua failure within existing time bounds;76 focused
+tests pass (one skipped). The partial run closed/restored0 and is preserved;
+its exact duplicate packages/checkpoints were retired. Keep policy frozen through
 the remaining pairs, then profile the same mature state if cost recurs. Astra's
 capture-history reporting correction uses complete material totals; it resolves
 the lone false missing-Base flag. [Results and review](../research/mods/csc-ai-customer-scheduling-20261117.md).
