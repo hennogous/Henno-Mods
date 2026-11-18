@@ -55,3 +55,50 @@ instruction-call lifecycle check. Release DLL SHA256
 `929a3c3242ec6c9df939b47d166a8ce4a9133b132847f42fa79ad3b1f5f4e17e`.
 The next live evidence is a matching positive score receipt, followed by a
 comparison, reservation and construction at a mapped site.
+
+## Live Pangaea result
+
+The shared controller completed Online turn 250 on the known Pangaea
+27061117/37061117 seed with the integrated CSC policy from `49b2d5b2` and CE
+`ddad388`. It reused the five optional content/UI packages from the earlier
+Pangaea run. Passive observers recorded outcomes. All 250 publications
+succeeded and all ten milestone censuses were recovered.
+
+| Measurement | Result |
+| --- | ---: |
+| Turns with Wonder offers | 173 |
+| Staged offer entries across those packets, including refreshes | 2,724 |
+| Maximum entries in one packet | 21 |
+| Exact Wonder score matches in the logged native windows | 0 |
+| Positive Wonder score writes | 0 |
+| Wonder hook faults | 0 |
+| Distinct original-AI reservation keys for the three mapped Wonders | 15 |
+| Those reserved plots next to an owned Tailors Quarter at reservation | 0 |
+
+The native status acknowledged the prior packet through version 249. The run
+stopped at the turn-250 boundary. The same hook still registered supplier
+protection writes. The geometry comparison joins successful native reservations
+to the Tailors footprints observed at their turn. Eleven reservation keys
+belonged to players with no functioning Tailors Quarter at that time.
+Mapuche finished Broadway at Ngulu Mapu on plot 2704, first reserved there on
+turn 143. Nubia's later Broadway contract at Napata did not finish the Wonder.
+The earlier run on this seed completed Broadway at Angkor Thom, with no
+mapped Wonder adjacency there either. The earlier run differs in other CSC
+policy, so the city difference has no attribution to Wonder guidance.
+
+This run verifies packet publication and regular native scoring activity, with
+no eligible offered row observed. It leaves the positive score path's live
+effect open. A targeted comparison should start with a verified legal Wonder
+tile beside a functioning Tailors Quarter. Capturing the rejected offered
+footprints would also tell us how much of the gap is map geometry versus
+native eligibility, timing or score routing.
+
+CSC guidance took 2.604 seconds mean and 6.198 seconds max per turn across
+250 turns. The controller closed Civ normally and restored the preferences.
+The inactive player save gate declined the turn-250 save before any request
+was sent. The endpoint census and logs were retained along with verified
+saves at turns 50, 100 and 200. Removed 405,642,180 bytes of verified closed
+package duplicates. Evidence is under
+`Desktop/Codex/csc-ai-wonder-placement-20261118/pangaea250`, including
+`Lua.log`, `AI_Behavior_Trees.csv`, `City_BuildQueue.csv`,
+`ai-processing-time.json` and `full-game-observation-complete.json`.

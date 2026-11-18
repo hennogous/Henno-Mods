@@ -10,6 +10,10 @@ first. REA confirms the installed XP2 call and row store. Lua and native build
 checks pass. Live positive receipts and reservation changes remain open.
 The follow-up calibration raises the offer bands to 8, 16 and 24 utility, with
 a native cap of 1/12 of the positive original score.
+The Online Pangaea 250 test then logged 173 nonempty publications and zero
+matching or boosted native rows. None of the 15 distinct mapped-Wonder
+reservation keys observed for the original AIs bordered an owned Tailors
+Quarter at reservation.
 [Implementation and static evidence](../research/mods/csc-ai-wonder-placement-20261118.md).
 
 ## AI-C219 — Bakers and Tailors forecasts group effects by Service and physical host

@@ -3,9 +3,11 @@
 **18 November: positive Wonder site guidance is implemented.**
 Mapped Wonders get a bounded preference beside supplied or supply-ready
 Quarters, through CE's existing legal Wonder plot score path. The stronger
-calibration offers 8, 16 or 24 utility, capped at 1/12 of the native score. Material
-protection has priority. The native build and Lua tests pass. Live receipts
-and site selection remain to be checked.
+calibration offers 8, 16 or 24 utility, capped at 1/12 of the native score.
+Pangaea reached turn 250 and published offers in 173 packets, with zero native
+matches or boosts. None of the 15 observed distinct original-AI reservation
+keys was next to an owned Tailors Quarter. Next qualify a positive receipt
+on a map state with a verified eligible site.
 [Trace, score limits and verification](../research/mods/csc-ai-wonder-placement-20261118.md).
 
 **18 November: Bakers and Tailors Service catalogue and remaining modifier families implemented.**
