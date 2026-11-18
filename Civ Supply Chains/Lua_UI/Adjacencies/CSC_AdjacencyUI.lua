@@ -120,6 +120,7 @@ ExposedMembers.CSC_Adjacency.GetEconomyCityNumber = function(playerID, cityID, k
     local city = CityManager.GetCity(playerID, cityID);
     if not city then return nil; end
     if kind == 'yield' then return economyNumber(city, 'GetYield', index); end
+    if kind == 'housing' then return economyNumber(city:GetGrowth(), 'GetHousing'); end
     local queue = city:GetBuildQueue();
     if kind == 'building' then return economyNumber(queue, 'GetBuildingCost', index); end
     if kind == 'district' then return economyNumber(queue, 'GetDistrictCost', index); end

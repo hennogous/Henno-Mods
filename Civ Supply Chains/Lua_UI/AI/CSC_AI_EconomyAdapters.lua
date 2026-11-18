@@ -115,8 +115,7 @@ function E.Snapshot(player,placement,ui)
         and type(CE_AIPseudoYieldIntervalValue)=='function'and type(CE_AIGrowthIntervalValue)=='function'then
         -- Optional scalar consumers add no hooks. Older CE keeps the qualified
         -- ordinary economy, consistently excluding Services in both worlds.
-        -- Housing's nonlinear city quote is a separate qualification step.
-        context.serviceKinds={GROWTH=true,PSEUDOYIELD=true,YIELD_PERCENT=true,NAVAL_PRODUCTION_PERCENT=true}
+        context.serviceKinds={GROWTH=true,PSEUDOYIELD=true,YIELD_PERCENT=true,NAVAL_PRODUCTION_PERCENT=true,HOUSING=true}
     end
     local snapshot=F.New(player,placement,ui,context)
     snapshot.evaluationContext=context or{horizon=50,discountQ8=4*256,nativeSite=false}

@@ -32,6 +32,15 @@ CREATE TABLE IF NOT EXISTS CSC_QuarterWonderSales
     PRIMARY KEY (QuarterKey, BuildingType)
     );
 
+-- Exact-plot Wonder Service grants and the READY marker consumed by their
+-- modifier wrappers. Gameplay reconciliation and the AI read this same map.
+CREATE TABLE IF NOT EXISTS CSC_QuarterWonderServices
+    (
+    HostType TEXT PRIMARY KEY NOT NULL,
+    ServiceType TEXT NOT NULL UNIQUE,
+    ActivationProperty TEXT NOT NULL UNIQUE
+    );
+
 CREATE TABLE IF NOT EXISTS CSC_Stage3CustomerTransactions
     (
     TransactionId               TEXT PRIMARY KEY NOT NULL,

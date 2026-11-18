@@ -22,7 +22,7 @@ function F.ServiceCatalogue()
     -- of Service amounts, customer buildings or civic names lives in AI policy.
     -- Display-building grants, slots and properties are not recurring benefits.
     if serviceCatalogue then return serviceCatalogue end
-    local result={byProducer={},omissions={},replacements={}}
+    local result={byProducer={},byService={},omissions={},replacements={}}
     if not GameInfo.BuildingModifiers or not GameInfo.Modifiers or not GameInfo.DynamicModifiers
         or not GameInfo.Requirements or not GameInfo.RequirementArguments
         or not GameInfo.RequirementSetRequirements then return result end
@@ -37,6 +37,26 @@ function F.ServiceCatalogue()
         EFFECT_ADJUST_BUILDING_HOUSING='HOUSING'}
     local stages,roots,children,wanted,args={},{},{},{},{}
     for row in GameInfo.CSC_QuarterFlowBuildings()do stages[row.BuildingType]=row end
+    local wonderByProperty,serviceByGate={},{}
+    if GameInfo.CSC_QuarterWonderServices then
+        for row in GameInfo.CSC_QuarterWonderServices()do wonderByProperty[row.ActivationProperty]=row end
+    end
+    local function serviceGate(quarter,modifier)
+        return table.concat({quarter,modifier.OwnerRequirementSetId or '',modifier.SubjectRequirementSetId or ''},':')
+    end
+    -- Gameplay's Service presentation anchors name the logical Service.
+    -- Its other benefit wrappers share the exact owner/recipient gate pair.
+    if GameInfo.CSC_AbilityAttachModifiers then
+        for anchor in GameInfo.CSC_AbilityAttachModifiers()do
+            local modifier=GameInfo.Modifiers[anchor.ModifierId]
+            if modifier and anchor.AbilityIconTarget then
+                local key=serviceGate(anchor.NotificationQuarter,modifier)
+                local previous=serviceByGate[key]
+                if previous==nil then serviceByGate[key]=anchor.AbilityIconTarget
+                elseif previous~=anchor.AbilityIconTarget then serviceByGate[key]=false end
+            end
+        end
+    end
     for row in GameInfo.BuildingModifiers()do if stages[row.BuildingType]then
         roots[#roots+1]=row;wanted[row.ModifierId]=true
     end end
@@ -78,7 +98,12 @@ function F.ServiceCatalogue()
         REQUIREMENT_PLOT_RESOURCE_TAG_MATCHES=true,REQUIREMENT_PLOT_ADJACENT_TO_OWNER=true,
         REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES=true,REQUIREMENT_CITY_HAS_BUILDING=true,
         REQUIREMENT_PLOT_PROPERTY_MATCHES=true,REQUIREMENT_CITY_HAS_X_POPULATION=true}
-    local function witnessed(set,witness,visiting)
+    local function wonderGate(requirement,args)
+        if requirement and requirement.RequirementType=='REQUIREMENT_PLOT_PROPERTY_MATCHES'
+            and (args.PropertyMinimum==1 or args.PropertyMinimum=='1') and not args.PropertyMaximum
+            and not args.PropertyValue then return wonderByProperty[args.PropertyName] end
+    end
+    local function witnessed(set,witness,wonder,visiting)
         -- Partial Boolean evaluation: this exact receiving host proves its own
         -- subject set. It can therefore prove one branch of a customer ANY,
         -- without satisfying unrelated Wonder branches or discarding extra
@@ -97,7 +122,8 @@ function F.ServiceCatalogue()
                     and a.CollectionType=='COLLECTION_PLAYER_DISTRICTS'and(tonumber(a.Count)or 1)<=1
             local ok=r and not(r.Inverse==1 or r.Inverse==true)
                 and(r.RequirementType=='REQUIREMENT_PLOT_ADJACENT_TO_OWNER'
-                    or nested and witnessed(a.RequirementSetId,witness,visiting))
+                    or wonder and wonderGate(r,a)==wonder
+                    or nested and witnessed(a.RequirementSetId,witness,wonder,visiting))
             if any then passed=passed or ok else passed=passed and ok end
         end
         visiting[set]=nil;return passed==true
@@ -108,7 +134,7 @@ function F.ServiceCatalogue()
         if visiting[set]then output.unknown=true;return end
         local definition=GameInfo.RequirementSets and GameInfo.RequirementSets[set]
         if output.owner and definition and definition.RequirementSetType=='REQUIREMENTSET_TEST_ANY'
-            and witnessed(set,output.witness)then return end
+            and witnessed(set,output.witness,output.witnessWonder)then return end
         if not members[set]or definition and definition.RequirementSetType~='REQUIREMENTSET_TEST_ALL'then
             output.unknown=true;return
         end
@@ -135,23 +161,35 @@ function F.ServiceCatalogue()
                     -- this contribution's own admitted recipient. Expanding an
                     -- ANY of other venues/Wonders would wrongly require all of
                     -- them, or let an unrelated unknown Wonder disable Theater.
-                    if(tonumber(a.Count)or 1)>1 or not witnessed(a.RequirementSetId,output.witness)then output.unknown=true end
+                    if(tonumber(a.Count)or 1)>1
+                        or not witnessed(a.RequirementSetId,output.witness,output.witnessWonder)then output.unknown=true end
                 elseif a.CollectionType and a.CollectionType~='COLLECTION_PLAYER_IMPROVEMENTS'then output.unknown=true
                 else gates(a.RequirementSetId,output,visiting,tonumber(a.Count)or minimumCount)end
             end
             if a.PropertyName then
-                local owner=propertyOwners[a.PropertyName]
-                if owner then gates(owner,output,visiting)else output.unknown=true end
+                local host=not output.owner and wonderGate(r,a)
+                if host then
+                    -- This marker is derived by gameplay from supply, producer
+                    -- and the exact completed Wonder. Forecast that same link
+                    -- without requiring the before-world's marker to be set.
+                    if output.wonder and output.wonder~=host then output.unknown=true end
+                    output.wonder=host
+                else
+                    local owner=propertyOwners[a.PropertyName]
+                    if owner then gates(owner,output,visiting)else output.unknown=true end
+                end
             end
         end
         visiting[set]=nil
     end
-    local function gate(set,owner,witness)
-        local g={civics={},techs={},tags={},buildings={},districts={},owner=owner,witness=witness};gates(set,g);return g
+    local function gate(set,owner,witness,wonder)
+        local g={civics={},techs={},tags={},buildings={},districts={},owner=owner,witness=witness,witnessWonder=wonder}
+        gates(set,g);return g
     end
     for _,p in ipairs(paths)do
         local root=p.path[1];local a=args[p.leaf]or{};local stage=stages[p.root.BuildingType]
-        local owner,subject=gate(root.OwnerRequirementSetId,true,root.SubjectRequirementSetId),gate(root.SubjectRequirementSetId,false)
+        local subject=gate(root.SubjectRequirementSetId,false)
+        local owner=gate(root.OwnerRequirementSetId,true,root.SubjectRequirementSetId,subject.wonder)
         local leaf=p.path[#p.path];local amount=tonumber(a.Amount)
         local rootType=GameInfo.DynamicModifiers[root.ModifierType]
         local leafType=GameInfo.DynamicModifiers[leaf.ModifierType]
@@ -159,11 +197,9 @@ function F.ServiceCatalogue()
         local shape=#p.path==2 and rootType.CollectionType=='COLLECTION_PLAYER_DISTRICTS'
             and leafType.CollectionType=='COLLECTION_OWNER'and not leaf.OwnerRequirementSetId
         if next(owner.buildings)or next(subject.civics)or next(subject.techs)or next(subject.tags)then shape=false end
-        -- Only explicit district recipients with a required buyer are currently
-        -- planned. Wonder-ready plot properties need a separate forecast reader;
-        -- they are reported, never treated as an unconditional future Wonder.
+        local recipient=(buyerCount==1 and not subject.wonder)or(buyerCount==0 and subject.wonder)
         if shape and amount and amount>0 and root.OwnerRequirementSetId and not owner.unknown and not subject.unknown
-            and buyerCount==1 and leaf.SubjectRequirementSetId==nil then
+            and recipient and leaf.SubjectRequirementSetId==nil then
             local row={id=root.ModifierId..'/'..p.leaf,root=root.ModifierId,leaf=p.leaf,
                 source=p.root.BuildingType,quarter=stage.QuarterKey,stage=stage.Stage,kind=p.kind,
                 amount=amount,owner=owner,subject=subject,yield=a.YieldType,
@@ -172,6 +208,15 @@ function F.ServiceCatalogue()
                 local gp=GameInfo.GreatPersonClasses and GameInfo.GreatPersonClasses[a.GreatPersonClassType]
                 row.pseudoYield=gp and gp.PseudoYieldType
             elseif p.kind=='TOURISM'then row.kind='PSEUDOYIELD';row.pseudoYield='PSEUDOYIELD_TOURISM'end
+            local service=subject.wonder and subject.wonder.ServiceType or serviceByGate[serviceGate(row.quarter,root)]
+            if service then
+                local building=GameInfo.Buildings and GameInfo.Buildings[service]
+                local entry=result.byService[service]or{quarter=row.quarter,stage=row.stage,
+                    citizenSlots=building and building.CitizenSlots or 0,effects={}}
+                row.service=service
+                entry.effects[#entry.effects+1]=row
+                result.byService[service]=entry
+            end
             local list=result.byProducer[row.source]or{};result.byProducer[row.source]=list;list[#list+1]=row
         else result.omissions[#result.omissions+1]=p.root.ModifierId..': unmodeled Service gate'end
     end
@@ -200,11 +245,15 @@ function F.ServiceRecords(site,profile,snapshot,research)
                 local buyer=GameInfo.Buildings and GameInfo.Buildings[customer.type]
                 local district=customer.districtType or buyer and buyer.PrereqDistrict
                 local matches=not next(definition.subject.districts)or district and definition.subject.districts[district]
-                if definition.stage==customer.stage and definition.subject.buildings[canonical]and matches and not seen[stamp]then
+                local wonder=definition.subject.wonder
+                local recipient=wonder and customer.type==wonder.HostType and customer.working
+                    and customer.complete and buyer and (buyer.IsWonder==true or buyer.IsWonder==1)
+                    or not wonder and definition.subject.buildings[canonical]
+                if definition.stage==customer.stage and recipient and matches and not seen[stamp]then
                     local receiver=snapshot.cities[customer.city]
                     local record={id=stamp,root=definition.root,leaf=definition.leaf,producer=source.type,
                         stage=definition.stage,customer=customer,city=customer.city,plot=customer.plot,
-                        kind=definition.kind,amount=definition.amount,pseudoYield=definition.pseudoYield,
+                        kind=definition.kind,amount=definition.amount,pseudoYield=definition.pseudoYield,service=definition.service,
                         yieldType=definition.yield,unlock=unlocked,materials={}}
                     for tag,count in pairs(definition.owner.tags)do
                         if tag==profile.base then record.materials.base=count end
@@ -236,6 +285,18 @@ function F.ServiceRecords(site,profile,snapshot,research)
                         -- another prospective source's percentage increase.
                         if record.base then record.base=math.min(100,record.base)end
                         record.known=record.known and record.base~=nil
+                    elseif definition.kind=='HOUSING'then
+                        record.known=record.known and snapshot.ServiceHousing and snapshot.ServiceHousing(customer.city)~=nil
+                        if record.known and source.working and customer.working and unlocked==0 then
+                            local counts={}
+                            for _,supplier in ipairs(site.suppliers or{})do
+                                if supplier.ready==0 then counts[supplier.kind]=(counts[supplier.kind]or 0)+1 end
+                            end
+                            record.active=true
+                            for kind,count in pairs(record.materials)do
+                                if (counts[kind]or 0)<count then record.active=false end
+                            end
+                        end
                     elseif definition.kind=='NAVAL_PRODUCTION_PERCENT'then
                         record.base=0
                         if receiver and receiver.currentUnitClass==definition.unitClass
@@ -604,6 +665,7 @@ function F.New(player,placement,ui,context)
         end
         if value==nil then
             if kind=='yield'then value=number(city,'GetYield',index)
+            elseif kind=='housing'and type(city.GetGrowth)=='function'then value=number(city:GetGrowth(),'GetHousing')
             elseif kind=='building'or kind=='district'then
                 value=number(city:GetBuildQueue(),kind=='building'and'GetBuildingCost'or'GetDistrictCost',index)
             elseif kind=='buildingTurns'or kind=='districtTurns'then
@@ -616,6 +678,10 @@ function F.New(player,placement,ui,context)
     snapshot.ServiceYield=function(cityID,yield)
         local city=snapshot.cities[cityID]
         return city and cityNumber(city.object,'yield',yield)
+    end
+    snapshot.ServiceHousing=function(cityID)
+        local city=snapshot.cities[cityID]
+        return city and city.foodSurplus~=nil and cityNumber(city.object,'housing',0)or nil
     end
     local function readPlot(plot)
         local index=plot:GetIndex()
@@ -1764,6 +1830,16 @@ function F.New(player,placement,ui,context)
         if #snapshot.chains>64 then return nil,'Affected chain budget exceeded'end
         local world={player=pid,horizon=context and context.horizon or 50,
             sites={},populationBaselines={},extraStreams={}}
+        local housing
+        if snapshot.serviceKinds.HOUSING then
+            local function parameter(name,default)
+                local row=GameInfo.GlobalParameters and GameInfo.GlobalParameters['CITY_HOUSING_LEFT_'..name]
+                return row and tonumber(row.Value)or default
+            end
+            housing={cities={},activeCities={},stop=parameter('ZERO_GROWTH',-4),
+                quarter=parameter('25PCT_GROWTH',0),half=parameter('50PCT_GROWTH',1)}
+            world.serviceHousing=housing
+        end
         if next(snapshot.serviceKinds)then
             -- Install before the FIRST ordinary baseline quote, which can be
             -- requested by material protection before Quarter placement. This
@@ -1775,6 +1851,30 @@ function F.New(player,placement,ui,context)
         for _,chain in ipairs(snapshot.chains)do
             if not chain.economy then return nil,'Existing Quarter economy unavailable'end
             world.sites[#world.sites+1]=chain.economy
+            if housing then for _,service in ipairs(chain.economy.services or{})do
+                if service.kind=='HOUSING'and service.active then
+                    local entry=housing.cities[service.city]
+                    if not entry then
+                        entry={active=0};housing.cities[service.city]=entry
+                        housing.activeCities[#housing.activeCities+1]=service.city
+                    end
+                    entry.active=entry.active+service.amount
+                end
+            end end
+        end
+        if housing then
+            -- Both worlds start from the same live city data. Strip the live
+            -- CSC Housing stacks once so the forecast can add them back at
+            -- their scheduled times, including zero for an operating chain.
+            for id,city in pairs(snapshot.cities)do
+                local amount=snapshot.ServiceHousing(id)
+                if amount then
+                    local entry=housing.cities[id]or{active=0}
+                    entry.left=amount-city.population
+                    entry.food=city.foodSurplus
+                    housing.cities[id]=entry
+                end
+            end
         end
         local problem;world.trade,problem=snapshot.TradeWorld(world.sites)
         if not world.trade then return nil,problem end
@@ -1810,7 +1910,7 @@ function F.New(player,placement,ui,context)
         local before,baselineProblem=snapshot.CurrentWorld()
         if not before then return nil,baselineProblem end
         local after={player=pid,horizon=horizon,sites={},populationBaselines={},extraStreams={},
-            baselineWorld=before,affectedChains={},
+            baselineWorld=before,affectedChains={},serviceHousing=before.serviceHousing,
             -- A Quarter's own quarterWork is scheduled by the shared ledger.
             -- Customer districts need this root queue time before their venues.
             queueReady=not quarterSite and{[pid..':'..cityID]=ready}or nil}

@@ -1,5 +1,17 @@
 # CSC findings and evidence
 
+## AI-C219 — Bakers and Tailors forecasts group effects by Service and physical host
+
+18 November 2026. The loaded modifier graph plus the new shared host registry
+compiles to 10 standard Service variants and 33 effect bindings. Leugi's
+Garden District adds a variant and two bindings. The Wonder READY gates resolve
+to completed adjacent Wonders in the forecast, with the producer and civic
+gates retained. The Housing proxy pools the city stacks and prices the
+resulting growth relief in native Food units. Citizen slots are captured as
+capacity. Verified against the loaded graph in SQLite and the production Lua
+forecast and gameplay fixtures. Live bid calibration and outcome checks remain
+open. [Coverage and tests](../research/mods/csc-ai-bakers-tailors-service-catalogue-20261118.md).
+
 ## AI-C218 — Native-priced Services change complete Quarter bids and queue opportunity cost
 
 18 November2026. Main CSC/qualified CE00edf646, unchanged saved-world checks at100

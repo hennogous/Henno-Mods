@@ -59,6 +59,35 @@ local r=assert(M.JointForecast(withServices({a,b}),price))
 assert(r.serviceStreams==2 and r.serviceValueQ8==60*256)
 ''')
 
+    def test_housing_stacks_before_pricing_and_only_rewards_growth_relief(self):
+        self.vm().execute('''
+local a,b=supplied('A',1),supplied('B',2)
+for _,site in ipairs({a,b}) do
+ site.services[1].kind='HOUSING';site.services[1].amount=2
+end
+local city={active=0,left=0,food=2}
+local housing={cities={[3]=city},activeCities={},stop=-4,quarter=0,half=1}
+local function value(sites)
+ local w=withServices(sites)
+ w.serviceHousing=housing
+ return assert(M.JointForecast(w,price)).serviceValueQ8
+end
+assert(value({a})==45*256 and value({a,b})==45*256)
+city.left=2;assert(value({a})==0)
+city.left=0;city.food=0;assert(value({a})==0)
+city.left=2;city.food=2;city.active=2
+housing.activeCities={3}
+assert(value({a})==0)
+local supplies=a.suppliers;a.suppliers={}
+assert(value({a})==-45*256)
+a.suppliers=supplies
+a.services[1].unlock=10
+local w=withServices({a})
+w.serviceHousing=housing
+local r=assert(M.JointForecast(w,function(s,h)return price(s,math.min(h,s.finish or h))end))
+assert(r.serviceValueQ8==-15*256) -- ten turns of relief lost
+''')
+
     def test_shared_engineer_leaf_under_stage_two_and_four_roots_pays_both(self):
         self.vm().execute('''
 local a=supplied('A',1);a.fourth={type='CAFE',working=true}
@@ -256,6 +285,31 @@ assert(not c.byProducer.PRODUCER and #c.omissions==1)
 GameInfo.Requirements.MATCH_BUYER.Inverse=1
 local c=CSC_AI_EconomyFacts.ServiceCatalogue()
 assert(not c.byProducer.PRODUCER and #c.omissions==1)
+''')
+
+    def test_registered_wonder_is_a_future_gate_only_on_its_real_completed_plot(self):
+        self.vm().execute('''
+GameInfo.CSC_QuarterWonderServices=info({
+ {HostType='WONDER',ServiceType='WONDER_SERVICE',ActivationProperty='UNKNOWN_WONDER'}})
+GameInfo.Buildings={WONDER={IsWonder=1},OTHER={IsWonder=1}}
+local inputs={}
+for row in GameInfo.RequirementArguments() do inputs[#inputs+1]=row end
+inputs[#inputs+1]={RequirementId='UNKNOWN',Name='PropertyMinimum',Value='1'}
+GameInfo.RequirementArguments=info(inputs)
+GameInfo.Modifiers.ROOT.SubjectRequirementSetId='UNKNOWN_SET'
+local c=CSC_AI_EconomyFacts.ServiceCatalogue()
+assert(#c.omissions==0 and #c.byService.WONDER_SERVICE.effects==1)
+local host={type='WONDER',stage=3,city=5,plot=20,complete=true,working=true}
+local other={type='OTHER',stage=3,city=5,plot=21,complete=true,working=true}
+local s={third={type='PRODUCER'},customers={host,other}}
+local snapshot={cities={[5]={}},serviceKinds={PSEUDOYIELD=true}}
+local function records()
+ return CSC_AI_EconomyFacts.ServiceRecords(s,{base='MODDED_BASE'},snapshot,function()return 7 end)
+end
+local r=records()
+assert(#r==1 and r[1].plot==20 and r[1].known and r[1].unlock==7)
+host.working=false;assert(#records()==0)
+host.working=true;host.complete=false;assert(#records()==0)
 ''')
 
     def test_recipient_any_set_and_leaf_owner_gate_are_not_discarded(self):

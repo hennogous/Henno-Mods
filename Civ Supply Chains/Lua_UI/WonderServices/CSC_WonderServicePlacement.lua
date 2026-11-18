@@ -1,11 +1,13 @@
 -- Shared exact-plot placement for persistent Wonder-hosted Services.
 -- SQL grants select the first Wonder district; CreateBuilding's explicit plot
 -- argument is required when a city contains several eligible Wonders.
-local SERVICE_HOSTS = {
-	{ HostType = "BUILDING_BOLSHOI_THEATRE", ServiceType = "BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI", ActivationProperty = "CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_READY" },
-	{ HostType = "BUILDING_BROADWAY", ServiceType = "BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY", ActivationProperty = "CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY" },
-	{ HostType = "BUILDING_SYDNEY_OPERA_HOUSE", ServiceType = "BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY", ActivationProperty = "CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_READY" },
-};
+local SERVICE_HOSTS = {};
+if GameInfo.CSC_QuarterWonderServices then
+	for row in GameInfo.CSC_QuarterWonderServices() do
+		table.insert(SERVICE_HOSTS, row);
+	end
+	table.sort(SERVICE_HOSTS, function(a, b) return a.HostType < b.HostType; end);
+end
 local m_IsReconciling = false;
 local m_HostPlots = {};
 local m_CurrentHostPlots = {};

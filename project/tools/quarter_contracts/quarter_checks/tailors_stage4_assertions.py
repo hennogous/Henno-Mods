@@ -102,6 +102,9 @@ def validate(root, db, implementation):
         expect(db.execute('SELECT PrereqDistrict,MustPurchase,CitizenSlots,Cost,Maintenance,Name FROM Buildings WHERE BuildingType=?',(v['service_building_type'],)).fetchone(),('DISTRICT_WONDER',1,0,0,0,'LOC_'+v['service_building_type']+'_NAME'),'Wonder Stage Manager '+v['host_wonder_type'])
         expect(one("SELECT COUNT(*) FROM ModifierArguments MA JOIN Modifiers M ON M.ModifierId=MA.ModifierId WHERE MA.Name='BuildingType' AND MA.Value=? AND M.ModifierType LIKE '%GRANT_BUILDING%'",v['service_building_type']),0,'no SQL grant for '+v['host_wonder_type'])
         expect(one('SELECT Pillage FROM Buildings_XP2 WHERE BuildingType=?',v['service_building_type']),0,'Wonder service cannot be pillaged')
+    actual_hosts=set(db.execute('SELECT HostType,ServiceType,ActivationProperty FROM CSC_QuarterWonderServices'))
+    expect(actual_hosts,{(v['host_wonder_type'],v['service_building_type'],v['activation_property']) for v in variants},
+           'shared exact-plot Wonder Service host registry')
     expect(arguments('MOD_CSC_TAILORS_STAGE_MANAGER_GPP'),{'GreatPersonClassType':'GREAT_PERSON_CLASS_ARTIST','Amount':'1'},'Stage Manager Artist point')
     art_modifier='MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY'
     expect(one('SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?',art_modifier),fashion,'Fashion House owns Stage4 art state')
@@ -116,6 +119,10 @@ def validate(root, db, implementation):
         expect(one('SELECT ModifierType FROM Modifiers WHERE ModifierId=?',child),'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE','flat destination district Tourism '+venue)
         if venue:
             expect(members(subject),{'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER','REQ_CSC_TAILORS_STAGE_4_'+venue+'_READY'},'exact Wonder subject gate '+venue)
+            expect(one("SELECT Value FROM RequirementArguments WHERE RequirementId=? AND Name='PropertyName'",
+                       'REQ_CSC_TAILORS_STAGE_4_'+venue+'_READY'),
+                   one('SELECT ActivationProperty FROM CSC_QuarterWonderServices WHERE ServiceType=?',service+suffix),
+                   'Wonder gate reads the reconciler marker '+venue)
         for kind in ('TOURISM','GPP'):
             mid='MOD_CSC_TAILORS_STAGE_MANAGER_'+kind+'_ATTACH_'+(venue or 'CUSTOMER')
             expect(one('SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?',mid),fashion,'Stage Manager seller-owned source '+kind+suffix)

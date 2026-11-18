@@ -443,14 +443,15 @@ local function ledger(site, second, shared)
                         stream.service=true;stream.pseudoYield=service.pseudoYield
                         stream.finish=service.finish;stream.recipientPlot=service.plot
                         stream.serviceRoot=service.root;stream.serviceLeaf=service.leaf
+                        stream.serviceType=service.service
+                        if yield=='HOUSING'then result.hasServiceHousing=true end
                     end
                 end
             elseif not service.known then omit('service:'..service.id,'Service input or optional price capability unavailable')end
         end
     end
-    -- Future staffing and unplanned routes are not free income. Service-aware
-    -- worlds price only declared, supported attachments; Housing and unresolved
-    -- Wonder-property gates remain explicit omissions in this first slice.
+    -- Future staffing and unplanned routes do not earn income. Service-aware
+    -- worlds price declared effects with supported gates and recipient facts.
     for _,reason in ipairs(site.omissions or {})do omit('coverage',reason)end
     -- Attribution is metadata for a decision adapter, never extra production.
     -- Existing investments, amenities, costs and immediate site yields receive
@@ -459,6 +460,60 @@ local function ledger(site, second, shared)
     if shared then return result end
     context.populationBaselines=site.populationBaselines
     return finishLedger(context)
+end
+
+local function poolServiceHousing(result, housing, horizon)
+    -- Housing affects growth at city thresholds, so stack all attachments
+    -- before pricing. A flat value per Housing would reward cities with room
+    -- to spare and double-count relief when two Innkeepers lift the same cap.
+    -- With population and pre-growth Food held fixed, price the change in
+    -- usable surplus as a native Food interval. The 2 Food cap bounds this
+    -- approximation across long horizons without simulating population.
+    if not housing or not result.hasServiceHousing and #housing.activeCities==0 then return end
+    local retained,changes,ids={},{},{}
+    for _,id in ipairs(housing.activeCities)do
+        if housing.cities[id].left then changes[id]={};ids[#ids+1]=id end
+    end
+    for _,stream in ipairs(result.streams)do
+        if stream.service and stream.yield=='HOUSING'then
+            local city=housing.cities[stream.city]
+            if city and city.left then
+                local events=changes[stream.city]
+                if not events then events={};changes[stream.city]=events;ids[#ids+1]=stream.city end
+                local finish=math.min(horizon,stream.finish or horizon)
+                events[stream.ready]=(events[stream.ready]or 0)+stream.amount
+                events[finish]=(events[finish]or 0)-stream.amount
+            end
+        else retained[#retained+1]=stream end
+    end
+    local function multiplier(left)
+        if left<housing.stop then return 0 end
+        if left<=housing.quarter then return 0.25 end
+        if left<=housing.half then return 0.5 end
+        return 1
+    end
+    table.sort(ids)
+    for _,id in ipairs(ids)do
+        local city,events=housing.cities[id],changes[id]
+        local times={0,horizon}
+        for turn,change in pairs(events)do
+            if turn>0 and turn<horizon and change~=0 then times[#times+1]=turn end
+        end
+        table.sort(times)
+        local current=multiplier(city.left)
+        local active=0
+        for i=1,#times-1 do
+            local ready,finish=times[i],times[i+1]
+            active=active+(events[ready]or 0)
+            local food=city.food*(multiplier(city.left-city.active+active)-current)
+            local amount=math.max(-2,math.min(2,food))
+            if amount~=0 then
+                retained[#retained+1]={id='service:housing:'..id..':'..ready,
+                    city=id,yield='YIELD_FOOD',amount=amount,ready=ready,finish=finish,service=true}
+            end
+        end
+    end
+    result.streams=retained
 end
 
 -- Pool simultaneous amenity changes once per owner/city/interval. Native
@@ -905,6 +960,7 @@ function M.JointForecast(world,price)
             result,problem=M.RouteLedger(result,world.trade,world.player,horizon)
         else result,problem=M.PoolAmenities(result,{},horizon)end
         if not result then return nil,problem end
+        if context.includeServices then poolServiceHousing(result,world.serviceHousing,horizon)end
         return result
     end
     local function evaluate(selected,disabled)

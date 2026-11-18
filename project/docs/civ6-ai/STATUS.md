@@ -1,13 +1,22 @@
 # Current CSC AI status
 
+**18 November: Bakers and Tailors Service catalogue and remaining modifier families implemented.**
+The standard pair has 10 Service variants and 33 effect bindings. The
+Horticulturist brings the optional Leugi configuration to 11 and 35. Housing
+uses a bounded city-growth proxy priced in native Food utility. Tailors Wonder
+effects use the exact completed host and the existing producer/supply/civic
+forecast. 156 economy and 21 Fashion House gameplay checks pass. Live bid
+calibration and full-game timing remain open. Citizen slots are catalogued.
+[Coverage and verification](../research/mods/csc-ai-bakers-tailors-service-catalogue-20261118.md).
+
 **18 November:14.3 first Service-valuation slice is implemented and native-checked.**
 Gameplay attachments supply the effects/gates; native growth/pseudo-yield quotes
 price growth, class-specific GPP and ordinary venue Tourism. Faith/eligible ship
 output use bounded current-output estimates and native yield prices. At100,
 two Bakers calculated bids gain11.79utility; two Tailors lose2.68 by delaying
 another chain two turns. Shared-controller100/250 checks close/restore at0turns;
-154 economy and13 timing/controller checks pass. Housing, Wonder-property gates
-and live changed-choice/full-game qualification remain next. Diagnostic cost adds
+154 economy and13 timing/controller checks pass for the first slice.
+Diagnostic cost adds
 0.069s at100 and0.425s in a nine-chain mature player pass; whole-turn cost awaits
 the next full run. Requires the new optional CE APIs; older CE keeps ordinary
 forecasts. [Implementation/results](../research/mods/csc-ai-service-valuation-implementation-20261118.md).

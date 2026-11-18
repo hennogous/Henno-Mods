@@ -23,6 +23,14 @@ class FashionWorld(unittest.TestCase):
         """)
 
     def load(self, path): self.lua.execute((LUA/path).read_text(encoding='utf-8-sig'))
+    def bind_wonder_hosts(self):
+        sys.path.insert(0, str(ROOT/'project/tools/transactions'))
+        from population_catalogue_fixture import compile_catalogue
+        db=compile_catalogue()
+        rows=[dict(row) for row in db.execute('SELECT * FROM CSC_QuarterWonderServices')]
+        db.close()
+        self.lua.globals().GameInfo.CSC_QuarterWonderServices=self.lua.globals().fixtureInfo(
+            self.lua.table_from(rows,recursive=True))
     def eval(self, expression): return self.lua.eval(expression)
     def execute(self, text): self.lua.execute(text)
     def stacks(self, city, branch='FASHION_HOUSE_RETURN'):
@@ -109,6 +117,7 @@ class FashionPopulationTests(FashionWorld):
 class WonderPlacementTests(FashionWorld):
     def setUp(self):
         super().setUp()
+        self.bind_wonder_hosts()
         self.execute("""
             addWonder(customer,'BUILDING_BROADWAY',0,1);
             addWonder(customer,'BUILDING_BOLSHOI_THEATRE',-1,1);
@@ -245,6 +254,7 @@ class WonderPlacementTests(FashionWorld):
 class WonderPresentationTests(FashionWorld):
     def setUp(self):
         super().setUp()
+        self.bind_wonder_hosts()
         self.execute("""
             addWonder(customer,'BUILDING_BROADWAY',0,1);
             addWonder(customer,'BUILDING_BOLSHOI_THEATRE',-1,1);

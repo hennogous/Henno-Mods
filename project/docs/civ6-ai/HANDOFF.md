@@ -5,9 +5,11 @@ The first slice is implemented and qualified for native prices/calculated bids
 in unchanged saved100/250 worlds. [Implementation, costs and remaining work](../research/mods/csc-ai-service-valuation-implementation-20261118.md).
 Use matching CE development build00edf646; source and frozen03 are recorded there.
 Native source branch is `codex/native-quarter-valuation`; no upstream PR.
-Next: Housing/linked-Wonder coverage and changed-choice/full-game qualification,
-including whole-guidance timing. All test sessions are closed. This supersedes
-the3.1 next-task suggestion below.
+Housing and the linked-Wonder branches are now covered in the standard
+Bakers/Tailors catalogue, with the Horticulturist in the optional Leugi branch.
+Next validate these additions live, then check changed choices, foundations and
+whole-guidance timing.
+[Catalogue/evidence](../research/mods/csc-ai-bakers-tailors-service-catalogue-20261118.md).
 
 **Problem2.1 is closed.** All six preselected fresh Online250 comparisons qualify,
 restore and pass fresh v3 accounting. Links75→86; customer-after-Quarter45→56

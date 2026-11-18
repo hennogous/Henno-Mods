@@ -105,7 +105,7 @@ CREATE TABLE RequirementArguments(RequirementId TEXT,Name TEXT,Value TEXT,PRIMAR
         for filename in ('CSC_BuildingTransactionSchema.sql','CSC_TradeRouteSchema.sql'):
             db.executescript((source/'Data'/filename).read_text(encoding='utf-8-sig'))
     shared=(source/('Data/CSC_Q_ALL_Common.sql'if consolidated else'Data/CSC_Q_ALL.sql')).read_text(encoding='utf-8-sig')
-    names={'CSC_QuarterFlowBuildings','CSC_QuarterCustomerBuildings','CSC_QuarterWonderSales','CSC_Stage3CustomerTransactions',
+    names={'CSC_QuarterFlowBuildings','CSC_QuarterCustomerBuildings','CSC_QuarterWonderSales','CSC_QuarterWonderServices','CSC_Stage3CustomerTransactions',
         'CSC_ScaledAmountBits','CSC_Stage3RateBits','CSC_Stage4StackBits','CSC_RouteStackBits'}
     for s in statements(shared):
         if any(re.match(r'(?:CREATE TABLE IF NOT EXISTS|INSERT OR IGNORE INTO)\s+'+n+r'\b',s)for n in names)or re.match(r'INSERT(?: OR IGNORE)? INTO DynamicModifiers\b',s):db.executescript(s)

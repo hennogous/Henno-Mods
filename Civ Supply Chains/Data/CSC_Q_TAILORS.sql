@@ -1920,6 +1920,15 @@ VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BOLSHOI',    'ICON_BUI
         (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_SYDNEY',     'ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',     'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',     'TAILORS'   ),
         (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_CUSTOMER',   'ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE',            'BUILDING_CSC_TAILORS_STAGE_4_SERVICE',            'TAILORS'   );
 
+-- The gameplay reconciler grants each persistent Service on this exact Wonder
+-- plot. The AI can resolve the same READY gate to a real completed recipient
+-- when forecasting a nearby Fashion House, before the marker has been set.
+INSERT INTO CSC_QuarterWonderServices
+        (   HostType,                        ServiceType,                                       ActivationProperty   )
+VALUES  (   'BUILDING_BOLSHOI_THEATRE',      'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI',    'CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_READY'   ),
+        (   'BUILDING_BROADWAY',             'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY',   'CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY'   ),
+        (   'BUILDING_SYDNEY_OPERA_HOUSE',   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',     'CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_READY'   );
+
 ----------------------------------------------------------------------------------------------------------------------------
 --	ModifierStrings
 ----------------------------------------------------------------------------------------------------------------------------
