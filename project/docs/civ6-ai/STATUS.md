@@ -39,6 +39,13 @@ failed-attempt checkpoint saves were retired. Keep policy frozen through
 the remaining pairs, then profile the same mature state if cost recurs. Astra's
 capture-history reporting correction uses complete material totals; it resolves
 the lone false missing-Base flag. [Results and review](../research/mods/csc-ai-customer-scheduling-20261117.md).
+**Second pair completed:** Pangaea has32→28 links and16→18 Quarter-first links;
+Tailors foundations6→3 explain its12→6 links. Comparable connected foundations
+10/14→13/24, mean/max guidance3.028/7.044→2.638/5.821s. Both close/qualify250.
+Across two maps, links52→62 and mean guidance2.502→2.500s. Four native linked
+misses receive their corrections and still lose; one Hub scheduling window,
+two Base0 flags and the largest terrain concession are being audited. Fractal
+control is running under5067. Policy remains frozen; completion is still open.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).

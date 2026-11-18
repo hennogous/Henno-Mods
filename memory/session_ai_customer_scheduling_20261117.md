@@ -1,5 +1,26 @@
 # Active customer-placement goal,17 November
 
+LATEST18Nov04:02UTC: parent5067live, FractalCONTROL101active→105,
+lastverified100/nativefaults0/disk35.83GiB. Nextcheck04:17UTC (readclockbefore
+polling; don'testimate15minfromanalysislength). PangaeaBOTHqualified250;
+TC v3coordination rerun. C→T links32→28,Qfirst16→18,Cfirst16→10,
+Blinks20→22,Tlinks12→6; Q24both18B6T→21B3T allBase,+3=23both,+4=18→16,
+bothmaterials6both, comparable10/14→13/24, avg/max3.028/7.044→2.638/5.821,
+servicesStore10both/Inn3→4. Rawresloss0→1, workinginterrupts8→12,
+Base0customerflags0→2. Fractalfinalpairfrozencontinues; NOTgoalcomplete.
+Overallfirst2maps52→62links, Qfirst28→42, comparables18/30→30/44,
+mean2.502→2.500s. Astra_customer_coordination_strategy reviewingPangBase0flags,
+-3CLterrainconcessionandmissedchoices read-only (no liveconsole/code).
+Recordednativeaudit4cases EXACTsamegenerationbeforeBEST+independentactualcall:
+HS3/131073t50 linked1656=181415 chosen1654=210125 delta+7693landed,gap112.148util;
+EC4/65536t104 linked755313094 chosen603332473 delta7407landed,gap75.699;
+EC3/524294t174 linked2032370638 chosen1959412516 delta3768landed,gap163.586;
+Hub2/393221t237 LINKEDREFERENCE28371069581 vs31321096130, ordinary3132gets
+-55993Q8economicdeltaandstillwins103.707utility. Don'tmistakenoofferonreference
+forinertguidance. FifthHub5/196610t164 target2486 offer+28038at163,nooffer/cache164;
+older163cache442417vs164winner684810notmatchedclock, remainunknownwindow.
+Fullcompactaudits/provenance+TCmetrics saveddatedmainreportJSON. No policychange.
+
 Latest18Nov02:35UTC: parent exec5067 alive; Pangaea CONTROL250 closed/qualified
 and retired duplicate packages.32nonCC links(20B/12T),16Qfirst/16customerfirst,
 comparable10/14, Quarter24(18B6T)allBase/23+3/18+4/6both. Guidance3.028avg/

@@ -1,7 +1,7 @@
 # Customer placement: native delivery and matched outcomes
 
-**The first matched Online250 pair improves customer placement; Pangaea's
-control is complete and its treatment is running.** Pair-first scheduling improves fresh coverage at the same forecast
+**Two matched Online250 pairs are complete. Connections improve overall;
+Pangaea is mixed. Fractal's control is running.** Pair-first scheduling improves fresh coverage at the same forecast
 budget; a combined-guidance ablation changes a close Hub choice through physical
 foundation. Stronger ordinary sites retain their wins. Three matched Online250
 worlds provide the remaining repeated-outcome test. **AI-C214–216**.
@@ -63,7 +63,48 @@ The query compiles and preserves active modules offline; native measurement
 is pending. Its proof encoder retains sparse plot sets and Havok integer IDs.
 The existing survey's optional1..60s acknowledgement timeout never retries a send.
 
-### Pangaea control250
+### Pangaea250: mixed outcome
+
+| Pangaea250 | Current control | Pair-first candidate |
+|---|---:|---:|
+|Physical links outside City Centers|32|28|
+|Bakers / Tailors links|20 /12|22 /6|
+|Quarter-first / customer-first links|16 /16|18 /10|
+|Confirmed comparable connected foundations|10 /14|13 /24|
+|Bakers / Tailors foundations, all Base-adjacent|18 /6|21 /3|
+|At least+3 / at least+4 foundations|23 /18|23 /16|
+|Both material classes at foundation|6|6|
+|Storekeeper / Innkeeper endpoint properties|10 /3|10 /4|
+|Guidance average / maximum|3.028s /7.044s|2.638s /5.821s|
+
+Both arms close/restore/qualify250 with zero native faults and drained captures.
+Tailors retains two links per founded Quarter in both arms; fewer Tailors explain
+its lower total. Candidate customer-after-Quarter connections increase despite
+the lower total. Across the first two maps, non-City-Center links52→62 and
+Quarter-first links28→42; mean guidance is2.502→2.500s/turn. Comparable conversion
+18/30→30/44 is a legal-alternative metric: linked sites are not automatically
+economically superior. Fractal and the native audits below remain open.
+
+Four equal-or-better ordinary-adjacency linked misses have same-generation
+cached scores before the matching native BEST, corroborated by independent
+actual selector calls:
+
+|Player/city/turn, district|Linked plot / Q8|Chosen plot / Q8|Remaining native margin|
+|---|---:|---:|---:|
+|3/131073/50, Holy Site|1656 /181415|1654 /210125|112.148utility|
+|4/65536/104, Entertainment|755 /313094|603 /332473|75.699utility|
+|3/524294/174, Entertainment|2032 /370638|1959 /412516|163.586utility|
+|2/393221/237, Commercial Hub|2837 /1069581|3132 /1096130|103.707utility|
+
+The first three receive fresh economic additions7693/7407/3768Q8. In the fourth,
+the linked site is the reference: the ordinary site receives-55993Q8 and still
+wins. These corrections land; ordinary adjacency alone does not explain the
+remaining native values. A fifth Hub case5/196610/164 has a positive28038Q8
+offer163, then no offer/same-generation linked cache164 when the ordinary site
+wins. Keep that scheduling window separate from the four delivered corrections.
+Two Base0-at-customer-foundation flags and the largest terrain concession are
+under Astra's read-only audit. No blanket bonus or policy change has been made.
+[Compact native comparisons and provenance](csc-ai-customer-scheduling-20261117.json).
 
 The same-seed restart closes/restores/qualifies250. It has24 original-AI Quarter
 foundations(18 Bakers/six Tailors), all Base-adjacent,23 at+3+,18 at+4+, and six

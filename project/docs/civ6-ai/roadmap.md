@@ -15,7 +15,10 @@ Zero also disables the Lua edge, so this proves the combined mechanism.
 
 The first Continents pair is complete: physical non-City-Center links20→34 and
 comparable connected foundations8/16→17/20. Pangaea control completes250 with32
-links and10/14 comparable connected foundations; its treatment is running.
+links and10/14 comparable connected foundations; treatment also qualifies250:
+28 links,13/24 comparable,18vs16 Quarter-first links, fewer Tailors. Across two
+maps links52→62 with mean guidance unchanged near2.50s. Fractal control is running;
+audit native missed choices/material flags and complete that pair before closing2.1.
 Frozen tuning is unchanged. This is a
 six-game serial campaign:
 current-policy control/treatment on three preselected Online250 worlds. Measure

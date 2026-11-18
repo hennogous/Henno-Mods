@@ -11,10 +11,13 @@ changes unlinked2377 to linked2227 and each is founded151. Zero also removes
 the Lua routing edge, so this qualifies combined guidance. The first fresh
 Online250 pair is complete: non-City-Center links20→34, comparable connected
 foundations8/16→17/20. Bakers links11→20, Tailors9→14. Pangaea control completes
-250 with32 links and10/14 comparable connected foundations; its treatment is
-running. After a pre-Lua discovery gap, controllerc7bf6b2b preserves the finite
+250 with32 links and10/14 comparable connected foundations; its treatment also
+qualifies250:28 links,13/24 comparable,18vs16 Quarter-first links. Tailors has
+threevs six foundations and sixvs12 links. Guidance3.028→2.638s average.
+Across two maps links52→62, average2.502→2.500s. Audit the mixed outcome and
+native misses before closing2.1. After a pre-Lua discovery gap, controllerc7bf6b2b preserves the finite
 operation on that failure. Parent exec5067 owns the six-game campaign. Keep its
-frozen policy unchanged; Pangaea treatment and both Fractal games remain. The runner uses immutable
+frozen policy unchanged; Fractal control is running and its treatment follows. The runner uses immutable
 manifests, initial parity, closed-child recovery and duplicate retirement.
 Use the shared controller, fifteen-minute checks and bounded passive diagnostics.
 [Native evidence, timing and storage retirement](../research/mods/csc-ai-customer-scheduling-20261117.md).
