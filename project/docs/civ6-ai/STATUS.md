@@ -1,5 +1,12 @@
 # Current CSC AI status
 
+**18 November: the joint guidance optimization is verified on Pangaea.**
+Exact plans are reused within a forecast. The turn-200 comparison matched
+bids and forecasts for both tested players. The fresh 250-turn run lowered
+average guidance time from 2.60 to 1.55 seconds and peak time from 6.20 to
+3.45 seconds. All 25 original-AI Quarter foundations matched the reference.
+[Performance results](../research/mods/csc-ai-joint-guidance-performance-20261118.md).
+
 **18 November: positive Wonder site guidance is implemented.**
 Mapped Wonders get a bounded preference beside supplied or supply-ready
 Quarters, through CE's existing legal Wonder plot score path. The stronger

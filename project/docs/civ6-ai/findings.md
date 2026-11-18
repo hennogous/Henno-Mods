@@ -1,5 +1,15 @@
 # CSC findings and evidence
 
+## AI-C221 — Reusing exact joint plans cuts guidance processing on Pangaea
+
+18 November 2026. A read-only turn-200 comparison with two original AI
+players verifies equal bids, forecasts and outcomes for the joint search.
+The fresh turn-250 Pangaea run, with only the model changed in the package,
+reduces full-publisher average and peak wall time by 40.3% and 44.3%.
+All 250 publications succeed and all 25 original-AI Quarter foundations
+match by turn, owner, city, type and plot.
+[Optimization and measurements](../research/mods/csc-ai-joint-guidance-performance-20261118.md).
+
 ## AI-C220 — Mapped Wonders can receive a bounded positive plot offer
 
 18 November 2026. The Lua adapter derives exact Wonder partners from the
