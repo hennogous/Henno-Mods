@@ -47,7 +47,9 @@ misses receive their corrections and still lose. Both Base0 flags are inherited
 untuned-observer Quarters; the CL+3-versus+6 tradeoff has+23.49utility of ordinary
 economic support and the other site is used later. One Hub scheduling window
 remains for follow-up if the final outcomes warrant it. Fractal
-control is running under5067. Policy remains frozen; completion is still open.
+control now completes250:23 links,16 Base-adjacent/+3+ Quarters,10/20 comparable
+connections,1.959s average/4.292s max. Five games qualify; the final Fractal
+treatment is running under5067. Policy remains frozen; completion is still open.
 Only the main CSC adapter differs, with SQL+1/CE/economic coefficients fixed.
 Targeted changed-choice/foundation/stronger-site controls and three fresh matched
 Online250 outcomes remain required. [Goal, gates and preselected seeds](customer-placement-goal.md).

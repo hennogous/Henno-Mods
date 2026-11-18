@@ -1,7 +1,7 @@
 # Customer placement: native delivery and matched outcomes
 
 **Two matched Online250 pairs are complete. Connections improve overall;
-Pangaea is mixed. Fractal's control is running.** Pair-first scheduling improves fresh coverage at the same forecast
+Pangaea is mixed. Fractal's control is complete and its treatment is running.** Pair-first scheduling improves fresh coverage at the same forecast
 budget; a combined-guidance ablation changes a close Hub choice through physical
 foundation. Stronger ordinary sites retain their wins. Three matched Online250
 worlds provide the remaining repeated-outcome test. **AI-C214–216**.
@@ -136,6 +136,18 @@ three Innkeepers. Mean/max guidance is3.028/7.044s, with complete250-turn covera
 zero native faults and all final native records drained. Another0.378GiB of exact
 duplicate package archives was retired. Treatment uses the same initial-world
 reference and unchanged frozen candidate.
+
+### Fractal control250 completed
+
+The fifth campaign game closes/restores/qualifies250 with zero native faults
+and a drained22,938-record journal. It builds16 original-AI Quarters(12 Bakers,
+four Tailors), all Base-adjacent and+3+, seven at+4+, three with both material
+classes. Its23 non-City-Center links split16 Bakers/seven Tailors and17 Quarter-
+first/six customer-first. Comparable customer foundations connect10/20. Endpoint
+properties show five Storekeepers and three Innkeepers. Mean/max guidance is
+1.959/4.292s. There are zero raw resource losses and six supplier interruptions.
+Duplicate package copies are retired; the final matched treatment is running.
+All three current-tuning controls are now complete; policy remains frozen.
 
 ### Pangaea controller recovery,18 November
 

@@ -17,7 +17,9 @@ threevs six foundations and sixvs12 links. Guidance3.028→2.638s average.
 Across two maps links52→62, average2.502→2.500s. Audit the mixed outcome and
 native misses before closing2.1. After a pre-Lua discovery gap, controllerc7bf6b2b preserves the finite
 operation on that failure. Parent exec5067 owns the six-game campaign. Keep its
-frozen policy unchanged; Fractal control is running and its treatment follows. The runner uses immutable
+frozen policy unchanged; Fractal control qualifies250(23 links,16 Base-adjacent
+Quarters,10/20 comparable). Its treatment is running, the last of six games.
+The runner uses immutable
 manifests, initial parity, closed-child recovery and duplicate retirement.
 Use the shared controller, fifteen-minute checks and bounded passive diagnostics.
 [Native evidence, timing and storage retirement](../research/mods/csc-ai-customer-scheduling-20261117.md).

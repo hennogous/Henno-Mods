@@ -1,5 +1,16 @@
 # Active customer-placement goal,17 November
 
+LATEST05:03:53UTC18Nov: parent5067live, finalFractalTREATMENT50inactiveboundary,
+lastverified45,worker18644,nativefaults0,disk35.51GiB. Next05:18:53UTC (store).
+FractalCONTROL250qualifies0/drained22938native rows, v3coordinationrerun:
+23nonCClinks16B7T,17Qfirst6customerfirst, comparable10/20;16Quarterfoundations
+12B4T allBase/all+3+,7+4+,3both; Store5Inn3properties. Guidanceavg1.958725144s/
+max4.291657s.0rawresource losses,6supplierinterruptions,0Base0flags.
+All3controls+2treatmentscomplete. FinalT remains→freshv3ALL6analysis→small
+same-mature-statebench &Astraoverallassessment→completionaudit. No policychange.
+Three-controls total75nonCClinks (47B28T),45Qfirst30CF,63Q(46B17T),
+comparables28/50. Do not comparethese3controlstoonly2treatmentsyet.
+
 LATEST18Nov04:02UTC: parent5067live, FractalCONTROL101active→105,
 lastverified100/nativefaults0/disk35.83GiB. Nextcheck04:17UTC (readclockbefore
 polling; don'testimate15minfromanalysislength). PangaeaBOTHqualified250;

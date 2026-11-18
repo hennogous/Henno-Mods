@@ -558,6 +558,104 @@
         "ai-processing-time.json": "081b5ce2bf5e942ade0a0e245bc9d8694d7a3de53bde0bb06e36978cefb6bf8b",
         "economy-savings-frozen.json": "cb80e31b4ed89c393d13b2ae936d9ef16251fe5f1b8a21028111503e0115e623"
       }
+    },
+    "fractal_control250": {
+      "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-customer-scheduling-20261117\\final-comparisons\\fractal-control250",
+      "connections": {
+        "physical_links": 34,
+        "planned_district_links": 23,
+        "city_center_links": 11,
+        "order": {
+          "quarter_first": 17,
+          "customer_first": 6
+        },
+        "owner_scoped_links": 34,
+        "owner_scoped_planned_links": 23,
+        "exact_prior_customer_first_links": 1,
+        "latest_quarter_layout_matches": 1,
+        "links_with_prior_economic_offer": 7,
+        "customer_foundations_with_private_yield": 14,
+        "existing_quarter_links_observed_without_base": 0
+      },
+      "quality": {
+        "BAKERS": {
+          "foundations": 12,
+          "at_least3": 12,
+          "at_least4": 6,
+          "base": 12,
+          "spec": 2,
+          "both": 2,
+          "distinct_geometry_qualified_candidates": 312,
+          "distinct_positive_offers": 71
+        },
+        "TAILORS": {
+          "foundations": 4,
+          "at_least3": 4,
+          "at_least4": 1,
+          "base": 4,
+          "spec": 1,
+          "both": 1,
+          "distinct_geometry_qualified_candidates": 219,
+          "distinct_positive_offers": 67
+        }
+      },
+      "quarter_links": {
+        "BAKERS": 16,
+        "TAILORS": 7
+      },
+      "services": {
+        "BAKERS:3": 3,
+        "BAKERS:2": 5
+      },
+      "comparable_foundations": 20,
+      "comparable_connected": 10,
+      "guidance_seconds": {
+        "average": 1.958725144,
+        "maximum": 4.291657
+      },
+      "material": {
+        "raw_resource_loss_events": 0,
+        "working_supplier_loss_events": 6,
+        "usable_material_exhaustions_by_role": {
+          "baseWorking": 5,
+          "specWorking": 1
+        }
+      },
+      "native": {
+        "installed": true,
+        "hooks": 20,
+        "frozen": true,
+        "active": 0,
+        "stopReason": null,
+        "faults": [],
+        "totals": {
+          "records": 22938,
+          "targetedSavings": 390,
+          "commandDebits": 107,
+          "unknownLineage": 0,
+          "expiredBindings": 317,
+          "accountSnapshots": 7470
+        },
+        "buffered": 0
+      },
+      "closed": {
+        "verified": true,
+        "native_exit_code": 0,
+        "owners_absent": true,
+        "preferences_verified": true,
+        "package_callback_completed": true
+      },
+      "source_sha256": {
+        "source.json": "31372867df63f18cd65fc32ca7dacf0e4a77fb4ac215ba5fc272d4fe8da83258",
+        "result.json": "a543e3fc3166ba07379bf98074f3eb1b7af1bc096e308951eabdf99c87662935",
+        "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+        "full-game-observation-complete.json": "a9fe282363263ddb2b5ec91ba15187ca5eb0eabb725e18aeb7b775a0184a0f55",
+        "planning-results.json": "6d1b752711081b92b987f16d7841f1bd22f7535793c400593c0b891bd2387afc",
+        "customer-coordination-results.json": "fd691079b3642bdb1de3df6bb4dfa16cafd8e707eb3136e9c39ab9c9b3a3901b",
+        "customer-opportunity-results.json": "55995aa418b3dc26c4b908515a567429f4634cd913a79b652c2a8ecff8b9cb5e",
+        "ai-processing-time.json": "9447ba2012e3ced9ca3e279713bb03ea8e9f9332a6508ac06e8fdcab12247972",
+        "economy-savings-frozen.json": "816cc3107acf228813048db6973585c13db8d3f1bbbb2edb693117f2948984ff"
+      }
     }
   },
   "pangaea_missed_equal_adjacency_native_audit": {

@@ -87,7 +87,8 @@ adjacent. Average/max guidance1.976/4.025s→2.362/5.505s. Pangaea control compl
 foundations. Treatment also completes250:28 links,13/24 comparable,18 Quarter-
 first links; Tailors foundations6→3. Across two maps links52→62, mean guidance
 2.502→2.500s. The mixed Pangaea outcome/native misses are under audit; Fractal
-control is running, with treatment next. Completion remains open.
+control qualifies250 with23 links,16 Base-adjacent/+3+ Quarters and10/20 comparable
+connections. Its treatment is running, the last of six. Completion remains open.
 Keep coefficients frozen through all maps. If the late cost recurs, compare old/
 new adapters on the same mature candidate save before closing the performance
 gate. Final analysis must rerun coordination v3 on closed outputs: it corrects
