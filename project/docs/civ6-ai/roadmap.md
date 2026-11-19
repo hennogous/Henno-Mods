@@ -1,5 +1,27 @@
 # CSC AI roadmap
 
+## Problems at a glance
+
+| Topic | Description | Status |
+| --- | --- | --- |
+| [1. Quarter placement](#1-quarter-placement) | Choose productive, legal Quarter sites. Buy viable sites when justified and defer weak options. | Bakers and Tailors guidance integrated. Broader purchase and construction reliability remains open. |
+| [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Customer placement closed for the tested Bakers and Tailors scope. Broader material protection remains open. |
+| [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply. Assign reachable Builders and request more capacity when needed. | Scheduling off by default. Opt-in finishing restored Kish's sole supplier in a matched replay. Wider qualification remains open. |
+| [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Mill bids verified in selected games. Broader coverage and qualification remain open. |
+| [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Granary follow-through observed. Broader customer coverage remains open. |
+| [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Storekeeper operation verified in selected chains. Unlock guidance and strategic priorities remain open. |
+| [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Planned. |
+| [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Planned. |
+| [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Planned. |
+| [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Planned. Specialty supplier work is already covered under Problem 3. |
+| [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Wonder placement guidance implemented. Customer-building guidance and broader qualification remain open. |
+| [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Planned. |
+| [13. Recovery and retention](#13-recovery-and-retention) | Repair damaged links, protect working supply and replan after permanent losses. | Repair and protection verified in matched replays. Broader recovery and replanning remain open. |
+| [14. Competing uses and shared plans](#14-competing-uses-and-shared-plans) | Compare new investments with finishing or repairing existing chains and avoid double-counting shared benefits. | Shared bids and Service forecasts partly implemented. Full-game calibration remains open. |
+| [15. Quarter investment and trade](#15-quarter-investment-and-trade) | Compare local production with imports and value trade routes to supplied Quarters. | Deferred until Bakers Stage 2 qualification. |
+
+## Current work
+
 **18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
 Three fresh Online250 seed pairs qualify/restore, with physical links75→86,
 customer-after-Quarter45→56 and comparable connections28/50→39/61. Both families
@@ -7,10 +29,79 @@ gain post-Quarter links; customer-first totals stay30. Mean overhead adds0.130s
 per turn; source/input/v3 and same-mature-state timing checks pass. Short native
 choice/foundation, stronger-site and invalidation gates complete the loop.
 No fourth seed or new premium is needed. [Completion audit and results](../research/mods/csc-ai-customer-scheduling-20261117.md).
-Initial **Problem3** material/Builder research is complete; no new full game is scheduled.
-[Seven current supplier gaps and the next exact Tailors job trace](../research/mods/csc-ai-material-development-audit-20261118.md).
+**Current priority is Problem 3, actual material development.** The
+Fractal treatment reached turn 250. At turn 240, the latest common boundary,
+on-time supply was 17 of 20 with dispatch and 18 of 20 in the control.
+[Matched Fractal results](../research/mods/csc-ai-material-development-matched-20261118.md#fractal-dispatch-comparison-at-verified-snapshots).
 
-**Current priority:14.3 Service valuation.** The first native-backed Quarter-bid
+**19 November — finishing-only replay.** Regular play leaves scheduling
+disabled and keeps the improvement and Builder-request bids. Both Kish
+arms loaded turn 166 with an operating Water Mill, pillaged sole Flax Farm
+and the same charged Builder on the tile. The opt-in arm finished the
+native repair on 166. The default arm still had pillaged Flax at 170.
+Finishing remains an experimental replay option.
+
+### Problem 3 qualification campaign
+
+The matched checkpoint tests cover Kish Builder dispatch, Specialty work
+during Stage 4 construction, and rebuilding a lost last supplier with an
+operating buyer. Physical work and displaced jobs are the decision evidence.
+The acquisition path must keep at most one live training or purchase request
+per physical job. Legal improvement availability starts the material scope.
+
+Three fresh paired Online turn-250 games are preselected below. Both arms
+use the stock Firaxis decision engine, existing CSC guidance, the same
+optional mods and the same per-turn supplier observation. The treatment uses
+the CE build with the new scheduler. Small maps use the previously qualified
+six-seat setup.
+
+| Map | Map seed | Game seed |
+| --- | ---: | ---: |
+| Fractal | 28111119 | 38111119 |
+| Pangaea | 27111119 | 37111119 |
+| Continents | 18111119 | 29111119 |
+
+For each pair, the per-turn census opens a window when the completed buyer
+works and an owned, visible deposit can legally supply it. Working supply
+already prepared before completion counts on opening day. Shortages of
+reachable Builders stay in the denominator. The fixed campaign window is
+15 Online turns, with openings too close to turn 250 reported separately.
+The target is at least 75% on time in each treatment game. Report Base and
+Specialty separately for Bakers and Tailors, last-supplier loss and recovery
+dates, and working suppliers at turn 250 against each control.
+
+Kish's archived Flax repair used four successive eight-turn waiting windows.
+The native Build Unit node reuses a live request, with one contract ID
+offered to several cities. The matched dispatch probe identified which charged
+workers reached recruitment and recovered the supplier on 173. An integrated
+replay and fresh qualification will measure how often that handoff works.
+[Native lifetime evidence](../research/mods/csc-ai-material-development-matched-20261118.md#kishs-repeated-offers-were-sequential).
+
+The passive matching replay found 11 searches with no stock Builder and 12
+with charged Builders that had already acted. Earlier access against lower-valued
+improvement work plus one on-site finishing opportunity repaired Kish's Farm
+on 173 and delayed Isin's Ziggurat assignment by two turns. The integrated
+version repaired the Farm on 166 against an unrepaired control at 175.
+It delayed two Umma Farm jobs by two turns each. The full-game
+census also dates newly working supply against the active buyer item, so
+Specialty work during Stage 4 construction is visible in either arm.
+Quebec confirms the unfinished buyer generates Specialty offers. Its
+matched arms reserved the repair a turn after the Café opened. In the
+archived Continents game, Aachen physically built its Honey Camp during
+Café construction. The fresh campaign records whether this also happens
+with the current integrated offer and dispatch policy.
+[Exact dispatch evidence](../research/mods/csc-ai-material-development-matched-20261118.md#kish-completed-the-repair-before-the-next-reassignment).
+[Packaged dispatch evidence](../research/mods/csc-ai-material-development-matched-20261118.md#the-integrated-policy-restored-kishs-flax).
+[Exact Quebec evidence](../research/mods/csc-ai-material-development-matched-20261118.md#quebecs-specialty-bid-before-the-cafe-opened).
+[Aachen physical work](../research/mods/csc-ai-material-development-matched-20261118.md#aachen-built-a-specialty-supplier-before-the-cafe-opened).
+
+For remaining capacity shortages, measure production and affordable Gold
+purchases separately. They rank the same native request using different
+fields. Match the requested worker type to the loaded improvement and
+verify actual assignment and work after either form of acquisition.
+[Native acquisition evidence](../research/mods/csc-ai-material-development-matched-20261118.md#builder-purchase-and-production-use-different-ranking-inputs).
+
+**14.3 Service valuation.** The first native-backed Quarter-bid
 slice passes unchanged100/250 checks. The follow-up adds Housing and exact
 Wonder recipients for Bakers/Tailors. Live calibration, changed choices and
 full-game qualification remain open.
@@ -997,13 +1088,26 @@ until the active check closes or an explicit dependency needs attention.
 ### 3. Material work and Builder capacity
 
 - **3.1 Exact job and timing.** Prioritize Base work when the Stage 2 buyer
-  functions and Specialty work when the Stage 4 buyer functions. Put the
-  intended plot and improvement into native job allocation and observe the work.
-  Initial18 November audit finds seven treatment endpoint producer/supplier gaps.
-  Next: trace Tailors1753/Sheep1680 from Pangaea100 through native job selection,
-  Builder availability and physical work. Existing producer-only support is26
-  utility, rising to56 with a working Stage2 customer; diagnose the first actual
-  barrier before increasing it. [Audit](../research/mods/csc-ai-material-development-audit-20261118.md).
+  enters active production, and Specialty work when the Stage 4 buyer enters
+  active production. Keep offering useful work once the buyer operates, with
+  additional value for a Service the improvement can restore. Measure turns
+  from the production commitment to supplier work and from a loss to restored
+  supply. Use stock producer choices for this capability. Problem 4 adds
+  guidance to the choice of producer. Put the intended plot and improvement
+  into native job allocation and observe the work.
+  The 18 November replay delivered the +26 producer-only bid and a matched
+  +64 ceiling bid to Tailors1753/Sheep1680. Angkor Thom opened the same Mine
+  job and the Sheep remained bare through 112 in both arms. The next Fractal
+  replay qualifies gameplay-derived exact improvement pricing. Mycenae
+  reserves its Pasture two turns earlier, completes it on 169 and retains
+  working Base supply at 183. Both arms complete on the same turn.
+  The full-game candidate also bids for additional suppliers when their
+  own transactions pay. The best missing link keeps the fallback band.
+  Kish's checkpoint replay moved the Tailors Flax reservation from 133 to 129
+  after raising the transport ceiling. Both arms ended on 135 with that plot
+  bare. The earlier reservation gives a concrete job to trace through worker
+  allocation and movement.
+  [Pricing and follow-through](../research/mods/csc-ai-material-job-followthrough-20261118.md).
 - **3.2 Assignment and supply.** Use a reachable Builder with charges,
   including across cities. Value another Builder when useful work exceeds
   available capacity. In Melbourne's opening replay the AI already
@@ -1012,9 +1116,82 @@ until the active check closes or an explicit dependency needs attention.
   Builder offer for another job. Sydney and Canberra used the nearby
   Builder for actual work. Melbourne's ten attempts found none eligible.
   Calibrate added capacity where a ready chain can justify its own
-  competing request. This replay gives no such case for a global boost.
+  competing request. Explicit Builder demand should follow valuable executable
+  work and account for charges, current assignments and cross-city options.
+  Fractal's Tenochtitlan reserved a Wheat repair and received a completed
+  Builder request. The job lost its reservation before a worker reached the
+  site in both replays. Keep request completion and actual worker allocation
+  distinct in the capacity adapter. The candidate budgets charged Builders
+  across city borders and offers added production value only when a native
+  material-job tree requests a Builder for an uncovered job. The follow-up
+  matches the exact city, plot and improvement carried by ordinary job trees.
+  Those trees can carry a zero marker in the fallback field. The ordinary
+  job's adjusted plot score already reaches Builder production. The revised
+  capacity quote credits that value and prices a second charge on nearby
+  uncovered work when available. Verify the native request, training and
+  completed work in that order. The targeted follow-through replay observes
+  the eligible recruitment pools, the Builder's controller, and the unit
+  list at the later Protect Unit decision. It also records which production
+  contracts complete on the same new Builder and which retains control.
+  The material plot score already affects recruitment in the managed-unit
+  pool when competing trees have equal native priority and permit a release.
+  The next capacity policy credits each nearby, compatible queued unit
+  against one job, leaving independent work eligible. A charged worker may
+  cover one repair while retaining its charge for a new build.
+  Kish's exact witness connects the empty protection list to reassignment
+  from a 210-utility Farm to Umma's 581-utility Mine at the same priority.
+  Nearby processed workers can make the Lua capacity estimate optimistic.
+  Candidate 08 leaves a residual-only quote for the exact Build Unit
+  fallback in this case. Native recruitment and stronger commitments keep
+  their ordinary rules.
 - **3.3 Improvement unlocks.** Value missing technologies early enough for
-  a viable supplier to be ready when needed.
+  a viable supplier to be ready when needed. The improvement tree already
+  has an Add Goal Tech stage for the admitted improvement. Look for a case
+  whose only viable mapped job needs research, and observe which goal and
+  immediate technology the engine chooses. Account for City Lights supplying
+  alternate improvements with different prerequisites. The candidate bids at
+  the ordinary technology and civic comparisons, with the actual supplier
+  return discounted over the estimated path. A finished Quarter with a working
+  customer and a queue-legal producer can justify its first supplier unlock.
+  The paired turn-100 Irrigation fixture records a +5,994 Q8 offer in the
+  real technology comparison for a working Wind Mill's adjacent Bananas.
+  Both arms select Irrigation on 104 and own it on 105. The material-job
+  follow-through remains part of the normal game. The recovered
+  turn-250 comparison contains no eligible research offers. The next
+  candidate values independent locked supplies for working buyers
+  alongside existing ready work and subtracts same-tile alternatives.
+
+The first matched Online Fractal pair closed at turn 250. Distinct worked
+plots were 16 and 15, and the working share was 75% and 60%. Keep Problem 3
+open. The next same-start game reached 250 via verified T200 recovery.
+It worked 15 distinct plots versus control's 16 and restored three distinct
+plots in six repairs. Both arms ended with 18 working plots. Trace the
+available Builder and job handoff before retesting the revised capacity policy.
+The next candidate, with conditional production quotes, recovered from the
+turn-150 checkpoint after the Shadow outage and reached 250. It worked 23
+distinct plots, with 20 new improvements and six repairs across four plots.
+The tuned control worked 16, with 15 new improvements and three repairs
+across three plots. The fresh Service-aware candidate closed at turn 250:
+17 distinct worked plots and 18/23 working suppliers versus 16 and 18/24
+in control. Its exact Aztec Wheat job led to two Builder contract purchases,
+a repair, and restored growth effects for two Bakers Quarters. Kish's Tailors
+Flax stayed bare from the Textile Workshop's completion on 103 through 250.
+The active-producer candidate closed at 250. It worked 21 distinct plots
+and finished with 15/22 working suppliers. Its first early Farm offer
+reached Kish's exact selector, while other improvement jobs held the work
+slot. Seven of eight sampled jobs saw work 10–136 turns after the first
+offer. All samples were Base. Seven exact Builder contracts initialized,
+two had cancellation rows and none recorded a purchase or training decision.
+The next bottleneck is keeping an executable job eligible and getting a
+worker to it. Check that and recovery time before recalibrating capacity bids.
+[Kish and Umma checkpoint replays](../research/mods/csc-ai-material-development-matched-20261118.md#kish-dispatch-and-umma-recovery-prerequisite)
+separate job admission from workforce availability. Kish's repair won the
+ordinary slot twice and neither admission found a Builder. At Umma the
+new prerequisite rule delivers a Quarter repair candidate even with zero
+working Base suppliers. The existing native repair consumer waits for a
+new stock district tree. The 15-turn window ends with the newly submitted
+ordinary repair and no material restored.
+[Scope and measurements](../research/mods/csc-ai-material-development-matched-20261118.md).
 
 ### 4. Stage 2 producer
 
