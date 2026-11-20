@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [Axum’s delayed Tailors supply and Builder follow-through — 20 November 2026](../research/mods/csc-ai-axum-builder-handoff-20261120.md)
+
 - [Commercial Hub opportunities beside existing Quarters: recorded latest250 audit —16 November2026](../research/mods/csc-ai-commercial-hub-audit-20261116.md)
 
 - [Small Dockmaster siting adjustment and queued Service valuation —16 November2026](../research/mods/csc-ai-dockmaster-siting-20261116.md)

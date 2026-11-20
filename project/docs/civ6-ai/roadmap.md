@@ -18,7 +18,7 @@
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Ready to proceed to Problem 4. Continue tracking Builder delivery as broader qualification. |
 | 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
-| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Delays traced to job competition, recruitment, and failed follow-through. Exact worker custody is the next trace. |
+| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Improved in matched games. Delays remain from unavailable Builders and interrupted assignments. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
 | [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Next focus. Verify first-producer unlocks and production for Bakers and Tailors. |
 | 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
@@ -97,10 +97,14 @@ failed Protect Unit the same turn. At Naranjo, the first Barley repair waited 12
 turns for a reservation while other jobs held the improvement slot. Both
 cities logged a failed build after a successful move. The preceding
 build log named `IMPROVEMENT_BARBARIAN_CAMP` despite a different admitted
-plan. Confirm the actual operation and its arguments before interpreting
-that label. For the next focused trace, record each candidate Builder's
-processed flag, controller, and moves from recruitment through Protect Unit
-and the actual improvement attempt.
+plan. REA traced it to the node's stored improvement index, which can remain
+unchanged while its worker is unavailable. At Axum, Builder 9502730 logged
+movement on turns 147–151. The exact checkpoint replay showed it ended
+turn 152 unassigned with three charges after the protection check failed.
+It returned to the same work after a fresh reservation on 153 and built the
+Sawmill on 154. Track repeat cases during Problem 4 trials and use the exact
+worker ID to distinguish an idle gap from a lasting reassignment.
+[Axum trace](../research/mods/csc-ai-axum-builder-handoff-20261120.md).
 [Continents runs and archive](../research/mods/csc-ce-steam-26595377-port-20261120.md#continents-benchmark).
 
 ### Problem 3 qualification campaign

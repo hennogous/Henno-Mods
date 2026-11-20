@@ -1,5 +1,12 @@
 # Current CSC AI status
 
+**20 November: Axum lost and then recruited the same Builder.** The replay
+showed the charged Builder ending turn 152 unassigned after a failed
+protection check. Axum re-reserved Bamboo and recruited it on 153, then
+built the Sawmill on 154. The original outage had already spent much longer
+waiting for an available Builder. Track recurring delays alongside Problem 4.
+[Worker and operation trace](../research/mods/csc-ai-axum-builder-handoff-20261120.md).
+
 **18 November: the joint guidance optimization is verified on Pangaea.**
 Exact plans are reused within a forecast. The turn-200 comparison matched
 bids and forecasts for both tested players. The fresh 250-turn run lowered
