@@ -414,8 +414,29 @@ finding the existing worker. The unit moved and built the Pasture on 167.
 The material observer independently recorded the improvement on Cattle
 2250, next to Bakers 2323. The buyer had zero working Base suppliers at
 the turn-167 survey and one at turn 168. The native guard measured 0.177 ms
-at the successful release callback. The ordinary turn-time and competing
-work comparison still need the two closed runs.
+at the successful release callback.
+
+In the completed log, the buyer first had one legal Base site and no
+working Base at turn 104. The same state appeared at every survey through
+167. Edinburgh first reserved Cattle on turn 166, 62 turns after that
+first survey. The city had logged thirteen reservations for other
+improvements in the interval. Nine cities evaluated the same fallback
+Builder contract, which was still waiting when the loan supplied an
+existing worker one turn after the reservation. This case separates the
+pre-reservation delay from the recruitment delay. The handoff starts at
+recruitment, after the native job has its site.
+
+The enabled game exited normally at turn 250 with complete supplier buyer
+surveys. It published 92 loan offers for nine distinct jobs. The one
+released Builder produced the Edinburgh Pasture. Across the AI empires
+there were 17 new supplier improvements and four repairs, and 16 of 21
+eligible supplier plots were working at the endpoint. Eight of thirteen
+buyers received supply within 15 turns. Whole CSC publication averaged
+1.415 seconds per turn and peaked at 3.242 seconds. Controller wall time
+from autoplay start to the last boundary was 3,097 seconds including
+observer handoffs. The same-seed control is running. Its CSC Lua differs
+only by the switch that disables loan publication. Evidence is under
+`ordinary-continent-worker-loan/loan-on`.
 
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
