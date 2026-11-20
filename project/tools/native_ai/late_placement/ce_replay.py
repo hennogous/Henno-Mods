@@ -25,8 +25,21 @@ LOGS = ('AI_CityBuild.csv', 'AI_Behavior_Trees.csv')
 # executable. GameCore code parity does not qualify the executable-side hooks.
 HOTFIX_CE_SHA = 'c39a24fd5d1af7e191edeefec10b1d5f8e2280a17c173bc5d944ec313f93118d'
 HOTFIX_EXE_SHA = 'd1a0cfd439e7451be515f47595cfa0b6b983f56d1faf4ea434a4ce3b21491ebe'
+STEAM_26595377_EXE_SHA = '080928a2820d341f4dfaa07877d7b11a6a1a007752c39f09330a70993b10456b'
+STEAM_26595377_CORE_SHA = '4de40abf7c739f53c1f3f825863ace84dc220e5a42d87620e56fceaf3fbd4dc8'
 # Unchanged upstream develop 2986a746 from the same supported build workflow.
 CE_BASE_SHA = '18af3c5a0e92d98756a0fdfcd28351bdcbaf1efdcd646ce6a27adfcb995991ad'
+
+
+def native_profile(binary):
+    """Pin both members of a supported Steam DX11 executable/GameCore pair."""
+    profiles = {
+        HOTFIX_EXE_SHA: HOTFIX_SHA,
+        STEAM_26595377_EXE_SHA: STEAM_26595377_CORE_SHA,
+    }
+    executable_sha = sha(binary)
+    require(executable_sha in profiles, 'Unsupported DX11 executable')
+    return executable_sha, profiles[executable_sha]
 
 
 def verify_modules(session, fork, output, original_sha):
