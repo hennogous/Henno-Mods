@@ -16,11 +16,11 @@
 | [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Customer placement closed for the tested Bakers and Tailors scope. Broader material protection remains open. |
 | 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Closed at the tested Bakers/Tailors scope. |
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
-| [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Ready to proceed to Problem 4. Continue tracking Builder delivery as broader qualification. |
+| [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Current focus is 3.2 Builder availability and follow-through. |
 | 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
-| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Improved in matched games. Delays remain from unavailable Builders and interrupted assignments. |
+| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Current focus. Axum waited on an existing job, then missed recruitment with charged Builders nearby. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
-| [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Next focus. Verify first-producer unlocks and production for Bakers and Tailors. |
+| [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Queued after the 3.2 follow-up. First-producer unlocks and production remain open for qualification. |
 | 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
 | 4.2 Build | Bid for the legal producer when its Base supply justifies investment. | Wind Mill nomination and follow-through verified. Wider Mill and Textile Workshop coverage remains open. |
 | [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Granary follow-through observed. Broader customer coverage remains open. |
@@ -78,15 +78,19 @@ the Barley Farm on 119 and finished with the same economic outcomes. Regular
 play now uses the finishing-only CE consumer when available.
 [Updated build and Continents comparison](../research/mods/csc-ce-steam-26595377-port-20261120.md).
 
-**Next focus is Problem 4, the Stage 2 producer.** On Continents, both tuned
+**Current focus is Problem 3.2, Builder availability and assignment.** On Continents, both tuned
 variants supplied 20 of 25 eligible buyers within 15 turns and recovered all
 three observed supply outages. One Tailors outage still took 40 turns.
-Keep measuring the time from producer commitment or supply loss to working
-supply during the Problem 4 trials. The remaining Builder delivery problem
-belongs to 3.2. Further improvement-unlock work in 3.3 stays deferred.
-For 4.1 and 4.2, follow the producer unlock through research, then follow a
-legal Mill or Textile Workshop through the native production comparison and
-completion.
+Measure from producer commitment or supply loss to working supply. The
+ordinary Axum replay matched the opening census and retained working Flax
+through turn 143. The controlled outage on turn 120 left Axum on its existing
+Farm job for eight turns. Its replacement Bamboo job then failed five
+Builder searches through turn 132, with a nearby charged Builder logging
+skips. Isolate that worker's eligibility at the exact recruitment check
+before choosing between an earlier pass and more capacity.
+[Availability test and results](../research/mods/csc-ai-axum-builder-availability-20261120.md).
+The producer work in 4.1 and 4.2 and further improvement-unlock work in 3.3
+are queued.
 
 **3.2 follow-up in the recorded Continents runs.** Axum admitted the Bamboo
 job as soon as its Tailors supply failed on turn 115. Before the Sawmill
@@ -102,8 +106,8 @@ unchanged while its worker is unavailable. At Axum, Builder 9502730 logged
 movement on turns 147–151. The exact checkpoint replay showed it ended
 turn 152 unassigned with three charges after the protection check failed.
 It returned to the same work after a fresh reservation on 153 and built the
-Sawmill on 154. Track repeat cases during Problem 4 trials and use the exact
-worker ID to distinguish an idle gap from a lasting reassignment.
+Sawmill on 154. Track the exact worker ID during the 3.2 follow-up to
+distinguish an idle gap from a lasting reassignment.
 [Axum trace](../research/mods/csc-ai-axum-builder-handoff-20261120.md).
 [Continents runs and archive](../research/mods/csc-ce-steam-26595377-port-20261120.md#continents-benchmark).
 

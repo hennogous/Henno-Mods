@@ -1,5 +1,12 @@
 # Current CSC AI status
 
+**20 November — Problem 3.2 remains the focus.** A controlled supply loss
+at Axum left its existing Farm reservation in place for eight turns.
+The replacement Bamboo job then failed five Builder searches while a
+nearby charged Builder spent four turns idle. Inspect exact recruitment
+eligibility before tuning scheduling or capacity.
+[Availability test](../research/mods/csc-ai-axum-builder-availability-20261120.md).
+
 **20 November: Axum lost and then recruited the same Builder.** The replay
 showed the charged Builder ending turn 152 unassigned after a failed
 protection check. Axum re-reserved Bamboo and recruited it on 153, then
