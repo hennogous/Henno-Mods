@@ -1,11 +1,10 @@
 # Current CSC AI status
 
-**20 November — Problem 3.2, Builder assignment.** Axum's guarded native
-loan restored the Bamboo Sawmill on turn 131 and both material transaction
-effects were active on 133. The same-start control still lacked supply.
-The competing cities' production queues matched. Integrate the guarded
-handoff and qualify it in ordinary play.
-[Matched handoff](../research/mods/csc-ai-axum-builder-availability-20261120.md#letting-the-supplier-recruit-from-an-idle-clearance-pass).
+**20 November — Problem 3.2, Builder assignment.** The integrated CSC
+and CE handoff restored Axum's Sawmill on turn 131 and both material effects
+by 133. The same-build control still lacked supply. The competing cities'
+production queues matched. Qualify the handoff in ordinary play.
+[Packaged matched replay](../research/mods/csc-ai-axum-builder-availability-20261120.md#packaged-csc-and-ce-follow-through).
 
 **20 November: Axum lost and then recruited the same Builder.** The replay
 showed the charged Builder ending turn 152 unassigned after a failed

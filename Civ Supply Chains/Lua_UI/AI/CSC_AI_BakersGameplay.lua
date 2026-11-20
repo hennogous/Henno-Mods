@@ -219,9 +219,12 @@ local function refresh(turn)
     -- capacity only when CE exposes the finishing-only worker consumer.
     -- Matched controls can set the test override to false for this packet.
     local finishEnabled = CSC_AI_TEST_LAST_SUPPLIER_FINISH ~= false
-    local materialTechLimit, materialCivicLimit, materialRequestLimit, materialFinishLimit =
+    local materialTechLimit, materialCivicLimit, materialRequestLimit, materialFinishLimit, materialLoanReady =
         bridge.MaterialDevelopmentLimits(materialStatus, finishEnabled)
+    -- The isolated ablation can keep the same packages and retire loan offers.
+    local materialLoanEnabled = materialLoanReady and CSC_AI_TEST_WORKER_LOAN ~= false
     local materialResearch,materialRequests,materialServices,materialCommitments,materialWorkers={},{},{},{},{}
+    local materialLoans={}
     if materialStatus then
         -- These are earlier-packet native receipts. A compared topic can
         -- lose, and an initialized request still has to win and train.
@@ -307,8 +310,9 @@ local function refresh(turn)
         -- Four pending unlocks per empire are ample for the current buyers.
         -- Stable ordering keeps a busy empire from publishing marginal noise.
         for i=1,math.min(4,#topics)do materialResearch[#materialResearch+1]=topics[i] end
-        local requests, workers = placement.MaterialBuilderOffers(
-            player, sites, playerUI, materialRequestLimit, materialFinishLimit)
+        local requests, workers, loan = placement.MaterialBuilderOffers(
+            player, sites, playerUI, materialRequestLimit, materialFinishLimit, materialLoanEnabled)
+        if loan then materialLoans[#materialLoans+1]=loan end
         for _,offer in ipairs(requests)do materialRequests[#materialRequests+1]=offer end
         for _,offer in ipairs(workers)do materialWorkers[#materialWorkers+1]=offer end
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
@@ -454,8 +458,15 @@ local function refresh(turn)
         #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
         exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit,
         declines,declineLimit,managedTypes,wonderOffers,materialResearch,
-        allowances<=capacity and materialRequests or nil, allowances<=capacity and materialWorkers or nil)
+        allowances<=capacity and materialRequests or nil, allowances<=capacity and materialWorkers or nil,
+        allowances<=capacity and materialLoans or nil)
     assert(accepted, message)
+    if allowances<=capacity then
+        for _,offer in ipairs(materialLoans)do
+            print(string.format('CSC_AI_WORKER_LOAN_OFFER turn=%d version=%d player=%d city=%d plot=%d unit=%d',
+                turn,version+1,offer.player,offer.city,offer.plot,offer.unit))
+        end
+    end
     for _,offer in ipairs(materialResearch)do
         local plots={};for plot in pairs(offer.jobs)do plots[#plots+1]=plot end;table.sort(plots)
         print(string.format('CSC_AI_MATERIAL_RESEARCH_OFFER turn=%d version=%d player=%d kind=%d index=%d deltaQ8=%d plots=%s',

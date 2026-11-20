@@ -85,7 +85,7 @@ end
     def test_material_work_and_prerequisite_bids_share_the_same_commit(self):
         l = self.make('''
 CE_AIMaterialDevelopmentStatus=function()return
-    '{"abi":1,"techReady":1,"civicReady":0,"builderReady":1,"researchLimitQ8":16384,"builderLimitQ8":32768,"workerReady":1,"workerFinishOnly":1}'
+    '{"abi":1,"techReady":1,"civicReady":0,"builderReady":1,"researchLimitQ8":16384,"builderLimitQ8":32768,"workerReady":1,"workerFinishOnly":1,"workerLoanReady":1}'
 end
 CE_AIBuilderProtectionBid=function(player,city,plot,improvement,deltaQ8)
     assert(player==1 and city==42 and plot==123 and improvement==4 and deltaQ8==17995)
@@ -103,13 +103,19 @@ CE_AIMaterialWorkerFinishOffer=function(player,city,plot,improvement,unit,unitTy
     assert(player==1 and city==42 and plot==123 and improvement==4 and unit==39 and unitType==5 and x==49 and y==1)
     calls[#calls+1]='Worker';return 1
 end
+CE_AIMaterialWorkerLoanOffer=function(player,city,plot,improvement,unit,unitType,x,y,artifact)
+    assert(player==1 and city==42 and plot==123 and improvement==4 and unit==40 and unitType==5
+        and x==47 and y==1 and artifact==47)
+    calls[#calls+1]='Loan';return 1
+end
 function publishDevelopment()
     local b=CSC_AI_DistrictBridge
     local status=b.MaterialDevelopmentStatus()
     assert(select(4,b.MaterialDevelopmentLimits(status))==0)
     assert(select(4,b.MaterialDevelopmentLimits('{"abi":1,"workerReady":1}',true))==0)
-    local tech,civic,builder,workerLimit=b.MaterialDevelopmentLimits(status,true)
-    assert(tech==16384 and civic==0 and builder==32768 and workerLimit==4)
+    assert(select(5,b.MaterialDevelopmentLimits('{"abi":1,"workerReady":1}',true))==false)
+    local tech,civic,builder,workerLimit,loanReady=b.MaterialDevelopmentLimits(status,true)
+    assert(tech==16384 and civic==0 and builder==32768 and workerLimit==4 and loanReady)
     assert(b.BuilderBidLimit('{"maxBidQ8":16384}')==16384)
     local jobLimit=b.BuilderBidLimit('{"maxBidQ8":32768}')
     assert(jobLimit==32768)
@@ -117,11 +123,12 @@ function publishDevelopment()
     local topic={player=1,kind=0,index=17,deltaQ8=2048}
     local request={player=1,city=42,plot=123,improvement=4,unit=5,deltaQ8=8192}
     local worker={player=1,city=42,plot=123,improvement=4,unit=39,unitType=5,x=49,y=1}
+    local loan={player=1,city=42,plot=123,improvement=4,unit=40,unitType=5,x=47,y=1,artifact=47}
     return b.Publish(1,74,46,80,{1},packet,{job},false,false,jobLimit,
-        {},0,nil,0,{},nil,0,{},0,{}, {},{topic},{request},{worker})
+        {},0,nil,0,{},nil,0,{},0,{}, {},{topic},{request},{worker},{loan})
 end
 ''')
         self.assertTrue(l.eval('publishDevelopment()'))
-        self.assertEqual(l.eval("table.concat(calls,',')"), 'Begin,Allow,Entry,Job,Research,Request,Worker,Commit')
+        self.assertEqual(l.eval("table.concat(calls,',')"), 'Begin,Allow,Entry,Job,Research,Request,Worker,Loan,Commit')
 
 if __name__=='__main__':unittest.main()

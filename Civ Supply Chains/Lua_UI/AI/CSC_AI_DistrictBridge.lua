@@ -63,7 +63,7 @@ function B.MaterialDevelopmentLimits(status, finishEnabled)
     local function statusNumber(key)
         return type(status) == 'string' and tonumber(status:match('"' .. key .. '":(%d+)')) or 0
     end
-    if statusNumber('abi') ~= 1 then return 0, 0, 0, 0 end
+    if statusNumber('abi') ~= 1 then return 0, 0, 0, 0, false end
 
     local researchQ8 = math.min(statusNumber('researchLimitQ8'), MAX_MATERIAL_RESEARCH_Q8)
     local builderQ8 = math.min(statusNumber('builderLimitQ8'), MAX_MATERIAL_REQUEST_Q8)
@@ -75,7 +75,8 @@ function B.MaterialDevelopmentLimits(status, finishEnabled)
     local finishLimit = finishEnabled == true and type(CE_AIMaterialWorkerFinishOffer) == 'function'
         and statusNumber('workerReady') == 1 and statusNumber('workerFinishOnly') == 1
         and MAX_WORKER_FINISH_OFFERS_PER_PLAYER or 0
-    return techLimit, civicLimit, requestLimit, finishLimit
+    local loanReady = type(CE_AIMaterialWorkerLoanOffer) == 'function' and statusNumber('workerLoanReady') == 1
+    return techLimit, civicLimit, requestLimit, finishLimit, loanReady
 end
 function B.BuilderHarvestStatus()
     if type(CE_AIBuilderHarvestProtectionStage)=='function'
@@ -151,7 +152,7 @@ end
 -- in its owning city. A repair identifies an existing district footprint.
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
     builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions,ownershipScopes,ownershipLimit,
-    declines,declineLimit,managedTypes,wonderOffers,materialResearch,materialRequests,materialWorkers)
+    declines,declineLimit,managedTypes,wonderOffers,materialResearch,materialRequests,materialWorkers,materialLoans)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -285,7 +286,7 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
     -- request from the existing improvement tree. A finishing offer names an
     -- on-site unit, and CE verifies its custody. All expire with this packet.
     if materialResearch and #materialResearch>256 or materialRequests and #materialRequests>256
-        or materialWorkers and #materialWorkers>256 then
+        or materialWorkers and #materialWorkers>256 or materialLoans and #materialLoans>64 then
         return reject('Material development batch too large')
     end
     for _,offer in ipairs(materialResearch or{})do
@@ -305,6 +306,17 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             and integer(offer.unit,0,2147483647) and integer(offer.unitType,0,4095)
             and integer(offer.improvement,0,4095) and integer(offer.x,0,width-1) and integer(offer.y,0,height-1))then
             return reject('Invalid material worker dispatch offer')
+        end
+    end
+    -- An idle-worker loan names an existing recovery job and the worker whose
+    -- route was checked. CE may offer it in one native custody comparison.
+    for _,offer in ipairs(materialLoans or{})do
+        if not (type(CE_AIMaterialWorkerLoanOffer)=='function' and integer(offer.player,0,63) and allowed[offer.player]
+            and integer(offer.city,0,2147483647) and integer(offer.plot,0,width*height-1)
+            and integer(offer.unit,0,2147483647) and integer(offer.unitType,0,4095)
+            and integer(offer.improvement,0,4095) and integer(offer.x,0,width-1)
+            and integer(offer.y,0,height-1) and integer(offer.artifact,-1,4095))then
+            return reject('Invalid material worker loan offer')
         end
     end
     -- Begin opens staging. Nothing here queues an action. Commit publishes
@@ -376,6 +388,10 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         for _,offer in ipairs(materialWorkers or{})do
             assert(CE_AIMaterialWorkerFinishOffer(offer.player,offer.city,offer.plot,offer.improvement,
                 offer.unit,offer.unitType,offer.x,offer.y)==1,'Native material worker dispatch rejected')
+        end
+        for _,offer in ipairs(materialLoans or{})do
+            assert(CE_AIMaterialWorkerLoanOffer(offer.player,offer.city,offer.plot,offer.improvement,
+                offer.unit,offer.unitType,offer.x,offer.y,offer.artifact)==1,'Native material worker loan rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

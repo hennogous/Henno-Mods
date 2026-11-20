@@ -360,8 +360,46 @@ restoration job from the CSC model under the existing per-player offer
 budget. Revalidate the current holder's native permission, same-priority
 request, completion of its current action pass and lack of an actionable
 clearance. Let the stock evaluator choose among the eligible offers.
-Integration, ordinary-game supply and competing work measurements, and
-the processing-time comparison remain open.
+
+### Packaged CSC and CE follow-through
+
+The CSC material planner publishes a loan alongside its existing positive
+supplier entry when a present buyer lacks that input and a charged Builder
+has a verified route. The native worker consumer checks the exact admitted
+job, the worker's live position and custody, and the completed district
+clearance states before permitting a release comparison. The loan is
+limited to one comparison per AI player and packet. The game's evaluator
+still selects the candidate. The offer, the released candidate and the
+physical job are logged separately.
+
+The first packaged replay used the saved turn-128 opening, the stock tree,
+and the new CE DLL with three tracked CSC Lua files. It used ordinary
+status and physical observation without the development probe. The planner
+published Bamboo at 1977 for Builder 7864354. The turn-129 policy readback
+reported one offer from Thessalonica controller 39714833 to Axum controller
+39583784 during turn 128, with 179 microseconds in the qualifying release
+path. Bamboo had a working Sawmill and both transaction effects were active
+at turn 133. Full-turn processing includes more than that single callback.
+Evidence is in `axum-integrated-worker-loan-128-133`.
+
+The final pair used the same CE DLL, SHA-256 prefix `93dec610`, and the
+same turn-128 checkpoint. The control switched off loan publication.
+The enabled arm exposed 7864354 to native recruitment on 128, moved it
+to Bamboo on 128 and built the Sawmill on 131. The two native transaction
+effects were active on 133. The control had neither effect and Bamboo
+was unimproved at 133. The arm directories are
+`axum-final-integrated-loan-128-133` and
+`axum-final-integrated-control-128-133`.
+All 16 observed production queue records for Thessalonica, Gondar and Adwa
+matched between arms. Player 5's improvement construction requests rose
+from three to four and feature removal requests stayed at one. Both runs
+closed normally and restored preferences.
+
+The Release x64 build passed 265 native district-score checks, four
+hook-group checks and the instruction delivery check. CSC passed 198
+Lua policy, supplier and economy checks. The integration is published
+on [CE csc-dev](https://github.com/hennogous/CivilizationVI_CommunityExtension/commit/f9dbcda709f690b5aee1e240ef21683a56ee6150).
+Fresh ordinary-game validation remains open.
 
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can

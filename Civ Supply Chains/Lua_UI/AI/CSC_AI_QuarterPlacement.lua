@@ -278,7 +278,8 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
     -- A distant producer can still justify parallel work at its discounted
     -- value. The first-link floor is for a buyer ready within the existing
     -- five-turn Builder planning allowance.
-    local floor = (hasWorkingMaterial(supply) or committedBuyer and committedBuyer.turns>MATERIAL_QUEUE_HORIZON)
+    local supplied = hasWorkingMaterial(supply)
+    local floor = (supplied or committedBuyer and committedBuyer.turns>MATERIAL_QUEUE_HORIZON)
         and 0 or bid
     local playerID = player:GetID()
     local best, bestLocked
@@ -366,6 +367,9 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
             -- sole mapped supplier. Construction and additional deposits
             -- still use the ordinary bids. Shared buyers may qualify one job.
             job.finishRepair=job.finishRepair or (operatingBuyer and #supply==1 and candidate.repair)
+            -- One working input restores this material channel to a present buyer.
+            -- An eligible replacement deposit can restore it while the old one waits.
+            job.restoreSupply=job.restoreSupply or (operatingBuyer and not supplied)
             if committedBuyer and (not job.commitment or committedBuyer.turns<job.commitment.turns) then
                 -- Diagnostic source for the earliest queued buyer on a shared
                 -- job. Its contribution is already accounted for in job.value.
@@ -653,7 +657,7 @@ function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominati
                         builderSites[#builderSites+1]={player=playerID,city=cityID,plot=index,
                             improvements={improvement},deltaQ8=math.min(builderBidLimit,math.max(job.floor,job.value)),
                             jobValueQ8=job.value,ordinaryQ8=job.ordinary,repair=job.repair,
-                            finishRepair=job.finishRepair,commitment=job.commitment}
+                            finishRepair=job.finishRepair,restoreSupply=job.restoreSupply,commitment=job.commitment}
                     else
                         allowed[#allowed+1]=improvement
                     end
@@ -709,11 +713,29 @@ end
 -- that exact fallback, which CE can use only when the native tree actually
 -- requests a Builder. The optional finish offer supplies an on-site Builder
 -- and sole-supplier repair. CE verifies that the native job already holds
--- that Builder. Stop both offers when supply works.
-function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit)
+-- that Builder. A separate loan offer can restore any missing material at
+-- an operating buyer. It names a routed worker and expires with this packet.
+local loanArtifactIndex
+local function loanArtifact()
+    if loanArtifactIndex~=nil then return loanArtifactIndex end
+    local artifact = GameInfo.Resources.RESOURCE_ANTIQUITY_SITE
+    loanArtifactIndex = -1
+    if artifact and GameInfo.Resource_Harvests then
+        local harvestable=false
+        for row in GameInfo.Resource_Harvests() do
+            if row.ResourceType==artifact.ResourceType then harvestable=true;break end
+        end
+        if artifact.ResourceClassType=='RESOURCECLASS_ARTIFACT' and not harvestable then
+            loanArtifactIndex=artifact.Index
+        end
+    end
+    return loanArtifactIndex
+end
+
+function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit, loanEnabled)
     dispatchLimit=dispatchLimit or 0
     local builder=GameInfo.Units and GameInfo.Units.UNIT_BUILDER
-    if (limit<=0 and dispatchLimit<=0) or not builder or not player.GetUnits or not ui
+    if (limit<=0 and dispatchLimit<=0 and not loanEnabled) or not builder or not player.GetUnits or not ui
         or type(ui.GetEconomyCityNumber)~='function' then return {},{} end
     -- One estimate of each plot's best job, one shareable roster, and one
     -- list of compatible units in production for the entire AI player.
@@ -762,6 +784,7 @@ function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit)
         end
     end
     local uncovered,contingent,dispatch,dispatchUnits,pathChecks={},{},{},{},0
+    local loan
     local getPath=UnitManager and UnitManager.GetMoveToPath
     for _,site in ipairs(jobs)do
         local plot=Map.GetPlotByIndex(site.plot)
@@ -778,6 +801,7 @@ function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit)
         end)
         for _,candidate in ipairs(nearby)do
             local reachable=true
+            local routeVerified=candidate.distance==0
             -- Bound expensive route reads. If the API or budget is absent,
             -- count the near charge conservatively and let native recruiting
             -- own the actual assignment instead of assuming a new unit is due.
@@ -786,10 +810,20 @@ function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit)
                 local ok,path=pcall(getPath,candidate.unit.object,site.plot)
                 if ok then
                     reachable=type(path)=='table' and (path[1]==site.plot or path[#path]==site.plot)
+                    routeVerified=reachable
                 end
             end
             if reachable then
                 worker=candidate.unit
+                -- Publish one proven route for an operating buyer with a missing
+                -- material. CE checks the worker's position, whether the holder
+                -- has idle work and whether this exact job needs recruitment.
+                if loanEnabled and not loan and site.restoreSupply and routeVerified
+                    and worker.kind==builder.Index and site.deltaQ8>0 then
+                    loan={player=site.player,city=site.city,plot=site.plot,
+                        improvement=site.improvements[1],unit=worker.object:GetID(),
+                        unitType=worker.kind,x=worker.x,y=worker.y,artifact=loanArtifact()}
+                end
                 -- A candidate here is only provisional. The native worker
                 -- pass checks custody and position again before changing order.
                 if #dispatch<dispatchLimit and candidate.distance==0 and site.finishRepair
@@ -869,7 +903,7 @@ function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit)
         if #result>=4 then break end
         sponsor(site,site.jobValueQ8-site.deltaQ8,true)
     end
-    return result,dispatch
+    return result,dispatch,loan
 end
 
 -- An unowned supplier needs its own investment, separate from buying a Quarter
