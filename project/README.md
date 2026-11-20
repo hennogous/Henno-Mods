@@ -15,7 +15,9 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | `docs/` | Internal/project documentation: durable, human-readable reference for collaborators and future maintainers: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. If a CSC collaborator should be able to use it without Hermes, it belongs here. |
 | `../memory/` | Versioned agent/project memory: session carryover, working notes, feedback, local lessons, and historical context. Treat it as agent-facing scratch/reference; promote durable human-facing truth to `docs/` or public `../docs/` when it matters. |
 | Hermes `civ-supply-chains` skill | Agent operational context only: local paths, workspace rules, what Bill/Garfield should read first, and stable CSC gotchas. Do not use it as the only home for collaborator-facing project truth. |
-| Hermes `civ6-gameplay` skill | Generic reusable Civ VI modding knowledge. Do not put CSC-specific notes there. |
+| `civ6-gameplay` skill | Reusable gameplay implementation, SQL, Lua, and mod structure. |
+| `civ6-art` skill | Reusable visual asset creation and integration. |
+| `civ6-ai` skill | Verified AI engine behavior, native decision traces, and reusable AI-N findings. |
 
 ## docs/
 
@@ -97,9 +99,13 @@ Scripts accumulated during development. Paths may need updating if the source da
 - `firetuner/run_csc_demo.py` — **Full end-to-end script**: kill → Steam launch → new game → 50-turn autoplay → snapshot (~90s, confirmed working)
 - `cn6libs/` — CN6 tool binaries: `CivNexus6.exe`, `CN6ToFGX.exe`, `FGXToCN6.exe` (pipeline dependencies)
 
-The shared [Civ VI art skill](https://github.com/hennogous/civ6-art) is maintained in its own repository and installed alongside the CSC and Civ VI modding skills. Project-specific art decisions remain in [the building art plan](docs/art/quarter-building-art-plan.md).
+## Shared Civ VI skills
 
-Shared skills are split by responsibility: [civ6-gameplay](https://github.com/hennogous/civ6-gameplay) owns gameplay, SQL/Lua and general mod structure; [civ6-art](https://github.com/hennogous/civ6-art) owns visual assets from creation through export, registration and cooking. CSC-specific plans and implementation contracts stay in this repository.
+- Use `civ6-gameplay` for gameplay implementation, SQL, Lua, and mod structure. [Repository](https://github.com/hennogous/civ6-gameplay)
+- Use `civ6-art` for visual assets from creation through export, registration, and cooking. [Repository](https://github.com/hennogous/civ6-art)
+- Use `civ6-ai` for AI behavior, native decision traces, and interpretation of tuning results. [Repository](https://github.com/hennogous/civ6-ai)
+
+On Shadow the Git checkouts live together under `C:\Users\Shadow\.agents\skills`. Codex uses the corresponding junctions under `C:\Users\Shadow\.codex\skills`. CSC-specific plans and contracts stay in this repository.
 
 CSC-specific art budgets, scale baselines, palettes and tool observations live in the [CSC skill](https://github.com/hennogous/civ-supply-chains), starting with its [production conventions](https://github.com/hennogous/civ-supply-chains/blob/main/references/art-production-conventions.md). Shared Civ VI guidance remains in `civ6-art`; the project art plan remains the source for asset decisions.
 

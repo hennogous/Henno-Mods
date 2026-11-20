@@ -253,15 +253,18 @@ Use the skills and docs according to audience:
 |---|---|
 | `civ6-gameplay` skill | Generic, reusable Civ VI gameplay knowledge: SQL schema, modifiers, Lua/UI logic, general `.modinfo` / `.civ6proj` structure, compatibility and engine gotchas. Keep this shareable; do not add CSC-specific notes. |
 | `civ6-art` skill | Generic visual workflows: concepts, models, materials, icons, strategic view, overlays, export, Asset Editor, ArtDefs, XLP/BLP and cooking. |
+| `civ6-ai` skill | Reusable Civ VI AI engine knowledge, native decision traces, modding controls and the AI-N finding register. |
 | `civ-supply-chains` skill | Bill/Hermes operational context for CSC: local paths, workspace rules, what to read first, stable CSC gotchas, and pointers to canonical repo docs. |
 | `docs/` | Public-facing docs site for players/readers. |
 | `project/docs/` | Internal human-readable project documentation for collaborators and future maintainers; if it should survive beyond agent session context, put/promote it here. |
 | `memory/` | Agent-facing session carryover, working notes, feedback, local lessons, and historical context; not the final home for durable collaborator-facing truth. |
 
-Rule of thumb: if another Civ VI modder could use it on a different mod, put it in `civ6-gameplay` for rules/logic or `civ6-art` for visual work; if CSC collaborators need it without Hermes, put it in the repo docs; if it tells Bill/Hermes how to work correctly on Shadow/CSC, put it in `civ-supply-chains`.
+Put reusable rules and Lua guidance in `civ6-gameplay`, visual workflows in `civ6-art`, and verified AI engine findings in `civ6-ai`. Put durable CSC decisions and evidence in the repo docs. Keep local operating guidance in `civ-supply-chains`.
 
 ## Shared skill ownership
 
-Use installed `civ6-gameplay` for gameplay, SQL/XML effects, Lua/UI logic and general mod structure. Use installed `civ6-art` for all art: concepts, models, painted materials, icons, strategic view, overlays, export, Asset Editor, ArtDefs, XLP/BLP and cooking. `civ-supply-chains` owns all CSC-specific instructions, including art budgets, kit scale, palettes, tool recipes and host observations. Load its `references/art-production-conventions.md` for CSC art work; project design decisions remain in the art plan.
+Use `civ6-gameplay` for gameplay implementation, `civ6-art` for visual assets and integration, and `civ6-ai` when researching or interpreting AI decisions. On Shadow, their canonical Git checkouts and `civ-supply-chains` are siblings under `C:\Users\Shadow\.agents\skills`. Codex loads them through junctions under `C:\Users\Shadow\.codex\skills`.
+
+`civ-supply-chains` owns CSC-specific operating guidance, including art budgets, kit scale, palettes, tool recipes and host observations. Load its `references/art-production-conventions.md` for CSC art work. Project design decisions remain in the art plan.
 
 The generic skills refer to the modder’s projects without depending on CSC. For this project, `civ-supply-chains` supplies that context. ImageGen and deterministic building-icon/SV production remain project-specific; their publication has not been decided.

@@ -31,9 +31,13 @@ need separate checks.
 5. Check changed links and evidence scope. Run meaningful code tests when implementation changes. Knowledge edits do not need Quartz, Mermaid rendering or a website deployment.
 6. Make regular scoped commits and pushes in each affected repo. Keep unrelated workspace changes out. Review CE contributions with Henno before any upstream PR.
 
-The installed skill is a separate Git repository. Its canonical files are
-`SKILL.md`, focused engine references and `references/engine/findings.md`.
-The old native topic paths in this repo are pointers, preserving existing links.
+On Shadow, the canonical Git checkout is `C:\Users\Shadow\.agents\skills\civ6-ai`,
+beside `civ6-gameplay` and `civ6-art`. Codex loads the same checkout through
+`C:\Users\Shadow\.codex\skills\civ6-ai`. Its maintained files are `SKILL.md`,
+focused engine references, and `references/engine/findings.md`.
+The old native topic paths in this repo preserve links to the skill. The
+original `project/skills/civ6-ai/SKILL.md` and the local `docs/.ai-handbook/`
+render tree belong to the retired handbook workflow.
 
 The JSON registers and source catalogue under `data/` are historical migration
 snapshots, not another live publishing database. The former renderer remains

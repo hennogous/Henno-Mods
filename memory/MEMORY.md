@@ -1,3 +1,13 @@
+# Shared Civ VI skills
+
+On Shadow, use the Git checkouts under `C:\Users\Shadow\.agents\skills`.
+The sibling `civ6-gameplay` skill covers SQL, Lua, and mod structure.
+`civ6-art` covers asset creation and integration. `civ6-ai` covers engine
+decisions, native traces, and reusable AI-N findings. `civ-supply-chains`
+supplies CSC-specific context. Codex discovers all four through junctions
+under `C:\Users\Shadow\.codex\skills`. Start CSC AI work from the AI index
+and numbered roadmap, with reusable engine findings in `civ6-ai`.
+
 # CURRENT: new-chat handoff,17 November
 
 Start at project/docs/civ6-ai/HANDOFF.md, then STATUS.md and the numbered roadmap.
