@@ -36,6 +36,10 @@ them in the same change. Review their accuracy and usefulness before committing.
 
 ## Native code and Community Extension contributions
 
+Put new CE APIs and native changes needed by CSC tuning on `csc-dev` in
+[the CE fork](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/csc-dev).
+Its working checkout on Shadow is `Desktop/Codex/CE-fork`.
+
 Treat maintainability as a high-priority review requirement from the first
 implementation. Start with the nearest feature on CE `develop` and follow its
 C++ style, module structure, hook and runtime APIs, and lifecycle. Keep raw

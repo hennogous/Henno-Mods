@@ -8,6 +8,11 @@ supplies CSC-specific context. Codex discovers all four through junctions
 under `C:\Users\Shadow\.codex\skills`. Start CSC AI work from the AI index
 and numbered roadmap, with reusable engine findings in `civ6-ai`.
 
+New native changes and CE APIs for CSC tuning go on `csc-dev` in
+`hennogous/CivilizationVI_CommunityExtension`. On Shadow, use
+`Desktop/Codex/CE-fork`. Use the branch README to build and package CE
+from tracked source and public dependencies.
+
 # CURRENT: new-chat handoff,17 November
 
 Start at project/docs/civ6-ai/HANDOFF.md, then STATUS.md and the numbered roadmap.
