@@ -5,20 +5,57 @@
 | Topic | Description | Status |
 | --- | --- | --- |
 | [1. Quarter placement](#1-quarter-placement) | Choose productive, legal Quarter sites. Buy viable sites when justified and defer weak options. | Bakers and Tailors guidance integrated. Broader purchase and construction reliability remains open. |
+| 1.1 Materials | Prefer viable mapped Base and Specialty deposits, including compatibility resources. | Base-aware siting verified in a matched native choice. |
+| 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | A prospective customer changed a matched native choice. Broader provider coverage remains open. |
+| 1.3 Rivers | Price the river and Mill geometry the site can use. | River/Mill geometry changed the chosen Bakers site. |
+| 1.4 Adjacency | Prefer +3 with +2 as the ordinary minimum and a narrow Tailors exception. | Stronger siting verified in a replay and observed in full games. |
+| 1.5 Tile purchase | Secure worthwhile Quarter footprints and material deposits. | Paid footprint and supplier acquisition verified. Wider reliability remains open. |
+| 1.6 Construction readiness and follow-through | Carry legal, affordable plans through capacity checks, foundation, and completion. | Integrated follow-through verified in a representative paid-footprint case. |
+| 1.7 Place or defer | Defer weak city plans and reconsider when viable supply appears. | Deferral and reconsideration verified in separate representative cases. |
+| 1.8 Discourage poor placements | Reduce the value of individual weak or destructive sites. | Weak-site suppression verified. Wider siting calibration remains open. |
 | [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Customer placement closed for the tested Bakers and Tailors scope. Broader material protection remains open. |
-| [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply. Assign reachable Builders and request more capacity when needed. | Scheduling off by default. Opt-in finishing restored Kish's sole supplier in a matched replay. Wider qualification remains open. |
-| [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Mill bids verified in selected games. Broader coverage and qualification remain open. |
+| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Closed at the tested Bakers/Tailors scope. |
+| 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
+| [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Ready to proceed to Problem 4. Continue tracking Builder delivery as broader qualification. |
+| 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
+| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Delays traced to job competition, recruitment, and failed follow-through. Exact worker custody is the next trace. |
+| 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
+| [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Next focus. Verify first-producer unlocks and production for Bakers and Tailors. |
+| 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
+| 4.2 Build | Bid for the legal producer when its Base supply justifies investment. | Wind Mill nomination and follow-through verified. Wider Mill and Textile Workshop coverage remains open. |
 | [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Granary follow-through observed. Broader customer coverage remains open. |
+| 5.1 Build | Favor the mapped customer building, including unique replacements. | Granary purchase and exchange verified in selected cases. |
 | [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Storekeeper operation verified in selected chains. Unlock guidance and strategic priorities remain open. |
+| 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | Service operation verified. Unlock guidance remains open. |
+| 6.2 Strategy | Adjust the value for empire needs and victory direction. | Deferred. |
 | [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Planned. |
+| 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Planned. |
+| 7.2 Build | Value construction from population 10 against ordinary competition. | Planned. |
 | [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Planned. |
+| 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Planned. |
 | [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Planned. |
+| 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | Planned. |
+| 9.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Planned. Specialty supplier work is already covered under Problem 3. |
+| 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Planned. |
+| 10.2 Build | Value construction from population 10, including Specialty development costs. | Planned. |
 | [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Wonder placement guidance implemented. Customer-building guidance and broader qualification remain open. |
+| 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Planned. |
+| 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Guidance implemented. Representative native receipt and placement remain open. |
 | [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Planned. |
+| 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Planned. |
+| 12.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [13. Recovery and retention](#13-recovery-and-retention) | Repair damaged links, protect working supply and replan after permanent losses. | Repair and protection verified in matched replays. Broader recovery and replanning remain open. |
+| 13.1 Repair | Restore damaged suppliers, Quarters, and customer assets. | Matched supplier and Quarter recoveries verified. Other sequences remain open. |
+| 13.2 Replan | Reassess after capture, destructive work, or permanent supplier loss. | Permanent-loss cases identified. Replanning follow-through remains open. |
+| 13.3 Preserve supply in Builder decisions | Protect working supply from replacement and harvesting before reservation. | Protection implemented. Wider harvest and replacement coverage remains open. |
 | [14. Competing uses and shared plans](#14-competing-uses-and-shared-plans) | Compare new investments with finishing or repairing existing chains and avoid double-counting shared benefits. | Shared bids and Service forecasts partly implemented. Full-game calibration remains open. |
+| 14.1 Sequence investment | Compare opening, finishing, repairing, and deferring chains against ordinary costs. | Opening costs measured. Broader bidding and sequencing calibration remains open. |
+| 14.2 Resolve conflicts | Resolve shared suppliers, customer benefits, and competing footprints. | Shared Granary bid deduplication verified in a fixture. Wider conflicts remain open. |
+| 14.3 Prospective Service value | Add each credible Service benefit once to the relevant spatial bid. | Bakers/Tailors Quarter valuation implemented. Live calibration and customer-side pricing remain open. |
 | [15. Quarter investment and trade](#15-quarter-investment-and-trade) | Compare local production with imports and value trade routes to supplied Quarters. | Deferred until Bakers Stage 2 qualification. |
+| 15.1 Price lost import benefits before building | Include the import value a same-family local Quarter could remove. | Deferred. |
+| 15.2 Value supplied Quarter destinations | Price eligible CSC returns in the native route comparison. | Deferred. |
 
 ## Current work
 
@@ -29,19 +66,46 @@ gain post-Quarter links; customer-first totals stay30. Mean overhead adds0.130s
 per turn; source/input/v3 and same-mature-state timing checks pass. Short native
 choice/foundation, stronger-site and invalidation gates complete the loop.
 No fourth seed or new premium is needed. [Completion audit and results](../research/mods/csc-ai-customer-scheduling-20261117.md).
-**Current priority is Problem 3, actual material development.** The
+**Earlier broad-dispatch comparison.** The
 Fractal treatment reached turn 250. At turn 240, the latest common boundary,
 on-time supply was 17 of 20 with dispatch and 18 of 20 in the control.
 [Matched Fractal results](../research/mods/csc-ai-material-development-matched-20261118.md#fractal-dispatch-comparison-at-verified-snapshots).
 
-**19 November — finishing-only replay.** Regular play leaves scheduling
-disabled and keeps the improvement and Builder-request bids. Both Kish
-arms loaded turn 166 with an operating Water Mill, pillaged sole Flax Farm
-and the same charged Builder on the tile. The opt-in arm finished the
-native repair on 166. The default arm still had pillaged Flax at 170.
-Finishing remains an experimental replay option.
+**20 November — sole-supplier repair finishing enabled.** The Kish replay
+restored the Flax Farm on turn 166 with scheduling on. With scheduling off,
+the Farm was still pillaged at 170. Both tuned Continents variants repaired
+the Barley Farm on 119 and finished with the same economic outcomes. Regular
+play now uses the finishing-only CE consumer when available.
+[Updated build and Continents comparison](../research/mods/csc-ce-steam-26595377-port-20261120.md).
+
+**Next focus is Problem 4, the Stage 2 producer.** On Continents, both tuned
+variants supplied 20 of 25 eligible buyers within 15 turns and recovered all
+three observed supply outages. One Tailors outage still took 40 turns.
+Keep measuring the time from producer commitment or supply loss to working
+supply during the Problem 4 trials. The remaining Builder delivery problem
+belongs to 3.2. Further improvement-unlock work in 3.3 stays deferred.
+For 4.1 and 4.2, follow the producer unlock through research, then follow a
+legal Mill or Textile Workshop through the native production comparison and
+completion.
+
+**3.2 follow-up in the recorded Continents runs.** Axum admitted the Bamboo
+job as soon as its Tailors supply failed on turn 115. Before the Sawmill
+completed on 154, its city improvement tree recorded 25 failed Builder
+searches, five successful searches, and four failed Protect Unit checks.
+The Flax repair's Builder contract was marked complete on 142, and the job
+failed Protect Unit the same turn. At Naranjo, the first Barley repair waited 12
+turns for a reservation while other jobs held the improvement slot. Both
+cities logged a failed build after a successful move. The preceding
+build log named `IMPROVEMENT_BARBARIAN_CAMP` despite a different admitted
+plan. Confirm the actual operation and its arguments before interpreting
+that label. For the next focused trace, record each candidate Builder's
+processed flag, controller, and moves from recruitment through Protect Unit
+and the actual improvement attempt.
+[Continents runs and archive](../research/mods/csc-ce-steam-26595377-port-20261120.md#continents-benchmark).
 
 ### Problem 3 qualification campaign
+
+This earlier qualification plan is retained for broader Problem 3 testing.
 
 The matched checkpoint tests cover Kish Builder dispatch, Specialty work
 during Stage 4 construction, and rebuilding a lost last supplier with an
@@ -1086,6 +1150,12 @@ until the active check closes or an explicit dependency needs attention.
   extending it to other new-district consumers.
 
 ### 3. Material work and Builder capacity
+
+The active profiles cover Bakers and Tailors. Each reads its Base and
+Specialty assignments from the loaded CSC gameplay tags and joins those
+resources to Civ VI's `Improvement_ValidResources` table. Compatibility
+rows use the same path. Native checks establish whether a mapped improvement
+is legal on the actual plot and available to its owner.
 
 - **3.1 Exact job and timing.** Prioritize Base work when the Stage 2 buyer
   enters active production, and Specialty work when the Stage 4 buyer enters
