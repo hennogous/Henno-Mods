@@ -399,7 +399,23 @@ The Release x64 build passed 265 native district-score checks, four
 hook-group checks and the instruction delivery check. CSC passed 198
 Lua policy, supplier and economy checks. The integration is published
 on [CE csc-dev](https://github.com/hennogous/CivilizationVI_CommunityExtension/commit/f9dbcda709f690b5aee1e240ef21683a56ee6150).
-Fresh ordinary-game validation remains open.
+
+### Edinburgh in ordinary play
+
+The first fresh validation uses Small Continents on Online speed, map seed
+`793412556` and game seed `1390346751`, with the packaged CSC and CE code and
+stock AI. The shared controller started a normal game without changing
+gameplay state. Its turn-186 check found the first native loan in the run.
+
+On turn 167, CE offered Builder 7667722 to Edinburgh's admitted Pasture
+job at plot 2250, with native improvement value 179. The same job had
+asked for a Builder through contract 3713. It canceled that contract after
+finding the existing worker. The unit moved and built the Pasture on 167.
+The material observer independently recorded the improvement on Cattle
+2250, next to Bakers 2323. The buyer had zero working Base suppliers at
+the turn-167 survey and one at turn 168. The native guard measured 0.177 ms
+at the successful release callback. The ordinary turn-time and competing
+work comparison still need the two closed runs.
 
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can

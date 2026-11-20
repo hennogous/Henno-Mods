@@ -18,7 +18,7 @@
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Current focus is 3.2 Builder availability and follow-through. |
 | 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
-| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | The packaged handoff restored Bamboo and Workshop effects in a same-build replay. Qualify supply, displacement and processing time in ordinary play. |
+| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | The matched handoff restored Axum's Bamboo. In a fresh game, the handoff supplied Edinburgh's Bakers with Cattle. The full-game comparison is running. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
 | [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Queued after the 3.2 follow-up. First-producer unlocks and production remain open for qualification. |
 | 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
@@ -104,8 +104,9 @@ without work. Bamboo was built on turn 131 and both material transaction
 effects were active on 133. The passive control still had no supply. The
 three competing cities' observed production queues matched. The integrated
 CSC and CE packages reproduced this result with a one-comparison-per-player
-packet limit. Next qualify supply, displacement and processing time in
-ordinary play.
+packet limit. On the fresh Continents seed, Edinburgh's handoff on 167
+canceled a pending Builder contract and put a Pasture on the Cattle that
+supplies its Bakers Quarter. The full-game comparison is still in progress.
 [Availability test and results](../research/mods/csc-ai-axum-builder-availability-20261120.md).
 The producer work in 4.1 and 4.2 and further improvement-unlock work in 3.3
 are queued.
