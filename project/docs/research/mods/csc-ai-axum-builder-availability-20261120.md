@@ -94,12 +94,122 @@ and worker rules.
 Axum's native Bamboo job passed Check Plot and requested an ordinary
 Builder on turn 128. The original run also showed a different ordinary
 Builder building the Sawmill on that plot and restoring Tailors supply.
-The outstanding question concerns Builder 7864354's availability at the
-native recruitment check.
 [Original physical completion](csc-ai-axum-builder-handoff-20261120.md#same-builder-resumed-the-bamboo-job).
+
+## Builder custody during the actual recruitment call
+
+The shared controller loaded the controlled run's turn-128 autosave,
+SHA-256 `78a30851782f4b5144b38fdd1b05c0736fdda25a749df6b1653a082abdce2237`.
+The replay verified the Builder roster and damaged Flax before advancing
+to 131. It ran the same CSC and CE packages. The passive trace sampled
+the stock recruit call and its candidate evaluator for Axum's target.
+It captured three complete requests with zero callback faults and closed
+with native exit 0 and restored preferences.
+
+Axum requested a Builder at native priority 2 and 230 utility on all
+three turns. Builder 7864354 was two tiles from Bamboo with three charges,
+`processed=0` and `departing=0` at each request. It was already under a
+different controller, and custody remained with that controller after
+each request. The candidate evaluator received zero Builders. The unit
+went on to skip each of the observed turns.
+
+| AI turn | Axum controller | Builder 7864354 at recruitment | Free-unit pool size, all types |
+| --- | ---: | ---: | ---: |
+| 128 | 39583784 | 39714833 | 12 |
+| 129 | 39583784 | 40370200 | 13 |
+| 130 | 39583784 | 41353222 | 23 |
+
+The same replay with the release trace resolved all three holders to a
+Thessalonica Rural Community district tree at (51, 18). The native
+destination, city and whole-utility values matched the City Lights
+district entries in the behavior log. Every release request ran at
+priority 2 and returned an empty list. The holders allowed release but
+had present values of 1,508, 1,570 and 1,258, against Axum's 230. The
+opening route query found a path through the Tailors Quarter to Bamboo
+(1829 → 1902 → 1977).
+
+The district tree used its tile-clearing recruitment branch. The loaded
+tree makes Find Available Unit, movement, clearing and reservation
+alternatives under a Priority node. That node stops at the first
+successful or running child. On the three turns, Find Available Unit
+succeeded and movement and clearing remained ready. On the same turn
+128, Taiyuan's failed recruitment let the later clearing nodes run with
+no Builder. The `Using builder charge` label belongs to the separate
+district-hurrying branch. The loaded Rural Community had no
+`District_BuildChargeProductions` row.
+
+### One-time borrowing test
+
+The same turn-128 checkpoint reproduced the exact initial comparison.
+A local diagnostic passed 1,509 to the holder for that single release
+call, one above the holder's 1,508. It checked both controller identities,
+priority 2, both sites, and that Builder 7864354 was the only ordinary
+Builder held for that job. The native routine offered the Builder,
+the receiving evaluator chose it and the control manager transferred
+it to Axum. The stock job still held its ordinary 230 utility.
+
+Builder 7864354 moved to Bamboo on 128. Thessalonica temporarily
+recaptured it and it skipped 129 and 130. Axum recruited it again
+from the ordinary free pool on 131 and the unit built the Sawmill that
+turn. It had used one charge by the next recruitment read. At the
+turn-133 boundary the Sawmill was working and the Flax Farm was still
+pillaged. In the original controlled outage both Base resources were
+still out at 133. Thessalonica repeatedly reserved the same district
+site in the borrowing replay. It did no observed clearing during the
+window. The diagnostic confirms the cost of the worker hold without
+establishing a production bid for general play.
+
+### Stock clearance tree experiment
+
+The loaded stock clearance nodes matched Firaxis's
+`Base/Assets/Gameplay/Data/BehaviorTrees.xml`. City Lights provided the
+Rural Community and its value. The branch that assigned the Builder
+came from the stock game. The replay used the same save and packages
+with one diagnostic SQL action. It changed the inner clearance Priority
+node 15 from `JumpTo=22` to `JumpTo=17`. The loaded database confirmed
+that change. The outer plot-check selector stayed the same. Successful
+recruitment now advances to movement and clearance in the enclosing
+Sequence. The diagnostic kept the native bid comparison in place.
+
+Thessalonica began moving a Builder to (51, 18) on 128 and reported
+arrival and successful Clear Plot on 130 with Builder 7208963. Builder
+7864354 made movement or improvement-removal requests for other jobs
+instead of skipping. At Axum's recruitment it had already processed.
+Bamboo stayed bare at 133 and the Flax Farm was still pillaged.
+Thessalonica's opening plot reported no resource, feature, improvement
+or district. It reported resource index 47 at 133 and still had no district.
+The Clear Plot success is a behavior result. It does not by itself
+establish a physical clearance.
+
+This isolates a defect in the stock tree's clearance sequence. The
+Priority node performs its documented short-circuit, which repeatedly
+obtained a Builder while skipping the work that could justify holding it.
+The stock release rule separately honored the holder's higher value.
+The trial repair of the sequence demonstrated movement and clearance
+execution. It also exposed the need to validate that the plot actually
+needs clearing before sending a Builder or testing a production change.
+The next 3.2 comparison should preserve useful stronger work and measure
+physical supply and any competing work affected.
+
+On the installed Windows Gathering Storm binary, `RecruitUnits` at
+`403170` excludes a controlled unit from the initial free pool. It can
+consider a held unit if its current controller offers it. REA decompiled
+the entry and the chooser at `5535b0` from the same binary
+(`ev_141a99218c956ac1ab24c9db1ef3f1cab60ba90c61bc568c063b7c02d2ccf551`).
+The held-unit offer routine at `543870` gates release on permission and
+native request priority, then on present value at equal priority
+(`ev_ae7ac8ac0fab7ce32fd0cbc77c58cdc11ca66e8c3a7f92336c1db9339a5e968e`).
+The earlier inactive-boundary read saw the unit after that turn's
+controller released it. The recruitment trace identifies the state
+that mattered before the skip.
 
 Local evidence on Shadow lives under
 `Desktop/Codex/csc-ai-builder-availability-20261120`. The ordinary
 replay is `axum-through-143` and the controlled test is
 `axum-forced-outage-133`. The case summaries join the native behavior tree,
-city contract and unit operation logs to the boundary observations.
+city contract and unit operation logs to the boundary observations. The
+recruitment capture lives in `axum-recruit-128-131/recruitment.json`, with
+the route and holder releases in `axum-holder-128-131` and the one-time
+borrowing test in `axum-borrow-128-133`. The clearance experiment is in
+`axum-clearance-128-133`. The holder, borrowing and clearance replays
+all closed with exit code 0 and restored preferences.

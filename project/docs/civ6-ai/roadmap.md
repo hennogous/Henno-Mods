@@ -18,7 +18,7 @@
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Current focus is 3.2 Builder availability and follow-through. |
 | 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
-| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Current focus. Axum waited on an existing job, then missed recruitment with charged Builders nearby. |
+| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Current focus. Axum's Builder was retained by a stalled district-clearing tree. A scoped replay restored supply. The reusable fix and ordinary-game proof remain open. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
 | [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Queued after the 3.2 follow-up. First-producer unlocks and production remain open for qualification. |
 | 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
@@ -85,9 +85,13 @@ Measure from producer commitment or supply loss to working supply. The
 ordinary Axum replay matched the opening census and retained working Flax
 through turn 143. The controlled outage on turn 120 left Axum on its existing
 Farm job for eight turns. Its replacement Bamboo job then failed five
-Builder searches through turn 132, with a nearby charged Builder logging
-skips. Isolate that worker's eligibility at the exact recruitment check
-before choosing between an earlier pass and more capacity.
+Builder searches through turn 132. The exact recruitment trace found a
+charged Builder held by Thessalonica's Rural Community clearance job.
+A one-time native loan let it build the Sawmill on turn 131. A one-row
+change to the stock clearance tree let the stronger district assignment
+advance through movement and its clearance check, while Axum still waited.
+Validate that a competing clearing job can do useful work before changing
+the shared policy.
 [Availability test and results](../research/mods/csc-ai-axum-builder-availability-20261120.md).
 The producer work in 4.1 and 4.2 and further improvement-unlock work in 3.3
 are queued.
