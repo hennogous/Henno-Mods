@@ -274,6 +274,30 @@ released offer can arrive after the unit has acted. The clearance gate
 addressed the first for two cities in this fixture. Evaluate sequencing
 on a genuine clearance job before changing the bids for working jobs.
 
+### Clearance sequencing with the two-site guard
+
+The same replay combined the two-site guard with the selector span trial.
+The loaded database confirmed node 15 ended at 17. The guard again
+intercepted nine requests. Adwa recruited Builder 7864354 on turn 128.
+The unit moved on turns 128 and 129 and reached the plot at (48, 23).
+On turn 130 the district tree reported successful Clear Plot and the unit
+submitted Remove Improvement. Adwa continued building its Star Fort and
+then queued a Builder. Its Rural Community had not entered the queue by
+turn 133. The watched Builder had processed before all five Axum searches.
+On turn 131 it was free at the search but had already spent a charge on
+other improvement work. Axum still lacked working supply at turn 133.
+
+The sequencing change made the held Builder perform work. The original
+five-turn window still had no usable Builder for Axum, so the trial did
+not establish earlier supply. The loaded `TreeData` offers another point
+to check. `Build City District` node 16 binds Builder Type and Clearing
+Builder, with no destination (`DefnId=1`). Node 29 and the corresponding
+`Build City Improvement` nodes bind Location. The reference node uses
+sentinel coordinates for a missing target. A typed native evaluator
+compares equal-priority candidates by distance to its supplied target.
+Record the actual destination and chosen unit when testing the missing
+binding. The selector trial is in `axum-clearance-sequence-pair-128-133`.
+
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
 consider a held unit if its current controller offers it. REA decompiled
