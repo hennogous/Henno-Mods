@@ -298,6 +298,24 @@ compares equal-priority candidates by distance to its supplied target.
 Record the actual destination and chosen unit when testing the missing
 binding. The selector trial is in `axum-clearance-sequence-pair-128-133`.
 
+### Binding the district footprint to recruitment
+
+The next matched replay added `TreeData` destination binding 1, `Location`,
+to stock Find Available Unit node 16. It kept the same two-site guard and
+selector span used in the preceding replay. The loaded table contained the
+new binding. Adwa's actual evaluator received (48, 23) on turns 128 and 131,
+matching its Rural Community reservation. The turn-128 first pool still
+selected Builder 7864354. The unit moved on 128 and 129 and submitted
+Remove Improvement on 130, as in the preceding comparison. The unit had
+already processed at all five of Axum's searches. Axum still had no
+working supply at the turn-133 boundary.
+
+The destination binding works at the recruitment call. In this fixture it
+left the relevant choice and supply outcome unchanged. Captured pools,
+selections, commands and the end-state check are in
+`axum-clearance-location-128-133`. The controller recorded normal exit and
+restored preferences.
+
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
 consider a held unit if its current controller offers it. REA decompiled
