@@ -75,6 +75,29 @@ restoration, but its process remained alive. The test process was
 stopped after its identity and save were verified. The logs and both
 temporary packages were archived and no game or Tuner process remained.
 
+## Sawmill gameplay integration
+
+The loaded gameplay database maps Bamboo and Sugar Maple to Resourceful 2's
+Sawmill. Construction unlocks it, and its only allowed worker is the
+ordinary Builder. The City Lights Farmer can build a Farm in this stack.
+The Sawmill's Build Unit fallback requests the ordinary Builder.
+
+CSC's Resourceful 2 support tags Bamboo as Tailors Base and Sugar Maple
+as Bakers Specialty. The common material host processor joins those tags
+to the loaded improvement rules. The replay database contained Sawmill
+input hosts and matching improvement modifiers for both the Textile
+Workshop and Café transactions. The AI reads the same loaded resource
+and worker rules.
+[Resource tags](../../../../Civ%20Supply%20Chains/ModSupport/ModSupport_R2.sql) ·
+[Material host processor](../../../../Civ%20Supply%20Chains/Data/CSC_Q_ALL_MaterialHosts.sql).
+
+Axum's native Bamboo job passed Check Plot and requested an ordinary
+Builder on turn 128. The original run also showed a different ordinary
+Builder building the Sawmill on that plot and restoring Tailors supply.
+The outstanding question concerns Builder 7864354's availability at the
+native recruitment check.
+[Original physical completion](csc-ai-axum-builder-handoff-20261120.md#same-builder-resumed-the-bamboo-job).
+
 Local evidence on Shadow lives under
 `Desktop/Codex/csc-ai-builder-availability-20261120`. The ordinary
 replay is `axum-through-143` and the controlled test is
