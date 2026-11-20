@@ -232,6 +232,48 @@ classify the work available to the competing Builder at the recruitment
 or release boundary. An occupied plot may still lack any task the Builder
 can perform. Test that case separately from bare footprints.
 
+### Clearance commands and Antiquity Sites
+
+The loaded game identified resource index 47 as `RESOURCE_ANTIQUITY_SITE`
+with class `RESOURCECLASS_ARTIFACT` and no `Resource_Harvests` rows. The
+native plot can therefore become occupied without gaining a clearing job
+for a Builder.
+
+In the Windows XP2 reference binary (SHA-256 prefix `324c51e9`),
+`ClearPlotNode::Execute` at `55d970` first submits removal if the plot has
+an improvement. With no improvement it submits harvest when the bound
+Harvest flag is true. Otherwise it submits feature removal. Submission
+and execution are separate. `CanPlayerHarvestResource` at `35fba0` rejects
+a resource definition with no harvest actions before checking player
+eligibility. `CanPlayerRemoveFeature` at `5d9610` checks the feature's
+removable flag and the player's prerequisites and restrictions. These
+player-level checks are separate from the unit's charges and movement
+state in the operation callbacks. Entry fingerprints map the three
+routines to `55d9b0`, `35f460` and `5d9650` in Steam build 26595377
+(GameCore SHA-256 prefix `4de40abf`).
+
+### Suppressing both known requests without Builder work
+
+An exact turn-128 replay verified that both bare footprints were legal
+Rural Community placements. The diagnostic suppressed only the matching
+Thessalonica and Gondar clearance recruitments while they were bare or
+held only an Antiquity Site. Both cities kept their original city
+production choices through turn 132. The guard intercepted nine requests.
+
+Adwa took the same Builder on turns 128–130 and 132. Its turn-128 district
+site had an improvement and a resource. The later site had jungle. The
+district controller held it at bids from 1,135 to 1,743, and the unit
+skipped those turns. On turn 131 a different improvement controller
+offered the unit back to Axum's 230 request. The Builder had already
+moved and was marked processed. It did not enter the evaluated pool.
+Axum still had no working Base supply on turn 133.
+
+This separates three decisions. A site can lack a valid Builder action,
+a clearance tree can retain a Builder while skipping its move, and a
+released offer can arrive after the unit has acted. The clearance gate
+addressed the first for two cities in this fixture. Evaluate sequencing
+on a genuine clearance job before changing the bids for working jobs.
+
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
 consider a held unit if its current controller offers it. REA decompiled
@@ -253,5 +295,8 @@ recruitment capture lives in `axum-recruit-128-131/recruitment.json`, with
 the route and holder releases in `axum-holder-128-131` and the one-time
 borrowing test in `axum-borrow-128-133`. The stock tree change is in
 `axum-clearance-128-133` and the one-site recruitment comparison in
-`axum-empty-clearance-128-133`. The controller recorded normal game exit
-and restored preferences for these replays.
+`axum-empty-clearance-128-133`. The two-site comparison is in
+`axum-clearance-pair-128-133`. The controller recorded normal game exit
+and restored preferences for these comparisons. Two earlier launches
+of the two-site probe stopped before advancing because the opening
+readback used an unavailable Lua function and then the wrong UI context.
