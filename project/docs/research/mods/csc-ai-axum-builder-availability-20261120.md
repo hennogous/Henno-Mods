@@ -191,6 +191,47 @@ needs clearing before sending a Builder or testing a production change.
 The next 3.2 comparison should preserve useful stronger work and measure
 physical supply and any competing work affected.
 
+### Opening placement eligibility
+
+A separate zero-turn load of the same turn-128 save checked Thessalonica's
+Rural Community footprint before any Builder action. Plot 1383 at (51, 18)
+was owned by player 5 and assigned to Thessalonica. It was bare desert, with
+no feature, resource, improvement or district. `Plot:CanHaveDistrict` and
+the city's native `BUILD` operation both returned true. The plot was one of
+eight legal placement targets returned for that district in the city. The
+city had zero production invested and the district cost 33.
+
+The stock clearance branch therefore held Builder capacity for a footprint
+that could already accept the district through ordinary city production.
+The legal placement query establishes eligibility at that boundary. The
+actual district production choice still has to be read from the queue and
+the city-build log. The snapshot is in
+`axum-site-legality-128/district-legality.json`.
+
+### Suppressing recruitment for one bare footprint
+
+The same turn-128 save replayed to turn 133 with a one-site diagnostic.
+It intercepted the ordinary Find Available Unit recruitment call for
+Thessalonica's district clearance only while the plot held no feature,
+resource or improvement. It passed a null evaluator to `RecruitUnits`,
+which returns before recruiting in that case. The guard left published
+district and material values unchanged.
+
+Thessalonica's recruitment was suppressed on turns 128 and 129. At both
+of Axum's searches, Builder 7864354 was still unprocessed with three charges
+and had already been taken by another equally prioritized Rural Community
+controller, for Gondar at (58, 22). That plot was also bare. The new
+holder's whole utility was 1,429 and 1,417 against Axum's 230. On turn 130
+Thessalonica's destination held a resource and the guard left its request
+alone. Its controller held the Builder again. Axum still had a pillaged
+Flax Farm and an unimproved Bamboo tile at the turn-133 boundary.
+
+The immediate follow-on hold explains why removing a single city from
+the contention produced no earlier supply. Any reusable test needs to
+classify the work available to the competing Builder at the recruitment
+or release boundary. An occupied plot may still lack any task the Builder
+can perform. Test that case separately from bare footprints.
+
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
 consider a held unit if its current controller offers it. REA decompiled
@@ -210,6 +251,7 @@ replay is `axum-through-143` and the controlled test is
 city contract and unit operation logs to the boundary observations. The
 recruitment capture lives in `axum-recruit-128-131/recruitment.json`, with
 the route and holder releases in `axum-holder-128-131` and the one-time
-borrowing test in `axum-borrow-128-133`. The clearance experiment is in
-`axum-clearance-128-133`. The holder, borrowing and clearance replays
-all closed with exit code 0 and restored preferences.
+borrowing test in `axum-borrow-128-133`. The stock tree change is in
+`axum-clearance-128-133` and the one-site recruitment comparison in
+`axum-empty-clearance-128-133`. The controller recorded normal game exit
+and restored preferences for these replays.

@@ -18,7 +18,7 @@
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Current focus is 3.2 Builder availability and follow-through. |
 | 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
-| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Current focus. Axum's Builder was retained by a stalled district-clearing tree. A scoped replay restored supply. The reusable fix and ordinary-game proof remain open. |
+| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Current focus. A scoped loan restored Axum's supply. Blocking one bare-tile clearance request exposed a second hold of the same Builder. The reusable fix and ordinary-game proof remain open. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
 | [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Queued after the 3.2 follow-up. First-producer unlocks and production remain open for qualification. |
 | 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
@@ -90,8 +90,11 @@ charged Builder held by Thessalonica's Rural Community clearance job.
 A one-time native loan let it build the Sawmill on turn 131. A one-row
 change to the stock clearance tree let the stronger district assignment
 advance through movement and its clearance check, while Axum still waited.
-Validate that a competing clearing job can do useful work before changing
-the shared policy.
+Thessalonica's district was already legal on its bare footprint. Skipping
+its two bare-tile recruitments exposed another district controller holding
+the same Builder for a second bare plot. Axum stayed without supply. The
+next test needs to distinguish actionable clearance from an idle hold
+across cities.
 [Availability test and results](../research/mods/csc-ai-axum-builder-availability-20261120.md).
 The producer work in 4.1 and 4.2 and further improvement-unlock work in 3.3
 are queued.
