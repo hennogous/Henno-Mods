@@ -24,6 +24,9 @@ C.MaxAge=40
 C.AcquiredAge=15
 C.MaxPlans=256
 
+-- Decode saved intent into this turn's working state. Version 1 stores the
+-- footprint, prior valuation and freshness bookkeeping. Current eligibility
+-- comes from fresh facts when the publisher reconsiders the saved plan.
 function C.New(player,turn,encoded)
     local state={player=player,turn=turn,plans={},events={},eventsDropped=0}
     if type(encoded)=='string'and encoded:sub(1,2)=='1\n'and #encoded<=65536 then

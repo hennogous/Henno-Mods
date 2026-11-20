@@ -843,6 +843,8 @@ end
 -- search even when each producer alone cannot cover their upkeep. Two sweeps
 -- per seed bound the search. Exhausting the work
 -- budget returns unavailable instead of presenting a partial world as complete.
+-- Values cover this counterfactual world and flow back to the decision adapter
+-- for comparison with an alternative built from the same live snapshot.
 function M.JointForecast(world,price)
     local sites,keys,definitions={},{},{}
     local horizon=world.horizon

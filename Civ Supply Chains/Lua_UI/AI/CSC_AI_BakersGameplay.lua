@@ -160,7 +160,7 @@ local function eligiblePlayers(turn)
     return allowed
 end
 
-local function priority(a, b)
+local function publishBefore(a, b)
     -- Wide weak-site coverage must never crowd out supplier protection or
     -- a positive bid for a viable Quarter or its customer.
     if (a.weak == true) ~= (b.weak == true) then return not a.weak end
@@ -180,6 +180,8 @@ local function refresh(turn)
         bridge.Disable()
         return false
     end
+    -- Read receipts for the previous version before committing replaces its
+    -- counters. Both warm starts and reloads begin from CE's live version.
     local status = assert(bridge.Status())
     assert(tonumber(status:match('"ready":(%d+)')) == 1, 'CE district scoring is unavailable')
     assert(tonumber(status:match('"faults":(%d+)')) == 0, 'CE district scoring has faulted')
@@ -216,8 +218,9 @@ local function refresh(turn)
     -- Finish eligible sole-supplier repairs by default. The bridge grants
     -- capacity only when CE exposes the finishing-only worker consumer.
     -- Matched controls can set the test override to false for this packet.
-    local materialTechLimit,materialCivicLimit,materialRequestLimit,materialDispatchLimit=
-        bridge.MaterialDevelopmentLimits(materialStatus,CSC_AI_TEST_LAST_SUPPLIER_FINISH~=false)
+    local finishEnabled = CSC_AI_TEST_LAST_SUPPLIER_FINISH ~= false
+    local materialTechLimit, materialCivicLimit, materialRequestLimit, materialFinishLimit =
+        bridge.MaterialDevelopmentLimits(materialStatus, finishEnabled)
     local materialResearch,materialRequests,materialServices,materialCommitments,materialWorkers={},{},{},{},{}
     if materialStatus then
         -- These are earlier-packet native receipts. A compared topic can
@@ -304,7 +307,8 @@ local function refresh(turn)
         -- Four pending unlocks per empire are ample for the current buyers.
         -- Stable ordering keeps a busy empire from publishing marginal noise.
         for i=1,math.min(4,#topics)do materialResearch[#materialResearch+1]=topics[i] end
-        local requests,workers=placement.MaterialBuilderOffers(player,sites,playerUI,materialRequestLimit,materialDispatchLimit)
+        local requests, workers = placement.MaterialBuilderOffers(
+            player, sites, playerUI, materialRequestLimit, materialFinishLimit)
         for _,offer in ipairs(requests)do materialRequests[#materialRequests+1]=offer end
         for _,offer in ipairs(workers)do materialWorkers[#materialWorkers+1]=offer end
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
@@ -419,7 +423,7 @@ local function refresh(turn)
     if #entries>capacity then
         print(string.format('CSC_AI_ECONOMY_CAPACITY_TRIM turn=%d entries=%d limit=%d managedTypes=%d',turn,#entries,capacity,#managedTypes))
     end
-    table.sort(entries, priority)
+    table.sort(entries, publishBefore)
     local omitted = math.max(0, #entries - capacity)
     for i = #entries, capacity + 1, -1 do entries[i] = nil end
     -- Only retained, validated planner entries may request admission control.

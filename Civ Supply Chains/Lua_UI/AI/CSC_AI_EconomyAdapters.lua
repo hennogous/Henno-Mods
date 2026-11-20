@@ -1432,6 +1432,9 @@ function E.BuildingValue(snapshot,chain,building)
     return site and M.Marginal(site,building,snapshot.Price)
 end
 
+-- Quote the ordinary transactions and the contingent Service separately in
+-- signed Q8. The Builder policy can credit the Service once across competing
+-- jobs. Missing ordinary pricing leaves the resulting offer unavailable.
 function E.MaterialJobValue(snapshot,chain,kind,plot,improvement,workTurn,pendingBuyer)
     local streams=snapshot.MaterialJobStreams and snapshot.MaterialJobStreams(chain,kind,plot,improvement,workTurn,pendingBuyer)
     if not streams then return nil end

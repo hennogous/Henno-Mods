@@ -281,8 +281,8 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
     local floor = (hasWorkingMaterial(supply) or committedBuyer and committedBuyer.turns>MATERIAL_QUEUE_HORIZON)
         and 0 or bid
     local playerID = player:GetID()
-    local best, bestLocked, localJobs
-    localJobs={}
+    local best, bestLocked
+    local localJobs = {}
     local quote=economy and CSC_AI_EconomyAdapters and CSC_AI_EconomyAdapters.MaterialJobValue
     for _, material in ipairs(supply) do
         if not material.working then
@@ -715,7 +715,9 @@ function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit)
     local builder=GameInfo.Units and GameInfo.Units.UNIT_BUILDER
     if (limit<=0 and dispatchLimit<=0) or not builder or not player.GetUnits or not ui
         or type(ui.GetEconomyCityNumber)~='function' then return {},{} end
-    local jobs, byPlot, workforce, training={},{},{},{}
+    -- One estimate of each plot's best job, one shareable roster, and one
+    -- list of compatible units in production for the entire AI player.
+    local jobs, byPlot, workforce, training = {}, {}, {}, {}
     local workers=materialWorkers()
     local function canWork(unitType,site)
         if not workers then return unitType==builder.Index end

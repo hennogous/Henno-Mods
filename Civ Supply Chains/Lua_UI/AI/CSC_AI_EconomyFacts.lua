@@ -593,6 +593,9 @@ function F.SelectMaterialLegs(transaction,improvement,ready)
     return selected
 end
 
+-- Capture live state for one player's refresh. The lazy memo tables below
+-- belong to this snapshot, so queue, ownership and supply reads are refreshed
+-- at the next publication even when the static catalogs can be reused.
 function F.New(player,placement,ui,context)
     local c=definitions();local pid=player:GetID()
     local snapshot={player=player,id=pid,cities={},districts={},supplies={},research={},sites={},quotes={},

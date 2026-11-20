@@ -19,6 +19,7 @@ local MAX_WONDER_OFFER_Q8=24*256
 local LEGACY_WONDER_OFFER_Q8=8*256
 local MAX_MATERIAL_RESEARCH_Q8=64*256
 local MAX_MATERIAL_REQUEST_Q8=128*256
+local MAX_WORKER_FINISH_OFFERS_PER_PLAYER = 4
 local function integer(x,low,high)
     local kind=type(x)
     return (kind=='number' or kind=='integer') and x==math.floor(x) and x>=low and x<=high
@@ -54,21 +55,27 @@ end
 function B.MaterialDevelopmentStatus()
     if type(CE_AIMaterialDevelopmentStatus)=='function' then return CE_AIMaterialDevelopmentStatus() end
 end
+
+-- The first three results are maximum deltas in Q8. The fourth is a count
+-- of identity-only offers for the worker priority pass. Each optional family
+-- can be unavailable independently on an older or partially qualified CE build.
 function B.MaterialDevelopmentLimits(status, finishEnabled)
-    local function get(key)
-        return type(status)=='string' and tonumber(status:match('"'..key..'":(%d+)')) or 0
+    local function statusNumber(key)
+        return type(status) == 'string' and tonumber(status:match('"' .. key .. '":(%d+)')) or 0
     end
-    if get('abi')~=1 then return 0,0,0,0 end
-    local research=get('researchLimitQ8')
-    local builder=get('builderLimitQ8')
-    return type(CE_AIMaterialResearchBid)=='function' and get('techReady')==1
-        and math.min(research,MAX_MATERIAL_RESEARCH_Q8) or 0,
-        type(CE_AIMaterialResearchBid)=='function' and get('civicReady')==1
-        and math.min(research,MAX_MATERIAL_RESEARCH_Q8) or 0,
-        type(CE_AIMaterialBuilderRequestBid)=='function' and get('builderReady')==1
-        and math.min(builder,MAX_MATERIAL_REQUEST_Q8) or 0,
-        finishEnabled==true and type(CE_AIMaterialWorkerFinishOffer)=='function'
-        and get('workerReady')==1 and get('workerFinishOnly')==1 and 4 or 0
+    if statusNumber('abi') ~= 1 then return 0, 0, 0, 0 end
+
+    local researchQ8 = math.min(statusNumber('researchLimitQ8'), MAX_MATERIAL_RESEARCH_Q8)
+    local builderQ8 = math.min(statusNumber('builderLimitQ8'), MAX_MATERIAL_REQUEST_Q8)
+    local researchAvailable = type(CE_AIMaterialResearchBid) == 'function'
+    local techLimit = researchAvailable and statusNumber('techReady') == 1 and researchQ8 or 0
+    local civicLimit = researchAvailable and statusNumber('civicReady') == 1 and researchQ8 or 0
+    local requestLimit = type(CE_AIMaterialBuilderRequestBid) == 'function'
+        and statusNumber('builderReady') == 1 and builderQ8 or 0
+    local finishLimit = finishEnabled == true and type(CE_AIMaterialWorkerFinishOffer) == 'function'
+        and statusNumber('workerReady') == 1 and statusNumber('workerFinishOnly') == 1
+        and MAX_WORKER_FINISH_OFFERS_PER_PLAYER or 0
+    return techLimit, civicLimit, requestLimit, finishLimit
 end
 function B.BuilderHarvestStatus()
     if type(CE_AIBuilderHarvestProtectionStage)=='function'
@@ -274,8 +281,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         if wonderKeys[key]then return reject('Duplicate Wonder placement offer')end
         wonderKeys[key]=true
     end
-    -- Research uses a topic index; recruitment uses a reserved native job.
-    -- Both retire atomically with the ordinary material-improvement packet.
+    -- Research identifies a topic. Recruitment matches an exact Build Unit
+    -- request from the existing improvement tree. A finishing offer names an
+    -- on-site unit, and CE verifies its custody. All expire with this packet.
     if materialResearch and #materialResearch>256 or materialRequests and #materialRequests>256
         or materialWorkers and #materialWorkers>256 then
         return reject('Material development batch too large')
@@ -363,8 +371,8 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             assert(CE_AIMaterialBuilderRequestBid(offer.player,offer.city,offer.plot,offer.improvement,offer.unit,offer.deltaQ8)==1,
                 'Native material Builder request rejected')
         end
-        -- Like the capacity quote, the short route expires with this packet.
-        -- It carries neither a unit order nor permission to ignore danger.
+        -- The priority pass can advance the existing tree once if it still
+        -- holds this Builder. Protection, movement and repair remain native.
         for _,offer in ipairs(materialWorkers or{})do
             assert(CE_AIMaterialWorkerFinishOffer(offer.player,offer.city,offer.plot,offer.improvement,
                 offer.unit,offer.unitType,offer.x,offer.y)==1,'Native material worker dispatch rejected')
