@@ -18,6 +18,15 @@ local function ownerReady(definition,fallback)
     return definition and(definition.working or definition.intactOwner)and 0 or fallback
 end
 
+local function serviceRate(service)
+    local yield,amount=service.kind,service.amount
+    if yield=='YIELD_PERCENT'or yield=='NAVAL_PRODUCTION_PERCENT'then
+        amount=(service.base or 0)*amount/100
+        yield=yield=='YIELD_PERCENT'and service.yieldType or'YIELD_PRODUCTION'
+    end
+    return yield,amount
+end
+
 -- Gameplay pays population returns using a Q8 per-receiving-citizen rate.
 -- Round the combined target once, independently for each receiving city.
 function M.PopulationPayout(target, population)
@@ -432,11 +441,7 @@ local function ledger(site, second, shared)
                 table.sort(times);ready=maximum(ready,times[count]or INF)
             end
             if service.known and producer and producer.type==service.producer then
-                local yield,amount=service.kind,service.amount
-                if yield=='YIELD_PERCENT'or yield=='NAVAL_PRODUCTION_PERCENT'then
-                    amount=(service.base or 0)*amount/100
-                    yield=yield=='YIELD_PERCENT'and service.yieldType or'YIELD_PRODUCTION'
-                end
+                local yield,amount=serviceRate(service)
                 if ready<math.min(site.horizon,service.finish or site.horizon)then
                     local stream=emit('service:'..service.id,yield,amount,ready,service.city)
                     if stream then
@@ -514,6 +519,45 @@ local function poolServiceHousing(result, housing, horizon)
         end
     end
     result.streams=retained
+end
+
+-- Price the live Services a single supplier job would restore. The existing
+-- producer, recipient and unlock gates must already work. Count only observed
+-- suppliers. This read model never assumes that another material job happens.
+-- The same Service catalogue and yield conversion drive Quarter forecasts.
+function M.MaterialServiceStreams(site,kind,ready,housing)
+    if not site.services or #site.services==0 or not site.existing or site.quarterReady~=0 or ready>=site.horizon then return {}end
+    local counts,seen,working={}, {}, {}
+    for _,supplier in ipairs(site.suppliers or{})do
+        local key=supplier.kind..':'..supplier.plot
+        if supplier.ready==0 and not seen[key]then
+            counts[supplier.kind]=(counts[supplier.kind]or 0)+1
+            seen[key]=true
+        end
+    end
+    for _,producer in ipairs(site.seconds or{})do if producer.working then working[producer.type]=true end end
+    for _,producer in pairs({site.third,site.fourth})do if producer.working then working[producer.type]=true end end
+    local result={streams={}}
+    for _,service in ipairs(site.services)do
+        if service.known and working[service.producer] and service.customer.complete and service.customer.working
+            and service.unlock==0 and service.materials[kind]==(counts[kind]or 0)+1
+            and ready<math.min(site.horizon,service.finish or site.horizon)then
+            local enabled=true
+            for other,count in pairs(service.materials)do
+                if other~=kind and (counts[other]or 0)<count then enabled=false;break end
+            end
+            if enabled and (service.kind~='HOUSING'or housing) then
+                local yield,amount=serviceRate(service)
+                if amount~=0 then
+                    result.streams[#result.streams+1]={id='service:'..service.id,city=service.city,yield=yield,amount=amount,
+                        ready=ready,finish=service.finish,service=true,pseudoYield=service.pseudoYield}
+                    if yield=='HOUSING'then result.hasServiceHousing=true end
+                end
+            end
+        end
+    end
+    poolServiceHousing(result,housing,site.horizon)
+    return result.streams
 end
 
 -- Pool simultaneous amenity changes once per owner/city/interval. Native

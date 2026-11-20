@@ -43,6 +43,60 @@ assert(before.serviceStreams==1 and after.serviceStreams==0)
 assert(before.serviceValueQ8-after.serviceValueQ8==30*256)
 ''')
 
+    def test_material_work_values_only_a_service_that_this_job_can_restore(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+local s=a.services[1]
+local function quote(kind,t)return M.MaterialServiceStreams(a,kind,t)end
+assert(#quote('base',5)==0) -- Current supplier already operates the Service.
+a.suppliers[1].ready=5
+local added=quote('base',5)
+assert(#added==1 and added[1].ready==5 and added[1].city==3 and added[1].service)
+assert(price(added[1],a.horizon)==25*256 and #quote('specialty',5)==0)
+s.materials.specialty=1
+assert(#quote('base',5)==0) -- A second missing supplier still blocks this job's return.
+a.suppliers[2]={kind='specialty',plot=12,ready=0}
+assert(#quote('base',5)==1)
+s.unlock=4;assert(#quote('base',5)==0);s.unlock=0
+s.customer.working=false;assert(#quote('base',5)==0);s.customer.working=true
+a.seconds[1].working=false;assert(#quote('base',5)==0);a.seconds[1].working=true
+s.finish=5;assert(#quote('base',5)==0)
+''')
+
+    def test_material_repair_housing_prices_added_relief_against_actual_city(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+a.suppliers[1].ready=5
+a.services[1].kind='HOUSING'
+a.services[1].amount=2
+local city={active=0,left=0,food=2}
+local housing={cities={[3]=city},activeCities={},stop=-4,quarter=0,half=1}
+local r=M.MaterialServiceStreams(a,'base',5,housing)
+assert(#r==1 and r[1].yield=='YIELD_FOOD' and r[1].amount==1.5 and r[1].ready==5)
+city.left=2
+assert(#M.MaterialServiceStreams(a,'base',5,housing)==0)
+''')
+
+    def test_material_quote_preserves_ordinary_value_when_service_quote_is_unavailable(self):
+        vm = self.vm()
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local a=supplied('A',1)
+a.suppliers[1].ready=5
+local E=CSC_AI_EconomyAdapters
+local snapshot={Price=price,MaterialJobStreams=function()
+    return {{city=1,yield='YIELD_PRODUCTION',amount=2,ready=5}}
+end}
+local function quote()return E.MaterialJobValue(snapshot,{economy=a},'base',11,1)end
+local ordinary,service=quote()
+assert(ordinary==50*256 and service==25*256)
+snapshot.Price=function(stream,horizon)
+    if not stream.service then return price(stream,horizon)end
+end
+ordinary,service=quote()
+assert(ordinary==50*256 and service==0)
+''')
+
     def test_civic_and_supplier_delay_control_service_interval(self):
         self.vm().execute('''
 local a=supplied('A',1);a.suppliers[1].ready=8;a.services[1].unlock=20
@@ -414,6 +468,7 @@ local queue={GetCurrentProductionTypeHash=function()return hash end,GetTurnsLeft
 CityManager={GetCity=function()return{GetBuildQueue=function()return queue end,GetYield=function()return 20 end}end}
 GameInfo={Units={[123]={Index=7,UnitType='GALLEY',Domain='DOMAIN_SEA',PromotionClass='PROMOTION_CLASS_NAVAL_MELEE',PrereqTech='SAILING'},
  [124]={Index=8,UnitType='WARRIOR',Domain='DOMAIN_LAND',PromotionClass='PROMOTION_CLASS_MELEE'}},
+ Buildings={[125]={Index=9,BuildingType='TEXTILE_WORKSHOP'}},
  Technologies={SAILING={EraType='ERA_ANCIENT'}},Civics={},
  Eras={ERA_ANCIENT={Index=0},ERA_RENAISSANCE={Index=3}},Yields={YIELD_PRODUCTION={Index=1}}}
 ''')
@@ -423,6 +478,10 @@ local read=ExposedMembers.CSC_Adjacency.GetEconomyCityNumber
 assert(read(1,5,'navalProduction',0)==20 and read(1,5,'currentUnit',0)==7)
 assert(read(1,5,'unitTurns',7)==4 and read(1,5,'unitTurns',8)==nil)
 hash=124;assert(read(1,5,'navalProduction',0)==0)
+assert(read(1,5,'currentBuilding',0)==nil)
+hash=125;assert(read(1,5,'currentBuilding',0)==9 and read(1,5,'currentBuildingTurns',9)==4)
+assert(read(1,5,'currentBuildingTurns',8)==nil)
+hash=124;assert(read(1,5,'currentBuildingTurns',9)==nil)
 assert(read(1,5,'buildingTurns',7)==nil) -- retain existing timing behavior
 ''')
 

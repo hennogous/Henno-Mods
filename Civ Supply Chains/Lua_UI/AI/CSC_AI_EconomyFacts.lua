@@ -683,6 +683,21 @@ function F.New(player,placement,ui,context)
         local city=snapshot.cities[cityID]
         return city and city.foodSurplus~=nil and cityNumber(city.object,'housing',0)or nil
     end
+    function snapshot.MaterialBuyerCommitment(city, buyers, horizon)
+        -- The city has one active item. Cached numeric queue facts are valid
+        -- only for this publication; a switched or unreadable item earns no
+        -- prospective material income. Buyer definitions come from the
+        -- Quarter's live district profile.
+        local current=cityNumber(city,'currentBuilding',0)
+        if current==nil then return nil end
+        for _,buyer in ipairs(buyers)do
+            if buyer.Index==current then
+                local turns=cityNumber(city,'currentBuildingTurns',current)
+                if turns and turns<horizon then return {type=buyer.BuildingType,turns=turns}end
+                return nil
+            end
+        end
+    end
     local function readPlot(plot)
         local index=plot:GetIndex()
         if not plotFacts[index]then
@@ -1710,6 +1725,92 @@ function F.New(player,placement,ui,context)
         chain.supply=snapshot.Supply(chain.plot,chain.profile)
         chain.economy=snapshot.Site(chain.city,chain.plot,chain.profile)
     end
+    local function newServiceHousing()
+        local function parameter(name,default)
+            local row=GameInfo.GlobalParameters and GameInfo.GlobalParameters['CITY_HOUSING_LEFT_'..name]
+            return row and tonumber(row.Value)or default
+        end
+        return {cities={},activeCities={},stop=parameter('ZERO_GROWTH',-4),
+            quarter=parameter('25PCT_GROWTH',0),half=parameter('50PCT_GROWTH',1)}
+    end
+    local materialHousing={}
+    function snapshot.MaterialHousing(site)
+        local cached=materialHousing[site]
+        if cached~=nil then return cached or nil end
+        local housing
+        if snapshot.serviceKinds.HOUSING then
+            for _,service in ipairs(site.services or{})do
+                if service.known and service.kind=='HOUSING'and not(housing and housing.cities[service.city])then
+                    local city=snapshot.cities[service.city]
+                    local amount=snapshot.ServiceHousing(service.city)
+                    if amount and city and (city.foodSurplus or 0)>0 and city.population then
+                        housing=housing or newServiceHousing()
+                        -- Actual Housing already includes any other operating
+                        -- Services. The material job adds only its new benefit.
+                        housing.cities[service.city]={active=0,left=amount-city.population,food=city.foodSurplus}
+                    end
+                end
+            end
+        end
+        materialHousing[site]=housing or false
+        return housing
+    end
+    function snapshot.MaterialJobStreams(chain, kind, plot, improvement, workTurn, pendingBuyer)
+        -- Price the change from today's supply to one exact legal Builder
+        -- option. Resource adjacency is already present. The job adds only
+        -- declared material legs to the buyer for this Quarter.
+        if not c.materialCanonical or not chain.economy then return nil end
+        local materialTag=kind=='base' and chain.profile.base or chain.profile.specialty
+        local buildings=chain.city:GetBuildings()
+        local target=GameInfo.Improvements[improvement]
+        if not target then return nil end
+        local current=not plot:IsImprovementPillaged() and GameInfo.Improvements[plot:GetImprovementType()]
+        local workingCity
+        for _,supplier in ipairs(chain.economy.suppliers) do
+            if supplier.plot==plot:GetIndex() and supplier.kind==kind and supplier.worked then
+                workingCity=supplier.city
+                break
+            end
+        end
+        -- Existing jobs use the normal five-turn work allowance. An unlock
+        -- quote starts the same income after the estimated research path.
+        workTurn=workTurn or 5
+        local streams={}
+        for _,transaction in pairs(c.materials) do
+            local buyer=transaction.quarter==chain.profile.key and transaction.tag==materialTag
+                and GameInfo.Buildings[transaction.producer]
+            local working=buyer and buildings:HasBuilding(buyer.Index) and not buildings:IsPillaged(buyer.Index)
+                and buildings:GetBuildingLocation(buyer.Index)==chain.plot:GetIndex()
+            -- A committed producer can finish in parallel with the Builder.
+            -- Research can also use a legal prospective producer for a first
+            -- supplier. Either way, income starts after both jobs finish.
+            local ready=working and workTurn or buyer and pendingBuyer and pendingBuyer.type==transaction.producer
+                and math.max(workTurn,pendingBuyer.turns)
+            if ready then
+                local previous={}
+                for _,leg in ipairs(F.SelectMaterialLegs(transaction,current and current.ImprovementType,0).legs) do
+                    previous[leg.key]=leg.amount
+                end
+                for _,leg in ipairs(F.SelectMaterialLegs(transaction,target.ImprovementType,ready).legs) do
+                    local amount=leg.amount-(previous[leg.key]or 0)
+                    previous[leg.key]=nil
+                    local recipient=leg.recipient=='PRODUCER' and chain.city:GetID() or workingCity
+                    if recipient and amount~=0 then
+                        streams[#streams+1]={city=recipient,yield=leg.yield,amount=amount,ready=ready}
+                    end
+                end
+                -- The target may lose a return exclusive to the old host.
+                -- Do not count the old payout again in the replacement bid.
+                for _,leg in ipairs(transaction.legs) do
+                    local recipient=leg.recipient=='PRODUCER' and chain.city:GetID() or workingCity
+                    if recipient and previous[leg.key] then
+                        streams[#streams+1]={city=recipient,yield=leg.yield,amount=-previous[leg.key],ready=ready}
+                    end
+                end
+            end
+        end
+        return streams
+    end
     local customerWorlds={}
     function snapshot.CustomerCandidateSets(protectedPlots)
         -- Reverse gameplay partner edges from existing Quarters to legal owned
@@ -1832,12 +1933,7 @@ function F.New(player,placement,ui,context)
             sites={},populationBaselines={},extraStreams={}}
         local housing
         if snapshot.serviceKinds.HOUSING then
-            local function parameter(name,default)
-                local row=GameInfo.GlobalParameters and GameInfo.GlobalParameters['CITY_HOUSING_LEFT_'..name]
-                return row and tonumber(row.Value)or default
-            end
-            housing={cities={},activeCities={},stop=parameter('ZERO_GROWTH',-4),
-                quarter=parameter('25PCT_GROWTH',0),half=parameter('50PCT_GROWTH',1)}
+            housing=newServiceHousing()
             world.serviceHousing=housing
         end
         if next(snapshot.serviceKinds)then

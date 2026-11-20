@@ -7,6 +7,13 @@ from lupa.lua51 import LuaRuntime
 
 
 SOURCE = Path(__file__).resolve().parents[4] / 'Civ Supply Chains/Lua_UI/AI'
+
+
+def gameplay_source(name):
+    directory = SOURCE.parent / 'TradeRoutes' if name.startswith('CSC_TradeRoute') else SOURCE
+    return (directory / f'{name}.lua').read_text(encoding='utf-8')
+
+
 FIXTURE = r'''
 local function iterator(rows)
     local i = 0
@@ -99,6 +106,40 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_publisher_enables_only_the_finishing_consumer_by_default(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        lua.globals().print = lambda _: None
+
+        def include(name):
+            if name != 'CSC_AdjacencyCore':
+                lua.execute(gameplay_source(name))
+
+        lua.globals().include = include
+        include('CSC_AI_BakersGameplay')
+        lua.execute("""
+            ExposedMembers.CSC_Adjacency={IsSinglePlayer=function() return true end}
+            CSC_AI_QuarterPlacement.MaterialDeductions=function() return {},{},{},{},{},{} end
+            CSC_AI_QuarterSiteForecasts=function() return {} end
+            CSC_AI_QuarterPlacement.MaterialBuilderOffers=function(_,_,_,_,limit)
+                dispatchLimit=limit
+                return {},{}
+            end
+            CE_AIMaterialWorkerFinishOffer=function() return 1 end
+            CE_AIMaterialDevelopmentStatus=function()
+                return '{"abi":1,"workerReady":1,"workerFinishOnly":1}'
+            end
+            boundary()
+            assert(dispatchLimit==4)
+            CSC_AI_TEST_LAST_SUPPLIER_FINISH=false
+            turn=2; boundary()
+            assert(dispatchLimit==0)
+            CSC_AI_TEST_LAST_SUPPLIER_FINISH=nil
+            CE_AIMaterialDevelopmentStatus=function() return '{"abi":1,"workerReady":1}' end
+            turn=3; boundary()
+            assert(dispatchLimit==0)
+        """)
+
     def test_oversized_managed_packet_preserves_defaults_and_highest_positive_offers(self):
         lua=LuaRuntime()
         lua.execute(FIXTURE)
@@ -106,7 +147,7 @@ class BakersGameplayTest(unittest.TestCase):
         lua.globals().print=messages.append
         def include(name):
             if name!='CSC_AdjacencyCore':
-                lua.execute((SOURCE/f'{name}.lua').read_text(encoding='utf-8'))
+                lua.execute(gameplay_source(name))
         lua.globals().include=include
         include('CSC_AI_BakersGameplay')
         lua.execute('''
@@ -160,7 +201,7 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
 
         def include(name):
             if name != 'CSC_AdjacencyCore':
-                lua.execute((SOURCE / f'{name}.lua').read_text(encoding='utf-8'))
+                lua.execute(gameplay_source(name))
 
         lua.globals().include = include
         include('CSC_AI_BakersGameplay')
@@ -281,7 +322,9 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
                 local _, jobs, buildings, repairs = CSC_AI_QuarterPlacement.MaterialDeductions(
                     Players[3], true, 16384, 131072, ExposedMembers.CSC_Adjacency.CanProduceItem, true)
                 local values = {}
-                for _, job in ipairs(jobs) do values[job.plot] = job.deltaQ8 end
+                for _, job in ipairs(jobs) do
+                    if job.deltaQ8 then values[job.plot] = job.deltaQ8 end
+                end
                 return values, buildings, repairs
             end
             jobs, buildings, repairs = plan()
@@ -308,6 +351,11 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
         lua.execute('workshop=true; damaged=true; jobs, buildings, repairs=plan()')
         self.assertEqual(lua.eval('repairs[1].district'), 3)
         self.assertEqual(lua.eval('#buildings'), 0)
+        lua.execute('pasture.GetImprovementType=function() return -1 end; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('repairs[1].district'), 3)
+        self.assertIsNone(lua.eval('jobs[101]'))  # The damaged Quarter must recover first.
+        lua.execute('ImprovementBuilder.CanHaveImprovement=function() return false end; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('#repairs'), 0)
 
     def test_shared_model_resolves_unique_host_and_building(self):
         lua = LuaRuntime()
@@ -355,7 +403,7 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
 
         def include(name):
             if name != 'CSC_AdjacencyCore':
-                lua.execute((SOURCE / f'{name}.lua').read_text(encoding='utf-8'))
+                lua.execute(gameplay_source(name))
 
         lua.globals().include = include
         include('CSC_AI_BakersGameplay')

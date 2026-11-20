@@ -212,6 +212,18 @@ local function refresh(turn)
     local builderStatus = bridge.BuilderStatus()
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
     local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
+    local materialStatus=bridge.MaterialDevelopmentStatus()
+    -- Finish eligible sole-supplier repairs by default. The bridge grants
+    -- capacity only when CE exposes the finishing-only worker consumer.
+    -- Matched controls can set the test override to false for this packet.
+    local materialTechLimit,materialCivicLimit,materialRequestLimit,materialDispatchLimit=
+        bridge.MaterialDevelopmentLimits(materialStatus,CSC_AI_TEST_LAST_SUPPLIER_FINISH~=false)
+    local materialResearch,materialRequests,materialServices,materialCommitments,materialWorkers={},{},{},{},{}
+    if materialStatus then
+        -- These are earlier-packet native receipts. A compared topic can
+        -- lose, and an initialized request still has to win and train.
+        print(string.format('CSC_AI_MATERIAL_DEVELOPMENT_RECEIPT turn=%d version=%d %s',turn,version,materialStatus))
+    end
     local wonderStatus = bridge.WonderStatus()
     local protectWonders = wonderStatus and wonderStatus:match('"ready":1') and wonderStatus:match('"faults":0')
     local wonderLimit, maxWonderOfferQ8 = bridge.WonderOfferLimit(wonderStatus)
@@ -274,8 +286,27 @@ local function refresh(turn)
         -- Take one chain snapshot per player. Supply protection marks plots
         -- before placement plans run, so a customer bid cannot promote a site
         -- already flagged by this player's material deductions.
+        local research=(materialTechLimit>0 or materialCivicLimit>0) and {} or nil
         local deductions, sites, bids, candidates, chains, threatened = placement.MaterialDeductions(player, protectBuilders,
-            builderBidLimit, nominationLimit, playerUI.CanProduceItem, repairLimit > 0,economy)
+            builderBidLimit, nominationLimit, playerUI.CanProduceItem, repairLimit > 0,economy,research)
+        local topics={}
+        for _,offer in pairs(research or{})do
+            local limit=offer.kind=='tech' and materialTechLimit or materialCivicLimit
+            offer.kind=offer.kind=='tech' and 0 or 1
+            offer.deltaQ8=math.min(limit,math.floor(offer.value))
+            if offer.deltaQ8>0 then topics[#topics+1]=offer end
+        end
+        table.sort(topics,function(a,b)
+            if a.value~=b.value then return a.value>b.value end
+            if a.kind~=b.kind then return a.kind<b.kind end
+            return a.index<b.index
+        end)
+        -- Four pending unlocks per empire are ample for the current buyers.
+        -- Stable ordering keeps a busy empire from publishing marginal noise.
+        for i=1,math.min(4,#topics)do materialResearch[#materialResearch+1]=topics[i] end
+        local requests,workers=placement.MaterialBuilderOffers(player,sites,playerUI,materialRequestLimit,materialDispatchLimit)
+        for _,offer in ipairs(requests)do materialRequests[#materialRequests+1]=offer end
+        for _,offer in ipairs(workers)do materialWorkers[#materialWorkers+1]=offer end
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
         for _, candidate in ipairs(candidates) do repairs[#repairs + 1] = candidate end
         for _, site in ipairs(threatened or {}) do exclusions[#exclusions + 1] = site end
@@ -284,10 +315,23 @@ local function refresh(turn)
             playerEntries[#playerEntries + 1] = entry
             protectedPlots[entry.plot] = true
         end
+        local serviceSample,serviceValue,commitmentSample
         for _, site in ipairs(sites) do
             builderSites[#builderSites + 1] = site
             allowances = allowances + #site.improvements
+            -- One representative value per player keeps the Service quote
+            -- visible without recording every material job each turn.
+            local value=site.ordinaryQ8 and site.jobValueQ8-site.ordinaryQ8
+            if value and value>0 and (not serviceValue or value>serviceValue)then
+                serviceSample,serviceValue=site,value
+            end
+            if site.commitment and site.deltaQ8>0 and (not commitmentSample or site.deltaQ8>commitmentSample.deltaQ8
+                or site.deltaQ8==commitmentSample.deltaQ8 and site.plot<commitmentSample.plot) then
+                commitmentSample=site
+            end
         end
+        if serviceSample then materialServices[#materialServices+1]=serviceSample end
+        if commitmentSample then materialCommitments[#materialCommitments+1]=commitmentSample end
         if wonderLimit>0 and maxWonderOfferQ8>0 and CSC_AI_EconomyAdapters then
             -- The native Wonder consumer uses the same publication as the
             -- supplier guard. Exclude known threats here even if capacity
@@ -405,8 +449,39 @@ local function refresh(turn)
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit,
         #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
         exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit,
-        declines,declineLimit,managedTypes,wonderOffers)
+        declines,declineLimit,managedTypes,wonderOffers,materialResearch,
+        allowances<=capacity and materialRequests or nil, allowances<=capacity and materialWorkers or nil)
     assert(accepted, message)
+    for _,offer in ipairs(materialResearch)do
+        local plots={};for plot in pairs(offer.jobs)do plots[#plots+1]=plot end;table.sort(plots)
+        print(string.format('CSC_AI_MATERIAL_RESEARCH_OFFER turn=%d version=%d player=%d kind=%d index=%d deltaQ8=%d plots=%s',
+            turn,version+1,offer.player,offer.kind,offer.index,offer.deltaQ8,table.concat(plots,',')))
+    end
+    if allowances<=capacity then
+        for _,site in ipairs(materialCommitments)do
+            -- One published example per player and turn. Subsequent native
+            -- reservations and work establish whether parallel bidding helped.
+            local buyer=site.commitment
+            print(string.format('CSC_AI_MATERIAL_COMMITTED_BUYER turn=%d version=%d player=%d builderCity=%d buyerCity=%d quarter=%d plot=%d improvement=%d class=%s buyer=%s eta=%d deltaQ8=%d',
+                turn,version+1,site.player,site.city,buyer.city,buyer.quarter,site.plot,site.improvements[1],buyer.kind,buyer.type,buyer.turns,site.deltaQ8))
+        end
+        for _,site in ipairs(materialServices)do
+            print(string.format('CSC_AI_MATERIAL_SERVICE_QUOTE turn=%d player=%d city=%d plot=%d ordinaryQ8=%d serviceQ8=%d improvementDeltaQ8=%d',
+                turn,site.player,site.city,site.plot,site.ordinaryQ8,site.jobValueQ8-site.ordinaryQ8,site.deltaQ8))
+        end
+        for _,offer in ipairs(materialRequests)do
+            -- The contingency flag describes the planner's workforce estimate.
+            -- The native receipt still establishes whether the request used it.
+            print(string.format('CSC_AI_MATERIAL_REQUEST_OFFER turn=%d version=%d player=%d city=%d plot=%d improvement=%d unit=%d deltaQ8=%d contingency=%d',
+                turn,version+1,offer.player,offer.city,offer.plot,offer.improvement,offer.unit,offer.deltaQ8,offer.contingency and 1 or 0))
+        end
+        for _,offer in ipairs(materialWorkers)do
+            -- A route was accepted into the packet. CE reports updated tree
+            -- order separately, and the game log records the action taken.
+            print(string.format('CSC_AI_MATERIAL_WORKER_OFFER turn=%d version=%d player=%d city=%d plot=%d improvement=%d unit=%d',
+                turn,version+1,offer.player,offer.city,offer.plot,offer.improvement,offer.unit))
+        end
+    end
     if CSC_AI_EconomyAdapters and CSC_AI_EconomyAdapters.Committed then
         -- Only retained entries in this accepted packet renew known values.
         -- A failed publish or a one-turn carried quote cannot renew a plan.

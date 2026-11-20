@@ -1432,6 +1432,29 @@ function E.BuildingValue(snapshot,chain,building)
     return site and M.Marginal(site,building,snapshot.Price)
 end
 
+function E.MaterialJobValue(snapshot,chain,kind,plot,improvement,workTurn,pendingBuyer)
+    local streams=snapshot.MaterialJobStreams and snapshot.MaterialJobStreams(chain,kind,plot,improvement,workTurn,pendingBuyer)
+    if not streams then return nil end
+    local q8,serviceQ8=0,0
+    local site=chain.economy
+    for _,stream in ipairs(streams) do
+        local value=snapshot.Price(stream,site.horizon)
+        if type(value)~='number' then return nil end
+        q8=q8+value
+    end
+    if not pendingBuyer and site.services and #site.services>0 then
+        local housing=snapshot.MaterialHousing and snapshot.MaterialHousing(site)
+        for _,stream in ipairs(M.MaterialServiceStreams(site,kind,workTurn or 5,housing))do
+            local value=snapshot.Price(stream,site.horizon)
+            if type(value)=='number'then serviceQ8=serviceQ8+value end
+        end
+    end
+    -- Bids can compare which single job restores these benefits. The separate
+    -- Service subtotal keeps two alternative jobs from each claiming the same
+    -- activation when pricing additional Builder charges.
+    return q8,serviceQ8
+end
+
 function E.SupplyValue(snapshot,chain,plot)
     local site=chain.economy or snapshot.Site(chain.city,chain.plot,chain.profile)
     if not site then return nil end

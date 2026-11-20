@@ -7,13 +7,18 @@ local B=CSC_AI_DistrictBridge
 local names={'Begin','Allow','Entry','Commit','Disable','Status'}
 -- Q8 represents one native utility point as 256 integers. Lua clamps the
 -- optional budgets to both CE's reported capacity and the limits below.
-local MAX_BUILDER_BID_Q8=64*256
+-- Exact transaction quotes can exceed 64 on a worked supplier. Preserve
+-- them up to 128 only when CE advertises that range. Existing fallback
+-- readiness bands and older CE builds still use their original limits.
+local MAX_BUILDER_BID_Q8=128*256
 local MAX_NOMINATION_BID_Q8=512*256
 local MAX_REPAIR_CANDIDATES=256
 local MAX_OWNERSHIP_SCOPES=4096
 local MAX_WONDER_OFFERS=512
 local MAX_WONDER_OFFER_Q8=24*256
 local LEGACY_WONDER_OFFER_Q8=8*256
+local MAX_MATERIAL_RESEARCH_Q8=64*256
+local MAX_MATERIAL_REQUEST_Q8=128*256
 local function integer(x,low,high)
     local kind=type(x)
     return (kind=='number' or kind=='integer') and x==math.floor(x) and x>=low and x<=high
@@ -45,6 +50,25 @@ function B.BuilderBidLimit(status)
     if type(CE_AIBuilderProtectionBid)~='function' or type(status)~='string' then return 0 end
     local limit=tonumber(status:match('"maxBidQ8":(%d+)')) or 0
     return math.min(limit,MAX_BUILDER_BID_Q8)
+end
+function B.MaterialDevelopmentStatus()
+    if type(CE_AIMaterialDevelopmentStatus)=='function' then return CE_AIMaterialDevelopmentStatus() end
+end
+function B.MaterialDevelopmentLimits(status, finishEnabled)
+    local function get(key)
+        return type(status)=='string' and tonumber(status:match('"'..key..'":(%d+)')) or 0
+    end
+    if get('abi')~=1 then return 0,0,0,0 end
+    local research=get('researchLimitQ8')
+    local builder=get('builderLimitQ8')
+    return type(CE_AIMaterialResearchBid)=='function' and get('techReady')==1
+        and math.min(research,MAX_MATERIAL_RESEARCH_Q8) or 0,
+        type(CE_AIMaterialResearchBid)=='function' and get('civicReady')==1
+        and math.min(research,MAX_MATERIAL_RESEARCH_Q8) or 0,
+        type(CE_AIMaterialBuilderRequestBid)=='function' and get('builderReady')==1
+        and math.min(builder,MAX_MATERIAL_REQUEST_Q8) or 0,
+        finishEnabled==true and type(CE_AIMaterialWorkerFinishOffer)=='function'
+        and get('workerReady')==1 and get('workerFinishOnly')==1 and 4 or 0
 end
 function B.BuilderHarvestStatus()
     if type(CE_AIBuilderHarvestProtectionStage)=='function'
@@ -120,7 +144,7 @@ end
 -- in its owning city. A repair identifies an existing district footprint.
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
     builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions,ownershipScopes,ownershipLimit,
-    declines,declineLimit,managedTypes,wonderOffers)
+    declines,declineLimit,managedTypes,wonderOffers,materialResearch,materialRequests,materialWorkers)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -250,6 +274,31 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         if wonderKeys[key]then return reject('Duplicate Wonder placement offer')end
         wonderKeys[key]=true
     end
+    -- Research uses a topic index; recruitment uses a reserved native job.
+    -- Both retire atomically with the ordinary material-improvement packet.
+    if materialResearch and #materialResearch>256 or materialRequests and #materialRequests>256
+        or materialWorkers and #materialWorkers>256 then
+        return reject('Material development batch too large')
+    end
+    for _,offer in ipairs(materialResearch or{})do
+        if not (type(CE_AIMaterialResearchBid)=='function' and integer(offer.player,0,63) and allowed[offer.player]
+            and integer(offer.kind,0,1) and integer(offer.index,0,4095)
+            and integer(offer.deltaQ8,1,MAX_MATERIAL_RESEARCH_Q8)) then return reject('Invalid material research offer') end
+    end
+    for _,offer in ipairs(materialRequests or{})do
+        if not (type(CE_AIMaterialBuilderRequestBid)=='function' and integer(offer.player,0,63) and allowed[offer.player]
+            and integer(offer.city,0,2147483647) and integer(offer.plot,0,width*height-1)
+            and integer(offer.unit,0,4095) and integer(offer.improvement,0,4095)
+            and integer(offer.deltaQ8,256,MAX_MATERIAL_REQUEST_Q8)) then return reject('Invalid material Builder offer') end
+    end
+    for _,offer in ipairs(materialWorkers or{})do
+        if not (type(CE_AIMaterialWorkerFinishOffer)=='function' and integer(offer.player,0,63) and allowed[offer.player]
+            and integer(offer.city,0,2147483647) and integer(offer.plot,0,width*height-1)
+            and integer(offer.unit,0,2147483647) and integer(offer.unitType,0,4095)
+            and integer(offer.improvement,0,4095) and integer(offer.x,0,width-1) and integer(offer.y,0,height-1))then
+            return reject('Invalid material worker dispatch offer')
+        end
+    end
     -- Begin opens staging. Nothing here queues an action. Commit publishes
     -- the packet for later native calls. If validation or a native call fails,
     -- Disable clears the policy so an older or incomplete offer cannot linger.
@@ -306,6 +355,19 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         end
         for _,e in ipairs(declines or {}) do
             assert(CE_AIDistrictDeclineStage(e.player,e.city,e.district,e.plot)==1,'Native district decline rejected')
+        end
+        for _,offer in ipairs(materialResearch or{})do
+            assert(CE_AIMaterialResearchBid(offer.player,offer.kind,offer.index,offer.deltaQ8)==1,'Native material research rejected')
+        end
+        for _,offer in ipairs(materialRequests or{})do
+            assert(CE_AIMaterialBuilderRequestBid(offer.player,offer.city,offer.plot,offer.improvement,offer.unit,offer.deltaQ8)==1,
+                'Native material Builder request rejected')
+        end
+        -- Like the capacity quote, the short route expires with this packet.
+        -- It carries neither a unit order nor permission to ignore danger.
+        for _,offer in ipairs(materialWorkers or{})do
+            assert(CE_AIMaterialWorkerFinishOffer(offer.player,offer.city,offer.plot,offer.improvement,
+                offer.unit,offer.unitType,offer.x,offer.y)==1,'Native material worker dispatch rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

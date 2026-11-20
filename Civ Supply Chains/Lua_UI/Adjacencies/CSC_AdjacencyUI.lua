@@ -135,6 +135,14 @@ ExposedMembers.CSC_Adjacency.GetEconomyCityNumber = function(playerID, cityID, k
         if unit.Index~=index then return nil; end; -- queue changed since snapshot
         return economyNumber(queue,'GetTurnsLeft',unit.UnitType);
     end;
+    if kind == 'currentBuilding' or kind == 'currentBuildingTurns' then
+        local hash=economyNumber(queue,'GetCurrentProductionTypeHash');
+        local building=hash and GameInfo.Buildings[hash];
+        if not building then return nil; end;
+        if kind == 'currentBuilding' then return building.Index; end;
+        if building.Index~=index then return nil; end; -- the city switched production
+        return economyNumber(queue,'GetTurnsLeft',building.BuildingType);
+    end;
     if kind == 'navalProduction' then
         -- Value Dockmaster's Production only against observed eligible naval
         -- work, not as a permanent bonus to all of this city's production.
