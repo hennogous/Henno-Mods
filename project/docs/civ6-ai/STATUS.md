@@ -1,11 +1,11 @@
 # Current CSC AI status
 
-**20 November — Problem 3.2 remains the focus.** A controlled supply loss
-at Axum left its existing Farm reservation in place for eight turns.
-The replacement Bamboo job then failed five Builder searches while a
-nearby charged Builder spent four turns idle. Inspect exact recruitment
-eligibility before tuning scheduling or capacity.
-[Availability test](../research/mods/csc-ai-axum-builder-availability-20261120.md).
+**20 November — Problem 3.2, Builder assignment.** Axum's guarded native
+loan restored the Bamboo Sawmill on turn 131 and both material transaction
+effects were active on 133. The same-start control still lacked supply.
+The competing cities' production queues matched. Integrate the guarded
+handoff and qualify it in ordinary play.
+[Matched handoff](../research/mods/csc-ai-axum-builder-availability-20261120.md#letting-the-supplier-recruit-from-an-idle-clearance-pass).
 
 **20 November: Axum lost and then recruited the same Builder.** The replay
 showed the charged Builder ending turn 152 unassigned after a failed

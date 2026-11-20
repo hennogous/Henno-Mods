@@ -316,6 +316,53 @@ selections, commands and the end-state check are in
 `axum-clearance-location-128-133`. The controller recorded normal exit and
 restored preferences.
 
+### Letting the supplier recruit from an idle clearance pass
+
+The guarded loan replay used the original stock tree and the ordinary
+CSC and CE packages. At the end of the district tree's action dispatch,
+the probe recorded the controller and the states of Find Available Unit,
+Move Unit and Clear Plot. At Axum's normal recruitment, it qualified only
+the exact charged, unprocessed Builder held by a district whose pass had
+successfully recruited and left movement and clearing Ready. The district
+plot had no feature, improvement or resource a Builder could act on.
+The holder allowed native release at the same request priority. The
+probe raised the requesting value for that pairwise release call only.
+
+On turn 128, Thessalonica held Builder 7864354 on a bare plot after this
+sequence. The native release comparison received 1,509 against the
+holder's 1,508. Axum's Sawmill bid stayed at 230. The holder offered
+7864354, the native chooser selected it, and the worker moved from
+(53, 24) to Bamboo at (53, 26). The later searches did not qualify for
+another loan. The worker skipped turns 129 and 130. Axum recruited it
+from the ordinary pool on turn 131 and it built the Sawmill that turn.
+
+At the turn-133 boundary the Textile Workshop was present and unpillaged.
+The active Tailors Base culture effect named Axum's Quarter and the
+production return named the Bamboo improvement at plot 1977. The Flax
+Farm remained pillaged. The data are in
+`axum-clearance-action-loan-128-133`, including `recruitment.json`,
+`UnitOperations.log` and `axum-restored-native-material-effects.txt`.
+
+The passive control loaded the same checkpoint and packages and observed
+the same recruitment and action-dispatch boundaries. With its comparison
+unchanged, the same Builder skipped turns 128–131 and moved for another
+job on 132. Bamboo was unimproved on turn 133 and neither of Axum's Base
+transaction effects was active. All 16 production queue records for
+Thessalonica, Gondar and Adwa matched the treatment. Thessalonica continued
+reserving (51, 18) in both arms without moving a Builder to it or clearing
+it. Across player 5, logged Builder improvement construction requests
+rose from three to four and feature removal requests stayed at one.
+The control is in `axum-clearance-handoff-control-128-133`. Both runs
+exited normally and restored preferences.
+
+The reusable intervention should publish a legal, reachable supply
+restoration job from the CSC model under the existing per-player offer
+budget. Revalidate the current holder's native permission, same-priority
+request, completion of its current action pass and lack of an actionable
+clearance. Let the stock evaluator choose among the eligible offers.
+Integration, ordinary-game supply and competing work measurements, and
+the processing-time comparison remain open.
+
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
 consider a held unit if its current controller offers it. REA decompiled
