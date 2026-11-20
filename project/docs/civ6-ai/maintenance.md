@@ -37,7 +37,9 @@ beside `civ6-gameplay` and `civ6-art`. Codex loads the same checkout through
 focused engine references, and `references/engine/findings.md`.
 The old native topic paths in this repo preserve links to the skill. The
 original `project/skills/civ6-ai/SKILL.md` and the local `docs/.ai-handbook/`
-render tree belong to the retired handbook workflow.
+staging and render tree were removed on 20 November 2026. The old CE snapshots
+and patches from staging are in the verified local archive
+`Desktop/Codex/csc-ce-develop-port-20261105/historical-dx11-work-20261107.zip`.
 
 The JSON registers and source catalogue under `data/` are historical migration
 snapshots, not another live publishing database. The former renderer remains
