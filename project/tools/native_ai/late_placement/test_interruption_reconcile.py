@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 import planning_continue as continuation
 import planning_interruption_reconcile as reconcile
+from ce_replay import STEAM_26595377_CORE_SHA, STEAM_26595377_EXE_SHA
 
 
 class InterruptedLifecycle(unittest.TestCase):
@@ -32,6 +33,8 @@ class InterruptedLifecycle(unittest.TestCase):
             binary=root/'game.exe';binary.write_bytes(b'fixture')
             (source/'source.json').write_text('{}')
             (source/'session-owner.json').write_text(json.dumps(dict(executable_path=str(binary),pid=123)))
+            (source/'protocol.json').write_text(json.dumps(dict(native_profile=dict(
+                executable_sha256=STEAM_26595377_EXE_SHA, gamecore_sha256=STEAM_26595377_CORE_SHA))))
             (source/'original-preferences.json').write_text('{}')
             (source/'resource-stack-preflight.json').write_text(json.dumps(dict(database=str(root/'Cache/DebugGameplay.sqlite'))))
             packages={}
@@ -56,7 +59,8 @@ class InterruptedLifecycle(unittest.TestCase):
             owner=SimpleNamespace(poll=lambda:None)
             with patch.object(reconcile,'native_inventory',return_value=[]), \
                  patch.object(reconcile,'manifest',return_value={}), \
-                 patch.object(reconcile,'sha',return_value=reconcile.HOTFIX_EXE_SHA), \
+                 patch.object(reconcile,'native_profile',
+                              return_value=(STEAM_26595377_EXE_SHA, STEAM_26595377_CORE_SHA)), \
                  patch.object(reconcile,'make_probe_controller',return_value=object()), \
                  patch.object(reconcile,'NativeSession',Session), \
                  patch.object(reconcile,'launch',return_value=owner), \

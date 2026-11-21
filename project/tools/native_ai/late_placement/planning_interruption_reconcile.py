@@ -12,7 +12,7 @@ from types import SimpleNamespace
 
 from driver import (HeldProcess, NativeSession, launch, load, make_probe_controller,
                     manifest, native_inventory, require, restore_preferences, sha, write_json)
-from ce_replay import HOTFIX_EXE_SHA
+from ce_replay import HOTFIX_EXE_SHA, HOTFIX_SHA, native_profile
 
 
 def run(source):
@@ -21,7 +21,16 @@ def run(source):
     require(not (source/'interruption-reconciled.json').exists(), 'Cleanup already recorded')
     identity = load(source/'session-owner.json')
     binary = Path(identity['executable_path']).resolve(strict=True)
-    require(sha(binary) == HOTFIX_EXE_SHA, 'Unexpected game executable')
+    # Restore from the same qualified DX11 profile as the interrupted run.
+    # Older records predate the profile field and used the original hotfix.
+    protocol_path = source/'protocol.json'
+    protocol = load(protocol_path) if protocol_path.is_file() else {}
+    expected = protocol.get('native_profile', {
+        'executable_sha256': HOTFIX_EXE_SHA,
+        'gamecore_sha256': HOTFIX_SHA,
+    })
+    require(native_profile(binary) == (expected['executable_sha256'], expected['gamecore_sha256']),
+            'Unexpected game executable/profile for the interrupted run')
     require((source/'original-preferences.json').is_file(), 'Missing original preferences')
     packages = load(source/'packages.json')
     installs = []
