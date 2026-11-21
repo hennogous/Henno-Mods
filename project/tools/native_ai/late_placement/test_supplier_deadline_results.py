@@ -1,6 +1,6 @@
 import unittest
 
-from supplier_deadline_results import read_tree_events, supplier_cases, with_early_preparation
+from supplier_deadline_results import counts, read_tree_events, supplier_cases, with_early_preparation
 
 
 class SupplierDeadlineTest(unittest.TestCase):
@@ -53,3 +53,23 @@ class SupplierDeadlineTest(unittest.TestCase):
         case, = supplier_cases(surveys, events, {'2'}, 2)
         self.assertEqual(case['first_observed'], dict(reserved=3, assigned=4))
         self.assertTrue(case['by_opening']['reserved'])
+
+    def test_supplier_that_becomes_legal_after_opening_counts_with_its_shorter_window(self):
+        surveys = {
+            turn: [dict(player='2', quarterPlot='15', quarter='TAILORS', role='specialty',
+                        buyerReady='true', legal='1' if turn >= 2 else '0', legalPlots='16' if turn >= 2 else '',
+                        working='1' if turn >= 4 else '0', workingPlots='16' if turn >= 4 else '')]
+            for turn in range(1, 6)
+        }
+        case, = supplier_cases(surveys, {}, {'2'}, 3)
+        self.assertTrue(case['eligible_after_opening'])
+        self.assertEqual(case['first_eligible'], 2)
+        self.assertFalse(case['by_opening']['working'])
+        self.assertTrue(case['by_deadline']['working'])
+        summary = counts([case])['specialty']
+        self.assertEqual(summary['needed_work_at_preparation'], 1)
+        self.assertEqual(summary['eligible_after_opening']['working_by_deadline_after_needed_work'], 1)
+
+        too_late, = supplier_cases(surveys, {}, {'2'}, 0)
+        self.assertEqual(too_late['cohort'], 'no_legal_supplier_by_deadline')
+        self.assertNotIn('eligible_after_opening', too_late)

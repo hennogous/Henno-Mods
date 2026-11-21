@@ -49,8 +49,11 @@ class. An already-improved plot is scored in its own cohort. Read the
 ordinary improvement tree logs for reservation and Builder assignment,
 then verify the actual improvement at buyer opening and at turn +10.
 Supply gained before +10 and lost later remains distinct from working
-supply at the +10 census. The census also distinguishes late eligibility,
-late openings and interrupted chains.
+supply at the +10 census. When an improvement becomes legal after buyer
+opening but within the deadline, include it and report its shorter window
+separately. This covers supplier plots acquired after opening or unlocked
+late. Buyers still without a legal plot by +10, buyers without ten
+observed turns, and interrupted buyers have separate counts.
 
 For treatment, also report first eligibility witnessed by an accepted
 early offer. This captures jobs that were still missing during the

@@ -128,8 +128,8 @@ def supplier_cases(surveys, events, players, window):
         outcomes.append(case)
         if deadline > final:
             case['cohort'] = 'late_opening'
-        elif eligible is None or eligible > opening:
-            case['cohort'] = 'no_legal_supplier_by_opening'
+        elif eligible is None or eligible > deadline:
+            case['cohort'] = 'no_legal_supplier_by_deadline'
         elif deadline not in timeline or timeline[deadline]['buyerReady']!='true':
             case['cohort'] = 'interrupted_at_deadline'
         elif exact_plots(timeline[eligible], 'working'):
@@ -161,6 +161,11 @@ def supplier_cases(surveys, events, players, window):
             case['by_deadline']['working'] = bool(exact_plots(timeline[deadline], 'working'))
             case['by_opening']['ever_worked'] = first.get('working', final + 1) <= opening
             case['by_deadline']['ever_worked'] = first.get('working', final + 1) <= deadline
+        if eligible is not None and opening < eligible <= deadline <= final:
+            # Title transfer or an improvement unlock after the buyer opens
+            # can still leave an actionable case before +10. Keep its shorter
+            # window visible without silently excluding it from the count.
+            case['eligible_after_opening'] = True
     return outcomes
 
 
@@ -170,6 +175,10 @@ def counts(cases):
         role = [case for case in cases if case['role'] == key]
         group = dict(Counter(case['cohort'] for case in role))
         needed = [case for case in role if case['cohort'] == 'needed_work_at_preparation']
+        late = [case for case in role if case.get('eligible_after_opening')]
+        group['eligible_after_opening'] = dict(Counter(case['cohort'] for case in late))
+        group['eligible_after_opening']['working_by_deadline_after_needed_work'] = sum(
+            case['by_deadline']['working'] for case in late if case['cohort'] == 'needed_work_at_preparation')
         for stage in ('by_opening', 'by_deadline'):
             group[stage] = {step: sum(case[stage][step] for case in needed)
                             for step in ('reserved', 'assigned', 'working', 'ever_worked')}
