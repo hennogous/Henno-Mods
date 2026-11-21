@@ -187,9 +187,14 @@ Medina first published a 13-point preparatory offer on turn 141 with a
 ten-turn Wind Mill estimate. The Mill received 16.2 of its 40 production
 on turn 154. Medina switched to a Courser on 155 and kept the partial Mill
 progress until it finished on 193. The supplier reservation and Builder
-request both came during the interruption. The turn-150 save precedes
-the production switch and the reservation, so it preserves both delays
-for a focused replay.
+request both came during the interruption. On 162 the Pasture carried a
+2,625 Q8 preparation bid. The native tree sent its 102-point Builder
+contract to Cairo. The CE receipt records zero separate sponsorships for
+that packet, consistent with the preparation value already entering the
+native job. Cairo finished a Musketman on 169 and worked on outer-defenses
+repair as the Builder contract reached its eight-turn wait. A replay from
+turn 150 can test worker availability without changing those competing
+queue investments.
 
 Québec's Bakers Quarter at 696 provides the first Specialty follow-through
 case. The treatment offered its Berries Plantation at 622 from turn 123,
