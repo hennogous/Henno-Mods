@@ -280,6 +280,18 @@ readback should distinguish native repair eligibility, a queue decision and
 restored Service effects. Compare timing with ordinary competition before
 adding a repair preference.
 
+The prepared Bakers check uses two different empires from the first
+ordinary Fractal turn-100 save. One starts with an active Wind Mill
+chain at plot 772 and loses the Mill. The other starts with an active
+Water Mill chain at plot 2114 and loses its Granary at plot 2187. The
+fixture checks the exact producer, recipient and working Base before
+damaging either building. It records the affected city's queue and the
+Service source property. The replay also reads the native Storekeeper
+growth recipients before and after. The same fixture can isolate either
+the Workshop or the Lighthouse at Québec's turn-250 checkpoint. That
+later checkpoint tests the repair path and records the era for judging
+whether the recovered Dockmaster benefit can still be used.
+
 ## The Wind Mill needed an ordinary nomination in Melbourne
 
 Melbourne already had a working Rice supplier, an adjacent
