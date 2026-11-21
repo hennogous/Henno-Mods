@@ -4361,7 +4361,9 @@ The treatment picked and finished a Cattle Pasture at 121 after CSC
 published a 2,452 Q8 preparation offer on that exact plot. Both plots
 serve the same Bakers Quarter. The control finished the Pasture on 87
 after a failed attempt and another Builder request. The Plantation was
-still missing through turn 120 in treatment. Both games show the same
-Base deadline result through that early window. This case identifies
-the trade-off between the two jobs and the timing of actual completion.
+still missing at the treatment's turn-250 census. The second pair ended
+with 5/8 Base deadline successes in control and 4/9 in treatment.
+Control had one Specialty buyer that needed work and met its deadline.
+The treatment had zero such Specialty cases. This case identifies the
+trade-off between the two jobs and the timing of actual completion.
 [Native reservation and material trace](../research/mods/csc-ai-supplier-preparation-20261121.md#second-fractal-treatment-first-changed-improvement-reservation).

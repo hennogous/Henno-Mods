@@ -269,7 +269,7 @@ failed on site on 81. A new Builder request on 82 led to a successful
 recruit on 86 and completed Pasture on 87. In treatment, it was the
 Plantation that moved to the next slot and then failed to finish on 81.
 The first physical Plantation was observed on 79 in control. It was
-still missing through 120 in treatment. Both plots supply the same
+still missing at the treatment's turn-250 census. Both plots supply the same
 Bakers Quarter, one with Base Cattle and the other with Specialty Tomato.
 
 Through the turn-120 audit, both arms supplied one of two Base buyers
@@ -277,7 +277,51 @@ that had needed work and whose full deadline had passed. Both successes
 were the same Bakers Quarter at plot 2574, supplied on 58, two turns
 after opening. Both missed the deadline at plot 1728. Reserve and
 assignment first appeared at 96 in control and were absent at the
-treatment deadline. The treatment's full run is still in progress.
+treatment deadline.
+
+### Second ordinary Fractal treatment, Online turns 1–250
+
+Both arms reached turn 250, exported all ten census milestones, and
+closed with verified preference restoration. This table uses the shared
+eligibility survey and exact native improvement checks. Including the
+treatment's published pre-unlock offers produces the same totals.
+
+| Material and arm | Needed work | Already working at preparation | Reserved / assigned / working by opening | Reserved / assigned / working by +10 |
+| --- | ---: | ---: | ---: | ---: |
+| Base, control | 8 | 9 | 5 / 5 / 4 | 7 / 7 / 5 |
+| Base, treatment | 9 | 6 | 5 / 5 / 3 | 6 / 6 / 4 |
+| Specialty, control | 1 | 3 | 1 / 1 / 1 | 1 / 1 / 1 |
+| Specialty, treatment | 0 | 2 | 0 / 0 / 0 | 0 / 0 / 0 |
+
+Treatment met the Base deadline for four of eight Bakers cases. Its one
+Tailors case missed despite getting a Builder before opening. Of the five
+Base misses, three lacked a reservation by the deadline and two had a
+Builder assigned. Treatment also had two interrupted Base windows. For
+Specialty, six treatment buyers still lacked a legal supplier at the
+deadline and one opened too late to observe the full window. No treatment
+episode met the ordinary outage definition of a previously supplied,
+still-operating buyer with a legal job and no working supplier. Control
+had two such Base outages and recovered one in nine turns.
+
+Treatment trained 90 and bought 76 Builders, against 104 and 101 in the
+control. Total Builder acquisitions fell from 205 to 166. Other recorded
+production completions were 1,416 in control and 1,343 in treatment.
+The full-run publisher averaged 1.948 s in control and 1.424 s in
+treatment. Maxima were 4.692 s and 2.639 s. Through turn 78, before the
+first different improvement reservation, the means were 532 ms and
+522 ms. Native managed-cell updates averaged 14.2 ms and 16.9 ms across
+the full runs. The whole-run timings and production counts include both
+games' different later empires. Neither arm had a publication failure.
+
+Across both ordinary pairs, treatment supplied 12 of 20 Base cases by
++10, compared with 10 of 19 in control. The first pair improved and the
+second fell short of a majority. Tailors accounted for one success in
+three treatment Base cases. Each side had one eligible Specialty case
+that needed work and met the deadline, on different runs. Chalkidiki
+shows a concrete trade-off within the treatment: faster Base supply
+displaced a Specialty job that the control completed. Reliable Specialty
+timing and recovery of a Stage 4 Service after losing both materials
+remain open.
 
 ### Matched Stage 3 outage in Popayán
 
