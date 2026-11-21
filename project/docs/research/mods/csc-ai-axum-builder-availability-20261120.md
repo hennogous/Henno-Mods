@@ -434,9 +434,46 @@ eligible supplier plots were working at the endpoint. Eight of thirteen
 buyers received supply within 15 turns. Whole CSC publication averaged
 1.415 seconds per turn and peaked at 3.242 seconds. Controller wall time
 from autoplay start to the last boundary was 3,097 seconds including
-observer handoffs. The same-seed control is running. Its CSC Lua differs
-only by the switch that disables loan publication. Evidence is under
-`ordinary-continent-worker-loan/loan-on`.
+observer handoffs. Evidence is under `ordinary-continent-worker-loan/loan-on`.
+
+### Same-seed control through turn 250
+
+Both runs closed normally after a turn-250 census. They used the same
+map, starts, starting units, optional mods and native binary hashes.
+The installed CSC packages differed by one line disabling loan publication.
+The structural censuses matched through turn 150. The first difference in
+observed city build queue rows was on 168.
+
+Edinburgh opened with legal Cattle supply missing on 104 in both games.
+On 166 both reserved the same Pasture site at value 179 and opened Builder
+contract 3713. The enabled game borrowed the held Builder and built the
+Pasture on 167. The control failed its 167 recruitment, retried the site
+over several attempts and built the Pasture on 205. The supplied buyer
+first appeared on 168 with the loan and 206 in the control, a 38-turn gain
+for this chain. In the enabled arm Edinburgh could reserve a different
+improvement on 168 while the control was still waiting on contract 3713.
+
+| Ordinary campaign measure | Loan enabled | Loan disabled |
+| --- | ---: | ---: |
+| Physical material plots working at turn 250 | 16/21 (76.2%) | 20/26 (76.9%) |
+| Bakers Base working | 10/12 | 13/17 |
+| Bakers Specialty working | 2/3 | 2/3 |
+| Tailors Base working | 2/4 | 2/3 |
+| Tailors Specialty working | 3/3 | 3/3 |
+| New supplier improvement events | 17 | 16 |
+| Supplier repair events | 4 | 5 |
+| Eligible buyers supplied within 15 turns | 8/13 | 11/17 |
+| Supply outages that recovered | 4/4 | 1/2 |
+| CSC publication mean / max per turn | 1.415 s / 3.242 s | 1.382 s / 3.213 s |
+
+The aggregate working ratio was similar. The control supplied Mashhad
+and Angkor Thom later in the game. Those are separate distributed outcomes
+after the runs diverged. The controlled Axum replay remains the direct
+competing-work check. The whole-policy publication timing includes changed
+empire workloads and concurrent offline analysis during the control.
+The Edinburgh native release itself took 0.177 ms. Both arms retain
+the original packages, queue and behavior logs, and material observations
+under `ordinary-continent-worker-loan/loan-on` and `loan-off`.
 
 ### Other supplier delays in the enabled game
 
@@ -450,7 +487,13 @@ turn 250. The stock city trees show several ways this happened.
 | Cumae | 137 | 139 | Reserved the Barley on 139 and 149. Each job went ten searches without a Builder. The 159 job recruited on the same turn and built a Farm on 166. |
 | Ostia | 146 | 152 | Recruited for the Flax Farm on 157, then failed protection on 162. Reserved again on 163, recruited on 168 and built that turn. |
 | Mashhad | 168 | 168 | Reserved Sheep twelve times. Ten reservations logged recruitment. On three attempts the tree logged a completed move and later failed at Build Improvement. |
-| Angkor Thom | 192 | 203 | Reserved the pillaged Maize Farm four times and recorded three successful recruitments. The last observed attempt failed protection a turn after recruitment. |
+| Angkor Thom | 192 | 203 | Reserved the pillaged Maize Farm four times and recorded three successful recruitments. Two failed at Move Unit that turn. The last failed protection on the next turn. |
+
+Angkor Thom's supply policy already bid for the Farm on 191, while its
+Water Mill was one turn from completion. The first reservation arrived on
+203. The finishing scheduler requires a charged Builder already on the
+repair plot. The run shows loan offers for several nearby Builders and
+no finishing offer for that plot.
 
 Mashhad's Sheep job at (61, 8) reported Move Unit Success and Build
 Improvement Running on turn 200, then Build Improvement Failure on 201.
