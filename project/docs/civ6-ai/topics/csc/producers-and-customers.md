@@ -11,6 +11,30 @@ flowchart LR
  D[Definition] --> V[Fresh value] --> R[Accepted request] --> Q[Queue selected] --> B[Completed building] --> W[Working retained path] --> E[Benefit]
 ```
 
+## Lugdunum's Wind Mill path starts before construction
+
+In both ordinary November 20 Continents games, Lugdunum held a completed
+inland Bakers Quarter by turn 75. Cattle and Rice were adjacent and neither
+had a working improvement at that census. The city was still missing a
+producer. Machinery was first logged as researching on 95 and owned on 98.
+
+On turn 94, Lugdunum's native Build City Building tree decoded a Wind
+Mill at value 86 and submitted Machinery through Add Goal Tech.
+Research contract 1546 appears in the tree and technology logs through 97.
+The city submitted construction contract 1645 on 98, then started it on
+104 and completed it on 107. Six turns elapsed between the request and
+the production start. These were separate native
+requests. The case establishes the route from producer nomination to
+prerequisite research and then production in a normal game. It leaves
+the value of any CSC bid and its effect on the research date to the
+matched Problem 4 tests.
+
+The turn-50 saves are retained for preparing a locked-producer fixture.
+In the turn-100 saves, Machinery is owned, the Wind Mill is still
+missing and Rice is working. These provide an unlocked production
+fixture close to the original selection. See the
+[ordinary Continents run identities](../../../research/mods/csc-ai-axum-builder-availability-20261120.md#same-seed-control-through-turn-250).
+
 ## A retained Bakers Stage 2 chain in Boston
 
 The matched tests kept Boston's exact Cattle Pasture next to a working Water
