@@ -99,6 +99,10 @@ function B.NominationLimit(status)
     if type(status)~='string' or not status:match('"ready":1') or not status:match('"faults":0') then return 0 end
     return math.min(tonumber(status:match('"maxBidQ8":(%d+)')) or 0,MAX_NOMINATION_BID_Q8)
 end
+function B.NominationQueueAvailable(status)
+    return type(CE_AIBuildingNominationQueueBid)=='function' and type(status)=='string'
+        and status:match('"queueReady":1')~=nil
+end
 function B.RepairStatus()
     if type(CE_AIDistrictRepairStage)=='function' and type(CE_AIDistrictRepairStatus)=='function' then
         return CE_AIDistrictRepairStatus()
@@ -215,7 +219,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
     for _,e in ipairs(nominations or {}) do
         if not (integer(nominationLimit,1,MAX_NOMINATION_BID_Q8) and integer(e.player,0,63)
             and allowed[e.player] and integer(e.city,0,2147483647) and integer(e.building,0,2147483647)
-            and integer(e.delta,1,nominationLimit)) then return reject('Invalid building nomination entry') end
+            and integer(e.delta,1,nominationLimit)
+            and (e.queueDelta==nil or integer(e.queueDelta,1,nominationLimit)
+                and type(CE_AIBuildingNominationQueueBid)=='function')) then return reject('Invalid building nomination entry') end
     end
     if repairs and (not integer(repairLimit,1,MAX_REPAIR_CANDIDATES) or #repairs>repairLimit) then
         return reject('Invalid district repair batch')
@@ -362,7 +368,13 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             assert(CE_AIBuilderHarvestProtectionStage()==1,'Native harvest protection rejected')
         end
         for _,e in ipairs(nominations or {}) do
-            assert(CE_AIBuildingNominationBid(e.player,e.city,e.building,e.delta)==1,'Native building nomination rejected')
+            if e.queueDelta then
+                assert(CE_AIBuildingNominationQueueBid(e.player,e.city,e.building,e.delta,e.queueDelta)==1,
+                    'Native queue building nomination rejected')
+            else
+                assert(CE_AIBuildingNominationBid(e.player,e.city,e.building,e.delta)==1,
+                    'Native building nomination rejected')
+            end
         end
         for _,e in ipairs(repairs or {}) do
             assert(CE_AIDistrictRepairStage(e.player,e.city,e.district,e.plot)==1,'Native district repair rejected')

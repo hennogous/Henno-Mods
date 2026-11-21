@@ -398,8 +398,9 @@ allowed the Lighthouse. The prior 52-point preference was published
 on turns 150–154. The native production fallback took the building
 through to a working Lighthouse on 154 without an ordinary nomination
 comparison. The control reached and verified turn 176. Its optional
-UI per-building yield read was unavailable, so the proof of payments
-will come from the underlying transaction modifiers.
+UI read of the exact building locations did not complete. The
+gameplay census and transaction modifier readbacks cover these
+separate observations in the next replay.
 
 The candidate customer bid now uses the loaded Stage 2 fixed exchange.
 It values each leg in its actual receiving city from the estimated
@@ -410,6 +411,16 @@ one preference per city/building and caps that preference at 64 native
 points. The normal building valuation retains its intrinsic yields,
 upkeep and production or purchase cost. Future producers, materials
 and Service effects make no contribution to this quote.
+
+The queue fallback uses its own native comparison. The CSC customer
+publisher opts into it when CE reports the qualified capability.
+Both queue callsites use the existing selector hook. CE keeps the
+queue and ordinary preferences and receipts independent. Older CE
+builds still receive the ordinary customer preference. Only a
+completed-district, currently legal customer offer uses the queue
+channel. Producer and research preparation continue to use ordinary
+nomination. The native queue retains its admitted contracts and
+competing unit and project values.
 
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 

@@ -239,6 +239,7 @@ local function refresh(turn)
         and harvestStatus:match('"ready":1') and harvestStatus:match('"faults":0')
     local nominationStatus = bridge.NominationStatus()
     local nominationLimit = bridge.NominationLimit(nominationStatus)
+    local queueNomination = bridge.NominationQueueAvailable(nominationStatus)
     local repairStatus = bridge.RepairStatus()
     local repairLimit = bridge.RepairLimit(repairStatus)
     local exclusionStatus = bridge.ExclusionStatus()
@@ -315,7 +316,12 @@ local function refresh(turn)
         if loan then materialLoans[#materialLoans+1]=loan end
         for _,offer in ipairs(requests)do materialRequests[#materialRequests+1]=offer end
         for _,offer in ipairs(workers)do materialWorkers[#materialWorkers+1]=offer end
-        for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
+        for _, bid in ipairs(bids) do
+            -- Older CE builds still deliver the ordinary building preference.
+            -- Only a qualified queue caller can consume the separate value.
+            if not queueNomination then bid.queueDelta=nil end
+            nominations[#nominations + 1] = bid
+        end
         for _, candidate in ipairs(candidates) do repairs[#repairs + 1] = candidate end
         for _, site in ipairs(threatened or {}) do exclusions[#exclusions + 1] = site end
         local protectedPlots = {}

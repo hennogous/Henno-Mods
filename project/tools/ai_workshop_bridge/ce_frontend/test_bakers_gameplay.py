@@ -629,11 +629,25 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
         """)
         self.assertEqual(lua.eval('#nominations'), 1)
         self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,16384')
-        lua.execute('hasGranary=true; granaryPillaged=true; turn=18; boundary()')
+        lua.execute("""
+            CE_AIBuildingNominationQueueBid=function(...)
+                nominations[#nominations+1]={...}
+                return 1
+            end
+            CE_AIBuildingNominationStatus=function()
+                return '{"ready":1,"faults":0,"maxBidQ8":131072,"queueReady":'..queueReady..'}'
+            end
+            queueReady=1;turn=18;boundary()
+        """)
+        self.assertEqual(lua.eval('#nominations'), 1)
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,9000,9000')
+        lua.execute('queueReady=0;turn=19;boundary()')
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,9000')
+        lua.execute('hasGranary=true; granaryPillaged=true; turn=20; boundary()')
         self.assertEqual(lua.eval('#nominations'), 0)
-        lua.execute('hasGranary=false; millPillaged=true; turn=19; boundary()')
+        lua.execute('hasGranary=false; millPillaged=true; turn=21; boundary()')
         self.assertEqual(lua.eval('#nominations'), 0)
-        lua.execute('turn=20; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute('turn=22; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

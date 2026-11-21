@@ -544,7 +544,7 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         return canProduce and canProduce(pid,buyer:GetID(),building.Hash)
     end
 
-    local function bid(buyer, building, value, eligible)
+    local function bid(buyer, building, value, eligible, queue)
         -- Producer preparation supplies its own eligibility above. Other
         -- nominations still consult the UI queue. An occupied city planning
         -- slot can delay the native comparison. Keep the strongest offer
@@ -555,8 +555,10 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         local existing = seen[key]
         if existing then
             existing.delta = math.max(existing.delta, delta)
+            if queue then existing.queueDelta=math.max(existing.queueDelta or 0,delta) end
         else
-            local entry = {player=pid, city=buyer:GetID(), building=building.Index, delta=delta}
+            local entry = {player=pid, city=buyer:GetID(), building=building.Index, delta=delta,
+                queueDelta=queue and delta or nil}
             nominations[#nominations + 1], seen[key] = entry, entry
         end
     end
@@ -599,7 +601,9 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
                     if not total.edges[edge]then
                         total.edges[edge]=true
                         total.value=total.value+value
-                        bid(buyer,building,math.min(CUSTOMER_EXCHANGE_CAP_Q8,total.value),true)
+                        -- The queue can choose a legal customer through its
+                        -- fallback without opening an ordinary building plan.
+                        bid(buyer,building,math.min(CUSTOMER_EXCHANGE_CAP_Q8,total.value),true,true)
                     end
                 end
             end
