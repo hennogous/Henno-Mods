@@ -74,6 +74,52 @@ while Machinery is unowned. The policy therefore checks prerequisite
 timing from the live player and loaded building definition as well as
 the UI queue query.
 
+### Lugdunum matched producer replay
+
+Both arms reloaded the same turn-75 save, matched all 55 opening
+structural records and ran through turn 112. The control kept the prior
+integrated CSC guidance. The investment arm changed the three Lua files
+that price and publish producer nominations, with the same CE and game
+build in both arms.
+
+| Lugdunum Wind Mill | Prior guidance | Producer investment |
+| --- | ---: | ---: |
+| First staged nomination | 78 | 75 |
+| First native comparison and Machinery request | 80 | 80 |
+| Machinery selected for research | 91 | 91 |
+| Machinery owned and first Mill contract submitted | 95 | 95 |
+| Replacement Mill contract submitted | 102 | 102 |
+| Mill selected | 108 | 105 |
+| Supplier planner detected the Mill under construction | 109 | 106 |
+| Working Mill observed | 110 | 106 |
+
+The early preference was 10,745 Q8 on turn 75, about 42 score points.
+No comparison of this candidate occurred in either arm on turns 75–79.
+By turn 80 both arms offered the established working-chain preference.
+The recorded candidate rose from 10,061 to 124,749 Q8 in both arms,
+and the native tree asked for Machinery. The two turn-102 replacements
+also had the same recorded candidate change, 58,398 to 173,086 Q8.
+Both contracts entered the queue at the tree's value of 228. The
+control then selected a Courser before the Mill. The investment run
+selected the Mill while the Courser request was still active. Several
+cities received new bids in the investment arm, and the two city
+production paths had already diverged. The four-turn gain is a
+whole-policy result. The early Lugdunum offer had no native comparison
+during the three extra turns.
+
+The supplier planner requested the Cattle Pasture while the Mill was
+being built in both arms. Cattle was still unimproved at turn 112.
+Both arms retained the Rice Farm and the adjacent Stage 2 customer.
+The investment arm also had a working Barley improvement at the
+endpoint. The checkpoint census verifies the buildings and plots.
+Transaction payouts were not sampled in this replay.
+
+The publisher's mean and maximum wall time over the 38 measured
+turns were 0.929 s and 1.083 s with the previous guidance and 0.939 s
+and 1.388 s with investment. These samples include the whole publisher,
+with different game states after the arms diverged. They give the run
+cost, rather than the isolated cost of the added producer quote.
+
 ## A retained Bakers Stage 2 chain in Boston
 
 The matched tests kept Boston's exact Cattle Pasture next to a working Water
