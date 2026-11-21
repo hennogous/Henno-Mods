@@ -335,6 +335,22 @@ incremental benefits from a second Mill remain unpriced.
 
 [Full exchange calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-player-weights-calibrate-the-full-ordinary-granary-exchange).
 
+## A completed Harbor was waiting for its Lighthouse
+
+The November 18 control game records a naturally occurring Stage 2
+customer opening for Problem 5. At turn 150, player 3's Tailors at plot
+545 had a working Textile Workshop, Flax Farm and Silver improvement.
+The Harbor on plot 546 was complete and unpillaged, with the Lighthouse
+absent. By turn 175 the Lighthouse and positive Dockmaster property were
+present. The two censuses bound the observed change to turns 151–175.
+
+The turn-150 game file is
+`CSC_AI_HARMONISED_150_0d2b7e2ea4b6.Civ6Save`, SHA-256
+`15e9be36612e60407b88a3b5eacb747fb9d1357ba2e5791389e186c467626ae2`.
+The archived opening census is `control250/full-census-150.json`.
+Match the live district and building facts when loading the checkpoint
+for a comparison.
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.
