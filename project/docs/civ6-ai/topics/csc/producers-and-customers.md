@@ -144,8 +144,26 @@ Research started on 85 and finished on 87. Default Specialization
 started the Workshop on 90, and the end-of-player-turn read showed it
 working on 92. At turn 132, the UI showed native Workshop Culture
 inputs and improvement Production returns on both Flax and Bamboo.
-The matched investment and shared-unlock arms will measure the earlier
-producer path against that same opening.
+
+The investment arm before the shared-unlock change reproduced that
+timeline. It staged a 64-point Workshop preference on turns 88–90.
+The ordinary nomination hook recorded zero comparisons for the three
+offers. Default Specialization queued the Workshop on turn 90 in both
+arms. The supplier adapter detected Bamboo on 91 and 92 while the
+Workshop was in production in both. The turn-132 readback showed both
+material exchanges operating in the two replays. This separates the
+stock path that built the Workshop from the preparation path under
+test in the dedicated shared-unlock arm.
+
+Ghidra's XP2 reference (SHA `324c51e9`) shows that
+`QueueNextBuild` itself calls `GetBestBuilding` and can log a
+choice under Default Specialization. The tested Steam XP2 DLL
+(SHA `4de40abf`) has the corresponding queue calls at RVAs
+`3e7d57` and `3e7e59`. Both target the same selector at
+`3e3fd0` as the ordinary nomination call at `3e0ec5`.
+CE's nomination comparison is restricted to the latter call's
+return address `3e0eca`. A building can therefore reach the queue
+through Default Specialization with a zero nomination receipt.
 
 ## A retained Bakers Stage 2 chain in Boston
 
