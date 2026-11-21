@@ -2,8 +2,11 @@
 
 **21 November — Problem 4 is active.** Verify the producer unlock and
 construction decisions for the Bakers’ Mills and Tailors’ Textile Workshop.
-Existing native nominations can open the prerequisite research. Trace the
-production choice and when the material planner sees it enter the queue.
+The matched Wind Mill finished on 106 versus 110. Axum's shared unlock
+reached four locked Workshop comparisons while the stock build finished
+on 92 in all arms. Qualify the integrated guidance in a fresh Small Online
+Continents run (map seed 1420359491, game seed 299464842) through turn 200.
+[Producer replays](topics/csc/producers-and-customers.md).
 
 **21 November — Problem 3.2 verified for the tested assignment paths.**
 The integrated loan restored Axum's Bamboo and both material effects.
