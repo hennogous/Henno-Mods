@@ -1210,6 +1210,9 @@ is legal on the actual plot and available to its owner.
   supplies a bounded 13-point preference to one job, compared with the
   established 26-point near-completion floor.
   [Preparation and matched measurements](../research/mods/csc-ai-supplier-preparation-20261121.md).
+  The Popayán replay verified Stage 3 recovery from a Base repair while
+  the Mill stayed pillaged. The existing economic bid already won in
+  both arms and the Innkeeper was back four turns after damage.
   [Prompt and delayed cases](../research/mods/csc-ai-axum-builder-availability-20261120.md#how-the-prompt-cases-got-supplied).
   The 18 November replay delivered the +26 producer-only bid and a matched
   +64 ceiling bid to Tailors1753/Sheep1680. Angkor Thom opened the same Mine

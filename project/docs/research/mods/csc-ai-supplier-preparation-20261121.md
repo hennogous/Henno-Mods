@@ -65,6 +65,12 @@ Stage 3 repair correction. Both pairs are under
 `Desktop/Codex/csc-ai-problem3-preparation-20261121`. Run
 `supplier_deadline_results.py` against each completed ordinary run.
 
+The second ordinary pair uses Fractal map seed `28111119` and game seed
+`38111119`. This was chosen before running either arm because the older
+dispatch comparison on that map saw up to five eligible Specialty buyers.
+The current pair will use the same preparation packages and timing
+observer as the first ordinary pair.
+
 ### Continents checkpoint, turns 150–175
 
 Both runs matched all 122 structural opening rows and closed normally.
@@ -179,3 +185,22 @@ in 8, 8, 12, 12, 13 and 29 turns. These are buyer episodes, so a shared
 plot can interrupt two buyers. The whole publisher averaged 1.377 s in
 control and 1.569 s in treatment, with maxima of 3.064 and 3.468 s over
 250 turns. The 0.192 s increase in mean includes the changed world state.
+Through turn 56, before native decisions diverged, the corresponding mean
+was 0.232 s vs 0.250 s. The separately tracked native managed-cell refresh
+averaged 13.4 ms vs 14.0 ms over the whole game. Both arms recorded zero
+failed publications.
+
+### Matched Stage 3 outage in Popayán
+
+Both arms matched 234 structural rows from the same ordinary Fractal
+turn-200 checkpoint. The controlled fixture pillaged the Wind Mill and
+the sole mapped Base Farm on Flax plot 1061. The adjacent Innkeeper
+property went from 1 to 0. The Bakery and its Market remained in place.
+
+Both arms reserved the Farm repair and found a Builder on 200. Popayán
+completed the repair on 203. The 204 survey saw working Base and the
+Innkeeper property back at 1 while the Mill was still pillaged. On the
+201–203 publications the treatment marked the Farm as a Service repair.
+Both arms quoted 19,007 Q8 because the existing modeled value exceeded
+the new 56-unit floor. This case qualifies independent Stage 3 recovery
+without an acceleration claim. The paired city production logs matched.
