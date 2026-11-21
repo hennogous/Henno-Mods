@@ -514,9 +514,45 @@ district-cell work averaged 13.366 ms and peaked at 34.910 ms.
 
 At every census, all Tailors lacked an adjacent Harbor that could host
 their Stage 2 customer. There were no Lighthouse bids for those
-Quarters. A second ordinary game uses Small Online Island Plates
-(map seed 897607809, game seed 495773652) to give the Harbor path more
-coastal opportunities.
+Quarters.
+
+## Island Plates exercised Bakers and stalled before Tailors investment
+
+Small Online Island Plates (map seed 897607809, game seed 495773652)
+reached turn 200 with three operating Bakers Quarters, three Mills
+with working Base supply, and three working Mill–Granary pairs.
+The turn-200 save SHA-256 was
+`9fae9410031c1fb8bfbc8d9f204110d686900c2c06981ec2e030276e552c443e`.
+A read-only reload confirmed active Granary Food, Mill Production
+and Mill Gold in Antioch, Dundee and Pella.
+
+Ancyra's missing Granary received seven ordinary and 15 queue writes
+across 40 staged windows. Its native tree submitted contract 3805
+on turn 176, and the turn-177 city log recorded a matching `PURCHASE`
+row. The turn-200 census found the Quarter and the Mill pillaged
+and the Granary absent. Count Ancyra as a delivered preference with
+a recorded purchase action and unverified exchange.
+
+The original AI seats completed zero Tailors. The planner found
+qualified geometry in 32 cities and offered a site in 11.
+In Swenett, ten native district selections between turns 65 and 91
+returned the same owned +3 Tailors footprint, plot 1871 at (21, 25).
+The behavior tree then failed its early plot check, returned to
+Builder clearance, and recorded no Tailors construction contract.
+For example, recruitment failed on 65 and succeeded on 71, with
+no resulting Quarter. This places the observed delay before Stage 2
+customer investment. The only finished Tailors on the map belonged
+to the observer seat outside CSC tuning.
+
+The publisher recorded 200 packets with no failures. Mean and maximum
+wall times were 0.510 and 1.542 seconds per turn. Native managed cells
+averaged 9.215 ms and peaked at 20.817 ms.
+
+For a targeted ordinary follow-up, rerun from Ancient on Small Online
+Fractal seed 28061117, game seed 38061117. That starting world
+previously formed the Tailors–Harbor opportunity verified in the matched
+Québec replay. The seeds match the retained checkpoint and the
+[original full-game protocol](../../../research/mods/csc-ai-material-development-matched-20261118.md).
 
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 

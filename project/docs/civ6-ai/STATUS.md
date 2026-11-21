@@ -4,9 +4,10 @@
 reached Québec's Lighthouse queue comparison and Saint John's Granary
 nomination and purchase. Both replays verified the exchange. The fresh
 Fractal game ended with seven working Bakers pairs and 105 Granary
-queue writes. Its Tailors lacked adjacent Harbors at each census.
-An Island Plates run covers the remaining fresh-game Lighthouse case.
-[Customer results](topics/csc/producers-and-customers.md#customer-decisions-in-a-fresh-fractal-game).
+queue writes. Island Plates recorded three more working Bakers pairs.
+Its observed +3 Tailors winner in Swenett stalled at the district plot
+check. The normal start on the documented Québec map is now running.
+[Customer results](topics/csc/producers-and-customers.md#island-plates-exercised-bakers-and-stalled-before-tailors-investment).
 
 **21 November — Problem 4 verified.** The fresh Continents game ended
 with 16 working Mills and four Workshops. Stockholm completed the
