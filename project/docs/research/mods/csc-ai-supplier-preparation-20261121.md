@@ -229,3 +229,16 @@ loan. The Stage 4 requirement check identified both missing classes, but
 this repair floor did not change the native job order or restore the
 Service within the replay. Compare the Mine's early quote with the job
 selector's final value before raising the repair floor.
+
+The next replay reads the city cache and improvement slot for this exact
+Mine. The Windows Steam XP2 build 26595377 calls `GetBestLocationFor`
+(`0x3e5010`) from `CheckForImprovement` (`0x3e0a10`) only when the
+ordinary improvement slot is free. `AnalyzeTerrain` (`0x3de500`) picks a
+preferred improvement type from eligible rows. The proposal then rescans
+the rows for that type and requires a positive `PresentValueOf`
+(`0x3e78c0`) for its chosen site. These functions and their call edges
+were matched to the decompiled reference against the exact installed
+DLL. The replay records the Mine's cached score, row eligibility, whether
+its reservation resolves, and the chosen location and slot before and
+after the proposal. That separates an offer priced too low from an
+eligible row waiting for a free slot.
