@@ -190,9 +190,49 @@ material exchanges again at 132.
 | Shared unlock | 4 | 92 | 1.780 s / 3.339 s |
 
 The positive price came from sources already represented in the
-ordinary ledger. Bamboo's co-unlock made the offer eligible. A
-fresh game will test how often the same guidance changes what
-actually gets built across different cities and prerequisites.
+ordinary ledger. Bamboo's co-unlock made the offer eligible.
+
+## The integrated producer policy in a fresh Continents game
+
+The Small Online game used map seed 1420359491, game seed 299464842,
+Steam XP2 build 26595377 and the integrated shared-unlock package.
+The shared controller verified the turn-200 save and a clean native
+exit. The save SHA-256 is
+`90e62b4d81b6da25265f0634ca59a581e0f16eb0c9b59db56280385cf01b6498`.
+
+| Turn 200 | Bakers | Tailors |
+| --- | ---: | ---: |
+| Completed, functioning Quarters | 17 | 4 |
+| Working Stage 2 producers | 16 | 4 |
+| Working Stage 2 producers with at least one working Base improvement | 15 | 3 |
+| Working Stage 2 producer with a functioning adjacent customer building | 10 | 0 |
+| Positive Stage 2 Service property | 9 | 0 |
+
+The Wind Mill tree in Montreal requested Machinery on turn 91, with
+research starting on 93 and ownership on 95. Linköping's Wind Mill
+tree also requested Machinery on 96 for a different player. That
+player started it on 102, owned it on 105, and Linköping selected
+the Mill through Default Specialization on 124.
+
+Stockholm's Textile Workshop bid wrote at the native comparison on
+turn 159. The candidate moved from 164,259 to 173,322 Q8, a 35.4-point
+preference. The tree picked the Workshop and submitted contract 3264
+at its native value of 641. The build began on 161 and completed on
+163. The turn-175 census confirmed the Workshop and working Sheep
+Pasture at the same Quarter. Axum supplies the separate matched test
+of the Workshop's before-unlock comparison and paid supplier effects.
+
+Opango's Water Mill was selected on 138 and completed on 141. The
+publisher recognized the producer under construction and offered a
+Base Flax Farm job on turns 139–141. The Flax was working by 175.
+Lugdunum supplies the matched Wind Mill queue comparison. These cases
+cover both Mills, the Workshop and the handoff to supplier planning.
+
+The Lua publisher averaged 1.471 s per turn and peaked at 3.384 s,
+with 200 complete packets and zero failed publication attempts.
+The separate native managed-cell measurement averaged 11.2 ms and
+peaked at 28.0 ms per turn. These times cover all integrated
+guidance in this game.
 
 ## A retained Bakers Stage 2 chain in Boston
 

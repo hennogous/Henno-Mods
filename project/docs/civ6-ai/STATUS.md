@@ -1,12 +1,12 @@
 # Current CSC AI status
 
-**21 November — Problem 4 is active.** Verify the producer unlock and
-construction decisions for the Bakers’ Mills and Tailors’ Textile Workshop.
-The matched Wind Mill finished on 106 versus 110. Axum's shared unlock
-reached four locked Workshop comparisons while the stock build finished
-on 92 in all arms. Qualify the integrated guidance in a fresh Small Online
-Continents run (map seed 1420359491, game seed 299464842) through turn 200.
-[Producer replays](topics/csc/producers-and-customers.md).
+**21 November — Problem 5 is active.** Problem 4 reached ordinary
+follow-through in a fresh 200-turn game. Stockholm finished a Workshop
+after a native score write. Opango offered a Flax job while its Water
+Mill was under construction. The endpoint had 16 working Mills and
+four Workshops. Price the mapped Stage 2 customer exchange and validate
+it on the native production or purchase path.
+[Producer results](topics/csc/producers-and-customers.md#the-integrated-producer-policy-in-a-fresh-continents-game).
 
 **21 November — Problem 3.2 verified for the tested assignment paths.**
 The integrated loan restored Axum's Bamboo and both material effects.
