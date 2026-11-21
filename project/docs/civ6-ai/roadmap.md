@@ -1196,14 +1196,18 @@ is legal on the actual plot and available to its owner.
   mapped Stage 2 Base or Stage 4 Specialty buyer is unlocked and credible
   for the existing Quarter, and the owned improvement is legal. Increase
   priority when that buyer enters active production. Keep offering useful
-  work once the buyer operates, with additional value for a Service the
-  improvement can restore. Aim for most eligible buyers that start short
-  to have work underway by production. Track first eligibility, bid, native
-  reservation, Builder assignment, and working supply. Report already
+  work once the buyer operates, with additional priority for the first legal
+  repairs that can restore adjacent Services. The Online target is working
+  supply by buyer opening plus 10 turns for most eligible buyers that lacked
+  supply at preparation. Track first eligibility, published bid, native
+  reservation, Builder assignment and working supply. Report already
   supplied buyers separately and measure restoration from the loss.
-  The current controller supports active production and operating buyers,
-  with an earlier Base path when there is a functioning customer. General
-  unlock-triggered preparation, including Specialty, remains open.
+  The first preparation candidate extends both classes to an unlocked
+  queue-legal buyer or its final unlock in progress, up to five turns away
+  with local building gates already met. Its positive expected transaction
+  supplies a bounded 13-point preference to one job, compared with the
+  established 26-point near-completion floor. This candidate still needs
+  matched game evidence.
   [Prompt and delayed cases](../research/mods/csc-ai-axum-builder-availability-20261120.md#how-the-prompt-cases-got-supplied).
   The 18 November replay delivered the +26 producer-only bid and a matched
   +64 ceiling bid to Tailors1753/Sheep1680. Angkor Thom opened the same Mine

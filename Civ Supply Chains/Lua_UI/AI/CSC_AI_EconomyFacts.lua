@@ -1118,6 +1118,22 @@ function F.New(player,placement,ui,context)
         visiting[definition.BuildingType]=nil
         return b
     end
+    function snapshot.MaterialBuyerPrerequisitesMet(chain, definition)
+        -- The site ledger can sequence absent stage buildings. Before an
+        -- unowned unlock, supplier preparation needs a shorter, credible path.
+        -- Check the loaded alternative prerequisite rows against live buildings
+        -- rather than borrowing the future buildings credited by the ledger.
+        local choices = c.prerequisites[definition.BuildingType] or {}
+        if #choices == 0 then return true end
+        local buildings = chain.city:GetBuildings()
+        for _, kind in ipairs(choices) do
+            local row = resolve(kind)
+            if row and buildings:HasBuilding(row.Index) and not buildings:IsPillaged(row.Index)
+                and (row.PrereqDistrict ~= chain.profile.district.DistrictType
+                    or buildings:GetBuildingLocation(row.Index) == chain.plot:GetIndex()) then return true end
+        end
+        return false
+    end
     local function futureCustomer(city,definition,plot)
         local b=building(city,definition,plot)
         b.ready=b.working and 0 or b.unlock+b.turns
@@ -1821,9 +1837,8 @@ function F.New(player,placement,ui,context)
                 and GameInfo.Buildings[transaction.producer]
             local working=buyer and buildings:HasBuilding(buyer.Index) and not buildings:IsPillaged(buyer.Index)
                 and buildings:GetBuildingLocation(buyer.Index)==chain.plot:GetIndex()
-            -- A committed producer can finish in parallel with the Builder.
-            -- Research can also use a legal prospective producer for a first
-            -- supplier. Either way, income starts after both jobs finish.
+            -- A queued or credible future producer can finish in parallel
+            -- with the Builder. Income starts only after both jobs finish.
             local ready=working and workTurn or buyer and pendingBuyer and pendingBuyer.type==transaction.producer
                 and math.max(workTurn,pendingBuyer.turns)
             if ready then

@@ -1,8 +1,8 @@
 -- Shared Bakers and Tailors supplier and Stage 2 chain policy. Read loaded
 -- material classes, buyer stages and live footprints, then translate missing
 -- or threatened links into candidate bids, repair offers and protection for
--- the CE publisher. Material development reads the exact working or actively
--- producing buyer for each stage. Deposit protection and acquisition also
+-- the CE publisher. Material development reads the first credible, producing
+-- or working buyer for each stage. Deposit protection and acquisition also
 -- value immediate Quarter adjacency.
 -- The bounded Bakers forecast diagnostic at the end has its own caller.
 CSC_AI_QuarterPlacement = {}
@@ -28,6 +28,9 @@ local EXCHANGE_PRODUCER_BID_Q8 = 18 * 256
 -- the separate, qualified band for a chain with an immediate Service.
 local PRODUCER_INVESTMENT_CAP_Q8 = 64 * 256
 local EARLY_SUPPLIER_BID_Q8 = 26 * 256
+-- A prospective city queue is less certain than an active build. Offer at
+-- most half the existing queued first-supplier band until it commits.
+local PREPARATION_SUPPLIER_CAP_Q8 = EARLY_SUPPLIER_BID_Q8 / 2
 local MATERIAL_WORKER_RADIUS = 6
 local MATERIAL_QUEUE_HORIZON = 5
 -- The native selector adds this allowance to the normal building valuation.
@@ -189,12 +192,13 @@ function P.ReadSuppliers(player, quarter, profile)
             and PlayersVisibility[playerID]:IsRevealed(plot:GetX(), plot:GetY())
             and CSC_Adjacency.ResourceVisible(playerID, resourceID) then
             local current = plot:GetImprovementType()
-            local viable, working, ready = false, false, false
+            local viable, working, ready, repairable = false, false, false, false
             for _, improvement in ipairs(options[resourceID]) do
                 if improvement == current then
                     viable = true
                     working = not plot:IsImprovementPillaged()
                     ready = true -- An existing compatible improvement can be used or repaired.
+                    repairable = not working
                     break
                 end
                 -- Native Lua wrapper 1a2a0 consumes a PLAYER ID, not a team.
@@ -205,7 +209,8 @@ function P.ReadSuppliers(player, quarter, profile)
                 end
             end
             if viable then
-                local material = {plot = plot:GetIndex(), resource = definition.ResourceType, working = working, ready = ready}
+                local material = {plot = plot:GetIndex(), resource = definition.ResourceType,
+                    working = working, ready = ready, repairable = repairable}
                 if base then supplies.base[#supplies.base + 1] = material end
                 if specialty then supplies.specialty[#supplies.specialty + 1] = material end
             end
@@ -272,11 +277,49 @@ local function materialUnlock(player, economy, definition)
     end
 end
 
+-- Identify a particular future buyer for this built Quarter. The unlocked
+-- path uses the live queue. The earlier path requires the exact remaining
+-- unlock to be in progress and close, with local building gates already met.
+-- Re-evaluate each publication so a research switch retires its offer.
+local function preparingBuyer(player, chain, economy, options, canProduce)
+    local site = chain.economy
+    if not site or not economy or not canProduce then return end
+    local best
+    for _, option in ipairs(options) do
+        local definition = GameInfo.Buildings[option.type]
+        if definition and not option.excluded and not option.working
+            and not chain.city:GetBuildings():HasBuilding(definition.Index) then
+            local unlocked = prerequisitesUnlocked(player, definition)
+            local delay
+            if unlocked then
+                if canProduce(player:GetID(), chain.city:GetID(), definition.Hash) then delay = 0 end
+            elseif economy.Research and economy.MaterialBuyerPrerequisitesMet
+                and option.unlock > 0 and option.unlock <= MATERIAL_QUEUE_HORIZON
+                and economy.MaterialBuyerPrerequisitesMet(chain, definition) then
+                local unscheduled, remaining = materialUnlock(player, economy, definition)
+                if not unscheduled then delay = remaining end
+            end
+            if delay then
+                -- Include a queue allowance in addition to research and the
+                -- building's own construction time. Preparation prices only
+                -- declared future transactions, when both jobs can be done.
+                local finish = delay + option.turns + MATERIAL_QUEUE_HORIZON
+                if finish < site.horizon and (not best or finish < best.turns
+                    or finish == best.turns and option.type < best.type) then
+                    best = {type=option.type, turns=finish}
+                end
+            end
+        end
+    end
+    return best
+end
+
 -- Pick the best exact buildable operation per supplier. Rank by the gain for
 -- a working buyer. At equal value prefer repair, then stable plot and
 -- improvement indices. Only the best operation in a missing class gets the
 -- fallback band. Other positive operations still reach stock selection.
-local function offerMaterialJob(player, chain, kind, recover, bid, economy, research, pendingBuyer, committedBuyer, operatingBuyer)
+local function offerMaterialJob(player, chain, kind, recover, bid, economy, research, pendingBuyer, committedBuyer,
+    operatingBuyer, prospectiveBuyer, serviceRepair)
     local supply = chain.supply[kind] or {}
     if bid <= 0 then return end
     -- The calibrated floor is for opening a missing material link. Further
@@ -286,8 +329,9 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
     -- value. The first-link floor is for a buyer ready within the existing
     -- five-turn Builder planning allowance.
     local supplied = hasWorkingMaterial(supply)
-    local floor = (supplied or committedBuyer and committedBuyer.turns>MATERIAL_QUEUE_HORIZON)
+    local floor = (supplied or prospectiveBuyer or committedBuyer and committedBuyer.turns>MATERIAL_QUEUE_HORIZON)
         and 0 or bid
+    local repairFloor=serviceRepair and READY_SUPPLIER_BID_Q8 or 0
     local playerID = player:GetID()
     local best, bestLocked
     local localJobs = {}
@@ -304,18 +348,26 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
                 if buildable then
                     local value,ordinary
                     if quote then
-                        local ok, direct, service=pcall(quote,economy,chain,kind,plot,index,nil,committedBuyer)
+                        local ok, direct, service=pcall(quote,economy,chain,kind,plot,index,nil,committedBuyer or prospectiveBuyer)
                         if ok and type(direct)=='number'then value,ordinary=direct+(service or 0),direct end
+                    end
+                    if prospectiveBuyer then
+                        -- Until a buyer commits, guide one supplier with a
+                        -- bounded share of its own positive transaction. The
+                        -- normal score and native choice remain in force.
+                        value=math.min(PREPARATION_SUPPLIER_CAP_Q8,math.floor((value or 0)/2))
+                        ordinary=value
                     end
                     value=value or 0
                     readyHere=math.max(readyHere or 0,value)
-                    if (floor>0 or value>0) and (not buildHere or value>buildHere.value or value==buildHere.value
+                    local ranking=repair and math.max(repairFloor,value) or value
+                    if (floor>0 or ranking>0) and (not buildHere or ranking>buildHere.ranking or ranking==buildHere.ranking
                         and (repair and not buildHere.repair or repair==buildHere.repair and index<buildHere.improvement)) then
                         -- A new improvement can finish in one action on a bare
                         -- plot. Keep clearing and replacement in normal order.
                         local finish=repair or current==-1 and plot.GetFeatureType and plot:GetFeatureType()==-1
                         buildHere={plot=material.plot,improvement=index,repair=repair,finish=finish,
-                            value=value,ordinary=ordinary or 0}
+                            value=value,ranking=ranking,ordinary=ordinary or 0}
                     end
                 elseif research and quote and economy.Research and not improvementUnlocked(player,index)
                     and ImprovementBuilder.CanHaveImprovement(plot,index,playerID) then
@@ -331,7 +383,7 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
             end
             if buildHere then
                 localJobs[#localJobs+1]=buildHere
-                if not best or buildHere.value>best.value or buildHere.value==best.value
+                if not best or buildHere.ranking>best.ranking or buildHere.ranking==best.ranking
                     and (buildHere.repair and not best.repair or buildHere.repair==best.repair and buildHere.plot<best.plot) then
                     best=buildHere
                 end
@@ -362,7 +414,7 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
         offer.jobs[bestLocked.plot]=true
     end
     for _,candidate in ipairs(localJobs)do
-        if candidate==best or candidate.value>0 then
+        if candidate==best or not prospectiveBuyer and candidate.value>0 then
             local jobs=recover[candidate.plot]or{}
             recover[candidate.plot]=jobs
             local job=jobs[candidate.improvement]or{floor=0,value=0,ordinary=0}
@@ -370,17 +422,27 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
             -- Add distinct buyer gains once per physical supplier operation.
             -- The fallback applies to the best missing link only, and is not
             -- stacked across buyers. A shared tile still needs one charge.
-            if candidate==best then job.floor=math.max(job.floor,floor) end
-            job.value=job.value+candidate.value
-            job.ordinary=job.ordinary+candidate.ordinary
+            local priorityRepair=candidate==best and candidate.repair and serviceRepair
+            if candidate==best then job.floor=math.max(job.floor,floor,priorityRepair and repairFloor or 0) end
+            local preparation = prospectiveBuyer and math.max(0,candidate.value-(job.preparationQ8 or 0))
+            job.value=job.value+(preparation or candidate.value)
+            job.ordinary=job.ordinary+(preparation or candidate.ordinary)
             job.repair=candidate.repair
+            job.serviceRepair=job.serviceRepair or priorityRepair
             -- Give an operating buyer's sole mapped supplier a chance to
             -- finish in the worker's current turn. The native pass still
             -- needs the exact Builder on site under this job's control.
-            job.finishSupply=job.finishSupply or (operatingBuyer and #supply==1 and candidate.finish)
+            job.finishSupply=job.finishSupply or (operatingBuyer and (priorityRepair or #supply==1) and candidate.finish)
             -- One working input restores this material channel to a present buyer.
             -- An eligible replacement deposit can restore it while the old one waits.
-            job.restoreSupply=job.restoreSupply or (operatingBuyer and not supplied)
+            job.restoreSupply=job.restoreSupply or (operatingBuyer and (priorityRepair or not supplied))
+            if preparation and preparation>0 then
+                -- Several prospective buyers can point to one job. Keep the
+                -- strongest of their uncertain quotes within one 13-unit band.
+                job.preparationQ8=candidate.value
+                job.preparation={type=prospectiveBuyer.type,turns=prospectiveBuyer.turns,
+                    city=chain.city:GetID(),quarter=chain.plot:GetIndex(),kind=kind}
+            end
             if committedBuyer and (not job.commitment or committedBuyer.turns<job.commitment.turns) then
                 -- Diagnostic source for the earliest queued buyer on a shared
                 -- job. Its contribution is already accounted for in job.value.
@@ -527,7 +589,8 @@ local function nominateProducer(player,chain,economy,readyChainBid,queueAllows,s
 end
 
 
-local function connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduce, seen, repairCities, economy, research)
+local function connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduce, seen, repairCities,
+    economy, research, serviceRepair)
     local profile, city, plot = chain.profile, chain.city, chain.plot:GetIndex()
     local pid, cityID = player:GetID(), city:GetID()
     local buildings = city:GetBuildings()
@@ -625,7 +688,12 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         -- A working Stage 2 buyer already pays for improved Base materials;
         -- an absent customer must not suppress that ordinary supply benefit.
         -- Reserve the larger band for a producer/customer pair that works now.
-        if customerWorks or producerWorks or committedBuyer then
+        -- A functioning customer already justifies the established first
+        -- supplier offer. Use the smaller preparation band for new cases.
+        local prospectiveBuyer=not customerWorks and not producerExists and not committedBuyer
+            and not chain.workingBase and chain.economy
+            and preparingBuyer(player,chain,economy,chain.economy.seconds or {},canProduce)
+        if customerWorks or producerWorks or committedBuyer or prospectiveBuyer then
             local value = producerWorks and customerWorks and limits.builder
                 or math.min(limits.builder, EARLY_SUPPLIER_BID_Q8)
             local pendingBuyer
@@ -642,7 +710,8 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
                         and canProduce(pid,cityID,producer.Hash) then pendingBuyer=option end
                 end
             end
-            offerMaterialJob(player, chain, 'base', recover, value, economy,research,pendingBuyer,committedBuyer,producerWorks)
+            offerMaterialJob(player, chain, 'base', recover, value, economy,research,pendingBuyer,committedBuyer,
+                producerWorks,prospectiveBuyer,serviceRepair.base)
         end
     elseif limits.repair and unlocked and chain.complete and localProducer and customerWorks and not repairCities[cityID] then
         -- Losing the Quarter and every Farm in the same event can leave each
@@ -658,6 +727,24 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
             end
         end
     end
+end
+
+local function serviceRepairs(chain)
+    local model=CSC_AI_EconomyModel
+    local site=chain.economy
+    if not chain.ready or not model or not site or not site.services or #site.services==0 then return {} end
+    -- Count only the damaged working locations a Builder can repair. An
+    -- alternative material class with no viable repair cannot justify a
+    -- priority floor for a Service still blocked elsewhere.
+    local repairable={}
+    for kind,supply in pairs(chain.supply)do
+        for _,material in ipairs(supply)do
+            if material.repairable then
+                repairable[kind]=(repairable[kind]or 0)+1
+            end
+        end
+    end
+    return next(repairable) and model.MaterialRestorationKinds(site,repairable,MATERIAL_QUEUE_HORIZON) or {}
 end
 
 local function materialRisk(player, builderBidLimit, nominationLimit, canProduceBuilding, admitRepairs,economy,research)
@@ -694,10 +781,11 @@ local function materialRisk(player, builderBidLimit, nominationLimit, canProduce
             end
         end
         if chain.complete and (limits.builder > 0 or limits.nomination > 0 or limits.repair) then
-            connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduceBuilding, seen, repairCities, economy,research)
-            -- Specialty jobs can run while the exact Stage 4 buyer is under
-            -- construction. Earlier stages, a spare unlock and remote buyers
-            -- do not qualify. Use the same modest first-supplier band as Base.
+            local recovery=limits.builder>0 and serviceRepairs(chain) or {}
+            connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduceBuilding, seen, repairCities,
+                economy,research,recovery)
+            -- Apply the same three buyer states to Specialty. An earlier
+            -- building stage alone supplies no credible Stage 4 timeline.
             if chain.ready and limits.builder > 0 then
                 local buyers=chain.profile.specialtyBuyers or {}
                 local workingSpecialtyBuyer=false
@@ -709,9 +797,14 @@ local function materialRisk(player, builderBidLimit, nominationLimit, canProduce
                 end
                 local committedBuyer=not workingSpecialtyBuyer and chain.economy and economy and economy.MaterialBuyerCommitment
                     and economy.MaterialBuyerCommitment(chain.city,buyers,chain.economy.horizon)
-                if workingSpecialtyBuyer or committedBuyer then
+                local fourth=chain.economy and chain.economy.fourth
+                local prospectiveBuyer=not workingSpecialtyBuyer and not committedBuyer and fourth
+                    and not hasWorkingMaterial(chain.supply.specialty)
+                    and preparingBuyer(player,chain,economy,{fourth},canProduceBuilding)
+                if workingSpecialtyBuyer or committedBuyer or prospectiveBuyer then
                     offerMaterialJob(player, chain, 'specialty', recover,
-                        math.min(limits.builder, EARLY_SUPPLIER_BID_Q8), economy,research,nil,committedBuyer,workingSpecialtyBuyer)
+                        math.min(limits.builder, EARLY_SUPPLIER_BID_Q8), economy,research,nil,committedBuyer,
+                        workingSpecialtyBuyer,prospectiveBuyer,recovery.specialty)
                 end
             end
         end
@@ -761,7 +854,8 @@ function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominati
                         builderSites[#builderSites+1]={player=playerID,city=cityID,plot=index,
                             improvements={improvement},deltaQ8=math.min(builderBidLimit,math.max(job.floor,job.value)),
                             jobValueQ8=job.value,ordinaryQ8=job.ordinary,repair=job.repair,
-                            finishSupply=job.finishSupply,restoreSupply=job.restoreSupply,commitment=job.commitment}
+                            finishSupply=job.finishSupply,restoreSupply=job.restoreSupply,commitment=job.commitment,
+                            preparation=job.preparation,serviceRepair=job.serviceRepair}
                     else
                         allowed[#allowed+1]=improvement
                     end
@@ -852,16 +946,22 @@ function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit, loanEn
         local permission=permissions and permissions[site.improvements[1]]
         return permission and (not permission.repairOnly or site.repair)
     end
+    local function assignmentValue(site)
+        -- A restoration floor can justify using a Builder already available.
+        -- Extra production below still uses only measured economic value.
+        return site.serviceRepair and math.max(site.deltaQ8,site.jobValueQ8 or 0) or site.jobValueQ8 or 0
+    end
     for _,site in ipairs(sites)do
-        if site.deltaQ8 and (site.jobValueQ8 or 0)>0 and canWork(builder.Index,site) then
+        if site.deltaQ8 and assignmentValue(site)>0 and canWork(builder.Index,site) then
             local old=byPlot[site.plot]
-            if not old or site.jobValueQ8>old.jobValueQ8 then byPlot[site.plot]=site end
+            if not old or assignmentValue(site)>assignmentValue(old) then byPlot[site.plot]=site end
         end
     end
     if not next(byPlot) then return {},{} end
     for _,site in pairs(byPlot)do jobs[#jobs+1]=site end
     table.sort(jobs,function(a,b)
-        if a.jobValueQ8~=b.jobValueQ8 then return a.jobValueQ8>b.jobValueQ8 end
+        local left,right=assignmentValue(a),assignmentValue(b)
+        if left~=right then return left>right end
         return a.plot<b.plot
     end)
     for _,unit in player:GetUnits():Members() do

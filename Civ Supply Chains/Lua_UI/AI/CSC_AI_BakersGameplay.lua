@@ -479,6 +479,15 @@ local function refresh(turn)
             turn,version+1,offer.player,offer.kind,offer.index,offer.deltaQ8,table.concat(plots,',')))
     end
     if allowances<=capacity then
+        -- Only published preparation bids appear here. Join this exact
+        -- city/plot/improvement to the native choice and physical work.
+        for _,site in ipairs(builderSites)do
+            local buyer=site.preparation
+            if buyer then
+                print(string.format('CSC_AI_MATERIAL_PREPARATION turn=%d version=%d player=%d builderCity=%d buyerCity=%d quarter=%d plot=%d improvement=%d class=%s buyer=%s eta=%d deltaQ8=%d',
+                    turn,version+1,site.player,site.city,buyer.city,buyer.quarter,site.plot,site.improvements[1],buyer.kind,buyer.type,buyer.turns,site.deltaQ8))
+            end
+        end
         for _,site in ipairs(materialCommitments)do
             -- One published example per player and turn. Subsequent native
             -- reservations and work establish whether parallel bidding helped.

@@ -288,6 +288,88 @@ value=8*256;bids=jobs();assert(bids[102]==value and not bids[101])
 index=7;assert(not next(jobs())) -- A switch to another item ends the commitment.
 ''')
 
+    def test_preparation_follows_actual_unlock_and_promotes_the_queued_job(self):
+        for family in ('BAKERS', 'TAILORS'):
+            with self.subTest(family=family):
+                runtime(family).execute(r'''
+local active, unlocked, prerequisite, legal, queued = -1, false, false, false, false
+for row in GameInfo.CSC_QuarterFlowBuildings()do
+    GameInfo.Buildings[row.BuildingType].BuildingType=row.BuildingType
+end
+local profile=chains()[1].profile
+local base,specialty=profile.producers[1],profile.specialtyBuyers[1]
+GameInfo.Technologies={TECH_FIXTURE_BUYER={Index=77}}
+base.PrereqTech='TECH_FIXTURE_BUYER';specialty.PrereqTech='TECH_FIXTURE_BUYER'
+Players[3].GetTechs=function() return {
+    HasTech=function()return unlocked end,
+    GetResearchingTech=function()return active end,
+} end
+local function jobs()
+    local cs=chains()
+    local unlock=unlocked and 0 or 4
+    cs[1].economy={horizon=30,seconds={{type=base.BuildingType,unlock=unlock,turns=4}},
+        fourth={type=specialty.BuildingType,unlock=unlock,turns=8}}
+    local facts={chains=cs,Research=function()return 4 end,
+        MaterialBuyerPrerequisitesMet=function(_,buyer)return buyer==base or prerequisite end,
+        MaterialBuyerCommitment=function(_,buyers)
+            if queued and buyers[1]==base then return {type=base.BuildingType,turns=4} end
+        end}
+    local _,sites=P.MaterialDeductions(Players[3],true,56*256,0,
+        function(_,_,hash)return legal and (hash==base.Hash or prerequisite) end,false,facts)
+    local result={}
+    for _,site in ipairs(sites)do if site.deltaQ8 then result[site.plot]=site end end
+    return result
+end
+CSC_AI_EconomyAdapters={SupplyValue=function()end,MaterialJobValue=function(_,_,kind,plot,_,_,buyer)
+    assert(buyer and buyer.type==(kind=='base' and base.BuildingType or specialty.BuildingType)
+        and plot:GetIndex()==(kind=='base' and 101 or 102))
+    return 48*256
+end}
+assert(not next(jobs())) -- Research estimate without actual commitment.
+active=77;local result=jobs()
+assert(result[101].deltaQ8==13*256 and result[101].preparation.turns==13 and not result[102])
+prerequisite=true;result=jobs();assert(result[102].preparation.turns==17)
+unlocked=true;assert(not next(jobs())) -- A legal city queue is still required.
+legal=true;result=jobs()
+assert(result[101].preparation.turns==9 and result[102].preparation.turns==13)
+queued=true;result=jobs()
+assert(result[101].deltaQ8==48*256 and result[101].commitment.turns==4 and not result[101].preparation)
+assert(result[102].deltaQ8==13*256 and result[102].preparation)
+''')
+
+    def test_repair_both_material_classes_for_a_recoverable_service(self):
+        vm = runtime()
+        vm.execute((ROOT / 'Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyModel.lua').read_text(encoding='utf-8'))
+        vm.execute(r'''
+owned[9],owned[12]=true,true
+baseImprovement,specImprovement=5,6
+local baseDamaged,specDamaged=true,true
+basePlot.IsImprovementPillaged=function()return baseDamaged end
+specPlot.IsImprovementPillaged=function()return specDamaged end
+local service={known=true,producer='FOURTH',customer={complete=true,working=true},unlock=0,
+    materials={base=1,specialty=1}}
+local function jobs()
+    local cs=chains()
+    cs[1].economy={existing=true,quarterReady=0,horizon=30,services={service},
+        fourth={type='FOURTH',working=true},suppliers={
+            {kind='base',plot=101,ready=baseDamaged and 5 or 0},
+            {kind='specialty',plot=102,ready=specDamaged and 5 or 0},
+        }}
+    local _,sites=P.MaterialDeductions(Players[3],true,56*256,0,nil,false,{chains=cs})
+    local result={}
+    for _,site in ipairs(sites)do if site.deltaQ8 then result[site.plot]=site end end
+    return result
+end
+local r=jobs()
+assert(r[101].deltaQ8==56*256 and r[102].deltaQ8==56*256)
+assert(r[101].finishSupply and r[102].finishSupply)
+assert(r[101].jobValueQ8==0 and r[102].jobValueQ8==0) -- No duplicate Service cash flow.
+baseDamaged=false;r=jobs()
+assert(not r[101] and r[102].deltaQ8==56*256)
+service.customer.working=false;r=jobs()
+assert(r[102].deltaQ8==26*256)
+''')
+
     def test_second_supplier_competes_on_its_actual_incremental_value(self):
         runtime().execute(r'''
 owned[9]=true;baseImprovement=5

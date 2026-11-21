@@ -529,8 +529,7 @@ end
 -- producer, recipient and unlock gates must already work. Count only observed
 -- suppliers. This read model never assumes that another material job happens.
 -- The same Service catalogue and yield conversion drive Quarter forecasts.
-function M.MaterialServiceStreams(site,kind,ready,housing)
-    if not site.services or #site.services==0 or not site.existing or site.quarterReady~=0 or ready>=site.horizon then return {}end
+local function materialServiceState(site)
     local counts,seen,working={}, {}, {}
     for _,supplier in ipairs(site.suppliers or{})do
         local key=supplier.kind..':'..supplier.plot
@@ -541,11 +540,44 @@ function M.MaterialServiceStreams(site,kind,ready,housing)
     end
     for _,producer in ipairs(site.seconds or{})do if producer.working then working[producer.type]=true end end
     for _,producer in pairs({site.third,site.fourth})do if producer.working then working[producer.type]=true end end
+    return counts,working
+end
+
+local function materialServiceCanResume(service,working,ready,horizon)
+    return service.known and working[service.producer] and service.customer.complete and service.customer.working
+        and service.unlock==0 and ready<math.min(horizon,service.finish or horizon)
+end
+
+-- If two material classes went down together, neither repair can claim the
+-- full Service cash flow on its own. Identify the required feasible repairs
+-- for the priority floor without adding any speculative Service income.
+function M.MaterialRestorationKinds(site,repairable,ready)
+    local result={}
+    if not site.services or #site.services==0 or not site.existing or site.quarterReady~=0 then return result end
+    local counts,working=materialServiceState(site)
+    for _,service in ipairs(site.services)do
+        if materialServiceCanResume(service,working,ready,site.horizon) then
+            local feasible=true
+            for kind,required in pairs(service.materials)do
+                if (counts[kind]or 0)+(repairable[kind]or 0)<required then feasible=false;break end
+            end
+            if feasible then
+                for kind,required in pairs(service.materials)do
+                    if (counts[kind]or 0)<required then result[kind]=true end
+                end
+            end
+        end
+    end
+    return result
+end
+
+function M.MaterialServiceStreams(site,kind,ready,housing)
+    if not site.services or #site.services==0 or not site.existing or site.quarterReady~=0 or ready>=site.horizon then return {}end
+    local counts,working=materialServiceState(site)
     local result={streams={}}
     for _,service in ipairs(site.services)do
-        if service.known and working[service.producer] and service.customer.complete and service.customer.working
-            and service.unlock==0 and service.materials[kind]==(counts[kind]or 0)+1
-            and ready<math.min(site.horizon,service.finish or site.horizon)then
+        if materialServiceCanResume(service,working,ready,site.horizon)
+            and service.materials[kind]==(counts[kind]or 0)+1 then
             local enabled=true
             for other,count in pairs(service.materials)do
                 if other~=kind and (counts[other]or 0)<count then enabled=false;break end
