@@ -537,12 +537,16 @@ The original AI seats completed zero Tailors. The planner found
 qualified geometry in 32 cities and offered a site in 11.
 In Swenett, ten native district selections between turns 65 and 91
 returned the same owned +3 Tailors footprint, plot 1871 at (21, 25).
-The behavior tree then failed its early plot check, returned to
-Builder clearance, and recorded no Tailors construction contract.
-For example, recruitment failed on 65 and succeeded on 71, with
-no resulting Quarter. This places the observed delay before Stage 2
-customer investment. The only finished Tailors on the map belonged
-to the observer seat outside CSC tuning.
+All ten attempts failed the early plot check and reached Builder
+clearance. Seven recruited a Builder. The construction node then
+reported `Not Building` and no Tailors contract was submitted.
+Swenett's Rural Community also failed the early plot check and
+recruitment on 67, then submitted contract 949 in the same update.
+The relevant open question is the Tailors construction request's
+admission in Problem 1.6. The turn-50 save precedes the first
+observed decision, so an exact-site replay can trace that predicate.
+The only finished Tailors on the map belonged to the observer seat
+outside CSC tuning.
 
 The publisher recorded 200 packets with no failures. Mean and maximum
 wall times were 0.510 and 1.542 seconds per turn. Native managed cells

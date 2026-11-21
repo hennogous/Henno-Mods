@@ -5,8 +5,8 @@ reached Québec's Lighthouse queue comparison and Saint John's Granary
 nomination and purchase. Both replays verified the exchange. The fresh
 Fractal game ended with seven working Bakers pairs and 105 Granary
 queue writes. Island Plates recorded three more working Bakers pairs.
-Its observed +3 Tailors winner in Swenett stalled at the district plot
-check. The normal start on the documented Québec map is now running.
+Swenett selected the +3 Tailors site ten times without admitting a
+construction contract. The normal start on the Québec map is running.
 [Customer results](topics/csc/producers-and-customers.md#island-plates-exercised-bakers-and-stalled-before-tailors-investment).
 
 **21 November — Problem 4 verified.** The fresh Continents game ended
