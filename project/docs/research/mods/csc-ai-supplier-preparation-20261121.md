@@ -52,6 +52,12 @@ Supply gained before +10 and lost later remains distinct from working
 supply at the +10 census. The census also distinguishes late eligibility,
 late openings and interrupted chains.
 
+For treatment, also report first eligibility witnessed by an accepted
+early offer. This captures jobs that were still missing during the
+final research and finished before the common queue-eligible survey.
+Keep the common survey clock for the direct comparison because the
+control has no early-offer receipt.
+
 The two SDK-generated packages use the same CE and CSC gameplay files.
 Compare `257dfdc9` with `c6412e9e` for fresh games. The first turn-150
 checkpoint pair used `cd541ad1` for preparation before the separate

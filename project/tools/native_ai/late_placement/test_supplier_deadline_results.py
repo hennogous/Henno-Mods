@@ -1,9 +1,26 @@
 import unittest
 
-from supplier_deadline_results import read_tree_events, supplier_cases
+from supplier_deadline_results import read_tree_events, supplier_cases, with_early_preparation
 
 
 class SupplierDeadlineTest(unittest.TestCase):
+    def test_early_offer_proves_a_missing_supplier_before_common_eligibility(self):
+        surveys = {
+            turn: [dict(player='2', quarterPlot='15', quarter='BAKERS', role='base',
+                        buyerReady='true' if turn >= 4 else 'false', legal='1' if turn >= 3 else '0',
+                        legalPlots='16' if turn >= 3 else '', working='1' if turn >= 3 else '0',
+                        workingPlots='16' if turn >= 3 else '')]
+            for turn in range(1, 7)
+        }
+        log = ['CSC_AI_MATERIAL_PREPARATION turn=2 player=2 quarter=15 plot=16 class=base deltaQ8=3328']
+        early = with_early_preparation(surveys, log)
+        common, = supplier_cases(surveys, {}, {'2'}, 2)
+        measured, = supplier_cases(early, {}, {'2'}, 2)
+        self.assertEqual(common['cohort'], 'already_working_at_preparation')
+        self.assertEqual(measured['cohort'], 'needed_work_at_preparation')
+        self.assertEqual(measured['first_eligible'], 2)
+        self.assertTrue(measured['by_opening']['working'])
+
     def test_deadline_uses_work_already_visible_at_the_survey(self):
         surveys = {
             turn: [dict(player='2', quarterPlot='15', quarter='BAKERS', role='base',

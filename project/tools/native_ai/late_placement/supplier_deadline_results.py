@@ -16,6 +16,7 @@ import re
 
 BUYER = re.compile(r'\bCSC_PLANNING_SUPPLIER_BUYER(_POLL)?\t(.+)')
 POSITION = re.compile(r'Reserving plot (\d+) (\d+)')
+PREPARATION = re.compile(r'\bCSC_AI_MATERIAL_PREPARATION\s+(.+)')
 
 
 def load(path):
@@ -53,6 +54,33 @@ def exact_plots(row, key):
     if len(plots) != int(row[key]):
         raise ValueError(f'Malformed {key} plot list')
     return plots
+
+
+def with_early_preparation(surveys, log):
+    """Add exact pre-unlock eligibility witnessed by accepted policy packets.
+
+    A preparation offer requires a legal plot and a missing first supplier.
+    Keep this treatment-only view alongside the common queue-eligible clock.
+    The common view remains the direct comparison against the older policy.
+    """
+    offers = defaultdict(set)
+    for line in log:
+        event = PREPARATION.search(line)
+        if event:
+            row = dict(field.split('=', 1) for field in event[1].split())
+            if int(row['deltaQ8']) > 0:
+                key = int(row['turn']), row['player'], row['quarter'], row['class']
+                offers[key].add(int(row['plot']))
+    augmented = {}
+    for turn, batch in surveys.items():
+        augmented[turn] = []
+        for row in batch:
+            key = turn, row['player'], row['quarterPlot'], row['role']
+            plots = offers.get(key)
+            if plots and not exact_plots(row, 'legal') and not row.get('constructing') and row['buyerReady']!='true':
+                row = dict(row, legal=str(len(plots)), legalPlots=','.join(map(str, sorted(plots))))
+            augmented[turn].append(row)
+    return augmented
 
 
 def read_tree_events(log, players, width, last):
@@ -226,13 +254,19 @@ def run(path, first, last, window):
         raise ValueError(f'Unqualified ordinary run at {path}')
     with (path/'Lua.log').open(encoding='utf-8-sig', errors='replace') as log:
         surveys = read_surveys(log, first, last)
+        log.seek(0)
+        early = with_early_preparation(surveys, log)
     players = {str(player) for player in source['original_ai']}
     with (path/'AI_Behavior_Trees.csv').open(encoding='utf-8-sig', errors='replace', newline='') as log:
         events = read_tree_events(log, players, source['map_signature'][0], last)
     cases = supplier_cases(surveys, events, players, window)
-    return {'counts': counts(cases), 'cases': cases, 'recoveries': recoveries(surveys, players),
+    result = {'counts': counts(cases), 'cases': cases, 'recoveries': recoveries(surveys, players),
             'production': production_activity(path, players, last),
             'publisher_wall': load(path/'ai-processing-time.json')['publisher_wall']}
+    if early != surveys:
+        early_cases = supplier_cases(early, events, players, window)
+        result['with_early_preparation'] = {'counts': counts(early_cases), 'cases': early_cases}
+    return result
 
 
 if __name__ == '__main__':
