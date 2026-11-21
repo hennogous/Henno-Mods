@@ -461,12 +461,24 @@ local function canTrainDockmasterShip(playerID, cityID, canProduce, lastEra, tra
     return false
 end
 
-local function nominateProducer(player,chain,economy,readyChainBid,queueAllows,submit)
-    local viable=0
+local function preparationHasSupply(chain,economy,definition,readyCount)
+    if readyCount>=2 then return true end
+    if not economy or not economy.ProducerUnlocksBase then return false end
     for _,material in ipairs(chain.supply.base)do
-        if material.ready then viable=viable+1 end
+        if not material.ready and economy.ProducerUnlocksBase(chain,definition,material)then
+            readyCount=readyCount+1
+            if readyCount>=2 then return true end
+        end
     end
-    if viable<2 and not chain.workingBase then return end
+    return false
+end
+
+local function nominateProducer(player,chain,economy,readyChainBid,queueAllows,submit)
+    if #chain.supply.base<2 and not chain.workingBase then return end
+    local readyCount=0
+    for _,material in ipairs(chain.supply.base)do
+        if material.ready then readyCount=readyCount+1 end
+    end
 
     local site,options=chain.economy,{}
     local fallback,fallbackReady
@@ -475,12 +487,15 @@ local function nominateProducer(player,chain,economy,readyChainBid,queueAllows,s
         local finish=option.unlock+option.turns
         -- A locked producer can lead the native preparation tree to submit
         -- its prerequisite research. Require two viable adjacent deposits
-        -- for that path. The selector still tests the building's own gates.
+        -- for that path. An exact supplier that shares the building's unlock
+        -- can justify preparation. It earns no income in this quote until
+        -- its job is available. The native selector still owns building gates.
         -- For an unlocked option, also consult the UI queue. In the locked
         -- Lugdunum fixture its query returned true before Machinery was owned.
         if definition and not option.excluded and finish<site.horizon
-            and (option.unlock==0 and queueAllows(chain.city,definition)
-                or option.unlock>0 and viable>=2 and not option.prerequisites)then
+            and (option.unlock==0 and (readyCount>=2 or chain.workingBase) and queueAllows(chain.city,definition)
+                or option.unlock>0 and not option.prerequisites
+                    and preparationHasSupply(chain,economy,definition,readyCount))then
             options[#options+1]=option
             if not fallback or finish<fallbackReady or finish==fallbackReady and option.type<fallback.type then
                 fallback,fallbackReady=option,finish
@@ -496,7 +511,7 @@ local function nominateProducer(player,chain,economy,readyChainBid,queueAllows,s
             return
         end
     end
-    if readyChainBid<=0 then return end
+    if readyChainBid<=0 or readyCount<2 and not chain.workingBase then return end
     if fallback then
         submit(chain.city,GameInfo.Buildings[fallback.type],readyChainBid,true)
         return

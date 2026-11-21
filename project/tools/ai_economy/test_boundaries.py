@@ -59,6 +59,56 @@ assert(CSC_AI_EconomyFacts.New(player,placement,{GetEconomyResearchNumbers=funct
 rate=0;assert(CSC_AI_EconomyFacts.New(player,placement,{}).Research('tech','A')==math.huge)
 ''')
 
+    def test_producer_unlock_qualifies_only_the_exact_mapped_bare_supplier(self):
+        vm=self.facts_vm()
+        vm.execute('''
+local function rows(entries)
+    return function()
+        local i=0
+        return function()i=i+1;return entries[i]end
+    end
+end
+local sawmill={Index=7,ImprovementType='IMPROVEMENT_SAWMILL',PrereqTech='A'}
+GameInfo.Improvements={IMPROVEMENT_SAWMILL=sawmill}
+GameInfo.Improvement_ValidResources=rows({
+    {ResourceType='RESOURCE_BAMBOO',ImprovementType=sawmill.ImprovementType},
+})
+GameInfo.CSC_MaterialTransactions=rows({
+    {TransactionId='BAMBOO_INPUT',QuarterKey='TAILORS',
+        ProducerBuildingType='WORKSHOP',MaterialClass='BASE'},
+})
+GameInfo.CSC_MaterialTransactionYields=rows({
+    {TransactionId='BAMBOO_INPUT',LegKey='CULTURE',Recipient='PRODUCER'},
+})
+GameInfo.CSC_MaterialTransactionInputHosts=rows({
+    {TransactionId='BAMBOO_INPUT',LegKey='CULTURE',ImprovementType=sawmill.ImprovementType},
+})
+local legal,existing=true,-1
+local bamboo={GetImprovementType=function()return existing end}
+Map={GetPlotByIndex=function(i)if i==123 then return bamboo end end}
+ImprovementBuilder={CanHaveImprovement=function(plot,index,id)
+    assert(plot==bamboo and index==7 and id==1)
+    return legal
+end}
+GameInfo.Civics.CIVIC_OTHER={Index=1}
+player.GetCulture=function()return{HasCivic=function()return false end}end
+local snapshot=CSC_AI_EconomyFacts.New(player,placement,{})
+local producer={BuildingType='WORKSHOP',PrereqTech='A'}
+local chain={profile={key='TAILORS',base='BASE'}}
+local material={plot=123,resource='RESOURCE_BAMBOO'}
+assert(snapshot.ProducerUnlocksBase(chain,producer,material))
+sawmill.PrereqCivic='CIVIC_OTHER'
+assert(not snapshot.ProducerUnlocksBase(chain,producer,material))
+sawmill.PrereqCivic=nil
+producer.BuildingType='OTHER'
+assert(not snapshot.ProducerUnlocksBase(chain,producer,material))
+producer.BuildingType='WORKSHOP'
+legal=false
+assert(not snapshot.ProducerUnlocksBase(chain,producer,material))
+legal=true;existing=8
+assert(not snapshot.ProducerUnlocksBase(chain,producer,material))
+''')
+
     def test_partial_plot_ui_record_keeps_available_gameplay_staffing(self):
         vm=self.facts_vm()
         vm.execute('''

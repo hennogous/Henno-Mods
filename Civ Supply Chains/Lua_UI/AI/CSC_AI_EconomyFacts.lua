@@ -470,6 +470,7 @@ local function definitions()
     end
     if GameInfo.CSC_MaterialTransactions and GameInfo.CSC_MaterialTransactionYields then
         c.materialCanonical=true
+        c.materialInputs={}
         local outputs,hosts={},{}
         if GameInfo.CSC_MaterialTransactionInputHosts then for row in GameInfo.CSC_MaterialTransactionInputHosts()do
             local key=row.TransactionId..':'..row.LegKey
@@ -486,6 +487,14 @@ local function definitions()
         for row in GameInfo.CSC_MaterialTransactions()do
             c.materials[row.TransactionId]={id=row.TransactionId,quarter=row.QuarterKey,
                 producer=row.ProducerBuildingType,tag=row.MaterialClass,legs=outputs[row.TransactionId]or{}}
+            local key=row.QuarterKey..':'..row.ProducerBuildingType..':'..row.MaterialClass
+            local inputs=c.materialInputs[key]or{}
+            c.materialInputs[key]=inputs
+            for _,leg in ipairs(outputs[row.TransactionId]or{})do
+                if leg.recipient=='PRODUCER'then
+                    for improvement in pairs(leg.hosts)do inputs[improvement]=true end
+                end
+            end
         end
     end
     c.improvementJobs={}
@@ -872,6 +881,34 @@ function F.New(player,placement,ui,context)
         local key=profile.key..':'..plot:GetIndex()
         if not snapshot.supplies[key]then snapshot.supplies[key]=placement.ReadSuppliers(player,plot,profile)end
         return snapshot.supplies[key]
+    end
+    function snapshot.ProducerUnlocksBase(chain,producer,material)
+        -- This is preparation eligibility for a locked producer in an existing
+        -- Quarter. A new supplier can qualify when learning that building's
+        -- prerequisites also makes the exact ordinary improvement available.
+        -- Keep Builder eligibility and recurring income on their own clocks.
+        local profile=chain.profile
+        local key=profile.key..':'..producer.BuildingType..':'..profile.base
+        local inputs=c.materialInputs and c.materialInputs[key]
+        if not inputs then return false end
+        local plot=Map.GetPlotByIndex(material.plot)
+        if not plot or plot:GetImprovementType()>=0 then return false end
+        for _,improvement in ipairs(c.improvementJobs[material.resource]or{})do
+            local kind=improvement.ImprovementType
+            if inputs[kind] and kind~='IMPROVEMENT_INDUSTRY' and kind~='IMPROVEMENT_CORPORATION'then
+                local techRow=improvement.PrereqTech and GameInfo.Technologies[improvement.PrereqTech]
+                local civicRow=improvement.PrereqCivic and GameInfo.Civics[improvement.PrereqCivic]
+                local needsTech=improvement.PrereqTech and not(techRow and tech:HasTech(techRow.Index))
+                local needsCivic=improvement.PrereqCivic and not(civicRow and culture:HasCivic(civicRow.Index))
+                if (needsTech or needsCivic)
+                    and (not needsTech or techRow and improvement.PrereqTech==producer.PrereqTech)
+                    and (not needsCivic or civicRow and improvement.PrereqCivic==producer.PrereqCivic)
+                    and ImprovementBuilder.CanHaveImprovement(plot,improvement.Index,pid)then
+                    return true
+                end
+            end
+        end
+        return false
     end
     function snapshot.TradeWorld(sites,footprint)
         -- Build plain route events from the SAME sites that the joint ledger

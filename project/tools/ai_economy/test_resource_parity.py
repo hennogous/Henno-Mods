@@ -123,6 +123,14 @@ assert(#nominations(false)==0)
 assert(#nominations(true)==0) -- The UI queue can allow a still-locked producer.
 c.supply.base[2]={plot=102,ready=false,working=false}
 assert(#nominations(false)==0)
+economy.ProducerUnlocksBase=function(chain,definition,material)
+    assert(chain==c and definition==row and material==c.supply.base[2])
+    return true
+end
+local prepared=nominations(false)
+assert(#prepared==1 and prepared[1].building==row.Index)
+assert(not c.supply.base[2].ready) -- Research preparation never unlocks the job.
+economy.ProducerUnlocksBase=nil
 c.supply.base[2].ready=true
 local bids=nominations(false)
 assert(#bids==1 and bids[1].building==row.Index and bids[1].delta==64*256)

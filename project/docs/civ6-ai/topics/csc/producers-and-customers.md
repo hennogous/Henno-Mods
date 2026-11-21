@@ -120,6 +120,32 @@ and 1.388 s with investment. These samples include the whole publisher,
 with different game states after the arms diverged. They give the run
 cost, rather than the isolated cost of the added producer quote.
 
+### Axum's producer and supplier share a technology
+
+Axum's turn-50 Tailors had a working Flax Farm and unimproved Bamboo.
+Construction unlocks both the Textile Workshop and the Bamboo
+Sawmill. The prior policy counted only sources with currently
+executable improvement prerequisites when qualifying producer
+preparation. This left the Bamboo out of the two-deposit test.
+
+The new check runs for locked producer candidates in completed
+Quarters. The loaded transaction must accept the exact improvement
+as a producer input, the plot must pass native improvement placement,
+and the producer must cover every outstanding tech and civic for that
+improvement. This lets Bamboo contribute to preparation eligibility.
+Material work remains on its ordinary unlock and assignment path.
+The preparation quote still uses the existing supplier ledger, so
+co-unlocked Bamboo contributes no speculative income.
+
+The turn-50 control matched all 41 opening structural records.
+Construction was first requested by a district tree in Axum on turn 78.
+Research started on 85 and finished on 87. Default Specialization
+started the Workshop on 90, and the end-of-player-turn read showed it
+working on 92. At turn 132, the UI showed native Workshop Culture
+inputs and improvement Production returns on both Flax and Bamboo.
+The matched investment and shared-unlock arms will measure the earlier
+producer path against that same opening.
+
 ## A retained Bakers Stage 2 chain in Boston
 
 The matched tests kept Boston's exact Cattle Pasture next to a working Water

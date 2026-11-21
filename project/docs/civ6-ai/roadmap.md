@@ -16,13 +16,13 @@
 | [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Customer placement closed for the tested Bakers and Tailors scope. Broader material protection remains open. |
 | 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Closed at the tested Bakers/Tailors scope. |
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
-| [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Current focus is 3.2 Builder availability and follow-through. |
+| [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Builder follow-through verified in matched and ordinary play. Track recurring delays in combined runs. |
 | 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
 | 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Verified for idle-worker handoffs and on-site finishing. Axum's Bamboo recovered, Edinburgh's Pasture advanced by 38 turns, and the integrated scheduler completed Mashhad's sole Pasture. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
 | [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Active. First-producer unlocks and production remain open for qualification. |
-| 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
-| 4.2 Build | Bid for the legal producer when its Base supply justifies investment. | Wind Mill nomination and follow-through verified. Wider Mill and Textile Workshop coverage remains open. |
+| 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Wind Mill preparation reached Machinery. Testing the shared Construction unlock for Workshop and Sawmill. |
+| 4.2 Build | Bid for the legal producer when its Base supply justifies investment. | Matched Bakers follow-through verified. Tailors control reached a working Workshop and two suppliers. The producer bid is under comparison. |
 | [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Granary follow-through observed. Broader customer coverage remains open. |
 | 5.1 Build | Favor the mapped customer building, including unique replacements. | Granary purchase and exchange verified in selected cases. |
 | [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Storekeeper operation verified in selected chains. Unlock guidance and strategic priorities remain open. |
