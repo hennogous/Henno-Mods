@@ -512,10 +512,18 @@ two charges and zero movement. At the 202 boundary it had moved back to
 operations were swap and move, with no build attempt. Builder 8323118
 was separately on Shahr-i-Qumis's Marsh and spent one of its three
 charges clearing it. The stock Pasture query at the 201 boundary
-returned false while the arrived worker had zero movement. Native
-custody changed during the following AI turn, so the decisive next
-read is the receiving tree's priority and the custody state at Build
-Improvement Update.
+returned false while the arrived worker had zero movement.
+
+The native caller trace reproduced the change. Sparda's Farm job at
+(65, 15) recruited 7143468 on 201. At the entry to that recruitment the
+Builder was already free, unprocessed and still on the Sheep with two
+charges. Sparda had priority 2 and a value of 467. Mashhad later reached
+Build Improvement with priority 2 and value 601. At that point the
+Builder had moved away and was processed under Sparda's controller. The
+Pasture node selected no worker and returned failure. A larger Pasture
+bid would leave this sequence intact if the Builder is already free
+before Sparda looks for one. Trace what releases the original custody.
+See `mashhad-pasture-200-202-caller-trace/native-transfer.json`.
 
 The replay used checkpoint SHA-256
 `2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`.
