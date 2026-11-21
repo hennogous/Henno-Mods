@@ -4338,3 +4338,15 @@ actual-SQL regressions and mature staffing250-01 pass:28 workers/30 ordinary
 streams, original10,954 native graph rows and67-city population refresh unchanged,
 session closed/restored. G3 route/world integration remains open.
 [Native path and checks](../research/mods/csc-observed-specialists-20261116.md).
+
+## AI-C206 — Early supplier scoring can win the next improvement slot
+
+21 November 2026, roadmap 3.1. In the first ordinary Fractal pair, both
+arms initially assigned a Builder to Knossos's supplier Farm on turn 55.
+The task reopened on 57. The control picked a Mine at 81 utility, and the
+early-preparation treatment picked the Farm at 93. The fallback Builder
+contract carried those values. The mapped Farm completed four turns sooner
+under treatment. The competing Mine is a concrete displaced job to account
+for in the campaign. Through turn 140, both arms supplied 3 of 5 Base
+buyers that needed work by their respective 10-turn deadlines.
+[Native choice, work and competing job](../research/mods/csc-ai-supplier-preparation-20261121.md#first-ordinary-fractal-treatment-earliest-changed-decision).

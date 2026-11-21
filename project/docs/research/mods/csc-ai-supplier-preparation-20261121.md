@@ -113,3 +113,23 @@ without an eligible Specialty deposit. Six had none adjacent, and the
 seventh's adjacent Tea was foreign-owned. The treatment on this seed
 can qualify earlier Base work. A second map with eligible missing
 Specialty cases is necessary for the full goal.
+
+### First ordinary Fractal treatment, earliest changed decision
+
+The ordinary treatment matched the control's opening map, AI seats,
+starting plots, starting units, and native inputs. The first different
+native tree or city production record was Knossos on turn 57. Both arms
+had tried the Farm at (36, 29) on 55 and had to reopen the job. Control
+then selected the Mine at (33, 29) at 81 utility. Treatment selected the
+mapped supplier Farm again at 93. The two arms' native Builder contract
+730 carried those exact values. The first different unit operation was
+on turn 62.
+
+The Farm finished on turn 65 in treatment and 69 in control, four
+Online turns earlier. The physical working-supply surveys first saw it
+on 66 and 70. Both were within their own buyer deadlines. Control had
+completed the competing Mine at (33, 29) on 64. Through turn 140 the
+treatment had not logged that Mine completion in Knossos. It opened
+the separate Mine site at (36, 28) one turn later. Both arms had 3 of
+5 eligible Base buyers working by opening plus ten among buyers with
+a completed deadline window at turn 140.
