@@ -502,11 +502,28 @@ while clearing Marsh at (59, 19) on 201. Its next node reported that it
 issued a Farm build. The only ordinary Builder with a build order logged
 for that player on 201 was 8323118, after its Remove Feature order. The
 operation log recorded the build could not start. Attribute that pair
-of orders to Shahr-i-Qumis. The exact Builder for Mashhad's Pasture still
-needs identification. The turn-200 checkpoint
-(SHA-256 `2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`)
-allows sampling the worker on each plot and checking operation legality
-at its actual location.
+of orders to Shahr-i-Qumis.
+
+The read-only turn-200 replay verified the original world, packages and
+GameCore and reproduced the failed Pasture. At the 201 boundary Builder
+7143468 had reached the Sheep, still held by controller 75694120 with
+two charges and zero movement. At the 202 boundary it had moved back to
+(60, 9), still with two charges, under controller 78250018. On 201 its
+operations were swap and move, with no build attempt. Builder 8323118
+was separately on Shahr-i-Qumis's Marsh and spent one of its three
+charges clearing it. The stock Pasture query at the 201 boundary
+returned false while the arrived worker had zero movement. Native
+custody changed during the following AI turn, so the decisive next
+read is the receiving tree's priority and the custody state at Build
+Improvement Update.
+
+The replay used checkpoint SHA-256
+`2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`.
+See `mashhad-pasture-200-202-context-fix/boundaries.json`, the unit
+and behavior logs, and verified normal close. The first attempt closed
+cleanly at the opening turn after querying a gameplay method in a UI
+context. The repeat read district and worker action facts in their
+respective contexts.
 
 The current XP2 binary explains how Shahr-i-Qumis can report success
 before its order is accepted. Clear Plot Execute (`55d9b0`) calls the
