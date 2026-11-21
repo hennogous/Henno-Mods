@@ -12,8 +12,11 @@ local B=assert(CSC_AI_DistrictBridge)
 local W={};CSC_AI_PLANNING_WATCH=W
 local unpack=unpack or table.unpack
 local function pack(...)return {n=select('#',...),...}end
-local profiles,byType={},{}
-for _,p in ipairs(P.StageTwoProfiles())do profiles[p.key]=p;byType[p.district.Index]=p end
+local profiles,byType,supplierRoles={},{},{}
+for _,p in ipairs(P.StageTwoProfiles())do
+ profiles[p.key]=p;byType[p.district.Index]=p
+ supplierRoles[p.key]={{name='base',buyers=p.producers or{}},{name='specialty',buyers=p.specialtyBuyers or{}}}
+end
 local districts,materials,relations,offers,native,opportunities,pending={},{},{},{},{},{},{}
 local adjacencyPending={}
 local sequence,records,faults,lastPoll=0,0,0,nil
@@ -243,6 +246,68 @@ local function scanMaterials(source,changedPlot)
  end
  if not changedPlot then for id in pairs(materials)do if not alive[id]then emit('MATERIAL_WATCH_ENDED',{identity=id,reason='quarterNoLongerPresent'});materials[id]=nil end end end
 end
+-- Test-only timing census for both arms. Use actual queue legality as the
+-- common preparation milestone. The policy can also act during the final
+-- research, which appears separately in its published preparation receipts.
+local function canPrepareSupplierBuyer(player,city,buyer,ui)
+ if not ui or type(ui.CanProduceItem)~='function' or not buyer.Hash then return false end
+ local tech=buyer.PrereqTech and GameInfo.Technologies[buyer.PrereqTech]
+ if buyer.PrereqTech and not(tech and player:GetTechs():HasTech(tech.Index))then return false end
+ local civic=buyer.PrereqCivic and GameInfo.Civics[buyer.PrereqCivic]
+ if buyer.PrereqCivic and not(civic and player:GetCulture():HasCivic(civic.Index))then return false end
+ return ui.CanProduceItem(player:GetID(),city,buyer.Hash)==true
+end
+local function scanSupplierBuyers(source)
+ -- Take one clocked readiness census per full scan, independent of whether
+ -- the policy published a bid. ReadSuppliers supplies the same ownership,
+ -- visibility, compatibility and unlock facts for both arms. Workforce is
+ -- deliberately absent from eligibility: a shortage still counts.
+ local count=0
+ for plot,q in pairs(districts)do
+  local profile=byType[q.district]
+  if profile and q.complete then
+   local supply,active
+   local player=Players[q.player]
+   local ui=ExposedMembers and ExposedMembers.CSC_Adjacency
+   if not q.pillaged then
+    -- Use the actual active item to date supply prepared during construction.
+    -- The production hash method is UI-only in the verified gameplay context.
+    -- Use the same read-only UI bridge as the material policy for both arms.
+    if ui and type(ui.GetEconomyCityNumber)=='function'then
+     active=ui.GetEconomyCityNumber(q.player,q.city,'currentBuilding',0)
+    end
+   end
+   for _,specification in ipairs(supplierRoles[profile.key])do
+    local ready,constructing,preparing=false,nil,nil
+    if not q.pillaged then
+     for _,buyer in ipairs(specification.buyers)do
+      if buildingAt(q,buyer.BuildingType)==2 then ready=true end
+      if active and active==buyer.Index then constructing=buyer.BuildingType end
+     end
+     if not ready and not constructing then
+      for _,buyer in ipairs(specification.buyers)do
+       if canPrepareSupplierBuyer(player,q.city,buyer,ui)then preparing=buyer.BuildingType;break end
+      end
+     end
+    end
+    local legalPlots,workingPlots={},{}
+    if ready or constructing or preparing then
+     supply=supply or P.ReadSuppliers(player,Map.GetPlotByIndex(plot),profile)
+     for _,material in ipairs(supply[specification.name])do
+      if material.ready then legalPlots[#legalPlots+1]=material.plot end
+      if material.working then workingPlots[#workingPlots+1]=material.plot end
+     end
+    end
+    count=count+1
+    emit('SUPPLIER_BUYER',{source=source,player=q.player,city=q.city,quarter=profile.key,quarterPlot=plot,
+     role=specification.name,buyerReady=ready,constructing=constructing,preparing=preparing,
+     legal=#legalPlots,working=#workingPlots,legalPlots=table.concat(legalPlots,','),
+     workingPlots=table.concat(workingPlots,',')})
+   end
+  end
+ end
+ emit('SUPPLIER_BUYER_POLL',{source=source,buyers=count})
+end
 local function scan(source)
  local present={}
  -- Players also contains uninitialised/dead seats whose GetCities method can
@@ -261,7 +326,7 @@ local function scan(source)
  for plot in pairs(adjacencyPending)do
   if districts[plot]then safe(adjacency,districts[plot],'FIRST_LATER_OBSERVATION')else adjacencyPending[plot]=nil end
  end
- scanRelations();scanMaterials(source)
+ scanRelations();scanMaterials(source);scanSupplierBuyers(source)
  emit('POLL',{source=source,records=records,faults=faults,dropped=dropped})
 end
 local function event(source,pid,districtID,cityID,x,y,kind)
