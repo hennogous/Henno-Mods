@@ -432,6 +432,21 @@ identified the Lighthouse's extra Production, the Workshop's Production
 return and its optional Gold return. Both buildings were unpillaged in
 the structural census.
 
+The corrected package loaded with all 189 opening records matching.
+The Lighthouse was first offered on 150. On 152 CE applied its 64-point
+preference to the actual queue comparison, raising the exact candidate
+from 529,634 to 546,018 Q8. Default Specialization selected it at
+2,132.9 points, compared with 2,068.9 in the prior guidance. It worked
+on 154 across both arms. The city finished rural infrastructure before
+the Lighthouse and started Send Aid afterward in both replays.
+
+The fixed package again confirmed the active two-city exchange on 176.
+The Lighthouse in Québec received +1 Production, and the Workshop in
+city 65536 received +1 Production and +1 Gold with the Gold option on.
+The recipe readback uses the native modifiers for those exact cities.
+The matched result establishes delivery to the queue and ordinary
+follow-through at this opening.
+
 Offline tests also exercise the actual fixed-buildings definition path.
 A synthetic unique Granary inherits the ordinary transaction and receives
 Food, while the producing Mill receives Production and optional Gold.
