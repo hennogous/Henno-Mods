@@ -4351,3 +4351,17 @@ completion in treatment through 250. In the completed pair, treatment
 supplied 8/11 Base deadline cases and one eligible Specialty case. Control
 supplied 5/11 Base cases and had no unsupplied eligible Specialty case.
 [Native choice, work and competing job](../research/mods/csc-ai-supplier-preparation-20261121.md#first-ordinary-fractal-treatment-earliest-changed-decision).
+
+## AI-C207 — First-supplier guidance can swap Base and Specialty job order
+
+21 November 2026, roadmap 3.1. In the second ordinary Fractal pair,
+Chalkidiki's first differing improvement reservation came on turn 79.
+The control picked and finished a Tomato Plantation at 113 utility.
+The treatment picked and finished a Cattle Pasture at 121 after CSC
+published a 2,452 Q8 preparation offer on that exact plot. Both plots
+serve the same Bakers Quarter. The control finished the Pasture on 87
+after a failed attempt and another Builder request. The Plantation was
+still missing through turn 120 in treatment. Both games show the same
+Base deadline result through that early window. This case identifies
+the trade-off between the two jobs and the timing of actual completion.
+[Native reservation and material trace](../research/mods/csc-ai-supplier-preparation-20261121.md#second-fractal-treatment-first-changed-improvement-reservation).

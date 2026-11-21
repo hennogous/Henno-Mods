@@ -253,6 +253,32 @@ per turn with a maximum of 4.692 seconds. The separately measured native
 managed-cell update averaged 14.2 ms and peaked at 35.2 ms per turn.
 All 250 publications succeeded.
 
+### Second Fractal treatment, first changed improvement reservation
+
+Both games built a Mahavihara on turn 78 in Chalkidiki. The earliest
+different successful improvement reservation in the native tree logs
+was in that city on 79. The control picked the Tomato Plantation at
+`(32, 23)` at 113 utility. The treatment picked the Cattle Pasture at
+`(31, 24)` at 121. CSC published 2,452 Q8 for that exact Pasture while
+plot 1733's Wind Mill was a prospective buyer. The native receipt
+prints only the first improvement score change in the packet, so the
+unadjusted Pasture score at this comparison is unavailable.
+
+Treatment built the Pasture on 79. The control reserved it on 80 and
+failed on site on 81. A new Builder request on 82 led to a successful
+recruit on 86 and completed Pasture on 87. In treatment, it was the
+Plantation that moved to the next slot and then failed to finish on 81.
+The first physical Plantation was observed on 79 in control. It was
+still missing through 120 in treatment. Both plots supply the same
+Bakers Quarter, one with Base Cattle and the other with Specialty Tomato.
+
+Through the turn-120 audit, both arms supplied one of two Base buyers
+that had needed work and whose full deadline had passed. Both successes
+were the same Bakers Quarter at plot 2574, supplied on 58, two turns
+after opening. Both missed the deadline at plot 1728. Reserve and
+assignment first appeared at 96 in control and were absent at the
+treatment deadline. The treatment's full run is still in progress.
+
 ### Matched Stage 3 outage in Popayán
 
 Both arms matched 234 structural rows from the same ordinary Fractal
