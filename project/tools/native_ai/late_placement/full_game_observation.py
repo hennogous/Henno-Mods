@@ -77,6 +77,7 @@ def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mod
     code='''-- Read-only trial observer. No bids, queue orders or game-property writes.
 local seats=__PLAYERS__
 local function collect()
+__EXCHANGE_SCOPE__
 __CENSUS__
 end
 assert(CSC_FULL_RUN_Observation==nil,'Duplicate observer')
@@ -94,7 +95,8 @@ GameEvents.OnGameTurnStarted.Add(function()
  if not ok then print('CSC_FULL_RUN_OBSERVATION_FAILED',turn,tostring(error))end
 end)
 print('CSC_FULL_RUN_OBSERVATION_INSTALLED')
-'''.replace('__PLAYERS__',lua(sorted(players))).replace('__CENSUS__',census)
+'''.replace('__PLAYERS__',lua(sorted(players))).replace('__EXCHANGE_SCOPE__',
+        'local CSC_MILESTONE_EXCHANGE_CENSUS=true' if service_watch else '').replace('__CENSUS__',census)
     (out/'full-game-observer.lua').write_text(code,encoding='utf-8')
     raw=controller.cmd(code,'CSC_AI_BakersGameplay','install-passive-full-game-observer')
     require('CSC_FULL_RUN_OBSERVATION_INSTALLED'in raw,'Observer did not acknowledge installation')

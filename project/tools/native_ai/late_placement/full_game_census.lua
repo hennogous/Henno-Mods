@@ -24,6 +24,7 @@ local function profile(key)
     return profiles["DISTRICT_CSC_" .. key .. "_QUARTER"]
 end
 local districtReplacements, buildingReplacements = {}, {}
+local populationExchanges = {}
 local function addReplacement(list, original, unique)
     list[original] = list[original] or {}
     table.insert(list[original], unique)
@@ -33,6 +34,32 @@ for row in GameInfo.DistrictReplaces() do
 end
 for row in GameInfo.BuildingReplaces() do
     addReplacement(buildingReplacements, row.ReplacesBuildingType, row.CivUniqueBuildingType)
+end
+if CSC_MILESTONE_EXCHANGE_CENSUS then
+    -- Read the published payout quantity in both directions. Use the
+    -- physical pair from the census and keep its
+    -- property values as raw evidence alongside independent Service effects.
+    local outputs = {}
+    for row in GameInfo.CSC_BuildingTransactionYields() do
+        if row.AmountProperty then
+            local legs = outputs[row.TransactionId] or {}
+            legs[row.Recipient] = row.AmountProperty
+            outputs[row.TransactionId] = legs
+        end
+    end
+    for row in GameInfo.CSC_BuildingTransactions() do
+        local legs = outputs[row.TransactionId]
+        if legs and legs.SOURCE and legs.PARTNER and row.SpatialRule == 'ADJACENT_OWNED' then
+            local source = populationExchanges[row.SourceBuildingType] or {}
+            local requiresHost = row.PartnerDistrictMustFunction
+            local record = {row = row, legs = legs, requiresHost = requiresHost == true or requiresHost == 1}
+            source[row.PartnerBuildingType] = record
+            for _, unique in ipairs(buildingReplacements[row.PartnerBuildingType] or {}) do
+                source[unique] = record
+            end
+            populationExchanges[row.SourceBuildingType] = source
+        end
+    end
 end
 for row in GameInfo.CSC_QuarterFlowBuildings() do
     local p = profile(row.QuarterKey)
@@ -144,9 +171,14 @@ for _, pid in ipairs(CSC_ENDPOINT_PLAYERS) do
                             complete and value.current.production or 0,
                             complete and value.current.gold or 0,value.production,value.gold)
                     end
+                    local runningProducer = {}
                     for typeName, stage in pairs(p.producers) do
                         local status = buildingAt(city, typeName, id)
                         if status > 0 then emit("PRODUCER", id, stage, typeName, status) end
+                        if CSC_MILESTONE_EXCHANGE_CENSUS and status == 2
+                            and district:IsComplete() and not district:IsPillaged() then
+                            runningProducer[stage] = typeName
+                        end
                     end
                     for _, near in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
                         if near:GetOwner() == pid then
@@ -199,7 +231,19 @@ for _, pid in ipairs(CSC_ENDPOINT_PLAYERS) do
                                             end
                                         end
                                         for typeName in pairs(types) do
-                                            status = math.max(status, buildingAt(buyer, typeName, nearID))
+                                            local present = buildingAt(buyer, typeName, nearID)
+                                            status = math.max(status, present)
+                                            local contracts = populationExchanges[runningProducer[stage]]
+                                            local transaction = contracts and contracts[typeName]
+                                            if present == 2 and transaction and (complete or not transaction.requiresHost) then
+                                                local sourceAmount = city:GetProperty(transaction.legs.SOURCE) or 0
+                                                local buyerAmount = buyer:GetProperty(transaction.legs.PARTNER) or 0
+                                                local step = transaction.row.PopulationStep
+                                                if sourceAmount > 0 and buyerAmount > 0 and (not step or buyer:GetPopulation() >= step) then
+                                                    emit("POPULATION_EXCHANGE", id, nearID, stage,
+                                                        transaction.row.TransactionId, sourceAmount, buyerAmount)
+                                                end
+                                            end
                                         end
                                     end
                                     emit("CUSTOMER", id, nearID, stage, hostType, complete, status)

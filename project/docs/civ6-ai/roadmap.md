@@ -26,13 +26,13 @@
 | [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Verified in matched replays and ordinary play for Bakers and Tailors. |
 | 5.1 Build | Favor the mapped customer building, including unique replacements. | Québec bought its Lighthouse while building a Commercial Hub. The endpoint verified both sides of the Workshop exchange. Unique Granary pricing passed the gameplay-definition fixture. |
 | [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Storekeeper operation verified in selected chains. Unlock guidance and strategic priorities remain open. |
-| 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | Candidate integrated. Native follow-through open. |
+| 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | Feudalism received the bid and completed on turn 71. A separate intact chain activated Storekeeper. |
 | 6.2 Strategy | Adjust the value for empire needs and victory direction. | Deferred. |
 | [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Planned. |
-| 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Candidate integrated. Native follow-through open. |
+| 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Guilds received the bid and appeared as the immediate next step. Unlock completion remains open. |
 | 7.2 Build | Value construction from population 10 against ordinary competition. | Angkor Thom received the Bakery bid and completed the building. The control also built it. |
 | [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Planned. |
-| 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Candidate integrated. Native follow-through open. |
+| 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Mahendraparvata received the Market bid and completed the building. Follow the resulting transaction in the campaign. |
 | [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Planned. |
 | 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | Candidate integrated. Native follow-through open. |
 | 9.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |

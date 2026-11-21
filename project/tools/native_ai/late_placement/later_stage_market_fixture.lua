@@ -2,12 +2,21 @@
 -- turn-200 world. The setup removes only the mapped Market in both arms.
 -- Ordinary AI remains responsible for selecting and executing its rebuild.
 local pid = 5
+local market = assert(GameInfo.Buildings.BUILDING_MARKET)
+if mode == 'legal' then
+    -- The setup verified the plot/building identity in Gameplay. PlotInfo
+    -- performs only the same immediate eligibility read used by the policy.
+    local customer = assert(CityManager.GetCity(pid, 262147))
+    assert(ExposedMembers.CSC_Adjacency.CanProduceItem(pid, customer:GetID(), market.Hash),
+        'Rebuild is not native-legal')
+    print('CSC_MILESTONE_MARKET_LEGAL', Game.GetCurrentGameTurn(), pid, customer:GetID(), market.Index)
+    return
+end
 local quarter = assert(Map.GetPlotByIndex(987))
 local host = assert(Map.GetPlotByIndex(913))
 local source = assert(Cities.GetPlotPurchaseCity(quarter))
 local customer = assert(Cities.GetPlotPurchaseCity(host))
 local bakery = assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_BAKERY)
-local market = assert(GameInfo.Buildings.BUILDING_MARKET)
 assert(source:GetOwner() == pid and customer:GetOwner() == pid
     and source:GetID() == 262147 and not Players[pid]:IsHuman())
 assert(host:GetDistrictType() == GameInfo.Districts.DISTRICT_COMMERCIAL_HUB.Index
@@ -48,11 +57,6 @@ if mode == 'setup' then
     buildings:RemoveBuilding(market.Index)
     assert(not buildings:HasBuilding(market.Index), 'The test Market was not removed')
     print('CSC_MILESTONE_MARKET_SETUP', pid, customer:GetID(), host:GetIndex(), market.Index, seller, buyer)
-elseif mode == 'legal' then
-    assert(not buildings:HasBuilding(market.Index)
-        and ExposedMembers.CSC_Adjacency.CanProduceItem(pid, customer:GetID(), market.Hash),
-        'Rebuild is not native-legal')
-    print('CSC_MILESTONE_MARKET_LEGAL', Game.GetCurrentGameTurn(), pid, customer:GetID(), market.Index)
 else
     assert(mode == 'outcome')
     local seller, buyer = exchange()

@@ -38,7 +38,9 @@ class Census(unittest.TestCase):
             ('PRODUCER', '46\t4\tCAFE\t2'),
             ('CUSTOMER', '45\t47\t4\tDISTRICT_ENTERTAINMENT_COMPLEX\ttrue\t2'),
             ('CUSTOMER', '46\t47\t4\tDISTRICT_ENTERTAINMENT_COMPLEX\ttrue\t2'),
+            ('POPULATION_EXCHANGE', '45\t47\t4\tCAFE_ZOO\t2\t2'),
         ]
         stage = stage_census(rows)['BAKERS']['stages'][2]
         self.assertEqual(stage['customer_hosts'], 1)
         self.assertEqual(stage['physical_exchange_pairs'], 2)
+        self.assertEqual(stage['positive_population_exchanges'], 1)

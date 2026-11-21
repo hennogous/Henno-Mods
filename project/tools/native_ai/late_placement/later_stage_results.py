@@ -14,6 +14,7 @@ def stage_census(rows):
     producers = set()
     materials = set()
     customers = set()
+    population_exchanges = set()
     for kind, payload in rows:
         fields = payload.split('\t')
         if kind == 'QUARTER':
@@ -29,6 +30,9 @@ def stage_census(rows):
             plot, host, stage, district, complete, status = fields
             if status != '0':
                 customers.add((plot, host, int(stage), district, complete == 'true' and status == '2'))
+        elif kind == 'POPULATION_EXCHANGE':
+            plot, host, stage, transaction, _, _ = fields
+            population_exchanges.add((plot, host, int(stage), transaction))
     result = {}
     for quarter in sorted({record[0] for record in quarters.values()}):
         built = {plot for plot, record in quarters.items() if record[0] == quarter and record[2]}
@@ -37,11 +41,11 @@ def stage_census(rows):
             supply={kind: dict(adjacent=sum(plot in built and c == kind for plot, _, c, _ in materials),
                               working=sum(plot in built and c == kind and active for plot, _, c, active in materials))
                     for kind in ('BASE', 'SPEC')},
-            stages=[_count_stage(stage, built, working, producers, customers) for stage in (2, 3, 4)])
+            stages=[_count_stage(stage, built, working, producers, customers, population_exchanges) for stage in (2, 3, 4)])
     return result
 
 
-def _count_stage(stage, built, working, producers, customers):
+def _count_stage(stage, built, working, producers, customers, population_exchanges):
     stage_producers = [(plot, active) for plot, found, _, active in producers if found == stage and plot in built]
     stage_customers = [(plot, host, district, active) for plot, host, found, district, active in customers
                        if found == stage and plot in built]
@@ -50,7 +54,9 @@ def _count_stage(stage, built, working, producers, customers):
                 customer_hosts=len({host for _, host, _, _ in stage_customers}),
                 working_customer_hosts=len({host for _, host, _, active in stage_customers if active}),
                 wonders=len({host for _, host, district, _ in stage_customers if district == 'DISTRICT_WONDER'}),
-                physical_exchange_pairs=sum(plot in active_producers and active for plot, _, _, active in stage_customers))
+                physical_exchange_pairs=sum(plot in active_producers and active for plot, _, _, active in stage_customers),
+                positive_population_exchanges=sum(plot in built and found == stage
+                                                 for plot, _, found, _ in population_exchanges))
 
 
 def service_durations(log, start, end):

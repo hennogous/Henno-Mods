@@ -6,6 +6,7 @@ Separate matched fixtures can qualify decisions too rare in that window.
 """
 import argparse
 from pathlib import Path
+import re
 import shutil
 from types import SimpleNamespace
 
@@ -65,6 +66,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
 
     def census(turn, label):
         scope = f'CSC_ENDPOINT_PLAYERS={lua(plan.identity["original_ai"])}\nCSC_ENDPOINT_EXPECTED_TURN={turn}\n'
+        scope += 'local CSC_MILESTONE_EXCHANGE_CENSUS=true\n'
         raw = controller.cmd(scope + read(HERE / 'full_game_census.lua'),
                              'CSC_AI_BakersGameplay', label)
         (output / (label + '.txt')).write_text(raw, encoding='utf-8')
@@ -97,12 +99,13 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
         marker = 'CSC_MILESTONE_SERVICE_INSTALLED' if every_turn else 'CSC_MILESTONE_SERVICE_END'
         require(marker in raw, 'Missing Service observation acknowledgement')
 
-    def fixture_receipt(mode, context):
+    def fixture_receipt(mode, context, expected=None):
         script = read(HERE / f'later_stage_{fixture}_fixture.lua')
         label = f'{fixture}-{mode}'
-        raw = controller.cmd(f'local mode={lua(mode)}\n' + script, context, label)
+        raw = controller.cmd(f'local mode={lua(mode)}\nlocal expectedBuyer={lua(expected)}\n' + script, context, label)
         (output / (label + '.txt')).write_text(raw, encoding='utf-8')
         require(f'CSC_MILESTONE_{fixture.upper()}_{mode.upper()}' in raw, 'Fixture evidence missing')
+        return raw
 
     try:
         for item in plan.packages:
@@ -130,9 +133,19 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
         ce = next(item for item in installed if item['role'] == 'ce')
         verify_modules(session, (ce['install'] / 'Binaries/Win64' / DLL).resolve(), output, STEAM_26595377_CORE_SHA)
         if fixture:
-            fixture_receipt('setup', 'CSC_AI_BakersGameplay')
-        if fixture == 'market':
-            fixture_receipt('legal', 'PlotInfo')
+            placement = None
+            if fixture == 'sacristan':
+                scout = fixture_receipt('scout', 'PlotInfo')
+                site = re.search(r'CSC_MILESTONE_SACRISTAN_SCOUT\s+(\d+)\b', scout)
+                require(site is not None, 'No native-legal Holy Site in the scoped replay')
+                placement = int(site[1])
+            setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay', placement)
+            if fixture == 'market':
+                fixture_receipt('legal', 'PlotInfo')
+            elif fixture == 'entertainment':
+                buyer = re.search(r'CSC_MILESTONE_ENTERTAINMENT_SETUP\s+3\s+(\d+)\b', setup)
+                require(buyer is not None, 'Entertainment Complex buyer missing from setup')
+                fixture_receipt('legal', 'PlotInfo', int(buyer[1]))
         service_observation('service-before')
         service_observation('service-observer', every_turn=True)
         native_status('native-before')
@@ -177,11 +190,20 @@ if __name__ == '__main__':
                           help='Controlled player-5 Market rebuild on the qualified turn-200 checkpoint')
     fixtures.add_argument('--storekeeper-preparation', action='store_true',
                           help='Add the same missing Mill on both turn-50 copies to isolate Feudalism')
+    fixtures.add_argument('--entertainment-preparation', action='store_true',
+                          help='Prepare the adjacent Arena on both turn-200 copies to isolate Zoo production')
+    fixtures.add_argument('--sacristan-preparation', action='store_true',
+                          help='Prepare the same Temple and Tailor to isolate Divine Right on the turn-100 copies')
     args = parser.parse_args()
     require(0 < args.end - args.start <= 25, 'Replay window must be 1 to 25 turns')
     require(not args.market_rebuild or args.start == 200, 'Market fixture requires the turn-200 source')
     require(not args.storekeeper_preparation or args.start == 50, 'Storekeeper fixture requires the turn-50 source')
-    fixture = 'market' if args.market_rebuild else 'storekeeper' if args.storekeeper_preparation else None
+    require(not args.entertainment_preparation or args.start == 200, 'Entertainment fixture requires the turn-200 source')
+    require(not args.sacristan_preparation or args.start == 100, 'Sacristan fixture requires the turn-100 source')
+    fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
+                    (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
+                    (args.sacristan_preparation, 'sacristan'))
+                    if enabled), None)
     for arm in args.arm or ('control', 'treatment'):
         run_arm(args.source, args.output / arm, args.start, args.end,
                 args.candidate_source if arm == 'treatment' else None, fixture)

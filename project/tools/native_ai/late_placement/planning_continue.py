@@ -30,7 +30,7 @@ from full_game_controller.environment import archive_sources
 STRUCTURAL_FIELDS = {'PLAYER': None, 'CITY': 3, 'QUARTER': 7,
                      'PRODUCER': None, 'SERVICE_BUILDING': None, 'MATERIAL': None,
                      'CUSTOMER_HOST': None, 'CUSTOMER': None, 'SALES': None}
-IGNORED_CENSUS_FIELDS = {'TREASURY', 'ADJACENCY', 'END'}
+IGNORED_CENSUS_FIELDS = {'TREASURY', 'ADJACENCY', 'POPULATION_EXCHANGE', 'END'}
 
 
 def structural_rows(census):
