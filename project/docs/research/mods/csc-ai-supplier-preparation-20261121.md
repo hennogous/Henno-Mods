@@ -174,6 +174,23 @@ Specialty opening and an interrupted Base window. Treatment had two late
 Specialty openings, one late Base opening and one Base opening without
 legal supply. Buyer dates and cohorts can change after the games diverge.
 
+The treated game's three Base misses all supplied their buyers later. The
+native tree and the physical survey place their delays at different steps.
+
+| Quarter | Buyer opened | First reserve / assignment | First working survey | What delayed it |
+| --- | ---: | ---: | ---: | --- |
+| Kish Bakers, Flax 2188 | 63 | 71 / 71 | 76 (+13) | The Builder reached the plot and built on 75 after four moving turns. |
+| Hamilton Tailors, plot 626 | 112 | 119 / 119 | 123 (+11) | The reserve came seven turns after opening. The Builder reached the site on 121 and finished the Pasture on 122. |
+| Medina Bakers, plot 1320 | 194 | 162 / 209 | 211 (+17) | The first reservation failed to recruit. Its 102-point Builder contract waited eight turns and expired. Medina retried on 209 and completed the Pasture on 210. |
+
+Medina first published a 13-point preparatory offer on turn 141 with a
+ten-turn Wind Mill estimate. The Mill received 16.2 of its 40 production
+on turn 154. Medina switched to a Courser on 155 and kept the partial Mill
+progress until it finished on 193. The supplier reservation and Builder
+request both came during the interruption. The turn-150 save precedes
+the production switch and the reservation, so it preserves both delays
+for a focused replay.
+
 Québec's Bakers Quarter at 696 provides the first Specialty follow-through
 case. The treatment offered its Berries Plantation at 622 from turn 123,
 published a higher quote once the Café entered production on 134, and
