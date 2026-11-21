@@ -466,6 +466,22 @@ production. The turn-176 UI read 2 Food on the Granary and confirmed
 its mill-supplied Food, reverse Production and optional Gold modifiers
 in the same city.
 
+The transaction-priced arm offered 64 points from turn 150. The
+Granary reached the production comparison on 153, when the city began
+Mont St. Michel. The ordinary comparison on 154 raised the Granary
+from 57,211 to 73,595 Q8. The native tree submitted the same contract
+3114 at 223, and the AI bought it on 155. Both arms kept the same
+Wonder production schedule and paid the same exchange at 176. The
+native current-scope record thus covers both the queue comparison and
+purchase in one existing customer district.
+
+Both customer replays used the corrected CE package from `csc-dev`
+`f6f0dd8` (DLL SHA-256
+`d6d5940a166e22a2c5bf34495e5f608c9c77c0a9953e0e54223ae425db2dcee2`).
+A fresh Small Online Fractal game uses the same integrated CSC and
+CE packages through turn 200, with map seed 864230117 and game seed
+427190583 selected before launch.
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

@@ -1,11 +1,17 @@
 # Current CSC AI status
 
-**21 November — Problem 5 is active.** Problem 4 reached ordinary
-follow-through in a fresh 200-turn game. Stockholm finished a Workshop
-after a native score write. Opango offered a Flax job while its Water
-Mill was under construction. The endpoint had 16 working Mills and
-four Workshops. Price the mapped Stage 2 customer exchange and validate
-it on the native production or purchase path.
+**21 November — Problem 5 is active.** The data-driven customer bid
+reached Québec's Lighthouse queue comparison and Saint John's Granary
+nomination and purchase. Both replays verified the exchange. Saint John
+continued Mont St. Michel while buying the Granary. The fresh integrated
+Fractal qualification uses map seed 864230117 and game seed 427190583
+through turn 200.
+[Customer results](topics/csc/producers-and-customers.md#a-completed-harbor-was-waiting-for-its-lighthouse).
+
+**21 November — Problem 4 verified.** The fresh Continents game ended
+with 16 working Mills and four Workshops. Stockholm completed the
+Workshop after a native comparison. Opango's Flax job was offered while
+the Water Mill was under construction.
 [Producer results](topics/csc/producers-and-customers.md#the-integrated-producer-policy-in-a-fresh-continents-game).
 
 **21 November — Problem 3.2 verified for the tested assignment paths.**
