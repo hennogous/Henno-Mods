@@ -137,8 +137,9 @@ Material work remains on its ordinary unlock and assignment path.
 The preparation quote still uses the existing supplier ledger, so
 co-unlocked Bamboo contributes no speculative income.
 
-The turn-50 control matched all 41 opening structural records.
-Construction was first requested by a district tree in Axum on turn 78.
+The turn-50 control matched all 41 opening structural records. The
+Games and Recreation civic-boost tree already requested Construction
+on turn 50. Axum's district tree also requested it on turn 78.
 Research started on 85 and finished on 87. Default Specialization
 started the Workshop on 90, and the end-of-player-turn read showed it
 working on 92. At turn 132, the UI showed native Workshop Culture
