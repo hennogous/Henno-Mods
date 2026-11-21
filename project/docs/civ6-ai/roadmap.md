@@ -18,9 +18,9 @@
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Current focus is 3.2 Builder availability and follow-through. |
 | 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
-| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | The handoff restored Axum's Bamboo and advanced Edinburgh's Pasture by 38 turns in the matched game. Mashhad's charged Builder left under a different controller after reaching the Sheep. |
+| 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Verified for idle-worker handoffs and on-site finishing. Axum's Bamboo recovered, Edinburgh's Pasture advanced by 38 turns, and the integrated scheduler completed Mashhad's sole Pasture. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
-| [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Queued after the 3.2 follow-up. First-producer unlocks and production remain open for qualification. |
+| [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Active. First-producer unlocks and production remain open for qualification. |
 | 4.1 Unlock | Favor the right producer tech or civic with two or more viable adjacent Base sources. | Open. Qualify the producer unlock decision in ordinary play. |
 | 4.2 Build | Bid for the legal producer when its Base supply justifies investment. | Wind Mill nomination and follow-through verified. Wider Mill and Textile Workshop coverage remains open. |
 | [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Granary follow-through observed. Broader customer coverage remains open. |
@@ -78,7 +78,7 @@ the Barley Farm on 119 and finished with the same economic outcomes. Regular
 play now uses the finishing-only CE consumer when available.
 [Updated build and Continents comparison](../research/mods/csc-ce-steam-26595377-port-20261120.md).
 
-**Current focus is Problem 3.2, Builder availability and assignment.** On Continents, both tuned
+**Problem 3.2, Builder availability and assignment.** On Continents, both tuned
 variants supplied 20 of 25 eligible buyers within 15 turns and recovered all
 three observed supply outages. One Tailors outage still took 40 turns.
 Measure from producer commitment or supply loss to working supply. The
@@ -108,12 +108,16 @@ packet limit. On the fresh Continents seed, Edinburgh's handoff on 167
 canceled a pending Builder contract and put a Pasture on the Cattle that
 supplies its Bakers Quarter. The matched control reserved the same Cattle
 on 166 and first built the Pasture on 205, 38 turns later.
-The enabled run also exposed a later failure in Mashhad: three Sheep
-Pasture attempts reached the build step and failed. Check the worker and
-stock operation eligibility at the turn-200 checkpoint.
+At Mashhad the Military Academy preparation recruited the arrived Builder
+and released it unused. Sparda then took it from the free pool. The
+integrated finishing scheduler let the on-site Builder complete the
+Pasture first. Sparda retained the Builder after it spent its movement
+and one charge. The Academy planned an alternate site and moved another
+Builder on the same turn. Broader effects of the new bare-plot finishing
+case will be measured in the next ordinary runs.
 [Availability test and results](../research/mods/csc-ai-axum-builder-availability-20261120.md).
-The producer work in 4.1 and 4.2 and further improvement-unlock work in 3.3
-are queued.
+Current focus moves to the producer unlock and construction decisions
+in 4.1 and 4.2. Further improvement-unlock work in 3.3 stays deferred.
 
 **3.2 follow-up in the recorded Continents runs.** Axum admitted the Bamboo
 job as soon as its Tailors supply failed on turn 115. Before the Sawmill

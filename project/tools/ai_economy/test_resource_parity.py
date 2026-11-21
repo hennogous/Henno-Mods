@@ -126,21 +126,27 @@ Players[3].GetTechs=function()return{HasTech=function()return false end}end
 _,jobs=policy();assert(jobs[102]==nil)
 ''')
 
-    def test_only_a_sole_pillaged_supplier_for_an_operating_buyer_qualifies_to_finish(self):
+    def test_only_a_sole_bare_or_pillaged_supplier_for_an_operating_buyer_qualifies_to_finish(self):
         for family in ('BAKERS', 'TAILORS'):
             with self.subTest(family=family):
                 runtime(family).execute(r'''
-baseImprovement,specImprovement=5,6
-basePlot.IsImprovementPillaged=function()return true end
-specPlot.IsImprovementPillaged=function()return true end
+basePlot.GetFeatureType=function()return -1 end
+specPlot.GetFeatureType=function()return -1 end
 local function finishes()
     local _,offers=P.MaterialDeductions(Players[3],true,56*256,0,nil,false)
     local result={}
-    for _,offer in ipairs(offers)do if offer.finishRepair then result[offer.plot]=true end end
+    for _,offer in ipairs(offers)do if offer.finishSupply then result[offer.plot]=true end end
     return result
 end
 assert(not next(finishes()))
 owned[9],owned[12]=true,true
+local newWork=finishes()
+assert(newWork[101] and newWork[102])
+specPlot.GetFeatureType=function()return 1 end
+assert(not finishes()[102])
+baseImprovement,specImprovement=5,6
+basePlot.IsImprovementPillaged=function()return true end
+specPlot.IsImprovementPillaged=function()return true end
 local repairs=finishes()
 assert(repairs[101] and repairs[102])
 damaged[12]=true
@@ -336,14 +342,14 @@ rows=bids();assert(#rows==2 and rows[1].plot==101 and rows[2].plot==102)
 local _,dispatch=P.MaterialBuilderOffers(Players[3],sites,ui,128*256,4)
 assert(#dispatch==0) -- Capacity routes never publish an early recruitment offer.
 sites[1].repair=true
-sites[1].finishRepair=true
+sites[1].finishSupply=true
 UnitManager.GetMoveToPath=function(_,plot)return {100,plot}end
 _,dispatch=P.MaterialBuilderOffers(Players[3],sites,ui,128*256,4)
 assert(#dispatch==0) -- A Builder en route still uses the stock order.
 x=3
 _,dispatch=P.MaterialBuilderOffers(Players[3],sites,ui,128*256,4)
 assert(#dispatch==1 and dispatch[1].unit==39 and dispatch[1].plot==101 and dispatch[1].x==3)
-sites[1].finishRepair=false
+sites[1].finishSupply=false
 _,dispatch=P.MaterialBuilderOffers(Players[3],sites,ui,128*256,4)
 assert(#dispatch==0)
 x=2

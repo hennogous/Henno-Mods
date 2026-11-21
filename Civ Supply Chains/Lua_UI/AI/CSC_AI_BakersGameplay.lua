@@ -215,7 +215,7 @@ local function refresh(turn)
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
     local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
     local materialStatus=bridge.MaterialDevelopmentStatus()
-    -- Finish eligible sole-supplier repairs by default. The bridge grants
+    -- Finish eligible sole-supplier jobs by default. The bridge grants
     -- capacity only when CE exposes the finishing-only worker consumer.
     -- Matched controls can set the test override to false for this packet.
     local finishEnabled = CSC_AI_TEST_LAST_SUPPLIER_FINISH ~= false

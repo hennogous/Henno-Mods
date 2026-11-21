@@ -520,9 +520,9 @@ Builder was already free, unprocessed and still on the Sheep with two
 charges. Sparda had priority 2 and a value of 467. Mashhad later reached
 Build Improvement with priority 2 and value 601. At that point the
 Builder had moved away and was processed under Sparda's controller. The
-Pasture node selected no worker and returned failure. A larger Pasture
-bid would leave this sequence intact if the Builder is already free
-before Sparda looks for one. Trace what releases the original custody.
+Pasture node selected no worker and returned failure. When the Builder
+is already free, its previous job's value cannot affect Sparda's
+recruitment. The preceding release needs its own attribution.
 See `mashhad-pasture-200-202-caller-trace/native-transfer.json`.
 
 The custody-write trace found an intervening job before Sparda. The
@@ -533,9 +533,42 @@ The release was the original game's ReleaseUnusedUnits call, return
 RVA `543b5b`, from DoGameCoreActions at return RVA `5401be`. Sparda's
 write came from initial free-pool recruitment at return RVA `403399`.
 The game left the Builder on the Sheep, charged and unprocessed,
-until Sparda recruited it. The preceding tree therefore needs its own
-priority and job attribution before choosing an intervention.
-See `mashhad-pasture-200-202-custody-write/native-transfer.json`.
+until Sparda recruited it. The intermediate tree was Build Trigger
+Building for Totalitarianism's Military Academy boost. It reserved
+an Encampment at (52, 12). Its priority was 2 and its value was 805,
+compared with Mashhad's priority 2 and value 601. Its recruitment
+already had the destination bound through Place District. It did not
+move this particular Builder or spend a charge before freeing it.
+See `mashhad-finish-control/native-transfer.json` and
+`mashhad-pasture-200-202-custody-write/native-transfer.json`.
+
+A matched diagnostic published one finishing offer for the already
+assigned Builder on the unobstructed Sheep. CE moved Mashhad's original
+tree earlier in the same priority pass. On 201 the tree selected that
+Builder for Pasture, submitted the stock build command and used one
+charge. Plot 653 had a working Pasture at the 202 boundary. Sparda still
+recruited the same Builder. The Pasture build spent its movement for
+that turn, and it stayed on (61, 8). The control reached (60, 9).
+The Academy tree retained value 805 and chose an Encampment at (56, 11).
+Builder 9175070 travelled toward it in the same turn. The two-turn
+replay measures this change of plan and the supplier gain. Academy
+construction beyond the window remains unmeasured. Both runs closed
+normally. Compare
+`mashhad-finish-control` and `mashhad-finish-treatment`.
+
+CSC's planner now extends its finishing offer to an operating buyer's
+sole supplier when the job is a repair or a new improvement on a bare
+plot. A job that requires clearing or replacement follows the ordinary
+order. The CE scheduler already requires the same stock Builder on the
+exact plot under the original job's control, then runs the stock work
+checks. This uses the existing CE API. The integrated replay replaced
+only the two CSC Lua files in the frozen package and used the original
+save and CE binary. Normal CSC publication produced the exact offer,
+CE recorded one finishing dispatch, and the stock Builder placed the
+Pasture on 201. Sparda and the Academy matched the diagnostic outcomes
+through 202. The game and controller closed cleanly. See
+`mashhad-finish-integrated`. All 171 economy and 21 CE frontend checks
+passed.
 
 The replay used checkpoint SHA-256
 `2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`.

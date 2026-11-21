@@ -304,7 +304,11 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
                     readyHere=math.max(readyHere or 0,value)
                     if (floor>0 or value>0) and (not buildHere or value>buildHere.value or value==buildHere.value
                         and (repair and not buildHere.repair or repair==buildHere.repair and index<buildHere.improvement)) then
-                        buildHere={plot=material.plot,improvement=index,repair=repair,value=value,ordinary=ordinary or 0}
+                        -- A new improvement can finish in one action on a bare
+                        -- plot. Keep clearing and replacement in normal order.
+                        local finish=repair or current==-1 and plot.GetFeatureType and plot:GetFeatureType()==-1
+                        buildHere={plot=material.plot,improvement=index,repair=repair,finish=finish,
+                            value=value,ordinary=ordinary or 0}
                     end
                 elseif research and quote and economy.Research and not improvementUnlocked(player,index)
                     and ImprovementBuilder.CanHaveImprovement(plot,index,playerID) then
@@ -363,10 +367,10 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
             job.value=job.value+candidate.value
             job.ordinary=job.ordinary+candidate.ordinary
             job.repair=candidate.repair
-            -- The experimental finishing slot covers an operating buyer's
-            -- sole mapped supplier. Construction and additional deposits
-            -- still use the ordinary bids. Shared buyers may qualify one job.
-            job.finishRepair=job.finishRepair or (operatingBuyer and #supply==1 and candidate.repair)
+            -- Give an operating buyer's sole mapped supplier a chance to
+            -- finish in the worker's current turn. The native pass still
+            -- needs the exact Builder on site under this job's control.
+            job.finishSupply=job.finishSupply or (operatingBuyer and #supply==1 and candidate.finish)
             -- One working input restores this material channel to a present buyer.
             -- An eligible replacement deposit can restore it while the old one waits.
             job.restoreSupply=job.restoreSupply or (operatingBuyer and not supplied)
@@ -657,7 +661,7 @@ function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominati
                         builderSites[#builderSites+1]={player=playerID,city=cityID,plot=index,
                             improvements={improvement},deltaQ8=math.min(builderBidLimit,math.max(job.floor,job.value)),
                             jobValueQ8=job.value,ordinaryQ8=job.ordinary,repair=job.repair,
-                            finishRepair=job.finishRepair,restoreSupply=job.restoreSupply,commitment=job.commitment}
+                            finishSupply=job.finishSupply,restoreSupply=job.restoreSupply,commitment=job.commitment}
                     else
                         allowed[#allowed+1]=improvement
                     end
@@ -711,9 +715,10 @@ end
 -- is exposed. A nearby worker is only an estimate: Civ can spend its turn
 -- on another job before this tree recruits. Leave a residual-only offer for
 -- that exact fallback, which CE can use only when the native tree actually
--- requests a Builder. The optional finish offer supplies an on-site Builder
--- and sole-supplier repair. CE verifies that the native job already holds
--- that Builder. A separate loan offer can restore any missing material at
+-- requests a Builder. A finish offer names the on-site Builder for a
+-- sole-supplier repair or bare-plot improvement. CE verifies that the exact
+-- native job still holds that Builder before promoting it within the same
+-- priority pass. A separate loan offer can restore any missing material at
 -- an operating buyer. It names a routed worker and expires with this packet.
 local loanArtifactIndex
 local function loanArtifact()
@@ -826,7 +831,7 @@ function P.MaterialBuilderOffers(player, sites, ui, limit, dispatchLimit, loanEn
                 end
                 -- A candidate here is only provisional. The native worker
                 -- pass checks custody and position again before changing order.
-                if #dispatch<dispatchLimit and candidate.distance==0 and site.finishRepair
+                if #dispatch<dispatchLimit and candidate.distance==0 and site.finishSupply
                     and worker.kind==builder.Index and site.deltaQ8>0 then
                     local id=worker.object:GetID()
                     if not dispatchUnits[id] then

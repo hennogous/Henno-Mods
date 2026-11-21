@@ -1,10 +1,17 @@
 # Current CSC AI status
 
-**20 November — Problem 3.2, Builder assignment.** The integrated CSC
-and CE handoff restored Axum's Sawmill on turn 131 and both material effects
-by 133. The same-build control still lacked supply. The competing cities'
-production queues matched. Qualify the handoff in ordinary play.
-[Packaged matched replay](../research/mods/csc-ai-axum-builder-availability-20261120.md#packaged-csc-and-ce-follow-through).
+**21 November — Problem 4 is active.** Verify the producer unlock and
+construction decisions for the Bakers’ Mills and Tailors’ Textile Workshop.
+Existing native nominations can open the prerequisite research. Trace the
+production choice and when the material planner sees it enter the queue.
+
+**21 November — Problem 3.2 verified for the tested assignment paths.**
+The integrated loan restored Axum's Bamboo and both material effects.
+In the ordinary matched Continents games, Edinburgh's Pasture was built
+38 turns earlier with the loan. A separate integrated replay completed
+Mashhad's Pasture with its assigned Builder before the unit moved to
+another job. Retain broader finishing measurements in the next ordinary
+games. [Matched evidence](../research/mods/csc-ai-axum-builder-availability-20261120.md).
 
 **20 November: Axum lost and then recruited the same Builder.** The replay
 showed the charged Builder ending turn 152 unassigned after a failed
