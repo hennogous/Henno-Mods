@@ -137,6 +137,13 @@ Material work remains on its ordinary unlock and assignment path.
 The preparation quote still uses the existing supplier ledger, so
 co-unlocked Bamboo contributes no speculative income.
 
+The matched opening readback confirmed that
+`IMPROVEMENT_RES2_SAWMILL` passed
+`ImprovementBuilder.CanHaveImprovement` on Bamboo plot 1977 while
+Construction was missing. The live publisher's supplier reader
+marked it viable and unready. The new producer-only predicate marked
+it eligible to count with the working Flax on 1828.
+
 The turn-50 control matched all 41 opening structural records. The
 Games and Recreation civic-boost tree already requested Construction
 on turn 50. Axum's district tree also requested it on turn 78.
