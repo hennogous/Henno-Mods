@@ -476,6 +476,37 @@ The Edinburgh native release itself took 0.177 ms. Both arms retain
 the original packages, queue and behavior logs, and material observations
 under `ordinary-continent-worker-loan/loan-on` and `loan-off`.
 
+### How the prompt cases got supplied
+
+The enabled run had 13 buyers with legal adjacent supply and a full
+15-turn observation window. Six already had working supply at the first
+qualifying survey. Of the seven that started short, two gained supply
+within 15 turns (after seven and eight turns), three gained it later
+(after 23, 30 and 64 turns), and two never showed working supply before
+the last survey. These counts come from the complete per-turn buyer
+census. First qualifying survey requires an operating buyer and a legal
+adjacent material. It can occur after the building opened. The older
+[Continents benchmark](csc-ce-steam-26595377-port-20261120.md#continents-benchmark)
+and [Fractal benchmark](csc-ai-material-scheduler-matrix-20261120.md#fractal-outcome)
+also include buyers whose suppliers were already working in their
+published 15-turn totals.
+
+- **Aberdeen Wheat.** CSC offered Edinburgh's neighboring Farm job
+  on turns 83–85 while Aberdeen's Water Mill was building. The Mill
+  logged completion on 85, and the turn-86 survey still showed no supply.
+  Edinburgh reserved Wheat plot 2325 and found an ordinary Builder on
+  91. The Farm completed on 93 and supplied Aberdeen at the 94 survey.
+- **Antium Flax.** The Bakers buyer at plot 2579 first had a legal site
+  and no working supply on 161. Antium reserved modded Flax plot 2580,
+  recruited, moved the Builder and built the Farm on 167. The next
+  survey confirmed the working supplier.
+
+Both city trees moved from reservation to recruitment on the same turn.
+The long cases spent those turns waiting for a vacancy or a worker.
+The quick timelines describe what the tuned game did. The matched loan
+control isolates the Edinburgh Cattle handoff, while the earlier stock
+benchmarks measure the effect of the combined guidance.
+
 ### Edinburgh's improvement slot and the old boost reservation
 
 Read-only replays from the same game's turn-100 and turn-150 checkpoints

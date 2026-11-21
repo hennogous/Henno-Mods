@@ -1192,14 +1192,19 @@ resources to Civ VI's `Improvement_ValidResources` table. Compatibility
 rows use the same path. Native checks establish whether a mapped improvement
 is legal on the actual plot and available to its owner.
 
-- **3.1 Exact job and timing.** Prioritize Base work when the Stage 2 buyer
-  enters active production, and Specialty work when the Stage 4 buyer enters
-  active production. Keep offering useful work once the buyer operates, with
-  additional value for a Service the improvement can restore. Measure turns
-  from the production commitment to supplier work and from a loss to restored
-  supply. Use stock producer choices for this capability. Problem 4 adds
-  guidance to the choice of producer. Put the intended plot and improvement
-  into native job allocation and observe the work.
+- **3.1 Exact job and timing.** Begin a modest first-supplier bid when the
+  mapped Stage 2 Base or Stage 4 Specialty buyer is unlocked and credible
+  for the existing Quarter, and the owned improvement is legal. Increase
+  priority when that buyer enters active production. Keep offering useful
+  work once the buyer operates, with additional value for a Service the
+  improvement can restore. Aim for most eligible buyers that start short
+  to have work underway by production. Track first eligibility, bid, native
+  reservation, Builder assignment, and working supply. Report already
+  supplied buyers separately and measure restoration from the loss.
+  The current controller supports active production and operating buyers,
+  with an earlier Base path when there is a functioning customer. General
+  unlock-triggered preparation, including Specialty, remains open.
+  [Prompt and delayed cases](../research/mods/csc-ai-axum-builder-availability-20261120.md#how-the-prompt-cases-got-supplied).
   The 18 November replay delivered the +26 producer-only bid and a matched
   +64 ceiling bid to Tailors1753/Sheep1680. Angkor Thom opened the same Mine
   job and the Sheep remained bare through 112 in both arms. The next Fractal
