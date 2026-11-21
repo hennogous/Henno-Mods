@@ -62,7 +62,7 @@ def _count_stage(stage, built, working, producers, customers, population_exchang
 def service_durations(log, start, end):
     if 'CSC_MILESTONE_SERVICE_FAULT' in log:
         raise ValueError('Native Service observer fault')
-    snapshots = {}
+    snapshots, ambiguous_turns = {}, {}
     pending = defaultdict(set)
     unlocks = []
     for line in log.splitlines():
@@ -79,9 +79,15 @@ def service_durations(log, start, end):
             if not start <= turn < end:
                 continue
             links = pending.pop(turn, set())
-            if unreadable or len(links) != count or turn in snapshots:
+            if len(links) != count or turn in snapshots or turn in ambiguous_turns:
                 raise ValueError(f'Incomplete native Service observation at turn {turn}')
-            snapshots[turn] = links
+            if unreadable:
+                # The native roster may temporarily have fewer active child
+                # copies than roots. Keep that clock out of the denominator
+                # while retaining all verified observations on other turns.
+                ambiguous_turns[turn] = unreadable
+            else:
+                snapshots[turn] = links
     turns_by_chain = defaultdict(list)
     for turn, links in sorted(snapshots.items()):
         for key in links:
@@ -92,8 +98,9 @@ def service_durations(log, start, end):
         totals[quarter, stage] += len(turns)
         chains.append(dict(player=int(player), quarter=quarter, stage=int(stage), service=service,
                            source=int(source), customer=int(customer), first=turns[0], last=turns[-1],
-                           active_turns=len(turns)))
+                           active_turns=len(turns), turns=turns))
     unlocks.sort(key=lambda row: (row['turn'], row['player'], row['kind'], row['topic']))
     return dict(observed_turns=sorted(snapshots), missing_turns=sorted(set(range(start, end)) - snapshots.keys()),
+                ambiguous_turns=ambiguous_turns,
                 totals=[dict(quarter=q, stage=int(s), active_link_turns=n) for (q, s), n in sorted(totals.items())],
                 chains=chains, unlocked=unlocks)

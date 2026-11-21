@@ -4,6 +4,7 @@ For a new chat, start with the **[17 November handoff](HANDOFF.md)** and
 **[current status](STATUS.md)**. They explain what we have learned,
 what remains open and which problem we are working on.
 
+- [Problems 6–12 trials and matched campaign](../research/mods/csc-ai-stage-investments-20261121.md) covers later investment, research, native Services and benchmark seeds.
 - [Architecture and diagram](architecture.md): shared economy, decision adapters, native systems and all ten placement sub-problems.
 - [Gameplay/AI economic contract](../integrations/csc-economic-contract.md): shared definitions, remaining gaps and regression gates.
 - [Population migration and manual QA](../research/mods/csc-population-transaction-catalogue-20261116.md): exact gameplay changes, preserved rules and native equivalence checks.

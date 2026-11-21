@@ -40,7 +40,7 @@
 | 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Humanism bids reached the civic comparison. Higher-scoring goals retained priority and both arms unlocked it on turn 113. |
 | 10.2 Build | Value construction from population 10, including Specialty development costs. | Matched replay moved Angkor Wat's Café ahead of a project while preserving its earlier Trader. Expand producer coverage. |
 | [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Wonder placement guidance implemented. Customer-building guidance and broader qualification remain open. |
-| 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Candidate integrated. Native follow-through open. |
+| 11.1 Customer building | Favor the mapped building in an adjacent customer district. | A legal Zoo bid reached both native selectors. Construction and payment remain open. |
 | 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Guidance implemented. Representative native receipt and placement remain open. |
 | [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Planned. |
 | 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Québec's Opera and Ballet bid reached the civic comparison, and Stage Manager activated on turn 264 in both arms. |

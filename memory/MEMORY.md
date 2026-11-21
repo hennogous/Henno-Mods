@@ -13,6 +13,14 @@ New native changes and CE APIs for CSC tuning go on `csc-dev` in
 `Desktop/Codex/CE-fork`. Use the branch README to build and package CE
 from tracked source and public dependencies.
 
+# Current CSC AI milestone
+
+The active goal integrates roadmap Problems 6–12 for Bakers and Tailors,
+deferring 6.2, 9.2 and 12.2. Read the [current evidence and campaign plan](../project/docs/research/mods/csc-ai-stage-investments-20261121.md)
+and the [numbered roadmap](../project/docs/civ6-ai/roadmap.md). Earlier
+snapshots below describe past work. Check the active goal and the shared
+controller's session state before touching an existing game.
+
 # CURRENT: new-chat handoff,17 November
 
 Start at project/docs/civ6-ai/HANDOFF.md, then STATUS.md and the numbered roadmap.

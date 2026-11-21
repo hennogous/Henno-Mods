@@ -23,10 +23,15 @@ class ServiceDurations(unittest.TestCase):
 
     def test_rejects_an_incomplete_native_snapshot(self):
         for line in ('CSC_MILESTONE_SERVICE_END\t40\t1\t0',
-                     'CSC_MILESTONE_SERVICE_END\t40\t0\t1',
                      'CSC_MILESTONE_SERVICE_FAULT\t40\tError'):
             with self.subTest(line=line), self.assertRaises(ValueError):
                 service_durations(line, 40, 41)
+
+    def test_exposes_an_ambiguous_native_turn_without_counting_it(self):
+        result = service_durations('CSC_MILESTONE_SERVICE_END\t40\t0\t1', 40, 41)
+        self.assertEqual(result['ambiguous_turns'], {40: 1})
+        self.assertEqual(result['observed_turns'], [])
+        self.assertEqual(result['missing_turns'], [40])
 
 
 class Census(unittest.TestCase):

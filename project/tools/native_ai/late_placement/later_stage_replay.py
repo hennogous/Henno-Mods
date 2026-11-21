@@ -133,13 +133,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
         ce = next(item for item in installed if item['role'] == 'ce')
         verify_modules(session, (ce['install'] / 'Binaries/Win64' / DLL).resolve(), output, STEAM_26595377_CORE_SHA)
         if fixture:
-            placement = None
-            if fixture == 'sacristan':
-                scout = fixture_receipt('scout', 'PlotInfo')
-                site = re.search(r'CSC_MILESTONE_SACRISTAN_SCOUT\s+(\d+)\b', scout)
-                require(site is not None, 'No native-legal Holy Site in the scoped replay')
-                placement = int(site[1])
-            setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay', placement)
+            setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay')
             if fixture == 'market':
                 fixture_receipt('legal', 'PlotInfo')
             elif fixture == 'entertainment':
@@ -193,7 +187,7 @@ if __name__ == '__main__':
     fixtures.add_argument('--entertainment-preparation', action='store_true',
                           help='Prepare the adjacent Arena on both turn-200 copies to isolate Zoo production')
     fixtures.add_argument('--sacristan-preparation', action='store_true',
-                          help='Prepare the same Temple and Tailor to isolate Divine Right on the turn-100 copies')
+                          help='Prepare the missing Tailor beside an existing Temple to isolate Divine Right')
     args = parser.parse_args()
     require(0 < args.end - args.start <= 25, 'Replay window must be 1 to 25 turns')
     require(not args.market_rebuild or args.start == 200, 'Market fixture requires the turn-200 source')

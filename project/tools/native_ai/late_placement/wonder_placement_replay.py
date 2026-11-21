@@ -12,27 +12,26 @@ import shutil
 from types import SimpleNamespace
 
 from ce_bakers_fresh import LOGS
-from ce_replay import DLL, HOTFIX_SHA, verify_modules
+from ce_replay import DLL, native_profile, verify_modules
 from driver import (HeldProcess, NativeSession, configure, flags, launch, lua, make_probe_controller,
                     manifest, native_inventory, parse, read, require, restore_preferences, sha, write_json)
+from later_stage_replay import candidate_package
 from planning_continue import compare_structure, enable, parse_census, prepare
 
 HERE = Path(__file__).resolve().parent
 FIXTURE = HERE/'wonder_placement_fixture.lua'
 
 
-def run_arm(source, out, dependencies, enabled, target=None):
-    plan = prepare(source, out, 200, 200, dependencies, read_only=True)
+def run_arm(source, out, dependencies, enabled, at, through, candidate, target=None):
+    plan = prepare(source, out, at, at, dependencies, read_only=True)
     require(not native_inventory(), 'Foreign Civ or FireTuner session must be preserved')
     out.mkdir(parents=True)
     shutil.copyfile(FIXTURE, out/FIXTURE.name)
     shutil.copyfile(Path(__file__), out/Path(__file__).name)
     write_json(out/'protocol.json',dict(diagnostic_only=True, source=str(source),
-        checkpoint=plan.checkpoint, enabled=enabled, fixture_edits=True, first=200, last=205))
-    write_json(out/'packages.json',{str(p['source']):dict(install=str(p['install']),files=p['files'])
-                                  for p in plan.packages})
+        checkpoint=plan.checkpoint, enabled=enabled, fixture_edits=True, first=at, last=through))
     controller=make_probe_controller(out,user_root=plan.user_root)
-    controller.study_endpoint=205
+    controller.study_endpoint=through
     controller.autoplay_interval_seconds=900
     controller.allow_one_more_turn=True
     controller.allow_observer_warning_dismissal=True
@@ -44,21 +43,22 @@ def run_arm(source, out, dependencies, enabled, target=None):
 
     def verify_packages():
         for item in copied:
-            require(manifest(item['install'])==manifest(item['source'])==item['files'],'Test package drift')
+            require(manifest(item['install'])==item['files'],'Test package drift')
         for item in plan.extras.values():
             require(manifest(Path(item['path']))==item['files'],'Optional package drift')
 
     def gate():
-        code='CSC_ENDPOINT_PLAYERS='+lua(plan.identity['original_ai'])+'\nCSC_ENDPOINT_EXPECTED_TURN=200\n'
+        code=f"CSC_ENDPOINT_PLAYERS={lua(plan.identity['original_ai'])}\nCSC_ENDPOINT_EXPECTED_TURN={at}\n"
         raw=controller.cmd(code+read(HERE/'full_game_census.lua'),'CSC_AI_BakersGameplay','wonder-source-census')
         (out/'source-census.txt').write_text(raw,encoding='utf-8')
-        proof=compare_structure(plan.expected_census,parse_census(raw,200))
+        proof=compare_structure(plan.expected_census,parse_census(raw,at))
         write_json(out/'source-structure-comparison.json',proof)
         require(proof['verified'],'Loaded world differs from checkpoint')
         return True
 
     def fixture(mode,context):
         code=f'local CSC_WONDER_FIXTURE_MODE={lua(mode)}\n'
+        code+=f'local CSC_WONDER_FIXTURE_TURN={at}\n'
         code+=f'local CSC_WONDER_FIXTURE_TARGET={lua(target)}\n' if target else ''
         code+=f'local CSC_WONDER_FIXTURE_ENABLED={lua(enabled)}\n'
         raw=controller.cmd(code+source_code,context,'wonder-'+mode,wait=45)
@@ -68,7 +68,13 @@ def run_arm(source, out, dependencies, enabled, target=None):
 
     try:
         for item in plan.packages:
-            shutil.copytree(item['source'],item['install']);copied.append(item)
+            if candidate and item['role']=='csc':
+                item=dict(item,files=candidate_package(item['source'],candidate,item['install']))
+            else:
+                shutil.copytree(item['source'],item['install'])
+            copied.append(item)
+        write_json(out/'packages.json',{str(p['source']):dict(install=str(p['install']),files=p['files'])
+                                       for p in copied})
         session.start(lambda:launch(SimpleNamespace(binary=plan.binary),out))
         session.wait_context('MainMenu')
         configure(controller,out,csc_id=plan.protocol['ce'])
@@ -77,46 +83,50 @@ def run_arm(source, out, dependencies, enabled, target=None):
         require({k for k,v in flags(controller,'wonder-test-mods')['mods'].items()if v}==
                 {plan.protocol['ce'],plan.protocol['csc'],*plan.extras},'Unexpected active packages')
         session.load_once(plan.checkpoint['native_save'],sha256=plan.checkpoint['sha256'],
-            native_directory=plan.saves,turn=200,contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),
+            native_directory=plan.saves,turn=at,contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),
             eligibility=gate)
         ce=next(item for item in copied if item['role']=='ce')
-        verify_modules(session,ce['install']/'Binaries/Win64'/DLL,out,HOTFIX_SHA)
+        _, core_sha = native_profile(plan.binary)
+        verify_modules(session,ce['install']/'Binaries/Win64'/DLL,out,core_sha)
         if target is None:
             raw=fixture('scout','PlotInfo')
-            require('CSC_WONDER_FIXTURE_SCOUT_END\t200' in raw,'Native Wonder survey incomplete')
+            require(f'CSC_WONDER_FIXTURE_SCOUT_END\t{at}\t' in raw,'Native Wonder survey incomplete')
             rows=[]
-            for match in re.finditer(r'CSC_WONDER_FIXTURE_POTENTIAL\t((?:\d+\t){8})([^\r\n]+)',raw):
-                names=('player','city','site','quarter','supplier','existing','working','unlocked')
+            for match in re.finditer(r'CSC_WONDER_FIXTURE_POTENTIAL\t((?:\d+\t){10})([^\r\n]+)',raw):
+                names=('player','city','site','quarter','supplier','specialty','existing','working','unlocked','wonder')
                 row=dict(zip(names,map(int,match[1].strip().split('\t'))))
                 row['name']=match[2].strip();rows.append(row)
-            require(rows,'No legal owned Wonder tile with a potential Tailors/supplier fixture')
+            require(rows,'No legal owned Wonder tile with Tailors, Base and Specialty supply')
             # Prefer an existing Quarter, an already unlocked Wonder and a
             # working supplier, in that order. The tie order is stable.
             target=min(rows,key=lambda r:(-r['existing'],-r['unlocked'],-r['working'],
-                                          r['player'],r['city'],r['site'],r['quarter'],r['supplier']))
+                                          r['player'],r['city'],r['site'],r['wonder'],r['quarter'],r['supplier'],r['specialty']))
         write_json(out/'target.json',target)
         setup=fixture('setup','CSC_AI_BakersGameplay')
-        require('CSC_WONDER_FIXTURE_SETUP_END\t200' in setup,'Wonder world setup failed')
-        offer=re.search(r'CSC_WONDER_FIXTURE_OFFER\t200\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)',setup)
+        require(f'CSC_WONDER_FIXTURE_SETUP_END\t{at}' in setup,'Wonder world setup failed')
+        offer=re.search(rf'CSC_WONDER_FIXTURE_OFFER\t{at}\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)',setup)
         require(offer is not None,'Live production offer absent')
         raw=fixture('verify','PlotInfo')
-        require('CSC_WONDER_FIXTURE_VERIFIED\t200' in raw,'Legal fixture validation failed')
-        controller.play(205)
+        require(f'CSC_WONDER_FIXTURE_VERIFIED\t{at}\t' in raw,'Legal fixture validation failed')
+        controller.play(through)
         state=controller.state_read('wonder-final-clock')
-        require(state['turn']==205 and not state['active'],'Wrong diagnostic endpoint')
+        require(state['turn']==through and not state['active'],'Wrong diagnostic endpoint')
         raw=controller.cmd("print('CSC_WONDER_FINAL='..CE_AISupplierWonderProtectionStatus())",
                            'CSC_AI_BakersGameplay','wonder-final')
         (out/'native-endpoint.txt').write_text(raw,encoding='utf-8')
         status=parse(raw,'CSC_WONDER_FINAL')
         write_json(out/'native-endpoint.json',status)
+        raw=fixture('outcome','CSC_AI_BakersGameplay')
+        require(f'CSC_WONDER_FIXTURE_OUTCOME\t{through}\t' in raw,'Missing physical Wonder outcome')
         key=list(map(int,offer.groups()[:4]))
         write_json(out/'observation.json',dict(target=target,offer_key=key,offer_q8=int(offer[5]),end=state))
     finally:
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda:restore_preferences(controller,out),
                           restore_package=verify_packages)
-        if session.closed:
+        if session.closed or session.owner is None and not native_inventory():
             for item in copied:item['install'].rename(out/item['install'].name)
+        if session.closed:
             for name in LOGS:
                 path=plan.user_root/'Logs'/name
                 if path.is_file():shutil.copyfile(path,out/name)
@@ -127,8 +137,14 @@ def run_arm(source, out, dependencies, enabled, target=None):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    for name in ('source','output','dependencies'):
+    for name in ('source','output'):
         parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--dependencies',type=Path)
+    parser.add_argument('--candidate-source',type=Path)
+    parser.add_argument('--at',type=int,default=200)
+    parser.add_argument('--through',type=int,default=205)
     args=parser.parse_args()
-    target=run_arm(args.source,args.output/'off',args.dependencies,False)
-    run_arm(args.source,args.output/'on',args.dependencies,True,target)
+    require(0 < args.through-args.at <= 25,'Wonder replay window must be 1 to 25 turns')
+    common=(args.at,args.through,args.candidate_source)
+    target=run_arm(args.source,args.output/'off',args.dependencies,False,*common)
+    run_arm(args.source,args.output/'on',args.dependencies,True,*common,target=target)
