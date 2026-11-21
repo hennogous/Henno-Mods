@@ -50,7 +50,8 @@ if mode == 'setup' then
     print('CSC_MILESTONE_MARKET_SETUP', pid, customer:GetID(), host:GetIndex(), market.Index, seller, buyer)
 elseif mode == 'legal' then
     assert(not buildings:HasBuilding(market.Index)
-        and customer:GetBuildQueue():CanProduce(market.Hash, false, false), 'Rebuild is not native-legal')
+        and ExposedMembers.CSC_Adjacency.CanProduceItem(pid, customer:GetID(), market.Hash),
+        'Rebuild is not native-legal')
     print('CSC_MILESTONE_MARKET_LEGAL', Game.GetCurrentGameTurn(), pid, customer:GetID(), market.Index)
 else
     assert(mode == 'outcome')

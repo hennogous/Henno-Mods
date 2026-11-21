@@ -40,7 +40,7 @@ def candidate_package(original, csc_source, candidate):
     return after
 
 
-def run_arm(source, output, start, end, candidate_source, market_rebuild=False):
+def run_arm(source, output, start, end, candidate_source, fixture=None):
     plan = prepare(source, output, start, start, None, read_only=True)
     require(not native_inventory(), 'Another session owns Civ or FireTuner')
     require(plan.protocol['native_profile']['gamecore_sha256'] == STEAM_26595377_CORE_SHA,
@@ -97,11 +97,12 @@ def run_arm(source, output, start, end, candidate_source, market_rebuild=False):
         marker = 'CSC_MILESTONE_SERVICE_INSTALLED' if every_turn else 'CSC_MILESTONE_SERVICE_END'
         require(marker in raw, 'Missing Service observation acknowledgement')
 
-    def customer_fixture(mode, context):
-        source = read(HERE / 'later_stage_market_fixture.lua')
-        raw = controller.cmd(f'local mode={lua(mode)}\n' + source, context, 'market-' + mode)
-        (output / ('market-' + mode + '.txt')).write_text(raw, encoding='utf-8')
-        require(f'CSC_MILESTONE_MARKET_{mode.upper()}' in raw, 'Market fixture evidence missing')
+    def fixture_receipt(mode, context):
+        script = read(HERE / f'later_stage_{fixture}_fixture.lua')
+        label = f'{fixture}-{mode}'
+        raw = controller.cmd(f'local mode={lua(mode)}\n' + script, context, label)
+        (output / (label + '.txt')).write_text(raw, encoding='utf-8')
+        require(f'CSC_MILESTONE_{fixture.upper()}_{mode.upper()}' in raw, 'Fixture evidence missing')
 
     try:
         for item in plan.packages:
@@ -113,7 +114,7 @@ def run_arm(source, output, start, end, candidate_source, market_rebuild=False):
             installed.append(item)
         verify_packages()
         write_json(output / 'inputs.json', dict(source=str(source), start=start, end=end,
-                   checkpoint=plan.checkpoint['sha256'], market_rebuild=market_rebuild,
+                   checkpoint=plan.checkpoint['sha256'], fixture=fixture,
                    packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
@@ -128,9 +129,10 @@ def run_arm(source, output, start, end, candidate_source, market_rebuild=False):
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=source_gate)
         ce = next(item for item in installed if item['role'] == 'ce')
         verify_modules(session, (ce['install'] / 'Binaries/Win64' / DLL).resolve(), output, STEAM_26595377_CORE_SHA)
-        if market_rebuild:
-            customer_fixture('setup', 'CSC_AI_BakersGameplay')
-            customer_fixture('legal', 'PlotInfo')
+        if fixture:
+            fixture_receipt('setup', 'CSC_AI_BakersGameplay')
+        if fixture == 'market':
+            fixture_receipt('legal', 'PlotInfo')
         service_observation('service-before')
         service_observation('service-observer', every_turn=True)
         native_status('native-before')
@@ -139,8 +141,8 @@ def run_arm(source, output, start, end, candidate_source, market_rebuild=False):
         require(state['turn'] == end and not state['active'], 'Wrong replay boundary')
         census(end, 'endpoint-census')
         native_status('native-after')
-        if market_rebuild:
-            customer_fixture('outcome', 'CSC_AI_BakersGameplay')
+        if fixture:
+            fixture_receipt('outcome', 'CSC_AI_BakersGameplay')
     finally:
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda: restore_preferences(controller, output)
@@ -170,11 +172,16 @@ if __name__ == '__main__':
     for name in ('start', 'end'):
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--arm', choices=('control', 'treatment'), action='append')
-    parser.add_argument('--market-rebuild', action='store_true',
-                        help='Controlled player-5 Market rebuild on the qualified turn-200 checkpoint')
+    fixtures = parser.add_mutually_exclusive_group()
+    fixtures.add_argument('--market-rebuild', action='store_true',
+                          help='Controlled player-5 Market rebuild on the qualified turn-200 checkpoint')
+    fixtures.add_argument('--storekeeper-preparation', action='store_true',
+                          help='Add the same missing Mill on both turn-50 copies to isolate Feudalism')
     args = parser.parse_args()
     require(0 < args.end - args.start <= 25, 'Replay window must be 1 to 25 turns')
     require(not args.market_rebuild or args.start == 200, 'Market fixture requires the turn-200 source')
+    require(not args.storekeeper_preparation or args.start == 50, 'Storekeeper fixture requires the turn-50 source')
+    fixture = 'market' if args.market_rebuild else 'storekeeper' if args.storekeeper_preparation else None
     for arm in args.arm or ('control', 'treatment'):
         run_arm(args.source, args.output / arm, args.start, args.end,
-                args.candidate_source if arm == 'treatment' else None, args.market_rebuild)
+                args.candidate_source if arm == 'treatment' else None, fixture)

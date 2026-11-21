@@ -43,7 +43,7 @@
 | 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Candidate integrated. Native follow-through open. |
 | 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Guidance implemented. Representative native receipt and placement remain open. |
 | [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Planned. |
-| 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Candidate integrated. Native follow-through open. |
+| 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Québec's Opera and Ballet bid reached the civic comparison, and Stage Manager activated on turn 264 in both arms. |
 | 12.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [13. Recovery and retention](#13-recovery-and-retention) | Repair damaged links, protect working supply and replan after permanent losses. | Repair and protection verified in matched replays. Broader recovery and replanning remain open. |
 | 13.1 Repair | Restore damaged suppliers, Quarters, producers and customers in established chains. | Matched supplier and Quarter recoveries verified. Stock Mill repair restored Storekeeper. Targeted Stage 2 building repair remains open. |
