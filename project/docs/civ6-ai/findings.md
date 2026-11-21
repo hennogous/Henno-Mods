@@ -4367,3 +4367,15 @@ Control had one Specialty buyer that needed work and met its deadline.
 The treatment had zero such Specialty cases. This case identifies the
 trade-off between the two jobs and the timing of actual completion.
 [Native reservation and material trace](../research/mods/csc-ai-supplier-preparation-20261121.md#second-fractal-treatment-first-changed-improvement-reservation).
+
+## AI-C208 — A later producer bid moved Angkor Wat's Café ahead of a district project
+
+21 November 2026, roadmap 10.2. Both arms reloaded the same Fractal turn-150
+save under Steam GameCore 26595377. Native production compared the offered
+Café and applied 16,384 Q8 to its 98,551 Q8 score in one comparison.
+Angkor Wat finished the same Trader in both arms. The treatment then put
+production into the Café on turn 158 and the Theater Square project on turn
+162. The control put production into the project first and reached the Café
+four turns later. The Café was complete only in treatment at the turn-165
+census, with working Flax and Berries adjacent to the Bakers Quarter.
+[Matched logs and supplier state](../research/mods/csc-ai-stage-investments-20261121.md#fractal-checkpoint-from-turn-150-to-165).

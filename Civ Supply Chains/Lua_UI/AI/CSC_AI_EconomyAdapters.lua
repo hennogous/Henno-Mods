@@ -1507,15 +1507,18 @@ function E.LaterStageInvestments(snapshot,research,nominations,nominationLimit)
             and snapshot.ui.CanProduceItem(snapshot.id,city,definition.Hash)==true
     end
     local function nominate(city,definition,value,reason)
-        local delta=math.min(nominationLimit,LATER_BUILDING_CAP_Q8,math.floor(value or 0))
+        local raw=math.floor(value or 0)
+        local delta=math.min(nominationLimit,LATER_BUILDING_CAP_Q8,raw)
         if delta<=0 then return end
         local key=city..':'..definition.Index
         local previous=byBuilding[key]
         if previous then
+            if delta>previous.delta then previous.stageReason=reason;previous.stageRawQ8=raw end
             previous.delta=math.max(previous.delta,delta)
             previous.queueDelta=math.max(previous.queueDelta or 0,delta)
         else
-            local offer={player=snapshot.id,city=city,building=definition.Index,delta=delta,queueDelta=delta,stageReason=reason}
+            local offer={player=snapshot.id,city=city,building=definition.Index,delta=delta,queueDelta=delta,
+                stageReason=reason,stageRawQ8=raw}
             nominations[#nominations+1]=offer;byBuilding[key]=offer
         end
     end

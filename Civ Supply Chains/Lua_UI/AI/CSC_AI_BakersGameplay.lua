@@ -37,6 +37,7 @@ local lastTurn
 local districtCount
 local previousOffers
 local previousOwnershipScopes = {}
+local previousLaterBuildingBids = {}
 local reportedOwnershipUnavailable = false
 
 local function wallClock()
@@ -240,6 +241,20 @@ local function refresh(turn)
     local nominationStatus = bridge.NominationStatus()
     local nominationLimit = bridge.NominationLimit(nominationStatus)
     local queueNomination = bridge.NominationQueueAvailable(nominationStatus)
+    -- CE retains exact building receipts for one packet. Read the previous
+    -- later-stage offers before publishing replacements. A queue write means
+    -- native production compared the option and applied the bid, even when
+    -- another item won. Construction remains a separate observation.
+    if nominationStatus and type(CE_AIBuildingNominationReceipt)=='function' then
+        for _,bid in ipairs(previousLaterBuildingBids) do
+            local receipt=readReceipt(CE_AIBuildingNominationReceipt,version,bid.player,bid.city,bid.building)
+            if (tonumber(receipt:match('"comparisons":(%d+)')) or 0)>0
+                or (tonumber(receipt:match('"queueComparisons":(%d+)')) or 0)>0 then
+                print(string.format('CSC_AI_LATER_BUILDING_RECEIPT turn=%d version=%d player=%d city=%d building=%d %s',
+                    turn,version,bid.player,bid.city,bid.building,receipt))
+            end
+        end
+    end
     local repairStatus = bridge.RepairStatus()
     local repairLimit = bridge.RepairLimit(repairStatus)
     local exclusionStatus = bridge.ExclusionStatus()
@@ -482,11 +497,13 @@ local function refresh(turn)
                 turn,version+1,offer.player,offer.city,offer.plot,offer.unit))
         end
     end
+    previousLaterBuildingBids={}
     if #nominations<=capacity then
         for _,bid in ipairs(nominations)do
             if bid.stageReason then
-                print(string.format('CSC_AI_LATER_BUILDING_OFFER turn=%d version=%d player=%d city=%d building=%d role=%s deltaQ8=%d',
-                    turn,version+1,bid.player,bid.city,bid.building,bid.stageReason,bid.delta))
+                previousLaterBuildingBids[#previousLaterBuildingBids+1]=bid
+                print(string.format('CSC_AI_LATER_BUILDING_OFFER turn=%d version=%d player=%d city=%d building=%d role=%s rawQ8=%d deltaQ8=%d',
+                    turn,version+1,bid.player,bid.city,bid.building,bid.stageReason,bid.stageRawQ8,bid.delta))
             end
         end
     end
