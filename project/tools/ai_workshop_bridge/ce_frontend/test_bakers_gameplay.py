@@ -318,9 +318,16 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
         lua.execute((SOURCE.parent / 'Adjacencies/CSC_AdjacencyUI.lua').read_text(encoding='utf-8'))
         lua.execute((SOURCE / 'CSC_AI_QuarterPlacement.lua').read_text(encoding='utf-8'))
         lua.execute("""
+            CSC_AI_EconomyAdapters={
+                SupplyValue=function() end,
+                StageTwoCustomerValue=function(_,chain,buyer,plot,building)
+                    assert(chain.profile.key=='TAILORS' and buyer:GetID()==77 and plot==99 and building.Index==8)
+                    return 7712
+                end,
+            }
             function plan()
                 local _, jobs, buildings, repairs = CSC_AI_QuarterPlacement.MaterialDeductions(
-                    Players[3], true, 16384, 131072, ExposedMembers.CSC_Adjacency.CanProduceItem, true)
+                    Players[3], true, 16384, 131072, ExposedMembers.CSC_Adjacency.CanProduceItem, true,{})
                 local values = {}
                 for _, job in ipairs(jobs) do
                     if job.deltaQ8 then values[job.plot] = job.deltaQ8 end
@@ -333,7 +340,10 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
         self.assertIsNone(lua.eval('jobs[98]'))
         lua.execute('pillaged=false; lighthouse=false; jobs, buildings, repairs=plan()')
         self.assertEqual(lua.eval('buildings[1].city'), 77)
-        self.assertEqual(lua.eval('buildings[1].delta'), 13312)
+        self.assertEqual(lua.eval('buildings[1].delta'), 7712)
+        lua.execute('local tags=CSC_Adjacency.HasTag; CSC_Adjacency.HasTag=function()return false end;'
+                    'jobs, buildings, repairs=plan(); CSC_Adjacency.HasTag=tags')
+        self.assertEqual(lua.eval('buildings[1].delta'), 7712)
         lua.execute('lighthouse=true; workshop=false; jobs, buildings, repairs=plan()')
         self.assertEqual(lua.eval('buildings[1].city'), 42)
         self.assertEqual(lua.eval('buildings[1].delta'), 114688)
@@ -560,6 +570,20 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
         lua.execute("""
             Players[3].GetCulture = function() return {HasCivic=function() return false end} end
             hasMill, hasGranary = true, false
+            CSC_AI_EconomyAdapters={
+                Snapshot=function(player,placement,ui)
+                    return {ui=ui, Supply=function(plot,profile)return placement.ReadSuppliers(player,plot,profile)end,
+                        QuoteCount=function()return 0 end}
+                end,
+                QuarterBids=function(_,_,_,entries)
+                    return entries,{evaluated=0,final=0,unknown=0,streams=0,omissions=0}
+                end,
+                SupplyValue=function() end,
+                StageTwoCustomerValue=function(_,chain,buyer,plot,building)
+                    assert(chain.profile.key=='BAKERS' and buyer:GetID()==77 and plot==99)
+                    if building.Index==11 then return 9000 end
+                end,
+            }
             CityManager = {GetCity=function(player, id)
                 assert(player==3 and id==77)
                 return {GetBuildQueue=function()
@@ -572,7 +596,7 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
             turn=16; boundary()
         """)
         self.assertEqual(lua.eval('#nominations'), 1)
-        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,13312')
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,9000')
         lua.execute("""
             local getCities = Players[3].GetCities
             local getPlot = Map.GetPlot
@@ -604,7 +628,7 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
             Players[3].GetCities = getCities
         """)
         self.assertEqual(lua.eval('#nominations'), 1)
-        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,13312')
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,16384')
         lua.execute('hasGranary=true; granaryPillaged=true; turn=18; boundary()')
         self.assertEqual(lua.eval('#nominations'), 0)
         lua.execute('hasGranary=false; millPillaged=true; turn=19; boundary()')

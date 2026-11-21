@@ -391,6 +391,26 @@ The archived opening census is `control250/full-census-150.json`.
 Match the live district and building facts when loading the checkpoint
 for a comparison.
 
+The current CE and CSC packages reproduced all opening structural
+records. The Harbor belongs to Québec, city 131073, and the Workshop
+belongs to the neighboring city 65536. Both native queue queries
+allowed the Lighthouse. The prior 52-point preference was published
+on turns 150–154. The native production fallback took the building
+through to a working Lighthouse on 154 without an ordinary nomination
+comparison. The control reached and verified turn 176. Its optional
+UI per-building yield read was unavailable, so the proof of payments
+will come from the underlying transaction modifiers.
+
+The candidate customer bid now uses the loaded Stage 2 fixed exchange.
+It values each leg in its actual receiving city from the estimated
+completion of the missing customer. The publisher uses the resolved
+building variant in a completed district and checks native queue
+eligibility. It sums exchanges with distinct working producers into
+one preference per city/building and caps that preference at 64 native
+points. The normal building valuation retains its intrinsic yields,
+upkeep and production or purchase cost. Future producers, materials
+and Service effects make no contribution to this quote.
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

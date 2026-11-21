@@ -71,6 +71,31 @@ s.customers[1].working=true
 assert(select(2,M.ProducerInvestment(s,s.seconds,price))>value)
 ''')
 
+    def test_customer_investment_prices_only_mapped_stage_two_legs_at_the_right_cities(self):
+        self.vm().execute('''
+local s=site()
+s.seconds[1].working=true
+local transaction={kind='FIXED',spatial='ADJACENT_OWNED',amount=1,legs={
+ {recipient='PARTNER',yield='YIELD_FOOD',amount=1},
+ {recipient='SOURCE',yield='YIELD_PRODUCTION',amount=1},
+}}
+local customer={building='Unique Granary',city=11,complete=true,stage=2,unlock=0,
+ turns=3,transactions={Wind=transaction}}
+local function quote(stream,horizon)
+ assert(stream.ready==3 and horizon==50)
+ if stream.yield=='YIELD_FOOD'then assert(stream.city==11);return stream.amount*4300 end
+ if stream.yield=='YIELD_PRODUCTION'then assert(stream.city==10);return stream.amount*3900 end
+ assert(stream.yield=='YIELD_GOLD' and stream.city==10)
+ return stream.amount*2400
+end
+assert(M.StageTwoCustomerValue(s,customer,quote)==8200)
+transaction.legs[3]={recipient='SOURCE',yield='YIELD_GOLD',amount=1}
+assert(M.StageTwoCustomerValue(s,customer,quote)==10600)
+customer.complete=false;assert(M.StageTwoCustomerValue(s,customer,quote)==nil)
+customer.complete=true;customer.unlock=2;assert(M.StageTwoCustomerValue(s,customer,quote)==nil)
+customer.unlock=0;s.seconds[1].working=false;assert(M.StageTwoCustomerValue(s,customer,quote)==nil)
+''')
+
     def test_same_city_customer_construction_is_not_parallel_production(self):
         self.vm().execute('''
 local s=site();s.customers={{stage=2,plot=8,city=10,complete=true,

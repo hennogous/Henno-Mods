@@ -18,6 +18,11 @@ local function ownerReady(definition,fallback)
     return definition and(definition.working or definition.intactOwner)and 0 or fallback
 end
 
+local function transactionCity(leg,site,customer)
+    if leg.recipient=='SOURCE'then return site.city,site.population end
+    return customer.city,customer.population
+end
+
 local function serviceRate(service)
     local yield,amount=service.kind,service.amount
     if yield=='YIELD_PERCENT'or yield=='NAVAL_PRODUCTION_PERCENT'then
@@ -343,8 +348,7 @@ local function ledger(site, second, shared)
                 local producer=stage==2 and second or stage==3 and site.third or site.fourth
                 local owner=producer and producer.type
                 for _,leg in ipairs(transaction.legs)do
-                    local city=leg.recipient=='SOURCE'and site.city or customer.city
-                    local population=leg.recipient=='SOURCE'and site.population or customer.population
+                    local city,population=transactionCity(leg,site,customer)
                     local identity='transaction:'..transaction.id..':'..customer.plot..':'..leg.key
                     if transaction.kind=='PARTNER_POPULATION'then
                         populationFlow(identity,leg.yield,quantity,start,city,population,leg.property,owner,leg.amount)
@@ -1199,6 +1203,30 @@ function M.ProducerInvestment(site,options,price)
         end
     end
     return best,benefit
+end
+
+function M.StageTwoCustomerValue(site,customer,price)
+    -- The native building candidate already has its own cost and intrinsic
+    -- yields. Price only the fixed exchanges with an operating producer that
+    -- the customer would activate. Its own completion time gates both legs.
+    if customer.stage~=2 or not customer.complete or customer.working or customer.excluded
+        or customer.unlock~=0 or customer.prerequisites or not present(customer.turns)
+        or customer.turns>=site.horizon then return nil end
+    local producer
+    for _,option in ipairs(site.seconds or{})do
+        if option.working then producer=option;break end
+    end
+    local transaction=producer and customer.transactions and customer.transactions[producer.type]
+    if not transaction or transaction.kind~='FIXED' or transaction.spatial~='ADJACENT_OWNED'then return nil end
+
+    local value=0
+    for _,leg in ipairs(transaction.legs)do
+        local priced=price({city=transactionCity(leg,site,customer),yield=leg.yield,
+            amount=transaction.amount*leg.amount,ready=customer.turns},site.horizon)
+        if not numeric(priced)then return nil end
+        value=value+priced
+    end
+    return value
 end
 
 function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,price)

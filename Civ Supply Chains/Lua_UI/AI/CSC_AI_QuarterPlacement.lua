@@ -30,10 +30,10 @@ local PRODUCER_INVESTMENT_CAP_Q8 = 64 * 256
 local EARLY_SUPPLIER_BID_Q8 = 26 * 256
 local MATERIAL_WORKER_RADIUS = 6
 local MATERIAL_QUEUE_HORIZON = 5
--- Trebizond's measured stream gives about 18–19 points for Food and
--- 17.5 each for Production and Gold. Round each term down. The bid
--- covers the immediate exchange with a working Mill.
-local CUSTOMER_BID_Q8 = (18 + 17 + 17) * 256
+-- The native selector adds this allowance to the normal building valuation.
+-- Trebizond's single Mill exchange was about 52 native points. Leave room
+-- for different recipients and multiple suppliers, with a bounded first band.
+local CUSTOMER_EXCHANGE_CAP_Q8 = 64 * 256
 
 local improvementsByResource
 local materialWorkerTypes
@@ -567,7 +567,7 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
     local checkShips = lastNavalEra and chain.ready and chain.workingBase and not producerExists
         and unlocked and canProduce and player:GetEra() <= lastNavalEra.Index
     local navalProductionAvailable = false
-    local hasBase = #chain.supply.base > 0
+    local adapter=CSC_AI_EconomyAdapters
     visitCustomerPlots(pid, chain, function(buyer, footprint, variants)
         local buyerBuildings = buyer:GetBuildings()
         local exists = false
@@ -581,9 +581,28 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
                 end
             end
         end
-        -- The producer/customer exchange can pay before the Service unlock.
-        if chain.ready and producerWorks and hasBase and not exists then
-            for _, building in pairs(variants) do bid(buyer, building, CUSTOMER_BID_Q8) end
+        -- An existing producer and missing legal customer can exchange even
+        -- when the material or Service link is down. Match actual buyer facts
+        -- before pricing. The standard native bid still owns the ordinary
+        -- building yields, costs and queue or purchase competition.
+        if limits.nomination>0 and chain.ready and producerWorks and not exists
+            and economy and adapter and adapter.StageTwoCustomerValue then
+            for _, building in pairs(variants) do
+                local value=adapter.StageTwoCustomerValue(economy,chain,buyer,footprint,building)
+                if value and value>0 and queueAllows(buyer,building)then
+                    -- One order buys the building. Each distinct working
+                    -- producer can pay for the exchange when it finishes.
+                    local key=buyer:GetID()..':'..building.Index
+                    local total=limits.customerQuotes[key] or {value=0,edges={}}
+                    limits.customerQuotes[key]=total
+                    local edge=plot..':'..footprint
+                    if not total.edges[edge]then
+                        total.edges[edge]=true
+                        total.value=total.value+value
+                        bid(buyer,building,math.min(CUSTOMER_EXCHANGE_CAP_Q8,total.value),true)
+                    end
+                end
+            end
         end
     end)
 
@@ -642,7 +661,7 @@ local function materialRisk(player, builderBidLimit, nominationLimit, canProduce
     local risks, recover, nominations, repairs = {}, {}, {}, {}
     local seen, repairCities = {}, {}
     local limits = {builder=math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8),
-        nomination=nominationLimit or 0, repair=admitRepairs, trainableShips={}}
+        nomination=nominationLimit or 0, repair=admitRepairs, trainableShips={}, customerQuotes={}}
     local chains = economy and economy.chains or P.ReadChains(player)
     for _, chain in ipairs(chains) do
         priceSupply(risks, chain.supply.base, chain.active)

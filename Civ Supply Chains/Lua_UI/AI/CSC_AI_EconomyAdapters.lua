@@ -1437,6 +1437,18 @@ function E.ProducerInvestment(snapshot,chain,options)
     if site then return M.ProducerInvestment(site,options,snapshot.Price)end
 end
 
+function E.StageTwoCustomerValue(snapshot,chain,buyer,footprint,building)
+    -- The existing-site facts already resolve the active civ's building
+    -- variant and its inherited transaction. Match the real legal receiver.
+    local site=chain.economy
+    for _,customer in ipairs(site and site.customers or{})do
+        if customer.city==buyer:GetID() and customer.plot==footprint
+            and customer.building==building.BuildingType and customer.stage==2 then
+            return M.StageTwoCustomerValue(site,customer,snapshot.Price)
+        end
+    end
+end
+
 -- Quote the ordinary transactions and the contingent Service separately in
 -- signed Q8. The Builder policy can credit the Service once across competing
 -- jobs. Missing ordinary pricing leaves the resulting offer unavailable.
