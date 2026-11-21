@@ -220,7 +220,12 @@ executed its repair on 257 and the survey saw it working on 258. The Silver
 Mine received 26,587 Q8 on 258 as working Base made the chain closer to
 recovery. It received no observed reservation through 263. Stage Manager
 stayed at 0. The two arms' native behavior-tree logs and city production
-logs matched byte for byte. Québec assigned Builders to Offshore Wind
-Farms and an Oil Well during this window. The Stage 4 requirement check
-identified both missing classes, but this repair floor did not change the
-native job order or restore the Service within the replay.
+logs matched byte for byte. The native improvement evaluator did apply
+the Mine bid. For example, the receipt at turn 259 shows 74,108 rising to
+100,695 Q8 for Ottawa's Silver plot. Ottawa selected a Lumber Mill on
+258 and Seasteads on 260 and 262. The first two reachable-Builder loan
+offers for the Mine named exact units, but neither recorded a native
+loan. The Stage 4 requirement check identified both missing classes, but
+this repair floor did not change the native job order or restore the
+Service within the replay. Compare the Mine's early quote with the job
+selector's final value before raising the repair floor.
