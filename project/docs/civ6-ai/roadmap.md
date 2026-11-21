@@ -17,7 +17,7 @@
 | 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Closed at the tested Bakers/Tailors scope. |
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Builder follow-through verified in matched and ordinary play. Track recurring delays in combined runs. |
-| 3.1 Exact job and timing | Develop mapped supply when its buyer enters production or is already operating. | Exact bids and completed work observed. Some jobs still wait after winning. |
+| 3.1 Exact job and timing | Prepare mapped supply ahead of the buyer and aim for working supply by Online turn +10. | Early native pricing verified in a matched replay. Ordinary timing comparison in progress. |
 | 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Verified for idle-worker handoffs and on-site finishing. Axum's Bamboo recovered, Edinburgh's Pasture advanced by 38 turns, and the integrated scheduler completed Mashhad's sole Pasture. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
 | [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Verified in matched replays and a fresh 200-turn game. |
@@ -1197,7 +1197,9 @@ is legal on the actual plot and available to its owner.
   for the existing Quarter, and the owned improvement is legal. Increase
   priority when that buyer enters active production. Keep offering useful
   work once the buyer operates, with additional priority for the first legal
-  repairs that can restore adjacent Services. The Online target is working
+  repairs that can restore adjacent Services. Read the loaded requirements
+  for each Service. Bakers and Tailors Stage 2 and 3 use Base alone. Stage 4
+  uses Base and Specialty. The Online target is working
   supply by buyer opening plus 10 turns for most eligible buyers that lacked
   supply at preparation. Track first eligibility, published bid, native
   reservation, Builder assignment and working supply. Report already
@@ -1206,8 +1208,8 @@ is legal on the actual plot and available to its owner.
   queue-legal buyer or its final unlock in progress, up to five turns away
   with local building gates already met. Its positive expected transaction
   supplies a bounded 13-point preference to one job, compared with the
-  established 26-point near-completion floor. This candidate still needs
-  matched game evidence.
+  established 26-point near-completion floor.
+  [Preparation and matched measurements](../research/mods/csc-ai-supplier-preparation-20261121.md).
   [Prompt and delayed cases](../research/mods/csc-ai-axum-builder-availability-20261120.md#how-the-prompt-cases-got-supplied).
   The 18 November replay delivered the +26 producer-only bid and a matched
   +64 ceiling bid to Tailors1753/Sheep1680. Angkor Thom opened the same Mine

@@ -351,7 +351,7 @@ local service={known=true,producer='FOURTH',stage=4,customer={complete=true,work
 local function jobs()
     local cs=chains()
     cs[1].economy={existing=true,quarterReady=0,horizon=30,services={service},
-        seconds={{type='SECOND',working=owned[9]==true}},third={type='THIRD',working=true},
+        seconds={{type='SECOND',working=owned[9]==true and not damaged[9]}},third={type='THIRD',working=true},
         fourth={type='FOURTH',working=true},suppliers={
             {kind='base',plot=101,ready=baseDamaged and 5 or 0},
             {kind='specialty',plot=102,ready=specDamaged and 5 or 0},
@@ -375,7 +375,7 @@ service.producer,service.stage='SECOND',2;r=jobs()
 assert(r[101].serviceRepair and not r[102].serviceRepair)
 -- A functioning Stage 3 source can justify Base on its own. The Stage 2
 -- buyer is pillaged and there is no Stage 2 customer in this fixture.
-service.producer,service.stage='THIRD',3;owned[9]=false;r=jobs()
+service.producer,service.stage='THIRD',3;damaged[9]=true;r=jobs()
 assert(r[101].serviceRepair and r[101].finishSupply and r[101].restoreSupply)
 assert(not r[102].serviceRepair)
 ''')
