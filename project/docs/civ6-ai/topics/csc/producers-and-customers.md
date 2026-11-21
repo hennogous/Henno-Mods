@@ -438,6 +438,19 @@ Food, while the producing Mill receives Production and optional Gold.
 The adapter quotes the unique receiver and skips a still-incomplete
 customer district.
 
+## A Granary purchase kept Saint John's Wonder in production
+
+The turn-150 save from the fresh Continents game had a working Water
+Mill on plot 871 and no Granary in Saint John's existing City Center
+on plot 797. The control matched all 169 opening structural records
+and confirmed native queue eligibility. At turn 154 the prior preference
+raised the candidate from 57,211 to 70,523 Q8. The native tree
+submitted Granary contract 3114 at its stock value of 223. The AI
+bought the building on 155 while Mont St. Michel continued to receive
+production. The turn-176 UI read 2 Food on the Granary and confirmed
+its mill-supplied Food, reverse Production and optional Gold modifiers
+in the same city.
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.
