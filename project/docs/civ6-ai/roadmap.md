@@ -1215,6 +1215,9 @@ is legal on the actual plot and available to its owner.
   [Pricing and follow-through](../research/mods/csc-ai-material-job-followthrough-20261118.md).
   Edinburgh's native replays separated occupied-slot turns, the two
   late Golf Course wins and a stale Cattle reservation the engine ignored.
+  A one-time cooldown shifted the slot to a Monastery that also went
+  unstaffed. Keep reservation timing and workforce availability separate
+  when deciding which delay to address.
   [Edinburgh admission trace](../research/mods/csc-ai-axum-builder-availability-20261120.md#edinburghs-improvement-slot-and-the-old-boost-reservation).
 - **3.2 Assignment and supply.** Use a reachable Builder with charges,
   including across cities. Value another Builder when useful work exceeds
@@ -1226,6 +1229,11 @@ is legal on the actual plot and available to its owner.
   Calibrate added capacity where a ready chain can justify its own
   competing request. Explicit Builder demand should follow valuable executable
   work and account for charges, current assignments and cross-city options.
+  In Cumae, the purchased Builder was already processed at the first call
+  that saw it. Until turn 159, every Builder at the call was held or had
+  acted. The same bid recruited once a worker was free. Use repeated empty
+  recruitment as evidence when judging a targeted capacity bid.
+  [Cumae replay](../research/mods/csc-ai-axum-builder-availability-20261120.md#what-the-native-recruiter-could-see).
   Fractal's Tenochtitlan reserved a Wheat repair and received a completed
   Builder request. The job lost its reservation before a worker reached the
   site in both replays. Keep request completion and actual worker allocation

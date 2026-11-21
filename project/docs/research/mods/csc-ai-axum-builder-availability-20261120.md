@@ -513,8 +513,18 @@ The late replay's Golf Course opened on 151, made ten unsuccessful
 Builder searches, and let contract 3223 expire before reopening the
 same plot and improvement on 161. Two other Builder contracts
 completed for the same player during that interval.
-The replay leaves open whether a different reservation would secure
-a worker sooner.
+
+A matched turn-150 checkpoint replay tested one reconsideration when the
+Golf Course request expired. It deducted 96 whole utility from that
+plot's Golf Course during the turn-161 comparison and restored the value
+afterwards. Both runs had the same opening structure and reserved that
+Golf Course on 151. In the treatment its turn-161 Q8 score temporarily
+fell from 65,860 to 41,284. The Pasture stayed at 45,139, and the stock
+selector chose a Monastery at (28, 31), worth 61,388. The Monastery's
+Builder searches failed on turns 161–168. Neither replay issued a Pasture
+order by 169. In this window, a cooldown on the repeated job moved the
+slot to another high-scoring job with the same immediate staffing problem.
+The trial was diagnostic and is outside CSC policy.
 
 Native anchors on this build are AnalyzeTerrain `3de500`,
 CheckForImprovement `3e0a10`, GetBestLocationFor `3e5010`, and
@@ -523,6 +533,50 @@ location selector is `3e50d3`. The REA reference SHA `324c51e9`
 maps the functions to `3dec40`, `3e1150`, `3e5750` and `4019f0`;
 the Windows PE entry fingerprints qualified the runtime probes.
 Evidence is under `Desktop/Codex/csc-ai-edinburgh-admission-20261121`.
+
+### Cumae's Builder requests in the original game
+
+CSC was already pricing the Barley Farm on turns 135 and 136 while its
+Water Mill was in production. The Farm twice won Cumae's improvement
+slot. Its requests for an ordinary Builder went to six cities at 179
+utility on 139 (contract 2868) and 148 on 149 (contract 3166). Cumae
+searched for a Builder ten times per reservation and neither request
+produced a Builder for that job.
+
+The Roman AI acquired Builders during the second reservation. A separate
+83-utility request bought one in Aquileia on 152. Another request at
+761 utility entered Rome's production queue on 153 and completed there
+on 154. These were distinct requests and purchasing and production
+used different comparisons. The third Barley reservation recruited a
+Builder on 159, then took seven more turns to reach the plot and build.
+
+#### What the native recruiter could see
+
+The read-only turn-150 replay matched 122 opening records and used the same
+frozen CSC and CE packages. It reproduced Cumae's nine failed searches on
+150–158 and successful recruitment on 159. The GameCore SHA-256 starts
+`4de40abf` and the CE package SHA-256 starts `93dec610`. The trace recorded
+the entry to CE's recruitment detour and the original caller's continuation
+without replacing its return address. It checked both native candidate pools
+at `5535b0` and the exact ordinary caller at `55527f`.
+
+| Replay turn | Roman Builders when Cumae asked | Native result |
+| --- | --- | --- |
+| 150–151 | None | Neither pool included a Builder. |
+| 152 | The Builder bought that turn was already marked processed and had no controller. | Neither pool included a Builder. |
+| 153–158 | One or two charged Builders. At every call each had another controller or was already processed. Their subsequent or earlier orders on those turns included moves and a build. | Neither pool included a Builder. |
+| 159 | Builder 5636122 was free and unprocessed with two charges. The second Builder was already processed and held elsewhere. | The free pool returned 5636122 at the same 148 utility. |
+
+The replay and the original diverged after recruitment. The replay
+re-recruited 5636122 on 161 and logged the Farm build on 162. The original
+logged its build on 166. The job's score was enough to recruit once a
+Builder entered the pool. A broad loan would also target workers doing
+other work. For cases like this, test earlier capacity sponsorship only
+where an admitted valuable supplier repeatedly finds no available worker.
+Compare additional completed supplier work, displaced jobs and idle charges.
+
+Artifacts are in
+`Desktop/Codex/csc-ai-edinburgh-admission-20261121/cumae-recruitment-150-168`.
 
 ### Other supplier delays in the enabled game
 
