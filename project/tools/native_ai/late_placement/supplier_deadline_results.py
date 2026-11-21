@@ -8,14 +8,18 @@ is the separate check that the plot actually gained a compatible improvement.
 import argparse
 from bisect import bisect_right
 from collections import Counter, defaultdict
+from contextlib import closing
 import csv
 import json
 from pathlib import Path
 import re
+import sqlite3
 
 
 BUYER = re.compile(r'\bCSC_PLANNING_SUPPLIER_BUYER(_POLL)?\t(.+)')
 POSITION = re.compile(r'Reserving plot (\d+) (\d+)')
+IMPROVEMENT = re.compile(r'Improve: (\w+);')
+MATERIAL_STATE = re.compile(r'\bCSC_PLANNING_MATERIAL_STATE\t(.+)')
 PREPARATION = re.compile(r'\bCSC_AI_MATERIAL_PREPARATION\s+(.+)')
 
 
@@ -83,8 +87,34 @@ def with_early_preparation(surveys, log):
     return augmented
 
 
-def read_tree_events(log, players, width, last):
-    current, events = {}, defaultdict(list)
+def read_material_job_filter(log, database):
+    """Use the matched gameplay DB and material observations to check job type."""
+    with closing(sqlite3.connect(database.resolve(strict=True).as_uri() + '?mode=ro', uri=True)) as connection:
+        compatible = set(connection.execute('SELECT ResourceType, ImprovementType FROM Improvement_ValidResources'))
+    if not compatible:
+        raise ValueError('Gameplay database has no improvement compatibility rows')
+    histories = defaultdict(list)
+    for line in log:
+        match = MATERIAL_STATE.search(line)
+        if match:
+            row = dict(field.split('=', 1) for field in match[1].rstrip('\r\n').split('\t'))
+            histories[row['player'], int(row['materialPlot'])].append((
+                int(row['turn']), int(row['sequence']), row['resource']))
+    if not histories:
+        raise ValueError('No saved material states for the native job audit')
+    for history in histories.values():
+        history.sort()
+
+    def match_job(player, plot, turn, improvement):
+        history = histories.get((player, plot), ())
+        index = bisect_right(history, (turn, float('inf'), '')) - 1
+        return index >= 0 and (history[index][2], improvement) in compatible
+
+    return match_job
+
+
+def read_tree_events(log, players, width, last, material_job=None):
+    current, decoded, events = {}, {}, defaultdict(list)
     for row in csv.reader(log, skipinitialspace=True):
         if len(row) < 7 or row[1] not in players or row[3] != 'Build City Improvement':
             continue
@@ -93,19 +123,29 @@ def read_tree_events(log, players, width, last):
         if turn >= last:
             continue
         key = player, city
-        if step == 'Reserve Plot' and state == 'SUCCESS':
+        if step == 'Decode Trigger':
+            if state == 'SUCCESS':
+                current.pop(key, None)
+                decoded.pop(key, None)
+            match = IMPROVEMENT.search(detail)
+            if match:
+                decoded[key] = match[1]
+        elif step == 'Reserve Plot' and state == 'SUCCESS':
             match = POSITION.fullmatch(detail.strip())
             current.pop(key, None)
             if match:
                 plot = int(match[1]) + width * int(match[2])
-                current[key] = plot, turn
-                events[player, plot].append((turn, 'reserved', turn))
+                improvement = decoded.get(key)
+                current[key] = plot, turn, improvement
+                if material_job is None or material_job(player, plot, turn, improvement):
+                    events[player, plot].append((turn, 'reserved', turn))
         elif ((step == 'Find Available Unit' and state == 'SUCCESS')
               or (step == 'Move Unit' and state in ('RUNNING', 'SUCCESS'))):
             reservation = current.get(key)
             if reservation is not None:
-                plot, reserved = reservation
-                events[player, plot].append((turn, 'assigned', reserved))
+                plot, reserved, improvement = reservation
+                if material_job is None or material_job(player, plot, turn, improvement):
+                    events[player, plot].append((turn, 'assigned', reserved))
     return events
 
 
@@ -254,7 +294,7 @@ def production_activity(path, players, last):
     return {'completed': trained, 'purchased': purchases, 'ambiguous_owner': ambiguous}
 
 
-def run(path, first, last, window):
+def run(path, first, last, window, *, gameplay_database=None):
     source = load(path/'source.json')
     protocol = load(path/'protocol.json')
     if not (protocol['ordinary_setup'] and protocol['fresh_game'] and protocol['endpoint'] == last
@@ -265,9 +305,13 @@ def run(path, first, last, window):
         surveys = read_surveys(log, first, last)
         log.seek(0)
         early = with_early_preparation(surveys, log)
+        material_job = None
+        if gameplay_database is not None:
+            log.seek(0)
+            material_job = read_material_job_filter(log, gameplay_database)
     players = {str(player) for player in source['original_ai']}
     with (path/'AI_Behavior_Trees.csv').open(encoding='utf-8-sig', errors='replace', newline='') as log:
-        events = read_tree_events(log, players, source['map_signature'][0], last)
+        events = read_tree_events(log, players, source['map_signature'][0], last, material_job)
     cases = supplier_cases(surveys, events, players, window)
     result = {'counts': counts(cases), 'cases': cases, 'recoveries': recoveries(surveys, players),
             'production': production_activity(path, players, last),
@@ -275,6 +319,8 @@ def run(path, first, last, window):
     if early != surveys:
         early_cases = supplier_cases(early, events, players, window)
         result['with_early_preparation'] = {'counts': counts(early_cases), 'cases': early_cases}
+    if gameplay_database is not None:
+        result['checked_resources_against'] = str(gameplay_database.resolve())
     return result
 
 
@@ -284,5 +330,7 @@ if __name__ == '__main__':
     parser.add_argument('--last', type=int, default=250)
     parser.add_argument('--first', type=int, default=1)
     parser.add_argument('--window', type=int, default=10)
+    parser.add_argument('--gameplay-database', type=Path,
+                        help='Optional database from the same loaded mod stack. Require a compatible improvement for native jobs.')
     args = parser.parse_args()
-    print(json.dumps(run(args.run, args.first, args.last, args.window), indent=2))
+    print(json.dumps(run(args.run, args.first, args.last, args.window, gameplay_database=args.gameplay_database), indent=2))

@@ -1,6 +1,9 @@
+from pathlib import Path
+import sqlite3
+from tempfile import TemporaryDirectory
 import unittest
 
-from supplier_deadline_results import counts, read_tree_events, supplier_cases, with_early_preparation
+from supplier_deadline_results import counts, read_material_job_filter, read_tree_events, supplier_cases, with_early_preparation
 
 
 class SupplierDeadlineTest(unittest.TestCase):
@@ -73,3 +76,26 @@ class SupplierDeadlineTest(unittest.TestCase):
         too_late, = supplier_cases(surveys, {}, {'2'}, 0)
         self.assertEqual(too_late['cohort'], 'no_legal_supplier_by_deadline')
         self.assertNotIn('eligible_after_opening', too_late)
+
+    def test_matching_plot_with_unmapped_improvement_does_not_count(self):
+        with TemporaryDirectory() as temp:
+            database = Path(temp) / 'gameplay.sqlite'
+            db = sqlite3.connect(database)
+            db.executescript('''
+                CREATE TABLE Improvement_ValidResources (ResourceType TEXT, ImprovementType TEXT);
+                INSERT INTO Improvement_ValidResources VALUES ('RESOURCE_CSC_FLAX', 'IMPROVEMENT_FARM');
+            ''')
+            db.close()
+            material_job = read_material_job_filter([
+                'CSC_PLANNING_MATERIAL_STATE\tplayer=2\tmaterialPlot=16\tturn=1\tsequence=1\tresource=RESOURCE_CSC_FLAX',
+            ], database)
+            trees = [
+                '2, 2, City A, Build City Improvement, SUCCESS, Decode Trigger, Improve: IMPROVEMENT_SOLAR_FARM; Value: 85',
+                '2, 2, City A, Build City Improvement, SUCCESS, Reserve Plot, Reserving plot 6 1',
+                '2, 2, City A, Build City Improvement, SUCCESS, Find Available Unit, Found: UNIT_BUILDER',
+                '3, 2, City A, Build City Improvement, SUCCESS, Decode Trigger, Improve: IMPROVEMENT_FARM; Value: 82',
+                '3, 2, City A, Build City Improvement, SUCCESS, Reserve Plot, Reserving plot 6 1',
+                '4, 2, City A, Build City Improvement, SUCCESS, Find Available Unit, Found: UNIT_BUILDER',
+            ]
+            actual = read_tree_events(trees, {'2'}, 10, 5, material_job)
+            self.assertEqual(actual['2', 16], [(3, 'reserved', 3), (4, 'assigned', 3)])

@@ -48,6 +48,14 @@ buyer. It records the exact legal and working plots for each material
 class. An already-improved plot is scored in its own cohort. Read the
 ordinary improvement tree logs for reservation and Builder assignment,
 then verify the actual improvement at buyer opening and at turn +10.
+Pass the matching loaded Gameplay database with `--gameplay-database` to
+check each native job's decoded improvement against the material observed
+on its plot. Unrelated jobs can reserve a mapped plot, so the coordinates
+alone are weaker evidence. This check reproduced all first-pair opening
+and deadline reservation and assignment counts. The compatibility audit
+used the same five loaded packages, including the three pinned optional
+mods. The run folder includes the 141-row `supplier-job-compatibility.sqlite`
+extract for reproducing the audit independently of the live cache.
 Supply gained before +10 and lost later remains distinct from working
 supply at the +10 census. When an improvement becomes legal after buyer
 opening but within the deadline, include it and report its shorter window
