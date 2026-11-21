@@ -422,6 +422,22 @@ channel. Producer and research preparation continue to use ordinary
 nomination. The native queue retains its admitted contracts and
 competing unit and project values.
 
+The first live queue package reported the callsites ready and Québec
+still queued the Lighthouse through Default Specialization on 152.
+The exact receipt recorded zero queue comparisons. Its assembly entry
+still bypassed modes 1/0 and 1/1 before the new C++ caller check. The
+matching fix makes those modes reach the independently scoped consumer.
+The Lighthouse was working on 154. At turn 176 the native effects
+identified the Lighthouse's extra Production, the Workshop's Production
+return and its optional Gold return. Both buildings were unpillaged in
+the structural census.
+
+Offline tests also exercise the actual fixed-buildings definition path.
+A synthetic unique Granary inherits the ordinary transaction and receives
+Food, while the producing Mill receives Production and optional Gold.
+The adapter quotes the unique receiver and skips a still-incomplete
+customer district.
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

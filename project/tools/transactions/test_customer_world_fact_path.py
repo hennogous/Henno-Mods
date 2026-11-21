@@ -136,6 +136,28 @@ local q=assert(CSC_AI_EconomyModel.JointCustomerForecast(b,a,price))
 assert(q.after.byBuilding['1:3:BUILDING_UNIQUE_MARKET']==6 and q.after.byBuilding['1:3:BUILDING_MARKET']==nil)
 ''')
 
+    def test_stage_two_bid_resolves_the_actual_unique_granary_and_fixed_exchange(self):
+        from customer_world_fixture import MOD
+        vm=world()
+        vm.execute((MOD/'Lua_UI/AI/CSC_AI_EconomyAdapters.lua').read_text())
+        vm.execute('''
+local unique={Index=1000,BuildingType='BUILDING_UNIQUE_GRANARY',PrereqDistrict='DISTRICT_CITY_CENTER',
+ TraitType='TRAIT_UNIQUE',Cost=65,Maintenance=2}
+GameInfo.Buildings[1000]=unique;GameInfo.Buildings[unique.BuildingType]=unique
+GameInfo.BuildingReplaces=info({{CivUniqueBuildingType=unique.BuildingType,ReplacesBuildingType='BUILDING_GRANARY'}})
+GameInfo.CivilizationTraits=info({{CivilizationType='CIV_TEST',TraitType='TRAIT_UNIQUE'}})
+PlayerConfigurations[1]={GetCivilizationTypeName=function()return'CIV_TEST'end,GetLeaderTypeName=function()return nil end}
+local s=snapshot();s.Price=price
+local E=CSC_AI_EconomyAdapters
+local chain=s.chains[1]
+local value=assert(E.StageTwoCustomerValue(s,chain,CITIES[3],8,unique))
+assert(value==3*(30-2)*256) -- Food to the Granary, Production and optional Gold to the Mill.
+assert(E.StageTwoCustomerValue(s,chain,CITIES[3],8,GameInfo.Buildings.BUILDING_GRANARY)==nil)
+PLOTS[8].incomplete=true
+local next=snapshot();next.Price=price
+assert(E.StageTwoCustomerValue(next,next.chains[1],CITIES[3],8,unique)==nil)
+''')
+
     def test_bakers_and_tailors_share_market_and_tailors_two_venues_pool_at_source(self):
         world().execute('''
 PLOTS[2].district='DISTRICT_CSC_TAILORS_QUARTER'
