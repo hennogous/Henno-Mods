@@ -172,6 +172,28 @@ CE's nomination comparison is restricted to the latter call's
 return address `3e0eca`. A building can therefore reach the queue
 through Default Specialization with a zero nomination receipt.
 
+The shared-unlock arm staged the Workshop from turn 50, starting at
+1,918 Q8 (about 7.5 points). CE applied the preference at native
+comparisons on turns 55, 65, 72 and 84, all before Construction.
+The building tree picked Walls, a City Lights rural infrastructure
+building twice, and Castle at those openings. At turn 55 the Workshop
+rose from 623 to 3,990 Q8. Walls led at about 47 whole points.
+The city's choice held through the wider replay. Construction still
+started on 85, the stock queue selected the Workshop on 90, and the
+Workshop worked on 92. The native effect readback confirmed both
+material exchanges again at 132.
+
+| Axum replay | Locked Workshop comparisons | Working Workshop | Publisher mean / max |
+| --- | ---: | ---: | ---: |
+| Prior guidance | 0 | 92 | 1.852 s / 3.890 s |
+| Producer investment | 0 | 92 | 1.727 s / 3.085 s |
+| Shared unlock | 4 | 92 | 1.780 s / 3.339 s |
+
+The positive price came from sources already represented in the
+ordinary ledger. Bamboo's co-unlock made the offer eligible. A
+fresh game will test how often the same guidance changes what
+actually gets built across different cities and prerequisites.
+
 ## A retained Bakers Stage 2 chain in Boston
 
 The matched tests kept Boston's exact Cattle Pasture next to a working Water
