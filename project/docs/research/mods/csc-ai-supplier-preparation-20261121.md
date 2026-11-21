@@ -82,3 +82,28 @@ empires during the replay. Publisher mean and maximum were 1.820 and
 2.542 seconds in control, and 1.905 and 2.924 in treatment over 26
 publications each. Use the fresh games to assess scheduling benefit and
 performance across the first unlocks and both buyer stages.
+
+### First ordinary Fractal control, Online turns 1–250
+
+The control reached turn 250 on map seed `28061117` and game seed
+`38061117`. Its preparation clock and outcome windows were observed on
+every turn. Of 11 Base buyers that needed work when eligible, six had a
+reservation, five an assignment, and five working supply by opening.
+By opening plus ten, ten had a reservation and assignment but still
+only five had working supply. Eight further Base buyers were already
+supplied at preparation. One Base case was interrupted before the deadline.
+
+Six missed Base buyers included four close outcomes. Kingston, Mecca and
+Cairo started to work on turn +12, and Kish on +13. The city tree at
+Kingston, Mecca and Ur logged a failed protection check after a Builder
+had already been assigned. Kish and Cairo completed after movement.
+One Tailors buyer took 35 turns, and Ur remained unsupplied. The sample
+therefore gives separate tests of earlier admission, route time, and
+whether a Builder stays with a job after assignment.
+
+The one fully observed eligible Specialty buyer was already supplied
+when preparation became possible. Seven other Stage 4 buyers opened
+without an eligible Specialty deposit. Six had none adjacent, and the
+seventh's adjacent Tea was foreign-owned. The treatment on this seed
+can qualify earlier Base work. A second map with eligible missing
+Specialty cases is necessary for the full goal.

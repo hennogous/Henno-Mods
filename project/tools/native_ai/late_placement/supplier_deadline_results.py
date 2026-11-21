@@ -70,13 +70,14 @@ def read_tree_events(log, players, width, last):
             current.pop(key, None)
             if match:
                 plot = int(match[1]) + width * int(match[2])
-                current[key] = plot
-                events[player, plot].append((turn, 'reserved'))
+                current[key] = plot, turn
+                events[player, plot].append((turn, 'reserved', turn))
         elif ((step == 'Find Available Unit' and state == 'SUCCESS')
               or (step == 'Move Unit' and state in ('RUNNING', 'SUCCESS'))):
-            plot = current.get(key)
-            if plot is not None:
-                events[player, plot].append((turn, 'assigned'))
+            reservation = current.get(key)
+            if reservation is not None:
+                plot, reserved = reservation
+                events[player, plot].append((turn, 'assigned', reserved))
     return events
 
 
@@ -114,9 +115,13 @@ def supplier_cases(surveys, events, players, window):
                 if exact_plots(row, 'working'):
                     first.setdefault('working', turn)
                 for plot in exact_plots(row, 'legal'):
-                    for event_turn, event in events.get((player, plot), ()):
+                    for event_turn, event, reserved in events.get((player, plot), ()):
                         if event_turn == turn and event_turn < deadline:
                             first.setdefault(event, event_turn + 1)
+                            # A Builder can pick up work already reserved
+                            # when the buyer becomes eligible. Carry the
+                            # observed reservation with that assignment.
+                            first['reserved'] = min(first.get('reserved', final+1), reserved+1)
             case['first_observed'] = first
             # A chain can briefly have an improvement and then lose it. Use
             # the actual state at both survey milestones for working supply.
