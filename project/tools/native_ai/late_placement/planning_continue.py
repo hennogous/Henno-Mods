@@ -19,7 +19,7 @@ import traceback
 from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, flags,
                     launch, load, lua, make_probe_controller, manifest, native_inventory,
                     parse, read, require, restore_preferences, sha, write_json)
-from ce_bakers_fresh import (LOGS, capture_census, check_native_status,
+from ce_bakers_fresh import (LOGS, MAPS, capture_census, check_native_status,
                             package_identity, summarize_run)
 from ce_replay import DLL, HOTFIX_EXE_SHA, verify_modules
 from full_game_controller.checkpoint import save_inactive_boundary
@@ -152,7 +152,7 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
             all(protocol.get(k) is False for k in ('untuned', 'external_policy', 'gameplay_interventions')) and
             not any(k.startswith('diagnostic_') and v for k, v in protocol.items()),
             'Require an ordinary original game with integrated main CSC policy only')
-    require(protocol['map'] in ('Continents', 'Pangaea', 'Fractal') and
+    require(protocol['map'] in MAPS and
             all(type(protocol[k]) is int for k in ('map_seed', 'game_seed')),
             'Missing original preselected map identity')
     players = identity['original_ai']

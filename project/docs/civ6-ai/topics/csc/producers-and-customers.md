@@ -478,9 +478,45 @@ purchase in one existing customer district.
 Both customer replays used the corrected CE package from `csc-dev`
 `f6f0dd8` (DLL SHA-256
 `d6d5940a166e22a2c5bf34495e5f608c9c77c0a9953e0e54223ae425db2dcee2`).
-A fresh Small Online Fractal game uses the same integrated CSC and
-CE packages through turn 200, with map seed 864230117 and game seed
-427190583 selected before launch.
+Mean and maximum publisher times over the 27-turn Québec replay were
+1.685 and 2.104 seconds with the prior preference, and 1.617 and
+1.982 seconds with transaction pricing. In Saint John those times
+were 2.489 and 3.286 seconds, and 2.557 and 3.417 seconds,
+respectively. These are times for the whole CSC publisher in each replay.
+
+## Customer decisions in a fresh Fractal game
+
+The same integrated CSC and CE packages ran an ordinary Small Online
+Fractal game through turn 200 with map seed 864230117 and game seed
+427190583. The endpoint save SHA-256 was
+`bc18e1605a98e049f4fbd95464daaa444315e6da100af7d0dee02a241189d821`.
+The policy staged 441 recorded Granary windows in eight cities. It
+recorded 69 ordinary writes across eight cities and 105 queue writes
+across seven. These count score writes, and a city can receive them
+on multiple turns before its building is chosen.
+
+| Turn 200 | Bakers | Tailors |
+| --- | ---: | ---: |
+| Operating Quarters | 18 | 3 |
+| Working Stage 2 producers | 17 | 1 |
+| Working Stage 2 producers with working Base supply | 16 | 1 |
+| Working Stage 2 producer–customer pairs | 7 | 0 |
+| Positive Stage 2 Service properties | 7 | 0 |
+
+A read-only endpoint reload matched 234 structural records. In one
+Bakers chain (player 2, city 393221), it confirmed the working Wind
+Mill at plot 1065 and Granary at 1064. The native effects were active
+for Granary Food and for the Wind Mill's Production and optional Gold.
+
+The publisher recorded 200 packets with no failures. Its mean and
+maximum wall times were 1.111 and 2.575 seconds per turn. Native managed
+district-cell work averaged 13.366 ms and peaked at 34.910 ms.
+
+At every census, all Tailors lacked an adjacent Harbor that could host
+their Stage 2 customer. There were no Lighthouse bids for those
+Quarters. A second ordinary game uses Small Online Island Plates
+(map seed 897607809, game seed 495773652) to give the Harbor path more
+coastal opportunities.
 
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 

@@ -2,11 +2,11 @@
 
 **21 November — Problem 5 is active.** The data-driven customer bid
 reached Québec's Lighthouse queue comparison and Saint John's Granary
-nomination and purchase. Both replays verified the exchange. Saint John
-continued Mont St. Michel while buying the Granary. The fresh integrated
-Fractal qualification uses map seed 864230117 and game seed 427190583
-through turn 200.
-[Customer results](topics/csc/producers-and-customers.md#a-completed-harbor-was-waiting-for-its-lighthouse).
+nomination and purchase. Both replays verified the exchange. The fresh
+Fractal game ended with seven working Bakers pairs and 105 Granary
+queue writes. Its Tailors lacked adjacent Harbors at each census.
+An Island Plates run covers the remaining fresh-game Lighthouse case.
+[Customer results](topics/csc/producers-and-customers.md#customer-decisions-in-a-fresh-fractal-game).
 
 **21 November — Problem 4 verified.** The fresh Continents game ended
 with 16 working Mills and four Workshops. Stockholm completed the

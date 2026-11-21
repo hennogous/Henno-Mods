@@ -23,7 +23,7 @@ from storekeeper_runtime import audit
 
 LOGS = ('Lua.log', 'Database.log', 'Modding.log', 'AI_CityBuild.csv', 'AI_Research.csv',
         'AI_Behavior_Trees.csv', 'City_BuildQueue.csv', 'UnitOperations.log', 'DiplomacyManager.csv')
-MAPS = ('Continents', 'Pangaea', 'Fractal')
+MAPS = ('Continents', 'Pangaea', 'Fractal', 'Island_Plates')
 MAP_SIZES = {'small': (6, 9), 'standard': (8, 12)}  # Major and city-state counts.
 QUALIFICATION_SEEDS = {
     'Continents': (17260413, 27410653),
@@ -37,7 +37,7 @@ QUALIFICATION_CENSUSES = [100, 150, 200, 240]
 def check_qualification(args):
     if (args.resume_from or not args.saves or args.map_size != 'standard'
             or args.through != QUALIFICATION_ENDPOINT
-            or (args.map_seed, args.game_seed) != QUALIFICATION_SEEDS[args.map]):
+            or (args.map_seed, args.game_seed) != QUALIFICATION_SEEDS.get(args.map)):
         raise ValueError('Qualification requires a fresh preselected Standard game through turn 249 and --saves')
     if args.untuned != bool(args.matched_source) or (args.untuned and args.map != 'Continents'):
         raise ValueError('The untuned Continents qualification arm requires the matching tuned source')
