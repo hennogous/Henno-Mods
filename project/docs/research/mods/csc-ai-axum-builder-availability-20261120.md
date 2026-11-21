@@ -438,6 +438,31 @@ observer handoffs. The same-seed control is running. Its CSC Lua differs
 only by the switch that disables loan publication. Evidence is under
 `ordinary-continent-worker-loan/loan-on`.
 
+### Other supplier delays in the enabled game
+
+Of thirteen buyers with at least 15 turns to obtain legal supply, three
+were supplied after a longer wait and two were still missing supply at
+turn 250. The stock city trees show several ways this happened.
+
+| City | First legal supplier survey with no working supply | First reservation | What the city tree did |
+| --- | ---: | ---: | --- |
+| Edinburgh | 104 | 166 | Recruited and built the Cattle Pasture on 167 using the loan. |
+| Cumae | 137 | 139 | Reserved the Barley on 139 and 149. Each job went ten searches without a Builder. The 159 job recruited on the same turn and built a Farm on 166. |
+| Ostia | 146 | 152 | Recruited for the Flax Farm on 157, then failed protection on 162. Reserved again on 163, recruited on 168 and built that turn. |
+| Mashhad | 168 | 168 | Reserved Sheep twelve times. Ten reservations logged recruitment. On three attempts the tree logged a completed move and later failed at Build Improvement. |
+| Angkor Thom | 192 | 203 | Reserved the pillaged Maize Farm four times and recorded three successful recruitments. The last observed attempt failed protection a turn after recruitment. |
+
+Mashhad is the clearest follow-through check. For the Sheep at (61, 8),
+its city tree reported Move Unit Success and Build Improvement Running
+on turn 200, then Build Improvement Failure on 201. On 201, the unit log
+records Builder 8323118 first issuing Remove Feature, then a Build
+Improvement order that could not start. It is the only ordinary Builder
+with a build operation logged for that player on 201. The log has no
+destination or improvement parameter, so the unit and request still
+need to be joined to Mashhad's tree. The stock operation eligibility and
+the actual request payload can be compared from the unchanged turn-200
+checkpoint (SHA-256 `2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`).
+
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
 consider a held unit if its current controller offers it. REA decompiled
