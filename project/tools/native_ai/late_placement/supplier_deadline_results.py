@@ -6,6 +6,7 @@ is the separate check that the plot actually gained a compatible improvement.
 """
 
 import argparse
+from bisect import bisect_right
 from collections import Counter, defaultdict
 import csv
 import json
@@ -178,7 +179,7 @@ def production_activity(path, players, last):
     a completed production row or an actual purchase, once per recorded action.
     The queue census has city names only. Expose unresolved owner cases.
     """
-    owners = defaultdict(set)
+    owners = defaultdict(lambda: defaultdict(set))
     purchases = Counter()
     with (path/'AI_CityBuild.csv').open(encoding='utf-8-sig', errors='replace', newline='') as log:
         for row in csv.reader(log, skipinitialspace=True):
@@ -187,8 +188,9 @@ def production_activity(path, players, last):
             turn, player, city = int(row[0]), row[1], row[2]
             if city == 'PURCHASE' and player in players:
                 purchases[row[5]] += 1
-            elif row[3] and row[4] and not row[4].startswith('CONTRACT') and not row[5]:
-                owners[turn, city].add(player)
+            elif city != 'PURCHASE' and player.isdigit():
+                owners[city][turn].add(player)
+    owner_turns = {city: sorted(history) for city, history in owners.items()}
     trained, ambiguous = Counter(), Counter()
     with (path/'City_BuildQueue.csv').open(encoding='utf-8-sig', errors='replace', newline='') as log:
         for row in csv.reader(log, skipinitialspace=True):
@@ -198,9 +200,11 @@ def production_activity(path, players, last):
             turn = int(turn)
             if turn > last or not item or float(cost) <= 0 or float(progress) < float(cost):
                 continue
-            # Production is applied before the AI's new turn update. Some
-            # losing or captured cities have only the previous owner census.
-            candidates = owners.get((turn, city)) or owners.get((turn - 1, city)) or set()
+            # A quiet turn need not emit a city decision. Carry the latest
+            # known owner forward, and expose same-turn name collisions.
+            observations = owner_turns.get(city, ())
+            index = bisect_right(observations, turn) - 1
+            candidates = owners[city][observations[index]] if index >= 0 else set()
             if not candidates or len(candidates) != 1:
                 ambiguous[item] += 1
             elif candidates <= players:

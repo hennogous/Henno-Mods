@@ -360,7 +360,7 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
                     end
                     value=value or 0
                     readyHere=math.max(readyHere or 0,value)
-                    local ranking=repair and math.max(repairFloor,value) or value
+                    local ranking=repair and serviceRepair and math.max(repairFloor,value) or value
                     if (floor>0 or ranking>0) and (not buildHere or ranking>buildHere.ranking or ranking==buildHere.ranking
                         and (repair and not buildHere.repair or repair==buildHere.repair and index<buildHere.improvement)) then
                         -- A new improvement can finish in one action on a bare
@@ -432,10 +432,11 @@ local function offerMaterialJob(player, chain, kind, recover, bid, economy, rese
             -- Give an operating buyer's sole mapped supplier a chance to
             -- finish in the worker's current turn. The native pass still
             -- needs the exact Builder on site under this job's control.
-            job.finishSupply=job.finishSupply or (operatingBuyer and (priorityRepair or #supply==1) and candidate.finish)
-            -- One working input restores this material channel to a present buyer.
-            -- An eligible replacement deposit can restore it while the old one waits.
-            job.restoreSupply=job.restoreSupply or (operatingBuyer and (priorityRepair or not supplied))
+            job.finishSupply=job.finishSupply or ((priorityRepair or operatingBuyer and #supply==1) and candidate.finish)
+            -- Qualify a repair from the Service that actually needs it. A
+            -- Stage 3 or 4 Service can need Base even when the Stage 2 buyer
+            -- stopped. The native loan still checks custody and job identity.
+            job.restoreSupply=job.restoreSupply or priorityRepair or (operatingBuyer and not supplied)
             if preparation and preparation>0 then
                 -- Several prospective buyers can point to one job. Keep the
                 -- strongest of their uncertain quotes within one 13-unit band.
@@ -690,10 +691,10 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         -- Reserve the larger band for a producer/customer pair that works now.
         -- A functioning customer already justifies the established first
         -- supplier offer. Use the smaller preparation band for new cases.
-        local prospectiveBuyer=not customerWorks and not producerExists and not committedBuyer
+        local prospectiveBuyer=not serviceRepair.base and not customerWorks and not producerExists and not committedBuyer
             and not chain.workingBase and chain.economy
             and preparingBuyer(player,chain,economy,chain.economy.seconds or {},canProduce)
-        if customerWorks or producerWorks or committedBuyer or prospectiveBuyer then
+        if serviceRepair.base or customerWorks or producerWorks or committedBuyer or prospectiveBuyer then
             local value = producerWorks and customerWorks and limits.builder
                 or math.min(limits.builder, EARLY_SUPPLIER_BID_Q8)
             local pendingBuyer

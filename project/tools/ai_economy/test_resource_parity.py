@@ -337,7 +337,7 @@ assert(result[101].deltaQ8==48*256 and result[101].commitment.turns==4 and not r
 assert(result[102].deltaQ8==13*256 and result[102].preparation)
 ''')
 
-    def test_repair_both_material_classes_for_a_recoverable_service(self):
+    def test_service_repair_priority_follows_the_required_material_classes(self):
         vm = runtime()
         vm.execute((ROOT / 'Civ Supply Chains/Lua_UI/AI/CSC_AI_EconomyModel.lua').read_text(encoding='utf-8'))
         vm.execute(r'''
@@ -346,11 +346,12 @@ baseImprovement,specImprovement=5,6
 local baseDamaged,specDamaged=true,true
 basePlot.IsImprovementPillaged=function()return baseDamaged end
 specPlot.IsImprovementPillaged=function()return specDamaged end
-local service={known=true,producer='FOURTH',customer={complete=true,working=true},unlock=0,
+local service={known=true,producer='FOURTH',stage=4,customer={complete=true,working=true},unlock=0,
     materials={base=1,specialty=1}}
 local function jobs()
     local cs=chains()
     cs[1].economy={existing=true,quarterReady=0,horizon=30,services={service},
+        seconds={{type='SECOND',working=owned[9]==true}},third={type='THIRD',working=true},
         fourth={type='FOURTH',working=true},suppliers={
             {kind='base',plot=101,ready=baseDamaged and 5 or 0},
             {kind='specialty',plot=102,ready=specDamaged and 5 or 0},
@@ -368,6 +369,15 @@ baseDamaged=false;r=jobs()
 assert(not r[101] and r[102].deltaQ8==56*256)
 service.customer.working=false;r=jobs()
 assert(r[102].deltaQ8==26*256)
+service.customer.working=true;baseDamaged=true
+service.materials={base=1}
+service.producer,service.stage='SECOND',2;r=jobs()
+assert(r[101].serviceRepair and not r[102].serviceRepair)
+-- A functioning Stage 3 source can justify Base on its own. The Stage 2
+-- buyer is pillaged and there is no Stage 2 customer in this fixture.
+service.producer,service.stage='THIRD',3;owned[9]=false;r=jobs()
+assert(r[101].serviceRepair and r[101].finishSupply and r[101].restoreSupply)
+assert(not r[102].serviceRepair)
 ''')
 
     def test_second_supplier_competes_on_its_actual_incremental_value(self):
