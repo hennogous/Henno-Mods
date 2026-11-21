@@ -90,6 +90,50 @@ end
 
 
 class ResourceParity(unittest.TestCase):
+    def test_locked_producer_preparation_needs_two_viable_base_plots(self):
+        for family,producer in (
+            ('BAKERS','BUILDING_CSC_BAKERS_WIND_MILL'),
+            ('TAILORS','BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'),
+        ):
+            with self.subTest(family=family):
+                vm=runtime(family)
+                vm.globals().producer=producer
+                vm.execute(r'''
+local row=GameInfo.Buildings[producer]
+if not row then
+    row={Index=20,Hash=120,BuildingType=producer,PrereqDistrict='DISTRICT_CSC_'..family..'_QUARTER'}
+    GameInfo.Buildings[producer]=row
+    GameInfo.CSC_QuarterFlowBuildings[1].BuildingType=producer
+end
+local c=chains()[1]
+local option={type=producer,unlock=6,turns=3}
+c.economy={horizon=20,seconds={option}}
+CSC_AI_EconomyAdapters={SupplyValue=function()end,
+    ProducerInvestment=function(_,chain,options)
+        assert(chain==c and #options==1 and options[1]==option)
+        return option,20000
+    end}
+local economy={chains={c}}
+local function nominations(legal)
+    local _,_,bids=P.MaterialDeductions(Players[3],true,0,32768,
+        function(_,_,hash)return legal and hash==row.Hash end,false,economy)
+    return bids
+end
+assert(#nominations(false)==0)
+assert(#nominations(true)==0) -- The UI queue can allow a still-locked producer.
+c.supply.base[2]={plot=102,ready=false,working=false}
+assert(#nominations(false)==0)
+c.supply.base[2].ready=true
+local bids=nominations(false)
+assert(#bids==1 and bids[1].building==row.Index and bids[1].delta==64*256)
+option.excluded=true;assert(#nominations(false)==0)
+option.excluded=false;option.unlock=0
+assert(#nominations(false)==0)
+assert(#nominations(true)==1)
+economy.MaterialBuyerCommitment=function()return {type=producer,turns=2}end
+assert(#nominations(true)==0)
+''')
+
     def test_loaded_arbitrary_resource_classes_and_equal_last_deposit_protection(self):
         for family in ('BAKERS', 'TAILORS'):
             with self.subTest(family=family):

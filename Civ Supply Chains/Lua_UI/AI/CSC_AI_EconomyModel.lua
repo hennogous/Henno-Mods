@@ -1167,6 +1167,40 @@ function M.Marginal(site,building,price)
     return full.valueQ8-without.valueQ8,full
 end
 
+function M.ProducerInvestment(site,options,price)
+    -- Price one Stage 2 investment against leaving the Quarter without a
+    -- producer. Water and Wind are alternatives for the same investment.
+    -- Already operating customer buildings can trade as soon as the producer
+    -- is ready. Later stages, Services and unbuilt customers have their own
+    -- decisions and add no income to this bid.
+    local stageTwo={}
+    for key,value in pairs(site)do stageTwo[key]=value end
+    stageTwo.third,stageTwo.fourth,stageTwo.service,stageTwo.services=nil,nil,nil,nil
+    stageTwo.direct,stageTwo.customers={},{}
+    for _,customer in ipairs(site.customers or{})do
+        if customer.stage==2 and customer.working then
+            stageTwo.customers[#stageTwo.customers+1]=customer
+        end
+    end
+    local function value(option)
+        local report=ledger(stageTwo,option)
+        return report and M.Price(report,price,stageTwo.horizon)
+    end
+    local baseline=value(nil)
+    if baseline==nil then return nil end
+    local best,benefit,bestReady=nil,0,math.huge
+    for _,option in ipairs(options)do
+        local forecast=value(option)
+        local delta=forecast and forecast-baseline
+        local ready=option.unlock+option.turns
+        if delta and (delta>benefit or delta==benefit and delta>0
+            and (ready<bestReady or ready==bestReady and option.type<best.type))then
+            best,benefit,bestReady=option,delta,ready
+        end
+    end
+    return best,benefit
+end
+
 function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,price)
     -- Building-transaction-only diagnostic, not a complete customer district
     -- value or a new customer policy. District adjacency/provider externalities

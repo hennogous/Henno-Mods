@@ -23,17 +23,56 @@ Mill at value 86 and submitted Machinery through Add Goal Tech.
 Research contract 1546 appears in the tree and technology logs through 97.
 The city submitted construction contract 1645 on 98, then started it on
 104 and completed it on 107. Six turns elapsed between the request and
-the production start. These were separate native
-requests. The case establishes the route from producer nomination to
-prerequisite research and then production in a normal game. It leaves
-the value of any CSC bid and its effect on the research date to the
-matched Problem 4 tests.
+the production start. These were separate native requests.
+
+The original turn-95 publication logged the previous native comparison
+for player 4, city 262147, building 206. The locked-producer checkpoint
+confirmed that 206 is the Wind Mill in this loadout. The integrated CSC
+preference changed the comparison from 22,248 to 136,936 Q8. The native
+preparation tree still carried its own value of 86 into the technology
+contract. This establishes that an ordinary building nomination can
+reach the native preparation path while its technology is missing.
+The matched Problem 4 tests measure timeline changes against the
+existing guidance.
 
 The turn-50 saves are retained for preparing a locked-producer fixture.
 In the turn-100 saves, Machinery is owned, the Wind Mill is still
 missing and Rice is working. These provide an unlocked production
 fixture close to the original selection. See the
 [ordinary Continents run identities](../../../research/mods/csc-ai-axum-builder-availability-20261120.md#same-seed-control-through-turn-250).
+
+### Producer investment in the shared economy
+
+The candidate evaluates one Stage 2 producer against leaving the
+Quarter without one. It uses the loaded alternative buildings,
+material income, stock unlock and production timing, operating customer
+exchanges, and investment costs. The two Mills compete for the same
+investment. Unimproved suppliers enter at their forecast work date.
+Later stages, Services and future customer construction use separate
+decisions.
+
+The publisher can offer a still-locked producer to the native building
+selector with two viable adjacent Base suppliers. An unlocked producer
+needs the actual city queue eligibility check and either a working
+supplier or two viable suppliers. The new preference is capped at 64
+native score points for qualification. A previously calibrated
+working-chain offer can still supply the stronger preference. Each
+Quarter offers one producer at a time. The native preparation tree
+retains the prerequisite request, and native production still handles
+the queue decision. The guidance follows a supplier's ordinary
+development path once the producer enters production.
+
+The turn-75 matched starting point came from repeating the turn-50
+checkpoint with integrated 3.2 guidance. The replay differs from the
+original continuous run in some cities. Lugdunum has the completed
+Quarter, a working Rice Farm, a viable Cattle site and a locked Wind
+Mill. Both comparison arms load this same new checkpoint, SHA-256
+`51907dae006feb6eb5743bac8607b4174669ac1103ac62e9442fc08d8a35dd19`.
+The UI readback at the checkpoint returns false for
+`CanProduce(millHash, true)` and true for `CanProduce(millHash, false, true)`
+while Machinery is unowned. The policy therefore checks prerequisite
+timing from the live player and loaded building definition as well as
+the UI queue query.
 
 ## A retained Bakers Stage 2 chain in Boston
 

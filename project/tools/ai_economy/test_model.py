@@ -53,6 +53,24 @@ local n=0;for _,v in ipairs(r.investments)do if v.type=='Water'or v.type=='Wind'
 assert(n==1)
 ''')
 
+    def test_equal_mills_are_one_profitable_producer_investment(self):
+        self.vm().execute('''
+local s=site()
+s.seconds[2]={type='Water',unlock=0,turns=3,cost=40,maintenance=0,terrain=1}
+s.suppliers={{kind='base',plot=1,ready=0},{kind='base',plot=2,ready=5}}
+assert(M.Marginal(s,'Wind',price)==0 and M.Marginal(s,'Water',price)==0)
+local option,value=M.ProducerInvestment(s,s.seconds,price)
+assert(option.type=='Water' and value>0)
+s.seconds[2].unlock=4
+local earlier,unchanged=M.ProducerInvestment(s,s.seconds,price)
+assert(earlier.type=='Wind' and unchanged==value)
+s.third={type='Bakery',unlock=0,turns=1,maintenance=0}
+s.customers={{stage=2,plot=8,city=11,complete=true,ready=0,working=false}}
+assert(select(2,M.ProducerInvestment(s,s.seconds,price))==value)
+s.customers[1].working=true
+assert(select(2,M.ProducerInvestment(s,s.seconds,price))>value)
+''')
+
     def test_same_city_customer_construction_is_not_parallel_production(self):
         self.vm().execute('''
 local s=site();s.customers={{stage=2,plot=8,city=10,complete=true,

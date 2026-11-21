@@ -23,6 +23,10 @@ local READY_SUPPLIER_BID_Q8 = 56 * 256
 -- The smaller band prices ordinary exchange when there is no Service premium.
 local READY_PRODUCER_BID_Q8 = 448 * 256
 local EXCHANGE_PRODUCER_BID_Q8 = 18 * 256
+-- The investment quote enters ordinary nomination in native Q8. Start
+-- below Lugdunum's observed 86-point preparation value while preserving
+-- the separate, qualified band for a chain with an immediate Service.
+local PRODUCER_INVESTMENT_CAP_Q8 = 64 * 256
 local EARLY_SUPPLIER_BID_Q8 = 26 * 256
 local MATERIAL_WORKER_RADIUS = 6
 local MATERIAL_QUEUE_HORIZON = 5
@@ -155,13 +159,16 @@ end
 
 -- Map suitability can exist before the improvement is unlocked. Share the
 -- unlock check between the siting forecast and the actual Builder offer.
-local function improvementUnlocked(player, index)
-    local definition = GameInfo.Improvements[index]
-    if not definition then return false end
+local function prerequisitesUnlocked(player,definition)
     local tech = definition.PrereqTech and GameInfo.Technologies[definition.PrereqTech]
     local civic = definition.PrereqCivic and GameInfo.Civics[definition.PrereqCivic]
     return (not definition.PrereqTech or tech and player:GetTechs():HasTech(tech.Index))
         and (not definition.PrereqCivic or civic and player:GetCulture():HasCivic(civic.Index))
+end
+
+local function improvementUnlocked(player,index)
+    local definition=GameInfo.Improvements[index]
+    return definition and prerequisitesUnlocked(player,definition)
 end
 
 -- A working improvement and a deposit that could supply the chain later are
@@ -454,6 +461,56 @@ local function canTrainDockmasterShip(playerID, cityID, canProduce, lastEra, tra
     return false
 end
 
+local function nominateProducer(player,chain,economy,readyChainBid,queueAllows,submit)
+    local viable=0
+    for _,material in ipairs(chain.supply.base)do
+        if material.ready then viable=viable+1 end
+    end
+    if viable<2 and not chain.workingBase then return end
+
+    local site,options=chain.economy,{}
+    local fallback,fallbackReady
+    for _,option in ipairs(site and site.seconds or{})do
+        local definition=GameInfo.Buildings[option.type]
+        local finish=option.unlock+option.turns
+        -- A locked producer can lead the native preparation tree to submit
+        -- its prerequisite research. Require two viable adjacent deposits
+        -- for that path. The selector still tests the building's own gates.
+        -- For an unlocked option, also consult the UI queue. In the locked
+        -- Lugdunum fixture its query returned true before Machinery was owned.
+        if definition and not option.excluded and finish<site.horizon
+            and (option.unlock==0 and queueAllows(chain.city,definition)
+                or option.unlock>0 and viable>=2 and not option.prerequisites)then
+            options[#options+1]=option
+            if not fallback or finish<fallbackReady or finish==fallbackReady and option.type<fallback.type then
+                fallback,fallbackReady=option,finish
+            end
+        end
+    end
+    local adapter=CSC_AI_EconomyAdapters
+    if #options>0 and adapter and adapter.ProducerInvestment then
+        local ok,chosen,value=pcall(adapter.ProducerInvestment,economy,chain,options)
+        if ok and chosen and type(value)=='number' and value>0 then
+            submit(chain.city,GameInfo.Buildings[chosen.type],
+                math.max(readyChainBid,math.min(PRODUCER_INVESTMENT_CAP_Q8,math.floor(value))),true)
+            return
+        end
+    end
+    if readyChainBid<=0 then return end
+    if fallback then
+        submit(chain.city,GameInfo.Buildings[fallback.type],readyChainBid,true)
+        return
+    end
+    -- The proven ready-chain band also works when a model quote is missing.
+    -- Keep that fallback on the city queue's eligible, unlocked producer.
+    for _,definition in ipairs(chain.profile.producers)do
+        if prerequisitesUnlocked(player,definition) and queueAllows(chain.city,definition)then
+            submit(chain.city,definition,readyChainBid,true)
+            return
+        end
+    end
+end
+
 
 local function connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduce, seen, repairCities, economy, research)
     local profile, city, plot = chain.profile, chain.city, chain.plot:GetIndex()
@@ -468,13 +525,17 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         producerWorks = producerWorks or onQuarter and not buildings:IsPillaged(producer.Index)
     end
 
-    local function bid(buyer, building, value)
-        -- The UI reads immediate queue legality. CE may encounter the bid
-        -- later when the ordinary building comparison runs. An occupied
-        -- native planning slot can delay that comparison while forecasts
-        -- continue. Keep the strongest offer when several chains suggest it.
+    local function queueAllows(buyer,building)
+        return canProduce and canProduce(pid,buyer:GetID(),building.Hash)
+    end
+
+    local function bid(buyer, building, value, eligible)
+        -- Producer preparation supplies its own eligibility above. Other
+        -- nominations still consult the UI queue. An occupied city planning
+        -- slot can delay the native comparison. Keep the strongest offer
+        -- when several chains suggest the same building.
         local delta = math.min(limits.nomination, value)
-        if delta <= 0 or not canProduce or not canProduce(pid, buyer:GetID(), building.Hash) then return end
+        if delta <= 0 or not eligible and not queueAllows(buyer,building) then return end
         local key = buyer:GetID() .. ':' .. building.Index
         local existing = seen[key]
         if existing then
@@ -512,19 +573,20 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
     end)
 
     if chain.ready then
-        if chain.workingBase and customerWorks and not producerExists then
+        local committedBuyer = not producerExists and chain.economy and economy and economy.MaterialBuyerCommitment
+            and economy.MaterialBuyerCommitment(city,profile.producers,chain.economy.horizon)
+        if limits.nomination>0 and not producerExists and not committedBuyer then
             -- Keep the modest exchange bid whenever the supplier and customer
             -- are working. The larger Tailors bid prices Dockmaster production
             -- only while the AI is in the sail era and its customer can use it.
             local servicePremium = unlocked and (profile.key ~= 'TAILORS' or navalProductionAvailable)
-            local value = servicePremium and READY_PRODUCER_BID_Q8 or EXCHANGE_PRODUCER_BID_Q8
-            for _, producer in ipairs(profile.producers) do bid(city, producer, value) end
+            local value=chain.workingBase and customerWorks
+                and (servicePremium and READY_PRODUCER_BID_Q8 or EXCHANGE_PRODUCER_BID_Q8) or 0
+            nominateProducer(player,chain,economy,value,queueAllows,bid)
         end
         -- A working Stage 2 buyer already pays for improved Base materials;
         -- an absent customer must not suppress that ordinary supply benefit.
         -- Reserve the larger band for a producer/customer pair that works now.
-        local committedBuyer = not producerExists and chain.economy and economy and economy.MaterialBuyerCommitment
-            and economy.MaterialBuyerCommitment(city,profile.producers,chain.economy.horizon)
         if customerWorks or producerWorks or committedBuyer then
             local value = producerWorks and customerWorks and limits.builder
                 or math.min(limits.builder, EARLY_SUPPLIER_BID_Q8)

@@ -1432,6 +1432,11 @@ function E.BuildingValue(snapshot,chain,building)
     return site and M.Marginal(site,building,snapshot.Price)
 end
 
+function E.ProducerInvestment(snapshot,chain,options)
+    local site=chain.economy
+    if site then return M.ProducerInvestment(site,options,snapshot.Price)end
+end
+
 -- Quote the ordinary transactions and the contingent Service separately in
 -- signed Q8. The Builder policy can credit the Service once across competing
 -- jobs. Missing ordinary pricing leaves the resulting offer unavailable.
