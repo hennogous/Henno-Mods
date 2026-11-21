@@ -26,24 +26,24 @@
 | [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Verified in matched replays and ordinary play for Bakers and Tailors. |
 | 5.1 Build | Favor the mapped customer building, including unique replacements. | Québec bought its Lighthouse while building a Commercial Hub. The endpoint verified both sides of the Workshop exchange. Unique Granary pricing passed the gameplay-definition fixture. |
 | [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Storekeeper operation verified in selected chains. Unlock guidance and strategic priorities remain open. |
-| 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | Service operation verified. Unlock guidance remains open. |
+| 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | Candidate integrated. Native follow-through open. |
 | 6.2 Strategy | Adjust the value for empire needs and victory direction. | Deferred. |
 | [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Planned. |
-| 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Planned. |
-| 7.2 Build | Value construction from population 10 against ordinary competition. | Planned. |
+| 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Candidate integrated. Native follow-through open. |
+| 7.2 Build | Value construction from population 10 against ordinary competition. | Candidate integrated. Native follow-through open. |
 | [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Planned. |
-| 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Planned. |
+| 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Candidate integrated. Native follow-through open. |
 | [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Planned. |
-| 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | Planned. |
+| 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | Candidate integrated. Native follow-through open. |
 | 9.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Planned. Specialty supplier work is already covered under Problem 3. |
-| 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Planned. |
-| 10.2 Build | Value construction from population 10, including Specialty development costs. | Planned. |
+| 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Candidate integrated. Native follow-through open. |
+| 10.2 Build | Value construction from population 10, including Specialty development costs. | Candidate integrated. Native follow-through open. |
 | [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Wonder placement guidance implemented. Customer-building guidance and broader qualification remain open. |
-| 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Planned. |
+| 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Candidate integrated. Native follow-through open. |
 | 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Guidance implemented. Representative native receipt and placement remain open. |
 | [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Planned. |
-| 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Planned. |
+| 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Candidate integrated. Native follow-through open. |
 | 12.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [13. Recovery and retention](#13-recovery-and-retention) | Repair damaged links, protect working supply and replan after permanent losses. | Repair and protection verified in matched replays. Broader recovery and replanning remain open. |
 | 13.1 Repair | Restore damaged suppliers, Quarters, producers and customers in established chains. | Matched supplier and Quarter recoveries verified. Stock Mill repair restored Storekeeper. Targeted Stage 2 building repair remains open. |
@@ -58,6 +58,8 @@
 | 15.2 Value supplied Quarter destinations | Price eligible CSC returns in the native route comparison. | Deferred. |
 
 ## Current work
+
+**21 November — Problems 6–12 candidate.** Service unlock, later producer and customer investment, and Wonder supply gates now share the economic model and existing native comparisons. The first matched checkpoint replay tests delivery. Three ordinary Online250 pairs are preselected for integrated qualification. [Policy and test plan](../research/mods/csc-ai-stage-investments-20261121.md).
 
 **18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
 Three fresh Online250 seed pairs qualify/restore, with physical links75→86,

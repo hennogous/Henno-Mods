@@ -336,7 +336,7 @@ local function ledger(site, second, shared)
             local producer=stage==2 and second or stage==3 and site.third or site.fourth
             local transaction=customer.transaction
             if customer.transactions then transaction=producer and customer.transactions[producer.type]end
-            if transaction then
+            if transaction and producer then
                 -- Ordinary population exchanges share the actual gameplay
                 -- header/legs. Round quantity by its property first; multiplying
                 -- a target before Q8 rounding would change the native payout.
@@ -543,9 +543,9 @@ local function materialServiceState(site)
     return counts,working
 end
 
-local function materialServiceCanResume(service,working,ready,horizon)
+local function serviceAssetsReady(service,working,ready,horizon)
     return service.known and working[service.producer] and service.customer.complete and service.customer.working
-        and service.unlock==0 and ready<math.min(horizon,service.finish or horizon)
+        and ready<math.min(horizon,service.finish or horizon)
 end
 
 -- If two material classes went down together, neither repair can claim the
@@ -556,7 +556,7 @@ function M.MaterialRestorationKinds(site,repairable,ready)
     if not site.services or #site.services==0 or not site.existing or site.quarterReady~=0 then return result end
     local counts,working=materialServiceState(site)
     for _,service in ipairs(site.services)do
-        if materialServiceCanResume(service,working,ready,site.horizon) then
+        if service.unlock==0 and serviceAssetsReady(service,working,ready,site.horizon) then
             local feasible=true
             for kind,required in pairs(service.materials)do
                 if (counts[kind]or 0)+(repairable[kind]or 0)<required then feasible=false;break end
@@ -576,7 +576,7 @@ function M.MaterialServiceStreams(site,kind,ready,housing)
     local counts,working=materialServiceState(site)
     local result={streams={}}
     for _,service in ipairs(site.services)do
-        if materialServiceCanResume(service,working,ready,site.horizon)
+        if service.unlock==0 and serviceAssetsReady(service,working,ready,site.horizon)
             and service.materials[kind]==(counts[kind]or 0)+1 then
             local enabled=true
             for other,count in pairs(service.materials)do
@@ -594,6 +594,56 @@ function M.MaterialServiceStreams(site,kind,ready,housing)
     end
     poolServiceHousing(result,housing,site.horizon)
     return result.streams
+end
+
+function M.ServiceResearchOffers(sites,housing,horizon,price)
+    -- Credit the exact topic only for benefits it can activate by itself.
+    -- Existing physical chains supply the gates and native research owns
+    -- the cost, dependency tree and immediate step. Price benefits from ETA
+    -- in the same Q8 as other research offers, with no building speculation.
+    local topics={}
+    for _,site in ipairs(sites)do
+        if site.existing and site.quarterReady==0 and site.services and #site.services>0 then
+            local counts,working=materialServiceState(site)
+            for _,service in ipairs(site.services)do
+                local topic,ready=service.researchTopic,service.unlock
+                if topic and present(ready) and serviceAssetsReady(service,working,ready,horizon)then
+                    local supplied=true
+                    for kind,amount in pairs(service.materials)do
+                        if (counts[kind]or 0)<amount then supplied=false;break end
+                    end
+                    local yield,amount=serviceRate(service)
+                    if supplied and amount>0 and (yield~='HOUSING'or housing and housing.cities[service.city])then
+                        local key=topic.kind..':'..topic.index
+                        local offer=topics[key]
+                        if not offer then
+                            offer={kind=topic.kind,index=topic.index,streams={},omissions={},effects={},chains={}}
+                            topics[key]=offer
+                        end
+                        -- Each attached effect can pay once per physical
+                        -- source and recipient. Several effects on one Service
+                        -- count as one chain for diagnostics, not several bids.
+                        local id=site.key..':'..service.id
+                        if not offer.effects[id]then
+                            offer.effects[id]=true
+                            offer.chains[site.key..':'..(service.service or service.stage)..':'..service.plot]=true
+                            offer.streams[#offer.streams+1]={id=id,city=service.city,yield=yield,amount=amount,
+                                ready=ready,finish=service.finish,service=true,pseudoYield=service.pseudoYield}
+                            if yield=='HOUSING'then offer.hasServiceHousing=true end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    for key,offer in pairs(topics)do
+        -- Apply a receiving city's growth threshold once to all Housing
+        -- this topic would unlock. The baseline already has active effects.
+        if offer.hasServiceHousing then poolServiceHousing(offer,housing,horizon)end
+        local value=M.Price(offer,price,horizon)
+        if value and value>0 then offer.value=value else topics[key]=nil end
+    end
+    return topics
 end
 
 -- Pool simultaneous amenity changes once per owner/city/interval. Native
@@ -1259,6 +1309,68 @@ function M.StageTwoCustomerValue(site,customer,price)
         value=value+priced
     end
     return value
+end
+
+function M.StageBuildingInvestment(links,price)
+    -- Evaluate exactly one later-stage building against the same physical
+    -- world without it. Links share one city/type order and therefore one
+    -- construction clock. Use the existing ledger for the population pools,
+    -- step bands and directional payouts, with no speculative second order.
+    local horizon=links[1].site.horizon
+    local function quote(build)
+        local context=newLedger({},nil)
+        context.joint=true
+        context.result.chainStages={}
+        context.populationBaselines={}
+        for _,link in ipairs(links)do
+            local source=link.site
+            local site={key=source.key,player=source.player,city=source.city,population=source.population,
+                existing=true,quarterReady=0,horizon=horizon,materialYield=source.materialYield,
+                suppliers=link.suppliers or{},customers={}}
+            local second
+            for _,definition in ipairs(source.seconds or{})do if definition.working then second=definition;break end end
+            if source.third and source.third.working then site.third=source.third end
+            if source.fourth and source.fourth.working then site.fourth=source.fourth end
+            for _,customer in ipairs(source.customers)do
+                if customer.working then site.customers[#site.customers+1]=customer end
+            end
+            if link.producer then
+                -- Other sellers already feed working recipients. Preserve
+                -- their raw targets so adding this producer rounds once.
+                for key,value in pairs(source.populationBaselines or{})do
+                    context.populationBaselines[source.player..':'..key]=value
+                end
+            end
+            if build then
+                -- Native building evaluation owns its ordinary upkeep and
+                -- intrinsic Amenities. The add-on bid prices CSC's exchange.
+                local function withoutNativeValue(building)
+                    local target={}
+                    for key,value in pairs(building)do target[key]=value end
+                    target.maintenance=0;target.amenityAmount=0;target.forecastDepth=0
+                    return target
+                end
+                if link.producer then site[link.producer]=withoutNativeValue(link.building)
+                else for _,customer in ipairs(link.customers)do
+                    site.customers[#site.customers+1]=withoutNativeValue(customer)
+                end end
+            end
+            ledger(site,second,context)
+            if context.error then return nil end
+            if build and link.developmentCost then
+                -- The separate supplier jobs spend Builder capacity. Their
+                -- delays already gate material receipts, while their cost
+                -- enters once here, independent of the building's own cost.
+                context.result.streams[#context.result.streams+1]={id=source.key..':supplier-development',
+                    city=source.city,yield='YIELD_PRODUCTION',amount=-link.developmentCost,ready=0,fixed=true}
+            end
+        end
+        local result=finishLedger(context)
+        return result and M.Price(result,price,horizon)
+    end
+    local before=quote(false)
+    local after=quote(true)
+    if before and after then return after-before end
 end
 
 function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,price)

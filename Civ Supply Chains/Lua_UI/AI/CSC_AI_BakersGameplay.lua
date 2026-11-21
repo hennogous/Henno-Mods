@@ -296,6 +296,15 @@ local function refresh(turn)
         local research=(materialTechLimit>0 or materialCivicLimit>0) and {} or nil
         local deductions, sites, bids, candidates, chains, threatened = placement.MaterialDeductions(player, protectBuilders,
             builderBidLimit, nominationLimit, playerUI.CanProduceItem, repairLimit > 0,economy,research)
+        if economy then
+            CSC_AI_EconomyAdapters.LaterStageInvestments(economy,research,bids,nominationLimit)
+        end
+        if economy and research then
+            -- Ready Services, producer unlocks and material jobs share the
+            -- native final-goal comparator. Merge by topic before applying
+            -- CE's four-topic limit and let it choose the prerequisite step.
+            CSC_AI_EconomyAdapters.ServiceResearch(economy,research)
+        end
         local topics={}
         for _,offer in pairs(research or{})do
             local limit=offer.kind=='tech' and materialTechLimit or materialCivicLimit
@@ -473,10 +482,28 @@ local function refresh(turn)
                 turn,version+1,offer.player,offer.city,offer.plot,offer.unit))
         end
     end
+    if #nominations<=capacity then
+        for _,bid in ipairs(nominations)do
+            if bid.stageReason then
+                print(string.format('CSC_AI_LATER_BUILDING_OFFER turn=%d version=%d player=%d city=%d building=%d role=%s deltaQ8=%d',
+                    turn,version+1,bid.player,bid.city,bid.building,bid.stageReason,bid.delta))
+            end
+        end
+    end
     for _,offer in ipairs(materialResearch)do
         local plots={};for plot in pairs(offer.jobs)do plots[#plots+1]=plot end;table.sort(plots)
-        print(string.format('CSC_AI_MATERIAL_RESEARCH_OFFER turn=%d version=%d player=%d kind=%d index=%d deltaQ8=%d plots=%s',
-            turn,version+1,offer.player,offer.kind,offer.index,offer.deltaQ8,table.concat(plots,',')))
+        if #plots>0 then
+            print(string.format('CSC_AI_MATERIAL_RESEARCH_OFFER turn=%d version=%d player=%d kind=%d index=%d deltaQ8=%d plots=%s',
+                turn,version+1,offer.player,offer.kind,offer.index,offer.deltaQ8,table.concat(plots,',')))
+        end
+        if offer.serviceQ8 then
+            print(string.format('CSC_AI_SERVICE_UNLOCK_OFFER turn=%d version=%d player=%d kind=%d index=%d serviceQ8=%d chains=%d deltaQ8=%d',
+                turn,version+1,offer.player,offer.kind,offer.index,offer.serviceQ8,offer.serviceChains,offer.deltaQ8))
+        end
+        if offer.producerQ8 then
+            print(string.format('CSC_AI_LATER_PRODUCER_RESEARCH_OFFER turn=%d version=%d player=%d kind=%d index=%d producerQ8=%d deltaQ8=%d',
+                turn,version+1,offer.player,offer.kind,offer.index,offer.producerQ8,offer.deltaQ8))
+        end
     end
     if allowances<=capacity then
         -- Only published preparation bids appear here. Join this exact

@@ -236,9 +236,14 @@ function F.ServiceRecords(site,profile,snapshot,research)
     if site.fourth then sources[#sources+1]=site.fourth end
     for _,source in ipairs(sources)do
         for _,definition in ipairs(catalog.byProducer[replacements[source.type]or source.type]or{})do
-            local unlocked=0
-            for civic in pairs(definition.owner.civics)do unlocked=math.max(unlocked,research('civic',civic))end
-            for tech in pairs(definition.owner.techs)do unlocked=math.max(unlocked,research('tech',tech))end
+            local unlocked,missing,topic=0,0,nil
+            local function readGate(kind,key)
+                unlocked=math.max(unlocked,research(kind,key))
+                local index=snapshot.UnownedResearch and snapshot.UnownedResearch(kind,key)
+                if index then missing=missing+1;topic={kind=kind,index=index}end
+            end
+            for civic in pairs(definition.owner.civics)do readGate('civic',civic)end
+            for tech in pairs(definition.owner.techs)do readGate('tech',tech)end
             for _,customer in ipairs(site.customers or{})do
                 local canonical=replacements[customer.type]or customer.type
                 local stamp=source.type..':'..definition.id..':'..customer.plot
@@ -255,6 +260,10 @@ function F.ServiceRecords(site,profile,snapshot,research)
                         stage=definition.stage,customer=customer,city=customer.city,plot=customer.plot,
                         kind=definition.kind,amount=definition.amount,pseudoYield=definition.pseudoYield,service=definition.service,
                         yieldType=definition.yield,unlock=unlocked,materials={}}
+                    -- Only one missing gate can independently switch this
+                    -- effect on. ETA is forecast data; ownership is checked
+                    -- separately so a near-complete topic stays eligible.
+                    if missing==1 then record.researchTopic=topic end
                     for tag,count in pairs(definition.owner.tags)do
                         if tag==profile.base then record.materials.base=count end
                         if tag==profile.specialty then record.materials.specialty=count end
@@ -695,6 +704,18 @@ function F.New(player,placement,ui,context)
         local city=snapshot.cities[cityID]
         return city and city.foodSurplus~=nil and cityNumber(city.object,'housing',0)or nil
     end
+    function snapshot.SupplierChargeCost(cityID)
+        -- Use the native current Builder price and loaded initial charges.
+        -- This is an opportunity cost for prospective development, not a
+        -- request to buy a Builder for each Stage 4 investment.
+        local city=snapshot.cities[cityID]
+        local builder=GameInfo.Units and GameInfo.Units.UNIT_BUILDER
+        local charges=builder and builder.BuildCharges
+        if city and charges and charges>0 then
+            local cost=cityNumber(city.object,'unit',builder.Index)
+            if cost and cost>0 then return cost/charges end
+        end
+    end
     function snapshot.MaterialBuyerCommitment(city, buyers, horizon)
         -- The city has one active item. Cached numeric queue facts are valid
         -- only for this publication; a switched or unreadable item earns no
@@ -778,6 +799,14 @@ function F.New(player,placement,ui,context)
         local turns=work(key);snapshot.research[memoKey]=turns;return turns
     end
     snapshot.Research=research
+    function snapshot.UnownedResearch(kind,key)
+        if not key or key=='' then return nil end
+        local definition=(kind=='tech'and GameInfo.Technologies or GameInfo.Civics)[key]
+        if not definition then return nil end
+        local owned=kind=='tech'and tech:HasTech(definition.Index)
+            or kind=='civic'and culture:HasCivic(definition.Index)
+        if not owned then return definition.Index end
+    end
     local traits={}
     local config=PlayerConfigurations[pid]
     if config then
@@ -1080,7 +1109,7 @@ function F.New(player,placement,ui,context)
         local works=host and host.working and intact
         local cost=cityNumber(city.object,'building',definition.Index)
         local unlocked=math.max(research('tech',definition.PrereqTech),research('civic',definition.PrereqCivic))
-        local b={type=definition.BuildingType,working=works,intactOwner=intact and host and host.complete or false,
+        local b={type=definition.BuildingType,present=present,working=works,intactOwner=intact and host and host.complete or false,
             unlock=works and 0 or unlocked,cost=cost,
             turns=cityNumber(city.object,'buildingTurns',definition.Index)
                 or(cost and city.production and city.production>0 and math.max(1,math.ceil(cost/city.production))or INF),

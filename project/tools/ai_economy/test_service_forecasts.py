@@ -106,6 +106,55 @@ a.services[1].unlock=30
 assert(M.JointForecast(withServices({a}),price).serviceStreams==0)
 ''')
 
+    def test_one_research_topic_credits_distinct_ready_chains_once(self):
+        vm = self.vm()
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local a=supplied('A',1);local b=supplied('B',2)
+for _,site in ipairs({a,b})do
+    site.services[1].unlock=5
+    site.services[1].researchTopic={kind='civic',index=6}
+end
+local bids={['civic:6']={player=1,kind='civic',index=6,value=300,jobs={[9]=true}}}
+local snapshot={id=1,evaluationContext={horizon=30},Price=price,
+    chains={{ready=true,economy=a},{ready=true,economy=a},{ready=true,economy=b}}}
+CSC_AI_EconomyAdapters.ServiceResearch(snapshot,bids)
+local bid=assert(bids['civic:6'])
+assert(bid.value==300+50*256 and bid.serviceQ8==50*256 and bid.serviceChains==2 and bid.jobs[9])
+for key in pairs(bids)do assert(key=='civic:6')end
+''')
+
+    def test_service_research_requires_every_other_gate_to_be_ready(self):
+        self.vm().execute('''
+local a=supplied('A',1)
+local s=a.services[1]
+s.stage=4;s.producer='CAFE';s.unlock=5;s.researchTopic={kind='civic',index=12}
+s.materials.specialty=1
+a.fourth={type='CAFE',working=true}
+local function offer()return M.ServiceResearchOffers({a},nil,30,price)['civic:12']end
+assert(not offer())
+a.suppliers[2]={kind='specialty',plot=12,ready=5};assert(not offer())
+a.suppliers[2].ready=0;assert(offer().value==25*256)
+s.customer.working=false;assert(not offer());s.customer.working=true
+a.fourth.working=false;assert(not offer());a.fourth.working=true
+s.finish=5;assert(not offer());s.finish=nil
+s.researchTopic=nil;assert(not offer())
+''')
+
+    def test_service_research_pools_housing_across_chains(self):
+        self.vm().execute('''
+local a=supplied('A',1);local b=supplied('B',2)
+for _,site in ipairs({a,b})do
+    local service=site.services[1]
+    service.kind='HOUSING';service.amount=1;service.unlock=5
+    service.researchTopic={kind='civic',index=9}
+end
+local housing={cities={[3]={active=0,left=0,food=2}},activeCities={},stop=-4,quarter=0,half=1}
+local bid=assert(M.ServiceResearchOffers({a,b},housing,30,price)['civic:9'])
+assert(#bid.streams==1 and bid.streams[1].yield=='YIELD_FOOD' and bid.streams[1].amount==1.5)
+assert(bid.value==25*256*1.5)
+''')
+
     def test_two_physical_producers_can_pay_one_recipient(self):
         self.vm().execute('''
 local a,b=supplied('A',1),supplied('B',2)
@@ -306,7 +355,7 @@ end}
 local source={GetX=function()return 0 end,GetY=function()return 0 end}
 local function chain(key,working,specialty)
  return {profile={key=key},plot=source,ready=true,workingBase=working,
-  supply={base={{}},specialty={{working=specialty}}}}
+  supply={base={{working=working,ready=true}},specialty={{working=specialty,ready=true}}}}
 end
 local player={GetID=function()return 1 end}
 local offers=E.WonderOffers(player,{chain('TAILORS',false,false),chain('TAILORS',true,true),
@@ -317,6 +366,9 @@ assert(#E.WonderOffers(player,{chain('BAKERS',true,true)}, {},10,24*256)==0)
 assert(E.WonderOffers(player,{chain('TAILORS',true,false)}, {},1,24*256)[1].deltaQ8==16*256)
 assert(E.WonderOffers(player,{chain('TAILORS',false,false)}, {},1,24*256)[1].deltaQ8==8*256)
 assert(E.WonderOffers(player,{chain('TAILORS',true,true)}, {},1,8*256)[1].deltaQ8==8*256)
+local blocked=chain('TAILORS',true,false)
+blocked.supply.specialty[1].ready=false
+assert(#E.WonderOffers(player,{blocked}, {},10,24*256)==0)
 ''')
 
     def test_wonder_offers_publish_inside_the_native_packet(self):

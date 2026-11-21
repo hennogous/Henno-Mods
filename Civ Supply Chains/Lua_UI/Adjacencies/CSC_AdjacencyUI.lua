@@ -124,6 +124,7 @@ ExposedMembers.CSC_Adjacency.GetEconomyCityNumber = function(playerID, cityID, k
     local queue = city:GetBuildQueue();
     if kind == 'building' then return economyNumber(queue, 'GetBuildingCost', index); end
     if kind == 'district' then return economyNumber(queue, 'GetDistrictCost', index); end
+    if kind == 'unit' then return economyNumber(queue, 'GetUnitCost', index); end
 
     -- Queue demand belongs in this numeric reader, not district-target lookup.
     -- Return definition IDs/turns only; Gameplay never borrows a UI unit/queue.

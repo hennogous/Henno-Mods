@@ -14,6 +14,9 @@ local F=CSC_AI_EconomyFacts
 local C=CSC_AI_PlanContinuity
 local planStates={}
 local wonderCustomers
+-- Match the ceiling used for Stage 2 exchange orders in the shared building
+-- packet. These are Q8 utility points in the native production comparison.
+local LATER_BUILDING_CAP_Q8=64*256
 
 function E.WonderOffers(player,chains,protectedPlots,limit,maxOfferQ8)
     -- The same generated sales catalogue feeds the Quarter forecast for
@@ -33,20 +36,24 @@ function E.WonderOffers(player,chains,protectedPlots,limit,maxOfferQ8)
     end
     local pid=player:GetID()
     local offers,seen={},{}
+    local function supplierLevel(materials)
+        local level=0
+        for _,material in ipairs(materials or{})do
+            if material.working then return 2 end
+            if material.ready then level=1 end
+        end
+        return level
+    end
     for _,chain in ipairs(chains or{})do
         local mapped=wonderCustomers[chain.profile.key]
         local supply=chain.supply
-        if mapped and chain.ready and supply and #(supply.base or{})>0 then
-            -- A working Base makes the chain more credible. Both material
-            -- classes in operation get the strongest allowance because the
-            -- Wonder Service needs both. Each step of supplier readiness adds
-            -- eight utility before CE applies its proportional cap.
-            local amount=chain.workingBase and 16 or 8
-            if chain.workingBase then
-                for _,material in ipairs(supply.specialty or{})do
-                    if material.working then amount=24;break end
-                end
-            end
+        local base=supply and supplierLevel(supply.base)or 0
+        local specialty=supply and supplierLevel(supply.specialty)or 0
+        if mapped and chain.ready and base>0 and specialty>0 then
+            -- A Stage 4 Wonder chain needs both classes. A legal future
+            -- supplier permits an offer. Each working class adds eight
+            -- utility before CE's positive-row and proportional checks.
+            local amount=(base+specialty-1)*8
             -- Older CE accepts at most 8 utility. Keep its packet valid.
             local deltaQ8=math.min(amount*256,maxOfferQ8)
             for _,plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
@@ -1446,6 +1453,186 @@ function E.StageTwoCustomerValue(snapshot,chain,buyer,footprint,building)
             and customer.building==building.BuildingType and customer.stage==2 then
             return M.StageTwoCustomerValue(site,customer,snapshot.Price)
         end
+    end
+end
+
+local function stageFourSuppliers(snapshot,chain)
+    -- Consider the actual working suppliers and at most one feasible job
+    -- for a missing class. The ledger retains each job's material ETA and
+    -- charges one share of a Builder for each distinct new improvement.
+    local site,selected,jobs=chain.economy,{},{}
+    for _,kind in ipairs({'base','specialty'})do
+        local legal={}
+        for _,material in ipairs(chain.supply[kind]or{})do
+            if material.ready then legal[material.plot]=material end
+        end
+        local working,pending=false,nil
+        for _,supplier in ipairs(site.suppliers)do
+            local fact=legal[supplier.plot]
+            if supplier.kind==kind and fact then
+                if supplier.ready==0 and fact.working then
+                    selected[#selected+1]=supplier;working=true
+                elseif supplier.ready>0 and supplier.ready<site.horizon
+                    and (not pending or supplier.ready<pending.ready
+                        or supplier.ready==pending.ready and supplier.plot<pending.plot)then
+                    pending=supplier
+                end
+            end
+        end
+        if not working then
+            if not pending then return nil end
+            selected[#selected+1]=pending
+            -- Repair consumes movement and its ready-time allowance, but
+            -- native execution preserves the Builder charge.
+            if not legal[pending.plot].repairable then jobs[pending.plot]=true end
+        end
+    end
+    if not next(jobs)then return selected,0 end
+    local cost=snapshot.SupplierChargeCost(site.city)
+    if not cost then return nil end
+    local count=0
+    for _ in pairs(jobs)do count=count+1 end
+    return selected,cost*count
+end
+
+function E.LaterStageInvestments(snapshot,research,nominations,nominationLimit)
+    -- Reuse the established city/building comparison and final research-goal
+    -- packet. No new queue order is created here. Physical customer groups
+    -- combine every connected working source before pricing one building.
+    if #snapshot.chains>64 then return end
+    local byBuilding,customerGroups={},{}
+    for _,bid in ipairs(nominations)do byBuilding[bid.city..':'..bid.building]=bid end
+    local function allowed(city,definition)
+        return nominationLimit>0 and type(snapshot.ui.CanProduceItem)=='function'
+            and snapshot.ui.CanProduceItem(snapshot.id,city,definition.Hash)==true
+    end
+    local function nominate(city,definition,value,reason)
+        local delta=math.min(nominationLimit,LATER_BUILDING_CAP_Q8,math.floor(value or 0))
+        if delta<=0 then return end
+        local key=city..':'..definition.Index
+        local previous=byBuilding[key]
+        if previous then
+            previous.delta=math.max(previous.delta,delta)
+            previous.queueDelta=math.max(previous.queueDelta or 0,delta)
+        else
+            local offer={player=snapshot.id,city=city,building=definition.Index,delta=delta,queueDelta=delta,stageReason=reason}
+            nominations[#nominations+1]=offer;byBuilding[key]=offer
+        end
+    end
+    local function considerProducer(chain,site,field)
+        local building=site[field]
+        if not building or building.present or building.working or building.excluded or building.prerequisites
+            or not building.unlock or not building.turns
+            or building.unlock+building.turns>=site.horizon then return end
+        local definition=GameInfo.Buildings[building.type]
+        if not definition or not snapshot.MaterialBuyerPrerequisitesMet(chain,definition)
+            or snapshot.MaterialBuyerCommitment(chain.city,{definition},site.horizon)then return end
+        local tech=snapshot.UnownedResearch('tech',definition.PrereqTech)
+        local civic=snapshot.UnownedResearch('civic',definition.PrereqCivic)
+        local researching=tech~=nil or civic~=nil
+        -- Submit a locked producer through its one missing research target.
+        -- A building nomination here could let native preparation bypass
+        -- the separate population-10 construction policy.
+        if researching then
+            if not research or tech and civic or site.population<7 then return end
+        elseif site.population<10 or not allowed(site.city,definition)then return end
+        local suppliers,cost
+        if field=='fourth'then
+            suppliers,cost=stageFourSuppliers(snapshot,chain)
+            if not suppliers then return end
+        end
+        local value=M.StageBuildingInvestment({{site=site,producer=field,building=building,
+            suppliers=suppliers,developmentCost=cost and cost>0 and cost or nil}},snapshot.Price)
+        if not value or value<=0 then return end
+        if researching then
+            local kind,index=tech and 'tech'or'civic',tech or civic
+            local key=kind..':'..index
+            local offer=research[key]or{player=snapshot.id,kind=kind,index=index,value=0,jobs={}}
+            offer.producerCities=offer.producerCities or{}
+            local previous=offer.producerCities[site.city]or 0
+            local gain=math.max(0,value-previous)
+            -- Distinct cities may invest after the same unlock. One city
+            -- earns only its strongest project while it has one queue.
+            offer.producerCities[site.city]=math.max(value,previous)
+            offer.producerQ8=(offer.producerQ8 or 0)+gain
+            offer.value=offer.value+gain;research[key]=offer
+        else nominate(site.city,definition,value,field)end
+    end
+    if nominationLimit<=0 and not research then return end
+    for _,chain in ipairs(snapshot.chains)do
+        local site=chain.economy
+        if chain.ready and site then
+            if site.population>=7 then
+                considerProducer(chain,site,'third')
+                considerProducer(chain,site,'fourth')
+            end
+            if nominationLimit>0 then for _,customer in ipairs(site.customers)do
+                local producer=customer.stage==3 and site.third or customer.stage==4 and site.fourth
+                if producer and producer.working and customer.complete and not customer.present and not customer.working
+                    and not customer.excluded and not customer.prerequisites and customer.unlock==0
+                    and customer.turns<site.horizon then
+                    local definition=GameInfo.Buildings[customer.type]
+                    if definition then
+                        local key=customer.city..':'..definition.Index
+                        local group=customerGroups[key]
+                        if not group then
+                            group={city=customer.city,plot=customer.plot,definition=definition,links={},sites={},
+                                allowed=allowed(customer.city,definition)}
+                            customerGroups[key]=group
+                        end
+                        if group.allowed and group.plot==customer.plot then
+                            local link=group.sites[site.key]
+                            if not link then
+                                link={site=site,customers={}};group.sites[site.key]=link
+                                group.links[#group.links+1]=link
+                            end
+                            link.customers[#link.customers+1]=customer
+                        end
+                    end
+                end
+            end end
+        end
+    end
+    -- Stable order keeps equally priced physical orders reproducible.
+    local keys={};for key in pairs(customerGroups)do keys[#keys+1]=key end;table.sort(keys)
+    for _,key in ipairs(keys)do
+        local group=customerGroups[key]
+        if #group.links>0 then
+            nominate(group.city,group.definition,M.StageBuildingInvestment(group.links,snapshot.Price),'customer')
+        end
+    end
+end
+
+function E.ServiceResearch(snapshot,research)
+    -- Use only this empire's existing Quarter snapshot. Material repair
+    -- supplies the same actual Housing baseline; topic pooling applies all
+    -- new effects together before the bridge compares research goals.
+    local sites,housing={},nil
+    for _,chain in ipairs(snapshot.chains)do
+        local site=chain.economy
+        if chain.ready and site and site.services and #site.services>0 then
+            sites[#sites+1]=site
+            for _,service in ipairs(site.services)do
+                if service.kind=='HOUSING'and service.known and service.researchTopic then
+                    local facts=snapshot.MaterialHousing(site)
+                    if facts then
+                        -- Keep memoized site facts immutable while
+                        -- collecting receiving cities across chains.
+                        housing=housing or{cities={},activeCities={},stop=facts.stop,quarter=facts.quarter,half=facts.half}
+                        for id,city in pairs(facts.cities)do housing.cities[id]=city end
+                    end
+                    break
+                end
+            end
+        end
+    end
+    for key,quote in pairs(M.ServiceResearchOffers(sites,housing,snapshot.evaluationContext.horizon,snapshot.Price))do
+        local offer=research[key]or{player=snapshot.id,kind=quote.kind,index=quote.index,value=0,jobs={}}
+        offer.value=offer.value+quote.value
+        offer.serviceQ8=quote.value
+        offer.serviceChains=0
+        for _ in pairs(quote.chains)do offer.serviceChains=offer.serviceChains+1 end
+        research[key]=offer
     end
 end
 
