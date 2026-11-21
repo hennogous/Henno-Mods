@@ -525,6 +525,18 @@ bid would leave this sequence intact if the Builder is already free
 before Sparda looks for one. Trace what releases the original custody.
 See `mashhad-pasture-200-202-caller-trace/native-transfer.json`.
 
+The custody-write trace found an intervening job before Sparda. The
+same turn moved Builder 7143468 from Mashhad's 75694120 to controller
+78512135, then to free (−1), then to Sparda's 78250018. The first write
+came from the managed-unit recruitment branch, return RVA `403707`.
+The release was the original game's ReleaseUnusedUnits call, return
+RVA `543b5b`, from DoGameCoreActions at return RVA `5401be`. Sparda's
+write came from initial free-pool recruitment at return RVA `403399`.
+The game left the Builder on the Sheep, charged and unprocessed,
+until Sparda recruited it. The preceding tree therefore needs its own
+priority and job attribution before choosing an intervention.
+See `mashhad-pasture-200-202-custody-write/native-transfer.json`.
+
 The replay used checkpoint SHA-256
 `2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`.
 See `mashhad-pasture-200-202-context-fix/boundaries.json`, the unit
