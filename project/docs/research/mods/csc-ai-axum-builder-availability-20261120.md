@@ -419,9 +419,10 @@ at the successful release callback.
 In the completed log, the buyer first had one legal Base site and no
 working Base at turn 104. The same state appeared at every survey through
 167. Edinburgh first reserved Cattle on turn 166, 62 turns after that
-first survey. The city had logged thirteen reservations for other
-improvements in the interval. Nine cities evaluated the same fallback
-Builder contract, which was still waiting when the loan supplied an
+first survey. The city logged nine competing job starts and four
+refreshes of the same Monastery reservation on turns 136–139.
+Nine cities evaluated the same fallback Builder contract, which was
+still waiting when the loan supplied an
 existing worker one turn after the reservation. This case separates the
 pre-reservation delay from the recruitment delay. The handoff starts at
 recruitment, after the native job has its site.
@@ -474,6 +475,54 @@ empire workloads and concurrent offline analysis during the control.
 The Edinburgh native release itself took 0.177 ms. Both arms retain
 the original packages, queue and behavior logs, and material observations
 under `ordinary-continent-worker-loan/loan-on` and `loan-off`.
+
+### Edinburgh's improvement slot and the old boost reservation
+
+Read-only replays from the same game's turn-100 and turn-150 checkpoints
+matched 84 and 122 structural records, respectively. Both used the frozen
+CSC and CE packages and the stock Windows Steam XP2 26595377 GameCore
+(SHA-256 prefix `4de40abf`). Both closed normally and restored preferences.
+Reload can change later decisions, so these are two traced windows.
+
+| Replay window | Native city job checks | Slot occupied | Slot opened |
+| --- | ---: | ---: | ---: |
+| 100–131 | 32 | 26 | 6 |
+| 150–168 | 19 | 17 | 2 |
+
+All four openings after the buyer's first observed readiness in the
+early window used a different improvement type. In the later window
+Edinburgh's cached type was often Pasture while the slot was occupied.
+At the two vacancies the type was Golf Course and the exact stock
+selector returned plot (30, 31).
+
+| Native turn, late replay | Stock Golf Course Q8 | Cached Cattle Pasture Q8 | Gap in whole utility |
+| ---: | ---: | ---: | ---: |
+| 151 | 74,672 | 49,020 | 100.20 |
+| 161 | 65,860 | 45,139 | 80.94 |
+
+The raw Cattle reservation handle 5242902 survived in the old plot
+row. The first matching original reservation on (30, 30) came from
+Seek Tech Boost for Horseback Riding on turn 41. Scotland owned the
+tech on 44, and the tree last reported a failed Move Unit on 48.
+In the late replay the stock selector looked up the exact handle on
+151 and 161 and received null both times. The stale bytes did not
+disqualify the plot. Pasture lost through slot timing and the preferred
+improvement type, with a price gap above a small extra preference.
+
+The late replay's Golf Course opened on 151, made ten unsuccessful
+Builder searches, and let contract 3223 expire before reopening the
+same plot and improvement on 161. Two other Builder contracts
+completed for the same player during that interval.
+The replay leaves open whether a different reservation would secure
+a worker sooner.
+
+Native anchors on this build are AnalyzeTerrain `3de500`,
+CheckForImprovement `3e0a10`, GetBestLocationFor `3e5010`, and
+ControlManager Find `4019d0`. The latter's return address in the
+location selector is `3e50d3`. The REA reference SHA `324c51e9`
+maps the functions to `3dec40`, `3e1150`, `3e5750` and `4019f0`;
+the Windows PE entry fingerprints qualified the runtime probes.
+Evidence is under `Desktop/Codex/csc-ai-edinburgh-admission-20261121`.
 
 ### Other supplier delays in the enabled game
 

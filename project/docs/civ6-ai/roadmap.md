@@ -1213,6 +1213,9 @@ is legal on the actual plot and available to its owner.
   bare. The earlier reservation gives a concrete job to trace through worker
   allocation and movement.
   [Pricing and follow-through](../research/mods/csc-ai-material-job-followthrough-20261118.md).
+  Edinburgh's native replays separated occupied-slot turns, the two
+  late Golf Course wins and a stale Cattle reservation the engine ignored.
+  [Edinburgh admission trace](../research/mods/csc-ai-axum-builder-availability-20261120.md#edinburghs-improvement-slot-and-the-old-boost-reservation).
 - **3.2 Assignment and supply.** Use a reachable Builder with charges,
   including across cities. Value another Builder when useful work exceeds
   available capacity. In Melbourne's opening replay the AI already
