@@ -79,8 +79,8 @@ Stage 3 repair correction. Both pairs are under
 The second ordinary pair uses Fractal map seed `28111119` and game seed
 `38111119`. This was chosen before running either arm because the older
 dispatch comparison on that map saw up to five eligible Specialty buyers.
-The current pair will use the same preparation packages and timing
-observer as the first ordinary pair.
+It uses the same preparation packages and timing observer as the first
+ordinary pair.
 
 ### Continents checkpoint, turns 150–175
 
@@ -217,6 +217,36 @@ Through turn 56, before native decisions diverged, the corresponding mean
 was 0.232 s vs 0.250 s. The separately tracked native managed-cell refresh
 averaged 13.4 ms vs 14.0 ms over the whole game. Both arms recorded zero
 failed publications.
+
+### Second ordinary Fractal control, Online turns 1–250
+
+The control reached turn 250, archived all ten census milestones and
+closed cleanly with verified preference restoration. The treatment began
+with the exact same starting units, leaders, map and loaded native
+capabilities. The reservation and assignment counts below were checked
+against the decoded improvement and the archived resource compatibility
+table.
+
+| Material | Needed work | Already working at preparation | Reserved / assigned / working by opening | Reserved / assigned / working by +10 |
+| --- | ---: | ---: | ---: | ---: |
+| Base | 8 | 9 | 5 / 5 / 4 | 7 / 7 / 5 |
+| Specialty | 1 | 3 | 1 / 1 / 1 | 1 / 1 / 1 |
+
+Five of seven Bakers Base cases met the deadline. The one Tailors Base
+case received a reservation and an assignment by the deadline and gained
+working supply on 220, 25 turns after opening. One additional Base window was interrupted. The
+Specialty buyer that needed work was Bakers plot 2869. It became eligible
+on 112, first had an observed reservation and assignment on 148, and
+had a working supplier by 165, five turns before the buyer opened. Five
+other Specialty buyers had no legal supplier by their deadlines, and
+three opened too late for the full window.
+
+One Base outage resolved after nine turns. Another was still open at
+250. AI empires trained 104 and bought 101 Builders, and completed 1,416
+other production orders. The guidance publisher averaged 1.948 seconds
+per turn with a maximum of 4.692 seconds. The separately measured native
+managed-cell update averaged 14.2 ms and peaked at 35.2 ms per turn.
+All 250 publications succeeded.
 
 ### Matched Stage 3 outage in Popayán
 
