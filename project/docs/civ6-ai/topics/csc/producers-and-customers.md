@@ -552,11 +552,54 @@ The publisher recorded 200 packets with no failures. Mean and maximum
 wall times were 0.510 and 1.542 seconds per turn. Native managed cells
 averaged 9.215 ms and peaked at 20.817 ms.
 
-For a targeted ordinary follow-up, rerun from Ancient on Small Online
-Fractal seed 28061117, game seed 38061117. That starting world
-previously formed the Tailors–Harbor opportunity verified in the matched
-Québec replay. The seeds match the retained checkpoint and the
+## Québec bought its Lighthouse while building a Commercial Hub
+
+The targeted follow-up started normally in the Ancient era on Small
+Online Fractal seed 28061117, game seed 38061117. The archived seed had
+previously formed the opportunity used in the matched Québec replay.
+The game used the same integrated CSC and CE packages and resumed from
+its own turn-125 autosave after an interruption. The shared controller
+matched all 150 structural records before resuming stock AI play. See the
 [original full-game protocol](../../../research/mods/csc-ai-material-development-matched-20261118.md).
+
+Ottawa queued its Textile Workshop on turn 130. It was operating at
+Tailors plot 545 by turn 150 with working Base supply. Neighboring
+Québec finished its Harbor at plot 546 on 153. CSC first published
+the Lighthouse preference on 154. Seven packets offered the 64-point
+preference (16,384 Q8). It reached the fallback building comparison
+in two packets and the ordinary nomination in one. Québec submitted
+Lighthouse contract 3202 on 158 and the purchase log carried the
+same contract on 160. Québec invested production in a Commercial Hub
+on turns 159–162, including the purchase turn. The Lighthouse and
+Workshop were operating at the turn-175 and turn-200 censuses, with
+a positive Dockmaster property on both turns.
+
+The turn-200 save SHA-256 was
+`4fd0a371bf0c05581214079976e5e0c91a024f005484eac2019d3017b76dfb48`.
+A read-only reload matched 240 structural records. The actual native
+modifier owners and subjects confirmed +1 Production at the
+Lighthouse in Québec (city 131073), and +1 Production and +1 Gold
+at the Workshop in Ottawa (city 65536, Gold option on). The same
+readback confirmed the active exchanges for the eight Bakers pairs.
+
+At turn 200 the original AI seats had eight operating Mill–Granary
+pairs and one Workshop–Lighthouse pair. The corresponding counts of
+operating Stage 2 producers were twelve and five. Across the original
+and resumed segments there were 255 published Granary windows, with
+34 ordinary writes and 67 fallback writes. The joint publisher timing
+averaged 1.226 seconds and peaked at 8.063 seconds per turn, including
+the original turns 1–125 and the resumed turns 126–200. The latter
+segment averaged 2.234 seconds per turn. Native managed-cell work across
+both segments averaged 9.910 ms and peaked at 35.368 ms.
+This run measures the integrated policy in ordinary play with a reload.
+The matched tests above establish what happened against the prior policy.
+
+Problem 5.1 is verified for Bakers and Tailors. The matched replays
+follow both native selection paths through a physical exchange, including
+an already completed Harbor. The ordinary runs repeat the behavior with
+the integrated policy, including Québec's purchase while another
+investment used production. The unique Granary fixture verifies variant
+resolution and pricing using the loaded gameplay definitions.
 
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 

@@ -1,13 +1,12 @@
 # Current CSC AI status
 
-**21 November — Problem 5 is active.** The data-driven customer bid
-reached Québec's Lighthouse queue comparison and Saint John's Granary
-nomination and purchase. Both replays verified the exchange. The fresh
-Fractal game ended with seven working Bakers pairs and 105 Granary
-queue writes. Island Plates recorded three more working Bakers pairs.
-Swenett selected the +3 Tailors site ten times without admitting a
-construction contract. The normal start on the Québec map is running.
-[Customer results](topics/csc/producers-and-customers.md#island-plates-exercised-bakers-and-stalled-before-tailors-investment).
+**21 November — Problem 5 verified.** The data-driven customer bid
+reached both native building selectors in ordinary Québec play.
+The AI bought the Lighthouse on turn 160 while building a Commercial
+Hub. The endpoint verified both sides of the Workshop exchange and
+eight working Bakers pairs. Matched Lighthouse and Granary replays
+independently verified both paths. Problem 6 remains queued.
+[Customer results](topics/csc/producers-and-customers.md#qu%C3%A9bec-bought-its-lighthouse-while-building-a-commercial-hub).
 
 **21 November — Problem 4 verified.** The fresh Continents game ended
 with 16 working Mills and four Workshops. Stockholm completed the
