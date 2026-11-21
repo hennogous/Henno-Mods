@@ -4346,7 +4346,8 @@ arms initially assigned a Builder to Knossos's supplier Farm on turn 55.
 The task reopened on 57. The control picked a Mine at 81 utility, and the
 early-preparation treatment picked the Farm at 93. The fallback Builder
 contract carried those values. The mapped Farm completed four turns sooner
-under treatment. The competing Mine is a concrete displaced job to account
-for in the campaign. Through turn 140, both arms supplied 3 of 5 Base
-buyers that needed work by their respective 10-turn deadlines.
+under treatment. The competing Mine completed on 64 in control and had no
+completion in treatment through 250. In the completed pair, treatment
+supplied 8/11 Base deadline cases and one eligible Specialty case. Control
+supplied 5/11 Base cases and had no unsupplied eligible Specialty case.
 [Native choice, work and competing job](../research/mods/csc-ai-supplier-preparation-20261121.md#first-ordinary-fractal-treatment-earliest-changed-decision).

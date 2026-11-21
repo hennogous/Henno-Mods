@@ -17,7 +17,7 @@
 | 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Closed at the tested Bakers/Tailors scope. |
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Builder follow-through verified in matched and ordinary play. Track recurring delays in combined runs. |
-| 3.1 Exact job and timing | Prepare mapped supply ahead of the buyer and aim for working supply by Online turn +10. | Early native pricing verified in a matched replay. Ordinary timing comparison in progress. |
+| 3.1 Exact job and timing | Prepare mapped supply ahead of the buyer and aim for working supply by Online turn +10. | First matched Online pair reached 8/11 Base cases vs 5/11 and one Specialty case. Further Specialty coverage is open. |
 | 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Verified for idle-worker handoffs and on-site finishing. Axum's Bamboo recovered, Edinburgh's Pasture advanced by 38 turns, and the integrated scheduler completed Mashhad's sole Pasture. |
 | 3.3 Improvement unlocks | Advance research for an otherwise viable supplier job. | Research bid reached the native comparison. Further work is deferred. |
 | [4. Stage 2 producer](#4-stage-2-producer) | Unlock and build the producer when nearby Base supply justifies it. | Verified in matched replays and a fresh 200-turn game. |

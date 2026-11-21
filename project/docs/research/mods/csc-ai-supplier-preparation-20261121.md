@@ -133,3 +133,49 @@ treatment had not logged that Mine completion in Knossos. It opened
 the separate Mine site at (36, 28) one turn later. Both arms had 3 of
 5 eligible Base buyers working by opening plus ten among buyers with
 a completed deadline window at turn 140.
+
+### First ordinary Fractal pair, final turn 250
+
+Both arms reached the deadline and closed cleanly. The table counts
+buyers that lacked working supply at preparation and had a full window.
+Reservation and assignment columns are the observed stock improvement
+tree actions on legal supplier plots, including assignments that carry
+an older reservation. Working columns use the physical survey.
+
+| Material and arm | Needed work | Already supplied at preparation | Reserved / assigned / working by opening | Reserved / assigned / working by +10 |
+| --- | ---: | ---: | ---: | ---: |
+| Base, control | 11 | 8 | 6 / 5 / 5 | 10 / 10 / 5 |
+| Base, treatment | 11 | 9 | 7 / 6 / 5 | 11 / 10 / 8 |
+| Specialty, control | 0 | 1 | 0 / 0 / 0 | 0 / 0 / 0 |
+| Specialty, treatment | 1 | 1 | 0 / 0 / 0 | 1 / 1 / 1 |
+
+Treatment reached 7/9 Bakers and 1/2 Tailors Base cases. Control reached
+5/10 and 0/1. Counting accepted pre-unlock offers as proof of earlier
+eligibility gives the same aggregate treatment counts. Seven Specialty
+openings in each arm lacked legal supply. Control also had one late
+Specialty opening and an interrupted Base window. Treatment had two late
+Specialty openings, one late Base opening and one Base opening without
+legal supply. Buyer dates and cohorts can change after the games diverge.
+
+Québec's Bakers Quarter at 696 provides the first Specialty follow-through
+case. The treatment offered its Berries Plantation at 622 from turn 123,
+published a higher quote once the Café entered production on 134, and
+had the working Café on 139. Québec reserved and staffed the site on 142,
+and built the Plantation on 145. The working supply was observed on 146,
+seven turns after opening. The control had no open Café at that Quarter
+by 250, so it gives no same-buyer timing comparison.
+
+The matched Knossos decision was the first directly observed trade-off.
+Its competing Mine at (33, 29) completed in control on 64 and had no
+completion in treatment through 250. Across the original AI players,
+control trained 98 Builders and bought 129. Treatment trained 111 and
+bought 110, six fewer acquisitions in total. All other recorded queue
+completions were 1,390 vs 1,327. The empire-wide counts include later
+divergence after the early local choices.
+
+Control resolved five of six Base supply outages in 3, 8, 8, 23 and 34
+turns. Its sixth chain became unavailable. Treatment resolved all six
+in 8, 8, 12, 12, 13 and 29 turns. These are buyer episodes, so a shared
+plot can interrupt two buyers. The whole publisher averaged 1.377 s in
+control and 1.569 s in treatment, with maxima of 3.064 and 3.468 s over
+250 turns. The 0.192 s increase in mean includes the changed world state.
