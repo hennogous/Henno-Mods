@@ -20,7 +20,10 @@ def runtime(capability=True,capacity=4096):
     lua=LuaRuntime();lua.execute(fixture.FIXTURE)
     messages=[];lua.globals().print=lambda *args:messages.append(' '.join(map(str,args)))
     def include(name):
-        if name!='CSC_AdjacencyCore':lua.execute((SOURCE/(name+'.lua')).read_text(encoding='utf-8-sig'))
+        if name=='CSC_AdjacencyCore':
+            return
+        folder=SOURCE.parent/'TradeRoutes' if name.startswith('CSC_TradeRoute') else SOURCE
+        lua.execute((folder/(name+'.lua')).read_text(encoding='utf-8-sig'))
     lua.globals().include=include
     include('CSC_AI_BakersGameplay')
     lua.execute('''

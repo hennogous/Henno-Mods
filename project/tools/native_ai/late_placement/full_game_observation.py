@@ -8,8 +8,11 @@ Service effect. The existing Storekeeper watcher supplies that extra evidence.
 """
 from pathlib import Path
 import re
-from driver import lua,read,write_json,require
+from driver import load,lua,read,write_json,require
 from customer_adjacency_policy import database_snapshot,qualify_database
+from full_game_controller.checkpoint import (
+    SaveFileUnavailable, SavePermissionUnavailable, archive_autosave_window, save_inactive_boundary,
+)
 
 HERE=Path(__file__).resolve().parent
 
@@ -34,24 +37,42 @@ def archive_censuses(log,out):
     return snapshots
 
 
-def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mods=None,csc_path=None,start=1):
+def archive_endpoint_autosave(out, saves, turn, error):
+    """Retain the held session's autosave as a companion to the verified end census."""
+    started_ns=int(load(out/'launch-bootstrap.json')['time']*1_000_000_000)
+    receipt,=archive_autosave_window(saves,out/'endpoint-autosave',turn,turn,started_ns)
+    require(receipt['status']=='archived','No stable endpoint autosave from the held game')
+    return dict(receipt,verified_turn=turn,manual_save_requests=int(isinstance(error,SaveFileUnavailable)),
+                reason=str(error),terminal_census='chain-census.txt')
+
+
+def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mods=None,csc_path=None,start=1,
+            untuned=False,service_watch=False):
     # Short diagnostic qualification uses the same passive observers/policy as
     # the full games; it cannot claim long-run outcome evidence.
-    require(endpoint in (25,50,200,250),'Integrated observations end at25/50/200/250')
-    scope=lua(dict(players=sorted(players),start=start))
+    require(endpoint in (25,50,200,250) or (start,endpoint) in ((100,175),(150,155)),
+            'Unsupported integrated observation window')
+    scope=lua(dict(players=sorted(players),start=start,untuned=untuned))
     preflight=read(HERE/'full_game_preflight.lua').replace('__SCOPE__',scope)
     raw=controller.cmd(preflight,'CSC_AI_BakersGameplay','full-game-capability-preflight')
     require('CSC_FULL_RUN_PREFLIGHT_OK' in raw,'Missing capability preflight acknowledgement')
     (out/'full-game-preflight.txt').write_text(raw,encoding='utf-8')
     db=database_snapshot(user_root/'Cache/DebugGameplay.sqlite')
-    write_json(out/'loaded-native-customer-database.json',db);qualify_database(db,'on')
+    write_json(out/'loaded-native-customer-database.json',db)
+    if untuned:
+        # The matched stock control omits the full AI connector action.
+        # Its observation context still reads the same gameplay definitions.
+        require(not any(db[key] for key in ('links','rules','yields','biases')),
+                'CSC native placement SQL was loaded in the stock control')
+    else:
+        qualify_database(db,'on')
     if csc_path and (Path(csc_path)/'Data/CSC_Q_ALL_MaterialHosts.sql').is_file():
         # New coverage packages qualify the actual loader output once, before
         # autoplay. Historical replays retain their original DB and bypass this
         # gate. This does not create a modifier or publish an AI offer.
         from coverage_preflight import inspect as inspect_coverage
         (out/'coverage_preflight.py').write_text(read(HERE/'coverage_preflight.py'),encoding='utf-8')
-        inspect_coverage(user_root/'Cache/DebugGameplay.sqlite',out)
+        inspect_coverage(user_root/'Cache/DebugGameplay.sqlite',out,ai_connectors=not untuned)
     census=read(HERE/'full_game_census.lua')
     code='''-- Read-only trial observer. No bids, queue orders or game-property writes.
 local seats=__PLAYERS__
@@ -82,6 +103,16 @@ print('CSC_FULL_RUN_OBSERVATION_INSTALLED')
     raw=controller.cmd(placement,'CSC_AI_BakersGameplay','install-read-only-quarter-lifecycle')
     require('CSC_QUARTER_WATCH_INSTALLED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw,
         'Quarter lifecycle observer failed to initialise')
+    if service_watch:
+        # Capture actual native recipients in both benchmark arms, including
+        # inactive periods, while the benchmark retains ordinary production.
+        name='later_stage_service_watch.lua'
+        scope=lua({pid: True for pid in sorted(players)})
+        service_code=('CSC_MILESTONE_SERVICE_EVERY_TURN=true\n'
+                      f'CSC_MILESTONE_SERVICE_PLAYERS={scope}\n'+read(HERE/name))
+        (out/name).write_text(service_code,encoding='utf-8')
+        raw=controller.cmd(service_code,'PlotInfo','install-passive-native-service-watch')
+        require('CSC_MILESTONE_SERVICE_INSTALLED'in raw,'Native Service observer did not initialise')
     if planning:
         from resource_stack_preflight import inspect_resource_stack
         resource_stack=inspect_resource_stack(controller,out,user_root,extra_mods or {},csc_path=csc_path)
@@ -123,6 +154,9 @@ def finish(out,endpoint=250,*,start=1):
     # Older and untuned runs receive an explicit empty-coverage report.
     from processing_time_summary import summarise
     write_json(out/'ai-processing-time.json',summarise(log,first=max(1,start),last=endpoint))
+    if (out/'later_stage_service_watch.lua').exists():
+        from later_stage_results import service_durations
+        write_json(out/'observed-services.json',service_durations(log,start,endpoint))
     for failure in('CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED',
             'CSC_FULL_RUN_OBSERVATION_FAILED','CSC_QUARTER_WATCH_FAULT','CSC_PLANNING_FAULT',
             'CSC_PLANNING_LIMIT','CSC_DISTRICT_UI_FAULT','CSC_CUSTOMER_WATCH_FAULT'):
@@ -132,6 +166,9 @@ def finish(out,endpoint=250,*,start=1):
                 'Customer opportunity observation incomplete')
     snapshots=archive_censuses(log,out)
     require(set(snapshots)==set(range(25*(start//25+1),endpoint+1,25)),'Missing full-game milestone')
+    if (out/'later_stage_service_watch.lua').exists():
+        from later_stage_results import stage_census
+        write_json(out/'stage-census.json',{turn:stage_census(reading['rows']) for turn,reading in snapshots.items()})
     write_json(out/'full-game-observation-complete.json',dict(verified=True,start=start,turns=sorted(snapshots)))
 
 
@@ -202,7 +239,7 @@ print('CSC_PURCHASE_CONTEXT_END',Game.GetCurrentGameTurn(),#targets)
     require('CSC_PURCHASE_CONTEXT_END'in raw,'Incomplete purchase map context')
 
 
-def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,observe_boundary=None):
+def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,observe_boundary=None,step=5):
     """Use the shared controller's guarded five-turn operations throughout.
 
     Observer-popup and victory handlers require a remaining budget <=5. Do
@@ -217,7 +254,7 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,obser
         # Land on each25-turn milestone as well as respecting the five-turn
         # budget. This permits exact inactive200/250 evidence and useful
         # natural checkpoints for a later matched SQL replay.
-        boundary=min(cursor+5,endpoint,25*(cursor//25+1))
+        boundary=min(cursor+step,endpoint,25*(cursor//25+1))
         if savings:savings.window(cursor,boundary)
         controller.play(boundary)
         if savings:
@@ -233,20 +270,18 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,obser
             # handoff; it must not publish a second AI policy or issue orders.
             observe_boundary(boundary)
         if saves is not None and boundary in(50,100,150,200):
-            from full_game_controller.checkpoint import save_inactive_boundary,SavePermissionUnavailable
             # These mid-run artifacts support later replays; the live censuses
-            # and native journals measure the campaign. Civ's shipped SP save
-            # gate may decline an inactive observer seat even though finite
-            # autoplay can continue. Match vanilla_district_run: record only
-            # this pre-request refusal and continue with no role/turn change.
-            # A sent request, completion timeout or ambiguous acknowledgement
-            # stays strict. The required endpoint save is handled separately.
+            # and native journals measure the campaign. Continue the same
+            # verified world when the save gate declines or a confirmed request
+            # fails to produce a file. The helper verifies the unchanged phase.
+            # An ambiguous request or phase change still stops the run.
             try:
                 checkpoint=save_inactive_boundary(controller,turn=boundary,name='CSC_AI_HARMONISED_'+str(boundary),
                     native_directory=saves,archive=out/('turn-'+str(boundary)+'.Civ6Save'))
-            except SavePermissionUnavailable as error:
+            except (SavePermissionUnavailable,SaveFileUnavailable) as error:
                 write_json(out/('checkpoint-unavailable-'+str(boundary)+'.json'),
-                    dict(turn=boundary,save_requests=0,optional_artifact=True,reason=str(error)))
+                    dict(turn=boundary,save_requests=int(isinstance(error,SaveFileUnavailable)),
+                         optional_artifact=True,reason=str(error)))
             else:write_json(out/('checkpoint-'+str(boundary)+'.json'),checkpoint)
         cursor=boundary
     # The final packet has no successor to collect its native timing counter.

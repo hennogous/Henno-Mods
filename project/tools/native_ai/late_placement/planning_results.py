@@ -41,7 +41,7 @@ def distribution(values):
                 maximum=max(values)if values else None)
 
 
-def analyse(root):
+def analyse(root, *, through=None):
     root=Path(root);source=json.loads((root/'source.json').read_text(encoding='utf-8'))
     players=set(source['original_ai'])
     log=(root/'Lua.log').read_text(encoding='utf-8-sig')
@@ -50,6 +50,11 @@ def analyse(root):
     ui=parse(log,'CSC_DISTRICT_UI_')
     savings_path=root/'economy-savings.ndjson'
     savings=[json.loads(line)for line in savings_path.read_text(encoding='utf-8').splitlines()]if savings_path.exists()else[]
+    if through is not None:
+        # Use one shared clock when an otherwise ordinary game ends naturally
+        # before its planned endpoint. Keep raw archives for the later turns.
+        planning,quarter,ui,savings=([r for r in rows if r.get('turn',0)<=through]
+                                   for rows in (planning,quarter,ui,savings))
     choices=defaultdict(list)
     placement_entries=defaultdict(list)
     for row in savings:
@@ -177,7 +182,7 @@ def analyse(root):
     coverage={}
     for match in re.finditer(r'CSC_AI_QUARTER_COVERAGE turn=(\d+) version=(\d+) player=(\d+) district=(\d+) result=(\{[^\r\n]+\})',log):
         t,version,pid,district=map(int,match.groups()[:4])
-        if pid in players:
+        if pid in players and (through is None or t<=through):
             coverage[('raw',version,pid,district)]=dict(turn=t,version=version,player=pid,district=district,
                                                receipt=json.loads(match[5]))
     for row in planning:
@@ -224,7 +229,8 @@ def analyse(root):
                 usable_material_exhaustions=exhaustions,
                 managed_coverage_receipts=list(coverage.values()),
                 relationship_pairs=list(relations.values()),plan_transitions=transitions)
-    (root/'planning-results.json').write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8')
+    name='planning-results.json' if through is None else f'planning-results-through-{through}.json'
+    (root/name).write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8')
     return summary
 
 

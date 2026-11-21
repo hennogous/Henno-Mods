@@ -12,6 +12,10 @@ class SavePermissionUnavailable(TimeoutError):
     """
 
 
+class SaveFileUnavailable(TimeoutError):
+    """The named request was confirmed, the file did not settle and the native phase stayed unchanged."""
+
+
 def archive_autosave_window(native_directory, archive_directory, first, last, after_ns):
     """Preserve existing autosaves after a finite play window without a new game command.
 
@@ -118,7 +122,10 @@ Events.SaveComplete.Add(CSC_EXACT_CHECKPOINT_SAVE.handler)
 Network.SaveGame({Name=%s,Location=SaveLocations.LOCAL_STORAGE,Type=SaveTypes.SINGLE_PLAYER,IsAutosave=false,IsQuicksave=false})
 print('CSC_EXACT_CHECKPOINT_REQUESTED',%s)"""%(turn,turn-1,n,n,n)
     acknowledged=True
-    try:r.cmd(code,'PlotInfo','save-exact-boundary-'+str(turn))
+    submitted=False
+    try:
+        raw=r.cmd(code,'PlotInfo','save-exact-boundary-'+str(turn))
+        submitted=bool(re.search(r'CSC_EXACT_CHECKPOINT_REQUESTED\s+'+re.escape(name)+r'\b',raw))
     except MissingAcknowledgment:acknowledged=False # Inspect the unique file; never repeat SaveGame.
     deadline=time.monotonic()+timeout;last=None;stable=0
     while time.monotonic()<deadline:
@@ -129,7 +136,12 @@ print('CSC_EXACT_CHECKPOINT_REQUESTED',%s)"""%(turn,turn-1,n,n,n)
             if stable>=3:break
         except(OSError,PermissionError):stable=0
         time.sleep(.5)
-    else:raise TimeoutError('Native checkpoint file did not settle; never resend blindly')
+    else:
+        if submitted:
+            after=r.state_read('exact-checkpoint-file-unavailable')
+            assert all(proof[k]==after[k]for k in('turn','active','remaining','local_player','player0_human'))
+            raise SaveFileUnavailable(f'Native SaveGame request {name} was confirmed but its file did not settle')
+        raise TimeoutError('Native checkpoint file did not settle; never resend blindly')
     raw=r.cmd("print('CSC_EXACT_CHECKPOINT_COMPLETE',CSC_EXACT_CHECKPOINT_SAVE.name,CSC_EXACT_CHECKPOINT_SAVE.completed);if CSC_EXACT_CHECKPOINT_SAVE.completed then Events.SaveComplete.Remove(CSC_EXACT_CHECKPOINT_SAVE.handler)end",'PlotInfo','checkpoint-save-complete')
     assert re.search(r'CSC_EXACT_CHECKPOINT_COMPLETE\s+'+re.escape(name)+r'\s+true',raw),'Native SaveComplete event not observed'
     archive.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(native,archive)

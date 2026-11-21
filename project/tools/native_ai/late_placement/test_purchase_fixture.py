@@ -147,8 +147,8 @@ print=function()end
     def test_both_watchers_compile_with_their_exact_scope(self):
         vm=LuaRuntime()
         compile_lua=vm.eval('function(code)return assert(loadstring(code))end')
-        for case in CASES.values():
-            with self.subTest(case=case['profile']):
+        for name, case in CASES.items():
+            with self.subTest(case=name):
                 compile_lua(WATCHER.replace('__SCOPE__',lua(case)).replace('__ENDPOINT__','208'))
 
     def test_ablation_changes_only_the_fixture_positive_candidate_condition(self):

@@ -41,3 +41,22 @@ class ContentSelection(unittest.TestCase):
                 environment, 'flags', side_effect=[selected, selected, selected]):
             with self.assertRaisesRegex(RuntimeError, 'CSC-only'):
                 environment.configure(controller, Path(directory))
+
+    def test_preference_ack_timeout_uses_exact_readback_without_a_second_write(self):
+        original = dict(mods={}, entries=[], auto_start=False)
+        controller = Mock()
+        controller.cmd.side_effect = environment.MissingAcknowledgment('preferences', '')
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            environment.write(output / 'original-preferences.json', original)
+            with patch.object(environment, 'flags', return_value={**original, 'auto_start': True}):
+                with self.assertRaisesRegex(RuntimeError, 'were not restored'):
+                    environment.restore_preferences(controller, output)
+            self.assertFalse((output / 'preferences-restored.json').exists())
+            controller.cmd.assert_called_once()
+            controller.reset_mock()
+            with patch.object(environment, 'flags', return_value=original):
+                environment.restore_preferences(controller, output)
+            proof = environment.read(output / 'preferences-restored.json')
+            self.assertTrue(proof['verified'] and proof['missing_ack'])
+            controller.cmd.assert_called_once()

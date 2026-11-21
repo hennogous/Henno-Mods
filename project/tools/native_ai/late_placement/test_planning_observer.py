@@ -76,7 +76,7 @@ CSC_Adjacency={HasTag=function(tag,name)
   or tag=='CLASS_CSC_BAKERS_SPEC'and name=='RESOURCE_TEST_SPEC'
   or tag=='CLASS_CSC_BAKERS_GOODS_PROVIDER'and name=='DISTRICT_TEST_PROVIDER'
  end,ResourceVisible=function()return true end}
-profile={key='BAKERS',base='CLASS_CSC_BAKERS_BASE',specialty='CLASS_CSC_BAKERS_SPEC',district=GameInfo.Districts[1]}
+profile={key='BAKERS',base='CLASS_CSC_BAKERS_BASE',specialty='CLASS_CSC_BAKERS_SPEC',district=GameInfo.Districts[1],specialtyBuyers={}}
 CSC_AI_QuarterPlacement={StageTwoProfiles=function()return {profile}end}
 geometryCalls=0;siteCalls=0;offerEnabled=false;geometryUpper=4
 snapshot={id=0,player=Players[0],Geometry=function(c,p,profile)geometryCalls=geometryCalls+1;return {base=2,upper=geometryUpper}end,
@@ -115,6 +115,28 @@ class PlanningObserverTests(unittest.TestCase):
         self.assertEqual(self.lua.eval("third"), "thirdReturn")
         self.assertEqual(self.lua.eval("a,b,c,d"), (True, "message", None, "fourth"))
         self.assertEqual(self.rows("OPPORTUNITY")[0]["qualified"], "true")
+
+    def test_supplier_census_observes_the_actual_buyer_queue_and_opening_day(self):
+        self.lua.execute('''
+local cafe={Index=2,Hash=12,BuildingType='BUILDING_TEST_CAFE'}
+GameInfo.Buildings[cafe.BuildingType]=cafe
+local roles=profile.specialtyBuyers
+roles[1]=cafe
+district(2,1,2,true)
+ExposedMembers={CSC_Adjacency={GetEconomyCityNumber=function(player,id,kind)
+ assert(kind=='currentBuilding');return Game.t<3 and 2 or nil
+end}}
+city.GetBuildings=function()return {HasBuilding=function(_,i)return i==2 and Game.t>=3 end,
+ GetBuildingLocation=function()return 2 end,IsPillaged=function()return false end}end
+CSC_AI_QuarterPlacement.ReadSuppliers=function()
+ return {base={},specialty={{plot=4,ready=true,working=Game.t>=2}}}
+end
+poll();Game.t=2;poll();Game.t=3;poll()
+''')
+        rows = [row for row in self.rows('SUPPLIER_BUYER') if row['role'] == 'specialty']
+        self.assertEqual([(row['buyerReady'], row.get('constructing'), row['working']) for row in rows], [
+            ('false', 'BUILDING_TEST_CAFE', '0'), ('false', 'BUILDING_TEST_CAFE', '1'), ('true', None, '1')])
+        self.assertEqual(rows[1]['workingPlots'], '4')
 
     def test_defer_reconsider_requires_accepted_publication(self):
         self.lua.execute("publish(); Game.t=2;offerEnabled=true;publishAccepted=false;publish();Game.t=3;publishAccepted=true;publish()")

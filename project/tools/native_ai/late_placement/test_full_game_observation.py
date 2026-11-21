@@ -10,19 +10,21 @@ from driver import lua
 
 
 class FullGameObservation(unittest.TestCase):
-    def test_only_pre_request_permission_refusal_skips_optional_checkpoint(self):
-        from full_game_controller.checkpoint import SavePermissionUnavailable
+    def test_safe_artifact_failures_skip_optional_checkpoint(self):
+        from full_game_controller.checkpoint import SaveFileUnavailable, SavePermissionUnavailable
         class Controller:
             def __init__(self):self.boundaries=[]
             def play(self,turn):self.boundaries.append(turn)
             def cmd(self,*args):return 'CSC_QUARTER_WATCH_DRAINED'
-        for error,continues in((SavePermissionUnavailable('local turn inactive; no request'),True),
-                                (TimeoutError('file unsettled after request'),False)):
+        for error,requests in((SavePermissionUnavailable('local turn inactive; no request'),0),
+                               (SaveFileUnavailable('confirmed request with no file'),1),
+                               (TimeoutError('file unsettled after request'),None)):
             with self.subTest(error=type(error).__name__),tempfile.TemporaryDirectory()as directory:
+                continues=requests is not None
                 root=Path(directory);(root/'Logs').mkdir()
                 (root/'Logs/Lua.log').write_text('CSC_STOREKEEPER_END\t100\t0\n')
                 c=Controller();observed=[]
-                with patch('full_game_controller.checkpoint.save_inactive_boundary',side_effect=error)as save:
+                with patch('full_game_observation.save_inactive_boundary',side_effect=error)as save:
                     if continues:play(c,root,root,start=95,endpoint=105,saves=root,observe_boundary=observed.append)
                     else:
                         with self.assertRaisesRegex(TimeoutError,'after request'):
@@ -33,10 +35,46 @@ class FullGameObservation(unittest.TestCase):
                 receipt=root/'checkpoint-unavailable-100.json'
                 if continues:
                     value=json.loads(receipt.read_text())
-                    self.assertEqual(value['save_requests'],0);self.assertTrue(value['optional_artifact'])
+                    self.assertEqual(value['save_requests'],requests);self.assertTrue(value['optional_artifact'])
                 else:self.assertFalse(receipt.exists())
                 self.assertFalse((root/'checkpoint-100.json').exists())
                 self.assertFalse((root/'turn-100.Civ6Save').exists())
+
+    def test_checkpoint_file_timeout_needs_confirmation_and_unchanged_native_phase(self):
+        from full_game_controller.checkpoint import SaveFileUnavailable, checkpoint_name, save_inactive_boundary
+
+        for confirmed, changed, expected in ((True, False, SaveFileUnavailable),
+                                             (False, False, TimeoutError),
+                                             (True, True, AssertionError)):
+            with self.subTest(confirmed=confirmed, changed=changed), tempfile.TemporaryDirectory() as directory:
+                native=Path(directory)
+                archive=native/'checkpoint.Civ6Save'
+                name=checkpoint_name('attempt',archive)
+
+                class Controller:
+                    requests=0
+
+                    def ready(self,*args):
+                        pass
+
+                    def state_read(self,label):
+                        turn=101 if changed and label=='exact-checkpoint-file-unavailable' else 100
+                        return dict(turn=turn,active=False,remaining=0,local_player=0,player0_human=True)
+
+                    def cmd(self,code,state,label):
+                        if label=='checkpoint-ui-phase':
+                            return 'CSC_EXACT_CHECKPOINT_UI 100 false 0 true true'
+                        self.requests+=1
+                        return 'CSC_EXACT_CHECKPOINT_REQUESTED '+name if confirmed else 'other acknowledgement'
+
+                controller=Controller()
+                with patch('full_game_controller.checkpoint.wait_save_ui_gate'), \
+                     patch('full_game_controller.checkpoint.time.monotonic',side_effect=(0,61)):
+                    with self.assertRaises(expected) as error:
+                        save_inactive_boundary(controller,turn=100,name='attempt',native_directory=native,archive=archive)
+                self.assertIs(type(error.exception),expected)
+                self.assertEqual(controller.requests,1)
+                self.assertFalse(archive.exists())
 
     def test_inactive_read_defers_lagging_clock_and_never_relabels_it(self):
         class Controller:

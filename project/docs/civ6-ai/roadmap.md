@@ -37,7 +37,7 @@
 | 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | Candidate integrated. Native follow-through open. |
 | 9.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Planned. Specialty supplier work is already covered under Problem 3. |
-| 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Candidate integrated. Native follow-through open. |
+| 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Humanism bids reached the civic comparison. Higher-scoring goals retained priority and both arms unlocked it on turn 113. |
 | 10.2 Build | Value construction from population 10, including Specialty development costs. | Matched replay moved Angkor Wat's Café ahead of a project while preserving its earlier Trader. Expand producer coverage. |
 | [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Wonder placement guidance implemented. Customer-building guidance and broader qualification remain open. |
 | 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Candidate integrated. Native follow-through open. |

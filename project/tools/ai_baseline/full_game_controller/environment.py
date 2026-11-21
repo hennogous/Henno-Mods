@@ -6,6 +6,7 @@ on import. Promoted functions retain the previously exercised source contracts.
 """
 import hashlib,json,os,re,shutil,subprocess,time,uuid
 from pathlib import Path
+from .transport import MissingAcknowledgment
 from .windows_process import HeldProcess,native_inventory
 CSC='c5e66bd1-d804-443b-ac3d-1917a20dba3c'
 
@@ -33,9 +34,20 @@ def restore_preferences(r,out):
  original=read(out/'original-preferences.json')
  entries=','.join('['+json.dumps(v['id']+'|'+v['subscription']+'|'+v['file'])+']='+str(v['enabled']).lower()for v in original['entries'])
  code='local wanted={'+entries+"};local function key(m)return m.Id..'|'..tostring(m.SubscriptionId or '')..'|'..tostring(m.SourceFileName or '')end;local disable={};for _,m in ipairs(Modding.GetInstalledMods())do if wanted[key(m)]==false and m.Enabled then disable[#disable+1]=m.Handle end end;if #disable>0 then Modding.DisableMod(disable)end;for _,m in ipairs(Modding.GetInstalledMods())do if wanted[key(m)]==true and not m.Enabled then Modding.EnableMod(m.Handle,true)end end;Automation.SetAutoStartEnabled("+str(original['auto_start']).lower()+');'
- r.cmd(code,'MainMenu','restore-exact-subscription-preferences');r.wait('MainMenu',90)
- actual=flags(r,'verify-exact-subscription-preferences');assert actual==original
- write(out/'preferences-restored.json',dict(verified=True,mods=len(actual['mods']),installed_entries=len(actual['entries']),auto_start=actual['auto_start']))
+ missing_ack=None
+ try:
+  r.cmd(code,'MainMenu','restore-exact-subscription-preferences')
+ except MissingAcknowledgment as error:
+  # Restoring several Workshop entries can outlast the console ACK. Read
+  # the exact postcondition from the same menu before closing the game.
+  # Never send a second preference mutation on the strength of a timeout.
+  missing_ack=error
+ r.wait('MainMenu',90)
+ actual=flags(r,'verify-exact-subscription-preferences')
+ if actual!=original:
+  raise RuntimeError('Original mod and auto-start preferences were not restored') from missing_ack
+ write(out/'preferences-restored.json',dict(verified=True,mods=len(actual['mods']),installed_entries=len(actual['entries']),
+                                           auto_start=actual['auto_start'],missing_ack=missing_ack is not None))
 
 def launch(a, out):
     """One direct launch; allow only the reviewed exit53→fresh Steam successor."""

@@ -4,6 +4,7 @@ Both arms load one common map derivative. Main CSC still supplies the live
 model, ordinary Q8 bands, eligibility and CE publication. The control withholds
 only one projected Mill rule at one site; it never writes a native score itself.
 """
+import re
 
 PREPARE=r'''
 assert(Game.GetCurrentGameTurn()==25 and not AutoplayManager.IsActive())
@@ -37,7 +38,9 @@ OMISSION=b'''    -- Diagnostic counterfactual: preserve real map/native forecast
 
 
 def without_river(scanner):
-    needle=b'    local count=A.Count(r,plot,city,pid);local amount=A.Amount(r,count)'
-    assert scanner.count(needle)==1
-    return scanner.replace(needle,b'    local count=A.Count(r,plot,city,pid)\n'+OMISSION+
-        b'    local amount=A.Amount(r,count)')
+    # The live reader now forwards the prospective plot; archived comparisons
+    # used the four-argument call. Preserve the exact call in either package.
+    rule = rb'(    local count=A\.Count\(r,plot,city,pid(?:,projectPlot)?\));(local amount=A\.Amount\(r,count\))'
+    modified, count = re.subn(rule, lambda match: match[1] + b'\n' + OMISSION + b'    ' + match[2], scanner)
+    assert count == 1
+    return modified

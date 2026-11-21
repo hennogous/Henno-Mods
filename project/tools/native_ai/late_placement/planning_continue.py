@@ -7,6 +7,7 @@ as another fresh seed. Importing this module launches/connects to nothing.
 """
 import argparse
 from collections import Counter
+from contextlib import nullcontext
 from dataclasses import dataclass
 import hashlib
 import json
@@ -21,8 +22,8 @@ from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, fla
                     parse, read, require, restore_preferences, sha, write_json)
 from ce_bakers_fresh import (LOGS, MAPS, capture_census, check_native_status,
                             package_identity, summarize_run)
-from ce_replay import DLL, HOTFIX_EXE_SHA, verify_modules
-from full_game_controller.checkpoint import save_inactive_boundary
+from ce_replay import DLL, STEAM_26595377_CORE_SHA, native_profile, verify_modules
+from full_game_controller.checkpoint import SaveFileUnavailable, SavePermissionUnavailable, save_inactive_boundary
 from full_game_controller.environment import archive_sources
 
 
@@ -109,7 +110,7 @@ class ContinuationPlan:
     output: Path
     at: int
     through: int
-    dependencies: Path
+    dependencies: Path | None
     protocol: dict
     identity: dict
     checkpoint: dict
@@ -121,7 +122,8 @@ class ContinuationPlan:
     saves: Path
 
 
-def prepare(source, output, at, through, dependencies, *, read_only=False):
+def prepare(source, output, at, through, dependencies, *, read_only=False, material_only=False,
+            finish_port_replay=False, observe_material=False):
     """Read and qualify all provenance before any install, launch or console.
 
     The failed run may have failure.json or an abrupt exit: supported closure
@@ -129,7 +131,7 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     package/checkpoint identities remain mandatory.
     """
     source, output = Path(source).resolve(strict=True), Path(output).resolve()
-    dependencies = Path(dependencies).resolve(strict=True)
+    dependencies = Path(dependencies).resolve(strict=True) if dependencies is not None else None
     require(not output.exists() and source.is_dir(), 'New continuation output required')
     # Read-only diagnostics may reuse the exact checkpoint without advancing
     # its clock. The ordinary continuation route keeps its original strict
@@ -139,16 +141,22 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     # A read-only source inspection may use any regular archived checkpoint,
     # including100/150. Playing continuations retain their qualified endpoints.
     endpoint_ok = at in (50, 100, 150, 200, 250) if read_only else through in (50, 200, 250)
+    if observe_material:
+        require(material_only and (at, through) in ((100, 175), (150, 155)),
+                'Axum trace needs a qualified Continents checkpoint and replay window')
+        endpoint_ok = True
     require(typed and at % 25 == 0 and window and endpoint_ok, 'Unsupported continuation window')
     require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')
-    # A same-turn structural replay needs the gameplay census, independent of
-    # treasury instrumentation. A playing continuation still needs that capture
-    # in its source so longitudinal payment and savings evidence stays aligned.
+    # A same-turn inspection or a material-only recovery uses the gameplay
+    # census independently of treasury instrumentation. A savings continuation
+    # still requires matching original savings capture.
+    no_savings = read_only or material_only
     require(all(protocol.get(k) is True for k in ('fresh_game', 'ordinary_setup',
             'harmonised_observation', 'planning_observation')) and
-            (read_only or protocol.get('passive_savings_observation') is True) and
+            (no_savings or protocol.get('passive_savings_observation') is True) and
+            (not material_only or protocol.get('passive_savings_observation') is False) and
             all(protocol.get(k) is False for k in ('untuned', 'external_policy', 'gameplay_interventions')) and
             not any(k.startswith('diagnostic_') and v for k, v in protocol.items()),
             'Require an ordinary original game with integrated main CSC policy only')
@@ -188,18 +196,17 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
             'Original package digests differ')
     _, csc_manifest = package_identity(by_role['csc']['source'])
     optional=csc_manifest.find("ActionCriteria/Criteria[@id='CSC_CE_SupplierExclusion']/ModInUse")
-    # Normal CSC keeps CE optional; a zero-turn survey can qualify that exact
-    # gate while retaining every source/package/module/clock check. Playing
-    # continuations keep their original explicit-dependency contract.
-    optional_readonly=read_only and optional is not None and optional.text==protocol['ce']
-    require(csc_manifest.find("Dependencies/Mod[@id='"+protocol['ce']+"']") is not None or optional_readonly,
+    # Main CSC keeps CE optional. Qualify that specific gate for the original
+    # material setup, then still require live capability and package parity.
+    optional_ce=no_savings and optional is not None and optional.text==protocol['ce']
+    require(csc_manifest.find("Dependencies/Mod[@id='"+protocol['ce']+"']") is not None or optional_ce,
             'CSC no longer depends on the recorded CE package')
     extras = load(source/'extra-mods.json')
     # The Government-screen regression adds the pinned BRS/EPC UI pair. A
     # zero-turn survey must reload that original stack, never silently drop it.
     # Playing continuations retain their qualified three-gameplay-mod contract.
     ui_pair = {'6f2888d4-79dc-415f-a8ff-f9d81d7afb53', '382a187f-c8ba-4094-a6a7-0d5315661f33'}
-    extra_count_ok = len(extras) == 3 or (read_only and len(extras) == 5 and ui_pair <= set(extras))
+    extra_count_ok = len(extras) == 3 or (no_savings and len(extras) == 5 and ui_pair <= set(extras))
     require(extra_count_ok and set(extras) == set(protocol['extra_mods']), 'Expected exact original optional packages')
     for mod_id, item in extras.items():
         package = Path(item['path']).resolve(strict=True)
@@ -207,10 +214,22 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
                 digest(item['files']) == protocol['extra_mods'][mod_id]['digest'] and
                 package == Path(protocol['extra_mods'][mod_id]['path']).resolve(), 'Optional package changed: '+mod_id)
     binary = Path(load(source/'launch-bootstrap.json')['binary']).resolve(strict=True)
-    require(sha(binary) == HOTFIX_EXE_SHA, 'Changed DX11 executable')
+    executable_sha, core_sha = native_profile(binary)
     loaded = load(source/'loaded-modules.json')
-    require(loaded['GameCore_XP2_FinalRelease.dll']['sha256'] == HOTFIX_SHA and
-            sha(Path(loaded['GameCore_XP2_FinalRelease.dll']['path'])) == HOTFIX_SHA and
+    original_core_sha = protocol.get('native_profile', {}).get('gamecore_sha256', HOTFIX_SHA)
+    if finish_port_replay:
+        # The old save is an input fixture for an explicit port test. Recheck
+        # its structure after loading, and qualify the new live DLL separately.
+        require(read_only and at == through and dependencies is None
+                and original_core_sha == HOTFIX_SHA and core_sha == STEAM_26595377_CORE_SHA,
+                'The finishing port replay requires the exact older fixture and updated Steam pair')
+    else:
+        require(core_sha == original_core_sha, 'Original DX11/XP2 build differs')
+        if 'native_profile' in protocol:
+            require(protocol['native_profile']['executable_sha256'] == executable_sha, 'Original DX11 build differs')
+    require(dependencies is None or core_sha == HOTFIX_SHA, 'Native diagnostics need their own relocation audit')
+    require(loaded['GameCore_XP2_FinalRelease.dll']['sha256'] == original_core_sha and
+            sha(Path(loaded['GameCore_XP2_FinalRelease.dll']['path'])) == core_sha and
             loaded[DLL]['sha256'] == sha(by_role['ce']['source']/'Binaries/Win64'/DLL),
             'Original XP2/CE binary identities differ')
     database = Path(load(source/'resource-stack-preflight.json')['database'])
@@ -219,7 +238,13 @@ def prepare(source, output, at, through, dependencies, *, read_only=False):
     mods = packages[0]['install'].parent
     require(not any(p.is_relative_to(mods) for p in (output, source, *(p['source'] for p in packages))),
             'Continuation staging/output must stay outside installed Mods')
-    require((dependencies/'frida/__init__.py').is_file(), 'Existing Frida dependencies missing')
+    # A read-only source preparation may feed a controller-only diagnostic.
+    # Playing continuations and callers supplying a dependency directory keep
+    # the existing Frida check for their native instrumentation.
+    require(not material_only or dependencies is None, 'Material-only recovery does not attach a savings observer')
+    require((no_savings and dependencies is None) or
+            (dependencies is not None and (dependencies/'frida/__init__.py').is_file()),
+            'Existing Frida dependencies missing')
     return ContinuationPlan(source, output, at, through, dependencies, protocol, identity,
                             checkpoint, expected, packages, extras, binary, user_root, saves)
 
@@ -236,10 +261,16 @@ Modding.EnableMod(chosen.Handle,true)
     session.wait_context('MainMenu', 90)
 
 
-def run(args):
-    plan = prepare(args.source, args.output, args.at, args.through, args.dependencies)
+def run(args, *, material_observer=None, material_observer_start=None):
+    material_only = getattr(args, 'material_only', False)
+    plan = prepare(args.source, args.output, args.at, args.through, args.dependencies,
+                   material_only=material_only, observe_material=material_observer is not None)
+    require(material_observer_start is None or
+            (material_observer is not None and plan.at < material_observer_start < plan.through),
+            'Deferred material observer must start inside its replay window')
     from economy_component_probe import targets,capture
     component_targets=targets(getattr(args,'component_target',None)or[])
+    require(not material_only or not component_targets, 'Material recovery keeps ordinary integrated observations')
     require(not native_inventory(), 'Foreign native/Tuner owner; preserve it')
     out = plan.output
     out.mkdir(parents=True)
@@ -254,7 +285,7 @@ def run(args):
     write_json(out/'continuation.json', dict(source=str(plan.source), at=plan.at, through=plan.through,
         source_checkpoint=plan.checkpoint, original_map=plan.protocol['map'],
         map_seed=plan.protocol['map_seed'], game_seed=plan.protocol['game_seed'],
-        new_seed=False, fixture=False, gameplay_interventions=False,
+        new_seed=False, fixture=False, gameplay_interventions=False, material_only=material_only,
         limits=['Reload resets transient native caches and observer identity bindings.',
                 'Only the continuation segment is measured here; parent evidence must be joined explicitly.',
                 'No assumption of uninterrupted RNG/decision identity with the stalled segment.']))
@@ -277,7 +308,7 @@ def run(args):
     controller.allow_observer_warning_dismissal = controller.allow_observer_first_meet_dismissal = True
     controller.allow_observer_congress_review = True
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
-    copied, watch, checkpoint = [], None, None
+    copied, watch, checkpoint, autosave_receipt = [], None, None, None
 
     def verify_packages():
         for p in plan.packages:
@@ -330,34 +361,51 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
         for mod_id in plan.extras:
             enable(session, mod_id)
         require({k for k, v in flags(controller, 'verify-continuation-packages')['mods'].items() if v} ==
-                {plan.protocol['ce'], plan.protocol['csc'], *plan.extras}, 'Expected exact original five packages')
+                {plan.protocol['ce'], plan.protocol['csc'], *plan.extras}, 'Expected exact original packages')
         session.load_once(plan.checkpoint['native_save'], sha256=plan.checkpoint['sha256'],
                           native_directory=plan.saves, turn=plan.at,
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay', 'CSC_AdjacencyGameplay'),
                           eligibility=source_gate)
-        verify_modules(session, by_role['ce']['install']/'Binaries/Win64'/DLL, out, HOTFIX_SHA)
+        core_sha = plan.protocol.get('native_profile', {}).get('gamecore_sha256', HOTFIX_SHA)
+        verify_modules(session, by_role['ce']['install']/'Binaries/Win64'/DLL, out, core_sha)
         raw = controller.cmd('CSC_BAKERS_STOREKEEPER_WATCH=true\n'+read(HERE/'storekeeper_runtime.lua'),
                              'PlotInfo', 'install-continuation-storekeeper-watch')
         require('CSC_BAKERS_STOREKEEPER_WATCH_INSTALLED' in raw, 'Storekeeper watch not installed')
-        from full_game_observation import install, play, finish
+        from full_game_observation import archive_endpoint_autosave, install, play, finish
         install(controller, out, plan.identity['original_ai'], plan.user_root, plan.through,
                 planning=True, extra_mods=plan.extras, csc_path=by_role['csc']['install'],start=plan.at)
-        from economy_savings_watch import EconomySavingsWatch
-        for name in ('economy_savings_watch.py', 'economy_savings_watch.js'):
-            shutil.copyfile(HERE/name, out/name)
-        indices = [int(v) for v in re.findall(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t', read(out/'loaded-district-catalogue.txt'))]
-        require(indices, 'Missing loaded district catalogue')
-        modules = load(out/'loaded-modules.json')
-        width, height = plan.identity['map_signature'][:2]
-        watch = EconomySavingsWatch(directory=plan.dependencies, binary=modules['GameCore_XP2_FinalRelease.dll']['path'],
-                                    output=out, start=plan.at, through=plan.through, write=write_json,
-                                    players=plan.identity['original_ai'], width=width, height=height, districts=max(indices)+1,
-                                    capture_placement=True)
-        watch.attach(session.owner, modules)
+        if not material_only:
+            from economy_savings_watch import EconomySavingsWatch
+            for name in ('economy_savings_watch.py', 'economy_savings_watch.js'):
+                shutil.copyfile(HERE/name, out/name)
+            indices = [int(v) for v in re.findall(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t', read(out/'loaded-district-catalogue.txt'))]
+            require(indices, 'Missing loaded district catalogue')
+            modules = load(out/'loaded-modules.json')
+            width, height = plan.identity['map_signature'][:2]
+            watch = EconomySavingsWatch(directory=plan.dependencies, binary=modules['GameCore_XP2_FinalRelease.dll']['path'],
+                                        output=out, start=plan.at, through=plan.through, write=write_json,
+                                        players=plan.identity['original_ai'], width=width, height=height, districts=max(indices)+1,
+                                        capture_placement=True)
+            watch.attach(session.owner, modules)
         if component_targets:
             capture(controller,out,component_targets,plan.at)
-        play(controller, out, plan.user_root, start=plan.at, endpoint=plan.through, saves=plan.saves, savings=watch,
-             observe_boundary=(lambda turn:capture(controller,out,component_targets,turn))if component_targets else None)
+        start = plan.at
+        if material_observer_start is not None:
+            # Qualify initial playback while no Frida callbacks are present.
+            # Keep the ordinary passive observation installed across both phases.
+            from full_game_observation import observe_inactive_storekeeper
+            start = material_observer_start
+            controller.play(start)
+            write_json(out/'material-observer-baseline.json', dict(turn=start, replay_start=plan.at))
+            if not re.search(r'CSC_STOREKEEPER_END\t'+str(start)+r'\t', read(plan.user_root/'Logs/Lua.log')):
+                observe_inactive_storekeeper(controller, out, start)
+        native_observation = material_observer(session,controller,out) if material_observer else nullcontext()
+        with native_observation as worker_boundary:
+            if worker_boundary:
+                worker_boundary(start)
+            boundary_reader = (lambda turn: capture(controller,out,component_targets,turn)) if component_targets else worker_boundary
+            play(controller, out, plan.user_root, start=start, endpoint=plan.through, saves=plan.saves, savings=watch,
+                 observe_boundary=boundary_reader, step=1 if worker_boundary else 5)
         from economy_preflight import inspect
         inspect(controller, out)
         final = parse(controller.cmd('print("CSC_CONTINUATION_END="..CE_AIDistrictScoresStatus())',
@@ -365,9 +413,16 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
         write_json(out/'native-endpoint.json', final)
         check_native_status(final, False)
         capture_census(controller, set(plan.identity['original_ai']), plan.through, out/'chain-census.txt')
-        checkpoint = save_inactive_boundary(controller, turn=plan.through, name='CSC_AI_CONTINUATION_'+str(plan.through),
-                                            native_directory=plan.saves, archive=out/'endpoint.Civ6Save')
-        write_json(out/'checkpoint.json', checkpoint)
+        try:
+            checkpoint = save_inactive_boundary(controller, turn=plan.through,
+                                                 name='CSC_AI_CONTINUATION_'+str(plan.through),
+                                                 native_directory=plan.saves, archive=out/'endpoint.Civ6Save')
+        except (SavePermissionUnavailable, SaveFileUnavailable) as error:
+            if not material_only:
+                raise
+            autosave_receipt = archive_endpoint_autosave(out,plan.saves,plan.through,error)
+        else:
+            write_json(out/'checkpoint.json', checkpoint)
     except Exception as error:
         write_json(out/'failure.json', dict(error=str(error), traceback=traceback.format_exc()))
         raise
@@ -390,13 +445,19 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
                         shutil.copyfile(path, out/name)
     summarize_run(out, set(plan.identity['original_ai']), plan.at, plan.through, False, checkpoint, [], qualification=False)
     finish(out, plan.through, start=plan.at)
-    watch.qualify()
+    if autosave_receipt:
+        write_json(out/'completed-via-autosave.json', dict(autosave_receipt, native_closed_verified=True))
+    if watch:
+        watch.qualify()
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ('source', 'output', 'dependencies'):
+    for name in ('source', 'output'):
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--dependencies', type=Path)
+    parser.add_argument('--material-only', action='store_true',
+                        help='Resume the ordinary material test with its original passive observers')
     parser.add_argument('--at', type=int, required=True)
     parser.add_argument('--through', type=int, required=True)
     parser.add_argument('--component-target',nargs=4,action='append',metavar=('PLAYER','CITY','PLOT','QUARTER'),

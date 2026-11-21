@@ -20,7 +20,7 @@ ROOTS=(
  ('CLASS_CSC_TAILORS_SPEC','MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER'))
 
 
-def inspect(database,output,*,require_complete=True):
+def inspect(database,output,*,require_complete=True,ai_connectors=True):
     database=Path(database).resolve(strict=True)
     with closing(sqlite3.connect(database.as_uri()+'?mode=ro',uri=True))as db:
         expected=set()
@@ -44,11 +44,14 @@ def inspect(database,output,*,require_complete=True):
  JOIN Adjacency_YieldChanges a ON a.ID=d.YieldChangeId
  WHERE d.DistrictType=? AND a.AdjacentDistrict=? AND a.YieldType='YIELD_CSC_AI_PLACEMENT'
  AND a.YieldChange=1 AND a.TilesRequired=1''',pair).fetchone()[0]for pair in sorted(providers)}
+    expected_links = 1 if ai_connectors else 0
+    connectors_match = customers['complete'] if ai_connectors else customers['actual'] == 0
     result=dict(database=str(database),database_sha256=hashlib.sha256(database.read_bytes()).hexdigest(),
         read_only=True,material_hosts=[dict(improvement=p[0],root=p[1],count=n)for p,n in counts.items()],
         provider_links=[dict(provider=p[0],quarter=p[1],count=n)for p,n in links.items()],
-        customer_connectors=customers,
-        verified=bool(counts)and customers['complete']and all(n==1 for n in (*counts.values(),*links.values())))
+        customer_connectors=customers,ai_connectors_expected=ai_connectors,
+        verified=bool(counts)and connectors_match and all(n==1 for n in counts.values())
+        and all(n==expected_links for n in links.values()))
     write_json(Path(output)/'coverage-preflight.json',result)
     if require_complete and not result['verified']:
         raise AssertionError('Loaded material/customer/provider coverage incomplete; inspect coverage-preflight.json')

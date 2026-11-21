@@ -24,12 +24,13 @@ class RiverPolicy(unittest.TestCase):
         original=(root/'CSC_AI_AdjacencyScan.lua').read_bytes()
         publisher=(root/'CSC_AI_BakersGameplay.lua').read_bytes()
         scanner,publisher=stage(original,publisher,migrate_roles=False)
-        prefix=publisher.split(b'--',1)[0]
         self.assertTrue(publisher.startswith(b'function CSC_EARLY_DIAG_Retained'))
         self.assertNotIn(b'Early saved role differs',publisher)
         modified=without_river(scanner)
-        replacement=b'    local count=A.Count(r,plot,city,pid)\n'+OMISSION+b'    local amount=A.Amount(r,count)'
-        self.assertEqual(modified.replace(replacement,b'    local count=A.Count(r,plot,city,pid);local amount=A.Amount(r,count)'),scanner)
+        call=b'    local count=A.Count(r,plot,city,pid,projectPlot)'
+        ordinary=b'local amount=A.Amount(r,count)'
+        replacement=call+b'\n'+OMISSION+b'    '+ordinary
+        self.assertEqual(modified.replace(replacement,call+b';'+ordinary),scanner)
         for source in (publisher,modified,PREPARE.encode()):
             LuaRuntime().eval('function(code)return assert(loadstring(code))end')(source.decode('utf-8-sig'))
 

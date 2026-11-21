@@ -11,13 +11,13 @@ import traceback
 import uuid
 import xml.etree.ElementTree as ET
 
-from ce_replay import DLL, HOTFIX_EXE_SHA, verify_modules
+from ce_replay import DLL, native_profile, verify_modules
 from driver import (
     HERE, HOTFIX_SHA, STUDY, XP2_IMAGE_SIZE, HeldProcess, NativeSession, configure, flags, launch, load, lua,
     make_probe_controller, manifest, native_inventory, parse, read, require,
     restore_preferences, sha, write_json,
 )
-from full_game_controller.checkpoint import save_inactive_boundary
+from full_game_controller.checkpoint import SaveFileUnavailable, SavePermissionUnavailable, save_inactive_boundary
 from storekeeper_runtime import audit
 
 
@@ -75,18 +75,30 @@ def package_identity(package):
     return str(uuid.UUID(root.attrib['id'])), root
 
 
-def untuned_manifest(root):
+def untuned_manifest(root, *, keep_observer_context=False):
     """Keep gameplay content and remove the declared AI tuning actions."""
     actions = root.find('InGameActions')
     publisher, = (node for node in actions if node.get('id') == 'CSC_AI_BakersGameplay')
     require(publisher.tag == 'AddGameplayScripts'
             and [file.text for file in publisher.findall('File')] == ['Lua_UI/AI/CSC_AI_BakersGameplay.lua'],
             'The publisher action must have exactly one CSC policy script')
-    actions.remove(publisher)
+    if not keep_observer_context:
+        actions.remove(publisher)
     connectors = actions.find("UpdateDatabase[@id='CSC_AI_Connectors']")
+    if keep_observer_context:
+        require(connectors is not None, 'No native connector action to withhold in the measured control')
     if connectors is not None:
         actions.remove(connectors)
     return ET.tostring(root, encoding='utf-8', xml_declaration=True)
+
+
+def passive_publisher(data):
+    """Retain observation helpers, without registering or calling the publisher."""
+    boundary = rb'(\r?\n)if bridge\.Available\(\) then(?=\r?\n    GameEvents\.OnGameTurnStarted\.Add\(onBoundary\))'
+    result, count = re.subn(boundary, rb'\1-- Benchmark control retains observation helpers without publishing.'
+                           rb'\1if false then', data)
+    require(count == 1, 'Stock-control publisher boundary changed')
+    return result
 
 
 def check_native_status(status, untuned):
@@ -327,23 +339,33 @@ def run(args):
     require(not any(path.is_relative_to(mods) for path in (out, ce, csc)),
             'Staging and output must be outside the installed Mods directory')
     require(not args.saves or args.saves.is_dir(), 'The native save directory must already exist')
-    require(sha(args.binary) == HOTFIX_EXE_SHA, 'The validated DX11 executable is required')
+    executable_sha, core_sha = native_profile(args.binary)
+    if core_sha != HOTFIX_SHA:
+        require(not (args.savings_dependencies or args.probe_dependencies),
+                'Previous-build native diagnostic probes need their own relocation audit')
     ce_dll = Path('Binaries/Win64') / DLL
     require(sha(ce / ce_dll) == args.ce_sha256, 'The staged CE DLL hash differs from the expected build')
     pins = {source: manifest(source) for source in local}
     installed_pins = dict(pins)
+    measured_control = args.untuned and args.harmonised_observation
     if args.untuned:
         csc_file, = (item.name for item in csc.glob('*.modinfo'))
-        control_manifest = untuned_manifest(csc_manifest)
+        control_manifest = untuned_manifest(csc_manifest, keep_observer_context=measured_control)
         installed_pins[csc] = dict(pins[csc])
-        installed_pins[csc][csc_file] = dict(size=len(control_manifest),
-                                             sha256=hashlib.sha256(control_manifest).hexdigest())
+        control_files = {csc_file: control_manifest}
+        if measured_control:
+            publisher = str(Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'))
+            control_files[publisher] = passive_publisher((csc / publisher).read_bytes())
+        for relative, data in control_files.items():
+            installed_pins[csc][relative] = dict(size=len(data), sha256=hashlib.sha256(data).hexdigest())
     protocol = dict(map=args.map, map_size=args.map_size, map_seed=args.map_seed, game_seed=args.game_seed,
         endpoint=args.through, interval_minutes=args.interval_minutes, csc=csc_id, ce=ce_id,
         untuned=args.untuned, development=not args.qualification, ordinary_setup=True,
         fresh_game=True, qualification=args.qualification, external_policy=False, gameplay_interventions=False,
         input_digests=[hashlib.sha256(json.dumps(pins[source], sort_keys=True).encode()).hexdigest()
                        for source in (ce, csc)])
+    if core_sha != HOTFIX_SHA:
+        protocol['native_profile'] = dict(executable_sha256=executable_sha, gamecore_sha256=core_sha)
     if args.saves:
         protocol['archive_endpoint'] = True
     if extra_mods:
@@ -500,14 +522,22 @@ def run(args):
                     'Component capture uses a short read-only Trebizond window')
     require(all(start < turn < args.through for turn in args.census_turns),
             'Milestone censuses must be interior turns')
+    if args.harmonised_observation:
+        protocol['harmonised_observation']=True
+        protocol['planning_observation']=args.planning_observation
+        protocol['passive_savings_observation']=bool(args.savings_dependencies)
+    if getattr(args,'service_observation',False):
+        require(args.harmonised_observation,'Native Service observation requires the shared census')
+        protocol['service_observation']=True
     if args.census_turns:
         protocol['census_turns'] = args.census_turns
     if args.observe_supplier_at is not None:
         protocol['diagnostic_supplier_boundary'] = args.observe_supplier_at
     other_source = None
     if getattr(args,'reference_source',None):
-        require(not(args.matched_source or args.untuned or args.resume_from or args.qualification),
-                'Regression reference is for a fresh tuned game, separate from opposite-policy matched arms')
+        require(not(args.matched_source or args.resume_from or args.qualification
+                    or (args.untuned and not measured_control)),
+                'Source regression requires a fresh development game')
         other_source=args.reference_source.resolve(strict=True)
         require(load(other_source.parent/'session-closed.json')['verified'], 'Reference game did not close cleanly')
         # Source/action reorganizations and explicit UI dependencies legitimately
@@ -526,12 +556,9 @@ def run(args):
                     'The matched qualification arm must have archived its full tuned run')
     out.mkdir(parents=True)
     if getattr(args,'harmonised_observation',False):
-        require(not(prior or args.untuned or args.probe_dependencies or args.observe_supplier_at
+        require(not(prior or args.probe_dependencies or args.observe_supplier_at
             or args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair),
-            'Full integrated observation requires a normal tuned start without diagnostic interventions')
-        protocol['harmonised_observation']=True
-        protocol['planning_observation']=args.planning_observation
-        protocol['passive_savings_observation']=bool(args.savings_dependencies)
+            'Full integrated observation requires a normal start without diagnostic interventions')
         shutil.copyfile(Path(__file__),out/Path(__file__).name)
     write_json(out / 'packages.json', {str(source): dict(install=str(local[source]), files=files)
                                        for source, files in installed_pins.items()})
@@ -551,7 +578,7 @@ def run(args):
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
     players = set()
     copied = []
-    checkpoint = None
+    checkpoint = autosave_receipt = None
     observer = None
     savings_watch = None
     target = args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair
@@ -693,7 +720,8 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
             shutil.copytree(source, destination)
             copied.append(source)
             if args.untuned and source == csc:
-                (destination / csc_file).write_bytes(control_manifest)
+                for relative, data in control_files.items():
+                    (destination / relative).write_bytes(data)
         verify_packages()
         session.start(lambda: launch(args, out))
         session.wait_context('MainMenu')
@@ -720,7 +748,7 @@ Modding.EnableMod(chosen.Handle,true)
         require({key for key, enabled in flags(controller, 'verify-local-pair')['mods'].items() if enabled}
                 == {ce_id, csc_id, *extra_mods}, 'Expected exactly the pinned development and optional packages')
         contexts = ('GameCore_Tuner', 'PlotInfo')
-        if not args.untuned:
+        if not args.untuned or measured_control:
             contexts += ('CSC_AI_BakersGameplay',)
         if prior:
             session.load_once(checkpoint_input['native_save'], sha256=checkpoint_input['sha256'],
@@ -729,7 +757,7 @@ Modding.EnableMod(chosen.Handle,true)
         else:
             session.issue_once('host-normal-start', host(args.map_seed, args.game_seed, args.map, args.map_size), 'MainMenu')
             session.ready_after_issue(1, contexts, eligibility=source_gate)
-        verify_modules(session, local[ce] / ce_dll, out, HOTFIX_SHA)
+        verify_modules(session, local[ce] / ce_dll, out, core_sha)
         if args.mill_opening_components:
             # A controlled opening fixture: preserve the Rice and Granary
             # while removing only the Farm. The native probe writes no scores.
@@ -790,7 +818,18 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
         if getattr(args,'harmonised_observation',False):
             from full_game_observation import install
             install(controller,out,players,args.user_root,args.through,
-                    planning=args.planning_observation,extra_mods=extra_mods,csc_path=local[csc])
+                    planning=args.planning_observation,extra_mods=extra_mods,csc_path=local[csc],
+                    untuned=measured_control,service_watch=getattr(args,'service_observation',False))
+            if core_sha != HOTFIX_SHA:
+                # Read admission capabilities before play. Fresh play must
+                # exercise the same developer APIs on the selected binary.
+                material = parse(controller.cmd(
+                    'print("CSC_MATERIAL_PROFILE="..CE_AIMaterialDevelopmentStatus())',
+                    'GameCore_Tuner', 'new-build-material-capabilities'), 'CSC_MATERIAL_PROFILE')
+                write_json(out / 'native-material-preflight.json', material)
+                require(all(material.get(k) == 1 for k in
+                            ('techReady', 'civicReady', 'builderReady', 'workerReady', 'workerFinishOnly'))
+                        and material.get('workerFaults') == 0, 'New build lacks qualified material capabilities')
         if args.savings_dependencies:
             require(args.harmonised_observation and args.planning_observation,
                     'Economic observation requires the passive planning/full-run observers')
@@ -1032,9 +1071,16 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             # should leave the read-only evidence available for inspection.
             state = controller.state_read('fresh-endpoint-save-check')
             if state['player0_alive']:
-                checkpoint = save_inactive_boundary(controller, turn=args.through, name='CSC_BAKERS_FRESH',
-                    native_directory=args.saves, archive=out / 'endpoint.Civ6Save')
-                write_json(out / 'checkpoint.json', checkpoint)
+                try:
+                    checkpoint = save_inactive_boundary(controller, turn=args.through, name='CSC_BAKERS_FRESH',
+                        native_directory=args.saves, archive=out / 'endpoint.Civ6Save')
+                except (SavePermissionUnavailable, SaveFileUnavailable) as error:
+                    if not (args.harmonised_observation and args.planning_observation) or args.qualification:
+                        raise
+                    from full_game_observation import archive_endpoint_autosave
+                    autosave_receipt = archive_endpoint_autosave(out,args.saves,args.through,error)
+                else:
+                    write_json(out / 'checkpoint.json', checkpoint)
             else:
                 write_json(out / 'checkpoint-unavailable.json', state)
     except Exception as error:
@@ -1066,6 +1112,8 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
     if getattr(args,'harmonised_observation',False):
         from full_game_observation import finish
         finish(out,args.through)
+    if autosave_receipt:
+        write_json(out/'completed-via-autosave.json', dict(autosave_receipt, native_closed_verified=session.closed))
     if savings_watch:savings_watch.qualify()
 
 
@@ -1092,10 +1140,13 @@ if __name__ == '__main__':
                         help='Read-only native economic quotes and district-slot checks at the endpoint')
     parser.add_argument('--harmonised-observation',action='store_true',
                         help='Passive25-turn two-Quarter/economy census and capability preflight; normal200/250-turn start only')
+    parser.add_argument('--service-observation',action='store_true',
+                        help='Record active native Service effects by source and recipient on each observed turn')
     parser.add_argument('--map-size', choices=MAP_SIZES, default='small')
     parser.add_argument('--interval-minutes', type=int, default=30,
                         help='Maximum wall time of one continuous autoplay window (30â€“240)')
-    parser.add_argument('--untuned', action='store_true', help='Remove only the CSC runtime policy action locally')
+    parser.add_argument('--untuned', action='store_true',
+                        help='Disable CSC native SQL/Lua guidance while retaining CSC gameplay')
     parser.add_argument('--qualification', action='store_true',
                         help='Record a preselected fresh Standard run with strict Storekeeper turn coverage')
     parser.add_argument('--matched-source', type=Path, help='Require initial state parity with the other arm')

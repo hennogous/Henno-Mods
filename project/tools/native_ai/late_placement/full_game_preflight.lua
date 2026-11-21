@@ -69,6 +69,25 @@ function CSC_FULL_RUN_Health()
  print('CSC_FULL_RUN_ECONOMY_HEALTH',Game.GetCurrentGameTurn(),status)
 end
 CSC_FULL_RUN_Health()
+-- The stock control exposes the same readers, with no published guidance.
+-- Opening seats were captured before autoplay by the controller; the absent
+-- policy must not write its own original-seat properties or private yield.
+if scope.untuned then
+ assert(GameInfo.Yields.YIELD_CSC_AI_PLACEMENT==nil,'Unexpected private AI yield')
+ assert(CE_AIDistrictScoresStatus():match('"enabled":0'),'Unexpected CSC policy')
+ -- The normal publisher initialises the adjacency catalogue in this Lua
+ -- context. Initialise the read-only definitions for the same census
+ -- geometry and material roles even when that publisher is disabled.
+ CSC_Adjacency.Initialize()
+ assert(next(CSC_Adjacency.Tags) and next(CSC_Adjacency.ByDistrict),'Observation catalogue empty')
+ print('CSC_FULL_RUN_CONTROL_CATALOGUE',Game.GetCurrentGameTurn())
+ for _,id in ipairs(scope.players)do
+  assert(Game:GetProperty('CSC_AI_OriginalHuman_'..id)==nil,'Unexpected CSC policy identity')
+ end
+ assert(Game:GetProperty('CSC_AI_OriginalHuman_0')==nil,'Unexpected CSC policy identity')
+ print('CSC_FULL_RUN_PREFLIGHT_OK',Game.GetCurrentGameTurn(),0,-1)
+ return
+end
 local y=assert(GameInfo.Yields.YIELD_CSC_AI_PLACEMENT)
 for _,key in ipairs({'BAKERS','TAILORS'})do
  local value=assert(GameInfo.Districts['DISTRICT_CSC_'..key..'_QUARTER']).RequiresPopulation

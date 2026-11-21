@@ -105,6 +105,12 @@ class ProvenanceTests(unittest.TestCase):
 
 class LifecycleTests(unittest.TestCase):
     def test_shared_session_load_once_and_exit_detach_order_without_game_access(self):
+        self.run_lifecycle()
+
+    def test_material_session_preserves_autosave_when_endpoint_save_is_unavailable(self):
+        self.run_lifecycle(material_only=True)
+
+    def run_lifecycle(self, *, material_only=False):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as tmp:
             root=Path(tmp);out=root/'continued';user=root/'user';user.mkdir()
             events=[];owner=SimpleNamespace(pid=123,exited=False)
@@ -127,7 +133,9 @@ class LifecycleTests(unittest.TestCase):
             controller=SimpleNamespace(cmd=command)
             class Session:
                 def __init__(self,*args,**kwargs):self.owner=None;self.closed=False
-                def start(self,callback):self.owner=callback();events.append('started')
+                def start(self,callback):
+                    self.owner=callback();events.append('started')
+                    pc.write_json(out/'launch-bootstrap.json',{'time':0})
                 def wait_context(self,*args):pass
                 def issue_once(self,*args):events.append('enable')
                 def load_once(self,*args,**kwargs):events.append('load-once');kwargs['eligibility']()
@@ -145,31 +153,47 @@ class LifecycleTests(unittest.TestCase):
             def install(*args,**kwargs):
                 (out/'loaded-district-catalogue.txt').write_text('CSC_DISTRICT_CATALOGUE\t43\tTAILORS\n')
             def copytree(source,destination):destination.mkdir()
+            auto=root/'Auto'
+            auto.mkdir()
+            (auto/'AutoSave_0250.Civ6Save').write_bytes(b'CIV6 endpoint')
+            save_error=pc.SavePermissionUnavailable('Declined before save request') if material_only else None
             with patch.object(pc,'prepare',return_value=plan), patch.object(pc,'native_inventory',return_value=[]), \
                  patch.object(pc,'make_probe_controller',return_value=controller), patch.object(pc,'NativeSession',Session), \
                  patch.object(pc,'launch',return_value=owner), patch.object(pc,'configure'), \
                  patch.object(pc,'flags',return_value={'mods':{k:True for k in ['ce','csc','a','b','c']}}), \
                  patch.object(pc,'verify_modules',side_effect=modules), patch.object(pc,'manifest',return_value={}), \
                  patch.object(pc,'archive_sources',return_value={}), patch.object(pc.shutil,'copytree',side_effect=copytree), \
-                 patch.object(pc,'save_inactive_boundary',return_value={'verified':True}), patch.object(pc,'capture_census'), \
+                 patch.object(pc,'save_inactive_boundary',return_value={'verified':True},side_effect=save_error) as save, \
+                 patch.object(pc,'capture_census'), \
                  patch.object(pc,'summarize_run') as summary, patch('full_game_observation.install',side_effect=install), \
                  patch('full_game_observation.play') as play, patch('full_game_observation.finish') as finish, \
                  patch('economy_preflight.inspect'), patch('economy_savings_watch.EconomySavingsWatch',return_value=watch) as watch_factory:
                 # Extras normally hold pinned files. This fixture supplies their
                 # minimal fields only after constructing its exact five IDs.
                 for item in plan.extras.values():item.update(path=str(root),files={})
-                pc.run(SimpleNamespace(source=root,output=out,at=200,through=250,dependencies=root))
+                pc.run(SimpleNamespace(source=root,output=out,at=200,through=250,dependencies=root,
+                                       material_only=material_only))
             self.assertEqual(events.count('load-once'),1)
-            self.assertLess(events.index('freeze'),events.index('menu'))
-            self.assertLess(events.index('native-exit'),events.index('detach'))
-            self.assertLess(events.index('detach'),events.index('held-close'))
             self.assertEqual(summary.call_args.args[2:4],(200,250))
             finish.assert_called_once_with(out,250,start=200)
             self.assertEqual(play.call_args.kwargs['start'],200)
             self.assertTrue((out/'source-structure-comparison.json').is_file())
             self.assertFalse(pc.load(out/'protocol.json')['fresh_game'])
-            watch.qualify.assert_called_once()
-            self.assertTrue(watch_factory.call_args.kwargs['capture_placement'])
+            save.assert_called_once()
+            if material_only:
+                self.assertIsNone(play.call_args.kwargs['savings'])
+                watch_factory.assert_not_called()
+                receipt=pc.load(out/'completed-via-autosave.json')
+                self.assertEqual(Path(receipt['archive']).read_bytes(),b'CIV6 endpoint')
+                self.assertTrue(receipt['native_closed_verified'])
+                self.assertEqual(receipt['manual_save_requests'],0)
+                self.assertFalse((out/'checkpoint.json').exists())
+            else:
+                self.assertLess(events.index('freeze'),events.index('menu'))
+                self.assertLess(events.index('native-exit'),events.index('detach'))
+                self.assertLess(events.index('detach'),events.index('held-close'))
+                watch.qualify.assert_called_once()
+                self.assertTrue(watch_factory.call_args.kwargs['capture_placement'])
 
 
 if __name__=='__main__':

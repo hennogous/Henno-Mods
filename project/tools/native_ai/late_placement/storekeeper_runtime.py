@@ -101,8 +101,10 @@ def contiguous_ranges(turns):
     return ranges
 
 
-def audit(text, players, *, expected_turns=None):
+def audit(text, players, *, expected_turns=None, before_turn=None):
     samples = sampled_chains(text)
+    if before_turn is not None:
+        samples = {turn: sample for turn, sample in samples.items() if turn < before_turn}
     if not samples:
         raise ValueError('No Storekeeper snapshots')
     expected = set(range(min(samples), max(samples) + 1)) if expected_turns is None else set(expected_turns)
