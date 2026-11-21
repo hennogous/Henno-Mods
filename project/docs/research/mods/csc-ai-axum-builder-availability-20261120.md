@@ -452,16 +452,31 @@ turn 250. The stock city trees show several ways this happened.
 | Mashhad | 168 | 168 | Reserved Sheep twelve times. Ten reservations logged recruitment. On three attempts the tree logged a completed move and later failed at Build Improvement. |
 | Angkor Thom | 192 | 203 | Reserved the pillaged Maize Farm four times and recorded three successful recruitments. The last observed attempt failed protection a turn after recruitment. |
 
-Mashhad is the clearest follow-through check. For the Sheep at (61, 8),
-its city tree reported Move Unit Success and Build Improvement Running
-on turn 200, then Build Improvement Failure on 201. On 201, the unit log
-records Builder 8323118 first issuing Remove Feature, then a Build
-Improvement order that could not start. It is the only ordinary Builder
-with a build operation logged for that player on 201. The log has no
-destination or improvement parameter, so the unit and request still
-need to be joined to Mashhad's tree. The stock operation eligibility and
-the actual request payload can be compared from the unchanged turn-200
-checkpoint (SHA-256 `2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`).
+Mashhad's Sheep job at (61, 8) reported Move Unit Success and Build
+Improvement Running on turn 200, then Build Improvement Failure on 201.
+The separate Shahr-i-Qumis city tree explicitly named Builder 8323118
+while clearing Marsh at (59, 19) on 201. Its next node reported that it
+issued a Farm build. The only ordinary Builder with a build order logged
+for that player on 201 was 8323118, after its Remove Feature order. The
+operation log recorded the build could not start. Attribute that pair
+of orders to Shahr-i-Qumis. The exact Builder for Mashhad's Pasture still
+needs identification. The turn-200 checkpoint
+(SHA-256 `2e458967018772a905fc253e73bfa4a455ce4e79a5b24b2b3c316402c9b14cf3`)
+allows sampling the worker on each plot and checking operation legality
+at its actual location.
+
+The current XP2 binary explains how Shahr-i-Qumis can report success
+before its order is accepted. Clear Plot Execute (`55d9b0`) calls the
+Remove Feature request constructor (`670ae0`) on its feature-removal
+route. Remove Feature Start (`671150`) deducts one charge at `3a2240`.
+When the Builder survives, it calls Finish Moves (`3a29e0`). Build
+Improvement Update (`551ac0`) checks charges, goal/Builder location or
+reachability, and plot eligibility. Execute (`5513a0`) checks that the
+selected worker is at its expected tile, calls the request constructor,
+and submits through the operations manager. Its dispatch call has no
+branch that acts on the manager's return. The behavior log and physical
+result are separate checks. Evidence for the named procedures is in
+`mashhad-builder-action-rea.json` beside the ordinary run directory.
 
 On the installed Windows Gathering Storm binary, `RecruitUnits` at
 `403170` excludes a controlled unit from the initial free pool. It can
