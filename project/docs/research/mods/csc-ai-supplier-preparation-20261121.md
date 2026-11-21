@@ -204,3 +204,23 @@ Innkeeper property back at 1 while the Mill was still pillaged. On the
 Both arms quoted 19,007 Q8 because the existing modeled value exceeded
 the new 56-unit floor. This case qualifies independent Stage 3 recovery
 without an acceleration claim. The paired city production logs matched.
+
+### Matched Stage 4 outage in Québec
+
+Both arms matched 274 structural rows from the ordinary Fractal turn-250
+checkpoint. A controlled Opera and Ballet grant activated Stage Manager
+with Québec's existing Fashion House, adjacent Amphitheater, Flax Farm
+and Silver Mine. The fixture pillaged both suppliers on 251. The Stage
+Manager property fell from 1 to 0.
+
+Treatment marked both missing suppliers as Service repairs from turn 252.
+The Farm and Mine each received 16,334 Q8 on the first publication in both
+arms, above the 56-point repair floor. Ottawa reserved the Farm on 256,
+executed its repair on 257 and the survey saw it working on 258. The Silver
+Mine received 26,587 Q8 on 258 as working Base made the chain closer to
+recovery. It received no observed reservation through 263. Stage Manager
+stayed at 0. The two arms' native behavior-tree logs and city production
+logs matched byte for byte. Québec assigned Builders to Offshore Wind
+Farms and an Oil Well during this window. The Stage 4 requirement check
+identified both missing classes, but this repair floor did not change the
+native job order or restore the Service within the replay.

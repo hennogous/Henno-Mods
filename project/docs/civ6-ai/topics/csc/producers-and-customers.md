@@ -264,6 +264,22 @@ University. The existing Pasture and Granary then supported the restored
 exchange and Storekeeper. [AI-C069](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c069)
 [Mill-only recovery evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#mill-only-damage-restored-the-full-service).
 
+### Stage 2 building repair coverage
+
+Stock AI can repair a pillaged Mill through city production. In the isolated
+Boston replay the Water Mill was pillaged on turn 66, repaired on turn 70
+after a University, and verified working with Storekeeper on turn 72.
+Alexandria also recovered after CSC helped repair the Quarter that gated
+the Mill. [Alexandria recovery](../../findings.md#ai-c122).
+
+The Stage 2 construction adapter checks for an existing producer or customer
+before offering a bid. An existing pillaged building skips that bid. Follow
+the Textile Workshop, Granary and Lighthouse through ordinary production
+when each is the missing building in a previously working Service. The same
+readback should distinguish native repair eligibility, a queue decision and
+restored Service effects. Compare timing with ordinary competition before
+adding a repair preference.
+
 ## The Wind Mill needed an ordinary nomination in Melbourne
 
 Melbourne already had a working Rice supplier, an adjacent

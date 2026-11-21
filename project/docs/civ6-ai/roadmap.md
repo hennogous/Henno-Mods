@@ -46,7 +46,7 @@
 | 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Planned. |
 | 12.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [13. Recovery and retention](#13-recovery-and-retention) | Repair damaged links, protect working supply and replan after permanent losses. | Repair and protection verified in matched replays. Broader recovery and replanning remain open. |
-| 13.1 Repair | Restore damaged suppliers, Quarters, and customer assets. | Matched supplier and Quarter recoveries verified. Other sequences remain open. |
+| 13.1 Repair | Restore damaged suppliers, Quarters, producers and customers in established chains. | Matched supplier and Quarter recoveries verified. Stock Mill repair restored Storekeeper. Targeted Stage 2 building repair remains open. |
 | 13.2 Replan | Reassess after capture, destructive work, or permanent supplier loss. | Permanent-loss cases identified. Replanning follow-through remains open. |
 | 13.3 Preserve supply in Builder decisions | Protect working supply from replacement and harvesting before reservation. | Protection implemented. Wider harvest and replacement coverage remains open. |
 | [14. Competing uses and shared plans](#14-competing-uses-and-shared-plans) | Compare new investments with finishing or repairing existing chains and avoid double-counting shared benefits. | Shared bids and Service forecasts partly implemented. Full-game calibration remains open. |
@@ -1389,14 +1389,20 @@ ordinary repair and no material restored.
 
 ### 13. Recovery and retention
 
-- **13.1 Repair.** Restore pillaged material improvements, Quarters and
-  customer assets when the chain merits it. Verify actual repair and resumed
+- **13.1 Repair.** Restore pillaged material improvements, Quarters, producers
+  and customers when the chain merits it. Verify actual repair and resumed
   benefits. Alexandria's matched extra Quarter admission at ordinary
   value restored the host. Stock AI then repaired the Mill and restored
   Storekeeper. The reusable CE and CSC packages reproduced the repair
   and kept the pending request across a save and reload. Validate the
   other repair sequences and ordinary-game coverage. The matched control
   retained the pillaged Quarter and Mill at turn 214.
+  For Stage 2 building repair, start with a working Storekeeper or Dockmaster
+  and isolate damage to its producer or its adjacent customer. Measure stock
+  recovery and the work competing for city production. If a useful repair
+  stalls, test a bounded bid at the native decision that admitted it. Check
+  the exact building's repair and the return of the Service and its benefit.
+  Keep Dockmaster-specific priority within its useful sail-era window.
 - **13.2 Replan.** Reassess after capture, lost supply, or destructive harvest
   and other work. Distinguish a repairable interruption from permanent loss.
   Heidelberg owned every adjacent tile and had no mapped Base after its
