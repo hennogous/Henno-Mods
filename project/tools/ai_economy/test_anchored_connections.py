@@ -75,6 +75,10 @@ local E=CSC_AI_EconomyAdapters
 snapshot.connectionGroups={};snapshot.connectionQuarters={quarterAt(20),quarterAt(21)}
 local equal=E.AnchoredConnectionPlans(snapshot,{})
 assert(#equal==1 and equal[1].costQ8==0) -- keep the plan, with no footprint cost
+snapshot.intentFootprints={[20]='7:3:20',[21]=true}
+local retained=E.AnchoredConnectionPlans(snapshot,{})
+assert(#retained==1 and retained[1].best.plot==20 and not retained[1].backup)
+snapshot.intentFootprints={[20]='8:3:20'}
 legal={21};turn=21
 local plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==21 and plans[1].order=='customerFirst')

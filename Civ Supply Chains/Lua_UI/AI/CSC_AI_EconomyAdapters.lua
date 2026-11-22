@@ -25,7 +25,7 @@ E.AnchoredConnectionAuditEnabled=false
 -- packet. These are Q8 utility points in the native production comparison.
 local LATER_BUILDING_CAP_Q8=64*256
 
-function E.WonderOffers(player,chains,protectedPlots,limit,maxOfferQ8,canPlaceWonder)
+function E.WonderOffers(player,chains,protectedPlots,limit,maxOfferQ8,canPlaceWonder,reservedPlots)
     -- The same generated sales catalogue feeds the Quarter forecast for
     -- completed Wonders. Here it identifies the individual Wonder building
     -- for CE's separate, native-legal plot comparison. Cache only definitions.
@@ -78,7 +78,8 @@ function E.WonderOffers(player,chains,protectedPlots,limit,maxOfferQ8,canPlaceWo
                     for _,building in ipairs(mapped)do
                         if not city:GetBuildings():HasBuilding(building)then
                             local key=city:GetID()..':'..building..':'..index
-                            if canPlaceWonder and legalBySite[key]==nil then
+                            local reserved=reservedPlots and reservedPlots[index]
+                            if canPlaceWonder and not reserved and legalBySite[key]==nil then
                                 local ok,legal=pcall(canPlaceWonder,pid,city:GetID(),building,index)
                                 legalBySite[key]=ok and type(legal)=='boolean' and (legal and 'legal' or 'blocked')or 'unavailable'
                             end
@@ -95,7 +96,7 @@ function E.WonderOffers(player,chains,protectedPlots,limit,maxOfferQ8,canPlaceWo
                             -- placement gate in charge. Known-impossible plots
                             -- cannot occupy the candidate's bounded offer list.
                             if (chain.ready or E.AnchoredConnectionsEnabled) and
-                                (not E.AnchoredConnectionsEnabled or legalBySite[key]~='blocked')then
+                                (not E.AnchoredConnectionsEnabled or not reserved and legalBySite[key]~='blocked')then
                                 local offer=seen[key]
                                 if offer then offer.deltaQ8=math.max(offer.deltaQ8,deltaQ8)
                                 else
@@ -578,7 +579,11 @@ local function reconcilePlans(snapshot)
         end
     end
     snapshot.intentFootprints={}
-    for _,plan in pairs(state.plans)do snapshot.intentFootprints[plan.plot]=true end
+    for id,plan in pairs(state.plans)do
+        -- A sole exact Quarter intent may use its own planned footprint.
+        -- True marks a conflict between intents and fences it for every bid.
+        snapshot.intentFootprints[plan.plot]=snapshot.intentFootprints[plan.plot] and true or id
+    end
 end
 
 function E.ReportWithdrawals(snapshot,entries,evaluations,scopes,previous)
@@ -1339,8 +1344,9 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         end
         return base and(stage<4 or specialty)
     end
-    local function free(index)
-        return not protectedPlots[index]and not(snapshot.intentFootprints and snapshot.intentFootprints[index])
+    local function free(index,ownIntent)
+        local reserved=snapshot.intentFootprints and snapshot.intentFootprints[index]
+        return not protectedPlots[index]and (not reserved or reserved==ownIntent)
     end
     for _,group in ipairs(snapshot.connectionGroups or{})do
         -- Reuse the same owned, unprotected, native-legal candidate set used
@@ -1363,7 +1369,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
     local admitted={}
     for _,candidate in ipairs(snapshot.connectionQuarters or{})do
         local entry,site=candidate.entry,candidate.site
-        if free(entry.plot)then
+        if free(entry.plot,siteKey(entry.city,entry.district,entry.plot))then
             local venues=site.customers
             local pending=snapshot.PendingConnectionVenues and snapshot.PendingConnectionVenues(site,candidate.profile)
             if pending and #pending>0 then

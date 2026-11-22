@@ -377,26 +377,6 @@ local function refresh(turn)
         end
         if serviceSample then materialServices[#materialServices+1]=serviceSample end
         if commitmentSample then materialCommitments[#materialCommitments+1]=commitmentSample end
-        if wonderLimit>0 and maxWonderOfferQ8>0 and CSC_AI_EconomyAdapters then
-            -- The native Wonder consumer uses the same publication as the
-            -- supplier guard. Exclude known threats here even if capacity
-            -- prevents publishing the entire Builder allowlist this turn.
-            local wonderProtected={}
-            for index in pairs(protectedPlots)do wonderProtected[index]=true end
-            for _,site in ipairs(sites)do wonderProtected[site.plot]=true end
-            for _,site in ipairs(threatened or{})do wonderProtected[site.plot]=true end
-            local limit=math.min(128,wonderLimit-#wonderOffers)
-            if limit>0 then
-                local adapter=CSC_AI_EconomyAdapters
-                local query=(adapter.AnchoredConnectionsEnabled or adapter.AnchoredConnectionAuditEnabled)
-                    and playerUI and playerUI.CanPlaceWonder
-                local anchors=(adapter.AnchoredConnectionsEnabled or adapter.AnchoredConnectionAuditEnabled)
-                    and economy and economy.chains or chains
-                for _,offer in ipairs(adapter.WonderOffers(player,anchors,wonderProtected,limit,maxWonderOfferQ8,query))do
-                    wonderOffers[#wonderOffers+1]=offer
-                end
-            end
-        end
         if protectBuilders then
             for _, site in ipairs(placement.SupplierAcquisitionOffers(player, chains, playerUI, builderBidLimit)) do
                 builderSites[#builderSites + 1] = site
@@ -448,6 +428,26 @@ local function refresh(turn)
                     turn,id,counts.qualityDeferred or 0,counts.economicDeferred or 0,counts.invoiceDeferred or 0,counts.unknown or 0,
                     counts.capacityReady or 0,counts.capacityFull or 0,counts.capacityUnknown or 0))
             else print(string.format('CSC_AI_ECONOMY_FAILED turn=%d player=%d reason=%s',turn,id,tostring(replacement)))end
+        end
+        if wonderLimit>0 and maxWonderOfferQ8>0 and CSC_AI_EconomyAdapters then
+            -- QuarterBids has reconciled the confirmed Quarter footprints for
+            -- this packet. Keep them and the threatened suppliers available
+            -- while weighing the Wonder's separate native placement offer.
+            local wonderProtected={}
+            for index in pairs(protectedPlots)do wonderProtected[index]=true end
+            for _,site in ipairs(sites)do wonderProtected[site.plot]=true end
+            for _,site in ipairs(threatened or{})do wonderProtected[site.plot]=true end
+            local limit=math.min(128,wonderLimit-#wonderOffers)
+            if limit>0 then
+                local adapter=CSC_AI_EconomyAdapters
+                local consider=adapter.AnchoredConnectionsEnabled or adapter.AnchoredConnectionAuditEnabled
+                local query=consider and playerUI and playerUI.CanPlaceWonder
+                local anchors=consider and economy and economy.chains or chains
+                local intent=consider and economy and economy.intentFootprints
+                for _,offer in ipairs(adapter.WonderOffers(player,anchors,wonderProtected,limit,maxWonderOfferQ8,query,intent))do
+                    wonderOffers[#wonderOffers+1]=offer
+                end
+            end
         end
         for _,entry in ipairs(playerEntries)do entries[#entries+1]=entry end
         for _, chain in ipairs(chains or {}) do

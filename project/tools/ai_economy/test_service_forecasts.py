@@ -382,6 +382,8 @@ local anchors={chain('TAILORS',true,true),chain('TAILORS',true,true)}
 E.AnchoredConnectionsEnabled=true
 offers=E.WonderOffers(player,anchors,{[21]=true},1,24*256,canPlace)
 assert(#offers==1 and offers[1].plot==24 and legalQueries==2)
+offers=E.WonderOffers(player,anchors,{[21]=true},1,24*256,canPlace,{[24]='10:38:24'})
+assert(#offers==0)
 ''')
 
     def test_wonder_offers_publish_inside_the_native_packet(self):

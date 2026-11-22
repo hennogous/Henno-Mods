@@ -450,6 +450,9 @@ site can still be an adequate backup, so loss pricing waits for stronger
 evidence. A still-legal plan keeps its preferred plot across visits and gives
 new or redirected sites one priority quote. Standing plans alternate with
 rotating alternatives so backup sites can be repriced under a full budget.
+The customer-first plan retains its exact Quarter footprint after it wins a
+native site comparison. Another city's intent or a competing Quarter type
+can invalidate that site. Wonder offers also skip those reconciled plans.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
