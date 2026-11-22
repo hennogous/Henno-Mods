@@ -233,7 +233,6 @@ if CSC_WONDER_FIXTURE_MODE=='verify'then
   'Specialty supplier failed the placement readback')
  -- PlotInfo owns native site legality. Gameplay already read back both
  -- the unlock and the working Fashion House in its synchronous setup.
- emit('UI_STATE',Game.GetCurrentGameTurn(),isUnlocked(player,wonder),workingBuilding(producer,f.quarter))
  emit('VERIFIED',Game.GetCurrentGameTurn(),f.player,f.city,f.site,wonder.Index,f.quarter,f.supplier,f.specialty)
  return
 end
