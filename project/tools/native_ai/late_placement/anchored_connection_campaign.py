@@ -70,7 +70,6 @@ def run(args):
     reference = args.reference.resolve(strict=True)
     ce = args.ce.resolve(strict=True)
     require(load(reference / 'session-closed.json')['verified'], 'Previous package source must be closed')
-    require(not native_inventory(), 'Another Civ VI or FireTuner session owns the console')
     protocol = load(reference / 'protocol.json')
     extras = load(reference / 'extra-mods.json')
     for item in extras.values():
@@ -116,6 +115,7 @@ def run(args):
         write_json(lock, pins)
     if args.freeze_only:
         return
+    require(not native_inventory(), 'Another Civ VI or FireTuner session owns the console')
 
     def game(map_name, arm, other=None):
         destination = output / f'{map_name.lower()}-{arm}'

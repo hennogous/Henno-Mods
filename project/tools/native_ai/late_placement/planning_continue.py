@@ -151,9 +151,9 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     # forward window. Neither mode relaxes source/save/package qualification.
     typed=type(at)is int and type(through)is int
     window=typed and(0<at==through<=250 if read_only else 0<at<through<=250)
-    # A read-only source inspection may use any regular archived checkpoint,
-    # including100/150. Playing continuations retain their qualified endpoints.
-    endpoint_ok = at in (50, 100, 150, 200, 250) if read_only else through in (50, 200, 250)
+    # Diagnostic replay may start at a natural early endpoint or a regular
+    # archived checkpoint. Playing continuations keep their qualified endpoints.
+    endpoint_ok = at in (25, 50, 100, 150, 200, 250) if read_only else through in (50, 200, 250)
     if observe_material:
         require(material_only and (at, through) in ((100, 175), (150, 155)),
                 'Axum trace needs a qualified Continents checkpoint and replay window')
@@ -192,7 +192,7 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     checkpoint_path = source/('checkpoint-'+str(at)+'.json')
     # Fresh-game drivers name the final receipt checkpoint.json; intermediate
     # boundaries use checkpoint-N.json. Both still require exact turn/save hashes.
-    if at == 250 and not checkpoint_path.is_file():
+    if at in (25, 250) and not checkpoint_path.is_file():
         checkpoint_path = source/'checkpoint.json'
     checkpoint = load(checkpoint_path)
     require(checkpoint['verified'] and checkpoint['turn'] == at and

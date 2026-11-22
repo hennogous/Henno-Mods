@@ -458,6 +458,17 @@ returned 100 native eligible reads and 82 writes. Across the four scouted
 cities, all 37 recorded native best district/site choices and the one request
 had the same district and plot in both arms. Both endpoint censuses held 13
 Quarters and 16 customer host rows with identical placement and completion.
+At the turn-112 journal drain, both arms returned Entertainment Complex
+2187 at 1,443.24 utility in city 65536 (player 4). The eligible linked plot
+2115 scored 1,283.62. Preserve this stronger ordinary choice as a control
+when testing any increase in the linked-site weight.
+In player 3's city 65536, the turn-101 Commercial Hub quote on plot 2424
+received +12,223 Q8 for the adjacent Bakers and −9,380 Q8 for consuming the
+only viable Tailors footprint next to a Holy Site. The native cell read the
+combined +2,843 Q8. The Bakers could still connect to a comparably valued
+Hub on 2498. On turn 105 the Tailors credit reached the native best result
+on 2424, which was already the best site in the control. The other eligible
+Tailors footprint lagged by 770.4 utility.
 This shifted testing to earlier saves with a recorded decision to build a
 district, including a Fractal city where the control chose a Campus only 25.7
 utility above a Bakers-adjacent Commercial Hub in the archived game.
