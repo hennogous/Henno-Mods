@@ -653,6 +653,25 @@ link and the value removed by the site-quality cap still limit the
 recovery. The separate last-slot and footprint-loss budgets keep their
 earlier scale. This revision is being tested in the same prepared save.
 
+Both calibrated Stirling arms matched all 101 prepared rows and reached
+turn 140 with complete native and physical histories. The turn-128
+treatment packet recovered 27,753 Q8 on Tailors 2692. In the same
+turn-129 native generation, the control read 416,180 for Tailors and
+chose Rural Community 2621 at 436,245. The treatment read 443,933 and
+chose Tailors. It submitted contract 2535 on turn 128, founded the
+Quarter on turn 129 and completed it on turn 130. The physical observer
+verified the pair with Holy Site 2618 and the pair with Theater Square
+2693. Both customers were already complete before the experiment.
+The existing Colosseum still completed on turn 133. The control had
+no Tailors there by turn 140. The single extra slot was identical in
+both worlds. This completes the matched customer-first check.
+
+The full-game campaign starts both arms from ordinary new games, with
+the private yield enabled and Dev CE `6244570` in both. The frozen CSC
+packages differ only in whether the anchored planner is enabled. Keep
+the short timing result with `cc37c87` separate from the campaign's
+timing on the public Dev CE revision.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions
