@@ -10,7 +10,8 @@ from anchored_connection_results import run_result
 from ce_bakers_fresh import package_identity
 from ce_replay import DLL, STEAM_26595377_CORE_SHA, development_package_files, native_profile
 from driver import HERE, load, manifest, native_inventory, require, sha, write_json
-from later_stage_replay import CONNECTION_FILES, CONNECTION_WONDER_UI
+from later_stage_replay import CONNECTION_ADAPTER as ADAPTER
+from later_stage_replay import CONNECTION_FILES, CONNECTION_WONDER_UI, with_connection_switch
 
 
 # Selected before observing the new games, using the protocol in the study note.
@@ -19,8 +20,6 @@ SEEDS = {
     'Fractal': (1836181160, 641259670),
     'Pangaea': (1094008659, 1112702560),
 }
-ADAPTER = 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua'
-FLAG = b'E.AnchoredConnectionsEnabled=false'
 AUDIT = b'E.AnchoredConnectionAuditEnabled=false'
 
 
@@ -55,15 +54,15 @@ def freeze_packages(original, source, packages):
     # arms. The private yield remains enabled in the existing CSC SQL.
     control, candidate = packages.values()
     adapter = (source / ADAPTER).read_bytes()
-    require(adapter.count(FLAG) == adapter.count(AUDIT) == 1, 'Expected explicit disabled planner and audit switches')
+    require(adapter.count(AUDIT) == 1, 'Expected one disabled connection audit switch')
     observed = adapter.replace(AUDIT, AUDIT.replace(b'false', b'true'))
     shutil.copytree(original, control)
     for script in (*CONNECTION_FILES, CONNECTION_WONDER_UI):
         require((control / script).is_file(), f'Unregistered CSC Lua overlay {script}')
         shutil.copy2(source / script, control / script)
-    (control / ADAPTER).write_bytes(observed)
+    (control / ADAPTER).write_bytes(with_connection_switch(observed, False))
     shutil.copytree(control, candidate)
-    (candidate / ADAPTER).write_bytes(observed.replace(FLAG, FLAG.replace(b'false', b'true')))
+    (candidate / ADAPTER).write_bytes(with_connection_switch(observed, True))
 
 
 def run(args):
@@ -106,7 +105,7 @@ def run(args):
     before, after = csc.values()
     require(set(before) == set(after) and {Path(name).as_posix() for name in before
             if before[name] != after[name]} == {ADAPTER}, 'Matched packages must differ only in the planner switch')
-    require((packages['control'] / ADAPTER).read_bytes().replace(FLAG, FLAG.replace(b'false', b'true'))
+    require(with_connection_switch((packages['control'] / ADAPTER).read_bytes(), True)
             == (packages['candidate'] / ADAPTER).read_bytes(), 'Unexpected matched policy change')
     pins['csc'] = csc
     if lock.is_file():

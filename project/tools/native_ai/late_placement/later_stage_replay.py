@@ -39,6 +39,14 @@ CONNECTION_WONDER_UI = 'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua'
 CONNECTION_ADAPTER = 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua'
 
 
+def with_connection_switch(source, enabled):
+    setting = b'true' if enabled else b'false'
+    updated, count = re.subn(rb'(?m)^E\.AnchoredConnectionsEnabled=(true|false)(?=\r?$)',
+                             b'E.AnchoredConnectionsEnabled=' + setting, source)
+    require(count == 1, 'Expected exactly one connection policy switch')
+    return updated
+
+
 def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES, *, connection_enabled=None):
     """Overlay only registered Lua scripts on an already built CSC package."""
     shutil.copytree(original, candidate)
@@ -51,11 +59,7 @@ def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES
         # native private yield and all other guidance in an older save.
         require(CONNECTION_ADAPTER in policy_files, 'Missing the connection policy adapter')
         adapter = candidate / CONNECTION_ADAPTER
-        setting = b'true' if connection_enabled else b'false'
-        updated, count = re.subn(rb'(?m)^E\.AnchoredConnectionsEnabled=(true|false)(?=\r?$)',
-                                 b'E.AnchoredConnectionsEnabled=' + setting, adapter.read_bytes())
-        require(count == 1, 'Expected exactly one connection policy switch')
-        adapter.write_bytes(updated)
+        adapter.write_bytes(with_connection_switch(adapter.read_bytes(), connection_enabled))
     before, after = manifest(original), manifest(candidate)
     changed = {Path(name).as_posix() for name in before if before[name] != after[name]}
     expected = set(policy_files)
