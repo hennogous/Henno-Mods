@@ -1552,8 +1552,14 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             local first,second=plots[1],plots[2]
             first.valueQ8=value(first.option)
             if second then second.valueQ8=value(second.option) end
+            -- For two sites of the same Quarter in one city, rank already
+            -- includes the link, the rest of the CSC forecast and site costs.
+            -- An older preferred plot or a higher local exchange alone must
+            -- not displace the stronger fresh bid. Keep that plot as a backup.
+            local fullQuarterComparison=second and order=='customerFirst'
+                and first.option.city==second.option.city and first.option.district==second.option.district
             if second and second.valueQ8 and (not first.valueQ8 or first.valueQ8<=0
-                or (first.option.waiting==true)==(second.option.waiting==true)
+                or not fullQuarterComparison and (first.option.waiting==true)==(second.option.waiting==true)
                     and(second.valueQ8>first.valueQ8 or second.valueQ8==first.valueQ8 and second.plot==preferred))then
                 first,second=second,first
             end

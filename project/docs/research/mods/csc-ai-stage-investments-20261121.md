@@ -487,8 +487,20 @@ pair still required immediate admission. Both chose the Rural Community on
 2424 and completed it on turn 41. On turn 42 the treatment then priced 2348
 beside the same Holy Site as its remaining Tailors footprint. The turn-43
 native cache received the entire +2,607 Q8, from 40,589 to 43,196. The native
-best was still a Rural Community at 2350 with 106,145 Q8. The capacity-wait
-change needs its own matched follow-through test against the archived control.
+best was still a Rural Community at 2350 with 106,145 Q8.
+
+The capacity-aware replay also matched all 24 source rows and closed cleanly
+at turn 65. From turn 36 through 40 it carried both Tailors options by the
+Holy Site while the city was full. The two sites offered the same local
+connection value of 3,476 Q8. The planner retained its earlier preference
+2348 even as the complete Quarter bid for 2424 was much stronger. The
+turn-40 native cache contained 101,982 Q8 for 2424 and 44,521 for 2348. The
+Rural Community won 2424 at 107,075 Q8 and completed on turn 41. The planner
+then continued on 2348, which became actionable on turn 42 and received the
+same +2,607 Q8 in the next comparison. The city still had no completed
+Tailors–Holy Site pair at turn 65. When two sites for the same Quarter in the
+same city have viable links, the revised shortlist uses the complete fresh
+bid to pick between them. An older preferred site can break a full-score tie.
 
 The Pangaea reload took a different path at the expected backup-site case.
 The turn-150 structure gate matched all 174 rows. The later control built an

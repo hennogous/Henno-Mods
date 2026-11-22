@@ -103,6 +103,21 @@ plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==21)
 ''')
 
+    def test_customer_first_prefers_the_stronger_complete_bid_over_an_older_equal_link(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local earlier,new=quarterAt(20),quarterAt(21)
+earlier.entry.finalQ8=100*256
+snapshot.connectionGroups={};snapshot.connectionQuarters={earlier}
+assert(E.AnchoredConnectionPlans(snapshot,{})[1].best.plot==20)
+turn=21;snapshot.connectionQuarters={earlier,new}
+local plan=E.AnchoredConnectionPlans(snapshot,{})[1]
+assert(plan.best.plot==21 and plan.backup.plot==20)
+assert(plan.competitiveBackupQ8==0 and plan.costQ8==32*256)
+values[21]=40*256
+assert(E.AnchoredConnectionPlans(snapshot,{})[1].best.plot==21)
+''')
+
     def test_one_slot_prices_a_real_foundation_yield_and_splits_the_loss_budget(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
