@@ -484,6 +484,19 @@ native cache received the entire +2,607 Q8, from 40,589 to 43,196. The native
 best was still a Rural Community at 2350 with 106,145 Q8. The capacity-wait
 change needs its own matched follow-through test against the archived control.
 
+A second customer-first case comes from Opango on Continents. At population
+8 with two of three slots used, Bakers and Tailors both bid for plot 1305 at
++3 adjacency. Bakers won by 737 Q8 (2.88 utility) over Tailors, submitted
+contract 1588 on turn 99 and completed on turn 104. The site borders a
+completed Theater Square on 1231 with a Marae and a working Flax Farm on
+1304. It has no Tailors Specialty, so the candidate must earn credit from
+eligible adjacency without assuming a Stage 4 exchange. The competing
+Bakers has two Base materials and remains a substantial alternative.
+The turn-100 save already follows contract submission. The matched test
+starts from the earlier turn-50 save, runs both arms with identical staged
+bytes and the flag off, verifies the turn-96 census, then turns the planner
+on in the treatment before the native request window.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions
@@ -563,8 +576,10 @@ completions, competing use of footprints, supplier retention and guidance
 wall time. Group legal backup plots for the same anchor, city and required
 district into one missing-district opportunity. Report those conversions
 alongside plot-level conversions and physical pairs by placement order and
-Quarter type. Across all three pairs, the candidate must complete more
-physical pairs and improve conversion overall and in at least two worlds.
+Quarter type. Count unconverted footprints occupied by a conflicting
+foundation, including after a change of owner or buying city. Across all
+three pairs, the candidate must complete more physical pairs and improve
+conversion overall and in at least two worlds.
 
 | Map | Map seed | Game seed |
 | --- | ---: | ---: |

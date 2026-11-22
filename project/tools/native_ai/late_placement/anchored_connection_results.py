@@ -47,10 +47,12 @@ def connection_counts(log, original_ai, through, *, observations=None):
     realized_by_district = set()
     foundations = defaultdict(list)
     for row in observations:
-        if row.get('player') not in original_ai or row.get('turn', 0) > through:
+        if row.get('turn', 0) > through:
             continue
         if row['kind'] == 'FOUNDATION' and row.get('foundationDateKnown'):
-            foundations[row['player'], row['plot']].append((row['turn'], row['district']))
+            foundations[row['plot']].append((row['turn'], row['player'], row.get('city'), row['district']))
+        if row.get('player') not in original_ai:
+            continue
         if row['kind'] != 'RELATION' or row.get('role') != 'customer' or not row.get('present'):
             continue
         if row.get('neighbourDistrict') == 0 or definitions.get(row.get('neighbourDistrict')) == 'DISTRICT_WONDER':
@@ -80,14 +82,22 @@ def connection_counts(log, original_ai, through, *, observations=None):
             if matched:
                 realized.add(identity)
                 realized_by_district.update(matched)
-    lost = set()
+    lost, lost_to_foreign_build = set(), set()
     for identity, groups in options.items():
         pid, order, _, qplot, cplot = identity
         plot = cplot if order == 'quarterFirst' else qplot
-        if identity not in realized and any(turn >= min(groups.values()) and not any(
-                district == group[-1] and seen <= turn for group, seen in groups.items())
-                for turn, district in foundations[pid, plot]):
-            lost.add(identity)
+        if identity in realized:
+            continue
+        first_seen = min(groups.values())
+        for turn, owner, city, district in foundations[plot]:
+            if turn < first_seen:
+                continue
+            if owner != pid:
+                lost_to_foreign_build.add(identity)
+                lost.add(identity)
+            elif not any(district == group[-1] and (city is None or city == group[-2]) and seen <= turn
+                         for group, seen in groups.items()):
+                lost.add(identity)
 
     def by_order_and_quarter(items):
         return dict(Counter(f'{order}:{quarter}' for _, order, quarter, *_ in items))
@@ -96,6 +106,7 @@ def connection_counts(log, original_ai, through, *, observations=None):
                   district_opportunities=by_order_and_quarter(opportunities_by_district),
                   completed_district_opportunities=by_order_and_quarter(realized_by_district),
                   lost_to_other_foundations=by_order_and_quarter(lost),
+                  lost_to_foreign_foundations=by_order_and_quarter(lost_to_foreign_build),
                   completed_physical_pairs=dict(Counter(f'{order}:{key[0]}' for key, order in completed.items())))
     return counts
 

@@ -13,7 +13,7 @@ from types import SimpleNamespace
 from ce_bakers_fresh import LOGS
 from ce_replay import (DLL, STEAM_26595377_CORE_SHA, archive_development_package,
                        development_package_files, verify_modules)
-from driver import (HeldProcess, NativeSession, configure, flags, launch, lua,
+from driver import (HeldProcess, NativeSession, configure, flags, launch, load, lua,
                     make_probe_controller, manifest, native_inventory, parse, read,
                     require, restore_preferences, sha, write_json)
 from planning_continue import HERE, compare_structure, enable, parse_census, prepare
@@ -36,24 +36,38 @@ CONNECTION_FILES = (
     'Lua_UI/AI/CSC_AI_PlanContinuity.lua',
 )
 CONNECTION_WONDER_UI = 'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua'
+CONNECTION_ADAPTER = 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua'
 
 
-def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES):
+def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES, *, connection_enabled=None):
     """Overlay only registered Lua scripts on an already built CSC package."""
     shutil.copytree(original, candidate)
     for name in policy_files:
         require((candidate / name).is_file(), 'Missing packaged script ' + name)
         shutil.copy2(csc_source / name, candidate / name)
+    if connection_enabled is not None:
+        # Matched connection replays use the same policy source in both arms.
+        # The single switch is the experimental change. This preserves the
+        # native private yield and all other guidance in an older save.
+        require(CONNECTION_ADAPTER in policy_files, 'Missing the connection policy adapter')
+        adapter = candidate / CONNECTION_ADAPTER
+        setting = b'true' if connection_enabled else b'false'
+        updated, count = re.subn(rb'(?m)^E\.AnchoredConnectionsEnabled=(true|false)(?=\r?$)',
+                                 b'E.AnchoredConnectionsEnabled=' + setting, adapter.read_bytes())
+        require(count == 1, 'Expected exactly one connection policy switch')
+        adapter.write_bytes(updated)
     before, after = manifest(original), manifest(candidate)
     changed = {Path(name).as_posix() for name in before if before[name] != after[name]}
-    require(set(after) == set(before) and changed == set(policy_files),
+    expected = set(policy_files)
+    allowed = changed == expected if connection_enabled is None else changed <= expected
+    require(set(after) == set(before) and allowed,
             'Frozen candidate must differ only in the declared registered policy scripts')
     return after
 
 
 def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
-            connection_scout=()):
+            connection_scout=(), connection_enabled=None, connection_switch_turn=None):
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
@@ -157,7 +171,9 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     policy_files=CONNECTION_FILES if connection_prototype else POLICY_FILES
                     if connection_prototype and (candidate_source / CONNECTION_WONDER_UI).is_file():
                         policy_files += (CONNECTION_WONDER_UI,)
-                    item=dict(item,files=candidate_package(item['source'],candidate_source,item['install'],policy_files))
+                    initial_connection = False if connection_switch_turn is not None else connection_enabled
+                    item=dict(item,files=candidate_package(item['source'],candidate_source,item['install'],policy_files,
+                                                          connection_enabled=initial_connection))
                 else:
                     shutil.copytree(item['source'], item['install'])
             installed.append(item)
@@ -165,7 +181,9 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         write_json(output / 'inputs.json', dict(source=str(source), start=start, end=end,
                    checkpoint=plan.checkpoint['sha256'], fixture=fixture,
                    natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
-                   connection_scout=connection_scout, packages={i['role']: i['files'] for i in installed}))
+                   connection_scout=connection_scout, connection_enabled=connection_enabled,
+                   connection_switch_turn=connection_switch_turn,
+                   packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
         configure(controller, output, csc_id=plan.protocol['ce'])
@@ -222,7 +240,26 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             code+=read(HERE/'customer_placement_watch.lua')
             raw=controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-scout')
             require('CSC_CUSTOMER_WATCH_INSTALLED' in raw, 'Native connection scout did not install')
-        play_between(preparation_turn, end)
+        if connection_switch_turn is None:
+            play_between(preparation_turn, end)
+        else:
+            # Both copies run the same pre-roll from the archived save. Delay
+            # the experimental flag until immediately before the native choice
+            # under study. The game controller leaves an inactive boundary and
+            # the scope's structural census must agree across the two copies.
+            play_between(start, connection_switch_turn)
+            prepared = census(connection_switch_turn, 'connection-switch-census')
+            if expected_preparation is not None:
+                proof = compare_structure(expected_preparation['census'], prepared)
+                write_json(output / 'connection-switch-comparison.json', proof)
+                require(proof['verified'], 'Connection switch pre-roll diverged')
+            setting = 'true' if connection_enabled else 'false'
+            code = ('local A=assert(CSC_AI_EconomyAdapters);assert(A.AnchoredConnectionsEnabled==false);'
+                    f'A.AnchoredConnectionsEnabled={setting};'
+                    'print("CSC_CONNECTION_SWITCH="..tostring(A.AnchoredConnectionsEnabled))')
+            raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-switch')
+            require(f'CSC_CONNECTION_SWITCH={setting}' in raw, 'Connection switch did not read back')
+            play_between(connection_switch_turn, end)
         state = controller.state_read('later-stage-final-clock')
         require(state['turn'] == end and not state['active'], 'Wrong replay boundary')
         census(end, 'endpoint-census')
@@ -259,6 +296,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     write_json(output / 'complete.json', dict(verified=True, turn=end))
     if natural_sacristan is not None:
         return dict(census=prepared, civic_start=civic_start)
+    if connection_switch_turn is not None:
+        return dict(census=prepared)
 
 
 if __name__ == '__main__':
@@ -269,7 +308,11 @@ if __name__ == '__main__':
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--arm', choices=('control', 'treatment'), action='append')
     parser.add_argument('--replay-ce',type=Path,help='Use this pinned Dev CE package in both replay arms')
-    parser.add_argument('--connection-prototype',action='store_true',help='Compare the five anchored-connection Lua overlays')
+    parser.add_argument('--connection-prototype',action='store_true',help='Stage the anchored connection Lua scripts over the saved package')
+    parser.add_argument('--matched-connection-switch',action='store_true',
+                        help='Use the same staged policy in both arms, with only anchored connections switched')
+    parser.add_argument('--connection-switch-turn',type=int,
+                        help='Use the identical inactive pre-roll in both arms before switching the experiment on')
     parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
                         help='Read the existing native score and choice journal for this AI city')
     fixtures = parser.add_mutually_exclusive_group()
@@ -299,18 +342,36 @@ if __name__ == '__main__':
             'Natural Sacristan fixture needs the turn-50 source and an endpoint after preparation at turn 55')
     require(not args.connection_capacity or (args.connection_prototype and args.start==150),
             'Connection capacity fixture requires the anchored prototype comparison at turn 150')
+    require(not args.matched_connection_switch or (args.connection_prototype and not args.sacristan_natural),
+            'A matched connection switch requires the anchored policy and one unchanged setup')
     fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
                     (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
                     (args.sacristan_preparation or args.sacristan_natural, 'sacristan'),
                     (args.connection_capacity, 'connection'))
                     if enabled), None)
+    arms=args.arm or ('control', 'treatment')
+    require(args.connection_switch_turn is None or (args.matched_connection_switch and not fixture
+            and len(arms)==2 and set(arms)=={'control','treatment'} and args.start < args.connection_switch_turn < args.end),
+            'An inactive connection switch requires both matched arms and an interior turn without a setup fixture')
     preparation = None
-    for arm in args.arm or ('control', 'treatment'):
-        candidate = args.candidate_source if arm == 'treatment' or args.sacristan_natural else None
+    for arm in arms:
+        candidate = args.candidate_source if arm == 'treatment' or args.sacristan_natural or args.matched_connection_switch else None
         natural = arm == 'treatment' if args.sacristan_natural else None
+        connection = arm == 'treatment' if args.matched_connection_switch else None
         result = run_arm(args.source, args.output / arm, args.start, args.end, candidate, fixture,
                          natural_sacristan=natural, expected_preparation=preparation,
                          replay_ce=args.replay_ce,connection_prototype=args.connection_prototype,
-                         connection_scout=args.connection_scout)
+                         connection_scout=args.connection_scout,connection_enabled=connection,
+                         connection_switch_turn=args.connection_switch_turn)
         if result is not None:
             preparation = result
+    if args.matched_connection_switch and set(arms)=={'control','treatment'}:
+        a,b=(load(args.output / arm / 'inputs.json') for arm in ('control','treatment'))
+        left,right=a['packages']['csc'],b['packages']['csc']
+        differences={Path(name).as_posix() for name in left.keys() | right.keys() if left.get(name)!=right.get(name)}
+        expected=set() if args.connection_switch_turn is not None else {CONNECTION_ADAPTER}
+        require(differences==expected and a['checkpoint']==b['checkpoint']
+                and a['connection_enabled'] is False and b['connection_enabled'] is True
+                and a['packages']['ce']==b['packages']['ce'], 'Matched connection replay package or checkpoint drift')
+        write_json(args.output / 'matched-switch.json',dict(verified=True,checkpoint=a['checkpoint'],
+                   switch_turn=args.connection_switch_turn,changed=sorted(differences)))

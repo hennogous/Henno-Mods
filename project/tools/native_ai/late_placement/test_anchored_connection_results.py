@@ -61,6 +61,17 @@ class ConnectionCounts(unittest.TestCase):
                                        working_without_observed_loss={'BAKERS:BASE': 1},
                                        working_again_after_loss={'BAKERS:BASE': 1}))
 
+    def test_foreign_and_reassigned_foundations_close_owned_opportunities(self):
+        log = '\n'.join([
+            'CSC_AI_CONNECTION_OPPORTUNITY turn=5 player=1 identity=quarterFirst:10:3:BAKERS:7:6:20',
+            'CSC_AI_CONNECTION_OPPORTUNITY turn=5 player=1 identity=quarterFirst:10:3:BAKERS:7:6:21',
+            record('FOUNDATION', player=0, city=8, plot=20, district=6, turn=9, foundationDateKnown='true'),
+            record('FOUNDATION', player=1, city=9, plot=21, district=6, turn=9, foundationDateKnown='true'),
+        ])
+        counts = connection_counts(log, {1}, 20)
+        self.assertEqual(counts['lost_to_other_foundations'], {'quarterFirst:BAKERS': 2})
+        self.assertEqual(counts['lost_to_foreign_foundations'], {'quarterFirst:BAKERS': 1})
+
     def test_wonder_foundation_is_distinct_from_exact_completed_building(self):
         log = '\n'.join([
             'CSC_AI_WONDER_CONNECTION_OPPORTUNITY turn=5 player=1 order=quarterFirst quarter=TAILORS '
