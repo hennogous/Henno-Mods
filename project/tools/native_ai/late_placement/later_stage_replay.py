@@ -82,7 +82,8 @@ def require_clean_replay_log(log):
 
 def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
-            connection_scout=(), connection_enabled=None, connection_switch_turn=None):
+            connection_scout=(), connection_enabled=None, connection_switch_turn=None,
+            connection_timing_player=None):
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
@@ -95,6 +96,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 'Connection capacity fixture expects the exact archived Continents layout')
     require(len(connection_scout)<=4 and all(pid in plan.identity['original_ai'] and 0<city<2**31
             for pid,city in connection_scout), 'Connection scout requires up to four original AI city scopes')
+    require(connection_timing_player is None or connection_timing_player in plan.identity['original_ai'],
+            'Connection timing requires an original AI player')
     require(not native_inventory(), 'Another session owns Civ or FireTuner')
     require(plan.protocol['native_profile']['gamecore_sha256'] == STEAM_26595377_CORE_SHA,
             'Checkpoint runtime differs from the supported CE build')
@@ -210,6 +213,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                    natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
                    connection_scout=connection_scout, connection_enabled=connection_enabled,
                    connection_switch_turn=connection_switch_turn,
+                   connection_timing_player=connection_timing_player,
                    packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
@@ -267,6 +271,10 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             code+=read(HERE/'customer_placement_watch.lua')
             raw=controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-scout')
             require('CSC_CUSTOMER_WATCH_INSTALLED' in raw, 'Native connection scout did not install')
+        if connection_timing_player is not None:
+            code = f'CSC_CONNECTION_TIMING_PLAYER={connection_timing_player}\n' + read(HERE/'connection_timing_watch.lua')
+            raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-timing')
+            require(f'CSC_CONNECTION_TIMING_READY={connection_timing_player}' in raw, 'Connection timer did not install')
         if connection_switch_turn is None:
             play_between(preparation_turn, end)
         else:
@@ -341,6 +349,8 @@ if __name__ == '__main__':
                         help='Use the identical inactive pre-roll in both arms before switching the experiment on')
     parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
                         help='Read the existing native score and choice journal for this AI city')
+    parser.add_argument('--connection-timing-player', type=int,
+                        help='Time the existing connection planner and site quotes for one AI seat')
     fixtures = parser.add_mutually_exclusive_group()
     fixtures.add_argument('--market-rebuild', action='store_true',
                           help='Controlled player-5 Market rebuild on the qualified turn-200 checkpoint')
@@ -370,6 +380,8 @@ if __name__ == '__main__':
             'Connection capacity fixture requires the anchored prototype comparison at turn 150')
     require(not args.matched_connection_switch or (args.connection_prototype and not args.sacristan_natural),
             'A matched connection switch requires the anchored policy and one unchanged setup')
+    require(args.connection_timing_player is None or (args.connection_prototype and args.end - args.start <= 5),
+            'Connection timing is for short diagnostic replays of the anchored planner')
     fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
                     (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
                     (args.sacristan_preparation or args.sacristan_natural, 'sacristan'),
@@ -388,7 +400,8 @@ if __name__ == '__main__':
                          natural_sacristan=natural, expected_preparation=preparation,
                          replay_ce=args.replay_ce,connection_prototype=args.connection_prototype,
                          connection_scout=args.connection_scout,connection_enabled=connection,
-                         connection_switch_turn=args.connection_switch_turn)
+                         connection_switch_turn=args.connection_switch_turn,
+                         connection_timing_player=args.connection_timing_player)
         if result is not None:
             preparation = result
     if args.matched_connection_switch and set(arms)=={'control','treatment'}:

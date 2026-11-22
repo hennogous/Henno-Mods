@@ -544,7 +544,12 @@ terrain, including foreign uniques and existing one-per-city types. The
 next revision reuses the shared, per-publication district type mask to skip
 these calls and skips plots whose entire loss budget was spent on the
 completion bid. The regression checks preserve the deduction for an
-available competing type. Peak time needs a fresh live measurement.
+available competing type. Replaying from the same Pangaea checkpoint on
+the newer planner cut the turn-151–153 peak from 9.02 s to 5.94 s. Player
+1's turn-152 pass fell from 7.38 s to 4.23 s, with nine deductions on
+plot 1902 in place of fifteen. The slot and backup handling also differs
+between the two frozen revisions. The focused timing replay will separate
+native quote costs from the surrounding Lua work.
 
 A second customer-first case comes from Opango on Continents. At population
 8 with two of three slots used, Bakers and Tailors both bid for plot 1305 at
@@ -574,6 +579,28 @@ and closed cleanly, but the publisher repeatedly failed and the arm was
 discarded. The runner now stages all eight registered AI scripts from the
 same revision and checks the publisher log before play and at each
 five-turn boundary. The corrected matched comparison uses the same save.
+
+Both corrected Continents arms matched all 27 source rows and all 108
+pre-switch rows. Only the connection flag changed at turn 96. The
+reloaded world gave Opango a different choice from the historical one.
+In the turn-103 observation, the Industrial Zone on 1305 won at 302,532
+Q8 in the control and 300,545 in the treatment. Tailors was 248,249
+in both. Both copies submitted the Industrial Zone on turn 102 and
+placed its foundation on 109. This is a clearer ordinary-choice control.
+
+The Quarter-first change came from Whanganui. Its Bakers at 1609 already
+existed at the switch. The linked Commercial Hub on 1683 had the same
+early base of 187,393 Q8 in each arm. In packet 55, ordinary guidance
+added 23,640 Q8 in both worlds. The last-slot plan added 9,900 more to the
+treatment. Its native cache read 297,904 Q8 after aggregation, against
+288,004 in the control. The treatment selected the Hub in that native
+comparison, submitted it on turn 104, founded it on 105 and completed the
+pair on 111. The control submitted the same plot on 106, founded it on
+107 and was still building at turn 113. The physical census after the
+switch found one new completed pair in the treatment and zero in the
+control. Both observers closed with zero faults or drops. This shows
+earlier selection and completion for a Quarter-first case. The
+customer-first case remains in qualification.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
