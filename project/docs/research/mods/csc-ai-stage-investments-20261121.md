@@ -263,6 +263,19 @@ Each cell shows stock → guided. Civic turns are the first ownership observatio
 
 The first Mill finished earlier on all three guided maps. First civic and later producer timings varied, while more matched suppliers and customers converted into working Services. Different players can set the first time for each column. The exact city replays identify changes in competing work: Angkor Wat started a Café ahead of a Theater Square project after both arms built the Trader, and player 5 kept its higher-ranked civic goals during the Humanism comparison.
 
+### Later building bids that reached the engine
+
+Count each player, city and building once per role. Count an offer only in a committed packet and match its native receipt by packet version and exact key. Cells show **published / compared / applied**. Pangaea uses the original log before the verified turn-200 checkpoint and the recovered log from turn 200. The endpoint building counts separately measure construction and purchases.
+
+| Guided game | Stage 3 producers | Stage 4 producers | Stage 3–4 customer buildings |
+| --- | ---: | ---: | ---: |
+| Continents | 10 / 9 / 9 | 2 / 2 / 2 | 4 / 3 / 2 |
+| Fractal | 16 / 16 / 16 | 7 / 7 / 7 | 4 / 4 / 4 |
+| Pangaea | 10 / 10 / 10 | 3 / 3 / 3 | 6 / 2 / 2 |
+| **Total** | **36 / 35 / 35** | **12 / 12 / 12** | **14 / 9 / 8** |
+
+Five eligible customer keys had no recorded native comparison. One more was compared without a write. Customer delivery missed six keys, the largest remaining gap among these building roles. The replays above identify cases where an applied bid also lost to other work and cases where the queue completed the investment and paid both sides.
+
 ### Problem 3 timing after all three pairs
 
 | Working by buyer completion plus ten turns, among cases needing legal Base work | Continents | Fractal | Pangaea | Total |
