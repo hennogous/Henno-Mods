@@ -20,19 +20,49 @@ from planning_continue import compare_structure, enable, parse_census, prepare
 
 HERE = Path(__file__).resolve().parent
 FIXTURE = HERE/'wonder_placement_fixture.lua'
+PUBLISHER = Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+STOCK_PUBLISHER_ENTRY = b'''
+-- Diagnostic only. Keep the original stock publisher dormant during the
+-- pre-roll, then use the existing boundary callback on both matched copies.
+function CSC_WonderFixtureActivatePublisher()
+    assert(bridge.Available(), 'Wonder fixture lost the CE publishing path')
+    CSC_WonderFixtureActivatePublisher = nil
+    GameEvents.OnGameTurnStarted.Add(onBoundary)
+    onBoundary()
+end
+'''
+
+
+def stage_stock_fixture(item):
+    """Keep the stock SQL and all original publisher code in the disposable copy."""
+    dst = item['install']
+    publisher = dst/PUBLISHER
+    contents = publisher.read_bytes()
+    require(b'Benchmark control retains observation helpers without publishing.' in contents,
+            'Expected the proven dormant stock publisher')
+    publisher.write_bytes(contents + STOCK_PUBLISHER_ENTRY)
+    installed = manifest(dst)
+    require(installed.keys() == item['files'].keys(), 'Stock fixture package inventory changed')
+    changed = {path for path in installed if installed[path] != item['files'][path]}
+    require(changed == {str(PUBLISHER)}, 'Unexpected stock fixture package change')
+    return dict(item, files=installed)
 
 
 def run_arm(source, out, dependencies, enabled, at, through, candidate, target=None, *, survey_only=False,
-            prepare_at=None, expected_preparation=None):
-    plan = prepare(source, out, at, at, dependencies, read_only=True)
+            prepare_at=None, expected_preparation=None, stock_hagmatana=False):
+    plan = prepare(source, out, at, at, dependencies, read_only=True, stock_derived=stock_hagmatana)
     require(not native_inventory(), 'Foreign Civ or FireTuner session must be preserved')
     prepare_at = at if prepare_at is None else prepare_at
     require(at <= prepare_at <= (250 if survey_only else through - 1), 'Invalid fixture boundary')
+    if stock_hagmatana:
+        require(candidate is None and at == 100 and 138 <= prepare_at < 144
+                and (plan.protocol['map_seed'],plan.protocol['game_seed']) == (27061117,37061117),
+                'Hagmatana fixture requires the witnessed Pangaea source and a pre-reservation clock')
     out.mkdir(parents=True)
     shutil.copyfile(FIXTURE, out/FIXTURE.name)
     shutil.copyfile(Path(__file__), out/Path(__file__).name)
     write_json(out/'protocol.json',dict(diagnostic_only=True, source=str(source),
-        checkpoint=plan.checkpoint, enabled=enabled, fixture_edits=not survey_only,
+        checkpoint=plan.checkpoint, enabled=enabled, fixture_edits=not survey_only, stock_derived=stock_hagmatana,
         first=at, prepare_at=prepare_at, last=prepare_at if survey_only else through))
     controller=make_probe_controller(out,user_root=plan.user_root)
     controller.study_endpoint=prepare_at if survey_only else through
@@ -69,6 +99,7 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
         code+=f'local CSC_WONDER_FIXTURE_TURN={prepare_at}\n'
         code+=f'local CSC_WONDER_FIXTURE_TARGET={lua(target)}\n' if target else ''
         code+=f'local CSC_WONDER_FIXTURE_ENABLED={lua(enabled)}\n'
+        code+=f'local CSC_WONDER_STOCK_HAGMATANA={lua(stock_hagmatana)}\n'
         raw=controller.cmd(code+source_code,context,'wonder-'+label,wait=45)
         (out/(label+'.txt')).write_text(raw,encoding='utf-8')
         require('LUA_ERROR' not in raw,'Wonder fixture Lua error')
@@ -81,6 +112,8 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
             else:
                 shutil.copytree(item['source'],item['install'])
             copied.append(item)
+            if stock_hagmatana and not survey_only and item['role']=='csc':
+                copied[-1]=stage_stock_fixture(item)
         write_json(out/'packages.json',{str(p['source']):dict(install=str(p['install']),files=p['files'])
                                        for p in copied})
         session.start(lambda:launch(SimpleNamespace(binary=plan.binary),out))
@@ -109,7 +142,13 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
                 proof=compare_structure(expected_preparation,preparation)
                 write_json(out/'preparation-comparison.json',proof)
                 require(proof['verified'],'The pre-roll changed the matched fixture state')
-        if target is None:
+        if target is None and stock_hagmatana:
+            raw=fixture('hagmatana','PlotInfo')
+            site=re.search(rf'CSC_WONDER_FIXTURE_HAGMATANA\t{prepare_at}\t((?:\d+\t){{4}}\d+)',raw)
+            require(site is not None,'Archived Hagmatana Wonder footprint did not reappear')
+            target=dict(zip(('player','city','site','quarter','wonder'),map(int,site[1].split('\t'))), existing=1)
+            write_json(out/'candidates.json',[target])
+        elif target is None:
             raw=fixture('scout','PlotInfo')
             require(f'CSC_WONDER_FIXTURE_SCOUT_END\t{prepare_at}\t' in raw,'Native Wonder survey incomplete')
             rows=[]
@@ -129,6 +168,14 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
             require(f'CSC_WONDER_FIXTURE_SETUP_END\t{prepare_at}' in setup,'Wonder world setup failed')
             offer=re.search(rf'CSC_WONDER_FIXTURE_OFFER\t{prepare_at}\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)',setup)
             require(offer is not None,'Live production offer absent')
+            if stock_hagmatana:
+                supply=re.search(r'CSC_WONDER_FIXTURE_SEEDED\t((?:\d+\t){3}\d+)',setup)
+                require(supply is not None,'Failed to prepare two legal Hagmatana suppliers')
+                chosen=dict(zip(('supplier','specialty','baseResource','specResource'),map(int,supply[1].split('\t'))))
+                require(all(key not in target or target[key]==value for key,value in chosen.items()),
+                        'The matched arms prepared different Hagmatana resources')
+                target.update(chosen)
+                write_json(out/'target.json',target)
             raw=fixture('verify','PlotInfo')
             require(f'CSC_WONDER_FIXTURE_VERIFIED\t{prepare_at}\t' in raw,'Legal fixture validation failed')
             raw=fixture('outcome','CSC_AI_BakersGameplay',label='initial-outcome')
@@ -169,17 +216,20 @@ if __name__=='__main__':
     parser.add_argument('--at',type=int,default=200)
     parser.add_argument('--through',type=int,default=205)
     parser.add_argument('--prepare-at',type=int,help='Follow ordinary turns to this exact boundary before setup')
+    parser.add_argument('--stock-hagmatana',action='store_true',help='Use the recorded stock Broadway case in matched copies')
     parser.add_argument('--survey-only',action='store_true',help='Record legal layouts and close without fixture edits')
     args=parser.parse_args()
     common=(args.at,args.through,args.candidate_source)
     prepare_at=args.at if args.prepare_at is None else args.prepare_at
     if args.survey_only:
-        run_arm(args.source,args.output,args.dependencies,False,*common,survey_only=True,prepare_at=prepare_at)
+        run_arm(args.source,args.output,args.dependencies,False,*common,survey_only=True,
+                prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana)
     else:
         require(0 < args.through-prepare_at <= 35,'Wonder replay needs 1 to 35 turns after setup')
-        target=run_arm(args.source,args.output/'off',args.dependencies,False,*common,prepare_at=prepare_at)
+        target=run_arm(args.source,args.output/'off',args.dependencies,False,*common,
+                       prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana)
         expected=None
         if prepare_at>args.at:
             expected=load(args.output/'off'/'preparation-census.json')
         run_arm(args.source,args.output/'on',args.dependencies,True,*common,target=target,prepare_at=prepare_at,
-                expected_preparation=expected)
+                expected_preparation=expected,stock_hagmatana=args.stock_hagmatana)

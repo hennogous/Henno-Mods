@@ -142,13 +142,76 @@ def verify_policy(native, database, performance, *, untuned):
         raise ValueError('Combined arm lacks native policy or loaded customer guidance')
 
 
-def campaign_results(root):
+def _read_json(path):
+    return json.loads(path.read_text(encoding='utf-8-sig'))
+
+
+def _recovered_measurements(original, continuation):
+    """Join time samples across one verified reload and preserve the raw runs."""
+    read = _read_json
+    resume = read(continuation/'continuation.json')
+    at = resume['at']
+    checkpoint = read(original/f'checkpoint-{at}.json')
+    archived = original/f'turn-{at}.Civ6Save'
+    if (Path(resume['source']).resolve() != original.resolve()
+            or resume['source_checkpoint'] != checkpoint
+            or not checkpoint['verified'] or checkpoint['turn'] != at
+            or sha256(archived.read_bytes()).hexdigest() != checkpoint['sha256']
+            or not read(continuation/'source-structure-comparison.json')['verified']
+            or not read(original/'session-closed.json')['verified']
+            or read(original/'source.json') != read(continuation/'source.json')):
+        raise ValueError('Resume does not reproduce the named benchmark checkpoint')
+    original_pins, resumed_pins = (read(path/'protocol.json') for path in (original,continuation))
+    if (any(original_pins[key] != resumed_pins.get(key) for key in
+            ('map', 'map_size', 'map_seed', 'game_seed', 'input_digests', 'extra_mods', 'native_profile',
+             'untuned', 'external_policy', 'gameplay_interventions', 'service_observation'))
+            or not resumed_pins['natural_continuation'] or resumed_pins['continuation_start'] != at):
+        raise ValueError('Continuation changed the benchmark inputs or policy')
+    ready = read(original/'session-source-ready.json')
+    original_modules, resumed_modules = (read(path/'loaded-modules.json') for path in (original,continuation))
+    if (not (ready['verified'] and ready['caller_eligibility_verified'] and ready['turn'] == 1)
+            or {name: item['sha256'] for name, item in original_modules.items()} !=
+               {name: item['sha256'] for name, item in resumed_modules.items()}):
+        raise ValueError('Originally loaded packages or fresh start could not be verified')
+
+    # Slice the abandoned run at the acknowledged save, then use disjoint
+    # turn ranges. In particular, neither branch's pre-save boundary activity
+    # is used as evidence of post-reload decisions on that turn.
+    prefix = (original/'Lua.log').read_text(encoding='utf-8-sig')
+    marker = re.compile(r'CSC_EXACT_CHECKPOINT_COMPLETE\t'+re.escape(checkpoint['unique_name'])+r'\ttrue\b')
+    matches = list(marker.finditer(prefix))
+    if len(matches) != 1:
+        raise ValueError('Expected one acknowledged checkpoint in the original log')
+    prefix = prefix[:matches[0].end()]
+    suffix = (continuation/'Lua.log').read_text(encoding='utf-8-sig')
+    clocked = re.compile(r'CSC_MILESTONE_(?:SERVICE_[A-Z_]+|UNLOCK)\s+(\d+)\b'
+                         r'|CSC_AI_(?:PROCESSING|PLAYER_PROCESSING|NATIVE_PROCESSING)\s+turn=(\d+)\b')
+
+    def selected(log, first, last):
+        for line in log.splitlines():
+            match = clocked.search(line)
+            if match and first <= int(match[1] or match[2]) < last:
+                yield line
+
+    earlier = '\n'.join(selected(prefix, 1, at))
+    later = '\n'.join(selected(suffix, at, 251))
+    from processing_time_summary import summarise
+    verify_policy(read(original/'source.json')['native'], read(original/'loaded-native-customer-database.json'),
+                  summarise(earlier), untuned=False)
+    census = {str(turn): stage_census(read(original/f'full-census-{turn}.json')['rows'])
+              for turn in range(25, at+1, 25)}
+    census.update(read(continuation/'stage-census.json'))
+    log = earlier + '\n' + later
+    return dict(census=census, services=service_durations(log, 1, 250), performance=summarise(log),
+                recovery=dict(original=str(original), continuation=str(continuation), at=at,
+                              checkpoint_sha256=checkpoint['sha256']))
+
+
+def campaign_results(root, *, continuations=None):
     """Read finished matched arms and keep their source/output identity checks."""
     root = Path(root)
-
-    def read(path):
-        return json.loads(path.read_text(encoding='utf-8-sig'))
-
+    read = _read_json
+    continuations = continuations or {}
     pins = read(root / 'campaign-inputs.json')
     input_digests = [sha256(json.dumps(pins[key], sort_keys=True).encode()).hexdigest()
                      for key in ('ce', 'csc')]
@@ -163,7 +226,8 @@ def campaign_results(root):
     for name, (map_seed, game_seed) in pins['seeds'].items():
         stock = root / f'{name.lower()}-stock'
         combined = root / f'{name.lower()}-combined'
-        if any(not (side / 'full-game-observation-complete.json').is_file() for side in (stock, combined)):
+        resumed = Path(continuations[name]) if name in continuations else None
+        if any(not (side / 'full-game-observation-complete.json').is_file() for side in (stock, resumed or combined)):
             continue
         standard, treatment = (read(side / 'protocol.json') for side in (stock, combined))
         if standard != dict(treatment, untuned=True) or treatment['untuned']:
@@ -181,7 +245,9 @@ def campaign_results(root):
         if any(original[key] != new[key] for key in ('original_ai', 'map_signature', 'starts', 'units')):
             raise ValueError(f'{name} arms did not start from the same world')
         results = {}
-        for label, side in (('stock', stock), ('combined', combined)):
+        for label, side in (('stock', stock), ('combined', resumed or combined)):
+            is_resumed = label == 'combined' and resumed is not None
+            start = read(side/'continuation.json')['at'] if is_resumed else 1
             loaded = read(side / 'loaded-modules.json')
             if any(loaded.get(module, {}).get('sha256') != digest
                    for module, digest in expected_modules.items()):
@@ -190,16 +256,16 @@ def campaign_results(root):
             coverage = read(side / 'full-game-observation-complete.json')
             ready = read(side / 'session-source-ready.json')
             if (terminal['reached'] != 250 or not read(side / 'session-closed.json')['verified']
-                    or not (ready['verified'] and ready['caller_eligibility_verified'] and ready['turn'] == 1)
-                    or not (coverage['verified'] and coverage['start'] == 1
-                            and coverage['turns'] == list(range(25, 251, 25)))):
+                    or not (ready['verified'] and ready['caller_eligibility_verified'] and ready['turn'] == start)
+                    or not (coverage['verified'] and coverage['start'] == start
+                            and coverage['turns'] == list(range(25*(start//25+1), 251, 25)))):
                 raise ValueError(f'{name} {label} lacks a verified turn-250 closure')
             performance = read(side / 'ai-processing-time.json')
             verify_policy(read(side / 'native-endpoint.json'), read(side / 'loaded-native-customer-database.json'),
                           performance, untuned=label == 'stock')
-            results[label] = dict(census=read(side / 'stage-census.json'),
-                                  services=read(side / 'observed-services.json'),
-                                  performance=performance)
+            results[label] = (_recovered_measurements(combined, side) if is_resumed else
+                              dict(census=read(side/'stage-census.json'),
+                                   services=read(side/'observed-services.json'), performance=performance))
         results['aligned_services'] = comparable_services(results['stock']['services'], results['combined']['services'])
         result[name] = results
     return result
@@ -210,4 +276,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Read verified matched later-stage campaign results')
     parser.add_argument('campaign', type=Path)
-    print(json.dumps(campaign_results(parser.parse_args().campaign), indent=2))
+    parser.add_argument('--continuation', nargs=2, action='append', metavar=('MAP','DIRECTORY'), default=[],
+                        help='Join a verified resumed treatment arm to its original checkpoint prefix')
+    args = parser.parse_args()
+    print(json.dumps(campaign_results(args.campaign, continuations=dict(args.continuation)), indent=2))

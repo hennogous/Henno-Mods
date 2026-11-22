@@ -99,6 +99,8 @@ Campaign artifacts and the frozen package are under `Desktop/Codex/csc-ai-stage6
 
 Shadow lost the first Pangaea stock process at turn 100. The restart reached turn 50 and the controller stopped when that path produced the old native checkpoint name. Both attempts are archived. Intermediate checkpoint names now include a per-run suffix, so a retry can start the same ordinary world while preserving saves from the previous attempt.
 
+The guided Pangaea arm started normally and saved turn 200. A hidden `FIRST_MEET_NEAR_INITIATOR` invitation to observer 0 blocked its turn-205 autoplay window. The native log and the live session agreed on sender 5 and recipient 0. The controller now recognizes this variant and uses the shipped first-meet `CHOICE_EXIT` semantics, after its ordinary participant and active-autoplay checks. The original session closed cleanly. The recovery matched all 249 structural rows when loading the exact turn-200 save with the original modules and policy. Keep the original prefix and the recovery raw logs, and use the save boundary when joining Service clocks and timing.
+
 ## Continents through turn 250
 
 Both games matched the opening map, roster, start plots and units and reached the endpoint. The stock arm kept CSC gameplay and withheld the publisher and private customer placement bonuses. Both arms sampled 200 shared Service turns. The UI watcher omits a number of controller handoff turns, so the table reports active links only on shared clocks.

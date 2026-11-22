@@ -1,6 +1,10 @@
+from hashlib import sha256
+import json
+from pathlib import Path
+import tempfile
 import unittest
 
-from later_stage_results import comparable_services, service_durations, stage_census, verify_policy
+from later_stage_results import _recovered_measurements, comparable_services, service_durations, stage_census, verify_policy
 
 
 class ServiceDurations(unittest.TestCase):
@@ -77,3 +81,49 @@ class CampaignPolicy(unittest.TestCase):
         verify_policy(native, dict(links=[1]), timing, untuned=False)
         with self.assertRaisesRegex(ValueError, 'Combined arm'):
             verify_policy(native, dict(links=[]), timing, untuned=False)
+
+
+class RecoveredCampaign(unittest.TestCase):
+    def test_uses_only_saved_prefix_and_deduplicates_same_chain_across_reload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            before, after = (Path(directory)/part for part in ('original', 'resume'))
+            before.mkdir()
+            after.mkdir()
+
+            def write(side, name, value):
+                (side/name).write_text(json.dumps(value), encoding='utf-8')
+
+            save = b'CIV6 pinned input'
+            (before/'turn-50.Civ6Save').write_bytes(save)
+            checkpoint = dict(verified=True, turn=50, sha256=sha256(save).hexdigest(), unique_name='exact')
+            write(before, 'checkpoint-50.json', checkpoint)
+            write(after, 'continuation.json', dict(source=str(before), at=50, source_checkpoint=checkpoint))
+            write(after, 'source-structure-comparison.json', dict(verified=True))
+            write(before, 'session-closed.json', dict(verified=True))
+            write(before, 'session-source-ready.json', dict(verified=True, caller_eligibility_verified=True, turn=1))
+            write(before, 'loaded-native-customer-database.json', dict(links=[1]))
+            protocol = {key: None for key in ('map', 'map_size', 'map_seed', 'game_seed', 'input_digests',
+                       'extra_mods', 'native_profile', 'untuned', 'external_policy', 'gameplay_interventions',
+                       'service_observation')}
+            for side in (before, after):
+                write(side, 'source.json', dict(native=dict(ready=1, faults=0, enabled=1, version=1)))
+                write(side, 'loaded-modules.json', {'CE': {'sha256': 'same engine'}})
+            write(before, 'protocol.json', protocol)
+            write(after, 'protocol.json', dict(protocol, natural_continuation=True, continuation_start=50))
+            for turn in (25, 50):
+                write(before, f'full-census-{turn}.json', dict(rows=[]))
+            write(after, 'stage-census.json', {'250': {}})
+
+            def sample(turn):
+                return (f'CSC_MILESTONE_SERVICE_LINK\t{turn}\t1\tBAKERS\t2\tSTOREKEEPER\t45\t90\n'
+                        f'CSC_MILESTONE_SERVICE_END\t{turn}\t1\t0\n'
+                        f'CSC_AI_PROCESSING turn={turn} published=1 ok=1 wallMicros=500\n')
+
+            (before/'Lua.log').write_text(sample(49)+sample(50)+'CSC_EXACT_CHECKPOINT_COMPLETE\texact\ttrue\n'
+                                          +sample(51), encoding='utf-8')
+            (after/'Lua.log').write_text(sample(50)+sample(52), encoding='utf-8')
+            combined = _recovered_measurements(before, after)
+            self.assertEqual(list(combined['census']), ['25', '50', '250'])
+            self.assertEqual(len(combined['services']['chains']), 1)
+            self.assertEqual(combined['services']['chains'][0]['turns'], [49, 50, 52])
+            self.assertEqual(combined['performance']['published_packets'], 3)

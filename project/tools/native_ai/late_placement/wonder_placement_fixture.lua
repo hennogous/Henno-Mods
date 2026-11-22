@@ -67,6 +67,20 @@ local function isUnlocked(player,wonder)
   and (not tech or player:GetTechs():HasTech(tech.Index))
 end
 
+if CSC_WONDER_FIXTURE_MODE=='hagmatana'then
+ -- This is the observed stock footprint before Broadway contract 2944.
+ -- The read-only scout neither grants prerequisites nor orders the Wonder.
+ local pid,id,siteIndex,quarterIndex=3,262147,1354,1428
+ local city=assert(CityManager.GetCity(pid,id))
+ local site=assert(Map.GetPlotByIndex(siteIndex))
+ local q=assert(Map.GetPlotByIndex(quarterIndex))
+ local broadway=assert(GameInfo.Buildings.BUILDING_BROADWAY)
+ assert(owns(site,pid,id) and empty(site) and workingQuarter(city,q))
+ assert(site:CanHaveWonder(broadway.Index,pid,id),'Hagmatana site is not currently admissible')
+ emit('HAGMATANA',Game.GetCurrentGameTurn(),pid,id,siteIndex,quarterIndex,broadway.Index)
+ return
+end
+
 if CSC_WONDER_FIXTURE_MODE=='scout'then
  -- Every proposed venue must already be legal for the real Wonder. Prefer
  -- natural suppliers and an existing Tailors before considering fixture edits.
@@ -140,8 +154,8 @@ local city=assert(CityManager.GetCity(f.player,f.city))
 local site=assert(Map.GetPlotByIndex(f.site))
 local q=assert(Map.GetPlotByIndex(f.quarter))
 local sourceCity=assert(quarterHost(q,f.player))
-local supplier=assert(Map.GetPlotByIndex(f.supplier))
-local special=assert(Map.GetPlotByIndex(f.specialty))
+local supplier=f.supplier and Map.GetPlotByIndex(f.supplier)
+local special=f.specialty and Map.GetPlotByIndex(f.specialty)
 local function adjacent(a,b)
  return Map.GetPlotDistance(a:GetX(),a:GetY(),b:GetX(),b:GetY())==1
 end
@@ -196,6 +210,46 @@ if CSC_WONDER_FIXTURE_MODE=='verify'then
 end
 assert(CSC_WONDER_FIXTURE_MODE=='setup'and Game.GetCurrentGameTurn()==CSC_WONDER_FIXTURE_TURN)
 assert(not player:IsHuman()and owns(site,f.player,f.city)and empty(site))
+if CSC_WONDER_STOCK_HAGMATANA then
+ -- The stock city had neither supplier class. On both disposable copies,
+ -- use only its vacant neighboring land and validate resource and improvement
+ -- legality through the engine. The Wonder tile itself stays untouched.
+ local function legalResource(plot,class)
+  for row in GameInfo.Resources()do
+   if class[row.Index] and ResourceBuilder.CanHaveResource(plot,row.Index)then
+    ResourceBuilder.SetResourceType(plot,row.Index,1)
+    local legal=false
+    for _,index in ipairs(improvements[row.Index]or{})do
+     legal=legal or ImprovementBuilder.CanHaveImprovement(plot,index,f.player)
+    end
+    ResourceBuilder.SetResourceType(plot,-1)
+    if legal then return row.Index end
+   end
+  end
+ end
+ local baseTiles,specTiles={},{}
+ for _,tile in ipairs(neighbours(q))do
+  if tile:GetIndex()~=f.site and tile:GetOwner()==f.player and empty(tile) and tile:GetImprovementType()==-1 then
+   local b=legalResource(tile,base)
+   local s=legalResource(tile,specialty)
+   if b then baseTiles[#baseTiles+1]={tile,b}end
+   if s then specTiles[#specTiles+1]={tile,s}end
+  end
+ end
+ local b,s
+ for _,first in ipairs(baseTiles)do
+  for _,second in ipairs(specTiles)do
+   if first[1]:GetIndex()~=second[1]:GetIndex() then b,s=first,second;break end
+  end
+  if b then break end
+ end
+ assert(b and s,'Hagmatana needs two distinct legal supplier plots')
+ supplier,special=b[1],s[1]
+ ResourceBuilder.SetResourceType(supplier,b[2],1)
+ ResourceBuilder.SetResourceType(special,s[2],1)
+ f.supplier,f.specialty=supplier:GetIndex(),special:GetIndex()
+ emit('SEEDED',f.supplier,f.specialty,b[2],s[2])
+end
 assert(adjacent(site,q)and adjacent(q,supplier)and supplier:GetOwner()==f.player
  and base[supplier:GetResourceType()]and supplier:GetDistrictType()==-1)
 assert(adjacent(q,special) and supplierCandidate(special,f.player,specialty))
@@ -263,4 +317,5 @@ E.WonderOffers=function(active,...)
  emit('PUBLICATION',Game.GetCurrentGameTurn(),selected.player,selected.city,selected.plot,selected.building,selected.deltaQ8,on and 1 or 0)
  return on and {selected}or{}
 end
+if CSC_WONDER_STOCK_HAGMATANA then assert(CSC_WonderFixtureActivatePublisher)() end
 emit('SETUP_END',Game.GetCurrentGameTurn())

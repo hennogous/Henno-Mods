@@ -21,7 +21,7 @@ from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, fla
                     launch, load, lua, make_probe_controller, manifest, native_inventory,
                     parse, read, require, restore_preferences, sha, write_json)
 from ce_bakers_fresh import (LOGS, MAPS, capture_census, check_native_status,
-                            package_identity, summarize_run)
+                            package_identity, passive_publisher, summarize_run, untuned_manifest)
 from ce_replay import DLL, STEAM_26595377_CORE_SHA, native_profile, verify_modules
 from full_game_controller.checkpoint import SaveFileUnavailable, SavePermissionUnavailable, save_inactive_boundary
 from full_game_controller.environment import archive_sources
@@ -76,6 +76,18 @@ def digest(files):
     return hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()
 
 
+def stock_archive_manifest(pristine, root, original):
+    """Derive the exact passive benchmark package from its pinned original."""
+    metadata, = pristine.glob('*.modinfo')
+    publisher = Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+    replacements = {
+        metadata.name: untuned_manifest(root, keep_observer_context=True),
+        str(publisher): passive_publisher((pristine/publisher).read_bytes()),
+    }
+    return original | {name: dict(sha256=hashlib.sha256(data).hexdigest(), size=len(data))
+                       for name, data in replacements.items()}
+
+
 def source_lifecycle_verified(source):
     """Accept a supported close or separately verified interruption cleanup.
 
@@ -123,7 +135,7 @@ class ContinuationPlan:
 
 
 def prepare(source, output, at, through, dependencies, *, read_only=False, material_only=False,
-            finish_port_replay=False, observe_material=False):
+            finish_port_replay=False, observe_material=False, stock_derived=False):
     """Read and qualify all provenance before any install, launch or console.
 
     The failed run may have failure.json or an abrupt exit: supported closure
@@ -146,6 +158,8 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
                 'Axum trace needs a qualified Continents checkpoint and replay window')
         endpoint_ok = True
     require(typed and at % 25 == 0 and window and endpoint_ok, 'Unsupported continuation window')
+    require(not stock_derived or (read_only and dependencies is None),
+            'Stock-derived fixtures require an explicit controller-only source inspection')
     require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')
@@ -157,9 +171,15 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
             'harmonised_observation', 'planning_observation')) and
             (no_savings or protocol.get('passive_savings_observation') is True) and
             (not material_only or protocol.get('passive_savings_observation') is False) and
-            all(protocol.get(k) is False for k in ('untuned', 'external_policy', 'gameplay_interventions')) and
+            protocol.get('untuned') is stock_derived and
+            all(protocol.get(k) is False for k in ('external_policy', 'gameplay_interventions')) and
             not any(k.startswith('diagnostic_') and v for k, v in protocol.items()),
+            'Require an ordinary stock benchmark' if stock_derived else
             'Require an ordinary original game with integrated main CSC policy only')
+    if stock_derived:
+        from later_stage_results import verify_policy
+        verify_policy(load(source/'native-endpoint.json'), load(source/'loaded-native-customer-database.json'),
+                      load(source/'ai-processing-time.json'), untuned=True)
     require(protocol['map'] in MAPS and
             all(type(protocol[k]) is int for k in ('map_seed', 'game_seed')),
             'Missing original preselected map identity')
@@ -181,18 +201,28 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     saves = Path(checkpoint['native_save']).resolve(strict=True).parent
     require(Path(checkpoint['archive']).resolve().parent == source and
             Path(checkpoint['native_save']).suffix == '.Civ6Save', 'Unexpected checkpoint locations')
-    packages = []
+    packages, originals = [], {}
     for path, item in load(source/'packages.json').items():
         package, install = Path(path).resolve(strict=True), Path(item['install']).resolve()
-        require(manifest(package) == item['files'] and not install.exists(), 'Frozen package/install differs: '+path)
+        require(not install.exists(), 'Frozen package/install differs: '+path)
         identity_id, root = package_identity(package)
         role = 'ce' if (package/'Binaries/Win64'/DLL).is_file() else 'csc'
         require(identity_id == protocol[role], 'Package role/identity differs')
+        originals[role] = manifest(package)
+        if stock_derived and role == 'csc':
+            # Preserve both the original input digest and the exact dormant
+            # publisher/SQL withholding bytes loaded in the stock world.
+            expected = stock_archive_manifest(package, root, originals[role])
+            package = (source/install.name).resolve(strict=True)
+            require(package.parent == source and expected == item['files'] == manifest(package),
+                    'Archived stock CSC package differs from the measured control')
+        else:
+            require(originals[role] == item['files'], 'Frozen package/install differs: '+path)
         packages.append(dict(source=package, install=install, files=item['files'], id=identity_id, role=role))
     require(len(packages) == 2 and {p['role'] for p in packages} == {'ce', 'csc'} and
             len({p['install'].parent for p in packages}) == 1, 'Expected separate CE/CSC development packages')
     by_role = {p['role']: p for p in packages}
-    require([digest(by_role[k]['files']) for k in ('ce', 'csc')] == protocol['input_digests'],
+    require([digest(originals[k]) for k in ('ce', 'csc')] == protocol['input_digests'],
             'Original package digests differ')
     _, csc_manifest = package_identity(by_role['csc']['source'])
     optional=csc_manifest.find("ActionCriteria/Criteria[@id='CSC_CE_SupplierExclusion']/ModInUse")
@@ -373,7 +403,8 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
         require('CSC_BAKERS_STOREKEEPER_WATCH_INSTALLED' in raw, 'Storekeeper watch not installed')
         from full_game_observation import archive_endpoint_autosave, install, play, finish
         install(controller, out, plan.identity['original_ai'], plan.user_root, plan.through,
-                planning=True, extra_mods=plan.extras, csc_path=by_role['csc']['install'],start=plan.at)
+                planning=True, extra_mods=plan.extras, csc_path=by_role['csc']['install'],start=plan.at,
+                service_watch=plan.protocol.get('service_observation',False))
         if not material_only:
             from economy_savings_watch import EconomySavingsWatch
             for name in ('economy_savings_watch.py', 'economy_savings_watch.js'):
