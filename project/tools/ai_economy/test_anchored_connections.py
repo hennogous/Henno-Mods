@@ -291,6 +291,28 @@ rows=E.ApplyConnectionCosts(snapshot,{completion},plans,{[3]=true})
 assert(#rows==1 and rows[1]==completion and quotes==1)
 ''')
 
+    def test_native_cost_keeps_the_regular_delta_and_needs_no_site_quote(self):
+        vm = self.vm()
+        vm.execute((AI / 'CSC_AI_DistrictBridge.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+local function okay()return 1 end
+CE_AIDistrictScoresBegin=okay;CE_AIDistrictScoresAllow=okay;CE_AIDistrictScoresCommit=okay
+CE_AIDistrictScoresDisable=okay;CE_AIDistrictScoresStatus=okay
+CE_AIDistrictScoresEntry=function()error('Ordinary entry would lose the separate cost')end
+local packet={}
+CE_AIDistrictScoresEarlyCost=function(...)packet[#packet+1]={...};return 1 end
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+snapshot.CustomerNetValue=function()error('Displacement must use the live native value')end
+snapshot.ConnectionDistrictTurns=function()error('Displacement requires no queue quote')end
+local regular={player=1,city=7,district=2,plot=20,delta=300}
+local rows=E.ApplyConnectionCosts(snapshot,{regular},plans,{[3]=true})
+assert(#rows==2 and regular.delta==300 and regular.earlyCostQ8==32*256)
+assert(CSC_AI_DistrictBridge.Publish(1,10,10,5,{1},rows))
+assert(#packet==2 and packet[1][5]==300 and packet[1][6]==32*256)
+assert(packet[2][5]==0 and packet[2][6]==32*256)
+''')
+
     def test_quote_budget_and_three_legal_sites_leave_ordinary_choice_open(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

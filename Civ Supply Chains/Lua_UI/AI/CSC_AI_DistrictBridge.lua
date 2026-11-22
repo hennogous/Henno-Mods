@@ -16,6 +16,7 @@ local MAX_REPAIR_CANDIDATES=256
 local MAX_OWNERSHIP_SCOPES=4096
 local MAX_WONDER_OFFERS=512
 local MAX_WONDER_OFFER_Q8=24*256
+local MAX_POSITIVE_SITE_COST_Q8=64*256
 local LEGACY_WONDER_OFFER_Q8=8*256
 local MAX_MATERIAL_RESEARCH_Q8=64*256
 local MAX_MATERIAL_REQUEST_Q8=128*256
@@ -188,9 +189,11 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         if type(e)~='table' or not(integer(e.player,0,63) and allowed[e.player]
             and integer(e.city,0,2147483647) and integer(e.district,1,districtCount-1)
             and integer(e.plot,0,width*height-1)
+            and (e.earlyCostQ8==nil or (e.finalQ8==nil and
+                integer(e.earlyCostQ8,1,MAX_POSITIVE_SITE_COST_Q8) and type(CE_AIDistrictScoresEarlyCost)=='function'))
             and(e.finalQ8~=nil and integer(e.finalQ8,-1048576,1048576)and e.delta==0
                 and type(CE_AIDistrictScoresFinalEntry)=='function'
-                or e.finalQ8==nil and integer(e.delta,-262144,1048576)and e.delta~=0)) then
+                or e.finalQ8==nil and integer(e.delta,-262144,1048576)and (e.delta~=0 or e.earlyCostQ8~=nil))) then
             return reject('Invalid district-site entry')
         end
         local key=e.player..':'..e.city..':'..e.district..':'..e.plot
@@ -339,6 +342,11 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
                 -- This is the whole CSC Quarter bid after native building
                 -- aggregation, exclusive with an early entry for the same key.
                 assert(CE_AIDistrictScoresFinalEntry(e.player,e.city,e.district,e.plot,e.finalQ8)==1,'Native final entry rejected')
+            elseif e.earlyCostQ8 then
+                -- This exact packet key carries the regular early delta and
+                -- a separate cost with a positive floor at native consumption.
+                assert(CE_AIDistrictScoresEarlyCost(e.player,e.city,e.district,e.plot,e.delta,e.earlyCostQ8)==1,
+                    'Native early site cost rejected')
             else
                 assert(CE_AIDistrictScoresEntry(e.player,e.city,e.district,e.plot,e.delta)==1,'Native entry rejected')
             end

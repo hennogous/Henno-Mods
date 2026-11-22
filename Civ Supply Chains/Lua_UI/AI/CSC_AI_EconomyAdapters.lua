@@ -1601,6 +1601,7 @@ end
 
 function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
     if #plans==0 then return entries end
+    local nativeCostAvailable=type(CE_AIDistrictScoresEarlyCost)=='function'
     local occupiedByPlan,byKey={},{}
     for _,entry in ipairs(entries)do byKey[siteKey(entry.city,entry.district,entry.plot)]=entry end
     for _,plan in ipairs(plans)do if plan.costQ8>0 then
@@ -1650,18 +1651,24 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
                         entry.finalQ8=entry.finalQ8-cost
                     end
                 else
-                    local ready=snapshot.ConnectionDistrictTurns(city,district)
-                    local net=ready and snapshot.CustomerNetValue(city,district,index,ready)
                     local existing=entry and entry.delta or 0
-                    -- The early CE consumer must keep an ordinary positive
-                    -- cell above zero so its native building aggregation runs.
-                    cost=net and math.min(cost,net+existing-1,262144+existing)or 0
+                    if not nativeCostAvailable then
+                        -- Older Dev CE needs the original read-before-write
+                        -- guard to leave native building aggregation in play.
+                        local ready=snapshot.ConnectionDistrictTurns(city,district)
+                        local net=ready and snapshot.CustomerNetValue(city,district,index,ready)
+                        cost=net and math.min(cost,net+existing-1,262144+existing)or 0
+                    end
                     if cost>0 then
                         if not entry then
-                            entry={player=snapshot.id,city=city,district=district,plot=index}
+                            entry={player=snapshot.id,city=city,district=district,plot=index,delta=0}
                             entries[#entries+1]=entry
                         end
-                        entry.delta=existing-cost
+                        -- The newer consumer uses the exact live NetValue.
+                        -- The ordinary residual stays separate so this cost
+                        -- cannot change its effect on an invalid/negative cell.
+                        if nativeCostAvailable then entry.earlyCostQ8=cost
+                        else entry.delta=existing-cost end
                     end
                 end
                 if cost>0 then
@@ -1673,7 +1680,10 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
             end
         end
     end
-    for i=#entries,1,-1 do if entries[i].finalQ8==nil and entries[i].delta==0 then table.remove(entries,i)end end
+    for i=#entries,1,-1 do
+        local entry=entries[i]
+        if entry.finalQ8==nil and entry.delta==0 and not entry.earlyCostQ8 then table.remove(entries,i)end
+    end
     return entries
 end
 

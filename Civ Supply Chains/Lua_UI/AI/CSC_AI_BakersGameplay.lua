@@ -173,7 +173,8 @@ local function publishBefore(a, b)
     -- a positive bid for a viable Quarter or its customer.
     if (a.weak == true) ~= (b.weak == true) then return not a.weak end
     if a.finalQ8 and b.finalQ8 and a.finalQ8~=b.finalQ8 then return a.finalQ8>b.finalQ8 end
-    if a.delta ~= b.delta then return a.delta < b.delta end
+    local changeA,changeB=a.delta-(a.earlyCostQ8 or 0),b.delta-(b.earlyCostQ8 or 0)
+    if changeA~=changeB then return changeA<changeB end
     if a.player ~= b.player then return a.player < b.player end
     if a.city ~= b.city then return a.city < b.city end
     if a.plot ~= b.plot then return a.plot < b.plot end
