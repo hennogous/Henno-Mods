@@ -51,7 +51,8 @@ def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES
 
 
 def run_arm(source, output, start, end, candidate_source, fixture=None, *,
-            natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False):
+            natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
+            connection_scout=()):
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
@@ -62,6 +63,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     if fixture=='connection':
         require(plan.checkpoint['sha256']=='2c3ac19cd18cfc50b368fb1dddfa40a3507cc8dfd4c3ac28ff503d504e590873',
                 'Connection capacity fixture expects the exact archived Continents layout')
+    require(len(connection_scout)<=4 and all(pid in plan.identity['original_ai'] and 0<city<2**31
+            for pid,city in connection_scout), 'Connection scout requires up to four original AI city scopes')
     require(not native_inventory(), 'Another session owns Civ or FireTuner')
     require(plan.protocol['native_profile']['gamecore_sha256'] == STEAM_26595377_CORE_SHA,
             'Checkpoint runtime differs from the supported CE build')
@@ -159,7 +162,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         write_json(output / 'inputs.json', dict(source=str(source), start=start, end=end,
                    checkpoint=plan.checkpoint['sha256'], fixture=fixture,
                    natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
-                   packages={i['role']: i['files'] for i in installed}))
+                   connection_scout=connection_scout, packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
         configure(controller, output, csc_id=plan.protocol['ce'])
@@ -207,10 +210,27 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                                   service_start), 'The prepared Sacristan was already operational')
         service_observation('service-observer', every_turn=True)
         native_status('native-before')
+        if connection_scout:
+            # Read the existing CE journal before each publication replaces it.
+            # This attaches neither a second native observer nor policy writer.
+            raw=controller.cmd(read(HERE/'planning_observer.lua'), 'CSC_AI_BakersGameplay', 'connection-history')
+            require('CSC_PLANNING_INSTALLED' in raw, 'Physical connection history did not install')
+            code='CSC_CUSTOMER_WATCH_TARGETS='+lua([list(row) for row in connection_scout])+'\n'
+            code+=read(HERE/'customer_placement_watch.lua')
+            raw=controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-scout')
+            require('CSC_CUSTOMER_WATCH_INSTALLED' in raw, 'Native connection scout did not install')
         play_between(preparation_turn, end)
         state = controller.state_read('later-stage-final-clock')
         require(state['turn'] == end and not state['active'], 'Wrong replay boundary')
         census(end, 'endpoint-census')
+        if connection_scout:
+            raw=controller.cmd('CSC_CUSTOMER_PLACEMENT_WATCH.Finish()',
+                               'CSC_AI_BakersGameplay', 'connection-scout-end')
+            require(re.search(r'CSC_CUSTOMER_WATCH_FINISH records=\d+ faults=0 dropped=0\b',raw),
+                    'Connection scout journal is incomplete')
+            raw=controller.cmd('CSC_AI_PLANNING_WATCH.Finish()', 'CSC_AI_BakersGameplay', 'connection-history-end')
+            require(re.search(r'CSC_PLANNING_FINISH\s+[^\r\n]*\bdropped=0\b[^\r\n]*\bfaults=0\b',raw),
+                    'Physical connection history is incomplete')
         native_status('native-after')
         if fixture:
             fixture_receipt('outcome', 'CSC_AI_BakersGameplay')
@@ -247,6 +267,8 @@ if __name__ == '__main__':
     parser.add_argument('--arm', choices=('control', 'treatment'), action='append')
     parser.add_argument('--replay-ce',type=Path,help='Use this pinned Dev CE package in both replay arms')
     parser.add_argument('--connection-prototype',action='store_true',help='Compare the five anchored-connection Lua overlays')
+    parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
+                        help='Read the existing native score and choice journal for this AI city')
     fixtures = parser.add_mutually_exclusive_group()
     fixtures.add_argument('--market-rebuild', action='store_true',
                           help='Controlled player-5 Market rebuild on the qualified turn-200 checkpoint')
@@ -261,9 +283,10 @@ if __name__ == '__main__':
     fixtures.add_argument('--connection-capacity', action='store_true',
                           help='Open one district slot in both copies of the scoped Continents turn-150 save')
     args = parser.parse_args()
-    # The early civic replay needs to pass the natural Guilds completion near
-    # turn 76. Keep the other diagnostic windows short.
-    max_turns = 50 if args.sacristan_natural else 30 if args.storekeeper_preparation else 25
+    # The connection replay may need to cross a reservation change and still
+    # leave time to complete the selected district. Native scouting is scoped
+    # to a few named cities throughout that window.
+    max_turns = 65 if args.connection_scout else 50 if args.sacristan_natural else 30 if args.storekeeper_preparation else 25
     require(0 < args.end - args.start <= max_turns, f'Replay window must be 1 to {max_turns} turns')
     require(not args.market_rebuild or args.start == 200, 'Market fixture requires the turn-200 source')
     require(not args.storekeeper_preparation or args.start == 50, 'Storekeeper fixture requires the turn-50 source')
@@ -284,6 +307,7 @@ if __name__ == '__main__':
         natural = arm == 'treatment' if args.sacristan_natural else None
         result = run_arm(args.source, args.output / arm, args.start, args.end, candidate, fixture,
                          natural_sacristan=natural, expected_preparation=preparation,
-                         replay_ce=args.replay_ce,connection_prototype=args.connection_prototype)
+                         replay_ce=args.replay_ce,connection_prototype=args.connection_prototype,
+                         connection_scout=args.connection_scout)
         if result is not None:
             preparation = result

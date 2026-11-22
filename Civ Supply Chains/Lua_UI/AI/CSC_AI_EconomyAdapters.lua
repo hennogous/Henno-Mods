@@ -17,6 +17,9 @@ local wonderCustomers
 -- Opt in on a frozen test package while we qualify the additional placement
 -- cost through native comparison and check turn time on ordinary worlds.
 E.AnchoredConnectionsEnabled=false
+-- The matched campaign enables this on both packages. The control reads the
+-- same eligible footprint facts and returns before pricing or changing bids.
+E.AnchoredConnectionAuditEnabled=false
 -- Match the ceiling used for Stage 2 exchange orders in the shared building
 -- packet. These are Q8 utility points in the native production comparison.
 local LATER_BUILDING_CAP_Q8=64*256
@@ -863,7 +866,38 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
         referenceUnavailable=0,candidateUnavailable=0,nativeUnavailable=0,nativeNonpositive=0}
     if not snapshot.CustomerCandidateSets or not snapshot.WorldQuote or not snapshot.CustomerNetValue then return {},stats end
     local source=snapshot.CustomerCandidateSets(protectedPlots);local offers={}
-    if snapshot.captureConnections then snapshot.connectionGroups=source end
+    local plans,anchored,anchorValues={},{},{}
+    if snapshot.captureConnections then
+        snapshot.connectionGroups=source
+        plans=E.AnchoredConnectionPlans(snapshot,protectedPlots)
+        for _,plan in ipairs(plans)do if plan.order=='quarterFirst'then
+            local option=plan.best.option
+            local key=option.city..':'..option.district
+            if not anchored[key]or plan.best.valueQ8>anchored[key].valueQ8 then anchored[key]=plan.best end
+            for _,row in ipairs(plan.choices)do
+                local target=row.option.city..':'..row.option.district..':'..row.plot
+                anchorValues[target]=math.max(anchorValues[target]or 0,row.valueQ8)
+            end
+        end end
+    end
+    local function referenceCredit(group,ready)
+        local ref=group.reference
+        local value=anchorValues[siteKey(group.city,group.district,ref.plot)]
+        if not (value and value>0 and ready)then return 0 end
+        local net=snapshot.CustomerNetValue(group.city,group.district,ref.plot,ready)
+        if not net or net<=0 then return 0 end
+        -- A linked reference currently supplies the relative forecast's zero
+        -- point. Credit its priced transaction once so the district TYPE can
+        -- compete for that gain, including when this is the sole legal site.
+        -- Carry the same origin into each freshly priced alternative below.
+        -- Native private yield remains in the base score and is absent here.
+        local credit=math.min(E.ConnectionCompletionCapQ8,value)
+        offers[#offers+1]={player=snapshot.id,city=group.city,district=group.district,plot=ref.plot,
+            delta=credit,customer=true,customerEconomic=true,referencePlot=ref.plot}
+        print(string.format('CSC_AI_CONNECTION_COMPLETION turn=%d player=%d city=%d district=%d plot=%d order=quarterFirst creditQ8=%d',
+            Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,ref.plot,credit))
+        return credit
+    end
     local state=customerSchedules[snapshot.id]or{groups={}}
     customerSchedules[snapshot.id]=state
     local groups,active={},{}
@@ -876,7 +910,11 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
                 if(candidate.links or 0)>0 then linked[candidate.plot]=true end
             end
         end
-        if #candidates==0 then stats.singletons=stats.singletons+1
+        if #candidates==0 then
+            stats.singletons=stats.singletons+1
+            if anchorValues[siteKey(group.city,group.district,group.reference.plot)] then
+                referenceCredit(group,snapshot.ConnectionDistrictTurns(group.city,group.district))
+            end
         else
             local key=group.city..':'..group.district
             local meta=state.groups[key]or{cursor=1}
@@ -884,19 +922,26 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
             -- publication's legal set and loses its scheduling hint here.
             if(group.reference.links or 0)>0 then linked[group.reference.plot]=true end
             if meta.hint and not linked[meta.hint]then meta.hint=nil end
+            local anchor=anchored[key]and anchored[key].plot
+            -- A new or redirected connection gets the same immediate quote as
+            -- a foundation event. A standing connection stays a hint only,
+            -- leaving alternate visits available to reprice its backups.
             local foundation=snapshot.customerFoundationHints and snapshot.customerFoundationHints[key]
+            if anchor and anchor~=meta.anchor then foundation=anchor end
             if foundation and not linked[foundation]then foundation=nil end
-            if foundation then meta.hint=foundation end
-            local work={group=group,key=key,meta=meta,candidates=candidates,used={},linked=linked,attempted=0,foundation=foundation}
+            if foundation or anchor then meta.hint=foundation or anchor end
+            local work={group=group,key=key,meta=meta,candidates=candidates,used={},linked=linked,attempted=0,
+                foundation=foundation,anchor=anchor}
             groups[#groups+1]=work;active[key]=meta
         end
     end
     state.groups=active
     local count=#groups
     if count==0 then
+        stats.offers=#offers
         print(string.format('CSC_AI_CUSTOMER_SCHEDULE turn=%d player=%d usefulGroups=0 singletonGroups=%d visitedGroups=0 forecasts=0',
             Game.GetCurrentGameTurn(),snapshot.id,stats.singletons))
-        return offers,stats
+        return offers,stats,plans
     end
     table.sort(groups,function(a,b)if a.group.city~=b.group.city then return a.group.city<b.group.city end
         return a.group.district<b.group.district end)
@@ -905,9 +950,10 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     local order,scheduled={},{}
     -- At most one real-foundation hint goes first. All remaining slots follow
     -- the regular queue, so a stream of new Quarters cannot starve older cities.
-    for _,work in ipairs(groups)do if work.foundation then
-        order[#order+1]=work;scheduled[work.key]=true;break
-    end end
+    for step=1,count do
+        local work=groups[(offset+step-1)%count+1]
+        if work.foundation then order[#order+1]=work;scheduled[work.key]=true;break end
+    end
     for step=1,count do
         local work=groups[(offset+step-1)%count+1]
         if not scheduled[work.key]then order[#order+1]=work end
@@ -932,7 +978,8 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
         if value then
             local raw=value.valueQ8-reference.valueQ8
             rawValue=raw
-            local delta=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw))
+            local delta=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,
+                math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw+(work.referenceCreditQ8 or 0)))
             local net=snapshot.CustomerNetValue(group.city,group.district,candidate.plot,investment.ready)
             netValue=net
             if net and net>0 then
@@ -982,13 +1029,15 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     for _,work in ipairs(order)do
         if stats.forecasts+2>CUSTOMER_FORECAST_BUDGET then break end
         local group=work.group
-        work.reference=quote(group,group.reference.plot)
+        local reference,investment=quote(group,group.reference.plot)
+        work.reference=reference
         stats.groups=stats.groups+1;visited[work.key]=true
         work.meta.visits=(work.meta.visits or 0)+1
         if not work.reference then
             stats.unknown=stats.unknown+1;stats.referenceUnavailable=stats.referenceUnavailable+1
             work.meta.hint=nil
         else
+            work.referenceCreditQ8=referenceCredit(group,investment and investment.ready)
             local candidate
             -- Alternate the strongest/hinted challenger with a rotating plot.
             -- Even when eight groups consume the entire budget, lower-ranked
@@ -1022,6 +1071,9 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     end
     for _,work in ipairs(groups)do
         local incumbent=work.meta.hint
+        -- An unvisited group retains its one-time priority until it receives
+        -- a quote. Clear a gone anchor immediately so a returning one is new.
+        if not work.anchor or visited[work.key]then work.meta.anchor=work.anchor end
         if incumbent and incumbent~=work.group.reference.plot and not work.used[incumbent]
             and work.linked[incumbent]then
             -- Identity only: its fresh value will be checked on the next
@@ -1052,7 +1104,7 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     print(string.format('CSC_AI_CUSTOMER_ECONOMIC_GAPS turn=%d player=%d referenceUnavailable=%d candidateUnavailable=%d nativeUnavailable=%d nativeNonpositive=%d unvisitedGroups=%d',
         Game.GetCurrentGameTurn(),snapshot.id,stats.referenceUnavailable,stats.candidateUnavailable,
         stats.nativeUnavailable,stats.nativeNonpositive,count-stats.groups))
-    return offers,stats
+    return offers,stats,plans
 end
 
 function E.ReportQuarterFunnel(snapshot,evaluations)
@@ -1207,8 +1259,10 @@ end
 -- for a different district. Retain identity only, so a stale offer cannot
 -- protect a tile after capture, a new reservation or a change in eligibility.
 local connectionMemory={}
+local connectionAuditMemory={}
 local CONNECTION_GROUPS_PER_ORDER=2
 local CONNECTION_COST_CAP_Q8=64*256
+E.ConnectionCompletionCapQ8=CONNECTION_COST_CAP_Q8
 
 function E.ConnectionLossQ8(best, backup)
     -- A cautious first calibration: half the ordinary link margin displaced,
@@ -1222,19 +1276,24 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
     local groups={quarterFirst={},customerFirst={}}
     local before=connectionMemory[pid]or{}
     local nextMemory={}
-    local function add(order,anchor,stage,family,option)
-        local key=table.concat({order,anchor,stage,family},':')
-        local g=groups[order][key]or{key=key,anchor=anchor,stage=stage,order=order,plots={}}
+    local function add(order,anchor,stage,quarterKey,option)
+        local key=table.concat({order,anchor,stage,quarterKey},':')
+        local g=groups[order][key]or{key=key,anchor=anchor,stage=stage,order=order,quarter=quarterKey,plots={}}
         groups[order][key]=g
         local plot=g.plots[option.plot]or{plot=option.plot,options={}}
         g.plots[option.plot]=plot
         plot.options[#plot.options+1]=option
     end
-    local function supplied(site,stage)
+    local function supplied(site,stage,consumedPlot)
         local base,specialty=false,false
-        for _,supplier in ipairs(site.suppliers or{})do if (supplier.ready or math.huge)<site.horizon then
-            base=base or supplier.kind=='base';specialty=specialty or supplier.kind=='specialty'
-        end end
+        for _,supplier in ipairs(site.suppliers or{})do
+            -- The local venue forecast keeps current supply. Reject a new
+            -- customer footprint that would cover one of those suppliers.
+            if consumedPlot~=nil and supplier.plot==consumedPlot then return false end
+            if (supplier.ready or math.huge)<site.horizon then
+                base=base or supplier.kind=='base';specialty=specialty or supplier.kind=='specialty'
+            end
+        end
         return base and(stage<4 or specialty)
     end
     local function free(index)
@@ -1246,7 +1305,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         for _,candidate in ipairs(group.candidates)do if free(candidate.plot)then
             for _,chain in ipairs(candidate.chains or{})do if chain.ready and chain.economy then
                 for _,venue in ipairs(snapshot.ProjectedCustomers(chain.profile,group.city,group.district,candidate.plot))do
-                    if venue.transaction and not venue.excluded and supplied(chain.economy,venue.stage)then
+                    if venue.transaction and not venue.excluded and supplied(chain.economy,venue.stage,candidate.plot)then
                         add('quarterFirst',chain.plot:GetIndex(),venue.stage,chain.profile.key,
                             {plot=candidate.plot,city=group.city,district=group.district,rank=candidate.adjacency,
                              site=chain.economy,venue=venue,projected=true})
@@ -1271,12 +1330,31 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     if ok and type(targets)=='table'then for _,index in ipairs(targets)do admitted[key][index]=true end end
                 end
                 if admitted[key][entry.plot]then
-                    add('customerFirst',venue.plot,venue.stage,entry.district,
+                    add('customerFirst',venue.plot,venue.stage,candidate.quarter,
                         {plot=entry.plot,city=entry.city,district=entry.district,rank=entry.finalQ8,site=site,venue=venue})
                 end
             end
         end end
     end
+    if snapshot.auditConnections then
+        local previous=connectionAuditMemory[pid]or{}
+        local current,changes={},{}
+        for _,ordered in pairs(groups)do for _,group in pairs(ordered)do
+            for _,row in pairs(group.plots)do for _,option in ipairs(row.options)do
+                local key=table.concat({group.key,option.city,option.district,row.plot},':')
+                if not previous[key]and not current[key]then changes[#changes+1]=key end
+                current[key]=true
+            end end
+        end end
+        table.sort(changes)
+        for _,key in ipairs(changes)do
+            -- Diagnostic only. Current owned, material-safe and native-legal
+            -- option. Valuation, selection and construction have later receipts.
+            print(string.format('CSC_AI_CONNECTION_OPPORTUNITY turn=%d player=%d identity=%s',turn,pid,key))
+        end
+        connectionAuditMemory[pid]=current
+    end
+    if snapshot.auditConnectionsOnly then return {} end
     local plans={}
     local function byRank(a,b)
         if a.rank~=b.rank then return a.rank>b.rank end
@@ -1293,15 +1371,12 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
     for _,order in ipairs({'quarterFirst','customerFirst'})do
         local candidates={}
         for _,group in pairs(groups[order])do
-            local plots={};for _,row in pairs(group.plots)do plots[#plots+1]=row end
-            -- Three or more legal options supply credible redundancy. Skip
-            -- preservation rather than doing a third comparison or claiming
-            -- that an unpriced option has zero value. The planner still makes
-            -- its normal completion bids for those options.
-            if #plots<=2 then
-                table.sort(plots,function(a,b)return a.plot<b.plot end)
-                group.choices=plots;candidates[#candidates+1]=group
-            end
+            candidates[#candidates+1]=group
+            -- Preserve a still-legal identity when another anchor receives
+            -- this turn's forecast slots. It will break ties when repriced;
+            -- no score from the previous packet survives this way.
+            local prior=before[group.key]
+            if prior and group.plots[prior]then nextMemory[group.key]=prior end
         end
         table.sort(candidates,function(a,b)return a.key<b.key end)
         -- Rotate each direction independently. This bounds the local ledger
@@ -1309,24 +1384,37 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         -- when a large empire has many mapped districts.
         for step=0,math.min(CONNECTION_GROUPS_PER_ORDER,#candidates)-1 do
             local group=candidates[(turn+pid+step)%#candidates+1]
-            for _,row in ipairs(group.choices)do
-                table.sort(row.options,byRank)
-                row.option=row.options[1];row.valueQ8=value(row.option)
-            end
             local preferred=before[group.key]
-            local first,second=group.choices[1],group.choices[2]
-            if second and first.valueQ8 and second.valueQ8
-                and(second.valueQ8>first.valueQ8 or second.valueQ8==first.valueQ8 and second.plot==preferred)then
+            local plots={}
+            for _,row in pairs(group.plots)do
+                table.sort(row.options,byRank)
+                row.option=row.options[1]
+                plots[#plots+1]=row
+            end
+            table.sort(plots,function(a,b)
+                if a.option.rank~=b.option.rank then return a.option.rank>b.option.rank end
+                if (a.plot==preferred)~=(b.plot==preferred)then return a.plot==preferred end
+                return a.plot<b.plot
+            end)
+            local first,second=plots[1],plots[2]
+            first.valueQ8=value(first.option)
+            if second then second.valueQ8=value(second.option) end
+            if second and second.valueQ8 and (not first.valueQ8 or second.valueQ8>first.valueQ8
+                or second.valueQ8==first.valueQ8 and second.plot==preferred)then
                 first,second=second,first
             end
-            if first.valueQ8 and(not second or second.valueQ8)then
-                local cost=E.ConnectionLossQ8(first.valueQ8,math.max(0,second and second.valueQ8 or 0))
+            if first.valueQ8 and first.valueQ8>0 then
+                -- Unpriced options can still be backups. Price two leading
+                -- completions even in a rich city, and defer any scarcity
+                -- penalty while a third option or unknown quote survives.
+                local completeSet=#plots<=2 and (not second or second.valueQ8~=nil)
+                local cost=completeSet and E.ConnectionLossQ8(first.valueQ8,math.max(0,second and second.valueQ8 or 0)) or 0
+                group.choices={first}
+                if second and second.valueQ8 then group.choices[2]=second end
                 nextMemory[group.key]=first.plot
-                if cost>0 then
-                    group.best=first;group.backup=second;group.costQ8=cost
-                    plans[#plans+1]=group
-                end
-            end
+                group.best=first;group.backup=second;group.costQ8=cost
+                plans[#plans+1]=group
+            else nextMemory[group.key]=nil end
         end
     end
     connectionMemory[pid]=nextMemory
@@ -1337,7 +1425,7 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
     if #plans==0 then return entries end
     local occupiedByPlan,byKey={},{}
     for _,entry in ipairs(entries)do byKey[siteKey(entry.city,entry.district,entry.plot)]=entry end
-    for _,plan in ipairs(plans)do
+    for _,plan in ipairs(plans)do if plan.costQ8>0 then
         local plot=plan.best.plot
         local reserve=occupiedByPlan[plot]or{plan=plan,completion={}}
         occupiedByPlan[plot]=reserve
@@ -1346,7 +1434,7 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
         -- This avoids stacking whole link prices or blocking shared Hubs.
         for _,option in ipairs(plan.best.options)do reserve.completion[option.district]=true end
         if plan.costQ8>reserve.plan.costQ8 then reserve.plan=plan end
-    end
+    end end
     local plots={};for plot in pairs(occupiedByPlan)do plots[#plots+1]=plot end;table.sort(plots)
     for _,index in ipairs(plots)do
         local reserve=occupiedByPlan[index]
@@ -1366,7 +1454,7 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
                     -- native reader. Fresh rows are safe to edit once here.
                     cost=entry and not entry.carried and math.min(cost,entry.finalQ8-1)or 0
                     if cost>0 then
-                        entry.beforeConnectionQ8=entry.finalQ8
+                        entry.beforeConnectionQ8=entry.beforeConnectionQ8 or entry.finalQ8
                         entry.finalQ8=entry.finalQ8-cost
                     end
                 else
@@ -1397,6 +1485,31 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
     return entries
 end
 
+function E.ApplyQuarterConnectionCredit(snapshot,entries,plans)
+    if #plans==0 then return end
+    local credits={}
+    for _,plan in ipairs(plans)do if plan.order=='customerFirst'then
+        for _,row in ipairs(plan.choices)do
+            local key=siteKey(row.option.city,row.option.district,row.plot)
+            credits[key]=math.max(credits[key]or 0,row.valueQ8)
+        end
+    end end
+    for _,entry in ipairs(entries)do if entry.economy and not entry.carried and entry.qualityCapQ8 then
+        local value=credits[siteKey(entry.city,entry.district,entry.plot)] or 0
+        -- The complete Quarter forecast already includes the real customer.
+        -- Recover only the part that the general siting ceiling could have
+        -- removed. This preserves ordinary scoring when that ceiling is idle.
+        local credit=math.min(value,E.ConnectionCompletionCapQ8,
+            math.max(0,-(entry.qualityCapAdjustmentQ8 or 0)),4096*256-entry.finalQ8)
+        if credit>0 then
+            entry.beforeConnectionQ8=entry.finalQ8
+            entry.finalQ8=entry.finalQ8+credit
+            print(string.format('CSC_AI_CONNECTION_COMPLETION turn=%d player=%d city=%d district=%d plot=%d order=customerFirst creditQ8=%d',
+                Game.GetCurrentGameTurn(),snapshot.id,entry.city,entry.district,entry.plot,credit))
+        end
+    end end
+end
+
 function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     local clock=os and os.clock
     local started=clock and clock()
@@ -1412,8 +1525,10 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,materialDeferred=0,carried=0,managed=true,
         capacityReady=0,capacityFull=0,capacityUnknown=0}
     local player,pid=snapshot.player,snapshot.id
-    if E.AnchoredConnectionsEnabled and snapshot.ConnectionDistrictTurns then
+    if (E.AnchoredConnectionsEnabled or E.AnchoredConnectionAuditEnabled) and snapshot.ConnectionDistrictTurns then
         snapshot.captureConnections=true;snapshot.connectionQuarters={}
+        snapshot.auditConnections=E.AnchoredConnectionAuditEnabled
+        snapshot.auditConnectionsOnly=not E.AnchoredConnectionsEnabled
     end
     snapshot.planState=planState(pid)
     local visibility=PlayersVisibility[pid]
@@ -1557,7 +1672,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                             if snapshot.captureConnections and not frontier and site
                                                 and not evaluation.carried and bid>0 then
                                                 snapshot.connectionQuarters[#snapshot.connectionQuarters+1]=
-                                                    {entry=result[#result],site=site}
+                                                    {entry=result[#result],site=site,quarter=profile.key}
                                             end
                                             stats.final=stats.final+1
                                             stats.min=math.min(stats.min or bid,bid);stats.max=math.max(stats.max or bid,bid)
@@ -1592,9 +1707,14 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
             end
         end
     end
-    if snapshot.CustomerCandidateSets then result=E.MergeCustomerOffers(result,E.CustomerEconomicOffers(snapshot,protectedPlots))end
+    local plans={}
+    if snapshot.CustomerCandidateSets then
+        local offers,_,priced=E.CustomerEconomicOffers(snapshot,protectedPlots)
+        result=E.MergeCustomerOffers(result,offers)
+        plans=priced or plans
+    end
     if snapshot.captureConnections then
-        local plans=E.AnchoredConnectionPlans(snapshot,protectedPlots)
+        E.ApplyQuarterConnectionCredit(snapshot,result,plans)
         result=E.ApplyConnectionCosts(snapshot,result,plans,managed)
         -- Proposed opportunities and costs. Actual consumption is visible in
         -- CE's early net or late managed journal on the matching packet.

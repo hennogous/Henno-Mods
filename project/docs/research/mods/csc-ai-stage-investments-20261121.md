@@ -427,6 +427,58 @@ Raw Dev CE and replay evidence is under
 The staged candidate changes only the five declared Lua policy files.
 The ordinary CSC package still starts with the prototype switch off.
 
+#### Qualification for completed district pairs
+
+The matched-save gate follows a native selector change through foundation
+and district completion in each placement order. The control runs the
+ordinary CSC guidance with the private adjacency yield enabled. The treatment
+uses the same Dev CE and gameplay packages. A stronger ordinary choice and a
+blocked footprint with a viable backup also need live evidence.
+
+The follow-up tests a gap in the prototype's score. The customer forecast
+currently compares alternative sites against a reference. A profitable
+linked reference needs a credit in district-type competition even when
+there are no other sites. The candidate shifts the reference and each freshly
+priced alternative by the same amount. For customer-first Quarter bids the
+complete forecast already counts the exchange. The candidate can recover
+some of it only where the generic site-quality ceiling removed part of the
+forecast. The native journal is the gate for both changes. The prototype
+otherwise retains the cost of consuming a stronger planned footprint and
+rechecks availability under current capacity and material protection. Among
+competing footprints, two are priced per visited anchor. An unpriced third
+site can still be an adequate backup, so loss pricing waits for stronger
+evidence. A still-legal plan keeps its preferred plot across visits and gives
+new or redirected sites one priority quote. Standing plans alternate with
+rotating alternatives so backup sites can be repriced under a full budget.
+
+The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
+all 106 retained source rows in each arm. The treatment published 20
+quarter-first and 12 customer-first credit offers. The footprint deductions
+returned 100 native eligible reads and 82 writes. Across the four scouted
+cities, all 37 recorded native best district/site choices and the one request
+had the same district and plot in both arms. Both endpoint censuses held 13
+Quarters and 16 customer host rows with identical placement and completion.
+This shifted testing to earlier saves with a recorded decision to build a
+district, including a Fractal city where the control chose a Campus only 25.7
+utility above a Bakers-adjacent Commercial Hub in the archived game.
+
+The ordinary campaign uses the following seeds, selected before the campaign
+starts. Each map is played in both arms on Online speed through turn 250, with
+the same mods and original AI roster checks. The game controller retains
+legal opportunities at publication, native choices, first foundations and
+completions, competing use of footprints, supplier retention and guidance
+wall time. Group legal backup plots for the same anchor, city and required
+district into one missing-district opportunity. Report those conversions
+alongside plot-level conversions and physical pairs by placement order and
+Quarter type. Across all three pairs, the candidate must complete more
+physical pairs and improve conversion overall and in at least two worlds.
+
+| Map | Map seed | Game seed |
+| --- | ---: | ---: |
+| Continents | 1457395586 | 276090738 |
+| Fractal | 1836181160 | 641259670 |
+| Pangaea | 1094008659 | 1112702560 |
+
 ### First observed unlocks, producer completions and Services
 
 Each cell shows stock → guided. Civic turns are the first ownership observation among all AI players in that game. Producer turns are the first time a corresponding order reached its cost in `City_BuildQueue.csv`, in stage order. This measures completed production orders. The endpoint tables count actual buildings, including purchases. On Pangaea the production log uses the original prefix before turn 200 and the verified replay from turn 200. Service turns use the shared observation clocks.

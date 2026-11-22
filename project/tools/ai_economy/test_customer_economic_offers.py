@@ -68,6 +68,30 @@ end
 assert(seen[20]and seen[21]and seen[22])
 ''')
 
+    def test_persistent_connections_reprice_backups_at_full_budget(self):
+        self.vm().execute('''
+print=function()end;groups={};values[22]=8000;nets[22]=5000
+local E=CSC_AI_EconomyAdapters
+for i=1,8 do groups[i]={city=i,district=6,reference={plot=10,links=0},candidates={
+ {plot=20,adjacency=2,links=1},{plot=21,adjacency=2,links=1},{plot=22,adjacency=2,links=0}}}end
+snapshot.captureConnections=true
+E.AnchoredConnectionPlans=function()
+ local plans={}
+ for city=1,8 do
+  local option={city=city,district=6}
+  local best={plot=20,option=option,valueQ8=500}
+  plans[#plans+1]={order='quarterFirst',best=best,choices={best}}
+ end
+ return plans
+end
+local seen={}
+for t=20,27 do turn=t;local rows,stats=E.CustomerEconomicOffers(snapshot,{})
+ assert(stats.forecasts==16)
+ for _,row in ipairs(rows)do if row.city==1 then seen[row.plot]=true end end
+end
+assert(seen[20]and seen[21]and seen[22])
+''')
+
     def test_hint_requotes_new_value_and_disappears_with_illegal_candidate(self):
         self.vm().execute('''
 print=function()end

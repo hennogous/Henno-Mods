@@ -48,7 +48,7 @@ snapshot={id=1,districts={[9]={working=true}},
     CustomerNetValue=function()return 120*256 end,
     ui={GetLegalDistrictTargets=function()return legal end}}
 function quarterAt(plot)
-    return {entry={plot=plot,city=7,district=3,finalQ8=200*256},
+    return {quarter='TEST',entry={plot=plot,city=7,district=3,finalQ8=200*256},
         site={plot=plot,horizon=50,suppliers=economy.suppliers,customers={venue(9)}}}
 end
 ''')
@@ -73,7 +73,8 @@ assert(stronger>100*256) -- A strong ordinary site still wins.
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
 snapshot.connectionGroups={};snapshot.connectionQuarters={quarterAt(20),quarterAt(21)}
-assert(#E.AnchoredConnectionPlans(snapshot,{})==0) -- equal-value backup
+local equal=E.AnchoredConnectionPlans(snapshot,{})
+assert(#equal==1 and equal[1].costQ8==0) -- keep the plan, with no footprint cost
 legal={21};turn=21
 local plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==21 and plans[1].order=='customerFirst')
@@ -91,7 +92,8 @@ values[21]=48*256
 local plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].costQ8==8*256 and plans[1].backup.plot==21)
 values[21]=nil
-assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+local uncertain=E.AnchoredConnectionPlans(snapshot,{})
+assert(#uncertain==1 and uncertain[1].costQ8==0)
 snapshot.intentFootprints={[20]=true};values[21]=48*256
 plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==21)
@@ -105,6 +107,8 @@ assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
 economy.suppliers[2]={kind='specialty',ready=5}
 assert(#E.AnchoredConnectionPlans(snapshot,{})==1)
 assert(#E.AnchoredConnectionPlans(snapshot,{[20]=true})==0)
+economy.suppliers[2].plot=20
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0) -- the venue would consume its supplier
 ''')
 
     def test_one_cost_for_shared_plot_and_native_early_cell_floor(self):
@@ -140,11 +144,76 @@ CSC_AI_EconomyModel.CustomerBuildingForecast=function()
     priceCount=priceCount+1;return {valueQ8=64*256}
 end
 snapshot.connectionGroups[1].candidates={main,backup,{plot=22,adjacency=1,chains={chain}}}
-assert(#E.AnchoredConnectionPlans(snapshot,{})==0 and priceCount==0)
+local redundant=E.AnchoredConnectionPlans(snapshot,{})
+assert(#redundant==1 and redundant[1].costQ8==0 and priceCount==2)
 snapshot.connectionGroups={}
 for i=1,12 do
     local distinct={ready=true,economy=economy,profile={key='TEST'},plot={GetIndex=function()return i end}}
     snapshot.connectionGroups[i]={city=7,district=1,candidates={{plot=20,adjacency=2,chains={distinct}}}}
 end
-assert(#E.AnchoredConnectionPlans(snapshot,{})==2 and priceCount==2)
+assert(#E.AnchoredConnectionPlans(snapshot,{})==2 and priceCount==4)
+''')
+
+    def test_preferred_identity_survives_an_unpriced_visit(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+values[21]=70*256
+snapshot.connectionGroups[1].candidates={main,backup}
+assert(E.AnchoredConnectionPlans(snapshot,{})[1].best.plot==21)
+for i=7,8 do
+    local distinct={ready=true,economy=economy,profile={key='TEST'},plot={GetIndex=function()return i end}}
+    snapshot.connectionGroups[#snapshot.connectionGroups+1]={city=7,district=1,
+        candidates={{plot=20,adjacency=2,chains={distinct}}}}
+end
+turn=21 -- Only anchors 7 and 8 are visited; 10 remains legal.
+for _,plan in ipairs(E.AnchoredConnectionPlans(snapshot,{}))do assert(plan.anchor~=10)end
+turn=22;values[21]=values[20]
+for _,plan in ipairs(E.AnchoredConnectionPlans(snapshot,{}))do
+    if plan.anchor==10 then assert(plan.best.plot==21);return end
+end
+error('Expected the previously deferred plan to receive a quote')
+''')
+
+    def test_linked_reference_shifts_type_value_without_doubling_site_difference(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.captureConnections=true
+values[20]=32*256
+local group={city=7,district=1,reference=main,candidates={main,{plot=19,adjacency=1,links=0}}}
+main.links=1
+snapshot.CustomerCandidateSets=function()return {group}end
+snapshot.CustomerWorld=function(_,_,plot)return {},{value=plot==20 and 64*256 or 32*256,customer={ready=3}}end
+snapshot.WorldQuote=function(world)return {valueQ8=world.value}end
+local entries=E.CustomerEconomicOffers(snapshot,{})
+assert(#entries==1 and entries[1].plot==20 and entries[1].delta==32*256)
+group.candidates={main}
+entries=E.CustomerEconomicOffers(snapshot,{})
+assert(#entries==1 and entries[1].plot==20 and entries[1].delta==32*256)
+''')
+
+    def test_existing_customer_only_recovers_a_measured_quarter_cap_deduction(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.connectionGroups={};snapshot.connectionQuarters={quarterAt(20)}
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+local entry={city=7,district=3,plot=20,economy=true,finalQ8=100*256,qualityCapQ8=100*256}
+E.ApplyQuarterConnectionCredit(snapshot,{entry},plans)
+assert(entry.finalQ8==100*256)
+entry.qualityCapAdjustmentQ8=-20*256
+E.ApplyQuarterConnectionCredit(snapshot,{entry},plans)
+assert(entry.finalQ8==120*256 and entry.beforeConnectionQ8==100*256)
+''')
+
+    def test_campaign_observation_reports_both_orders_without_a_control_quote(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local messages={};print=function(msg)messages[#messages+1]=msg end
+snapshot.connectionQuarters={quarterAt(21)}
+snapshot.auditConnections=true;snapshot.auditConnectionsOnly=true
+CSC_AI_EconomyModel.CustomerBuildingForecast=function()error('audit priced a forecast')end
+CSC_AI_EconomyModel.ExistingCustomerConnectionValue=function()error('audit priced a forecast')end
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0 and #messages==2)
+assert(messages[1]:find('identity=customerFirst:9:3:TEST:7:3:21',1,true))
+assert(messages[2]:find('identity=quarterFirst:10:3:TEST:7:1:20',1,true))
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0 and #messages==2)
 ''')
