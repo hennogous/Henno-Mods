@@ -85,6 +85,8 @@ REA and Ghidra also established a narrow experimental reset for this case. On St
 
 The current ownership routine evidence is `ev_73c6c355b1d543b036c45af5fea9bc5d1ea20ecafe3bb06e3900a8c5a56ecbc9`. The progress writer clamps to the topic's cost. It records positive progress deltas in the accumulated culture counters, while a decrease only changes the topic's progress. The fixture resets the two observed topic fields and leaves the prior game history in place.
 
+The live turn-100 control verified the split Lua surface. `PlotInfo` reported Divine Right as owned with stored progress zero before preparation. The Gameplay script confirmed both setters, cleared ownership and prepared the producer. `PlotInfo` then reported the civic unowned with progress zero. The Gameplay context had no progress getter. The readbacks establish the starting civic state for this copy. The AI then plays toward the unlock under ordinary research rules.
+
 ## Preselected full-game pairs
 
 Each pair uses a fresh Small Online game through turn 250 on the shared controller, with the same map and game seed, gameplay and UI mods, and pinned Firaxis GameCore and CE build. The control retains CSC gameplay with guidance and private customer adjacency disabled. The treatment runs the integrated CSC policy. Both use stock AI. Seeds are fixed before qualification begins.

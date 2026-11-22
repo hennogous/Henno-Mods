@@ -133,6 +133,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
         ce = next(item for item in installed if item['role'] == 'ce')
         verify_modules(session, (ce['install'] / 'Binaries/Win64' / DLL).resolve(), output, STEAM_26595377_CORE_SHA)
         if fixture:
+            if fixture == 'sacristan':
+                fixture_receipt('before', 'PlotInfo')
             setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay')
             if fixture == 'market':
                 fixture_receipt('legal', 'PlotInfo')
@@ -140,6 +142,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
                 buyer = re.search(r'CSC_MILESTONE_ENTERTAINMENT_SETUP\s+3\s+(\d+)\b', setup)
                 require(buyer is not None, 'Entertainment Complex buyer missing from setup')
                 fixture_receipt('legal', 'PlotInfo', int(buyer[1]))
+            elif fixture == 'sacristan':
+                fixture_receipt('progress', 'PlotInfo')
         service_observation('service-before')
         service_observation('service-observer', every_turn=True)
         native_status('native-before')

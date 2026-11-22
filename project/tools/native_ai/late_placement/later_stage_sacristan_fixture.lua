@@ -13,6 +13,15 @@ local owned = culture:HasCivic(civic.Index)
 local temple = assert(GameInfo.Buildings.BUILDING_TEMPLE)
 local tailor = assert(GameInfo.Buildings.BUILDING_CSC_TAILORS_TAILOR)
 local workshop = assert(GameInfo.Buildings.BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP)
+if mode == 'before' or mode == 'progress' then
+    -- Progress is exposed by the UI reader. Gameplay owns the civic mutation
+    -- below and has no progress getter in this binary.
+    local progress = culture:GetCulturalProgress(civic.Index)
+    if mode == 'progress' then assert(progress == 0, 'Civic progress reset was not observed') end
+    local marker = mode == 'before' and 'BEFORE' or 'PROGRESS'
+    print('CSC_MILESTONE_SACRISTAN_' .. marker, Game.GetCurrentGameTurn(), pid, civic.Index, tostring(owned), progress)
+    return
+end
 local function active(owner, definition, location)
     local buildings = owner:GetBuildings()
     return buildings:HasBuilding(definition.Index) and not buildings:IsPillaged(definition.Index)
@@ -43,11 +52,11 @@ if mode == 'setup' then
     -- this exact world to have no Tailor before resetting the civic, so the
     -- Service attachment is created against the reset facts on both copies.
     assert(not city:GetBuildings():HasBuilding(tailor.Index), 'The fixture needs the archived missing Tailor')
-    local oldProgress = culture:GetCulturalProgress(civic.Index)
+    assert(type(culture.SetCivic) == 'function' and type(culture.SetCulturalProgress) == 'function',
+        'Gameplay civic setters are unavailable')
     culture:SetCivic(civic.Index, false)
     culture:SetCulturalProgress(civic.Index, 0)
-    assert(not culture:HasCivic(civic.Index) and culture:GetCulturalProgress(civic.Index) == 0,
-        'The controlled civic reset was not observed')
+    assert(not culture:HasCivic(civic.Index), 'The controlled civic ownership reset was not observed')
     for _, building in ipairs({workshop, tailor}) do
         if not active(city, building, quarterPlot) then
             assert(not city:GetBuildings():HasBuilding(building.Index), 'Producer already exists but is damaged')
@@ -55,7 +64,7 @@ if mode == 'setup' then
         end
         assert(active(city, building, quarterPlot), 'Producer preparation failed')
     end
-    print('CSC_MILESTONE_SACRISTAN_SETUP', pid, cityId, quarterPlot, templePlot, civic.Index, tostring(owned), oldProgress)
+    print('CSC_MILESTONE_SACRISTAN_SETUP', pid, cityId, quarterPlot, templePlot, civic.Index, tostring(owned))
 else
     assert(mode == 'outcome')
     print('CSC_MILESTONE_SACRISTAN_OUTCOME', Game.GetCurrentGameTurn(), pid, cityId, tostring(owned),
