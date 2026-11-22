@@ -898,10 +898,13 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
     local stats={groups=0,forecasts=0,unknown=0,clamped=0,offers=0,
         referenceUnavailable=0,candidateUnavailable=0,nativeUnavailable=0,nativeNonpositive=0}
     if not snapshot.CustomerCandidateSets or not snapshot.WorldQuote or not snapshot.CustomerNetValue then return {},stats end
-    local source=snapshot.CustomerCandidateSets(protectedPlots);local offers={}
+    local source,waiting=snapshot.CustomerCandidateSets(protectedPlots);local offers={}
     local plans,anchored,anchorValues,anchorPressure={},{},{},{}
     if snapshot.captureConnections then
-        snapshot.connectionGroups=source
+        snapshot.connectionGroups={}
+        for _,list in ipairs({source,waiting or{}})do
+            for _,group in ipairs(list)do snapshot.connectionGroups[#snapshot.connectionGroups+1]=group end
+        end
         plans=E.AnchoredConnectionPlans(snapshot,protectedPlots)
         for _,plan in ipairs(plans)do if plan.order=='quarterFirst'then
             local option=plan.best.option
@@ -1349,8 +1352,8 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         return not protectedPlots[index]and (not reserved or reserved==ownIntent)
     end
     for _,group in ipairs(snapshot.connectionGroups or{})do
-        -- Reuse the same owned, unprotected, native-legal candidate set used
-        -- by the ordinary customer residual. A group may have one site only.
+        -- Reuse the owned, unprotected candidate sets. Waiting candidates
+        -- retain the same map fit without immediate native build admission.
         for _,candidate in ipairs(group.candidates)do if free(candidate.plot)then
             for _,chain in ipairs(candidate.chains or{})do if chain.economy and (chain.ready or
                 chain.complete==false and (chain.economy.quarterReady or math.huge)<chain.economy.horizon)then
@@ -1360,7 +1363,8 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     if venue.transaction and (transactionReady or canPriceYields)then
                         add('quarterFirst',chain.plot:GetIndex(),venue.stage,chain.profile.key,
                             {plot=candidate.plot,city=group.city,district=group.district,rank=candidate.adjacency,
-                             site=chain.economy,chain=chain,venue=venue,projected=true,transactionReady=transactionReady})
+                             site=chain.economy,chain=chain,venue=venue,projected=true,
+                             transactionReady=transactionReady,waiting=candidate.waiting})
                     end
                 end
             end end
@@ -1448,6 +1452,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
     if snapshot.auditConnectionsOnly then return {} end
     local plans={}
     local function byRank(a,b)
+        if (a.waiting==true)~=(b.waiting==true)then return a.waiting~=true end
         if a.rank~=b.rank then return a.rank>b.rank end
         if a.district~=b.district then return a.district<b.district end
         return a.venue.building<b.venue.building
@@ -1510,6 +1515,8 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 plots[#plots+1]=row
             end
             table.sort(plots,function(a,b)
+                local aWaiting,bWaiting=a.option.waiting==true,b.option.waiting==true
+                if aWaiting~=bWaiting then return not aWaiting end
                 if a.option.rank~=b.option.rank then return a.option.rank>b.option.rank end
                 if (a.plot==preferred)~=(b.plot==preferred)then return a.plot==preferred end
                 return a.plot<b.plot
@@ -1517,8 +1524,9 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             local first,second=plots[1],plots[2]
             first.valueQ8=value(first.option)
             if second then second.valueQ8=value(second.option) end
-            if second and second.valueQ8 and (not first.valueQ8 or second.valueQ8>first.valueQ8
-                or second.valueQ8==first.valueQ8 and second.plot==preferred)then
+            if second and second.valueQ8 and (not first.valueQ8 or first.valueQ8<=0
+                or (first.option.waiting==true)==(second.option.waiting==true)
+                    and(second.valueQ8>first.valueQ8 or second.valueQ8==first.valueQ8 and second.plot==preferred))then
                 first,second=second,first
             end
             if first.valueQ8 and first.valueQ8>0 then

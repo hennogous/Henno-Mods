@@ -484,6 +484,16 @@ native cache received the entire +2,607 Q8, from 40,589 to 43,196. The native
 best was still a Rural Community at 2350 with 106,145 Q8. The capacity-wait
 change needs its own matched follow-through test against the archived control.
 
+The Pangaea reload took a different path at the expected backup-site case.
+The turn-150 structure gate matched all 174 rows. The later control built an
+Industrial Zone on 2982 on turn 192 and completed it on turn 194. Both
+Entertainment Complex candidate plots (2755 and 2756) remained physically
+open, but the city went from four of five specialty slots in use to five of
+five. Quarter-first planning now also retains verified full-capacity plots
+for future evaluation. It keeps them out of the ordinary customer bid list
+and gives currently admitted alternatives priority. Waiting plots are traced
+separately from currently legal opportunities in both placement orders.
+
 A second customer-first case comes from Opango on Continents. At population
 8 with two of three slots used, Bakers and Tailors both bid for plot 1305 at
 +3 adjacency. Bakers won by 737 Q8 (2.88 utility) over Tailors, submitted

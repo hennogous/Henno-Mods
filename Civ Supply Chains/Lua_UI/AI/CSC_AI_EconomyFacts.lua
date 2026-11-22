@@ -1961,7 +1961,7 @@ function F.New(player,placement,ui,context)
                 end end
             end
         end
-        local result={}
+        local result,waiting={},{}
         for _,group in pairs(groups)do
             local city=snapshot.cities[group.city].object
             local unlocked=math.max(research('tech',group.definition.PrereqTech),research('civic',group.definition.PrereqCivic))==0
@@ -2003,6 +2003,27 @@ function F.New(player,placement,ui,context)
                         end
                         if #related>0 then result[#result+1]=group end
                     end
+                    -- A known-full city can still have owned, unlocked sites
+                    -- worth retaining beside an existing Quarter. Keep those
+                    -- in a separate planning list so the ordinary bid adapter
+                    -- never treats them as currently admitted build targets.
+                    if snapshot.captureConnections and #targets==0 and #map.free>0
+                        and flag(group.definition.RequiresPopulation)then
+                        local capacity=snapshot.DistrictCapacity(city)
+                        if capacity and capacity.known and capacity.used>=capacity.allowed then
+                            local candidates={}
+                            for _,row in ipairs(map.free)do
+                                local link=group.related[row.index]
+                                if link and not protectedPlots[row.index]then
+                                    candidates[#candidates+1]={plot=row.index,adjacency=row.adjacency,
+                                        links=link.links,chains=link.chains,waiting=true}
+                                end
+                            end
+                            if #candidates>0 then
+                                waiting[#waiting+1]={city=group.city,district=group.district,candidates=candidates}
+                            end
+                        end
+                    end
                 end
             end
         end
@@ -2042,7 +2063,7 @@ function F.New(player,placement,ui,context)
             end
         end
         table.sort(result,function(a,b)if a.city~=b.city then return a.city<b.city end;return a.district<b.district end)
-        return result
+        return result,waiting
     end
     local currentWorld
     function snapshot.CurrentWorld()

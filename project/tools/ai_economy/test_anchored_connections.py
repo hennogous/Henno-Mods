@@ -167,6 +167,23 @@ E.AnchoredConnectionPlans(snapshot,{})
 assert(#messages==2 and messages[2]:find('CSC_AI_CONNECTION_OPPORTUNITY',1,true))
 ''')
 
+    def test_quarter_first_waiting_site_never_enters_the_ordinary_bid_list(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local group=snapshot.connectionGroups[1]
+group.candidates[1].waiting=true
+snapshot.captureConnections=true
+snapshot.CustomerCandidateSets=function()return {},{group}end
+snapshot.WorldQuote=function()error('Waiting site entered the ordinary auction')end
+local offers,_,plans=E.CustomerEconomicOffers(snapshot,{})
+assert(#offers==0 and #plans==1 and plans[1].order=='quarterFirst' and plans[1].best.option.waiting)
+-- A destination that can build now leads while a fuller neighbour retains
+-- its higher-valued footprint as a possible future backup.
+group.candidates={main,backup};main.adjacency=9;values[20]=100*256;values[21]=48*256
+plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.plot==21 and plans[1].backup.plot==20)
+''')
+
     def test_stage_four_without_specialty_can_price_immediate_adjacency(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
