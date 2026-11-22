@@ -81,6 +81,8 @@ The Sacristan trials lacked a valid starting opportunity. The first city's adjac
 
 REA and Ghidra also established a narrow experimental reset for this case. On Steam XP2 `4de40abf`, the Lua `SetCivic` entry at RVA `6f12f0` forwards the Boolean to the native setter at `284870`. Clearing the ownership flag returns before the completion broadcast. The `SetCulturalProgress` thunk at `6f13a0` uses the numeric Q8 argument converter at `6f0450` and the progress writer at `284bb0`. A diagnostic can clear both fields on copies of the same archived world, then create the missing Tailor so its attachment was never active under the old civic state. The actual AI must choose and complete the civic again. This setup has no role in ordinary play or shipping guidance.
 
+The current ownership routine evidence is `ev_73c6c355b1d543b036c45af5fea9bc5d1ea20ecafe3bb06e3900a8c5a56ecbc9`. The progress writer clamps to the topic's cost. It records positive progress deltas in the accumulated culture counters, while a decrease only changes the topic's progress. The fixture resets the two observed topic fields and leaves the prior game history in place.
+
 ## Preselected full-game pairs
 
 Each pair uses a fresh Small Online game through turn 250 on the shared controller, with the same map and game seed, gameplay and UI mods, and pinned Firaxis GameCore and CE build. The control retains CSC gameplay with guidance and private customer adjacency disabled. The treatment runs the integrated CSC policy. Both use stock AI. Seeds are fixed before qualification begins.
@@ -94,6 +96,8 @@ Each pair uses a fresh Small Online game through turn 250 on the shared controll
 Report placement, suppliers, producer and customer completions, Wonders, working exchanges, active Service turns, unlock timing, missed opportunities, competing work and guidance processing time for each pair. Count Service duration from active native effects on specific recipients.
 
 Campaign artifacts and the frozen package are under `Desktop/Codex/csc-ai-stage6-12-20261121/campaign`.
+
+Shadow lost the first Pangaea stock process at turn 100. The restart reached turn 50 and the controller stopped when that path produced the old native checkpoint name. Both attempts are archived. Intermediate checkpoint names now include a per-run suffix, so a retry can start the same ordinary world while preserving saves from the previous attempt.
 
 ## Continents through turn 250
 
@@ -133,6 +137,8 @@ The combined arm observed seven distinct Storekeeper, four Innkeeper and two Sac
 - **8.1, Market.** Player 4's Urumqi (city `262147`) published a Market offer on turn 203. The next receipt records the exact queue write at 16,384 Q8. The native chooser nominated it on turn 203, and the queue reached 117.6 of 60 production on turn 205. The turn-225 and turn-250 censuses record the Bakery at 1823 and Market at 1748 paying 26 units on each side. The turn-200 census precedes the exchange.
 - **11.1, Zoo.** Qaraqorum (player 4, city `65536`) went from no Zoo exchange to a native Zoo submission on turn 209. The exact receipt records a queue write and the ordinary nomination receipt records a write. Production reached 245 of 180 on turn 213. The turn-250 census records the Café at 2189 and Zoo at 2115 paying four units each.
 - **11.2, Wonders.** Repeated publications produced 924 offers and zero exact native matches. The CE counter records an exact match before checking the score sign or applying the cap, so the next check is candidate admission. Astra traced two natural orders. Angkor Thom built Broadway two tiles from its Tailors, with both plots touching the Quarter and its Theater already occupied. Qaraqorum had both materials earlier and later pursued Sydney Opera House. The nearest Harbor was three tiles from the Quarter, beyond the range for one site to touch both. Scout the turn-200 checkpoint for an admissible footprint before evaluating the premium.
+
+On the benchmark GameCore `4de40abf`, the Wonder loop in RVA `3e2360` first calls `CanHaveWonder` at `25bab0` and requires a nonnegative combined delay estimate. Only then does the call at `3e3a5a` pass the exact coordinates to Building NetValue at `52a030`. The return at `3e3a5f` feeds the plot's building-score entry. The UI legality result is useful for scouting. The earlier-packet CE receipt establishes actual native comparison and score application. Current disassembly and decompilation evidence is `ev_1b56ac155dd8ebc6783ba10f4fd53759c847380afbc858a5776b9e62edb151ee` and `ev_6dede9f8c29725b7dd51f67e0f8c94ac78fe47941baedf3ded743ec3ad0fb77b`.
 
 Evidence is under `Desktop/Codex/csc-ai-stage6-12-20261121/campaign/fractal-combined` in the native receipts, `AI_CityBuild.csv`, `City_BuildQueue.csv`, `full-census-{200,225,250}.json` and `observed-services.json`.
 

@@ -212,5 +212,24 @@ ExposedMembers={CSC_Adjacency={}}
             self.assertEqual(controller.samples,[6])
             self.assertTrue(controller.allow_one_more_turn)
 
+    def test_restarted_run_uses_a_different_native_checkpoint_name(self):
+        class Controller:
+            def play(self,turn):
+                pass
+
+            def cmd(self,*args):
+                return 'CSC_QUARTER_WATCH_DRAINED'
+
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            (root/'Logs').mkdir()
+            (root/'Logs/Lua.log').write_text('CSC_STOREKEEPER_END\t50\t0\n',encoding='utf-8')
+            with patch('full_game_observation.save_inactive_boundary',return_value={}) as save:
+                for _ in range(2):
+                    play(Controller(),root,root,start=45,endpoint=51,saves=root)
+            first,second=(call.kwargs for call in save.call_args_list)
+            self.assertEqual(first['archive'],second['archive'])
+            self.assertNotEqual(first['name'],second['name'])
+
 
 if __name__=='__main__':unittest.main()

@@ -8,6 +8,7 @@ Service effect. The existing Storekeeper watcher supplies that extra evidence.
 """
 from pathlib import Path
 import re
+from uuid import uuid4
 from driver import load,lua,read,write_json,require
 from customer_adjacency_policy import database_snapshot,qualify_database
 from full_game_controller.checkpoint import (
@@ -251,6 +252,10 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,obser
     never a chain, score, queue, treasury or native operation.
     """
     controller.allow_one_more_turn=True
+    # A restarted arm may reuse its output path while native saves from the
+    # old process remain. Keep each run's save names distinct and preserve
+    # the shared helper's rule against overwriting an existing checkpoint.
+    save_scope=uuid4().hex[:12] if saves is not None else None
     cursor=start
     while cursor<endpoint:
         # Land on each25-turn milestone as well as respecting the five-turn
@@ -278,7 +283,7 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,obser
             # fails to produce a file. The helper verifies the unchanged phase.
             # An ambiguous request or phase change still stops the run.
             try:
-                checkpoint=save_inactive_boundary(controller,turn=boundary,name='CSC_AI_HARMONISED_'+str(boundary),
+                checkpoint=save_inactive_boundary(controller,turn=boundary,name=f'CSC_AI_HARMONISED_{boundary}_{save_scope}',
                     native_directory=saves,archive=out/('turn-'+str(boundary)+'.Civ6Save'))
             except (SavePermissionUnavailable,SaveFileUnavailable) as error:
                 write_json(out/('checkpoint-unavailable-'+str(boundary)+'.json'),
