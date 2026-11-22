@@ -94,6 +94,9 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     if fixture=='connection':
         require(plan.checkpoint['sha256']=='2c3ac19cd18cfc50b368fb1dddfa40a3507cc8dfd4c3ac28ff503d504e590873',
                 'Connection capacity fixture expects the exact archived Continents layout')
+    if fixture=='stirling_capacity':
+        require(plan.checkpoint['sha256']=='3abc302fdc23f3941450158354e7348b9571bdffa3f13d5a0d01acb102c10df7',
+                'Stirling capacity fixture expects the qualified turn-100 save')
     require(len(connection_scout)<=4 and all(pid in plan.identity['original_ai'] and 0<city<2**31
             for pid,city in connection_scout), 'Connection scout requires up to four original AI city scopes')
     require(connection_timing_player is None or connection_timing_player in plan.identity['original_ai'],
@@ -237,7 +240,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 proof = compare_structure(expected_preparation['census'], prepared)
                 write_json(output / 'preparation-comparison.json', proof)
                 require(proof['verified'], 'The natural Sacristan preparation worlds diverged')
-        if fixture:
+        if fixture and fixture!='stirling_capacity':
             if fixture == 'sacristan':
                 civic_start = sacristan_civic_state('before')
                 require(civic_start[0] == str(preparation_turn), 'Civic UI did not reach the preparation turn')
@@ -288,6 +291,15 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 proof = compare_structure(expected_preparation['census'], prepared)
                 write_json(output / 'connection-switch-comparison.json', proof)
                 require(proof['verified'], 'Connection switch pre-roll diverged')
+            if fixture=='stirling_capacity':
+                fixture_receipt('before', 'PlotInfo')
+                fixture_receipt('setup', 'CSC_AI_BakersGameplay')
+                fixture_receipt('legal', 'PlotInfo')
+                capacity_census = census(connection_switch_turn, 'connection-capacity-census')
+                if expected_preparation is not None:
+                    proof = compare_structure(expected_preparation['capacity_census'], capacity_census)
+                    write_json(output / 'connection-capacity-comparison.json', proof)
+                    require(proof['verified'], 'Controlled capacity preparation diverged')
             setting = 'true' if connection_enabled else 'false'
             code = ('local A=assert(CSC_AI_EconomyAdapters);assert(A.AnchoredConnectionsEnabled==false);'
                     f'A.AnchoredConnectionsEnabled={setting};'
@@ -331,7 +343,10 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     if natural_sacristan is not None:
         return dict(census=prepared, civic_start=civic_start)
     if connection_switch_turn is not None:
-        return dict(census=prepared)
+        result = dict(census=prepared)
+        if fixture=='stirling_capacity':
+            result['capacity_census'] = capacity_census
+        return result
 
 
 if __name__ == '__main__':
@@ -364,6 +379,8 @@ if __name__ == '__main__':
                           help='Prepare the Tailor and Temple at turn 55 before Divine Right starts')
     fixtures.add_argument('--connection-capacity', action='store_true',
                           help='Open one district slot in both copies of the scoped Continents turn-150 save')
+    fixtures.add_argument('--stirling-capacity', action='store_true',
+                          help='Open the same district slot in Stirling at the matched turn-127 boundary')
     args = parser.parse_args()
     # The connection replay may need to cross a reservation change and still
     # leave time to complete the selected district. Native scouting is scoped
@@ -382,13 +399,15 @@ if __name__ == '__main__':
             'A matched connection switch requires the anchored policy and one unchanged setup')
     require(args.connection_timing_player is None or (args.connection_prototype and args.end - args.start <= 5),
             'Connection timing is for short diagnostic replays of the anchored planner')
+    require(not args.stirling_capacity or (args.start==100 and args.connection_switch_turn==127),
+            'Stirling capacity fixture starts on turn 100 and prepares on 127')
     fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
                     (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
                     (args.sacristan_preparation or args.sacristan_natural, 'sacristan'),
-                    (args.connection_capacity, 'connection'))
+                    (args.connection_capacity, 'connection'), (args.stirling_capacity, 'stirling_capacity'))
                     if enabled), None)
     arms=args.arm or ('control', 'treatment')
-    require(args.connection_switch_turn is None or (args.matched_connection_switch and not fixture
+    require(args.connection_switch_turn is None or (args.matched_connection_switch and fixture in (None, 'stirling_capacity')
             and len(arms)==2 and set(arms)=={'control','treatment'} and args.start < args.connection_switch_turn < args.end),
             'An inactive connection switch requires both matched arms and an interior turn without a setup fixture')
     preparation = None

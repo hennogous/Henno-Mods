@@ -551,6 +551,18 @@ plot 1902 in place of fifteen. The slot and backup handling also differs
 between the two frozen revisions. The focused timing replay will separate
 native quote costs from the surrounding Lua work.
 
+The timing replay from the same save confirmed the source. Player 1's
+turn-152 anchored planning took 9.1 ms, and the extra site quotes inside
+the footprint deduction took 3.93 s of its 4.55 s placement pass. The
+longest individual quote took 0.44 s. On turn 153 the same quote path took
+18 ms. The inexpensive path in the Dev CE feature branch stages the
+ordinary delta and the extra opportunity cost separately. It reads the
+real net score during the engine's existing calculation and applies the
+cost only to its positive remainder, keeping at least 1 Q8 for building
+aggregation. Invalid cells and the existing signed residual retain their
+previous behaviour. The pinned existing Dev CE build still uses the
+native-quote fallback.
+
 A second customer-first case comes from Opango on Continents. At population
 8 with two of three slots used, Bakers and Tailors both bid for plot 1305 at
 +3 adjacency. Bakers won by 737 Q8 (2.88 utility) over Tailors, submitted
@@ -601,6 +613,19 @@ switch found one new completed pair in the treatment and zero in the
 control. Both observers closed with zero faults or drops. This shows
 earlier selection and completion for a Quarter-first case. The
 customer-first case remains in qualification.
+
+The matched Stirling replay isolated a customer-first choice at turn 129.
+Both copies had a Holy Site on 2618 and a Theater Square on 2693. The
+guidance recovered 16,384 Q8 of the mapped link from the Quarter's
+site-quality cap. Tailors 2692 rose from 416,180 to 432,564, overtaking
+the Rural Community on 2621 at 430,923 in the same generation. The
+native journal recorded the Tailors as best and passed its value to
+the production valuation reader. The city had all six population slots
+filled and issued no Tailors construction request. Both copies chose
+Colosseum production on turn 130 and finished the replay with one
+new Quarter-first pair apiece. The follow-up begins from the same
+turn-100 save and opens one slot in both copies at turn 127, then
+compares their capacity, legal footprint, native choice and production.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
