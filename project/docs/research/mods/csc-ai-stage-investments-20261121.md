@@ -500,6 +500,22 @@ for future evaluation. It keeps them out of the ordinary customer bid list
 and gives currently admitted alternatives priority. Waiting plots are traced
 separately from currently legal opportunities in both placement orders.
 
+Both Pangaea arms closed at turn 210 from the same 174-row checkpoint.
+They completed the same eight new physical pairs, all Bakers: four with
+the Quarter first and four with the customer first. The treatment captured
+two ordinary backup redirects. On turn 156, the Stage 4 plan beside Bakers
+2399 preferred Entertainment Complex plot 2324 and priced backup 2400 at
+the same value. The Commercial Hub took 2324 that turn, forming the Stage 3
+pair. At the planner's turn-169 visit, plot 2400 became the legal Stage 4
+target. Beside Bakers 1498, a Commercial Hub took preferred Entertainment
+Complex plot 1571 on turn 163. The plan returned to legal backup 1572 on
+turn 194, once the city could build the customer. Packet 45 wrote the
+combined +25,526 Q8 offer for 1572, taking the exact native cell from
+425,654 to 451,180 before aggregation. Both backup plots stayed clear of
+new district foundations through the replay. The physical and native
+observers finished with zero faults or drops. Raw data is in
+`Desktop/Codex/csc-ai-anchored-links-20261122/pangaea-150-210-connection-backup`.
+
 A second customer-first case comes from Opango on Continents. At population
 8 with two of three slots used, Bakers and Tailors both bid for plot 1305 at
 +3 adjacency. Bakers won by 737 Q8 (2.88 utility) over Tailors, submitted
