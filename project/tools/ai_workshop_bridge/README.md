@@ -1,5 +1,14 @@
 # Workshop delivery prototypes
 
+The current CSC development package is built from
+[Cru's Dev CE `dev`](https://github.com/cru121/civ6-dev-ce/tree/dev) using
+[`dev_ce/Build-DevCe.ps1`](dev_ce/Build-DevCe.ps1). See the
+[current setup](../../docs/civ6-ai/topics/native/workshop-delivery.md#current-development-setup)
+for the checkout, packaging identity and qualification. The rest of this page
+describes earlier delivery experiments and their original validation.
+
+## Earlier prototypes
+
 **Preferred release:** CSC Lua/SQL with a Community Extension dependency. The
 preserved tested carrier is the
 [earlier CE fork](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/feature/ai-district-scores),
@@ -16,7 +25,7 @@ builder. See `project/docs/research/mods/csc-ce-develop-port-20261105.md`.
 
 See `project/docs/research/mods/csc-native-workshop-delivery-20261104.md` and the
 maintained `project/docs/civ6-ai/topics/native/workshop-delivery.md` for results.
-The current port and its exact evidence are in
+The historical policy port and its exact evidence are in
 `project/docs/research/mods/csc-ce-policy-parity-20261104.md`.
 
 ## Components
@@ -25,8 +34,8 @@ The current port and its exact evidence are in
   framed receipts. No DLL/Python/Frida runtime is carried by this package.
 - `ce_parity/`: isolated CE test packaging, shared-controller game driver and
   strict policy/native-trace auditor. Python audits/controls the test only.
-- The fork's `native/AIDistrictScores.c` is the current native implementation;
-  its `native/README.md` and `tools/README.md` describe the API and full build.
+- The earlier fork's `native/AIDistrictScores.c` was the native implementation
+  used for the original parity experiment.
 - `ce_probe/`: a Lua-only, read-only package using installed CE memory APIs and
   ordinary gameplay events. No hooks or memory writes. Its controller selects
   the exact Workshop CE subscription and restores preferences on normal exit.
@@ -35,7 +44,7 @@ The current port and its exact evidence are in
   unavailable on stock CE1.3. It installs no tuning policy automatically.
 - `prepare_ce_contribution.py`: historical candidate preparation. It reproduces
   an earlier object-only proposal, not the subsequently qualified fork module.
-  Do not overwrite the fork's current source with this older candidate.
+  Use contemporary Dev CE source for new native work.
 - `bridge.c`/`hook_entry.S`: common experimental native code. With
   `CSC_CE_INTEGRATION`, CE owns registration and context lifecycle. The default
   branch is an independent proxy used only to establish native package loading.

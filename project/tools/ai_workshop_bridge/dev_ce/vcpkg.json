@@ -1,0 +1,9 @@
+{
+  "name": "civ6-dev-ce-csc-test",
+  "version-string": "0.1.0",
+  "builtin-baseline": "5d68747adeb88f05aac8ca4d18d29e50296509b1",
+  "dependencies": ["capstone", "minhook"],
+  "overrides": [
+    { "name": "minhook", "version": "1.3.4" }
+  ]
+}

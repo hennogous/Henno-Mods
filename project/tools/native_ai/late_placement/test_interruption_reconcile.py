@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import planning_continue as continuation
 import planning_interruption_reconcile as reconcile
-from ce_replay import STEAM_26595377_CORE_SHA, STEAM_26595377_EXE_SHA
+from ce_replay import DEV_CE_LOG, STEAM_26595377_CORE_SHA, STEAM_26595377_EXE_SHA
 
 
 class InterruptedLifecycle(unittest.TestCase):
@@ -41,7 +41,13 @@ class InterruptedLifecycle(unittest.TestCase):
             for role,name in [('CE','CSC Bakers Development CE'),('CSC','CSC Bakers Development Mod')]:
                 frozen=root/'frozen'/role;frozen.mkdir(parents=True)
                 installed=root/'Mods'/name;installed.mkdir(parents=True)
-                packages[str(frozen)]=dict(install=str(installed),files={})
+                if role=='CE':
+                    for directory in frozen,installed:
+                        (directory/'DevCE.modinfo').write_text('<Mod/>')
+                    (installed/DEV_CE_LOG).parent.mkdir(parents=True)
+                    (installed/DEV_CE_LOG).write_text('Runtime log')
+                packages[str(frozen)]=dict(install=str(installed),reused=role=='CE',
+                                           files=reconcile.development_package_files(frozen))
             (source/'packages.json').write_text(json.dumps(packages))
             events=[]
             class Session:
@@ -58,7 +64,6 @@ class InterruptedLifecycle(unittest.TestCase):
                 (path/'preferences-restored.json').write_text('{"verified":true}')
             owner=SimpleNamespace(poll=lambda:None)
             with patch.object(reconcile,'native_inventory',return_value=[]), \
-                 patch.object(reconcile,'manifest',return_value={}), \
                  patch.object(reconcile,'native_profile',
                               return_value=(STEAM_26595377_EXE_SHA, STEAM_26595377_CORE_SHA)), \
                  patch.object(reconcile,'make_probe_controller',return_value=object()), \
@@ -73,6 +78,10 @@ class InterruptedLifecycle(unittest.TestCase):
             self.assertEqual(record['AI_turns_advanced'],0)
             self.assertFalse((source/'session-closed.json').exists())
             self.assertTrue(all((source/Path(row['install']).name).exists()for row in packages.values()))
+            self.assertTrue((root/'Mods/CSC Bakers Development CE'/DEV_CE_LOG).is_file())
+            self.assertFalse((root/'Mods/CSC Bakers Development Mod').exists())
+            self.assertEqual((source/DEV_CE_LOG.name).read_text(), 'Runtime log')
+            self.assertFalse((source/'CSC Bakers Development CE'/DEV_CE_LOG).exists())
 
     def test_foreign_native_owner_blocks_before_any_cleanup(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -8,10 +8,10 @@ supplies CSC-specific context. Codex discovers all four through junctions
 under `C:\Users\Shadow\.codex\skills`. Start CSC AI work from the AI index
 and numbered roadmap, with reusable engine findings in `civ6-ai`.
 
-New native changes and CE APIs for CSC tuning go on `csc-dev` in
-`hennogous/CivilizationVI_CommunityExtension`. On Shadow, use
-`Desktop/Codex/CE-fork`. Use the branch README to build and package CE
-from tracked source and public dependencies.
+Use `cru121/civ6-dev-ce` on Shadow at `Desktop/Codex/civ6-dev-ce`. Start CE
+changes on feature branches from the latest `origin/dev`. The old `hennogous`
+`csc-dev` branch is historical. Use the [Dev CE setup](../project/docs/civ6-ai/topics/native/workshop-delivery.md)
+to build and test the current package.
 
 # Latest completed CSC AI milestone
 

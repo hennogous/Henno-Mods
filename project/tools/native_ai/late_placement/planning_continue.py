@@ -22,7 +22,8 @@ from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, fla
                     parse, read, require, restore_preferences, sha, write_json)
 from ce_bakers_fresh import (LOGS, MAPS, capture_census, check_native_status,
                             package_identity, passive_publisher, summarize_run, untuned_manifest)
-from ce_replay import DLL, STEAM_26595377_CORE_SHA, native_profile, verify_modules
+from ce_replay import (DLL, STEAM_26595377_CORE_SHA, archive_development_package,
+                       development_package_files, native_profile, verify_modules)
 from full_game_controller.checkpoint import SaveFileUnavailable, SavePermissionUnavailable, save_inactive_boundary
 from full_game_controller.environment import archive_sources
 
@@ -204,11 +205,15 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     packages, originals = [], {}
     for path, item in load(source/'packages.json').items():
         package, install = Path(path).resolve(strict=True), Path(item['install']).resolve()
-        require(not install.exists(), 'Frozen package/install differs: '+path)
         identity_id, root = package_identity(package)
         role = 'ce' if (package/'Binaries/Win64'/DLL).is_file() else 'csc'
         require(identity_id == protocol[role], 'Package role/identity differs')
-        originals[role] = manifest(package)
+        originals[role] = development_package_files(package)
+        # A current Dev CE can stay installed between ordinary runs and
+        # continuations. Old snapshots still require their exact archived DLL.
+        reused = role == 'ce' and (package/'DevCE.modinfo').is_file() and install.is_dir()
+        require(not install.exists() or (reused and development_package_files(install) == originals[role]),
+                'Frozen package/install differs: '+path)
         if stock_derived and role == 'csc':
             # Preserve both the original input digest and the exact dormant
             # publisher/SQL withholding bytes loaded in the stock world.
@@ -218,7 +223,8 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
                     'Archived stock CSC package differs from the measured control')
         else:
             require(originals[role] == item['files'], 'Frozen package/install differs: '+path)
-        packages.append(dict(source=package, install=install, files=item['files'], id=identity_id, role=role))
+        packages.append(dict(source=package, install=install, files=item['files'], id=identity_id, role=role,
+                             reused=reused))
     require(len(packages) == 2 and {p['role'] for p in packages} == {'ce', 'csc'} and
             len({p['install'].parent for p in packages}) == 1, 'Expected separate CE/CSC development packages')
     by_role = {p['role']: p for p in packages}
@@ -310,7 +316,8 @@ def run(args, *, material_observer=None, material_observer_start=None):
                     original_source=str(plan.source), source_checkpoint_sha256=plan.checkpoint['sha256'])
     for name, data in [('protocol.json', protocol), ('source.json', plan.identity),
                        ('extra-mods.json', plan.extras), ('packages.json', {
-                           str(p['source']): dict(install=str(p['install']), files=p['files']) for p in plan.packages})]:
+                           str(p['source']): dict(install=str(p['install']), files=p['files'], reused=p['reused'])
+                           for p in plan.packages})]:
         write_json(out/name, data)
     write_json(out/'continuation.json', dict(source=str(plan.source), at=plan.at, through=plan.through,
         source_checkpoint=plan.checkpoint, original_map=plan.protocol['map'],
@@ -342,9 +349,9 @@ def run(args, *, material_observer=None, material_observer_start=None):
 
     def verify_packages():
         for p in plan.packages:
-            require(manifest(p['source']) == p['files'], 'Frozen package changed during continuation')
+            require(development_package_files(p['source']) == p['files'], 'Frozen package changed during continuation')
         for p in copied:
-            require(manifest(p['install']) == p['files'], 'Installed package changed during continuation')
+            require(development_package_files(p['install']) == p['files'], 'Installed package changed during continuation')
         for item in plan.extras.values():
             require(manifest(Path(item['path'])) == item['files'], 'Optional package changed during continuation')
         require(all(sha(Path(path)) == value for path, value in pins.items()), 'Executed observer/controller source changed')
@@ -381,7 +388,8 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
 
     try:
         for p in plan.packages:
-            shutil.copytree(p['source'], p['install'])
+            if not p['reused']:
+                shutil.copytree(p['source'], p['install'])
             copied.append(p)
         verify_packages()
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), out))
@@ -468,7 +476,7 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
             watch.after_exit()
         if session.closed or session.owner is None and not native_inventory():
             for p in copied:
-                p['install'].rename(out/p['install'].name)
+                archive_development_package(p['install'], out/p['install'].name, p['reused'])
             if session.closed:
                 for name in LOGS:
                     path = plan.user_root/'Logs'/name

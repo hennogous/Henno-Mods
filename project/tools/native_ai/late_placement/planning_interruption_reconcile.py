@@ -11,8 +11,9 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from driver import (HeldProcess, NativeSession, launch, load, make_probe_controller,
-                    manifest, native_inventory, require, restore_preferences, sha, write_json)
-from ce_replay import HOTFIX_EXE_SHA, HOTFIX_SHA, native_profile
+                    native_inventory, require, restore_preferences, sha, write_json)
+from ce_replay import (HOTFIX_EXE_SHA, HOTFIX_SHA, archive_development_package,
+                       development_package_files, native_profile)
 
 
 def run(source):
@@ -38,10 +39,13 @@ def run(source):
         package, installed = Path(path).resolve(strict=True), Path(row['install']).resolve(strict=True)
         require(installed.parent.name == 'Mods' and installed.name in
                 ('CSC Bakers Development CE', 'CSC Bakers Development Mod'), 'Unexpected installed target')
-        require(manifest(package) == row['files'] == manifest(installed), 'Test package changed')
+        require(development_package_files(package) == row['files'] == development_package_files(installed),
+                'Test package changed')
+        reused = row.get('reused', False)
+        require(not reused or (installed/'DevCE.modinfo').is_file(), 'Unexpected persistent package')
         archive = source/installed.name
         require(not archive.exists(), 'Package archive already exists')
-        installs.append((installed, archive, row['files']))
+        installs.append((installed, archive, row['files'], reused))
     require(len(installs) == 2, 'Expected exact CE/CSC test copies')
     out = source/'interruption-cleanup'
     require(not out.exists(), 'Preserve earlier cleanup attempt')
@@ -50,11 +54,10 @@ def run(source):
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
     def archive_packages():
         require(not native_inventory(), 'Owner appeared before package archive')
-        for installed, archive, files in installs:
-            require(manifest(installed) == files, 'Installed package changed during cleanup')
-            # Both absolute targets are verified above: move only these two
-            # named test copies from Mods into this original evidence folder.
-            installed.rename(archive)
+        for installed, archive, files, reused in installs:
+            require(development_package_files(installed) == files, 'Installed package changed during cleanup')
+            # Preserve an existing provider and move only the test-owned copies.
+            archive_development_package(installed, archive, reused)
     session.start(lambda: launch(SimpleNamespace(binary=binary), out))
     try:
         session.wait_context('MainMenu')
@@ -69,7 +72,7 @@ def run(source):
         owners_absent=True, preferences_verified=True,
         cleanup_session=str(out/'session-closed.json'),
         gameplay_loaded=False, AI_turns_advanced=0,
-        package_archives=[str(archive) for _, archive, _ in installs]))
+        package_archives=[str(archive) for _, archive, _, _ in installs]))
 
 
 if __name__ == '__main__':

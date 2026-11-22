@@ -11,7 +11,7 @@ import traceback
 import uuid
 import xml.etree.ElementTree as ET
 
-from ce_replay import DLL, native_profile, verify_modules
+from ce_replay import DLL, archive_development_package, development_package_files, native_profile, verify_modules
 from driver import (
     HERE, HOTFIX_SHA, STUDY, XP2_IMAGE_SIZE, HeldProcess, NativeSession, configure, flags, launch, load, lua,
     make_probe_controller, manifest, native_inventory, parse, read, require,
@@ -334,8 +334,10 @@ def run(args):
                                or main_mod_optional),
             'CSC must depend on CE, or explicitly qualify its main-mod optional CE criterion')
     local = {ce: mods / 'CSC Bakers Development CE', csc: mods / 'CSC Bakers Development Mod'}
-    require(not out.exists() and not native_inventory() and all(not path.exists() for path in local.values()),
-            'Fresh output, unused development paths and exclusive native ownership required')
+    reuse_ce = (ce / 'DevCE.modinfo').is_file() and local[ce].is_dir()
+    require(not out.exists() and not native_inventory() and not local[csc].exists()
+            and (reuse_ce or not local[ce].exists()),
+            'Fresh output, expected development paths and exclusive native ownership required')
     require(not any(path.is_relative_to(mods) for path in (out, ce, csc)),
             'Staging and output must be outside the installed Mods directory')
     require(not args.saves or args.saves.is_dir(), 'The native save directory must already exist')
@@ -345,7 +347,11 @@ def run(args):
                 'Previous-build native diagnostic probes need their own relocation audit')
     ce_dll = Path('Binaries/Win64') / DLL
     require(sha(ce / ce_dll) == args.ce_sha256, 'The staged CE DLL hash differs from the expected build')
-    pins = {source: manifest(source) for source in local}
+    pins = {source: development_package_files(source) for source in local}
+    # An installed Dev CE may serve as the test provider when its contents
+    # match the pinned source. Its runtime log is generated beside the DLL.
+    if reuse_ce:
+        require(development_package_files(local[ce]) == pins[ce], 'Installed Dev CE differs from the pinned provider')
     installed_pins = dict(pins)
     measured_control = args.untuned and args.harmonised_observation
     if args.untuned:
@@ -560,8 +566,9 @@ def run(args):
             or args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair),
             'Full integrated observation requires a normal start without diagnostic interventions')
         shutil.copyfile(Path(__file__),out/Path(__file__).name)
-    write_json(out / 'packages.json', {str(source): dict(install=str(local[source]), files=files)
-                                       for source, files in installed_pins.items()})
+    write_json(out / 'packages.json', {str(source): dict(install=str(local[source]), files=files,
+                                                        reused=source == ce and reuse_ce)
+                                     for source, files in installed_pins.items()})
     write_json(out / 'protocol.json', protocol)
     write_json(out / 'extra-mods.json', extra_mods)
     if getattr(args,'government_screen_check',False):
@@ -589,7 +596,8 @@ def run(args):
 
     def verify_packages():
         for source in copied:
-            require(manifest(local[source]) == installed_pins[source], f'Installed development package changed: {source}')
+            require(development_package_files(local[source]) == installed_pins[source],
+                    f'Installed development package changed: {source}')
         for identity, item in extra_mods.items():
             require(manifest(Path(item['path'])) == item['files'], f'Extra mod changed: {identity}')
 
@@ -717,7 +725,8 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
 
     try:
         for source, destination in local.items():
-            shutil.copytree(source, destination)
+            if source != ce or not reuse_ce:
+                shutil.copytree(source, destination)
             copied.append(source)
             if args.untuned and source == csc:
                 for relative, data in control_files.items():
@@ -1102,7 +1111,7 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             savings_watch.after_exit()
         if session.closed or (session.owner is None and not native_inventory()):
             for source in copied:
-                local[source].rename(out / local[source].name)
+                archive_development_package(local[source], out / local[source].name, source == ce and reuse_ce)
             for name in LOGS:
                 log = args.user_root / 'Logs' / name
                 if session.closed and log.is_file():

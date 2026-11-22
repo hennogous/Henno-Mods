@@ -1,8 +1,51 @@
 # Workshop delivery and Community Extension
 
-**Current status: develop port passes supported MSVC build and fresh bounded native regression.**
-Henno prefers CSC to ship Lua/SQL and depend on Community Extension, rather than
-ship and maintain its own DLL.
+## Current development setup
+
+Build and test CSC with [Cru's Dev CE `dev` branch](https://github.com/cru121/civ6-dev-ce/tree/dev).
+The [integration commit `6244570`](https://github.com/cru121/civ6-dev-ce/commit/62445704b5648a83ecedadf49ec14055a33a0ca4)
+imported the CSC native API and adapted its registration and context lifecycle to
+Dev CE. Shadow's working checkout is `Desktop/Codex/civ6-dev-ce`.
+Base feature branches on the latest `origin/dev` in that repository. The old
+`hennogous` fork and the release and save evidence below are historical.
+
+[Build-DevCe.ps1](../../../../tools/ai_workshop_bridge/dev_ce/Build-DevCe.ps1)
+builds the Dev CE checkout with Visual Studio 2022 and pinned vcpkg inputs. Its
+CSC development package retains the qualified mod ID and DLL prefix used by
+CSC's optional SQL and shared controller. This avoids enabling those SQL
+connectors merely because an older general Dev CE release is installed. Build
+to a fresh output directory. The wrapper emits `Dev CE CSC Development` and
+`dev-ce-build.json`, which records the source commit and DLL hash. It links
+MinHook and Capstone statically into the Dev CE DLL.
+
+The installed package is called **Dev CE (CSC development build)** in Civ VI.
+On Shadow its folder is `Documents/My Games/Sid Meier's Civilization VI/Mods/CSC Bakers Development CE`.
+Use one GameCore provider in a game. Pass the staged output and DLL hash to the
+shared controller. If the installed development package matches that output,
+the controller can use it and restore the prior mod selections after the test.
+For a replay pinned to the former fork or another build, park the installed
+Dev CE package outside `Mods` while the old snapshot owns the same mod ID.
+A public Workshop dependency still needs its own release qualification.
+
+### Shadow cutover on 22 November 2026
+
+Dev CE `6244570` contains all 47 native AI method names referenced by CSC.
+Its Release x64 build loaded on Steam build `26595377`, with proxy SHA-256
+`120fbea9c2ebc0a660999c20cb1e37dcf085ab5ac0b5687154ebd8f85230e9ac`.
+The shared controller verified the loaded proxy and Firaxis GameCore paths and
+hashes. A fresh small Continents game on Online speed reached turn 25 with
+the combined CSC tuning package. Runtime telemetry captured 67 native
+district-site score changes across 13 reporting turns, including 13 increases
+and 54 decreases. The native status reported zero faults. The controller
+verified preference restoration and game closure. Local evidence is under
+`Desktop/Codex/dev-ce-csc-6244570/smoke-continents`.
+
+Dev CE is the only installed local GameCore provider. The former `CE-fork`
+checkout was moved intact to `Desktop/Codex/retired-ce/henno-ce-fork` at
+`f6f0dd8` after the check. Its existing build and save evidence remains usable
+for exact replays.
+
+## Historical delivery investigation
 
 ## A Workshop package can carry native code
 

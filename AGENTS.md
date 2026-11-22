@@ -36,12 +36,15 @@ them in the same change. Review their accuracy and usefulness before committing.
 
 ## Native code and Community Extension contributions
 
-Put new CE APIs and native changes needed by CSC tuning on `csc-dev` in
-[the CE fork](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/csc-dev).
-Its working checkout on Shadow is `Desktop/Codex/CE-fork`.
+Use [cru121/civ6-dev-ce `dev`](https://github.com/cru121/civ6-dev-ce/tree/dev)
+for CSC development. Its working checkout on Shadow is `Desktop/Codex/civ6-dev-ce`.
+Start each change on a feature branch based on the latest `origin/dev` in that
+repository. The former `hennogous` `csc-dev` branch is historical.
+Use the [Dev CE setup](project/docs/civ6-ai/topics/native/workshop-delivery.md)
+to build and verify the development package.
 
 Treat maintainability as a high-priority review requirement from the first
-implementation. Start with the nearest feature on CE `develop` and follow its
+implementation. Start with the nearest feature on Dev CE `dev` and follow its
 C++ style, module structure, hook and runtime APIs, and lifecycle. Keep raw
 MinHook calls inside CE's shared hook layer. If it lacks a required behavior,
 document the gap and keep any shared change small and reviewable.

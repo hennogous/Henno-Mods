@@ -20,6 +20,7 @@ from driver import (
 FORK = 'd0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a0a'
 OLD_FORK = 'd0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a06'
 DLL = 'GameCore_XP2_CE_AI_FinalRelease.dll'
+DEV_CE_LOG = Path('Binaries/Win64/DevBridge.log')
 LOGS = ('AI_CityBuild.csv', 'AI_Behavior_Trees.csv')
 # Supported MSVC build of the reviewed CE hotfix profile and its Windows DX11
 # executable. GameCore code parity does not qualify the executable-side hooks.
@@ -29,6 +30,25 @@ STEAM_26595377_EXE_SHA = '080928a2820d341f4dfaa07877d7b11a6a1a007752c39f09330a70
 STEAM_26595377_CORE_SHA = '4de40abf7c739f53c1f3f825863ace84dc220e5a42d87620e56fceaf3fbd4dc8'
 # Unchanged upstream develop 2986a746 from the same supported build workflow.
 CE_BASE_SHA = '18af3c5a0e92d98756a0fdfcd28351bdcbaf1efdcd646ce6a27adfcb995991ad'
+
+
+def development_package_files(path):
+    files = manifest(path)
+    # Dev CE logs beside the loaded DLL. Check every packaged file and treat
+    # this one generated file as session evidence, outside the package pin.
+    if (path / 'DevCE.modinfo').is_file():
+        files.pop(str(DEV_CE_LOG), None)
+    return files
+
+
+def archive_development_package(installed, destination, reused):
+    if reused:
+        shutil.copytree(installed, destination)
+    else:
+        installed.rename(destination)
+    log = destination / DEV_CE_LOG
+    if (destination / 'DevCE.modinfo').is_file() and log.is_file():
+        log.rename(destination.parent / DEV_CE_LOG.name)
 
 
 def native_profile(binary):

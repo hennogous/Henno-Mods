@@ -118,7 +118,8 @@ class LifecycleTests(unittest.TestCase):
             identity=dict(original_ai=[1,2,3,4,5],map_signature=[74,46,1],
                           starts=[dict(player=p,leader='LEADER_'+str(p)) for p in range(6)])
             expected=dict(turn=200,rows=[['PLAYER','1\ttrue']])
-            packages=[dict(source=root/role,install=root/('installed-'+role),files={},id=role,role=role) for role in ('ce','csc')]
+            packages=[dict(source=root/role,install=root/('installed-'+role),files={},id=role,role=role,
+                           reused=False) for role in ('ce','csc')]
             plan=pc.ContinuationPlan(root,out,200,250,root,
                 dict(ce='ce',csc='csc',map='Pangaea',map_seed=1,game_seed=2,interval_minutes=15),
                 identity,dict(native_save=str(root/'source.Civ6Save'),sha256='pinned'),expected,
