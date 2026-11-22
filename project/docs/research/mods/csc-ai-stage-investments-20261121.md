@@ -470,7 +470,19 @@ to that body and it dispatches indirectly through slot `+0x58`. Its active
 Cities accessor at `363170` reads the singleton at `b8e238`; constructor
 `362d60` installs a table whose slot points to the plot-rules method at
 `362a40`. Use that read for map potential and the separate controller query
-for current city admission. [Reference predicate evidence](csc-native-future-customer-legality-20261101.md)
+for current city admission. REA dossier `ev_1bd8da8261266198edbe68d44be82bb3121a0b420976d08286ccfd4d9d9bd25b`
+traces that method to the checked plot helper at `25a340`. Raw current-binary
+evidence is in `Desktop/Codex/csc-ai-anchored-links-20261122/plot-predicate-rea-evidence.json`.
+[Reference predicate evidence](csc-native-future-customer-legality-20261101.md)
+
+Both turn-25 copies matched all 24 source structure rows and closed at turn
+65 with zero observer faults or dropped records. The frozen treatment in that
+pair still required immediate admission. Both chose the Rural Community on
+2424 and completed it on turn 41. On turn 42 the treatment then priced 2348
+beside the same Holy Site as its remaining Tailors footprint. The turn-43
+native cache received the entire +2,607 Q8, from 40,589 to 43,196. The native
+best was still a Rural Community at 2350 with 106,145 Q8. The capacity-wait
+change needs its own matched follow-through test against the archived control.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
