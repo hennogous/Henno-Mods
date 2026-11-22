@@ -567,6 +567,14 @@ Complex options on 799 and 948. The turn-103 selector picked Theater Square
 653 about 20 utility ahead of 799. The Theater Square was founded on 105
 and completed on 110. Observe both cities through turn 113.
 
+The first Continents replay found a packaging mismatch. The earlier save's
+district bridge lacked `NominationQueueAvailable`, which the staged
+publisher calls even with anchored connections off. Civ reached turn 113
+and closed cleanly, but the publisher repeatedly failed and the arm was
+discarded. The runner now stages all eight registered AI scripts from the
+same revision and checks the publisher log before play and at each
+five-turn boundary. The corrected matched comparison uses the same save.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions

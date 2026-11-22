@@ -29,11 +29,16 @@ POLICY_FILES = (
     'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua',
 )
 CONNECTION_FILES = (
+    # Freeze the complete registered AI package. The entry point calls the
+    # bridge and the scanners from the same revision even when links are off.
+    'Lua_UI/AI/CSC_AI_AdjacencyScan.lua',
     'Lua_UI/AI/CSC_AI_BakersGameplay.lua',
+    'Lua_UI/AI/CSC_AI_DistrictBridge.lua',
     'Lua_UI/AI/CSC_AI_EconomyAdapters.lua',
     'Lua_UI/AI/CSC_AI_EconomyFacts.lua',
     'Lua_UI/AI/CSC_AI_EconomyModel.lua',
     'Lua_UI/AI/CSC_AI_PlanContinuity.lua',
+    'Lua_UI/AI/CSC_AI_QuarterPlacement.lua',
 )
 CONNECTION_WONDER_UI = 'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua'
 CONNECTION_ADAPTER = 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua'
@@ -47,7 +52,8 @@ def with_connection_switch(source, enabled):
     return updated
 
 
-def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES, *, connection_enabled=None):
+def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES, *,
+                      connection_enabled=None, allow_identical_scripts=False):
     """Overlay only registered Lua scripts on an already built CSC package."""
     shutil.copytree(original, candidate)
     for name in policy_files:
@@ -63,10 +69,15 @@ def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES
     before, after = manifest(original), manifest(candidate)
     changed = {Path(name).as_posix() for name in before if before[name] != after[name]}
     expected = set(policy_files)
-    allowed = changed == expected if connection_enabled is None else changed <= expected
+    allowed = changed <= expected if allow_identical_scripts or connection_enabled is not None else changed == expected
     require(set(after) == set(before) and allowed,
             'Frozen candidate must differ only in the declared registered policy scripts')
     return after
+
+
+def require_clean_replay_log(log):
+    for marker in ('CSC_AI_BAKERS_DISTRICTS_FAILED', 'CSC_MILESTONE_SERVICE_FAULT'):
+        require(marker not in log, 'Replay log contains ' + marker)
 
 
 def run_arm(source, output, start, end, candidate_source, fixture=None, *,
@@ -99,12 +110,23 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                             hold=HeldProcess, write=write_json)
     installed = []
     preparation_turn = 55 if natural_sacristan is not None else start
+    log_cursor = 0
+
+    def check_live_log():
+        nonlocal log_cursor
+        path = plan.user_root / 'Logs' / 'Lua.log'
+        with path.open(encoding='utf-8-sig', errors='replace') as live:
+            live.seek(log_cursor)
+            require_clean_replay_log(live.read())
+            log_cursor = live.tell()
 
     def play_between(first, last):
         # Keep shared observer recovery eligible in every finite window.
-        for boundary in range(first + 5, last, 5):
+        # Stop a broken frozen package at startup or the first short boundary.
+        check_live_log()
+        for boundary in (*range(first + 5, last, 5), last):
             controller.play(boundary)
-        controller.play(last)
+            check_live_log()
 
     def verify_packages():
         for item in installed:
@@ -177,7 +199,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                         policy_files += (CONNECTION_WONDER_UI,)
                     initial_connection = False if connection_switch_turn is not None else connection_enabled
                     item=dict(item,files=candidate_package(item['source'],candidate_source,item['install'],policy_files,
-                                                          connection_enabled=initial_connection))
+                                                          connection_enabled=initial_connection,
+                                                          allow_identical_scripts=connection_prototype))
                 else:
                     shutil.copytree(item['source'], item['install'])
             installed.append(item)
@@ -294,8 +317,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     require(session.closed and sha(Path(plan.checkpoint['native_save'])) == plan.checkpoint['sha256'],
             'Source save changed or replay closure unverified')
     log = read(output / 'Lua.log')
-    for marker in ('CSC_AI_BAKERS_DISTRICTS_FAILED', 'CSC_MILESTONE_SERVICE_FAULT'):
-        require(marker not in log, 'Replay log contains ' + marker)
+    require_clean_replay_log(log)
     write_json(output / 'observed-services.json', service_durations(log, preparation_turn + 1, end))
     write_json(output / 'complete.json', dict(verified=True, turn=end))
     if natural_sacristan is not None:
