@@ -59,7 +59,7 @@
 
 ## Current work
 
-**22 November — Problems 6–12 integrated qualification.** Continents and Fractal completed both Online turn-250 arms. The treatment operated 31 distinct Services over 1,848 shared observed link-turns across the two maps. The stock arms recorded one Service and 54 link-turns. Guided Pangaea matched the exact turn-200 save after a hidden first-meet interruption. Fractal verified native bids through operation for Feudalism, a Market and a Zoo, and Pangaea verified Guilds research. A ready Stage 3 Service unlock and the Wonder tile comparison remain the targeted checks. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md).
+**22 November — Problems 6–12 integrated qualification.** All three matched Online pairs reached turn 250. The treatment operated 54 distinct Services over 3,012 shared observed link-turns against one stock Service and 54 link-turns. Guided Pangaea resumed from its verified turn-200 save and continued past the hidden first-meet interruption. Fractal verified Feudalism, Market and Zoo bids through operation, and Pangaea verified Guilds research. A ready Stage 3 Service unlock and the Wonder tile comparison remain the targeted checks. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
 
 **18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
 Three fresh Online250 seed pairs qualify/restore, with physical links75→86,

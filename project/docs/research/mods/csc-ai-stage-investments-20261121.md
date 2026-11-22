@@ -101,7 +101,7 @@ Campaign artifacts and the frozen package are under `Desktop/Codex/csc-ai-stage6
 
 Shadow lost the first Pangaea stock process at turn 100. The restart reached turn 50 and the controller stopped when that path produced the old native checkpoint name. Both attempts are archived. Intermediate checkpoint names now include a per-run suffix, so a retry can start the same ordinary world while preserving saves from the previous attempt.
 
-The guided Pangaea arm started normally and saved turn 200. A hidden `FIRST_MEET_NEAR_INITIATOR` invitation to observer 0 blocked its turn-205 autoplay window. The native log and the live session agreed on sender 5 and recipient 0. The original session closed cleanly. Reloading the exact save matched all 249 structural rows and reproduced the block as `FIRST_MEET_NO_MANS`. The controller now checks the three shipped initial invitation variants, requiring the latest NONE/INITIAL/Processing Immediately record, exact live participants and active autoplay. It uses the shipped `CHOICE_EXIT` semantics. Keep the original prefix and the successful recovery raw logs, and use the save boundary when joining Service clocks and timing.
+The guided Pangaea arm started normally and saved turn 200. A hidden `FIRST_MEET_NEAR_INITIATOR` invitation to observer 0 blocked its turn-205 autoplay window. The native log and the live session agreed on sender 5 and recipient 0. The original session closed cleanly. Reloading the exact save matched all 249 structural rows and reproduced the block as `FIRST_MEET_NO_MANS`. The controller now checks the three shipped initial invitation variants, requiring the latest NONE/INITIAL/Processing Immediately record, exact live participants and active autoplay. The second replay applied the shipped `CHOICE_EXIT` at turn 205 and continued past the stall. Keep the original prefix and the successful recovery raw logs, and use the save boundary when joining Service clocks and timing.
 
 ## Continents through turn 250
 
@@ -113,7 +113,9 @@ Both games matched the opening map, roster, start plots and units and reached th
 | Completed Quarters | 13 | 14 | 13 | 3 |
 | Working Base supplier links / adjacent links | 2 / 3 | 15 / 17 | 1 / 1 | 3 / 3 |
 | Working Specialty supplier links / adjacent links | 0 / 0 | 3 / 4 | 0 / 0 | 0 / 0 |
+| Stage 2 / 3 / 4 completed producers | 11 / 8 / 5 | 13 / 11 / 4 | 9 / 8 / 6 | 3 / 1 / 1 |
 | Stage 2 / 3 / 4 working producers | 11 / 8 / 5 | 13 / 11 / 3 | 9 / 8 / 6 | 3 / 1 / 1 |
+| Stage 2 / 3 / 4 completed customer hosts | 4 / 0 / 0 | 12 / 8 / 1 | 0 / 1 / 2 | 0 / 2 / 3 |
 | Stage 2 / 3 / 4 working customer hosts | 4 / 0 / 0 | 12 / 7 / 1 | 0 / 1 / 2 | 0 / 2 / 3 |
 | Stage 2 physical exchange pairs | 3 | 12 | 0 | 0 |
 | Quarters with a working Stage 2 pair and working Base | 1 | 10 | 0 | 0 |
@@ -136,7 +138,9 @@ Both arms reached turn 250 from the verified common opening. The Service watcher
 | Completed Quarters | 13 | 13 | 9 | 5 |
 | Working Base supplier links / adjacent links | 0 / 2 | 12 / 15 | 2 / 2 | 5 / 6 |
 | Working Specialty supplier links / adjacent links | 0 / 1 | 2 / 4 | 0 / 1 | 2 / 2 |
+| Stage 2 / 3 / 4 completed producers | 12 / 9 / 5 | 13 / 10 / 8 | 8 / 8 / 4 | 5 / 3 / 4 |
 | Stage 2 / 3 / 4 working producers | 11 / 8 / 5 | 13 / 10 / 8 | 7 / 7 / 4 | 3 / 3 / 3 |
+| Stage 2 / 3 / 4 completed customer hosts | 5 / 2 / 0 | 9 / 5 / 1 | 0 / 1 / 0 | 0 / 2 / 2 |
 | Stage 2 / 3 / 4 working customer hosts | 5 / 2 / 0 | 9 / 5 / 1 | 0 / 1 / 0 | 0 / 2 / 2 |
 | Stage 2 physical exchange pairs | 3 | 9 | 0 | 0 |
 | Quarters with a working Stage 2 pair and working Base | 0 | 6 | 0 | 0 |
@@ -171,3 +175,63 @@ The native `DISTRICT_WONDER` placeholder at 1354 already reported `IsComplete` a
 The stock Hagmatana link identifies a native-legal physical layout and a witnessed selection and production window. The placement guidance requires viable Base and Specialty because it targets a supportable chain. The stock city had no surveyed legal supplier of either class at that Quarter, and the actual Wonder transaction can pay once the two buildings operate. The paired 11.2 replay still needs a CSC bid at the upstream site comparison.
 
 Astra reviewed the fallback. A replay must reach the same world before the turn-144 contract and confirm two distinct legal supplier plots while Broadway's footprint remains available. The diagnostic runner can now follow ordinary play from an archived checkpoint to an exact earlier preparation turn. It verifies matched structure there before applying any controlled setup. Prefer a naturally viable candidate in a guided archive first. Reusing Hagmatana's stock save would need an explicit stock-derived diagnostic with its original package identity verified and the same supply and publisher setup in both arms.
+
+## Pangaea through turn 250
+
+The stock arm reached turn 250 from its ordinary start. The guided arm used its original observations up to the exact turn-200 save and its matched-state continuation through turn 250. The successful continuation closed the hidden first-meet invitation at turn 205 and restored the original mod preferences at the end. The comparison uses 199 shared Service clocks. The original abandoned play after the save and the first blocked recovery contribute zero observations.
+
+| Turn-250 count | Bakers stock | Bakers combined | Tailors stock | Tailors combined |
+| --- | ---: | ---: | ---: | ---: |
+| Quarter foundations through turn 250 | 13 | 18 | 15 | 4 |
+| Completed Quarters | 13 | 17 | 15 | 4 |
+| Working Base supplier links / adjacent links | 0 / 1 | 15 / 20 | 1 / 1 | 5 / 5 |
+| Working Specialty supplier links / adjacent links | 3 / 3 | 4 / 4 | 1 / 1 | 1 / 1 |
+| Stage 2 / 3 / 4 completed producers | 12 / 12 / 10 | 17 / 16 / 10 | 15 / 11 / 9 | 4 / 4 / 3 |
+| Stage 2 / 3 / 4 working producers | 10 / 10 / 9 | 16 / 15 / 10 | 14 / 10 / 7 | 4 / 4 / 3 |
+| Stage 2 / 3 / 4 completed customer hosts | 7 / 3 / 1 | 10 / 7 / 2 | 0 / 2 / 3 | 0 / 3 / 1 |
+| Stage 2 / 3 / 4 working customer hosts | 7 / 1 / 1 | 10 / 7 / 1 | 0 / 1 / 3 | 0 / 3 / 1 |
+| Stage 2 physical exchange pairs | 5 | 9 | 0 | 0 |
+| Quarters with a working Stage 2 pair and working Base | 0 | 6 | 0 | 0 |
+| Stage 3 / 4 exchanges with positive quantities on both sides | 1 / 1 | 8 / 0 | 1 / 1 | 3 / 1 |
+| Completed mapped Wonder customer hosts | 0 | 0 | 1 | 0 |
+| Active Stage 2 / 3 / 4 Service link-turns | 0 / 0 / 0 | 679 / 353 / 0 | 0 / 0 / 0 | 0 / 132 / 0 |
+
+The first Bakers foundation was turn 23 stock and turn 25 guided. The first Tailors foundation moved from 55 to 23. In guided play, 11 Storekeeper, ten Innkeeper and two Sacristan links operated. The three longest Storekeeper links were active on 138, 117 and 106 shared sampled turns. The two Sacristans each operated on 66 shared sampled turns. The native Guilds research trace completed on turn 91.
+
+Pangaea had 452 later building offers across 19 distinct city/building keys. Native receipts recorded writes on 15 keys. The 1,137 Wonder site offers produced zero exact native matches in the measured packets. The only ordinary completed Wonder customer across all six games was stock Hagmatana's Broadway. Its later pillage interrupted the production-side exchange. The guided publisher averaged 1.223 seconds, with a peak of 2.766 seconds. Native managed-cell work averaged 15.56 milliseconds and peaked at 29.14 milliseconds.
+
+The original guided raw measurements are in `campaign/pangaea-combined` and the successful suffix is in `campaign/pangaea-combined-turn200-resume-v2`. Reproduce the three-pair audit with `later_stage_results.py <campaign> --continuation Pangaea <successful-suffix>`. Resume evidence verifies the saved state before continuing normal play. Reload resets transient native caches and can change subsequent choices.
+
+## Combined benchmark results
+
+| Three-map total | Bakers stock | Bakers combined | Tailors stock | Tailors combined |
+| --- | ---: | ---: | ---: | ---: |
+| Quarter foundations | 42 | 47 | 42 | 12 |
+| Completed Quarters | 39 | 44 | 37 | 12 |
+| Working Base links / adjacent links | 2 / 6 | 42 / 52 | 4 / 4 | 13 / 14 |
+| Working Specialty links / adjacent links | 3 / 4 | 9 / 12 | 1 / 2 | 3 / 3 |
+| Stage 2 / 3 / 4 completed producers | 35 / 29 / 20 | 43 / 37 / 22 | 32 / 27 / 19 | 12 / 8 / 8 |
+| Stage 2 / 3 / 4 working producers | 32 / 26 / 19 | 42 / 36 / 21 | 30 / 25 / 17 | 10 / 8 / 7 |
+| Stage 2 / 3 / 4 completed customer hosts | 16 / 5 / 1 | 31 / 20 / 4 | 0 / 4 / 5 | 0 / 7 / 6 |
+| Stage 2 / 3 / 4 working customer hosts | 16 / 3 / 1 | 31 / 19 / 3 | 0 / 3 / 5 | 0 / 7 / 6 |
+| Stage 2 physical exchange pairs | 11 | 30 | 0 | 0 |
+| Quarters with a working Stage 2 pair and working Base | 1 | 22 | 0 | 0 |
+| Stage 3 / 4 exchanges with positive quantities on both sides | 3 / 1 | 17 / 1 | 2 / 1 | 6 / 3 |
+| Completed mapped Wonder customer hosts | 0 | 0 | 1 | 0 |
+| Stage 2 / 3 / 4 distinct active Service links | 1 / 0 / 0 | 29 / 20 / 0 | 0 / 0 / 0 | 0 / 5 / 0 |
+| Stage 2 / 3 / 4 active Service link-turns | 54 / 0 / 0 | 2,053 / 587 / 0 | 0 / 0 / 0 | 0 / 372 / 0 |
+
+Across the 598 shared observation clocks the guided AI delivered 54 distinct Service links and 3,012 link-turns, against one link and 54 link-turns for stock. Eight Storekeeper links and one Sacristan link were active at 100 or more shared turn observations. The publisher averaged 1.248 seconds over 750 measured turns and peaked at 2.887 seconds. The separately measured native managed-cell work averaged 15.14 milliseconds and peaked at 29.14 milliseconds.
+
+The guided AI built 20 fewer Quarters while increasing working Base links from 6 to 55. The gains are concentrated in Bakers. Tailors fell from 37 to 12 completed Quarters and added five Sacristans. The absence of Dockmaster or Stage 4 Services in normal games remains visible. The earlier Québec matched replay independently verifies actual Stage Manager activation after its civic unlock.
+
+### Problem 3 timing after all three pairs
+
+| Working by buyer completion plus ten turns, among cases needing legal Base work | Continents | Fractal | Pangaea | Total |
+| --- | ---: | ---: | ---: | ---: |
+| Stock Bakers | 1 / 2 | 0 / 3 | 0 / 1 | 1 / 6 |
+| Guided Bakers | 3 / 7 | 5 / 8 | 8 / 9 | 16 / 24 |
+| Stock Tailors | 1 / 1 | 0 / 0 | 1 / 3 | 2 / 4 |
+| Guided Tailors | 0 / 1 | 0 / 2 | 0 / 1 | 0 / 4 |
+
+Separately, 20 guided Base cases already had working supply when first actionable, compared with three stock cases. Specialty had two comparable guided work-needed cases and one reached the deadline. The guided runs observed 13 eligible supplier outages and seven recoveries, versus six outages and zero recoveries in stock. Four Pangaea recoveries took 3, 21, 12 and 12 turns. Tailors readiness and the time needed to improve or restore a supplier remain practical gaps.

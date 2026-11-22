@@ -1,5 +1,16 @@
 # CSC findings and evidence
 
+## AI-C223 — Guided chains operated more often across the three matched seeds
+
+22 November 2026. Continents, Fractal and Pangaea reached Online turn 250
+with the same verified opening and mod stack within each pair. Guided Pangaea
+resumed from its exact turn-200 save after the hidden observer invitation.
+Combined guidance took completed Quarters from 76 to 56, working Base links
+from six to 55, and active Service links from one to 54 on 598 shared clocks.
+The guided games recorded no Dockmaster or Stage 4 Services. Their Tailors
+had five Sacristans and four legal work-needed Stage 2 Base cases that missed
+the ten-turn deadline. [Detailed benchmark and supplier timing](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
+
 ## AI-C222 — Later customer bids can reach construction and pay both sides
 
 22 November 2026. In the ordinary Fractal combined run, CE applied Urumqi's
