@@ -28,8 +28,8 @@
 | [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Representative Storekeeper follow-through verified in ordinary Fractal play. |
 | 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | The ordinary Fractal civic receipt identified Feudalism as the immediate step. The player completed it and the same offered source activated Storekeeper on turn 71. |
 | 6.2 Strategy | Adjust the value for empire needs and victory direction. | Deferred. |
-| [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Construction verified. Exact unlock completion is the remaining replay check. |
-| 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Guilds received the bid and appeared as the immediate next step. Unlock completion remains open. |
+| [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Representative Guilds research and Bakery production are verified. |
+| 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Pangaea player 5 received the Guilds bid, selected it as the immediate step and owned it on turn 91. The longer goal stayed in place. |
 | 7.2 Build | Value construction from population 10 against ordinary competition. | Angkor Thom received the Bakery bid and completed the building. The control also built it. |
 | [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Representative Market build and exchange verified in ordinary Fractal play. |
 | 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Urumqi's exact Market bid was applied, it completed on turn 205, and the Bakery and Market each received 26 units. |
@@ -59,7 +59,7 @@
 
 ## Current work
 
-**22 November — Problems 6–12 integrated qualification.** Continents and Fractal completed both Online turn-250 arms. The treatment operated 31 distinct Services over 1,848 shared observed link-turns across the two maps. The stock arms recorded one Service and 54 link-turns. Pangaea resumed on the preselected seeds after the host outage. Fractal verified native bids through operation for Feudalism, a Market and a Zoo. The Stage 3 producer unlock trace, a ready Stage 3 Service unlock and the Wonder tile comparison remain the targeted checks. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md).
+**22 November — Problems 6–12 integrated qualification.** Continents and Fractal completed both Online turn-250 arms. The treatment operated 31 distinct Services over 1,848 shared observed link-turns across the two maps. The stock arms recorded one Service and 54 link-turns. Guided Pangaea matched the exact turn-200 save after a hidden first-meet interruption. Fractal verified native bids through operation for Feudalism, a Market and a Zoo, and Pangaea verified Guilds research. A ready Stage 3 Service unlock and the Wonder tile comparison remain the targeted checks. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md).
 
 **18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
 Three fresh Online250 seed pairs qualify/restore, with physical links75→86,
