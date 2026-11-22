@@ -1,5 +1,17 @@
 # CSC findings and evidence
 
+## AI-C227 — Inland Tailors have legal customer windows that close without a connection
+
+22 November 2026, roadmap 1.2 and 2.1. In the three guided turn-250 games,
+six of the seven Tailors with no Stage 3 customer district had a legal
+adjacent option, positive offers and native score observations. Five lost
+at least one candidate footprint to another construction. Pangaea Sparda's
+linked Holy Site had 716.2 utility after its bid and lost to a nonadjacent
+820.8 site, which the city built. Six of seven endpoint Stage 3 links came
+from customer-first foundations. The next shared placement question is how
+to carry viable links across both district choices and price displacement.
+[Exact clocks, sites and evidence](../research/mods/csc-ai-stage-investments-20261121.md#inland-customer-placement-during-the-game).
+
 ## AI-C226 — Broadway completed at the credited site and paid both sides
 
 22 November 2026, roadmap 11.2. Both copies of the controlled Hagmatana

@@ -307,6 +307,61 @@ that can share space with a Holy Site or Commercial Hub, and to the overlap
 of Specialty and Theater footprints for Stage 4. Native candidate and score
 comparisons would distinguish scarce legal footprints from low district bids.
 
+#### Inland customer placement during the game
+
+Follow the seven guided Tailors with no mapped Stage 3 customer district at
+turn 250 back to their foundations. Intersect the Quarter's six recorded
+neighbours with the Holy Site and Commercial Hub families in the loaded
+customer mapping. Reconstruct the positive `CSC_CUSTOMER_WATCH_GROUP` sets
+from the change log, requiring exactly one player publication clock and the
+same owner. Join native `net` and `cache` records by player, city, district,
+plot and packet version. Use the original Pangaea segment through turn 199
+and the recovered segment from turn 200. A publication clock establishes a
+currently legal owned footprint. A native score establishes evaluation, and
+the separate physical foundation records establish construction.
+
+| Guided Quarter | Foundation | Legal adjacent Stage 3 windows, distinct turns | Observed outcome |
+| --- | ---: | ---: | --- |
+| Continents Sparda, plot 1101 | 236 | 14, turns 237–250 | Holy Site sites on 1174 and 1175 entered evaluation. Both remained open at the endpoint. |
+| Fractal Qaraqorum, 2265 | 36 | 5, turns 48–52 | The +3 Quarter had Cotton and Dyes. The only observed Holy Site candidate on 2338 received bids, then became a Rural Community on turn 73. |
+| Fractal Kookeqota, 2634 | 209 | 23, turns 212–250 | One candidate, 2709, became an Aerodrome on turn 217. The neighbouring city still had a legal customer candidate late in the run. |
+| Fractal Alexandria Troas, 1134 | 28 | 90, turns 53–183 | Native site lookups returned linked locations. The Theater Square took 1060 on turn 114, and the Industrial Zone took 1208 on turn 147. |
+| Pangaea Mahendraparvata, 1528 | 77 | 22, turns 84–143 | An Aqueduct took 1602 on turn 118 and a Wonder took 1601 on turn 133. |
+| Pangaea Sparda, 1729 | 23 | 56, turns 24–149 | Two neighbouring cities built their Holy Sites elsewhere. A Wonder, Dam and Canal later occupied observed linked candidates. |
+| Pangaea Meroë, 603 | 139 | 0 observed | Two adjacent Flax plots and two earlier district foundations constrained the ring. |
+
+Six of seven had a currently legal adjacent customer site and a positive
+economic offer. Each of those six has a native score observation on a linked
+cell. Five eventually lost at least one of those footprints to another
+construction. The ranges above give the first and last observations, with
+gaps between them. They describe opportunities, including cases that lacked
+a customer production selection in the observed window.
+
+Pangaea Sparda exposes a same-comparison loss. Packet 50 raised the linked
+Holy Site's early value at 1656 by 11,663 Q8. Its final cached score was
+183,337 Q8 (716.2 utility). The same native generation selected the
+nonadjacent 1654 at 210,125 Q8 (820.8 utility). The city submitted Holy Site
+contract 669 at turn 50 and founded 1654 on 56. The city later used 1656 for a
+Canal, showing the opportunity cost of preserving a site. In the seven
+working Stage 3 links present at the three endpoints, six customer districts
+were physically founded first. The one Quarter-first link was Angkor Thom's
+Commercial Hub, founded on turn 92 beside its turn-80 Tailors.
+
+The current customer-first path gives a bounded preference to an exact
+material-backed prospective layout when it matches the customer's best
+ordinary adjacency. The Quarter-first path can promote a matching footprint
+in the forecast scheduler via the preceding packet. Each subsequent quote
+uses current owned legal options and current economic value. Those mechanisms
+help when either piece is ready and a strong alternative stays available.
+For Quarters with a separate essential customer, the common missing input is
+the remaining value of a specific connection across both placements. The
+proposed next slice is a gameplay-derived link plan that carries its best few
+footprints forward across both foundation orders, revalidates them, and prices
+using the last competitive site for other construction. District and production
+competition still decide whether to complete the connection. A matched replay
+should contain a close connected choice, a clearly stronger competing site and
+a lost or occupied footprint before retesting whole games.
+
 ### First observed unlocks, producer completions and Services
 
 Each cell shows stock → guided. Civic turns are the first ownership observation among all AI players in that game. Producer turns are the first time a corresponding order reached its cost in `City_BuildQueue.csv`, in stage order. This measures completed production orders. The endpoint tables count actual buildings, including purchases. On Pangaea the production log uses the original prefix before turn 200 and the verified replay from turn 200. Service turns use the shared observation clocks.

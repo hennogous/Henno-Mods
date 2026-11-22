@@ -6,15 +6,15 @@
 | --- | --- | --- |
 | [1. Quarter placement](#1-quarter-placement) | Choose productive, legal Quarter sites. Buy viable sites when justified and defer weak options. | Bakers and Tailors guidance integrated. Broader purchase and construction reliability remains open. |
 | 1.1 Materials | Prefer viable mapped Base and Specialty deposits, including compatibility resources. | Base-aware siting verified in a matched native choice. |
-| 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | A prospective customer changed a matched native choice. Broader provider coverage remains open. |
+| 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | A prospective customer changed a matched native choice. Carrying the connection through later placement remains open. |
 | 1.3 Rivers | Price the river and Mill geometry the site can use. | River/Mill geometry changed the chosen Bakers site. |
 | 1.4 Adjacency | Prefer +3 with +2 as the ordinary minimum and a narrow Tailors exception. | Stronger siting verified in a replay and observed in full games. |
 | 1.5 Tile purchase | Secure worthwhile Quarter footprints and material deposits. | Paid footprint and supplier acquisition verified. Wider reliability remains open. |
 | 1.6 Construction readiness and follow-through | Carry legal, affordable plans through capacity checks, foundation, and completion. | Integrated follow-through verified in a representative paid-footprint case. |
 | 1.7 Place or defer | Defer weak city plans and reconsider when viable supply appears. | Deferral and reconsideration verified in separate representative cases. |
 | 1.8 Discourage poor placements | Reduce the value of individual weak or destructive sites. | Weak-site suppression verified. Wider siting calibration remains open. |
-| [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Customer placement closed for the tested Bakers and Tailors scope. Broader material protection remains open. |
-| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Closed at the tested Bakers/Tailors scope. |
+| [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Site preferences and finite material protection verified. Coordination and broader protection remain open. |
+| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Native site guidance verified. Coordinating both district placements across turns remains open. |
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Builder follow-through verified in matched and ordinary play. Track recurring delays in combined runs. |
 | 3.1 Exact job and timing | Prepare mapped supply ahead of the buyer and aim for working supply by Online turn +10. | Base results were mixed in the two matched pairs. Treatment reached 8/11 and 4/9. Tailors and Specialty coverage are limited. |
@@ -58,6 +58,8 @@
 | 15.2 Value supplied Quarter destinations | Price eligible CSC returns in the native route comparison. | Deferred. |
 
 ## Current work
+
+**22 November — Inland customer placement audit, 1.2 and 2.1.** Six of seven unconnected guided Tailors had a legal Stage 3 customer footprint and native scoring activity. Five later lost one or more sites to another build. The next capability is to carry valuable gameplay-defined connections across decisions in both foundation orders and account for displacing them. [Matched-campaign retrospective](../research/mods/csc-ai-stage-investments-20261121.md#inland-customer-placement-during-the-game).
 
 **22 November — Problems 6–12 integrated qualification complete.** All ten in-scope decisions have representative live follow-through and all three matched Online pairs reached turn 250. The treatment operated 54 distinct Services over 3,012 shared observed link-turns against one stock Service and 54 link-turns. Guided Pangaea resumed from its verified turn-200 save. Fractal verified Feudalism, Market and Zoo bids through operation, Pangaea verified Guilds research, Kish verified Divine Right through Sacristan and the controlled Hagmatana pair verified the Broadway tile write through payment. Problems 6.2, 9.2 and 12.2 remain deferred. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
 
