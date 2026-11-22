@@ -381,6 +381,27 @@ E.ApplyQuarterConnectionCredit(snapshot,{entry},plans)
 assert(entry.finalQ8==120*256 and entry.beforeConnectionQ8==100*256)
 ''')
 
+    def test_strong_site_measured_relief_scales_with_ordinary_district_value(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.connectionGroups={};snapshot.connectionQuarters={quarterAt(20)}
+values[20]=200*256
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+local function credit(adjacency,reference,removed)
+    local startingScore=100*256
+    local entry={city=7,district=3,plot=20,economy=true,adjacency=adjacency,finalQ8=startingScore,
+        comparisonReferenceQ8=reference*256,qualityCapQ8=startingScore,qualityCapAdjustmentQ8=-removed*256}
+    E.ApplyQuarterConnectionCredit(snapshot,{entry},plans)
+    return (entry.finalQ8-startingScore)/256
+end
+assert(credit(2,2000,200)==64)
+assert(credit(3,1000,200)==80)
+assert(credit(3,2000,200)==128)
+assert(credit(3,2000,20)==20)
+values[20]=40*256;plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(credit(3,2000,200)==40)
+''')
+
     def test_campaign_observation_reports_both_orders_without_a_control_quote(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

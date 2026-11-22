@@ -415,6 +415,7 @@ E.DeferredQuarterQ8=-1024*256
 -- sites before their complete-value quote reaches the publication packet.
 E.MinimumAdjacency=2
 E.MinimumSitingBonusQ8=48*256
+local MINIMUM_SITING_REFERENCE_FRACTION=.08
 
 function E.PlacementMinimumAdjacency(facts)
     -- Shared by cheap geometry, full quotes and continuity grace. The live
@@ -516,7 +517,7 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
         -- merely from a later generic amenity forecast. Actual native units,
         -- timing, material losses and production competition stay in force.
         local adjacency=math.min(6,sitingAdjacency)
-        local fraction=adjacency<3 and(.08+.32*(adjacency-2))or(.4+.6*(adjacency-3))
+        local fraction=adjacency<3 and(MINIMUM_SITING_REFERENCE_FRACTION+.32*(adjacency-2))or(.4+.6*(adjacency-3))
         premium=reference*fraction*(site.sitingReadiness or 1)
     elseif sitingAdjacency<3 then
         -- Fractional adjacency can arise through yield multipliers. Interpolate
@@ -1314,6 +1315,7 @@ local connectionAuditMemory={}
 local CONNECTION_GROUPS_PER_ORDER=2
 local CONNECTION_COST_CAP_Q8=64*256
 E.ConnectionCompletionCapQ8=CONNECTION_COST_CAP_Q8
+local STRONG_SITE_LINK_RELIEF_LIMIT_Q8=128*256
 
 function E.ConnectionLossQ8(best, backup)
     -- A cautious first calibration: half the ordinary link margin displaced,
@@ -1703,11 +1705,20 @@ function E.ApplyQuarterConnectionCredit(snapshot,entries,plans)
         local key=siteKey(entry.city,entry.district,entry.plot)
         local value=credits[key]or 0
         -- The complete Quarter forecast already includes the real customer.
-        -- Recover the part removed by the general siting ceiling, or use the
-        -- last-slot preference when larger. Use the greater of the two since
-        -- they can support the same link. CE still compares other districts.
-        local relief=entry.qualityCapQ8 and math.min(value,E.ConnectionCompletionCapQ8,
+        -- For a strong site, the recovery limit can scale with the smallest
+        -- ordinary siting premium. This gives a larger host city room to
+        -- recover actual link value clipped from its bid. Keep the 64-utility
+        -- limit on weaker sites and on the separate loss and timing costs.
+        local reliefLimit=E.ConnectionCompletionCapQ8
+        if (entry.adjacency or 0)+1e-6>=3 and entry.comparisonReferenceQ8 then
+            local calibrated=math.floor(entry.comparisonReferenceQ8*MINIMUM_SITING_REFERENCE_FRACTION)
+            reliefLimit=math.max(reliefLimit,math.min(STRONG_SITE_LINK_RELIEF_LIMIT_Q8,calibrated))
+        end
+        local relief=entry.qualityCapQ8 and math.min(value,reliefLimit,
             math.max(0,-(entry.qualityCapAdjustmentQ8 or 0)))or 0
+        -- Use the greater of recovery and last-slot pressure. They can
+        -- support the same link, and native district and production choices
+        -- still compare the resulting bid with their ordinary competitors.
         local credit=math.min(math.max(relief,pressure[key]or 0),4096*256-entry.finalQ8)
         if credit>0 then
             entry.beforeConnectionQ8=entry.finalQ8

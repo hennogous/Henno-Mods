@@ -563,6 +563,15 @@ aggregation. Invalid cells and the existing signed residual retain their
 previous behaviour. The pinned existing Dev CE build still uses the
 native-quote fallback.
 
+The fast replay loaded the same 174 structural rows and ran on the local
+Dev CE feature build `cc37c87`. Its Lua publisher averaged 2.24 s with a
+2.48 s peak on turns 151–153, against 4.84 s and 6.36 s for the profiled
+fallback. On turn 152 player 1's footprint deductions took 1.0 ms and
+issued zero exploratory site quotes. The same nine costs were proposed
+on 1902 and all four sampled receipts recorded a guarded native write.
+The game closed cleanly and the launcher restored the original Dev CE
+DLL and verified its hash. This is a short, targeted comparison.
+
 A second customer-first case comes from Opango on Continents. At population
 8 with two of three slots used, Bakers and Tailors both bid for plot 1305 at
 +3 adjacency. Bakers won by 737 Q8 (2.88 utility) over Tailors, submitted
@@ -626,6 +635,23 @@ Colosseum production on turn 130 and finished the replay with one
 new Quarter-first pair apiece. The follow-up begins from the same
 turn-100 save and opens one slot in both copies at turn 127, then
 compares their capacity, legal footprint, native choice and production.
+
+In the one-slot replay both copies reached six of seven district slots
+at population 19, and all 101 prepared rows matched. The target Tailors
+again received the same 16,384 Q8 deduction recovery. The effective
+Tailors score of 432,564 stayed 3,681 Q8 below the Rural Community at
+436,245. The mapped Holy Site link was independently priced at 38,405
+Q8, and the site-quality adjustment had clipped more than this amount.
+Both arms completed Colosseum on turn 133. Neither issued a Tailors
+order through turn 140.
+
+The next version restores more of this already forecast value for
+sites with at least +3 adjacency. Its recovery limit can rise from 64
+utility to the existing minimum siting premium of 8% of the ordinary
+district reference, bounded at 128 utility. The quote for the existing
+link and the value removed by the site-quality cap still limit the
+recovery. The separate last-slot and footprint-loss budgets keep their
+earlier scale. This revision is being tested in the same prepared save.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
