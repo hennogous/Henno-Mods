@@ -1,6 +1,6 @@
 import unittest
 
-from later_stage_results import comparable_services, service_durations, stage_census
+from later_stage_results import comparable_services, service_durations, stage_census, verify_policy
 
 
 class ServiceDurations(unittest.TestCase):
@@ -57,3 +57,23 @@ class Census(unittest.TestCase):
         self.assertEqual(stage['customer_hosts'], 1)
         self.assertEqual(stage['physical_exchange_pairs'], 2)
         self.assertEqual(stage['positive_population_exchanges'], 1)
+
+
+class CampaignPolicy(unittest.TestCase):
+    def test_stock_requires_both_policy_paths_withheld(self):
+        native = dict(ready=1, faults=0, enabled=0, version=0, entries=0, matched=0, changed=0)
+        database = dict(links=[], rules=[], yields=[], biases=[])
+        timing = dict(publication_attempts=0, published_packets=0)
+        verify_policy(native, database, timing, untuned=True)
+        for inputs in ((dict(native, version=1), database, timing),
+                       (native, dict(database, links=[1]), timing),
+                       (native, database, dict(timing, publication_attempts=1))):
+            with self.subTest(inputs=inputs), self.assertRaisesRegex(ValueError, 'Stock arm'):
+                verify_policy(*inputs, untuned=True)
+
+    def test_combined_requires_policy_and_customer_sql(self):
+        native = dict(ready=1, faults=0, enabled=1, version=250)
+        timing = dict(published_packets=250)
+        verify_policy(native, dict(links=[1]), timing, untuned=False)
+        with self.assertRaisesRegex(ValueError, 'Combined arm'):
+            verify_policy(native, dict(links=[]), timing, untuned=False)

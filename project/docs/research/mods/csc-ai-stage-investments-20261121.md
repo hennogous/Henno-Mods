@@ -105,12 +105,14 @@ Both games matched the opening map, roster, start plots and units and reached th
 
 | Turn-250 count | Bakers stock | Bakers combined | Tailors stock | Tailors combined |
 | --- | ---: | ---: | ---: | ---: |
+| Quarter foundations through turn 250 | 13 | 15 | 14 | 3 |
 | Completed Quarters | 13 | 14 | 13 | 3 |
-| Working Base supplier links | 2 | 15 | 1 | 3 |
-| Working Specialty supplier links | 0 | 3 | 0 | 0 |
+| Working Base supplier links / adjacent links | 2 / 3 | 15 / 17 | 1 / 1 | 3 / 3 |
+| Working Specialty supplier links / adjacent links | 0 / 0 | 3 / 4 | 0 / 0 | 0 / 0 |
 | Stage 2 / 3 / 4 working producers | 11 / 8 / 5 | 13 / 11 / 3 | 9 / 8 / 6 | 3 / 1 / 1 |
 | Stage 2 / 3 / 4 working customer hosts | 4 / 0 / 0 | 12 / 7 / 1 | 0 / 1 / 2 | 0 / 2 / 3 |
 | Stage 2 physical exchange pairs | 3 | 12 | 0 | 0 |
+| Quarters with a working Stage 2 pair and working Base | 1 | 10 | 0 | 0 |
 | Stage 3 / 4 exchanges with positive quantities on both sides | 0 / 0 | 5 / 0 | 0 / 0 | 1 / 1 |
 | Active Stage 2 / 3 / 4 Service link-turns | 54 / 0 / 0 | 801 / 154 / 0 | 0 / 0 / 0 | 0 / 47 / 0 |
 
@@ -118,22 +120,28 @@ The combined arm observed 11 distinct Storekeeper, six Innkeeper and one Sacrist
 
 The 590 offers cover 16 distinct player/city/building keys. Fourteen reached a native comparison and thirteen received a write. Both Stage 4 producer targets received comparisons. The two interior keys without writes were Market offers. Player 2's turn-202 offer was compared without a write and player 5's turn-232 offer expired without a recorded comparison. A Bakery offer on turn 250 had no subsequent production window.
 
+The first Bakers foundation moved from turn 71 to 21. The first Tailors foundation moved from turn 60 to 129. Foundation counts are original AI placement events, so they also include work that was still under construction or had disappeared from the original AIs' holdings by turn 250.
+
 ## Fractal through turn 250
 
 Both arms reached turn 250 from the verified common opening. The Service watcher provided 199 shared clocks.
 
 | Turn-250 count | Bakers stock | Bakers combined | Tailors stock | Tailors combined |
 | --- | ---: | ---: | ---: | ---: |
+| Quarter foundations through turn 250 | 16 | 14 | 13 | 5 |
 | Completed Quarters | 13 | 13 | 9 | 5 |
 | Working Base supplier links / adjacent links | 0 / 2 | 12 / 15 | 2 / 2 | 5 / 6 |
 | Working Specialty supplier links / adjacent links | 0 / 1 | 2 / 4 | 0 / 1 | 2 / 2 |
 | Stage 2 / 3 / 4 working producers | 11 / 8 / 5 | 13 / 10 / 8 | 7 / 7 / 4 | 3 / 3 / 3 |
 | Stage 2 / 3 / 4 working customer hosts | 5 / 2 / 0 | 9 / 5 / 1 | 0 / 1 / 0 | 0 / 2 / 2 |
 | Stage 2 physical exchange pairs | 3 | 9 | 0 | 0 |
+| Quarters with a working Stage 2 pair and working Base | 0 | 6 | 0 | 0 |
 | Stage 3 / 4 exchanges with positive quantities on both sides | 2 / 0 | 4 / 1 | 1 / 0 | 2 / 1 |
 | Active Stage 2 / 3 / 4 Service link-turns | 0 / 0 / 0 | 573 / 80 / 0 | 0 / 0 / 0 | 0 / 193 / 0 |
 
 The combined arm observed seven distinct Storekeeper, four Innkeeper and two Sacristan links. None of the four completed ordinary games had a mapped Wonder customer link. On Fractal the treatment published 919 later building offers and logged 340 exact receipt rows. All 27 distinct player/city/building keys received a write at least once. The publisher averaged 1.325 seconds and peaked at 2.410 seconds across 250 publications. The separate native managed-cell timing averaged 15.74 milliseconds and peaked at 28.83 milliseconds.
+
+First foundations moved from turn 29 to 17 for Bakers and from 38 to 28 for Tailors. Stage 2 supplied Quarter counts join working producers and customers to an operating Base supplier. They count each Quarter once even if it has several working pairs. Stage 3 and 4 positive payments come from actual game properties for both recipients.
 
 - **6.1, Feudalism.** Player 3 received eight offers from turn 62 through 69. The native turn-68 receipt records Feudalism as the immediate research step toward the longer goal. Player 3 first owned Feudalism at the turn-71 observation, when Storekeeper also operated from the offered Bakers source `655367`.
 - **8.1, Market.** Player 4's Urumqi (city `262147`) published a Market offer on turn 203. The next receipt records the exact queue write at 16,384 Q8. The native chooser nominated it on turn 203, and the queue reached 117.6 of 60 production on turn 205. The turn-225 and turn-250 censuses record the Bakery at 1823 and Market at 1748 paying 26 units on each side. The turn-200 census precedes the exchange.

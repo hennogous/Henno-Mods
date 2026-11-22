@@ -1,5 +1,6 @@
 """Aggregate verified Service recipient-turns from the passive UI watcher."""
 from collections import Counter, defaultdict
+from hashlib import sha256
 import json
 from pathlib import Path
 import re
@@ -127,6 +128,20 @@ def comparable_services(stock, combined):
     return dict(common_turns=sorted(common), stock=side(stock), combined=side(combined))
 
 
+def verify_policy(native, database, performance, *, untuned):
+    """Use the actual loaded SQL and native receipts to establish the arm's policy."""
+    if native['ready'] != 1 or native['faults']:
+        raise ValueError('Native district scorer was unavailable or faulted')
+    if untuned:
+        if (any(native[key] for key in ('enabled', 'version', 'entries', 'matched', 'changed'))
+                or any(database[key] for key in ('links', 'rules', 'yields', 'biases'))
+                or performance['publication_attempts']):
+            raise ValueError('Stock arm shows active CSC guidance')
+    elif (native['enabled'] != 1 or native['version'] <= 0 or not database['links']
+          or not performance['published_packets']):
+        raise ValueError('Combined arm lacks native policy or loaded customer guidance')
+
+
 def campaign_results(root):
     """Read finished matched arms and keep their source/output identity checks."""
     root = Path(root)
@@ -134,8 +149,18 @@ def campaign_results(root):
     def read(path):
         return json.loads(path.read_text(encoding='utf-8-sig'))
 
+    pins = read(root / 'campaign-inputs.json')
+    input_digests = [sha256(json.dumps(pins[key], sort_keys=True).encode()).hexdigest()
+                     for key in ('ce', 'csc')]
+    extra_digests = {identity: dict(path=item['path'],
+        digest=sha256(json.dumps(item['files'], sort_keys=True).encode()).hexdigest())
+        for identity, item in pins['extras'].items()}
+    ce_dll = 'GameCore_XP2_CE_AI_FinalRelease.dll'
+    ce_hash, = (info['sha256'] for path, info in pins['ce'].items()
+                if path.replace('\\', '/').endswith('/' + ce_dll))
+    expected_modules = {'GameCore_XP2_FinalRelease.dll': pins['gamecore_sha256'], ce_dll: ce_hash}
     result = {}
-    for name, (map_seed, game_seed) in read(root / 'campaign-inputs.json')['seeds'].items():
+    for name, (map_seed, game_seed) in pins['seeds'].items():
         stock = root / f'{name.lower()}-stock'
         combined = root / f'{name.lower()}-combined'
         if any(not (side / 'full-game-observation-complete.json').is_file() for side in (stock, combined)):
@@ -145,17 +170,36 @@ def campaign_results(root):
             raise ValueError(f'{name} arms did not use the same benchmark inputs')
         if (standard['map_seed'], standard['game_seed']) != (map_seed, game_seed):
             raise ValueError(f'{name} pair used a different seed')
+        if (standard['input_digests'] != input_digests
+                or standard.get('extra_mods', {}) != extra_digests
+                or standard['native_profile']['gamecore_sha256'] != pins['gamecore_sha256']):
+            raise ValueError(f'{name} pair differs from the frozen campaign packages or GameCore')
+        if (not standard['ordinary_setup'] or not standard['fresh_game']
+                or standard['external_policy'] or standard['gameplay_interventions']):
+            raise ValueError(f'{name} pair did not run as ordinary fresh games')
         original, new = (read(side / 'source.json') for side in (stock, combined))
         if any(original[key] != new[key] for key in ('original_ai', 'map_signature', 'starts', 'units')):
             raise ValueError(f'{name} arms did not start from the same world')
         results = {}
         for label, side in (('stock', stock), ('combined', combined)):
+            loaded = read(side / 'loaded-modules.json')
+            if any(loaded.get(module, {}).get('sha256') != digest
+                   for module, digest in expected_modules.items()):
+                raise ValueError(f'{name} {label} loaded a different GameCore or CE build')
             terminal = read(side / 'result.json')
-            if terminal['reached'] != 250 or not read(side / 'session-closed.json')['verified']:
+            coverage = read(side / 'full-game-observation-complete.json')
+            ready = read(side / 'session-source-ready.json')
+            if (terminal['reached'] != 250 or not read(side / 'session-closed.json')['verified']
+                    or not (ready['verified'] and ready['caller_eligibility_verified'] and ready['turn'] == 1)
+                    or not (coverage['verified'] and coverage['start'] == 1
+                            and coverage['turns'] == list(range(25, 251, 25)))):
                 raise ValueError(f'{name} {label} lacks a verified turn-250 closure')
+            performance = read(side / 'ai-processing-time.json')
+            verify_policy(read(side / 'native-endpoint.json'), read(side / 'loaded-native-customer-database.json'),
+                          performance, untuned=label == 'stock')
             results[label] = dict(census=read(side / 'stage-census.json'),
                                   services=read(side / 'observed-services.json'),
-                                  performance=read(side / 'ai-processing-time.json'))
+                                  performance=performance)
         results['aligned_services'] = comparable_services(results['stock']['services'], results['combined']['services'])
         result[name] = results
     return result
