@@ -493,11 +493,16 @@ change needs its own matched follow-through test against the archived control.
 The Pangaea reload took a different path at the expected backup-site case.
 The turn-150 structure gate matched all 174 rows. The later control built an
 Industrial Zone on 2982 on turn 192 and completed it on turn 194. Both
-Entertainment Complex candidate plots (2755 and 2756) remained physically
-open, but the city went from four of five specialty slots in use to five of
-five. Quarter-first planning now also retains verified full-capacity plots
-for future evaluation. It keeps them out of the ordinary customer bid list
-and gives currently admitted alternatives priority. Waiting plots are traced
+Entertainment Complex candidate plots (2755 and 2756) were still open when
+the Industrial Zone took the city's last current specialty slot. The control
+then founded a Campus on 2756 on turn 197 and completed it on 201. The treatment
+left 2756 vacant through 210. Earlier, packet 17 charged the Rural Community
+on 2756 exactly 11,279 Q8 for consuming the Stage 4 footprint beside Bakers
+2757. The native early cell had the same base of 432,829 in both arms.
+The native best changed from Rural Community 2756 in the control to a Rural
+Community on 2905 in the treatment. Quarter-first planning now also retains
+verified full-capacity plots for future evaluation. It keeps them out of the
+ordinary customer bid list and gives currently admitted alternatives priority. Waiting plots are traced
 separately from currently legal opportunities in both placement orders.
 
 Both Pangaea arms closed at turn 210 from the same 174-row checkpoint.
@@ -530,7 +535,12 @@ alone cannot establish it as a competitive substitute.
 The turn-100 save already follows contract submission. The matched test
 starts from the earlier turn-50 save, runs both arms with identical staged
 bytes and the flag off, verifies the turn-96 census, then turns the planner
-on in the treatment before the native request window.
+on in the treatment before the native request window. The same replay
+watches the Quarter-first comparison in player 4's city 196610. In the
+archived game, Bakers 800 completed on turn 87 and had legal Entertainment
+Complex options on 799 and 948. The turn-103 selector picked Theater Square
+653 about 20 utility ahead of 799. The Theater Square was founded on 105
+and completed on 110. Observe both cities through turn 113.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
