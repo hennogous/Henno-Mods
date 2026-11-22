@@ -250,9 +250,9 @@ if CSC_WONDER_STOCK_HAGMATANA then
  assert(district and district:IsComplete() and not district:IsPillaged()
   and district:GetX()==theaterTile:GetX() and district:GetY()==theaterTile:GetY(),
   'Matched Theater preparation failed')
- -- The stock city had neither supplier class. On both disposable copies,
- -- use only its vacant neighboring land and validate resource and improvement
- -- legality through the engine. The Wonder tile itself stays untouched.
+ -- The stock city had neither supplier class. Prefer untouched vacant land.
+ -- When that cannot host two suppliers, prepare two matched land plots in
+ -- this disposable fixture. The Wonder and Theater tiles stay untouched.
  local function legalResource(plot,class)
   for row in GameInfo.Resources()do
    if class[row.Index] and ResourceBuilder.CanHaveResource(plot,row.Index)then
@@ -266,13 +266,21 @@ if CSC_WONDER_STOCK_HAGMATANA then
    end
   end
  end
- local baseTiles,specTiles={},{}
+ local baseTiles,specTiles,eligible={},{},{}
  for _,tile in ipairs(neighbours(q))do
-  if tile:GetIndex()~=f.site and tile:GetOwner()==f.player and empty(tile) and tile:GetImprovementType()==-1 then
-   local b=legalResource(tile,base)
-   local s=legalResource(tile,specialty)
-   if b then baseTiles[#baseTiles+1]={tile,b}end
-   if s then specTiles[#specTiles+1]={tile,s}end
+  local feature=GameInfo.Features[tile:GetFeatureType()]
+  local landmark=feature and (feature.NaturalWonder==true or feature.NaturalWonder==1)
+  if tile:GetIndex()~=f.site and tile:GetOwner()==f.player and tile:GetDistrictType()==-1
+   and not tile:IsWater() and not tile:IsMountain() and not landmark then
+   local res,imp=tile:GetResourceType(),tile:GetImprovementType()
+   eligible[#eligible+1]={plot=tile,rank=(res>=0 and 20000 or 0)+(imp>=0 and 10000 or 0)+tile:GetIndex()}
+   emit('SUPPLIER_TERRAIN',tile:GetIndex(),tile:GetTerrainType(),tile:GetFeatureType(),res,imp)
+   if res==-1 and imp==-1 then
+    local b=legalResource(tile,base)
+    local s=legalResource(tile,specialty)
+    if b then baseTiles[#baseTiles+1]={tile,b}end
+    if s then specTiles[#specTiles+1]={tile,s}end
+   end
   end
  end
  local b,s
@@ -282,7 +290,23 @@ if CSC_WONDER_STOCK_HAGMATANA then
   end
   if b then break end
  end
- assert(b and s,'Hagmatana needs two distinct legal supplier plots')
+ if not b then
+  table.sort(eligible,function(a,c)return a.rank<c.rank end)
+  assert(#eligible>=2,'Hagmatana needs two distinct owned land plots for the fixture')
+  local function prepareSupplier(tile,terrain,resource,class)
+   local res=assert(GameInfo.Resources[resource]).Index
+   assert(class[res],'Fixture resource is absent from the loaded supplier class')
+   if tile:GetImprovementType()>=0 then ImprovementBuilder.SetImprovementType(tile,-1,f.player)end
+   if tile:GetResourceType()>=0 then ResourceBuilder.SetResourceType(tile,-1)end
+   if tile:GetFeatureType()>=0 then TerrainBuilder.SetFeatureType(tile,-1)end
+   TerrainBuilder.SetTerrainType(tile,assert(GameInfo.Terrains[terrain]).Index)
+   assert(ResourceBuilder.CanHaveResource(tile,res),'Engine rejected the prepared supplier terrain')
+   emit('SUPPLIER_PREPARED',tile:GetIndex(),terrain,resource)
+   return {tile,res}
+  end
+  b=prepareSupplier(eligible[1].plot,'TERRAIN_PLAINS','RESOURCE_CSC_FLAX',base)
+  s=prepareSupplier(eligible[2].plot,'TERRAIN_DESERT_HILLS','RESOURCE_SILVER',specialty)
+ end
  supplier,special=b[1],s[1]
  ResourceBuilder.SetResourceType(supplier,b[2],1)
  ResourceBuilder.SetResourceType(special,s[2],1)
@@ -340,6 +364,17 @@ local function targeted(offers)
  end
 end
 local p=assert(CSC_AI_QuarterPlacement)
+if CSC_WONDER_STOCK_HAGMATANA then
+ -- The stock pre-roll leaves this Gameplay context's publisher dormant.
+ -- Its first real publication initializes the loaded tag definitions.
+ -- Do the same read-only initialization for the pre-publication check.
+ CSC_Adjacency.Initialize()
+ for _,tile in ipairs({supplier,special})do
+  local res=tile:GetResourceType()
+  emit('SUPPLIER_READY',tile:GetIndex(),res,tile:GetImprovementType(),
+   PlayersVisibility[f.player]:IsRevealed(tile:GetX(),tile:GetY()),CSC_Adjacency.ResourceVisible(f.player,res))
+ end
+end
 local chains=p.ReadChains(player)
 for _,chain in ipairs(chains)do
  if chain.plot:GetIndex()==f.quarter then
