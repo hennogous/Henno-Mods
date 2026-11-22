@@ -1,6 +1,6 @@
 import unittest
 
-from later_stage_results import service_durations, stage_census
+from later_stage_results import comparable_services, service_durations, stage_census
 
 
 class ServiceDurations(unittest.TestCase):
@@ -32,6 +32,14 @@ class ServiceDurations(unittest.TestCase):
         self.assertEqual(result['ambiguous_turns'], {40: 1})
         self.assertEqual(result['observed_turns'], [])
         self.assertEqual(result['missing_turns'], [40])
+
+    def test_matched_comparison_uses_only_common_observed_turns(self):
+        stock = dict(observed_turns=[40, 42], chains=[dict(quarter='BAKERS', stage=2, turns=[40, 42])])
+        combined = dict(observed_turns=[40, 41], chains=[dict(quarter='BAKERS', stage=2, turns=[41])])
+        result = comparable_services(stock, combined)
+        self.assertEqual(result['common_turns'], [40])
+        self.assertEqual(result['stock'], [dict(quarter='BAKERS', stage=2, chains=1, turns=1)])
+        self.assertEqual(result['combined'], [])
 
 
 class Census(unittest.TestCase):

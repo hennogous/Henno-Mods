@@ -1,5 +1,7 @@
 """Aggregate verified Service recipient-turns from the passive UI watcher."""
 from collections import Counter, defaultdict
+import json
+from pathlib import Path
 import re
 
 
@@ -104,3 +106,64 @@ def service_durations(log, start, end):
                 ambiguous_turns=ambiguous_turns,
                 totals=[dict(quarter=q, stage=int(s), active_link_turns=n) for (q, s), n in sorted(totals.items())],
                 chains=chains, unlocked=unlocks)
+
+
+def comparable_services(stock, combined):
+    """Compare only clocks with a complete native observation in both arms."""
+    common = set(stock['observed_turns']) & set(combined['observed_turns'])
+    if not common:
+        raise ValueError('No common verified Service observations in the pair')
+
+    def side(reading):
+        counts = defaultdict(lambda: dict(chains=0, turns=0))
+        for chain in reading['chains']:
+            observed = len(common.intersection(chain['turns']))
+            if observed:
+                key = (chain['quarter'], chain['stage'])
+                counts[key]['chains'] += 1
+                counts[key]['turns'] += observed
+        return [dict(quarter=q, stage=s, **counts[q, s]) for q, s in sorted(counts)]
+
+    return dict(common_turns=sorted(common), stock=side(stock), combined=side(combined))
+
+
+def campaign_results(root):
+    """Read finished matched arms and keep their source/output identity checks."""
+    root = Path(root)
+
+    def read(path):
+        return json.loads(path.read_text(encoding='utf-8-sig'))
+
+    result = {}
+    for name, (map_seed, game_seed) in read(root / 'campaign-inputs.json')['seeds'].items():
+        stock = root / f'{name.lower()}-stock'
+        combined = root / f'{name.lower()}-combined'
+        if any(not (side / 'full-game-observation-complete.json').is_file() for side in (stock, combined)):
+            continue
+        standard, treatment = (read(side / 'protocol.json') for side in (stock, combined))
+        if standard != dict(treatment, untuned=True) or treatment['untuned']:
+            raise ValueError(f'{name} arms did not use the same benchmark inputs')
+        if (standard['map_seed'], standard['game_seed']) != (map_seed, game_seed):
+            raise ValueError(f'{name} pair used a different seed')
+        original, new = (read(side / 'source.json') for side in (stock, combined))
+        if any(original[key] != new[key] for key in ('original_ai', 'map_signature', 'starts', 'units')):
+            raise ValueError(f'{name} arms did not start from the same world')
+        results = {}
+        for label, side in (('stock', stock), ('combined', combined)):
+            terminal = read(side / 'result.json')
+            if terminal['reached'] != 250 or not read(side / 'session-closed.json')['verified']:
+                raise ValueError(f'{name} {label} lacks a verified turn-250 closure')
+            results[label] = dict(census=read(side / 'stage-census.json'),
+                                  services=read(side / 'observed-services.json'),
+                                  performance=read(side / 'ai-processing-time.json'))
+        results['aligned_services'] = comparable_services(results['stock']['services'], results['combined']['services'])
+        result[name] = results
+    return result
+
+
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Read verified matched later-stage campaign results')
+    parser.add_argument('campaign', type=Path)
+    print(json.dumps(campaign_results(parser.parse_args().campaign), indent=2))
