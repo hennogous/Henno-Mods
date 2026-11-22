@@ -212,9 +212,9 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
         if stock_derived and role == 'csc':
             # Preserve both the original input digest and the exact dormant
             # publisher/SQL withholding bytes loaded in the stock world.
-            expected = stock_archive_manifest(package, root, originals[role])
+            stock_files = stock_archive_manifest(package, root, originals[role])
             package = (source/install.name).resolve(strict=True)
-            require(package.parent == source and expected == item['files'] == manifest(package),
+            require(package.parent == source and stock_files == item['files'] == manifest(package),
                     'Archived stock CSC package differs from the measured control')
         else:
             require(originals[role] == item['files'], 'Frozen package/install differs: '+path)

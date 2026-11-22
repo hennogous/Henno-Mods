@@ -21,6 +21,7 @@ from planning_continue import compare_structure, enable, parse_census, prepare
 HERE = Path(__file__).resolve().parent
 FIXTURE = HERE/'wonder_placement_fixture.lua'
 PUBLISHER = Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+HAGMATANA_QUARTER = '1428'
 STOCK_PUBLISHER_ENTRY = b'''
 -- Diagnostic only. Keep the original stock publisher dormant during the
 -- pre-roll, then use the existing boundary callback on both matched copies.
@@ -48,8 +49,20 @@ def stage_stock_fixture(item):
     return dict(item, files=installed)
 
 
+def hagmatana_checkpoint_census(census):
+    """Keep all physical structures and all relations of the target Quarter."""
+    # The original turn-start census precedes the inactive save. Nine remote
+    # neighbor rows differed on reload. Require the full reloaded census to
+    # match between arms, and compare the original on the complete target
+    # and the unaffected world structure before allowing the fixture.
+    remote_neighbor_rows = {'MATERIAL', 'SALES', 'CUSTOMER_HOST'}
+    rows = [(kind, payload) for kind, payload in census['rows']
+            if kind not in remote_neighbor_rows or payload.split('\t', 1)[0] == HAGMATANA_QUARTER]
+    return dict(census, rows=rows)
+
+
 def run_arm(source, out, dependencies, enabled, at, through, candidate, target=None, *, survey_only=False,
-            prepare_at=None, expected_preparation=None, stock_hagmatana=False):
+            prepare_at=None, expected_preparation=None, expected_source=None, stock_hagmatana=False):
     plan = prepare(source, out, at, at, dependencies, read_only=True, stock_derived=stock_hagmatana)
     require(not native_inventory(), 'Foreign Civ or FireTuner session must be preserved')
     prepare_at = at if prepare_at is None else prepare_at
@@ -88,9 +101,21 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
         return parse_census(raw,turn)
 
     def gate():
-        proof=compare_structure(plan.expected_census,census(at,'source-census'))
+        observed = census(at, 'source-census')
+        write_json(out/'source-census.json', observed)
+        proof=compare_structure(plan.expected_census, observed)
         write_json(out/'source-structure-comparison.json',proof)
-        require(proof['verified'],'Loaded world differs from checkpoint')
+        if stock_hagmatana:
+            focused = compare_structure(hagmatana_checkpoint_census(plan.expected_census),
+                                        hagmatana_checkpoint_census(observed))
+            write_json(out/'source-hagmatana-comparison.json', focused)
+            require(focused['verified'], 'Hagmatana or the saved world structure changed')
+            if expected_source is not None:
+                paired = compare_structure(expected_source, observed)
+                write_json(out/'source-pair-comparison.json', paired)
+                require(paired['verified'], 'The two loaded stock copies diverged')
+        else:
+            require(proof['verified'],'Loaded world differs from checkpoint')
         return True
 
     def fixture(mode,context,label=None):
@@ -235,5 +260,6 @@ if __name__=='__main__':
         expected=None
         if prepare_at>args.at:
             expected=load(args.output/'off'/'preparation-census.json')
+        source_census = load(args.output/'off'/'source-census.json') if args.stock_hagmatana else None
         run_arm(args.source,args.output/'on',args.dependencies,True,*common,target=target,prepare_at=prepare_at,
-                expected_preparation=expected,stock_hagmatana=args.stock_hagmatana)
+                expected_preparation=expected,expected_source=source_census,stock_hagmatana=args.stock_hagmatana)
