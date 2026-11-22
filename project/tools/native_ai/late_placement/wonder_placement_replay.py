@@ -75,11 +75,14 @@ def hagmatana_checkpoint_census(census):
 
 
 def run_arm(source, out, dependencies, enabled, at, through, candidate, target=None, *, survey_only=False,
-            prepare_at=None, expected_preparation=None, expected_source=None, stock_hagmatana=False):
+            prepare_at=None, expected_preparation=None, expected_source=None, stock_hagmatana=False,
+            hold_broadway_rival=False):
     plan = prepare(source, out, at, at, dependencies, read_only=True, stock_derived=stock_hagmatana)
     require(not native_inventory(), 'Foreign Civ or FireTuner session must be preserved')
     prepare_at = at if prepare_at is None else prepare_at
     require(at <= prepare_at <= (250 if survey_only else through - 1), 'Invalid fixture boundary')
+    require(not hold_broadway_rival or (stock_hagmatana and not survey_only),
+            'Rival hold requires the controlled Hagmatana pair')
     if stock_hagmatana:
         require(candidate is None and at == 100 and 125 <= prepare_at < 144
                 and (plan.protocol['map_seed'],plan.protocol['game_seed']) == (27061117,37061117),
@@ -89,6 +92,7 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
     shutil.copyfile(Path(__file__), out/Path(__file__).name)
     write_json(out/'protocol.json',dict(diagnostic_only=True, source=str(source),
         checkpoint=plan.checkpoint, enabled=enabled, fixture_edits=not survey_only, stock_derived=stock_hagmatana,
+        hold_broadway_rival=hold_broadway_rival,
         first=at, prepare_at=prepare_at, last=prepare_at if survey_only else through))
     controller=make_probe_controller(out,user_root=plan.user_root)
     controller.study_endpoint=prepare_at if survey_only else through
@@ -138,6 +142,7 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
         code+=f'local CSC_WONDER_FIXTURE_TARGET={lua(target)}\n' if target else ''
         code+=f'local CSC_WONDER_FIXTURE_ENABLED={lua(enabled)}\n'
         code+=f'local CSC_WONDER_STOCK_HAGMATANA={lua(stock_hagmatana)}\n'
+        code+=f'local CSC_WONDER_HOLD_RIVAL={lua(hold_broadway_rival)}\n'
         if stock_hagmatana:
             code+=f'local CSC_WONDER_ORIGINAL_AI={lua(plan.identity["original_ai"])}\n'
         raw=controller.cmd(code+source_code,context,'wonder-'+label,wait=45)
@@ -265,23 +270,27 @@ if __name__=='__main__':
     parser.add_argument('--through',type=int,default=205)
     parser.add_argument('--prepare-at',type=int,help='Follow ordinary turns to this exact boundary before setup')
     parser.add_argument('--stock-hagmatana',action='store_true',help='Use the recorded stock Broadway case in matched copies')
+    parser.add_argument('--hold-broadway-rival',action='store_true',
+                        help='Delay Preah Vihear’s Mass Media on both matched copies for the payment trace')
     parser.add_argument('--survey-only',action='store_true',help='Record legal layouts and close without fixture edits')
     args=parser.parse_args()
     common=(args.at,args.through,args.candidate_source)
     prepare_at=args.at if args.prepare_at is None else args.prepare_at
     if args.survey_only:
         run_arm(args.source,args.output,args.dependencies,False,*common,survey_only=True,
-                prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana)
+                prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana,hold_broadway_rival=args.hold_broadway_rival)
     else:
         # Give the earlier Hagmatana pair enough time to pay Broadway's cost.
         # Both copies still compete against the same world's ordinary orders.
         max_turns = 55 if args.stock_hagmatana else 35
         require(0 < args.through-prepare_at <= max_turns, f'Wonder replay needs 1 to {max_turns} turns after setup')
         target=run_arm(args.source,args.output/'off',args.dependencies,False,*common,
-                       prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana)
+                       prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana,
+                       hold_broadway_rival=args.hold_broadway_rival)
         expected=None
         if prepare_at>args.at:
             expected=load(args.output/'off'/'preparation-census.json')
         source_census = load(args.output/'off'/'source-census.json') if args.stock_hagmatana else None
         run_arm(args.source,args.output/'on',args.dependencies,True,*common,target=target,prepare_at=prepare_at,
-                expected_preparation=expected,expected_source=source_census,stock_hagmatana=args.stock_hagmatana)
+                expected_preparation=expected,expected_source=source_census,stock_hagmatana=args.stock_hagmatana,
+                hold_broadway_rival=args.hold_broadway_rival)

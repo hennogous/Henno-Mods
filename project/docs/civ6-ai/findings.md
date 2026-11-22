@@ -7,8 +7,10 @@ legal Broadway, Theater and working Tailors layout. The treatment applied
 6,144 Q8 to the exact Broadway plot in 17 native comparisons. Hagmatana's
 Wonder contract went from 878 to 902 utility at the same submission clock.
 Both chose it on 158 and lost the world race to Preah Vihear on 163. Both
-closed at 176 with no Hagmatana payment. The earlier replay tracks the
-same guidance through completed production and the resulting exchange.
+closed at 176 with no Hagmatana payment. The earlier pair had 26 exact
+increases and the same +24 contract change. It chose Broadway on 150 and
+used the exact plot on 151 before Preah Vihear won on 161. The payment
+diagnostic holds that one rival's unlocking civic on both copies.
 [Exact plot receipt, contract and competition](../research/mods/csc-ai-stage-investments-20261121.md#matched-turn-142-placement-credit-and-the-wonder-race).
 
 ## AI-C224 — A ready Sacristan chain reached the Divine Right comparison and operated

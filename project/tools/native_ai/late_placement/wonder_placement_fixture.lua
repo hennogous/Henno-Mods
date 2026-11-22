@@ -361,6 +361,38 @@ if civic and not player:GetCulture():HasCivic(civic.Index)then player:GetCulture
 if tech and not player:GetTechs():HasTech(tech.Index)then player:GetTechs():SetTech(tech.Index,true)end
 assert(isUnlocked(player,wonder))
 
+if CSC_WONDER_HOLD_RIVAL then
+ -- The matched race already measured stronger outside competition. In this
+ -- payment fixture, hold the recurring rival's entry civic on both copies
+ -- while Hagmatana's own native planning and build queue run normally.
+ assert(CSC_WONDER_STOCK_HAGMATANA and civic and civic.CivicType=='CIVIC_MASS_MEDIA')
+ local rivalID=1
+ local rival=assert(Players[rivalID])
+ local rivalCity
+ for _,host in rival:GetCities():Members()do
+  local name=host:GetName()
+  if name=='LOC_CITY_NAME_PREAH_VIHEAR' or name=='Preah Vihear'then rivalCity=host end
+  local current=host:GetBuildQueue():CurrentlyBuilding()
+  local active=current and GameInfo.Buildings[current]
+  assert(not host:GetBuildings():HasBuilding(wonder.Index) and (not active or active.Index~=wonder.Index),
+   'Rival already started or completed Broadway')
+ end
+ assert(rivalCity,'The recorded rival does not own Preah Vihear')
+ emit('RIVAL_CITY',rivalID,rivalCity:GetID())
+ local function holdRival()
+  if not rival:IsAlive() or city:GetBuildings():HasBuilding(wonder.Index)then return end
+  assert(not rival:IsHuman())
+  local culture=rival:GetCulture()
+  local owned=culture:HasCivic(civic.Index)
+  if owned then culture:SetCivic(civic.Index,false)end
+  culture:SetCulturalProgress(civic.Index,0)
+  assert(not culture:HasCivic(civic.Index),'Rival retained Mass Media during the payment fixture')
+  emit('RIVAL_HELD',Game.GetCurrentGameTurn(),rivalID,civic.Index,owned,false)
+ end
+ holdRival()
+ GameEvents.OnGameTurnStarted.Add(holdRival)
+end
+
 -- Both arms run the production adapter, then the diagnostic wrapper limits
 -- delivery to one exact live offer in ON. Neither arm orders the Wonder.
 local E=assert(CSC_AI_EconomyAdapters)
