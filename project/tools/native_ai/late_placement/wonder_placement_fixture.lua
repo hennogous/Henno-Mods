@@ -69,15 +69,41 @@ end
 
 if CSC_WONDER_FIXTURE_MODE=='hagmatana'then
  -- This is the observed stock footprint before Broadway contract 2944.
- -- The read-only scout neither grants prerequisites nor orders the Wonder.
+ -- The reload can change an earlier Theater order or the Mass Media clock.
+ -- Record a legal owned Theater footprint if the district is still missing.
+ -- Both copies get the same prerequisites; the AI owns the Wonder order.
  local pid,id,siteIndex,quarterIndex=3,262147,1354,1428
  local city=assert(CityManager.GetCity(pid,id))
  local site=assert(Map.GetPlotByIndex(siteIndex))
  local q=assert(Map.GetPlotByIndex(quarterIndex))
  local broadway=assert(GameInfo.Buildings.BUILDING_BROADWAY)
  assert(owns(site,pid,id) and empty(site) and workingQuarter(city,q))
- assert(site:CanHaveWonder(broadway.Index,pid,id),'Hagmatana site is not currently admissible')
- emit('HAGMATANA',Game.GetCurrentGameTurn(),pid,id,siteIndex,quarterIndex,broadway.Index)
+ assert(Map.GetPlotDistance(site:GetX(),site:GetY(),q:GetX(),q:GetY())==1)
+ local theater=assert(GameInfo.Districts[broadway.AdjacentDistrict])
+ local theaterPlot=-1
+ local candidate
+ local district=city:GetDistricts():GetDistrict(theater.Index)
+ for _,tile in ipairs(neighbours(site))do
+  if owns(tile,pid,id)then
+   if district and tile:GetX()==district:GetX() and tile:GetY()==district:GetY()
+    and district:IsComplete() and not district:IsPillaged()then
+    theaterPlot=tile:GetIndex();break
+   end
+   if not district and tile:GetIndex()~=quarterIndex and empty(tile) and tile:CanHaveDistrict(theater.Index,pid,id)then
+    -- Keep the Quarter's own material ring free whenever possible.
+    local shared=Map.GetPlotDistance(tile:GetX(),tile:GetY(),q:GetX(),q:GetY())==1
+    local rank=(shared and 10000 or 0)+tile:GetIndex()
+    if not candidate or rank<candidate.rank then candidate={plot=tile:GetIndex(),rank=rank}end
+   end
+  end
+ end
+ local unlocked=isUnlocked(assert(Players[pid]),broadway)
+ local legal=site:CanHaveWonder(broadway.Index,pid,id)
+ emit('HAGMATANA_SCOUT',Game.GetCurrentGameTurn(),siteIndex,site:GetTerrainType(),theaterPlot,
+  candidate and candidate.plot or -1,unlocked,legal)
+ assert(theaterPlot>=0 or candidate,'Hagmatana has no legal adjacent Theater footprint')
+ emit('HAGMATANA',Game.GetCurrentGameTurn(),pid,id,siteIndex,quarterIndex,broadway.Index,
+  theaterPlot>=0 and theaterPlot or candidate.plot)
  return
 end
 
@@ -211,6 +237,19 @@ end
 assert(CSC_WONDER_FIXTURE_MODE=='setup'and Game.GetCurrentGameTurn()==CSC_WONDER_FIXTURE_TURN)
 assert(not player:IsHuman()and owns(site,f.player,f.city)and empty(site))
 if CSC_WONDER_STOCK_HAGMATANA then
+ local theater=assert(GameInfo.Districts[wonder.AdjacentDistrict])
+ local theaterTile=assert(Map.GetPlotByIndex(f.theater))
+ assert(owns(theaterTile,f.player,f.city) and adjacent(site,theaterTile))
+ local district=city:GetDistricts():GetDistrict(theater.Index)
+ if not district then
+  assert(empty(theaterTile),'Theater fixture footprint was occupied')
+  city:GetBuildQueue():CreateIncompleteDistrict(theater.Index,f.theater,100)
+  district=city:GetDistricts():GetDistrict(theater.Index)
+  emit('THEATER_ADDED',f.theater)
+ end
+ assert(district and district:IsComplete() and not district:IsPillaged()
+  and district:GetX()==theaterTile:GetX() and district:GetY()==theaterTile:GetY(),
+  'Matched Theater preparation failed')
  -- The stock city had neither supplier class. On both disposable copies,
  -- use only its vacant neighboring land and validate resource and improvement
  -- legality through the engine. The Wonder tile itself stays untouched.

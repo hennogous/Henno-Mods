@@ -169,9 +169,10 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
                 require(proof['verified'],'The pre-roll changed the matched fixture state')
         if target is None and stock_hagmatana:
             raw=fixture('hagmatana','PlotInfo')
-            site=re.search(rf'CSC_WONDER_FIXTURE_HAGMATANA\t{prepare_at}\t((?:\d+\t){{4}}\d+)',raw)
+            site=re.search(rf'CSC_WONDER_FIXTURE_HAGMATANA\t{prepare_at}\t((?:\d+\t){{5}}\d+)',raw)
             require(site is not None,'Archived Hagmatana Wonder footprint did not reappear')
-            target=dict(zip(('player','city','site','quarter','wonder'),map(int,site[1].split('\t'))), existing=1)
+            keys=('player','city','site','quarter','wonder','theater')
+            target=dict(zip(keys,map(int,site[1].split('\t'))), existing=1)
             write_json(out/'candidates.json',[target])
         elif target is None:
             raw=fixture('scout','PlotInfo')
