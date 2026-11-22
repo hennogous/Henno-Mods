@@ -225,6 +225,18 @@ Across the 598 shared observation clocks the guided AI delivered 54 distinct Ser
 
 The guided AI built 20 fewer Quarters while increasing working Base links from 6 to 55. The gains are concentrated in Bakers. Tailors fell from 37 to 12 completed Quarters and added five Sacristans. The absence of Dockmaster or Stage 4 Services in normal games remains visible. The earlier Québec matched replay independently verifies actual Stage Manager activation after its civic unlock.
 
+### First observed unlocks, producer completions and Services
+
+Each cell shows stock → guided. Civic turns are the first ownership observation among all AI players in that game. Producer turns are the first time a corresponding order reached its cost in `City_BuildQueue.csv`, in stage order. This measures completed production orders. The endpoint tables count actual buildings, including purchases. On Pangaea the production log uses the original prefix before turn 200 and the verified replay from turn 200. Service turns use the shared observation clocks.
+
+| Map | Feudalism / Guilds / Divine Right / Humanism / Opera and Ballet | Bakers producers (2 / 3 / 4) | Tailors producers (2 / 3 / 4) | Storekeeper / Innkeeper / Sacristan |
+| --- | --- | --- | --- | --- |
+| Continents | 68 / 73 / 82 / 106 / — → 62 / 71 / 66 / 91 / — | 101 / 111 / 121 → 85 / 107 / 128 | 115 / 122 / 136 → 131 / 140 / 139 | 183 / — / — → 98 / 189 / 164 |
+| Fractal | 56 / 62 / 69 / 81 / 224 → 61 / 66 / 77 / 97 / 224 | 116 / 136 / 128 → 55 / 121 / 138 | 104 / 129 / 160 → 119 / 123 / 151 | — / — / — → 71 / 199 / 124 |
+| Pangaea | 61 / 66 / 77 / 92 / 212 → 62 / 66 / 79 / 93 / 226 | 72 / 91 / 125 → 69 / 97 / 135 | 119 / 121 / 149 → 89 / 105 / 153 | — / — / — → 78 / 127 / 168 |
+
+The first Mill finished earlier on all three guided maps. First civic and later producer timings varied, while more matched suppliers and customers converted into working Services. Different players can set the first time for each column. The exact city replays identify changes in competing work: Angkor Wat started a Café ahead of a Theater Square project after both arms built the Trader, and player 5 kept its higher-ranked civic goals during the Humanism comparison.
+
 ### Problem 3 timing after all three pairs
 
 | Working by buyer completion plus ten turns, among cases needing legal Base work | Continents | Fractal | Pangaea | Total |
