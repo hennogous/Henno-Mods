@@ -1,5 +1,5 @@
 -- Isolate Divine Right beside a working Base supplier and Holy Site. The
--- turn-70 fixture uses the naturally unowned civic. The turn-100 fixture
+-- turn-55 fixture precedes the natural research choice. The turn-100 fixture
 -- resets an earlier unlock for a controlled diagnostic. Both copies receive
 -- the same missing buildings. Native AI owns selection and completion.
 local pid, cityId, quarterPlot, templePlot = 5, 131073, 2038, 1965
@@ -18,14 +18,15 @@ if mode == 'before' or mode == 'progress' then
     -- Progress is exposed by the UI reader. Gameplay owns the civic mutation
     -- below and has no progress getter in this binary.
     local progress = culture:GetCulturalProgress(civic.Index)
+    local current = culture:GetProgressingCivic()
     if natural then
-        assert(not owned, 'The natural civic fixture needs an unowned topic')
+        assert(not owned and current ~= civic.Index, 'The natural civic needs a pending research decision')
     elseif mode == 'progress' then
         assert(progress == 0, 'Civic progress reset was not observed')
     end
     local marker = mode == 'before' and 'BEFORE' or 'PROGRESS'
     print('CSC_MILESTONE_SACRISTAN_' .. marker, Game.GetCurrentGameTurn(), pid, civic.Index, tostring(owned),
-        progress, culture:GetProgressingCivic())
+        progress, current)
     return
 end
 local function active(owner, definition, location)
@@ -48,6 +49,9 @@ if mode == 'setup' then
     local district = assert(city:GetDistricts():GetDistrict(GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER.Index))
     assert(district:IsComplete() and not district:IsPillaged()
         and district:GetX() == quarter:GetX() and district:GetY() == quarter:GetY())
+    local holy = assert(customer:GetDistricts():GetDistrict(GameInfo.Districts.DISTRICT_HOLY_SITE.Index))
+    assert(holy:IsComplete() and not holy:IsPillaged()
+        and holy:GetX() == venue:GetX() and holy:GetY() == venue:GetY())
     local profile
     for _, candidate in ipairs(CSC_AI_QuarterPlacement.StageTwoProfiles()) do
         if candidate.key == 'TAILORS' then profile = candidate; break end
@@ -59,9 +63,6 @@ if mode == 'setup' then
     assert(supplied, 'No working Base supplier in the archived Tailors chain')
     if natural then
         assert(not owned, 'Divine Right was already owned in the natural fixture')
-        local holy = assert(customer:GetDistricts():GetDistrict(GameInfo.Districts.DISTRICT_HOLY_SITE.Index))
-        assert(holy:IsComplete() and not holy:IsPillaged()
-            and holy:GetX() == venue:GetX() and holy:GetY() == venue:GetY())
         if not customerWorks() then
             assert(not customer:GetBuildings():HasBuilding(temple.Index), 'Fixture only adds a missing Temple')
             customer:GetBuildQueue():CreateBuilding(temple.Index, templePlot)
@@ -109,9 +110,12 @@ if mode == 'setup' then
         end
     end
     print('CSC_MILESTONE_SACRISTAN_SETUP', pid, cityId, quarterPlot, templePlot, civic.Index, tostring(owned))
+    -- The UI Service watcher reports native district IDs. Record the
+    -- physical plot mapping before play so its recipient can be joined.
+    print('CSC_MILESTONE_SACRISTAN_DISTRICTS', district:GetID(), holy:GetID(), customer:GetID())
 else
     assert(mode == 'outcome')
     print('CSC_MILESTONE_SACRISTAN_OUTCOME', Game.GetCurrentGameTurn(), pid, cityId, tostring(owned),
         tostring(active(city, tailor, quarterPlot)), tostring(customerWorks()),
-        customer:GetProperty('CSC_TAILORS_STAGE_3_EFFECT_FAITH') or 0)
+        city:GetProperty('CSC_TAILORS_STAGE_3_EFFECT_FAITH') or 0)
 end

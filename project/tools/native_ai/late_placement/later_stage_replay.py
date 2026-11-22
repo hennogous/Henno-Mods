@@ -58,7 +58,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     session = NativeSession(output, controller, inventory=native_inventory,
                             hold=HeldProcess, write=write_json)
     installed = []
-    preparation_turn = 70 if natural_sacristan is not None else start
+    preparation_turn = 55 if natural_sacristan is not None else start
 
     def play_between(first, last):
         # Keep shared observer recovery eligible in every finite window.
@@ -230,7 +230,7 @@ if __name__ == '__main__':
     fixtures.add_argument('--sacristan-preparation', action='store_true',
                           help='Reset Divine Right and add the missing Tailor beside an existing Temple on both copies')
     fixtures.add_argument('--sacristan-natural', action='store_true',
-                          help='Prepare the Tailor and Temple at turn 70 while Divine Right is naturally unowned')
+                          help='Prepare the Tailor and Temple at turn 55 before Divine Right starts')
     args = parser.parse_args()
     # The early civic replay needs to pass the natural Guilds completion near
     # turn 76. Keep the other diagnostic windows short.
@@ -240,8 +240,8 @@ if __name__ == '__main__':
     require(not args.storekeeper_preparation or args.start == 50, 'Storekeeper fixture requires the turn-50 source')
     require(not args.entertainment_preparation or args.start == 200, 'Entertainment fixture requires the turn-200 source')
     require(not args.sacristan_preparation or args.start == 100, 'Sacristan fixture requires the turn-100 source')
-    require(not args.sacristan_natural or (args.start == 50 and args.end > 70),
-            'Natural Sacristan fixture needs the turn-50 source and an endpoint after preparation at turn 70')
+    require(not args.sacristan_natural or (args.start == 50 and args.end > 55),
+            'Natural Sacristan fixture needs the turn-50 source and an endpoint after preparation at turn 55')
     fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
                     (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
                     (args.sacristan_preparation or args.sacristan_natural, 'sacristan'))
