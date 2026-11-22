@@ -1,6 +1,7 @@
 import unittest
 
-from anchored_connection_results import connection_counts
+from anchored_connection_results import connection_counts, supplier_history, wonder_connections
+from planning_results import parse
 
 
 def record(kind, **fields):
@@ -47,3 +48,34 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(counts['district_opportunities'], {'quarterFirst:BAKERS': 1})
         self.assertEqual(counts['completed_opportunities'], {})
         self.assertEqual(counts['lost_to_other_foundations'], {'quarterFirst:BAKERS': 1})
+
+    def test_keeper_repair_and_ownership_change_count_separately(self):
+        def material(plot, turn, *, working=True, player=1):
+            return dict(kind='MATERIAL_STATE', player=player, owner=player, quarter='BAKERS',
+                        quarterPlot=20, materialPlot=plot, base=True, spec=False, working=working, turn=turn)
+
+        history = supplier_history([material(21, 3), material(22, 3), material(23, 3),
+                                    material(22, 5, working=False), material(23, 6, player=0),
+                                    material(22, 9)], {1}, 20)
+        self.assertEqual(history, dict(ever_working={'BAKERS:BASE': 3}, working_at_endpoint={'BAKERS:BASE': 2},
+                                       working_without_observed_loss={'BAKERS:BASE': 1},
+                                       working_again_after_loss={'BAKERS:BASE': 1}))
+
+    def test_wonder_foundation_is_distinct_from_exact_completed_building(self):
+        log = '\n'.join([
+            'CSC_AI_WONDER_CONNECTION_OPPORTUNITY turn=5 player=1 order=quarterFirst quarter=TAILORS '
+            'anchor=10 building=BUILDING_BROADWAY city=7 plot=20',
+            'CSC_AI_WONDER_CONNECTION_OPPORTUNITY turn=5 player=2 order=customerFirst quarter=TAILORS '
+            'anchor=40 building=BUILDING_SYDNEY_OPERA_HOUSE city=8 plot=30',
+            relation(1, 'TAILORS', 10, 20, 9, 'quarterFirst', role='wonderCustomer',
+                     neighbourDistrict=13, building='BUILDING_BROADWAY', buildingStatus=0),
+            relation(1, 'TAILORS', 10, 20, 12, 'quarterFirst', role='wonderCustomer',
+                     neighbourDistrict=13, building='BUILDING_BROADWAY', buildingStatus=2),
+            relation(2, 'TAILORS', 30, 40, 12, 'neighbourFirst', role='wonderCustomer',
+                     neighbourDistrict=13, building='BUILDING_SYDNEY_OPERA_HOUSE', buildingStatus=0),
+        ])
+        result = wonder_connections(log, parse(log, 'CSC_PLANNING_'), {1, 2}, 20)
+        broadway = {'quarterFirst:TAILORS:BUILDING_BROADWAY': 1}
+        self.assertEqual(sum(result['opportunities'].values()), 2)
+        self.assertEqual(result['completed_opportunities'], broadway)
+        self.assertEqual(result['completed_physical_pairs'], broadway)

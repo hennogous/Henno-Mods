@@ -13,9 +13,12 @@ from processing_time_summary import summarise
 OPPORTUNITY = re.compile(
     r'CSC_AI_CONNECTION_OPPORTUNITY turn=(\d+) player=(\d+) identity='
     r'(quarterFirst|customerFirst):(\d+):([234]):([A-Z_]+):(\d+):(\d+):(\d+)')
+WONDER_OPPORTUNITY = re.compile(
+    r'CSC_AI_WONDER_CONNECTION_OPPORTUNITY turn=(\d+) player=(\d+) order=(quarterFirst|customerFirst) '
+    r'quarter=([A-Z_]+) anchor=(\d+) building=(BUILDING_[A-Z0-9_]+) city=\d+ plot=(\d+)')
 
 
-def connection_counts(log, original_ai, through):
+def connection_counts(log, original_ai, through, *, observations=None):
     """Join observed legal options to real foundations and completed links.
 
     Deduplicate stage/venue definitions for a physical pair. Keep ownership
@@ -36,7 +39,8 @@ def connection_counts(log, original_ai, through):
         group = (pid, order, quarter, anchor, city, district)
         opportunities_by_district.add(group)
         options[identity].setdefault(group, turn)
-    observations = parse(log, 'CSC_PLANNING_')
+    if observations is None:
+        observations = parse(log, 'CSC_PLANNING_')
     definitions = {row['district']: row['districtType'] for row in observations if row['kind']=='MAPPING'}
     completed = {}
     realized = set()
@@ -96,6 +100,69 @@ def connection_counts(log, original_ai, through):
     return counts
 
 
+def supplier_history(observations, players, through):
+    """Measure observed continuity of each working, owned material link."""
+    ever_working, interrupted = set(), set()
+    active = {}
+    for row in observations:
+        if row.get('turn', 0) > through:
+            continue
+        if row['kind'] == 'MATERIAL_WATCH_ENDED':
+            identity = tuple(map(int, row['identity'].split(':')))
+            interrupted.update(active.pop(identity, ()))
+        if row['kind'] != 'MATERIAL_STATE':
+            continue
+        identity = (row['quarterPlot'], row['materialPlot'])
+        pid = row['player']
+        current = set()
+        if pid in players and row['owner'] == pid and row['working']:
+            for role in ('base', 'spec'):
+                if row[role]:
+                    current.add((row['quarter'], role, pid, *identity))
+        interrupted.update(active.get(identity, set()) - current)
+        ever_working.update(current)
+        active[identity] = current
+
+    def counts(items):
+        return dict(Counter(f'{quarter}:{role.upper()}' for quarter, role, *_ in items))
+
+    endpoint = set().union(*active.values())
+    return dict(ever_working=counts(ever_working), working_at_endpoint=counts(endpoint),
+                working_without_observed_loss=counts(endpoint - interrupted),
+                working_again_after_loss=counts(endpoint & interrupted))
+
+
+def wonder_connections(log, observations, players, through):
+    """Keep the actual Wonder building identity and find completed venues."""
+    offered, completed, converted = {}, {}, set()
+    for turn, player, order, quarter, anchor, building, target in WONDER_OPPORTUNITY.findall(log):
+        turn, player, anchor, target = map(int, (turn, player, anchor, target))
+        if player in players and turn <= through:
+            qplot, wplot = (anchor, target) if order == 'quarterFirst' else (target, anchor)
+            offered.setdefault((player, order, quarter, building, qplot, wplot), turn)
+    for row in observations:
+        if (row['kind'] != 'RELATION' or row.get('role') != 'wonderCustomer'
+                or row.get('player') not in players or row['turn'] > through
+                or not (row.get('quarterComplete') and row.get('neighbourComplete')
+                        and row.get('buildingStatus', 0) > 0)):
+            continue
+        physical = (row['quarter'], row['building'], row['quarterPlot'], row['neighbourPlot'])
+        order = {'quarterFirst': 'quarterFirst', 'neighbourFirst': 'customerFirst'}.get(row.get('foundationOrder'), 'unknown')
+        if completed.get(physical, 'unknown') == 'unknown':
+            completed[physical] = order
+        key = (row['player'], order, *physical)
+        foundation = row.get('neighbourFoundationTurn' if order == 'quarterFirst' else 'quarterFoundationTurn')
+        if key in offered and foundation is not None and offered[key] <= foundation:
+            converted.add(key)
+
+    def counts(keys):
+        return dict(Counter(f'{order}:{quarter}:{building}' for _, order, quarter, building, *_ in keys))
+
+    return dict(opportunities=counts(offered), completed_opportunities=counts(converted),
+                completed_physical_pairs=dict(Counter(f'{order}:{quarter}:{building}'
+                    for (quarter, building, _, _), order in completed.items())))
+
+
 def run_result(root):
     def read(name):
         return json.loads((root / name).read_text(encoding='utf-8-sig'))
@@ -107,7 +174,8 @@ def run_result(root):
         raise ValueError(f'Incomplete qualification arm {root}')
     players = set(read('source.json')['original_ai'])
     log = (root / 'Lua.log').read_text(encoding='utf-8-sig')
-    counts = connection_counts(log, players, through)
+    observations = parse(log, 'CSC_PLANNING_')
+    counts = connection_counts(log, players, through, observations=observations)
     timing = summarise(log, last=through)
     if (not counts['opportunities'] or timing['unobserved_turns'] or timing['incomplete_wall_turns']
             or timing['failed_attempts']):
@@ -123,7 +191,7 @@ def run_result(root):
                 supply[f'{quarters[plot]}:{material}:working'] += 1
     material_tags = read('resource-stack-preflight.json')['groups']
     supplier_losses = Counter()
-    for row in parse(log, 'CSC_PLANNING_'):
+    for row in observations:
         if row['kind'] != 'MATERIAL_STATE' or row.get('player') not in players or row['turn'] > through:
             continue
         quarter = row['quarter']
@@ -136,7 +204,9 @@ def run_result(root):
                 supplier_losses[f'{quarter}:{material}:material_loss'] += 1
     return dict(counts=counts, timing=timing['publisher_wall'],
                 native_managed_timing=timing['native_managed_cell_wall'],
-                endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses))
+                endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
+                supplier_history=supplier_history(observations, players, through),
+                wonder_connections=wonder_connections(log, observations, players, through))
 
 
 if __name__ == '__main__':

@@ -369,6 +369,19 @@ assert(E.WonderOffers(player,{chain('TAILORS',true,true)}, {},1,8*256)[1].deltaQ
 local blocked=chain('TAILORS',true,false)
 blocked.supply.specialty[1].ready=false
 assert(#E.WonderOffers(player,{blocked}, {},10,24*256)==0)
+-- Known terrain or adjacency exclusions never occupy the new bounded list.
+-- Unknown reads can still be checked by the native Wonder caller.
+local legalQueries=0
+local function canPlace(owner,city,building,plot)
+ assert(owner==1 and city==10 and building==77)
+ legalQueries=legalQueries+1
+ if plot==20 then return false end
+ if plot==24 then return true end
+end
+local anchors={chain('TAILORS',true,true),chain('TAILORS',true,true)}
+E.AnchoredConnectionsEnabled=true
+offers=E.WonderOffers(player,anchors,{[21]=true},1,24*256,canPlace)
+assert(#offers==1 and offers[1].plot==24 and legalQueries==2)
 ''')
 
     def test_wonder_offers_publish_inside_the_native_packet(self):

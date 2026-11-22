@@ -35,6 +35,7 @@ CONNECTION_FILES = (
     'Lua_UI/AI/CSC_AI_EconomyModel.lua',
     'Lua_UI/AI/CSC_AI_PlanContinuity.lua',
 )
+CONNECTION_WONDER_UI = 'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua'
 
 
 def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES):
@@ -154,6 +155,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 require(not item['install'].exists(), 'Test mod destination already exists')
                 if item['role'] == 'csc' and candidate_source:
                     policy_files=CONNECTION_FILES if connection_prototype else POLICY_FILES
+                    if connection_prototype and (candidate_source / CONNECTION_WONDER_UI).is_file():
+                        policy_files += (CONNECTION_WONDER_UI,)
                     item=dict(item,files=candidate_package(item['source'],candidate_source,item['install'],policy_files))
                 else:
                     shutil.copytree(item['source'], item['install'])

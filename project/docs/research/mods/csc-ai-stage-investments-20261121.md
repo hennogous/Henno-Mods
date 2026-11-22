@@ -441,7 +441,7 @@ linked reference needs a credit in district-type competition even when
 there are no other sites. The candidate shifts the reference and each freshly
 priced alternative by the same amount. For customer-first Quarter bids the
 complete forecast already counts the exchange. The candidate can recover
-some of it only where the generic site-quality ceiling removed part of the
+some of it where the generic site-quality ceiling removed part of the
 forecast. The native journal is the gate for both changes. The prototype
 otherwise retains the cost of consuming a stronger planned footprint and
 rechecks availability under current capacity and material protection. Among
@@ -472,6 +472,55 @@ Tailors footprint lagged by 770.4 utility.
 This shifted testing to earlier saves with a recorded decision to build a
 district, including a Fractal city where the control chose a Campus only 25.7
 utility above a Bakers-adjacent Commercial Hub in the archived game.
+
+The matched turn-50 to 72 Pella replay reproduced that choice in both
+arms. The packet published on turn 55 added 8,890 Q8 to the linked Hub on
+1654. CE read 100,574 Q8 in the early cell and cached 121,776 Q8 after native
+aggregation. Campus 1730 won with 128,367 Q8, then appeared in the production
+log on turn 56 and completed on turn 60. The city had one free specialty
+slot at population 10. The anchored planner issued no additional offer for
+that Hub. The next candidate uses the same projected gameplay adjacency as
+the empire forecast so an eligible Quarter's foundation-driven benefit is
+available to the local plan as well as mapped building transactions. It
+also budgets a bounded preference for the completion when investing in a
+different district would consume the last current slot. Backups outside
+that city reduce the value at stake, and an unknown backup defers this extra
+preference. Any preference actually written leaves only the balance for a
+competing footprint deduction. The game still controls construction.
+
+The rerun published an additional 2,833 Q8 for Hub 1654. The native early
+cell increased by that exact amount to 103,407 Q8, and the cached Hub rose
+to 124,609 Q8. Campus 1730 retained its 128,367 Q8 and still won by 14.68
+utility. The physical observer recorded its foundation on turn 56 and
+completion on turn 60. Both observers closed with zero faults and drops.
+
+The next iteration recognizes a Partner or Quarter foundation when there
+is a credible completion estimate. The local forecast delays the actual
+building exchange to district and building readiness. A Stage 4 prospect
+with just Base can still earn an immediate adjacency quote where the loaded
+rules pay it. The Stage 4 exchange itself requires both material classes.
+
+##### The three Tailors Wonder customers
+
+Use the exact building identities from `CSC_QuarterWonderSales`. Bolshoi
+Theatre and Broadway require a flat land tile beside a Theater Square.
+Sydney Opera House requires coast beside land and a Harbor, with lakes
+excluded. The current GameCore predicate requires the adjacent district
+to belong to the Wonder's city, including accepted unique replacements.
+The UI bridge asks that predicate on the exact city, building and plot.
+The experimental planner drops sites the predicate rejects from its
+bounded positive offers. CE still checks the actual native candidate,
+score, unlock timing and the world race. The existing protected-material
+gate and calibrated positive offer apply for Quarter-first Wonders.
+
+A completed named Wonder also enters the customer-first Quarter planner
+through the Stage 4 transaction facts. A generic Wonder placeholder never
+establishes a customer. The matched campaign reports exact Wonder links and
+opportunity conversion alongside ordinary districts, including whether the
+Quarter or Wonder foundation came first. The earlier Hagmatana controlled
+trial proves the native Broadway write and the completed building's exchange.
+That trial retained the same winning plot, and ordinary play can still lose
+the Wonder to another city. [Hagmatana matched evidence](#matched-turn-142-placement-credit-and-the-wonder-race).
 
 The ordinary campaign uses the following seeds, selected before the campaign
 starts. Each map is played in both arms on Online speed through turn 250, with

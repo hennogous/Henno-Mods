@@ -99,6 +99,63 @@ plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==21)
 ''')
 
+    def test_one_slot_prices_a_real_foundation_yield_and_splits_the_loss_budget(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+GameInfo.Districts[1].RequiresPopulation=true
+snapshot.cities={[7]={object={}}};local freeSlots=1
+snapshot.DistrictCapacity=function()return {known=true,used=2,allowed=2+freeSlots}end
+values[20]=0 -- mapped future building is too far away to pay during the horizon
+snapshot.ProjectedConnectionYields=function(_,district,plot)
+    assert(district==1 and plot==20);return {YIELD_GOLD=1}
+end
+snapshot.Price=function(s,horizon)
+    assert(s.yield=='YIELD_GOLD' and s.amount==1 and s.ready==0 and horizon==50)
+    return 48*256
+end
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.valueQ8==48*256 and plans[1].pressureQ8==36*256)
+local existing={{player=1,city=7,district=1,plot=20,delta=36*256,connectionPressureQ8=36*256}}
+local rows=E.ApplyConnectionCosts(snapshot,existing,plans,{[3]=true})
+assert(rows[2].district==2 and rows[2].delta==-12*256)
+freeSlots=2
+plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(plans[1].pressureQ8==nil and plans[1].costQ8==24*256)
+''')
+
+    def test_both_placement_orders_can_reprice_from_a_physical_foundation(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+chain.ready=false;chain.complete=false;economy.quarterReady=4
+assert(#E.AnchoredConnectionPlans(snapshot,{})==1)
+economy.quarterReady=50
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+chain.complete=true;economy.quarterReady=4 -- a pillaged district is not a new foundation
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+
+snapshot.connectionGroups={}
+local established=quarterAt(20);established.site.customers={}
+snapshot.connectionQuarters={established}
+snapshot.districts[9]={working=false,complete=false}
+local buyer=venue(9);buyer.anchorReady=3
+snapshot.PendingConnectionVenues=function()return{buyer}end
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].order=='customerFirst' and plans[1].anchor==9)
+snapshot.districts[9].complete=true
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+''')
+
+    def test_stage_four_without_specialty_can_price_immediate_adjacency(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+stage=4
+CSC_AI_EconomyModel.CustomerBuildingForecast=function()error('No supported specialty transaction')end
+snapshot.ProjectedConnectionYields=function()return{YIELD_GOLD=1}end
+snapshot.Price=function()return 48*256 end
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.valueQ8==48*256 and plans[1].stage==4)
+''')
+
     def test_stage_four_requires_specialty_and_a_real_mapped_partner(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

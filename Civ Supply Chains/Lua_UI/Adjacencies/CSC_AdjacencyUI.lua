@@ -55,6 +55,18 @@ ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets = function(playerID, cityID
     return legal;
 end;
 
+-- Use the same plot predicate as the native Wonder forecast. It checks the
+-- loaded terrain and required adjacent district in this city. The separate
+-- native forecast still decides which technology, construction and race
+-- windows to consider. This read does not select or reserve a Wonder.
+ExposedMembers.CSC_Adjacency.CanPlaceWonder = function(playerID, cityID, buildingIndex, plotIndex)
+    local plot = Map.GetPlotByIndex(plotIndex);
+    if plot and type(plot.CanHaveWonder) == 'function' then
+        local ok, legal = pcall(plot.CanHaveWonder, plot, buildingIndex, playerID, cityID);
+        if ok and type(legal) == 'boolean' then return legal; end;
+    end;
+end;
+
 -- A placed but unfinished or pillaged host still has the right geometry.
 -- A functioning district breaks ties between sites with equal potential.
 ExposedMembers.CSC_Adjacency.HasWorkingDistrictAt = function(x, y)

@@ -95,6 +95,13 @@ assert(M.ExistingCustomerConnectionValue(site,venue,price)==3*(26/256*10)*30*256
 assert(#site.customers==1 and site.customers[1]==venue and site.service.amount==9999)
 ''')
 
+    def test_customer_foundation_waits_for_district_and_building_completion(self):
+        self.model().execute('''
+venue.anchorReady=7;venue.hostReady=7;venue.unlock=7;venue.maintenance=0
+assert(M.ExistingCustomerConnectionValue(site,venue,price)==3*(26/256*10)*(30-9)*256)
+assert(#site.customers==0 and not venue.complete and not venue.working)
+''')
+
     def test_customer_queue_delays_missing_producer_in_same_city_but_cities_can_build_in_parallel(self):
         vm=self.model()
         vm.execute('''

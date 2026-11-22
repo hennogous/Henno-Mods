@@ -387,7 +387,12 @@ local function refresh(turn)
             for _,site in ipairs(threatened or{})do wonderProtected[site.plot]=true end
             local limit=math.min(128,wonderLimit-#wonderOffers)
             if limit>0 then
-                for _,offer in ipairs(CSC_AI_EconomyAdapters.WonderOffers(player,chains,wonderProtected,limit,maxWonderOfferQ8))do
+                local adapter=CSC_AI_EconomyAdapters
+                local query=(adapter.AnchoredConnectionsEnabled or adapter.AnchoredConnectionAuditEnabled)
+                    and playerUI and playerUI.CanPlaceWonder
+                local anchors=(adapter.AnchoredConnectionsEnabled or adapter.AnchoredConnectionAuditEnabled)
+                    and economy and economy.chains or chains
+                for _,offer in ipairs(adapter.WonderOffers(player,anchors,wonderProtected,limit,maxWonderOfferQ8,query))do
                     wonderOffers[#wonderOffers+1]=offer
                 end
             end

@@ -1178,7 +1178,7 @@ function F.New(player,placement,ui,context)
         b.building=definition.BuildingType;b.city=city.id;b.plot=plot;b.population=city.population
         return b
     end
-    local function customerRecord(profile,buyer,definition,plot,stage)
+    local function customerRecord(profile,buyer,definition,plot,stage,foundationReady)
         local customer=futureCustomer(buyer,definition,plot)
         customer.stage=stage
         local host=snapshot.districts[plot]
@@ -1217,6 +1217,13 @@ function F.New(player,placement,ui,context)
                     and buyer.buildings:GetBuildingLocation(definition.Index)==plot
                 if functioning and ordinary.kind~='FIXED'and not ordinary.partnerDistrictMustFunction then
                     customer.working=true;customer.unlock=0;customer.ready=0
+                elseif foundationReady and not host.complete then
+                    -- A real foundation can anchor a future transaction.
+                    -- Delay the venue until the observed district can finish;
+                    -- the ordinary live-customer reader passes no such ETA.
+                    customer.hostReady=foundationReady
+                    customer.unlock=math.max(customer.unlock or INF,foundationReady)
+                    customer.ready=customer.unlock+customer.turns
                 else
                     -- A missing building cannot be forecast ahead of an unknown
                     -- district repair. Later repair adapters can supply an ETA.
@@ -1226,7 +1233,7 @@ function F.New(player,placement,ui,context)
         end
         if stage~=3 or customer.rate then return customer end
     end
-    function snapshot.ProjectedCustomers(profile,cityID,districtIndex,plotIndex)
+    function snapshot.ProjectedCustomers(profile,cityID,districtIndex,plotIndex,foundationReady)
         -- Plain prospective records, NOT completed live districts. A diagnostic
         -- or future decision adapter must separately qualify the target, price
         -- district construction, and pass its ready time to the central model.
@@ -1240,10 +1247,27 @@ function F.New(player,placement,ui,context)
             if expected and F.DistrictFamily(expected.Index)==F.DistrictFamily(districtIndex)
                 and definition and allowed(definition)and not flag(definition.IsWonder)then
                 local stamp=definition.BuildingType..':'..mapping.ProducerStage
-                local row=not seen[stamp]and customerRecord(profile,buyer,definition,plotIndex,mapping.ProducerStage)
+                local row=not seen[stamp]and customerRecord(profile,buyer,definition,plotIndex,mapping.ProducerStage,foundationReady)
                 if row then
-                    row.complete=false;row.projected=true;row.working=false
+                    row.complete=false;row.projected=true;row.working=false;row.anchorReady=foundationReady
                     result[#result+1]=row;seen[stamp]=true
+                end
+            end
+        end
+        return result
+    end
+    function snapshot.PendingConnectionVenues(site,profile)
+        local result={}
+        local quarterPlot=Map.GetPlotByIndex(site.plot)
+        for _,plot in ipairs(Map.GetAdjacentPlots(quarterPlot:GetX(),quarterPlot:GetY()))do
+            local index=plot:GetIndex()
+            local host=snapshot.districts[index]
+            if host and not host.complete and plot:GetOwner()==pid then
+                local ready=snapshot.ConnectionDistrictTurns(host.city,host.type)
+                if ready and ready<site.horizon then
+                    for _,venue in ipairs(snapshot.ProjectedCustomers(profile,host.city,host.type,index,ready))do
+                        result[#result+1]=venue
+                    end
                 end
             end
         end
@@ -2074,6 +2098,61 @@ function F.New(player,placement,ui,context)
         if not world.trade then return nil,problem end
         currentWorld=world;return world
     end
+    local function projectDistrict(plot,districtIndex)
+        -- PreCreateDistrict rechecks zoning with/without resource removal.
+        -- A visible deposit must be removed for an admitted fresh foundation.
+        -- Hidden deposits may remain and CSC's visible-resource rules ignore
+        -- them. Keep the actual terrain, rivers, ownership and plot identity.
+        local plotIndex,resource=plot:GetIndex(),plot:GetResourceType()
+        local resourceAfter=resource>=0 and CSC_Adjacency.ResourceVisible(pid,resource)and -1 or resource
+        local projected=setmetatable({GetDistrictType=function()return districtIndex end,
+            GetImprovementType=function()return -1 end,IsImprovementPillaged=function()return false end,
+            GetResourceType=function()return resourceAfter end},{__index=function(_,name)
+                local value=plot[name]
+                if type(value)=='function'then return function(_,...)return value(plot,...)end end
+                return value
+            end})
+        return function(p)return p:GetIndex()==plotIndex and projected or p end
+    end
+    local supported={FROM_RINGS_TYPETAG_RESOURCE=true,FROM_RINGS_TYPETAG_DISTRICT=true,
+        FROM_RINGS_CAO_DISTRICT=true,FROM_RINGS_CAO_TERRAIN_SETS=true,FROM_RIVER_CROSSING=true}
+    local function checkedAmounts(city,center,kind,projection)
+        for _,rule in ipairs(CSC_Adjacency.ByDistrict[kind]or{})do
+            if rule.ModifierOwner~='BuildingModifiers'and not supported[rule.AdjacencyType]then
+                return nil,'District projection source requires support: '..tostring(rule.AdjacencyType)
+            end
+        end
+        return snapshot.AdjacencyAmounts(city,center,kind,projection)
+    end
+    local function quarterAdjacencyChange(chain,project)
+        local kind=chain.profile.district.DistrictType
+        local old,problem=checkedAmounts(chain.city,chain.plot,kind)
+        if not old then return nil,problem end
+        local new,err=checkedAmounts(chain.city,chain.plot,kind,project)
+        if not new then return nil,err end
+        local delta={}
+        for yield,amount in pairs(old)do delta[yield]=-amount end
+        for yield,amount in pairs(new)do delta[yield]=(delta[yield]or 0)+amount end
+        return delta
+    end
+    function snapshot.ProjectedConnectionYields(chain,districtIndex,plotIndex)
+        -- This is the Quarter's incremental gameplay yield from a mapped
+        -- customer's foundation. Reuse the same projection as the full world
+        -- quote without rebuilding every empire-wide trade or building ledger.
+        local target=Map.GetPlotByIndex(plotIndex)
+        if target then return quarterAdjacencyChange(chain,projectDistrict(target,districtIndex))end
+    end
+    function snapshot.ExistingConnectionYields(site,profile,partnerPlot)
+        -- Compare the same prospective Quarter with and without the partner's
+        -- real footprint. Only its receiving Quarter adjacency belongs here.
+        local city=snapshot.cities[site.city].object
+        local center=Map.GetPlotByIndex(site.plot)
+        local delta=quarterAdjacencyChange({city=city,plot=center,profile=profile},
+            function(p)if p:GetIndex()~=partnerPlot then return p end end)
+        if not delta then return nil end
+        for yield,amount in pairs(delta)do delta[yield]=-amount end
+        return delta
+    end
     local function investmentWorld(cityID,districtIndex,plotIndex,quarterSite)
         -- First correctness path: include ALL owned implemented chains. Queue
         -- sharing/population pools are not the only links: distant exporters
@@ -2109,30 +2188,7 @@ function F.New(player,placement,ui,context)
             -- Customer districts need this root queue time before their venues.
             queueReady=not quarterSite and{[pid..':'..cityID]=ready}or nil}
         if #snapshot.chains>64 then return nil,'Affected chain budget exceeded'end
-        -- Native PreCreateDistrict1029c0 rechecks zoning with/without resource
-        -- removal. A visible deposit must be removed for an admitted fresh
-        -- foundation. Hidden deposits may remain and are not counted by CSC's
-        -- visible-resource adjacency matcher. Terrain/rivers remain unchanged.
-        local resource=plot:GetResourceType()
-        local resourceAfter=resource>=0 and CSC_Adjacency.ResourceVisible(pid,resource)and -1 or resource
-        local projected=setmetatable({GetDistrictType=function()return districtIndex end,
-            GetImprovementType=function()return -1 end,IsImprovementPillaged=function()return false end,
-            GetResourceType=function()return resourceAfter end},{__index=function(_,name)
-                local value=plot[name]
-                if type(value)=='function'then return function(_,...)return value(plot,...)end end
-                return value
-            end})
-        local function project(p)return p:GetIndex()==plotIndex and projected or p end
-        local supported={FROM_RINGS_TYPETAG_RESOURCE=true,FROM_RINGS_TYPETAG_DISTRICT=true,
-            FROM_RINGS_CAO_DISTRICT=true,FROM_RINGS_CAO_TERRAIN_SETS=true,FROM_RIVER_CROSSING=true}
-        local function checkedAmounts(city,center,kind,projection)
-            for _,rule in ipairs(CSC_Adjacency.ByDistrict[kind]or{})do
-                if rule.ModifierOwner~='BuildingModifiers'and not supported[rule.AdjacencyType]then
-                    return nil,'District projection source requires support: '..tostring(rule.AdjacencyType)
-                end
-            end
-            return snapshot.AdjacencyAmounts(city,center,kind,projection)
-        end
+        local project=projectDistrict(plot,districtIndex)
         for _,chain in ipairs(snapshot.chains)do
             local site=chain.economy
             if not site then return nil,'Existing Quarter economy unavailable'end
@@ -2158,13 +2214,9 @@ function F.New(player,placement,ui,context)
             end
             after.sites[#after.sites+1]=changed
             if #changed.suppliers~=#site.suppliers then after.affectedChains[site.key]=true end
-            local old,error=checkedAmounts(chain.city,chain.plot,chain.profile.district.DistrictType)
-            if not old then return nil,error end
-            local new,problem=checkedAmounts(chain.city,chain.plot,chain.profile.district.DistrictType,project)
-            if not new then return nil,problem end
-            local yields={};for yield in pairs(old)do yields[yield]=true end;for yield in pairs(new)do yields[yield]=true end
-            for yield in pairs(yields)do
-                local delta=(new[yield]or 0)-(old[yield]or 0)
+            local yields,problem=quarterAdjacencyChange(chain,project)
+            if not yields then return nil,problem end
+            for yield,delta in pairs(yields)do
                 if delta~=0 then after.extraStreams[#after.extraStreams+1]={id='quarter-adjacency:'..site.key..':'..yield,
                     component='quarter-adjacency-externality',player=pid,city=site.city,yield=yield,amount=delta,
                     ready=0,quarterKey=site.key};after.affectedChains[site.key]=true end

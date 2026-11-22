@@ -1386,6 +1386,15 @@ function M.ExistingCustomerConnectionValue(site, customer, price)
     for _, venue in ipairs(site.customers or {}) do
         if venue~=customer then without.customers[#without.customers+1]=venue end
     end
+    if customer.anchorReady then
+        -- The partner district has a physical foundation and an estimated
+        -- completion time. Admit it only inside the linked forecast. Its
+        -- customer building, prerequisites and transaction keep that delay.
+        with.customers={}
+        for _,venue in ipairs(without.customers)do with.customers[#with.customers+1]=venue end
+        local finished={};for key,value in pairs(customer)do finished[key]=value end
+        finished.complete=true;with.customers[#with.customers+1]=finished
+    end
     local baseline=M.Forecast(without,price)
     local linked=baseline and M.Forecast(with,price)
     return linked and linked.valueQ8-baseline.valueQ8

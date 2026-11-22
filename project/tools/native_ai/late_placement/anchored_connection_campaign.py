@@ -10,7 +10,7 @@ from anchored_connection_results import run_result
 from ce_bakers_fresh import package_identity
 from ce_replay import DLL, STEAM_26595377_CORE_SHA, development_package_files, native_profile
 from driver import HERE, load, manifest, native_inventory, require, sha, write_json
-from later_stage_replay import CONNECTION_FILES
+from later_stage_replay import CONNECTION_FILES, CONNECTION_WONDER_UI
 
 
 # Selected before observing the new games, using the protocol in the study note.
@@ -58,7 +58,7 @@ def freeze_packages(original, source, packages):
     require(adapter.count(FLAG) == adapter.count(AUDIT) == 1, 'Expected explicit disabled planner and audit switches')
     observed = adapter.replace(AUDIT, AUDIT.replace(b'false', b'true'))
     shutil.copytree(original, control)
-    for script in CONNECTION_FILES:
+    for script in (*CONNECTION_FILES, CONNECTION_WONDER_UI):
         require((control / script).is_file(), f'Unregistered CSC Lua overlay {script}')
         shutil.copy2(source / script, control / script)
     (control / ADAPTER).write_bytes(observed)
