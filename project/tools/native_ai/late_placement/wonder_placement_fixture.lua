@@ -223,14 +223,17 @@ if CSC_WONDER_FIXTURE_MODE=='outcome'then
  return
 end
 if CSC_WONDER_FIXTURE_MODE=='verify'then
- assert(owns(site,f.player,f.city)and empty(site))
+ assert(owns(site,f.player,f.city)and empty(site),'Wonder tile lost its owner or became occupied')
  assert(site:CanHaveWonder(wonder.Index,f.player,f.city),'Wonder tile fails stock placement API')
- assert(workingQuarter(sourceCity,q)and adjacent(site,q)and adjacent(q,supplier))
- assert(compatible(supplier,supplier:GetImprovementType())and not supplier:IsImprovementPillaged())
+ assert(workingQuarter(sourceCity,q)and adjacent(site,q)and adjacent(q,supplier),'Wonder supply geometry changed')
+ assert(compatible(supplier,supplier:GetImprovementType())and not supplier:IsImprovementPillaged(),
+  'Base supplier failed the placement readback')
  assert(adjacent(q,special) and specialty[special:GetResourceType()]
-  and compatible(special,special:GetImprovementType()) and not special:IsImprovementPillaged())
- assert(isUnlocked(player,wonder))
- assert(workingBuilding(producer,f.quarter))
+  and compatible(special,special:GetImprovementType()) and not special:IsImprovementPillaged(),
+  'Specialty supplier failed the placement readback')
+ -- PlotInfo owns native site legality. Gameplay already read back both
+ -- the unlock and the working Fashion House in its synchronous setup.
+ emit('UI_STATE',Game.GetCurrentGameTurn(),isUnlocked(player,wonder),workingBuilding(producer,f.quarter))
  emit('VERIFIED',Game.GetCurrentGameTurn(),f.player,f.city,f.site,wonder.Index,f.quarter,f.supplier,f.specialty)
  return
 end
@@ -391,5 +394,5 @@ E.WonderOffers=function(active,...)
  emit('PUBLICATION',Game.GetCurrentGameTurn(),selected.player,selected.city,selected.plot,selected.building,selected.deltaQ8,on and 1 or 0)
  return on and {selected}or{}
 end
-if CSC_WONDER_STOCK_HAGMATANA then assert(CSC_WonderFixtureActivatePublisher)() end
+if CSC_WONDER_STOCK_HAGMATANA then assert(CSC_WonderFixtureActivatePublisher)(assert(CSC_WONDER_ORIGINAL_AI)) end
 emit('SETUP_END',Game.GetCurrentGameTurn())

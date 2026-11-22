@@ -25,11 +25,24 @@ HAGMATANA_QUARTER = '1428'
 STOCK_PUBLISHER_ENTRY = b'''
 -- Diagnostic only. Keep the original stock publisher dormant during the
 -- pre-roll, then use the existing boundary callback on both matched copies.
-function CSC_WonderFixtureActivatePublisher()
+function CSC_WonderFixtureActivatePublisher(originalAI)
     assert(bridge.Available(), 'Wonder fixture lost the CE publishing path')
+    -- The dormant stock copy had no publisher at turn one to record the
+    -- original seats. Restore that ledger from the archived world identity.
+    for _, playerID in ipairs(originalAI) do
+        local player = assert(Players[playerID])
+        assert(not player:IsHuman(), 'Wonder fixture found a human on an AI seat')
+        local key = identityPrefix .. playerID
+        local stored = Game:GetProperty(key)
+        assert(stored == nil or stored == 0, 'Wonder fixture AI seat changed')
+        Game:SetProperty(key, 0)
+    end
     CSC_WonderFixtureActivatePublisher = nil
     GameEvents.OnGameTurnStarted.Add(onBoundary)
     onBoundary()
+    local status = assert(bridge.Status())
+    local version = tonumber(status:match('"version":(%d+)'))
+    assert(version and version > 0, 'Wonder fixture did not publish its first packet')
 end
 '''
 
@@ -125,6 +138,8 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
         code+=f'local CSC_WONDER_FIXTURE_TARGET={lua(target)}\n' if target else ''
         code+=f'local CSC_WONDER_FIXTURE_ENABLED={lua(enabled)}\n'
         code+=f'local CSC_WONDER_STOCK_HAGMATANA={lua(stock_hagmatana)}\n'
+        if stock_hagmatana:
+            code+=f'local CSC_WONDER_ORIGINAL_AI={lua(plan.identity["original_ai"])}\n'
         raw=controller.cmd(code+source_code,context,'wonder-'+label,wait=45)
         (out/(label+'.txt')).write_text(raw,encoding='utf-8')
         require('LUA_ERROR' not in raw,'Wonder fixture Lua error')
@@ -205,7 +220,8 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
             raw=fixture('verify','PlotInfo')
             require(f'CSC_WONDER_FIXTURE_VERIFIED\t{prepare_at}\t' in raw,'Legal fixture validation failed')
             raw=fixture('outcome','CSC_AI_BakersGameplay',label='initial-outcome')
-            require(f'CSC_WONDER_FIXTURE_OUTCOME\t{prepare_at}\tfalse\t' in raw,'Wonder already completed at the replay start')
+            require(f'CSC_WONDER_FIXTURE_OUTCOME\t{prepare_at}\tfalse\t-1\ttrue\t' in raw,
+                    'The prepared producer must be operating before the Wonder is present')
             # As in the pre-roll, preserve the shared controller's guarded
             # observer recovery windows while the ordinary AI chooses work.
             for boundary in range(prepare_at+5,through,5):
