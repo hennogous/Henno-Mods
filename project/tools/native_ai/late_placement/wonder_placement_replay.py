@@ -81,9 +81,9 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
     prepare_at = at if prepare_at is None else prepare_at
     require(at <= prepare_at <= (250 if survey_only else through - 1), 'Invalid fixture boundary')
     if stock_hagmatana:
-        require(candidate is None and at == 100 and 138 <= prepare_at < 144
+        require(candidate is None and at == 100 and 125 <= prepare_at < 144
                 and (plan.protocol['map_seed'],plan.protocol['game_seed']) == (27061117,37061117),
-                'Hagmatana fixture requires the witnessed Pangaea source and a pre-reservation clock')
+                'Hagmatana fixture requires the witnessed Pangaea source and an earlier pre-reservation clock')
     out.mkdir(parents=True)
     shutil.copyfile(FIXTURE, out/FIXTURE.name)
     shutil.copyfile(Path(__file__), out/Path(__file__).name)
@@ -222,6 +222,8 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
             raw=fixture('outcome','CSC_AI_BakersGameplay',label='initial-outcome')
             require(f'CSC_WONDER_FIXTURE_OUTCOME\t{prepare_at}\tfalse\t-1\ttrue\t' in raw,
                     'The prepared producer must be operating before the Wonder is present')
+            raw=fixture('watch','CSC_AI_BakersGameplay')
+            require(f'CSC_WONDER_FIXTURE_WATCH_INSTALLED\t{prepare_at}' in raw, 'Wonder site watcher not installed')
             # As in the pre-roll, preserve the shared controller's guarded
             # observer recovery windows while the ordinary AI chooses work.
             for boundary in range(prepare_at+5,through,5):
@@ -271,7 +273,10 @@ if __name__=='__main__':
         run_arm(args.source,args.output,args.dependencies,False,*common,survey_only=True,
                 prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana)
     else:
-        require(0 < args.through-prepare_at <= 35,'Wonder replay needs 1 to 35 turns after setup')
+        # Give the earlier Hagmatana pair enough time to pay Broadway's cost.
+        # Both copies still compete against the same world's ordinary orders.
+        max_turns = 55 if args.stock_hagmatana else 35
+        require(0 < args.through-prepare_at <= max_turns, f'Wonder replay needs 1 to {max_turns} turns after setup')
         target=run_arm(args.source,args.output/'off',args.dependencies,False,*common,
                        prepare_at=prepare_at,stock_hagmatana=args.stock_hagmatana)
         expected=None

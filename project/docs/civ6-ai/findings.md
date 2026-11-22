@@ -1,5 +1,16 @@
 # CSC findings and evidence
 
+## AI-C225 — A bounded Broadway plot credit carries into the Wonder contract
+
+22 November 2026, roadmap 11.2. Matched Pangaea replays supplied the same
+legal Broadway, Theater and working Tailors layout. The treatment applied
+6,144 Q8 to the exact Broadway plot in 17 native comparisons. Hagmatana's
+Wonder contract went from 878 to 902 utility at the same submission clock.
+Both chose it on 158 and lost the world race to Preah Vihear on 163. Both
+closed at 176 with no Hagmatana payment. The earlier replay tracks the
+same guidance through completed production and the resulting exchange.
+[Exact plot receipt, contract and competition](../research/mods/csc-ai-stage-investments-20261121.md#matched-turn-142-placement-credit-and-the-wonder-race).
+
 ## AI-C224 — A ready Sacristan chain reached the Divine Right comparison and operated
 
 22 November 2026, roadmap 9.1. Two copies of the same Fractal world reached

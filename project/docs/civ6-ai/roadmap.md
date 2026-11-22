@@ -41,7 +41,7 @@
 | 10.2 Build | Value construction from population 10, including Specialty development costs. | Matched replay moved Angkor Wat's Café ahead of a project while preserving its earlier Trader. Expand producer coverage. |
 | [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Zoo follow-through verified. Wonder placement and exchange remain open. |
 | 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Qaraqorum's Zoo received the exact bid, completed on turn 213, and paid both sides of its Café exchange. |
-| 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Guidance implemented. Representative native receipt and placement remain open. |
+| 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Hagmatana's Broadway plot received the native bonus and its Wonder contract rose by 24. Completion and payment with the guided site remain open. |
 | [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Representative Stage Manager follow-through verified in the Québec replay. |
 | 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Québec's Opera and Ballet bid reached the civic comparison, and Stage Manager activated on turn 264 in both arms. |
 | 12.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |

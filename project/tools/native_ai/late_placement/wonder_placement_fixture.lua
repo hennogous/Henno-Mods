@@ -190,36 +190,43 @@ local function workingBuilding(definition,where)
  return buildings:HasBuilding(definition.Index) and not buildings:IsPillaged(definition.Index)
   and buildings:GetBuildingLocation(definition.Index)==where
 end
-if CSC_WONDER_FIXTURE_MODE=='outcome'then
- local buildings=city:GetBuildings()
- local completed=buildings:HasBuilding(wonder.Index)
- local location=completed and buildings:GetBuildingLocation(wonder.Index)or -1
+if CSC_WONDER_FIXTURE_MODE=='outcome' or CSC_WONDER_FIXTURE_MODE=='watch'then
  local transaction
  for row in GameInfo.CSC_BuildingTransactions()do
   if row.SourceBuildingType==producer.BuildingType and row.PartnerBuildingType==wonder.BuildingType then transaction=row end
  end
  assert(transaction,'Missing loaded Fashion House/Wonder exchange')
- -- The producer property can include other adjacent customers. The Wonder's
- -- property is unique to its building type. Record both totals alongside
- -- the quantity implied by this exact physical link and the authored rule.
- local sourceReturn,partnerReturn,linkSource,linkPartner=0,0,0,0
- local functioning=workingBuilding(producer,f.quarter) and workingQuarter(sourceCity,q)
- local linked=completed and functioning and adjacent(q,assert(Map.GetPlotByIndex(location)))
- local quantity=linked and math.floor(city:GetPopulation()/transaction.PopulationStep)*transaction.QuantityAmount or 0
+ local legs={}
  for leg in GameInfo.CSC_BuildingTransactionYields()do
-  if leg.TransactionId==transaction.TransactionId then
-   local prop=leg.AmountProperty
-   if prop and leg.Recipient=='SOURCE'then
-    sourceReturn=sourceCity:GetProperty(prop)or 0
-    linkSource=quantity*leg.AmountPerUnit
-   elseif prop and leg.Recipient=='PARTNER'then
-    partnerReturn=city:GetProperty(prop)or 0
-    linkPartner=quantity*leg.AmountPerUnit
-   end
-  end
+  if leg.TransactionId==transaction.TransactionId and leg.AmountProperty then legs[leg.Recipient]=leg end
  end
- emit('OUTCOME',Game.GetCurrentGameTurn(),completed,location,functioning,sourceReturn,partnerReturn,
-   city:GetPopulation(),linkSource,linkPartner)
+ local sourceLeg,partnerLeg=assert(legs.SOURCE),assert(legs.PARTNER)
+ local function outcome()
+  local buildings=city:GetBuildings()
+  local completed=buildings:HasBuilding(wonder.Index)
+  local location=completed and buildings:GetBuildingLocation(wonder.Index)or -1
+  local functioning=workingBuilding(producer,f.quarter) and workingQuarter(sourceCity,q)
+  local linked=completed and functioning and adjacent(q,assert(Map.GetPlotByIndex(location)))
+  local pop=city:GetPopulation()
+  local quantity=linked and math.floor(pop/transaction.PopulationStep)*transaction.QuantityAmount or 0
+  -- The producer total can include other customers. The partner property
+  -- belongs to this Wonder type. Compare with the exact link's entitlement.
+  return completed,location,functioning,sourceCity:GetProperty(sourceLeg.AmountProperty)or 0,
+   city:GetProperty(partnerLeg.AmountProperty)or 0,pop,quantity*sourceLeg.AmountPerUnit,quantity*partnerLeg.AmountPerUnit
+ end
+ if CSC_WONDER_FIXTURE_MODE=='watch'then
+  -- Diagnostic-only and exact-site. The native district placeholder can
+  -- exist before the Wonder building. Keep foundation and payment separate.
+  assert(not CSC_WonderFixtureWatchInstalled,'Wonder watcher already installed')
+  CSC_WonderFixtureWatchInstalled=true
+  local placeholder=assert(GameInfo.Districts.DISTRICT_WONDER).Index
+  GameEvents.OnGameTurnStarted.Add(function()
+   emit('WATCH',Game.GetCurrentGameTurn(),site:GetDistrictType()==placeholder,outcome())
+  end)
+  emit('WATCH_INSTALLED',Game.GetCurrentGameTurn())
+ else
+  emit('OUTCOME',Game.GetCurrentGameTurn(),outcome())
+ end
  return
 end
 if CSC_WONDER_FIXTURE_MODE=='verify'then
