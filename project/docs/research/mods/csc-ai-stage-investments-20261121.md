@@ -454,6 +454,17 @@ The customer-first plan retains its exact Quarter footprint after it wins a
 native site comparison. Another city's intent or a competing Quarter type
 can invalidate that site. Wonder offers also skip those reconciled plans.
 
+The new turn-25 Fractal source reproduces the Holy Site at 2349. In the
+control, it completes on turn 35, and on turn 40 the player founds a Rural
+Community on the adjacent Tailors target 2424. At publication the city still
+has both of its district slots in use. The earlier packet supplies a positive
+Tailors forecast to the native comparison. The anchored planner had required
+current UI build admission before pricing. The new planner retains a positively
+valued, owned site at known-full capacity if the plot passes the native type check.
+This lets it value loss of the site while waiting for growth. The final
+request still needs live admission. Capacity-waiting sites have a separate
+trace and are excluded from the currently legal opportunity denominator.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions

@@ -149,6 +149,24 @@ snapshot.districts[9].complete=true
 assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
 ''')
 
+    def test_full_capacity_can_retain_its_footprint_until_native_admission(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.connectionGroups={};snapshot.connectionQuarters={quarterAt(20)}
+local entry=snapshot.connectionQuarters[1].entry
+entry.capacityState='full';legal={}
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.option.waiting)
+entry.capacityState='stale';assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+entry.capacityState='full';snapshot.auditConnections=true;snapshot.auditConnectionsOnly=true
+local messages={};print=function(s)messages[#messages+1]=s end
+E.AnchoredConnectionPlans(snapshot,{})
+assert(#messages==1 and messages[1]:find('CSC_AI_CONNECTION_CAPACITY_WAIT',1,true))
+legal={20};entry.capacityState='ready';turn=21
+E.AnchoredConnectionPlans(snapshot,{})
+assert(#messages==2 and messages[2]:find('CSC_AI_CONNECTION_OPPORTUNITY',1,true))
+''')
+
     def test_stage_four_without_specialty_can_price_immediate_adjacency(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

@@ -1394,10 +1394,23 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                             for _,index in ipairs(targets)do admitted[key][index]=true end
                         end
                     end
-                    if admitted[key][entry.plot]then
+                    local ready=admitted[key][entry.plot]
+                    -- QuarterBids intentionally builds a fresh, owned map
+                    -- forecast even at full capacity. Keep an otherwise
+                    -- suitable footprint while waiting for growth because a
+                    -- competing district can consume it before that update.
+                    -- The native cache and request gate still decide if the
+                    -- Quarter can build. Unknown capacity gives no exception.
+                    local waiting=false
+                    if not ready and entry.capacityState=='full'then
+                        local plot=Map.GetPlotByIndex(entry.plot)
+                        waiting=plot and plot:CanHaveDistrict(entry.district,pid,entry.city)
+                    end
+                    if ready or waiting then
                         add('customerFirst',venue.plot,venue.stage,candidate.quarter,
                             {plot=entry.plot,city=entry.city,district=entry.district,rank=entry.finalQ8,
-                             site=site,venue=venue,profile=candidate.profile,transactionReady=transactionReady,wonder=wonder})
+                             site=site,venue=venue,profile=candidate.profile,transactionReady=transactionReady,
+                             wonder=wonder,waiting=waiting})
                     end
                 end
             end
@@ -1409,10 +1422,11 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         for _,ordered in pairs(groups)do for _,group in pairs(ordered)do
             for _,row in pairs(group.plots)do for _,option in ipairs(row.options)do
                 local key=table.concat({group.key,option.city,option.district,row.plot},':')
-                if not previous[key]and not current[key]then
+                local observation=option.waiting and key..':capacityWait'or key
+                if not previous[observation]and not current[observation]then
                     changes[#changes+1]={key=key,group=group,option=option}
                 end
-                current[key]=true
+                current[observation]=true
             end end
         end end
         table.sort(changes,function(a,b)return a.key<b.key end)
@@ -1420,7 +1434,9 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             -- Diagnostic only. Current owned, material-safe and native-legal
             -- option. Valuation, selection and construction have later receipts.
             local group,option=change.group,change.option
-            if option.wonder then
+            if option.waiting then
+                print(string.format('CSC_AI_CONNECTION_CAPACITY_WAIT turn=%d player=%d identity=%s',turn,pid,change.key))
+            elseif option.wonder then
                 print(string.format('CSC_AI_WONDER_CONNECTION_OPPORTUNITY turn=%d player=%d order=customerFirst quarter=%s anchor=%d building=%s city=%d plot=%d',
                     turn,pid,group.quarter,group.anchor,option.venue.building,option.city,option.plot))
             else
@@ -1849,10 +1865,10 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         -- Proposed opportunities and costs. Actual consumption is visible in
         -- CE's early net or late managed journal on the matching packet.
         for _,plan in ipairs(plans)do
-            print(string.format('CSC_AI_CONNECTION_PLAN turn=%d player=%d order=%s anchor=%d stage=%d city=%d district=%d plot=%d valueQ8=%d backup=%d backupQ8=%d costQ8=%d pressureQ8=%d',
+            print(string.format('CSC_AI_CONNECTION_PLAN turn=%d player=%d order=%s anchor=%d stage=%d city=%d district=%d plot=%d valueQ8=%d backup=%d backupQ8=%d costQ8=%d pressureQ8=%d capacityWait=%s',
                 Game.GetCurrentGameTurn(),pid,plan.order,plan.anchor,plan.stage,plan.best.option.city,
                 plan.best.option.district,plan.best.plot,plan.best.valueQ8,plan.backup and plan.backup.plot or -1,
-                plan.backup and plan.backup.valueQ8 or 0,plan.costQ8,plan.pressureQ8 or 0))
+                plan.backup and plan.backup.valueQ8 or 0,plan.costQ8,plan.pressureQ8 or 0,tostring(plan.best.option.waiting==true)))
         end
     end
     if snapshot.WorldStats then
