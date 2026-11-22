@@ -450,6 +450,12 @@ site can still be an adequate backup, so loss pricing waits for stronger
 evidence. A still-legal plan keeps its preferred plot across visits and gives
 new or redirected sites one priority quote. Standing plans alternate with
 rotating alternatives so backup sites can be repriced under a full budget.
+For two plots of the same city and district, an observed disadvantage in the
+backup's native or complete Quarter score reduces how much of the lost link
+it can replace. If those comparison scores are unavailable or belong to
+different city/type scopes, the planner keeps the backup's full quoted value.
+This preserves the site's identity for a later recheck while bounding the
+deduction by the actual local connection value.
 The customer-first plan retains its exact Quarter footprint after it wins a
 native site comparison. Another city's intent or a competing Quarter type
 can invalidate that site. Wonder offers also skip those reconciled plans.
@@ -502,6 +508,9 @@ completed Theater Square on 1231 with a Marae and a working Flax Farm on
 1304. It has no Tailors Specialty, so the candidate must earn credit from
 eligible adjacency without assuming a Stage 4 exchange. The competing
 Bakers has two Base materials and remains a substantial alternative.
+Tailors plot 1230 also touches the Theater. Its native complete score was
+130,525 Q8 against 267,533 Q8 on 1305, so equivalent relationship geometry
+alone cannot establish it as a competitive substitute.
 The turn-100 save already follows contract submission. The matched test
 starts from the earlier turn-50 save, runs both arms with identical staged
 bytes and the flag off, verifies the turn-96 census, then turns the planner

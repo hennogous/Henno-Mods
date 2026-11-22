@@ -1491,6 +1491,34 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         end end
         return utility
     end
+    local function competitiveBackup(first,second)
+        if not second or not second.valueQ8 or second.valueQ8<=0 then return 0 end
+        local a,b=first.option,second.option
+        local best,backup
+        if a.city==b.city and a.district==b.district then
+            if not a.projected then
+                -- Fresh complete Quarter bids include the local economy,
+                -- ordinary siting and the native site costs. A much weaker
+                -- alternative cannot absorb the whole lost connection value.
+                best,backup=a.rank,b.rank
+            elseif not a.waiting and not b.waiting and snapshot.CustomerNetValue then
+                -- The ordinary customer's future building subtotal is common
+                -- to this city and district. Compare its two positive native
+                -- site values before that aggregation, in the same Q8 units.
+                local ready=snapshot.ConnectionDistrictTurns(a.city,a.district)
+                if ready then
+                    best=snapshot.CustomerNetValue(a.city,a.district,first.plot,ready)
+                    backup=snapshot.CustomerNetValue(b.city,b.district,second.plot,ready)
+                    if not(best and best>0 and backup and backup>0)then best,backup=nil,nil end
+                end
+            end
+        end
+        -- Keep the undiminished fallback for other city/type comparisons or
+        -- unknown native quotes. Losing a site never charges more than the
+        -- bounded local connection value, even when the native gap is large.
+        local disadvantage=best and math.max(0,best-backup)or 0
+        return math.max(0,second.valueQ8-disadvantage)
+    end
     for _,order in ipairs({'quarterFirst','customerFirst'})do
         local candidates={}
         for _,group in pairs(groups[order])do
@@ -1534,7 +1562,8 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 -- completions even in a rich city, and defer any scarcity
                 -- penalty while a third option or unknown quote survives.
                 local completeSet=#plots<=2 and (not second or second.valueQ8~=nil)
-                local cost=completeSet and E.ConnectionLossQ8(first.valueQ8,math.max(0,second and second.valueQ8 or 0)) or 0
+                local fallback=completeSet and competitiveBackup(first,second)or nil
+                local cost=fallback and E.ConnectionLossQ8(first.valueQ8,fallback)or 0
                 group.choices={first}
                 if second and second.valueQ8 then group.choices[2]=second end
                 local target=first.option
@@ -1555,7 +1584,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     end
                 end
                 nextMemory[group.key]=first.plot
-                group.best=first;group.backup=second;group.costQ8=cost
+                group.best=first;group.backup=second;group.competitiveBackupQ8=fallback;group.costQ8=cost
                 plans[#plans+1]=group
             else nextMemory[group.key]=nil end
         end
@@ -1873,10 +1902,11 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         -- Proposed opportunities and costs. Actual consumption is visible in
         -- CE's early net or late managed journal on the matching packet.
         for _,plan in ipairs(plans)do
-            print(string.format('CSC_AI_CONNECTION_PLAN turn=%d player=%d order=%s anchor=%d stage=%d city=%d district=%d plot=%d valueQ8=%d backup=%d backupQ8=%d costQ8=%d pressureQ8=%d capacityWait=%s',
+            print(string.format('CSC_AI_CONNECTION_PLAN turn=%d player=%d order=%s anchor=%d stage=%d city=%d district=%d plot=%d valueQ8=%d backup=%d backupQ8=%d costQ8=%d pressureQ8=%d capacityWait=%s competitiveBackupQ8=%s',
                 Game.GetCurrentGameTurn(),pid,plan.order,plan.anchor,plan.stage,plan.best.option.city,
                 plan.best.option.district,plan.best.plot,plan.best.valueQ8,plan.backup and plan.backup.plot or -1,
-                plan.backup and plan.backup.valueQ8 or 0,plan.costQ8,plan.pressureQ8 or 0,tostring(plan.best.option.waiting==true)))
+                plan.backup and plan.backup.valueQ8 or 0,plan.costQ8,plan.pressureQ8 or 0,tostring(plan.best.option.waiting==true),
+                tostring(plan.competitiveBackupQ8)))
         end
     end
     if snapshot.WorldStats then

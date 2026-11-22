@@ -220,6 +220,28 @@ assert(rows[1].delta==-9 and rows[1].connectionCostQ8==6)
 for _,row in ipairs(rows)do assert(row.district~=1 and row.district~=3)end
 ''')
 
+    def test_weak_native_backup_does_not_erase_a_competitive_footprint_loss(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.connectionGroups[1].candidates={main,backup}
+snapshot.CustomerNetValue=function(city,district,plot)
+    return (plot==20 and 1050 or 510)*256
+end
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.plot==20 and plans[1].backup.plot==21)
+assert(plans[1].backup.valueQ8==64*256 and plans[1].competitiveBackupQ8==0 and plans[1].costQ8==32*256)
+snapshot.CustomerNetValue=function(_,_,plot)if plot==20 then return 1050*256 end end
+plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(plans[1].competitiveBackupQ8==64*256 and plans[1].costQ8==0)
+
+snapshot.connectionGroups={};snapshot.connectionQuarters={quarterAt(20),quarterAt(21)}
+snapshot.connectionQuarters[1].entry.finalQ8=1050*256
+snapshot.connectionQuarters[2].entry.finalQ8=510*256
+plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.plot==20 and plans[1].backup.plot==21)
+assert(plans[1].competitiveBackupQ8==0 and plans[1].costQ8==32*256)
+''')
+
     def test_managed_deduction_keeps_fresh_basis_and_skips_carried_score(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
