@@ -254,6 +254,28 @@ E.ApplyConnectionCosts(snapshot,{row},plans,{[3]=true})
 assert(row.finalQ8==100*256)
 ''')
 
+    def test_displacement_quotes_only_available_competitors_with_a_remaining_cost(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+local city={};snapshot.cities={[7]={object=city}}
+snapshot.FutureDistrictTypes=function(object)
+    assert(object==city)
+    return {[1]=true,[2]=true}
+end
+local quotes=0
+snapshot.CustomerNetValue=function(cityID,district,plot)
+    assert(cityID==7 and district==2 and plot==20)
+    quotes=quotes+1
+    return 120*256
+end
+local rows=E.ApplyConnectionCosts(snapshot,{},plans,{[3]=true})
+assert(#rows==1 and rows[1].district==2 and rows[1].delta==-32*256 and quotes==1)
+local completion={player=1,city=7,district=1,plot=20,delta=32*256,connectionPressureQ8=32*256}
+rows=E.ApplyConnectionCosts(snapshot,{completion},plans,{[3]=true})
+assert(#rows==1 and rows[1]==completion and quotes==1)
+''')
+
     def test_quote_budget_and_three_legal_sites_leave_ordinary_choice_open(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

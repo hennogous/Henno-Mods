@@ -1611,16 +1611,26 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
         for _,option in ipairs(plan.best.options)do reserve.completion[option.district]=true end
         if footprintCost>reserve.costQ8 then reserve.plan=plan;reserve.costQ8=footprintCost end
     end end
-    local plots={};for plot in pairs(occupiedByPlan)do plots[#plots+1]=plot end;table.sort(plots)
+    -- Shared completions still contribute their exemptions above. A plot
+    -- whose whole loss budget went to a positive bid needs no native quotes.
+    local plots={};for plot,reserve in pairs(occupiedByPlan)do
+        if reserve.costQ8>0 then plots[#plots+1]=plot end
+    end;table.sort(plots)
     for _,index in ipairs(plots)do
         local reserve=occupiedByPlan[index]
         local plan=reserve.plan
         local city=plan.best.option.city
         local plot=Map.GetPlotByIndex(index)
+        local targetCity=snapshot.cities and snapshot.cities[city]
+        local allowed=targetCity and snapshot.FutureDistrictTypes and snapshot.FutureDistrictTypes(targetCity.object)
         for definition in GameInfo.Districts()do
             local district=definition.Index
+            -- Map fit alone also admits foreign uniques and one-per-city
+            -- types already built here. Neither can spend this footprint.
+            -- Unavailable type facts leave the earlier native quote in charge.
             if district>0 and definition.DistrictType~='DISTRICT_WONDER'
                 and definition.InternalOnly~=true and definition.InternalOnly~=1 and not reserve.completion[district]
+                and (not allowed or allowed[district])
                 and plot:CanHaveDistrict(district,snapshot.id,city)then
                 local key=siteKey(city,district,index)
                 local entry=byKey[key]

@@ -1282,6 +1282,16 @@ function F.New(player,placement,ui,context)
     local customerMaps,customerAdjacency,customerTypes={},{},{}
     local spatialStats={maps=0,adjacencyReads=0,unavailable=0,laggedReads=0,options=0}
     snapshot.SpatialStats=function()return spatialStats end
+    function snapshot.FutureDistrictTypes(city)
+        -- Share the actor and existing-district mask across placement directions
+        -- and displacement quotes. A new snapshot rechecks captures and builds.
+        -- Capacity and research are separate live admission checks.
+        local cityID=city:GetID()
+        if customerTypes[cityID]==nil then
+            customerTypes[cityID]=CSC_AI_FutureDistrictTypes and CSC_AI_FutureDistrictTypes(pid,city)or false
+        end
+        return customerTypes[cityID]or nil
+    end
     local function customerYield(city,plot,definition)
         local key=city:GetID()..':'..plot:GetIndex()..':'..definition.Index
         if customerAdjacency[key]~=nil then return customerAdjacency[key]or nil end
@@ -1326,10 +1336,8 @@ function F.New(player,placement,ui,context)
         spatialStats.maps=spatialStats.maps+1
         local result={plots={},best=0,free={}};customerMaps[key]=result
         local cityID=city:GetID()
-        if customerTypes[cityID]==nil then
-            customerTypes[cityID]=CSC_AI_FutureDistrictTypes and CSC_AI_FutureDistrictTypes(pid,city)or false
-        end
-        if not customerTypes[cityID]or not customerTypes[cityID][definition.Index]then return result end
+        local allowed=snapshot.FutureDistrictTypes(city)
+        if not allowed or not allowed[definition.Index]then return result end
         local center=Map.GetPlot(city:GetX(),city:GetY())
         for _,p in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
             local owner=p:GetOwner()==pid and Cities.GetPlotPurchaseCity(p)
@@ -1408,22 +1416,15 @@ function F.New(player,placement,ui,context)
         -- Rebuild live facts each publication; cache each Quarter/site supply
         -- and each customer/site adjacency through the central snapshot.
         local options,potential={},{}
-        local types=customerTypes -- share actor/type masks with forward layouts
         local work={targets=0,quarterChecks=0,supplyReads=0,options=0,unknown=0}
         snapshot.customerFirstWork=work
-        local function futureTypes(city)
-            local id=city:GetID()
-            if types[id]==nil then types[id]=CSC_AI_FutureDistrictTypes
-                and CSC_AI_FutureDistrictTypes(pid,city)or false end
-            return types[id]
-        end
         local function reserved(index)return snapshot.intentFootprints and snapshot.intentFootprints[index]end
         local function quarterAt(plot,profile)
             local key=plot:GetIndex()..':'..profile.district.Index
             if potential[key]~=nil then return potential[key]or nil end
             potential[key]=false;work.quarterChecks=work.quarterChecks+1
             local city=plot:GetOwner()==pid and Cities.GetPlotPurchaseCity(plot)
-            local allowed=city and futureTypes(city)
+            local allowed=city and snapshot.FutureDistrictTypes(city)
             if not city or not allowed or not allowed[profile.district.Index]
                 or plot:GetDistrictType()~=-1 or plot:GetResourceType()~=-1
                 or protectedPlots[plot:GetIndex()]or reserved(plot:GetIndex())
@@ -1449,7 +1450,7 @@ function F.New(player,placement,ui,context)
         if type(ui.GetLegalDistrictTargets)~='function'or not Map.GetPlotDistance then return options end
         for _,id in ipairs(cityIDs)do
             local city=snapshot.cities[id].object
-            local allowed=futureTypes(city)
+            local allowed=snapshot.FutureDistrictTypes(city)
             for _,district in ipairs(districtIDs)do if allowed and allowed[district]then
                 local mapping=graph[district];local definition=mapping.definition
                 local ok,targets=pcall(ui.GetLegalDistrictTargets,pid,id,definition.Hash)

@@ -521,6 +521,19 @@ new district foundations through the replay. The physical and native
 observers finished with zero faults or drops. Raw data is in
 `Desktop/Codex/csc-ai-anchored-links-20261122/pangaea-150-210-connection-backup`.
 
+Over turns 151–209, publisher time averaged 1.79 s in the control and
+1.92 s in the treatment. The peaks were 2.90 s and 9.02 s. The treatment's
+two slow rounds were concentrated in player 1's placement pass. It issued
+35 footprint deductions across two customer-first plans, then dropped to
+20 on turn 153 as the plan beside the Commercial Hub on 1828 fell out.
+Player 1's measured pass fell from 7.38 s to 0.25 s. The earlier adapter
+asked the native site evaluator about every competing type that fit the
+terrain, including foreign uniques and existing one-per-city types. The
+next revision reuses the shared, per-publication district type mask to skip
+these calls and skips plots whose entire loss budget was spent on the
+completion bid. The regression checks preserve the deduction for an
+available competing type. Peak time needs a fresh live measurement.
+
 A second customer-first case comes from Opango on Continents. At population
 8 with two of three slots used, Bakers and Tailors both bid for plot 1305 at
 +3 adjacency. Bakers won by 737 Q8 (2.88 utility) over Tailors, submitted
