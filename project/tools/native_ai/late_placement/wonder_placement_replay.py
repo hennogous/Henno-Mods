@@ -22,14 +22,15 @@ HERE = Path(__file__).resolve().parent
 FIXTURE = HERE/'wonder_placement_fixture.lua'
 
 
-def run_arm(source, out, dependencies, enabled, at, through, candidate, target=None):
+def run_arm(source, out, dependencies, enabled, at, through, candidate, target=None, *, survey_only=False):
     plan = prepare(source, out, at, at, dependencies, read_only=True)
     require(not native_inventory(), 'Foreign Civ or FireTuner session must be preserved')
     out.mkdir(parents=True)
     shutil.copyfile(FIXTURE, out/FIXTURE.name)
     shutil.copyfile(Path(__file__), out/Path(__file__).name)
     write_json(out/'protocol.json',dict(diagnostic_only=True, source=str(source),
-        checkpoint=plan.checkpoint, enabled=enabled, fixture_edits=True, first=at, last=through))
+        checkpoint=plan.checkpoint, enabled=enabled, fixture_edits=not survey_only,
+        first=at, last=at if survey_only else through))
     controller=make_probe_controller(out,user_root=plan.user_root)
     controller.study_endpoint=through
     controller.autoplay_interval_seconds=900
@@ -56,13 +57,14 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
         require(proof['verified'],'Loaded world differs from checkpoint')
         return True
 
-    def fixture(mode,context):
+    def fixture(mode,context,label=None):
+        label=label or mode
         code=f'local CSC_WONDER_FIXTURE_MODE={lua(mode)}\n'
         code+=f'local CSC_WONDER_FIXTURE_TURN={at}\n'
         code+=f'local CSC_WONDER_FIXTURE_TARGET={lua(target)}\n' if target else ''
         code+=f'local CSC_WONDER_FIXTURE_ENABLED={lua(enabled)}\n'
-        raw=controller.cmd(code+source_code,context,'wonder-'+mode,wait=45)
-        (out/(mode+'.txt')).write_text(raw,encoding='utf-8')
+        raw=controller.cmd(code+source_code,context,'wonder-'+label,wait=45)
+        (out/(label+'.txt')).write_text(raw,encoding='utf-8')
         require('LUA_ERROR' not in raw,'Wonder fixture Lua error')
         return raw
 
@@ -96,30 +98,34 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
                 names=('player','city','site','quarter','supplier','specialty','existing','working','unlocked','wonder')
                 row=dict(zip(names,map(int,match[1].strip().split('\t'))))
                 row['name']=match[2].strip();rows.append(row)
-            require(rows,'No legal owned Wonder tile with Tailors, Base and Specialty supply')
+            write_json(out/'candidates.json', rows)
             # Prefer an existing Quarter, an already unlocked Wonder and a
             # working supplier, in that order. The tie order is stable.
-            target=min(rows,key=lambda r:(-r['existing'],-r['unlocked'],-r['working'],
+            target=min(rows,default=None,key=lambda r:(-r['existing'],-r['unlocked'],-r['working'],
                                           r['player'],r['city'],r['site'],r['wonder'],r['quarter'],r['supplier'],r['specialty']))
-        write_json(out/'target.json',target)
-        setup=fixture('setup','CSC_AI_BakersGameplay')
-        require(f'CSC_WONDER_FIXTURE_SETUP_END\t{at}' in setup,'Wonder world setup failed')
-        offer=re.search(rf'CSC_WONDER_FIXTURE_OFFER\t{at}\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)',setup)
-        require(offer is not None,'Live production offer absent')
-        raw=fixture('verify','PlotInfo')
-        require(f'CSC_WONDER_FIXTURE_VERIFIED\t{at}\t' in raw,'Legal fixture validation failed')
-        controller.play(through)
-        state=controller.state_read('wonder-final-clock')
-        require(state['turn']==through and not state['active'],'Wrong diagnostic endpoint')
-        raw=controller.cmd("print('CSC_WONDER_FINAL='..CE_AISupplierWonderProtectionStatus())",
-                           'CSC_AI_BakersGameplay','wonder-final')
-        (out/'native-endpoint.txt').write_text(raw,encoding='utf-8')
-        status=parse(raw,'CSC_WONDER_FINAL')
-        write_json(out/'native-endpoint.json',status)
-        raw=fixture('outcome','CSC_AI_BakersGameplay')
-        require(f'CSC_WONDER_FIXTURE_OUTCOME\t{through}\t' in raw,'Missing physical Wonder outcome')
-        key=list(map(int,offer.groups()[:4]))
-        write_json(out/'observation.json',dict(target=target,offer_key=key,offer_q8=int(offer[5]),end=state))
+        if not survey_only:
+            require(target is not None,'No legal owned Wonder tile with Tailors, Base and Specialty supply')
+            write_json(out/'target.json',target)
+            setup=fixture('setup','CSC_AI_BakersGameplay')
+            require(f'CSC_WONDER_FIXTURE_SETUP_END\t{at}' in setup,'Wonder world setup failed')
+            offer=re.search(rf'CSC_WONDER_FIXTURE_OFFER\t{at}\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)',setup)
+            require(offer is not None,'Live production offer absent')
+            raw=fixture('verify','PlotInfo')
+            require(f'CSC_WONDER_FIXTURE_VERIFIED\t{at}\t' in raw,'Legal fixture validation failed')
+            raw=fixture('outcome','CSC_AI_BakersGameplay',label='initial-outcome')
+            require(f'CSC_WONDER_FIXTURE_OUTCOME\t{at}\tfalse\t' in raw,'Wonder already completed at the replay start')
+            controller.play(through)
+            state=controller.state_read('wonder-final-clock')
+            require(state['turn']==through and not state['active'],'Wrong diagnostic endpoint')
+            raw=controller.cmd("print('CSC_WONDER_FINAL='..CE_AISupplierWonderProtectionStatus())",
+                               'CSC_AI_BakersGameplay','wonder-final')
+            (out/'native-endpoint.txt').write_text(raw,encoding='utf-8')
+            status=parse(raw,'CSC_WONDER_FINAL')
+            write_json(out/'native-endpoint.json',status)
+            raw=fixture('outcome','CSC_AI_BakersGameplay')
+            require(f'CSC_WONDER_FIXTURE_OUTCOME\t{through}\t' in raw,'Missing physical Wonder outcome')
+            key=list(map(int,offer.groups()[:4]))
+            write_json(out/'observation.json',dict(target=target,offer_key=key,offer_q8=int(offer[5]),end=state))
     finally:
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda:restore_preferences(controller,out),
@@ -143,8 +149,12 @@ if __name__=='__main__':
     parser.add_argument('--candidate-source',type=Path)
     parser.add_argument('--at',type=int,default=200)
     parser.add_argument('--through',type=int,default=205)
+    parser.add_argument('--survey-only',action='store_true',help='Record all legal candidate layouts without edits or play')
     args=parser.parse_args()
-    require(0 < args.through-args.at <= 25,'Wonder replay window must be 1 to 25 turns')
     common=(args.at,args.through,args.candidate_source)
-    target=run_arm(args.source,args.output/'off',args.dependencies,False,*common)
-    run_arm(args.source,args.output/'on',args.dependencies,True,*common,target=target)
+    if args.survey_only:
+        run_arm(args.source,args.output,args.dependencies,False,*common,survey_only=True)
+    else:
+        require(0 < args.through-args.at <= 25,'Wonder replay window must be 1 to 25 turns')
+        target=run_arm(args.source,args.output/'off',args.dependencies,False,*common)
+        run_arm(args.source,args.output/'on',args.dependencies,True,*common,target=target)

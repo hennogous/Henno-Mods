@@ -1,13 +1,15 @@
 -- Isolate Divine Right in the turn-100 world with an operating Base
--- supplier and Temple beside Tailors. Both copies receive only missing
--- producer buildings. Native AI owns the actual civic and its timing.
+-- supplier and Temple beside Tailors. Reset Divine Right before creating
+-- the missing Tailor on both disposable copies. This isolates one civic on
+-- an already developed map. Native AI owns the new selection and completion.
 local pid, cityId, quarterPlot, templePlot = 5, 131073, 2038, 1965
 local player = assert(Players[pid])
 local city = assert(CityManager.GetCity(pid, cityId))
 local quarter, venue = assert(Map.GetPlotByIndex(quarterPlot)), assert(Map.GetPlotByIndex(templePlot))
 local customer = assert(Cities.GetPlotPurchaseCity(venue))
 local civic = assert(GameInfo.Civics.CIVIC_DIVINE_RIGHT)
-local owned = player:GetCulture():HasCivic(civic.Index)
+local culture = player:GetCulture()
+local owned = culture:HasCivic(civic.Index)
 local temple = assert(GameInfo.Buildings.BUILDING_TEMPLE)
 local tailor = assert(GameInfo.Buildings.BUILDING_CSC_TAILORS_TAILOR)
 local workshop = assert(GameInfo.Buildings.BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP)
@@ -25,8 +27,7 @@ local function customerWorks()
     return false
 end
 if mode == 'setup' then
-    assert(Game.GetCurrentGameTurn() == 100 and not owned and not player:IsHuman(),
-        'The archived player must enter the replay without Divine Right')
+    assert(Game.GetCurrentGameTurn() == 100 and not player:IsHuman())
     assert(customer:GetOwner() == pid and customerWorks()
         and Map.GetPlotDistance(quarter:GetX(), quarter:GetY(), venue:GetX(), venue:GetY()) == 1)
     local profile
@@ -38,6 +39,15 @@ if mode == 'setup' then
         supplied = supplied or item.working
     end
     assert(supplied, 'No working Base supplier in the archived Tailors chain')
+    -- Clearing ownership does not broadcast the completion event. Require
+    -- this exact world to have no Tailor before resetting the civic, so the
+    -- Service attachment is created against the reset facts on both copies.
+    assert(not city:GetBuildings():HasBuilding(tailor.Index), 'The fixture needs the archived missing Tailor')
+    local oldProgress = culture:GetCulturalProgress(civic.Index)
+    culture:SetCivic(civic.Index, false)
+    culture:SetCulturalProgress(civic.Index, 0)
+    assert(not culture:HasCivic(civic.Index) and culture:GetCulturalProgress(civic.Index) == 0,
+        'The controlled civic reset was not observed')
     for _, building in ipairs({workshop, tailor}) do
         if not active(city, building, quarterPlot) then
             assert(not city:GetBuildings():HasBuilding(building.Index), 'Producer already exists but is damaged')
@@ -45,7 +55,7 @@ if mode == 'setup' then
         end
         assert(active(city, building, quarterPlot), 'Producer preparation failed')
     end
-    print('CSC_MILESTONE_SACRISTAN_SETUP', pid, cityId, quarterPlot, templePlot, civic.Index)
+    print('CSC_MILESTONE_SACRISTAN_SETUP', pid, cityId, quarterPlot, templePlot, civic.Index, tostring(owned), oldProgress)
 else
     assert(mode == 'outcome')
     print('CSC_MILESTONE_SACRISTAN_OUTCOME', Game.GetCurrentGameTurn(), pid, cityId, tostring(owned),

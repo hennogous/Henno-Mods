@@ -187,9 +187,12 @@ if __name__ == '__main__':
     fixtures.add_argument('--entertainment-preparation', action='store_true',
                           help='Prepare the adjacent Arena on both turn-200 copies to isolate Zoo production')
     fixtures.add_argument('--sacristan-preparation', action='store_true',
-                          help='Prepare the missing Tailor beside an existing Temple to isolate Divine Right')
+                          help='Reset Divine Right and add the missing Tailor beside an existing Temple on both copies')
     args = parser.parse_args()
-    require(0 < args.end - args.start <= 25, 'Replay window must be 1 to 25 turns')
+    # The early civic replay needs to pass the natural Guilds completion near
+    # turn 76. Keep the other diagnostic windows short.
+    max_turns = 30 if args.storekeeper_preparation else 25
+    require(0 < args.end - args.start <= max_turns, f'Replay window must be 1 to {max_turns} turns')
     require(not args.market_rebuild or args.start == 200, 'Market fixture requires the turn-200 source')
     require(not args.storekeeper_preparation or args.start == 50, 'Storekeeper fixture requires the turn-50 source')
     require(not args.entertainment_preparation or args.start == 200, 'Entertainment fixture requires the turn-200 source')

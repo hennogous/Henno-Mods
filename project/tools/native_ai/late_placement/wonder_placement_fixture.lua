@@ -47,6 +47,10 @@ local function workingQuarter(city,plot)
  local d=city:GetDistricts():GetDistrict(quarter.Index)
  return d and d:IsComplete() and not d:IsPillaged() and d:GetX()==plot:GetX() and d:GetY()==plot:GetY()
 end
+local function quarterHost(plot,pid)
+ local city=plot:GetOwner()==pid and Cities.GetPlotPurchaseCity(plot)
+ if city and city:GetOwner()==pid then return city end
+end
 local function emit(name,...)
  local values={...};for i=1,#values do values[i]=tostring(values[i])end
  print('CSC_WONDER_FIXTURE_'..name..'\t'..table.concat(values,'\t'))
@@ -95,15 +99,16 @@ if CSC_WONDER_FIXTURE_MODE=='scout'then
     if plot:CanHaveWonder(wonder.Index,pid,id)then legal[#legal+1]=wonder end
    end end
    if #legal>0 then
-    -- The stock UI build queue exposes the current item by hash. The
-    -- gameplay queue's CurrentlyBuilding method is used only for edits.
-    local item=city:GetBuildQueue():GetCurrentProductionTypeHash()
     for _,q in ipairs(neighbours(plot))do
+     -- A Tailors in a neighboring city of the same player can trade with
+     -- this Wonder. Check capacity and production in the Quarter's city.
+     local host=quarterHost(q,pid)
      local existing=q:GetDistrictType()==quarter.Index
-     local usable=existing and workingQuarter(city,q)
-     if not city:GetDistricts():HasDistrict(quarter.Index) and empty(q) and owns(q,pid,id)
-      and not GameInfo.Districts[item or -1] then
-      usable=q:CanHaveDistrict(quarter.Index,pid,id)
+     local usable=host and existing and workingQuarter(host,q)
+     if host and not host:GetDistricts():HasDistrict(quarter.Index) and empty(q) then
+      -- This is the UI queue. CurrentlyBuilding is available in Gameplay.
+      local item=host:GetBuildQueue():GetCurrentProductionTypeHash()
+      usable=not GameInfo.Districts[item or -1] and q:CanHaveDistrict(quarter.Index,pid,host:GetID())
      end
      if usable then
       for _,sup in ipairs(neighbours(q))do
@@ -134,13 +139,14 @@ local player=assert(Players[f.player])
 local city=assert(CityManager.GetCity(f.player,f.city))
 local site=assert(Map.GetPlotByIndex(f.site))
 local q=assert(Map.GetPlotByIndex(f.quarter))
+local sourceCity=assert(quarterHost(q,f.player))
 local supplier=assert(Map.GetPlotByIndex(f.supplier))
 local special=assert(Map.GetPlotByIndex(f.specialty))
 local function adjacent(a,b)
  return Map.GetPlotDistance(a:GetX(),a:GetY(),b:GetX(),b:GetY())==1
 end
 local function workingBuilding(definition,where)
- local buildings=city:GetBuildings()
+ local buildings=sourceCity:GetBuildings()
  return buildings:HasBuilding(definition.Index) and not buildings:IsPillaged(definition.Index)
   and buildings:GetBuildingLocation(definition.Index)==where
 end
@@ -153,21 +159,33 @@ if CSC_WONDER_FIXTURE_MODE=='outcome'then
   if row.SourceBuildingType==producer.BuildingType and row.PartnerBuildingType==wonder.BuildingType then transaction=row end
  end
  assert(transaction,'Missing loaded Fashion House/Wonder exchange')
- local sourceReturn,partnerReturn=0,0
+ -- The producer property can include other adjacent customers. The Wonder's
+ -- property is unique to its building type. Record both totals alongside
+ -- the quantity implied by this exact physical link and the authored rule.
+ local sourceReturn,partnerReturn,linkSource,linkPartner=0,0,0,0
+ local functioning=workingBuilding(producer,f.quarter) and workingQuarter(sourceCity,q)
+ local linked=completed and functioning and adjacent(q,assert(Map.GetPlotByIndex(location)))
+ local quantity=linked and math.floor(city:GetPopulation()/transaction.PopulationStep)*transaction.QuantityAmount or 0
  for leg in GameInfo.CSC_BuildingTransactionYields()do
   if leg.TransactionId==transaction.TransactionId then
    local prop=leg.AmountProperty
-   if leg.Recipient=='SOURCE'then sourceReturn=city:GetProperty(prop)or 0
-   else partnerReturn=city:GetProperty(prop)or 0 end
+   if prop and leg.Recipient=='SOURCE'then
+    sourceReturn=sourceCity:GetProperty(prop)or 0
+    linkSource=quantity*leg.AmountPerUnit
+   elseif prop and leg.Recipient=='PARTNER'then
+    partnerReturn=city:GetProperty(prop)or 0
+    linkPartner=quantity*leg.AmountPerUnit
+   end
   end
  end
- emit('OUTCOME',Game.GetCurrentGameTurn(),completed,location,workingBuilding(producer,f.quarter),sourceReturn,partnerReturn)
+ emit('OUTCOME',Game.GetCurrentGameTurn(),completed,location,functioning,sourceReturn,partnerReturn,
+   city:GetPopulation(),linkSource,linkPartner)
  return
 end
 if CSC_WONDER_FIXTURE_MODE=='verify'then
  assert(owns(site,f.player,f.city)and empty(site))
  assert(site:CanHaveWonder(wonder.Index,f.player,f.city),'Wonder tile fails stock placement API')
- assert(workingQuarter(city,q)and adjacent(site,q)and adjacent(q,supplier))
+ assert(workingQuarter(sourceCity,q)and adjacent(site,q)and adjacent(q,supplier))
  assert(compatible(supplier,supplier:GetImprovementType())and not supplier:IsImprovementPillaged())
  assert(adjacent(q,special) and specialty[special:GetResourceType()]
   and compatible(special,special:GetImprovementType()) and not special:IsImprovementPillaged())
@@ -195,20 +213,20 @@ local function improve(plot)
  return improvement
 end
 if f.existing==0 then
- local queue=city:GetBuildQueue()
- assert(empty(q)and owns(q,f.player,f.city)and not city:GetDistricts():HasDistrict(quarter.Index))
+ local queue=sourceCity:GetBuildQueue()
+ assert(empty(q)and not sourceCity:GetDistricts():HasDistrict(quarter.Index))
  assert(not GameInfo.Districts[queue:CurrentlyBuilding()or -1],'A district is already queued')
  queue:CreateIncompleteDistrict(quarter.Index,f.quarter,100)
 end
-assert(workingQuarter(city,q))
+assert(workingQuarter(sourceCity,q))
 local improvement=improve(supplier)
 improve(special)
 -- Both arms start with the same functioning producer. Its future exchange
 -- depends on where the AI chooses to build the Wonder and whether it finishes.
 for _,building in ipairs({workshop,producer})do
  if not workingBuilding(building,f.quarter)then
-  assert(not city:GetBuildings():HasBuilding(building.Index),'Fixture only adds missing producers')
-  city:GetBuildQueue():CreateBuilding(building.Index,f.quarter)
+  assert(not sourceCity:GetBuildings():HasBuilding(building.Index),'Fixture only adds missing producers')
+  sourceCity:GetBuildQueue():CreateBuilding(building.Index,f.quarter)
  end
  assert(workingBuilding(building,f.quarter),'Fixture producer unavailable')
 end
