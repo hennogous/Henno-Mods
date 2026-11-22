@@ -39,9 +39,9 @@
 | [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Humanism comparison and completion and Café production timing verified in matched replays. |
 | 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Humanism bids reached the civic comparison. Higher-scoring goals retained priority and both arms unlocked it on turn 113. |
 | 10.2 Build | Value construction from population 10, including Specialty development costs. | Matched replay moved Angkor Wat's Café ahead of a project while preserving its earlier Trader. Expand producer coverage. |
-| [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Zoo follow-through verified. Wonder placement and exchange remain open. |
+| [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Representative Zoo and Broadway cases verified from bid through payment. |
 | 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Qaraqorum's Zoo received the exact bid, completed on turn 213, and paid both sides of its Café exchange. |
-| 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Hagmatana's Broadway plot received the native bonus and its Wonder contract rose by 24. Completion and payment with the guided site remain open. |
+| 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Hagmatana's Broadway bid raised the contract by 24. Both copies of the controlled payment trial finished at the credited site on 168 and paid both sides from 169. |
 | [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Representative Stage Manager follow-through verified in the Québec replay. |
 | 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Québec's Opera and Ballet bid reached the civic comparison, and Stage Manager activated on turn 264 in both arms. |
 | 12.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
@@ -59,7 +59,7 @@
 
 ## Current work
 
-**22 November — Problems 6–12 integrated qualification.** All three matched Online pairs reached turn 250. The treatment operated 54 distinct Services over 3,012 shared observed link-turns against one stock Service and 54 link-turns. Guided Pangaea resumed from its verified turn-200 save and continued past the hidden first-meet interruption. Fractal verified Feudalism, Market and Zoo bids through operation, Pangaea verified Guilds research, and the matched Kish replay verified Divine Right through Sacristan operation. The Wonder tile comparison and payment remain the targeted check. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
+**22 November — Problems 6–12 integrated qualification complete.** All ten in-scope decisions have representative live follow-through and all three matched Online pairs reached turn 250. The treatment operated 54 distinct Services over 3,012 shared observed link-turns against one stock Service and 54 link-turns. Guided Pangaea resumed from its verified turn-200 save. Fractal verified Feudalism, Market and Zoo bids through operation, Pangaea verified Guilds research, Kish verified Divine Right through Sacristan and the controlled Hagmatana pair verified the Broadway tile write through payment. Problems 6.2, 9.2 and 12.2 remain deferred. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
 
 **18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
 Three fresh Online250 seed pairs qualify/restore, with physical links75→86,

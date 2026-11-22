@@ -1,13 +1,15 @@
 # Current CSC AI status
 
-**22 November — All three Problems 6–12 benchmark pairs reached turn 250.**
+**22 November — Problems 6–12 qualification complete.**
+All three benchmark pairs reached turn 250.
 The guided AI operated 54 Services for 3,012 shared observed link-turns,
 compared with one Service for 54 link-turns with stock decision-making.
 The publisher averaged 1.25 seconds per turn and peaked at 2.89 seconds.
-Nine of the ten current roadmap decisions have representative live evidence.
-The matched Kish replay verified Divine Right through Sacristan operation.
-The remaining check is Wonder placement through payment. Tailors material timing and
-Dockmaster remain visible coverage gaps in the ordinary games.
+All ten current decisions have representative live evidence. The matched Kish
+replay verified Divine Right through Sacristan operation. The controlled
+Hagmatana replay verified the Broadway tile bid through construction and
+payment. Tailors material timing and Dockmaster remain visible coverage gaps
+in the ordinary games. Problems 6.2, 9.2 and 12.2 remain deferred.
 [Matched results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
 
 **21 November — Problem 5 verified.** The data-driven customer bid

@@ -19,9 +19,9 @@ flowchart LR
 | 7.1, 7.2 Stage 3 producer | From population 7, price the unlock against the expected exchange. From population 10, bid for the eligible building against other orders. Price working venues and the modeled local returns. | Offline tests cover the population gates, live eligibility and queued orders. The native Guilds comparison and completion are verified in Pangaea. Native Bakery construction is verified in a matched replay. |
 | 8.1, 11.1 Customer building | Price an eligible mapped adjacent customer building for its operating producers, including unique replacements. Group links that share one customer order and round their population return together. | Tests cover shared recipients, population rounding and replacements. On ordinary Fractal, Urumqi's Market and Qaraqorum's Zoo both received their exact bids, completed and paid both sides of the exchange. |
 | 10.1, 10.2 Stage 4 producer | Use the same population gates and require feasible Base and Specialty supply. Supplier readiness constrains material returns. Each distinct missing new improvement carries a share of a Builder's cost. | Offline tests cover missing or late supply, the charge cost, and repair. A treatment Café completed sooner. Humanism reached the civic comparison and completed at the same time in both arms. |
-| 11.2 Wonder site | Use the existing native Wonder-site bid on adjacent owned tiles with viable Base and Specialty. Give more weight as each class becomes operational and preserve material protection. | Hagmatana's prepared Broadway row received the bonus. The world Wonder race still governs completion and payment. |
+| 11.2 Wonder site | Use the existing native Wonder-site bid on adjacent owned tiles with viable Base and Specialty. Give more weight as each class becomes operational and preserve material protection. | Hagmatana's Broadway row received the bonus in three matched pairs. The controlled payment pair completed and paid the exact exchange. The unrestricted pairs recorded cancellations when a rival finished first. |
 
-Astra recommended pricing the effect of one physical queue order at a time through the existing ledger. The controlled replays will check how the applied bid competes with other research and production, then follow selection through to construction or a realised Service. The full games will keep Problem 3 supplier timing visible for both material classes.
+Astra recommended pricing each physical queue order once through the existing ledger. The controlled replays follow bids through native competition, selection and realised effects. The full games track Problem 3 supplier timing for both material classes. Astra independently audited all ten representative decision results and the three matched benchmark pairs before closure.
 
 ## Fractal checkpoint from turn 150 to 165
 
@@ -206,7 +206,21 @@ The pair matched all 49 loaded structural rows across copies and all 67 rows at 
 
 The earlier preparation matched all 60 structural rows across copies, and the intended Broadway site and two suppliers passed the same legality checks. This pair kept ordinary rival production. Hagmatana submitted the contract on turn 146 at 635 control / 659 guided, selected it on turn 150, and the exact plot 1354 acquired the Wonder placeholder on turn 151 in both copies. The guided arm recorded 26 exact native score increases through the turn-151 receipt. Preah Vihear chose Broadway on 155 and won on 161. The Hagmatana contract was cancelled in both copies, and the turn-180 endpoint observed zero exchange payment. Both copies closed and restored settings. Evidence is under `wonder-hagmatana-125-180`.
 
-The separate payment diagnostic uses the same turn-125 setup and holds only the recurring rival's Mass Media in both disposable copies. The fixture verifies the rival's city and civic state and checks the native log for any Broadway production during the hold. Hagmatana's quote, placement and orders use the actual native decisions. The focused observer records the exact tile's foundation, completed building, functioning Fashion House and observed payment, while both unrestricted pairs retain evidence of the world race. Astra reviewed the controlled isolation and the exact payment check.
+### Broadway completion and payment with the recurring rival held
+
+The payment pair used the turn-125 setup and held Preah Vihear's player's Mass Media in both disposable copies from turns 125 to 168. The hold verified the intended city and read back the civic state. The native logs recorded no Broadway order for that player. Other contenders could still compete. Both copies matched all 49 loaded rows and all 60 preparation rows, used the same legal Theater, suppliers and Fashion House, and started with zero Broadway payment. The replay left Hagmatana's selection and production to the game AI. Only the exact placement bid differed between copies.
+
+| Exact Hagmatana result | Control | Guided |
+| --- | ---: | ---: |
+| Positive native writes to Broadway plot 1354 | 0 | 26 |
+| Turn-146 contract value | 660 | 684 |
+| Native contract selected | 150 | 150 |
+| Exact plot foundation first observed | 151 | 151 |
+| Completed by native production | 168 | 168 |
+| First completed building and both payments observed | 169 | 169 |
+| Fashion House Production / Broadway Culture on turns 169–180 | +2 / +2 | +2 / +2 |
+
+The first treatment receipt on turn 126 raised the exact plot from 190,017 to 196,161 Q8. Every applied credit was 6,144 Q8. Both native queues reached 827.6 of 810 production on turn 168. On turn 169, both recorded completed Broadway at 1354 and the functioning Fashion House at 1428. The observed payments matched the authored quantities for twelve consecutive observations through turn 180. Both replays closed and restored settings. This qualifies the full decision boundary for 11.2 in a controlled layout. The two unrestricted pairs retain the evidence of how the same placement credit fares against a faster rival. Raw data is under `wonder-hagmatana-payment-isolation-125-180`.
 
 ## Pangaea through turn 250
 

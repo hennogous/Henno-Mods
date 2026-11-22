@@ -1,5 +1,17 @@
 # CSC findings and evidence
 
+## AI-C226 — Broadway completed at the credited site and paid both sides
+
+22 November 2026, roadmap 11.2. Both copies of the controlled Hagmatana
+replay held Preah Vihear's Mass Media from turns 125–168. The only bid
+difference was the intended Broadway tile. The treatment applied 26 exact
+writes of 6,144 Q8 and the contract rose from 660 to 684 utility. Both arms
+chose it on 150, founded on 1354 on 151 and finished on 168. The Fashion
+House received +2 Production and Broadway +2 Culture on twelve consecutive
+observations from turn 169 to 180. The earlier unrestricted pairs show the
+world race still cancelling the credited investment when a rival finishes.
+[Exact plot, queue and transaction evidence](../research/mods/csc-ai-stage-investments-20261121.md#broadway-completion-and-payment-with-the-recurring-rival-held).
+
 ## AI-C225 — A bounded Broadway plot credit carries into the Wonder contract
 
 22 November 2026, roadmap 11.2. Matched Pangaea replays supplied the same
