@@ -33,8 +33,8 @@
 | 7.2 Build | Value construction from population 10 against ordinary competition. | Angkor Thom received the Bakery bid and completed the building. The control also built it. |
 | [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Representative Market build and exchange verified in ordinary Fractal play. |
 | 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Urumqi's exact Market bid was applied, it completed on turn 205, and the Bakery and Market each received 26 units. |
-| [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Innkeeper and Sacristan operate in the campaign. A ready-chain civic bid needs targeted qualification. |
-| 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | Candidate integrated. Native follow-through open. |
+| [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Innkeeper and Sacristan operate in the campaign. The matched Kish replay verifies the Sacristan unlock path. |
+| 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | The Divine Right bid reached three native comparisons. The AI selected Divine Right as its immediate step and operated Sacristan from turn 71. |
 | 9.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Humanism comparison and completion and Café production timing verified in matched replays. |
 | 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Humanism bids reached the civic comparison. Higher-scoring goals retained priority and both arms unlocked it on turn 113. |
@@ -59,7 +59,7 @@
 
 ## Current work
 
-**22 November — Problems 6–12 integrated qualification.** All three matched Online pairs reached turn 250. The treatment operated 54 distinct Services over 3,012 shared observed link-turns against one stock Service and 54 link-turns. Guided Pangaea resumed from its verified turn-200 save and continued past the hidden first-meet interruption. Fractal verified Feudalism, Market and Zoo bids through operation, and Pangaea verified Guilds research. A ready Stage 3 Service unlock and the Wonder tile comparison remain the targeted checks. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
+**22 November — Problems 6–12 integrated qualification.** All three matched Online pairs reached turn 250. The treatment operated 54 distinct Services over 3,012 shared observed link-turns against one stock Service and 54 link-turns. Guided Pangaea resumed from its verified turn-200 save and continued past the hidden first-meet interruption. Fractal verified Feudalism, Market and Zoo bids through operation, Pangaea verified Guilds research, and the matched Kish replay verified Divine Right through Sacristan operation. The Wonder tile comparison and payment remain the targeted check. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
 
 **18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
 Three fresh Online250 seed pairs qualify/restore, with physical links75→86,

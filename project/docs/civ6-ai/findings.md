@@ -1,5 +1,18 @@
 # CSC findings and evidence
 
+## AI-C224 — A ready Sacristan chain reached the Divine Right comparison and operated
+
+22 November 2026, roadmap 9.1. Two copies of the same Fractal world reached
+turn 55 with zero Culture invested in Divine Right. Both received the same
+missing buildings. The control withheld only the target Service credit. The
+treatment published 15 bids. Native receipts applied three, with Divine
+Right recorded as the immediate step at the last comparison. Both copies
+completed it on 71 and the exact Tailors–Temple link operated on nine shared
+observations from 71 through 81. Native district IDs tied the operating link
+to the prepared plots. The earlier turn-70 test began after the choice and
+recorded the effect without a native bid comparison.
+[Matched research and Service evidence](../research/mods/csc-ai-stage-investments-20261121.md#kishs-sacristan-before-the-civic-choice).
+
 ## AI-C223 — Guided chains operated more often across the three matched seeds
 
 22 November 2026. Continents, Fractal and Pangaea reached Online turn 250

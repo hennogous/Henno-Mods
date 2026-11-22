@@ -4,9 +4,9 @@
 The guided AI operated 54 Services for 3,012 shared observed link-turns,
 compared with one Service for 54 link-turns with stock decision-making.
 The publisher averaged 1.25 seconds per turn and peaked at 2.89 seconds.
-Eight of the ten current roadmap decisions have representative live evidence.
-The two remaining checks are the ready Stage 3 Service civic and the Wonder
-site comparison through placement and payment. Tailors material timing and
+Nine of the ten current roadmap decisions have representative live evidence.
+The matched Kish replay verified Divine Right through Sacristan operation.
+The remaining check is Wonder placement through payment. Tailors material timing and
 Dockmaster remain visible coverage gaps in the ordinary games.
 [Matched results](../research/mods/csc-ai-stage-investments-20261121.md#combined-benchmark-results).
 
