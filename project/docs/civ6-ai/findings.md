@@ -1,5 +1,15 @@
 # CSC findings and evidence
 
+## AI-C222 — Later customer bids can reach construction and pay both sides
+
+22 November 2026. In the ordinary Fractal combined run, CE applied Urumqi's
+Market and Qaraqorum's Zoo bids to their exact building decisions. The native
+queues finished them on turns 205 and 213. The turn-250 census verified payment
+on both sides from the adjacent Bakery and Café, respectively. Several other
+customer offers expired while their city selected competing work. The same
+run recorded no exact Wonder tile matches, despite repeated site publications.
+[Normal-start evidence](../research/mods/csc-ai-stage-investments-20261121.md#fractal-through-turn-250).
+
 ## AI-C221 — Reusing exact joint plans cuts guidance processing on Pangaea
 
 18 November 2026. A read-only turn-200 comparison with two original AI

@@ -25,24 +25,24 @@
 | 4.2 Build | Bid for the legal producer when its Base supply justifies investment. | Both Mills and the Workshop completed in fresh play. The supplier planner offered Opango's Flax work during Mill construction. |
 | [5. Stage 2 customer](#5-stage-2-customer) | Complete the mapped customer building and verify its exchange with the producer. | Verified in matched replays and ordinary play for Bakers and Tailors. |
 | 5.1 Build | Favor the mapped customer building, including unique replacements. | Québec bought its Lighthouse while building a Commercial Hub. The endpoint verified both sides of the Workshop exchange. Unique Granary pricing passed the gameplay-definition fixture. |
-| [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Storekeeper operation verified in selected chains. Unlock guidance and strategic priorities remain open. |
-| 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | Feudalism received the bid and completed on turn 71. A separate intact chain activated Storekeeper. |
+| [6. Stage 2 Service](#6-stage-2-service) | Value the unlock when a chain is ready and verify the Service operates. | Representative Storekeeper follow-through verified in ordinary Fractal play. |
+| 6.1 Unlock | Combine the value of distinct ready chains when pricing the unlock. | The ordinary Fractal civic receipt identified Feudalism as the immediate step. The player completed it and the same offered source activated Storekeeper on turn 71. |
 | 6.2 Strategy | Adjust the value for empire needs and victory direction. | Deferred. |
-| [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Planned. |
+| [7. Stage 3 producer](#7-stage-3-producer) | Unlock and build the producer when city population and expected returns justify it. | Construction verified. Exact unlock completion is the remaining replay check. |
 | 7.1 Unlock | Value the tech or civic from population 7 when the investment pays. | Guilds received the bid and appeared as the immediate next step. Unlock completion remains open. |
 | 7.2 Build | Value construction from population 10 against ordinary competition. | Angkor Thom received the Bakery bid and completed the building. The control also built it. |
-| [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Planned. |
-| 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Mahendraparvata received the Market bid and completed the building. Follow the resulting transaction in the campaign. |
-| [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Planned. |
+| [8. Stage 3 customer](#8-stage-3-customer) | Build the mapped customer building and verify its exchange. | Representative Market build and exchange verified in ordinary Fractal play. |
+| 8.1 Build | Favor the adjacent mapped Stage 3 customer and verify the exchange. | Urumqi's exact Market bid was applied, it completed on turn 205, and the Bakery and Market each received 26 units. |
+| [9. Stage 3 Service](#9-stage-3-service) | Value the unlock and useful benefits of each ready Stage 3 chain. | Innkeeper and Sacristan operate in the campaign. A ready-chain civic bid needs targeted qualification. |
 | 9.1 Unlock | Price the unlock from the distinct ready Stage 3 chains. | Candidate integrated. Native follow-through open. |
 | 9.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
-| [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Planned. Specialty supplier work is already covered under Problem 3. |
+| [10. Stage 4 producer](#10-stage-4-producer) | Unlock and build the producer when population, Base supply and Specialty supply justify it. | Humanism comparison and completion and Café production timing verified in matched replays. |
 | 10.1 Unlock | Value the tech or civic from population 7 with viable Base and Specialty supply. | Humanism bids reached the civic comparison. Higher-scoring goals retained priority and both arms unlocked it on turn 113. |
 | 10.2 Build | Value construction from population 10, including Specialty development costs. | Matched replay moved Angkor Wat's Café ahead of a project while preserving its earlier Trader. Expand producer coverage. |
-| [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Wonder placement guidance implemented. Customer-building guidance and broader qualification remain open. |
-| 11.1 Customer building | Favor the mapped building in an adjacent customer district. | A legal Zoo bid reached both native selectors. Construction and payment remain open. |
+| [11. Stage 4 customer or Wonder](#11-stage-4-customer-or-wonder) | Build the mapped customer or choose a legal Wonder site beside the Quarter. | Zoo follow-through verified. Wonder placement and exchange remain open. |
+| 11.1 Customer building | Favor the mapped building in an adjacent customer district. | Qaraqorum's Zoo received the exact bid, completed on turn 213, and paid both sides of its Café exchange. |
 | 11.2 Wonder | Favor a legal mapped Wonder tile beside a Quarter with the required supply. | Guidance implemented. Representative native receipt and placement remain open. |
-| [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Planned. |
+| [12. Stage 4 Service](#12-stage-4-service) | Favor the unlock when the linked supply chain can deliver useful benefits. | Representative Stage Manager follow-through verified in the Québec replay. |
 | 12.1 Unlock | Price the unlock from distinct ready Stage 4 chains. | Québec's Opera and Ballet bid reached the civic comparison, and Stage Manager activated on turn 264 in both arms. |
 | 12.2 Strategy | Value the effect for empire needs and victory direction. | Deferred. |
 | [13. Recovery and retention](#13-recovery-and-retention) | Repair damaged links, protect working supply and replan after permanent losses. | Repair and protection verified in matched replays. Broader recovery and replanning remain open. |
@@ -59,7 +59,7 @@
 
 ## Current work
 
-**21 November — Problems 6–12 candidate.** Service unlock, later producer and customer investment, and Wonder supply gates share the economic model and existing native comparisons. The first matched checkpoint replay moved one Café ahead of a district project. An earlier checkpoint targets the research choices. Three ordinary Online250 pairs are preselected for integrated qualification. [Policy, replay and test plan](../research/mods/csc-ai-stage-investments-20261121.md).
+**22 November — Problems 6–12 integrated qualification.** Continents and Fractal completed both Online turn-250 arms. The treatment operated 31 distinct Services over 1,848 shared observed link-turns across the two maps. The stock arms recorded one Service and 54 link-turns. Pangaea resumed on the preselected seeds after the host outage. Fractal verified native bids through operation for Feudalism, a Market and a Zoo. The Stage 3 producer unlock trace, a ready Stage 3 Service unlock and the Wonder tile comparison remain the targeted checks. [Policy, replays and benchmark results](../research/mods/csc-ai-stage-investments-20261121.md).
 
 **18 November — Problem2.1 closed for integrated Bakers/Tailors placement.**
 Three fresh Online250 seed pairs qualify/restore, with physical links75→86,
