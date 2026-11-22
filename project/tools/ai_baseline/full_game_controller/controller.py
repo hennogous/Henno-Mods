@@ -29,7 +29,7 @@ def make_controller(base_class,*,diagnostics,boundary_decision,tuner_port,prepar
   'state_discovery':staticmethod(state_discovery)if state_discovery else None})
 
 EXIT_ONLY_OBSERVER_WARS=frozenset(('DECLARE_SURPRISE_WAR','DECLARE_FORMAL_WAR'))
-FIRST_MEET_OBSERVER_STATEMENTS=frozenset(('FIRST_MEET_NEAR_RECIPIENT',))
+FIRST_MEET_OBSERVER_STATEMENTS=frozenset(('FIRST_MEET_NEAR_RECIPIENT','FIRST_MEET_NEAR_INITIATOR'))
 PASSIVE_OBSERVER_STATEMENTS=frozenset(('WARNING_TOO_MANY_TROOPS_NEAR_ME','DIPLOMATIC_KUDO','DIPLOMATIC_WARNING','DIPLOMATIC_HIDDEN_AGENDA_KUDO','DIPLOMATIC_HIDDEN_AGENDA_WARNING'))
 # Choice-bearing prompts are NOT passive messages. This narrow opt-in uses the
 # shipped Escape/ExitConversationMode cancellation semantics for the artificial
