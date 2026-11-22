@@ -271,6 +271,42 @@ Across the 598 shared observation clocks the guided AI delivered 54 distinct Ser
 
 The guided AI built 20 fewer Quarters while increasing working Base links from 6 to 55. The gains are concentrated in Bakers. Tailors fell from 37 to 12 completed Quarters and added five Sacristans. The absence of Dockmaster or Stage 4 Services in normal games remains visible. The earlier Québec matched replay independently verifies actual Stage Manager activation after its civic unlock.
 
+### What limits Tailors beyond coastal sites
+
+Join `QUARTER`, `MATERIAL`, `PRODUCER` and `CUSTOMER` by Quarter plot in each
+turn-250 census. Use the recovered Pangaea endpoint for the guided arm. Count
+each completed Quarter once per map. A working producer requires an intact
+Quarter, and a working customer requires a completed host and
+operating building. These endpoint counts complement the whole-game Service
+clocks.
+
+| Tailors at turn 250 | Stock | Guided |
+| --- | ---: | ---: |
+| Completed Quarter | 37 | 12 |
+| At least one adjacent Base deposit | 4 | 12 |
+| At least one working Base supplier | 4 | 11 |
+| Adjacent mapped Stage 3 district | 3 | 5 |
+| Working Tailor and adjacent working Temple or Market | 2 | 4 |
+| Both material classes working | 0 | 3 |
+| Both material classes working and an operating Fashion House | 0 | 2 |
+| Both material classes working and a working mapped Stage 4 customer | 0 | 0 |
+
+All seven adjacent mapped Stage 3 hosts in guided play contained a working
+Temple or Market at the endpoint. The other seven Tailors had no adjacent
+mapped Stage 3 district. Five Sacristan links operated during the runs for
+372 shared link-turns. The six working Stage 4 customer hosts and the three
+Tailors with both suppliers were on different Quarter sites. The earlier
+Québec replay demonstrates that a fully assembled Stage Manager can instead
+wait on the civic.
+
+The quality filter selects fewer Tailors and increases the number with usable
+Base supply. Earlier [Perth evidence](csc-ai-perth-followthrough-20261117.md)
+also shows one competitive site losing at district selection despite exact
+bid delivery. For inland Tailors, the benchmark points to viable Base sites
+that can share space with a Holy Site or Commercial Hub, and to the overlap
+of Specialty and Theater footprints for Stage 4. Native candidate and score
+comparisons would distinguish scarce legal footprints from low district bids.
+
 ### First observed unlocks, producer completions and Services
 
 Each cell shows stock → guided. Civic turns are the first ownership observation among all AI players in that game. Producer turns are the first time a corresponding order reached its cost in `City_BuildQueue.csv`, in stage order. This measures completed production orders. The endpoint tables count actual buildings, including purchases. On Pangaea the production log uses the original prefix before turn 200 and the verified replay from turn 200. Service turns use the shared observation clocks.
