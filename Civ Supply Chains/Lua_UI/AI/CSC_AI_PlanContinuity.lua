@@ -66,7 +66,7 @@ function C.Selected(state,entry)
     plan={city=entry.city,district=entry.district,plot=entry.plot,observed=state.turn,
         acquired=entry.frontier and -1 or state.turn,frontier=entry.frontier==true,
         baselineWorkers=entry.footprintWorkers or -1,signature=entry.footprintSignature or '_',
-        lastQ8=entry.finalQ8,lastFresh=entry.publishedTurn or state.turn-1,unknownUsed=0}
+        lastQ8=entry.beforeConnectionQ8 or entry.finalQ8,lastFresh=entry.publishedTurn or state.turn-1,unknownUsed=0}
     state.plans[id]=plan;event(state,'selected',plan,'native_best')
     -- Bound persisted memory independently of publication size. Keep recent
     -- confirmed intents; never evict by a speculative offer's score.
@@ -149,7 +149,10 @@ function C.Committed(state,entries)
         local plan=state.plans[key(entry.city,entry.district,entry.plot)]
         if entry.player==state.player and plan and plan.plot==entry.plot
             and entry.economy and not entry.carried and entry.finalQ8>0 then
-            plan.lastQ8=entry.finalQ8;plan.lastFresh=state.turn;plan.unknownUsed=0
+            -- Transient connection costs are revalidated each publication.
+            -- A grace quote carries the fresh Quarter basis, without an old
+            -- soft claim for a site that may since have become occupied.
+            plan.lastQ8=entry.beforeConnectionQ8 or entry.finalQ8;plan.lastFresh=state.turn;plan.unknownUsed=0
         end
     end
 end

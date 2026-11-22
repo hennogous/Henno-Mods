@@ -362,6 +362,71 @@ competition still decide whether to complete the connection. A matched replay
 should contain a close connected choice, a clearly stronger competing site and
 a lost or occupied footprint before retesting whole games.
 
+#### Anchored connection prototype
+
+The prototype runs inside CSC's normal placement adapter when its test switch
+is enabled. It uses one completed working district as the anchor. For a
+Quarter anchor, it reads current native-legal customer footprints and the
+loaded venue mappings. For a customer anchor, it starts from positive normal
+Quarter bids and checks current native admission. The same path accepts
+Markets, Temples, Zoos, Ferris Wheels and Leugi's Conservatory when their
+loaded definitions match. Stage 4 needs viable supply of both material
+classes. The existing quotes still make the bids to complete the link.
+
+Each player checks up to two groups per placement order and prices at most
+two distinct sites per group. The twin ledger quotes estimate ordinary
+transaction value with and without a venue, using the current readiness of
+materials, producer, district and buildings. An exclusive competing build
+pays half the estimated value lost compared with the backup, capped at 64
+native utility. Equally valuable backups yield zero cost. Three or more
+known sites, unavailable quotes and disappearing candidates leave a group
+without a deduction. Across groups sharing a plot, take the largest loss and
+exempt productive alternatives. Only the most recent selected identities are
+remembered. Prices, validity and costs are recalculated each publication.
+
+The prototype uses CE's existing early district residual and managed Quarter
+score. An early deduction is clamped to keep the estimated native cell positive
+for building aggregation. An unmodified Quarter basis is used if its fresh
+forecast goes missing later, so a carried bid cannot accumulate yesterday's
+deductions. The native private yield and gameplay SQL stay at the benchmark
+settings. The prototype compares local ordinary transaction value and the
+normal bids handle wider economic and Service effects.
+
+The matched Pangaea replay used the archived turn-100 save and identical Dev
+CE `6244570`, gameplay files and optional mods in each arm. Both source
+censuses matched all 94 archived structural rows, and both completed turn
+115 and restored preferences. The prototype produced 28 positive
+Quarter-first plan observations across four distinct anchors. From 60 sampled
+post-commit receipts, the native engine wrote 38 deductions. Both arms ended
+with the same 11 physical Quarter sites and 15 customer-host links. Turns
+101–115 averaged 1.351 seconds for the control and 1.410 for the prototype,
+with maxima of 1.749 and 1.829 seconds. This example measures delivery and
+cost in a short replay with an equal physical link outcome.
+
+The natural Continents turn-150 replay matched 142 structural rows in both
+arms. Two promising customer-first city scopes were already full for district
+slots. The prototype priced no qualifying connection by turn 155. Both arms
+ended with the same 11 Quarter sites and 19 customer-host links. Turns 151–155
+averaged 1.576 seconds for the control and 1.608 for the prototype, with
+maxima of 1.697 and 1.791 seconds.
+
+The controlled Continents capacity replay adds two population to player 4's
+city 196610 in each copy of the same turn-150 save, opening one district slot.
+The game controller verifies a working Commercial Hub on 2506 and ten legal
+Tailors sites including the linked 2581. On turns 151 and 152, the prototype
+values that Stage 3 connection at 7,570 and 7,604 Q8. The four sampled
+competing district cells on 2581 each receive the 3,785 then 3,802 Q8
+deduction. The Tailors keeps its ordinary bid. Both arms close and restore
+preferences, and the planned tile remains open at both turn-153 endpoints.
+This is live customer-first delivery with a controlled capacity change and
+an equal physical outcome.
+
+Raw Dev CE and replay evidence is under
+`Desktop/Codex/csc-ai-anchored-links-20261122`. The three output folders are
+`pangaea-100-115`, `continents-150-155` and `continents-capacity-150-153`.
+The staged candidate changes only the five declared Lua policy files.
+The ordinary CSC package still starts with the prototype switch off.
+
 ### First observed unlocks, producer completions and Services
 
 Each cell shows stock → guided. Civic turns are the first ownership observation among all AI players in that game. Producer turns are the first time a corresponding order reached its cost in `City_BuildQueue.csv`, in stage order. This measures completed production orders. The endpoint tables count actual buildings, including purchases. On Pangaea the production log uses the original prefix before turn 200 and the verified replay from turn 200. Service turns use the shared observation clocks.

@@ -129,6 +129,13 @@ local function reportReceipts(turn, version, status)
         print(string.format('CSC_AI_CUSTOMER_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d result=%s',
             turn, version, site.player, site.city, site.district, site.plot, result))
     end
+    -- Diagnostic only. Retain a few exact entries in each placement order
+    -- after packet trimming. A receipt can say staged without a native read.
+    for _,site in ipairs(previous.connections or {})do
+        local result=readReceipt(CE_AIDistrictScoresReceipt,version,site.player,site.city,site.district,site.plot)
+        print(string.format('CSC_AI_CONNECTION_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d order=%s costQ8=%d result=%s',
+            turn,version,site.player,site.city,site.district,site.plot,site.connectionOrder,site.connectionCostQ8,result))
+    end
     for i = 1, math.min(#previous.buildings, buildingReceiptLimit) do
         local bid = previous.buildings[i]
         local result = readReceipt(CE_AIBuildingNominationReceipt, version, bid.player, bid.city, bid.building)
@@ -607,8 +614,15 @@ local function refresh(turn)
     local siteBids, weakSites, customerSites = 0, 0, 0
     -- Save the exact published identities for readback on the next boundary.
     -- Receipt caps limit logging work. They do not limit what CE receives.
-    local tracked = {turn=turn,version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes}
+    local tracked = {turn=turn,version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes,
+        connections={}}
+    local connectionReads={quarterFirst=0,customerFirst=0}
     for _, entry in ipairs(entries) do
+        local connectionOrder=entry.connectionOrder
+        if connectionOrder and connectionReads[connectionOrder]<4 and type(CE_AIDistrictScoresReceipt)=='function'then
+            tracked.connections[#tracked.connections+1]=entry
+            connectionReads[connectionOrder]=connectionReads[connectionOrder]+1
+        end
         if entry.finalQ8~=nil then tracked.economy[#tracked.economy+1]=entry end
         if entry.weak then
             weakSites = weakSites + 1

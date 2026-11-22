@@ -86,6 +86,15 @@ assert(M.CustomerBuildingForecast(site,{venue},1,31,price).valueQ8==0)
 assert(M.CustomerBuildingForecast(site,{venue},1,nil,price)==nil)
 ''')
 
+    def test_existing_customer_link_values_only_the_mapped_exchange(self):
+        self.model().execute('''
+venue.complete=true;venue.working=true;venue.projected=false;venue.maintenance=0
+site.customers={venue}
+site.direct={{id='unrelated',yield='YIELD_FOOD',amount=100,ready=0,city=1}}
+assert(M.ExistingCustomerConnectionValue(site,venue,price)==3*(26/256*10)*30*256)
+assert(#site.customers==1 and site.customers[1]==venue and site.service.amount==9999)
+''')
+
     def test_customer_queue_delays_missing_producer_in_same_city_but_cities_can_build_in_parallel(self):
         vm=self.model()
         vm.execute('''

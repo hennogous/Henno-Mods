@@ -1373,6 +1373,24 @@ function M.StageBuildingInvestment(links,price)
     if before and after then return after-before end
 end
 
+function M.ExistingCustomerConnectionValue(site, customer, price)
+    -- Estimate the ordinary value at risk if a new Quarter can no longer
+    -- reach this particular existing venue. Use the same local ledger twice,
+    -- including producer/building readiness and any investment still needed.
+    -- Both arms omit Services. The regular Quarter bid still owns its joint
+    -- valuation and the private native yield stays outside these quotes.
+    local without, with = {}, {}
+    for name, value in pairs(site) do without[name]=value;with[name]=value end
+    without.service=nil;with.service=nil
+    without.customers={}
+    for _, venue in ipairs(site.customers or {}) do
+        if venue~=customer then without.customers[#without.customers+1]=venue end
+    end
+    local baseline=M.Forecast(without,price)
+    local linked=baseline and M.Forecast(with,price)
+    return linked and linked.valueQ8-baseline.valueQ8
+end
+
 function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,price)
     -- Building-transaction-only diagnostic, not a complete customer district
     -- value or a new customer policy. District adjacency/provider externalities

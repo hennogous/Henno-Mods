@@ -11,12 +11,14 @@ import shutil
 from types import SimpleNamespace
 
 from ce_bakers_fresh import LOGS
-from ce_replay import DLL, STEAM_26595377_CORE_SHA, verify_modules
+from ce_replay import (DLL, STEAM_26595377_CORE_SHA, archive_development_package,
+                       development_package_files, verify_modules)
 from driver import (HeldProcess, NativeSession, configure, flags, launch, lua,
                     make_probe_controller, manifest, native_inventory, parse, read,
                     require, restore_preferences, sha, write_json)
 from planning_continue import HERE, compare_structure, enable, parse_census, prepare
 from later_stage_results import service_durations
+from ce_bakers_fresh import package_identity
 
 
 POLICY_FILES = (
@@ -26,24 +28,40 @@ POLICY_FILES = (
     'Lua_UI/AI/CSC_AI_EconomyModel.lua',
     'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua',
 )
+CONNECTION_FILES = (
+    'Lua_UI/AI/CSC_AI_BakersGameplay.lua',
+    'Lua_UI/AI/CSC_AI_EconomyAdapters.lua',
+    'Lua_UI/AI/CSC_AI_EconomyFacts.lua',
+    'Lua_UI/AI/CSC_AI_EconomyModel.lua',
+    'Lua_UI/AI/CSC_AI_PlanContinuity.lua',
+)
 
 
-def candidate_package(original, csc_source, candidate):
+def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES):
     """Overlay only registered Lua scripts on an already built CSC package."""
     shutil.copytree(original, candidate)
-    for name in POLICY_FILES:
+    for name in policy_files:
         require((candidate / name).is_file(), 'Missing packaged script ' + name)
         shutil.copy2(csc_source / name, candidate / name)
     before, after = manifest(original), manifest(candidate)
     changed = {Path(name).as_posix() for name in before if before[name] != after[name]}
-    require(set(after) == set(before) and changed == set(POLICY_FILES),
-            'Frozen candidate must differ only in the five registered policy scripts')
+    require(set(after) == set(before) and changed == set(policy_files),
+            'Frozen candidate must differ only in the declared registered policy scripts')
     return after
 
 
 def run_arm(source, output, start, end, candidate_source, fixture=None, *,
-            natural_sacristan=None, expected_preparation=None):
-    plan = prepare(source, output, start, start, None, read_only=True)
+            natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False):
+    if replay_ce is not None:
+        replay_ce=replay_ce.resolve(strict=True)
+        require((replay_ce/'DevCE.modinfo').is_file() and
+                (replay_ce/'Binaries/Win64'/DLL).is_file(), 'Expected a staged Dev CE build')
+    plan = prepare(source, output, start, start, None, read_only=True, replay_ce=replay_ce)
+    if replay_ce is not None:
+        require(package_identity(replay_ce)[0]==plan.protocol['ce'], 'Dev CE replay mod identity differs')
+    if fixture=='connection':
+        require(plan.checkpoint['sha256']=='2c3ac19cd18cfc50b368fb1dddfa40a3507cc8dfd4c3ac28ff503d504e590873',
+                'Connection capacity fixture expects the exact archived Continents layout')
     require(not native_inventory(), 'Another session owns Civ or FireTuner')
     require(plan.protocol['native_profile']['gamecore_sha256'] == STEAM_26595377_CORE_SHA,
             'Checkpoint runtime differs from the supported CE build')
@@ -68,7 +86,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
 
     def verify_packages():
         for item in installed:
-            require(manifest(item['install']) == item['files'], 'Installed package drift')
+            require(development_package_files(item['install']) == item['files'], 'Installed package drift')
         for extra in plan.extras.values():
             require(manifest(Path(extra['path'])) == extra['files'], 'Optional package drift')
 
@@ -126,11 +144,16 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
 
     try:
         for item in plan.packages:
-            require(not item['install'].exists(), 'Test mod destination already exists')
-            if item['role'] == 'csc' and candidate_source:
-                item = dict(item, files=candidate_package(item['source'], candidate_source, item['install']))
+            if item['role']=='ce' and replay_ce is not None:
+                item=dict(item,source=replay_ce,files=development_package_files(replay_ce),reused=item['install'].is_dir())
+                if not item['reused']:shutil.copytree(item['source'],item['install'])
             else:
-                shutil.copytree(item['source'], item['install'])
+                require(not item['install'].exists(), 'Test mod destination already exists')
+                if item['role'] == 'csc' and candidate_source:
+                    policy_files=CONNECTION_FILES if connection_prototype else POLICY_FILES
+                    item=dict(item,files=candidate_package(item['source'],candidate_source,item['install'],policy_files))
+                else:
+                    shutil.copytree(item['source'], item['install'])
             installed.append(item)
         verify_packages()
         write_json(output / 'inputs.json', dict(source=str(source), start=start, end=end,
@@ -172,6 +195,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 buyer = re.search(r'CSC_MILESTONE_ENTERTAINMENT_SETUP\s+3\s+(\d+)\b', setup)
                 require(buyer is not None, 'Entertainment Complex buyer missing from setup')
                 fixture_receipt('legal', 'PlotInfo', int(buyer[1]))
+            elif fixture == 'connection':
+                fixture_receipt('legal', 'PlotInfo')
             elif fixture == 'sacristan':
                 civic_prepared = sacristan_civic_state('progress')
                 if natural_sacristan is not None:
@@ -196,7 +221,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                           restore_package=verify_packages)
         if session.closed or session.owner is None and not native_inventory():
             for item in installed:
-                item['install'].rename(output / item['install'].name)
+                archive_development_package(item['install'],output/item['install'].name,item.get('reused',False))
         if session.closed:
             for name in LOGS:
                 log = plan.user_root / 'Logs' / name
@@ -220,6 +245,8 @@ if __name__ == '__main__':
     for name in ('start', 'end'):
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--arm', choices=('control', 'treatment'), action='append')
+    parser.add_argument('--replay-ce',type=Path,help='Use this pinned Dev CE package in both replay arms')
+    parser.add_argument('--connection-prototype',action='store_true',help='Compare the five anchored-connection Lua overlays')
     fixtures = parser.add_mutually_exclusive_group()
     fixtures.add_argument('--market-rebuild', action='store_true',
                           help='Controlled player-5 Market rebuild on the qualified turn-200 checkpoint')
@@ -231,6 +258,8 @@ if __name__ == '__main__':
                           help='Reset Divine Right and add the missing Tailor beside an existing Temple on both copies')
     fixtures.add_argument('--sacristan-natural', action='store_true',
                           help='Prepare the Tailor and Temple at turn 55 before Divine Right starts')
+    fixtures.add_argument('--connection-capacity', action='store_true',
+                          help='Open one district slot in both copies of the scoped Continents turn-150 save')
     args = parser.parse_args()
     # The early civic replay needs to pass the natural Guilds completion near
     # turn 76. Keep the other diagnostic windows short.
@@ -242,15 +271,19 @@ if __name__ == '__main__':
     require(not args.sacristan_preparation or args.start == 100, 'Sacristan fixture requires the turn-100 source')
     require(not args.sacristan_natural or (args.start == 50 and args.end > 55),
             'Natural Sacristan fixture needs the turn-50 source and an endpoint after preparation at turn 55')
+    require(not args.connection_capacity or (args.connection_prototype and args.start==150),
+            'Connection capacity fixture requires the anchored prototype comparison at turn 150')
     fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
                     (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
-                    (args.sacristan_preparation or args.sacristan_natural, 'sacristan'))
+                    (args.sacristan_preparation or args.sacristan_natural, 'sacristan'),
+                    (args.connection_capacity, 'connection'))
                     if enabled), None)
     preparation = None
     for arm in args.arm or ('control', 'treatment'):
         candidate = args.candidate_source if arm == 'treatment' or args.sacristan_natural else None
         natural = arm == 'treatment' if args.sacristan_natural else None
         result = run_arm(args.source, args.output / arm, args.start, args.end, candidate, fixture,
-                         natural_sacristan=natural, expected_preparation=preparation)
+                         natural_sacristan=natural, expected_preparation=preparation,
+                         replay_ce=args.replay_ce,connection_prototype=args.connection_prototype)
         if result is not None:
             preparation = result

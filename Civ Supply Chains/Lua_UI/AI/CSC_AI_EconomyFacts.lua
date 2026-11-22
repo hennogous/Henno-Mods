@@ -906,6 +906,15 @@ function F.New(player,placement,ui,context)
         end
         facts.capacity=result;return result
     end
+    function snapshot.ConnectionDistrictTurns(cityID,district)
+        -- The connection adapter prices a currently admissible plot. Use
+        -- the same queue-time read/fallback as the customer world forecast.
+        local city=snapshot.cities[cityID]
+        local duration=city and cityNumber(city.object,'districtTurns',district)
+        if duration then return math.max(1,duration) end
+        local cost=city and cityNumber(city.object,'district',district)
+        if cost and city.production and city.production>0 then return math.max(1,math.ceil(cost/city.production)) end
+    end
     function snapshot.Supply(plot,profile)
         local key=profile.key..':'..plot:GetIndex()
         if not snapshot.supplies[key]then snapshot.supplies[key]=placement.ReadSuppliers(player,plot,profile)end
@@ -1920,6 +1929,10 @@ function F.New(player,placement,ui,context)
                         end
                         local related=group.related[plot:GetIndex()]or{index=plot:GetIndex(),links=0}
                         related.links=related.links+1;group.related[plot:GetIndex()]=related
+                        if snapshot.captureConnections then
+                            related.chains=related.chains or{}
+                            related.chains[#related.chains+1]=chain
+                        end
                     end
                 end end
             end
@@ -1939,7 +1952,8 @@ function F.New(player,placement,ui,context)
                     local choices={}
                     for _,row in ipairs(map.free)do if admitted[row.index]and not protectedPlots[row.index]then
                         local link=group.related[row.index]
-                        choices[#choices+1]={plot=row.index,adjacency=row.adjacency,links=link and link.links or 0}
+                        choices[#choices+1]={plot=row.index,adjacency=row.adjacency,links=link and link.links or 0,
+                            chains=link and link.chains}
                     end end
                     -- customerMap sorts ordinary adjacency descending, then
                     -- plot index. This stable reference never reads our already

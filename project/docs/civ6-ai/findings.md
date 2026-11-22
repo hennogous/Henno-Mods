@@ -1,5 +1,17 @@
 # CSC findings and evidence
 
+## AI-C228 — Both anchored placement orders can price competing use of a footprint
+
+22 November 2026, roadmap 1.2 and 2.1. The optional prototype reuses the
+gameplay transaction model and ordinary district score consumers. In the
+matched Pangaea replay the engine applied 38 of 60 sampled Quarter-first
+deductions. In the Continents capacity fixture an existing Hub anchored
+Tailors plot 2581. The engine applied all eight sampled customer-first
+deductions. The natural replay pairs ended with equal physical connections.
+The prototype stays opt-in while we test changes to a native choice and
+measure conversion in ordinary games.
+[Implementation, timings and test evidence](../research/mods/csc-ai-stage-investments-20261121.md#anchored-connection-prototype).
+
 ## AI-C227 — Inland Tailors have legal customer windows that close without a connection
 
 22 November 2026, roadmap 1.2 and 2.1. In the three guided turn-250 games,

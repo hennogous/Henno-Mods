@@ -136,7 +136,7 @@ class ContinuationPlan:
 
 
 def prepare(source, output, at, through, dependencies, *, read_only=False, material_only=False,
-            finish_port_replay=False, observe_material=False, stock_derived=False):
+            finish_port_replay=False, observe_material=False, stock_derived=False, replay_ce=None):
     """Read and qualify all provenance before any install, launch or console.
 
     The failed run may have failure.json or an abrupt exit: supported closure
@@ -161,6 +161,7 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     require(typed and at % 25 == 0 and window and endpoint_ok, 'Unsupported continuation window')
     require(not stock_derived or (read_only and dependencies is None),
             'Stock-derived fixtures require an explicit controller-only source inspection')
+    require(replay_ce is None or read_only, 'Replacement CE is only supported for diagnostic replay preparation')
     require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')
@@ -212,7 +213,12 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
         # A current Dev CE can stay installed between ordinary runs and
         # continuations. Old snapshots still require their exact archived DLL.
         reused = role == 'ce' and (package/'DevCE.modinfo').is_file() and install.is_dir()
-        require(not install.exists() or (reused and development_package_files(install) == originals[role]),
+        # The original artifact remains pinned below. A matched diagnostic can
+        # explicitly select a newer installed CE for both copies of the save.
+        expected_install = development_package_files(replay_ce) if replay_ce is not None and role=='ce' else None
+        replacement = expected_install is not None and (install/'DevCE.modinfo').is_file() and (
+            development_package_files(install)==expected_install)
+        require(not install.exists() or replacement or (reused and development_package_files(install) == originals[role]),
                 'Frozen package/install differs: '+path)
         if stock_derived and role == 'csc':
             # Preserve both the original input digest and the exact dormant
