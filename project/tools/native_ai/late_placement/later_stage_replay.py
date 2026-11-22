@@ -41,7 +41,8 @@ def candidate_package(original, csc_source, candidate):
     return after
 
 
-def run_arm(source, output, start, end, candidate_source, fixture=None):
+def run_arm(source, output, start, end, candidate_source, fixture=None, *,
+            natural_sacristan=None, expected_preparation=None):
     plan = prepare(source, output, start, start, None, read_only=True)
     require(not native_inventory(), 'Another session owns Civ or FireTuner')
     require(plan.protocol['native_profile']['gamecore_sha256'] == STEAM_26595377_CORE_SHA,
@@ -57,6 +58,13 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
     session = NativeSession(output, controller, inventory=native_inventory,
                             hold=HeldProcess, write=write_json)
     installed = []
+    preparation_turn = 70 if natural_sacristan is not None else start
+
+    def play_between(first, last):
+        # Keep shared observer recovery eligible in every finite window.
+        for boundary in range(first + 5, last, 5):
+            controller.play(boundary)
+        controller.play(last)
 
     def verify_packages():
         for item in installed:
@@ -98,14 +106,23 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
         (output / (label + '.txt')).write_text(raw, encoding='utf-8')
         marker = 'CSC_MILESTONE_SERVICE_INSTALLED' if every_turn else 'CSC_MILESTONE_SERVICE_END'
         require(marker in raw, 'Missing Service observation acknowledgement')
+        return raw
 
     def fixture_receipt(mode, context, expected=None):
         script = read(HERE / f'later_stage_{fixture}_fixture.lua')
         label = f'{fixture}-{mode}'
-        raw = controller.cmd(f'local mode={lua(mode)}\nlocal expectedBuyer={lua(expected)}\n' + script, context, label)
+        options = (f'local mode={lua(mode)}\nlocal expectedBuyer={lua(expected)}\n'
+                   f'local naturalSacristan={lua(natural_sacristan)}\nlocal fixtureTurn={preparation_turn}\n')
+        raw = controller.cmd(options + script, context, label)
         (output / (label + '.txt')).write_text(raw, encoding='utf-8')
         require(f'CSC_MILESTONE_{fixture.upper()}_{mode.upper()}' in raw, 'Fixture evidence missing')
         return raw
+
+    def sacristan_civic_state(mode):
+        raw = fixture_receipt(mode, 'PlotInfo')
+        row = re.search(rf'CSC_MILESTONE_SACRISTAN_{mode.upper()}\t([^\r\n]+)', raw)
+        require(row is not None, 'Sacristan civic readback missing')
+        return row[1].split('\t')
 
     try:
         for item in plan.packages:
@@ -118,6 +135,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
         verify_packages()
         write_json(output / 'inputs.json', dict(source=str(source), start=start, end=end,
                    checkpoint=plan.checkpoint['sha256'], fixture=fixture,
+                   natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
                    packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
@@ -132,9 +150,21 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=source_gate)
         ce = next(item for item in installed if item['role'] == 'ce')
         verify_modules(session, (ce['install'] / 'Binaries/Win64' / DLL).resolve(), output, STEAM_26595377_CORE_SHA)
+        if natural_sacristan is not None:
+            # Both arms use the same integrated package throughout pre-roll.
+            # Only the target civic's Service credit is toggled after setup.
+            play_between(start, preparation_turn)
+            prepared = census(preparation_turn, 'preparation-census')
+            if expected_preparation is not None:
+                proof = compare_structure(expected_preparation['census'], prepared)
+                write_json(output / 'preparation-comparison.json', proof)
+                require(proof['verified'], 'The natural Sacristan preparation worlds diverged')
         if fixture:
             if fixture == 'sacristan':
-                fixture_receipt('before', 'PlotInfo')
+                civic_start = sacristan_civic_state('before')
+                require(civic_start[0] == str(preparation_turn), 'Civic UI did not reach the preparation turn')
+                if expected_preparation is not None:
+                    require(civic_start == expected_preparation['civic_start'], 'Starting civic state differs between arms')
             setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay')
             if fixture == 'market':
                 fixture_receipt('legal', 'PlotInfo')
@@ -143,16 +173,16 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
                 require(buyer is not None, 'Entertainment Complex buyer missing from setup')
                 fixture_receipt('legal', 'PlotInfo', int(buyer[1]))
             elif fixture == 'sacristan':
-                fixture_receipt('progress', 'PlotInfo')
-        service_observation('service-before')
+                civic_prepared = sacristan_civic_state('progress')
+                if natural_sacristan is not None:
+                    require(civic_start == civic_prepared, 'Building setup changed natural civic state')
+        service_start = service_observation('service-before')
+        if natural_sacristan is not None:
+            require(not re.search(r'CSC_MILESTONE_SERVICE_LINK\t\d+\t5\tTAILORS\t3\t\w+\t2038\t1965\b',
+                                  service_start), 'The prepared Sacristan was already operational')
         service_observation('service-observer', every_turn=True)
         native_status('native-before')
-        # Keep presentation recovery eligible throughout this matched replay.
-        # The shared controller authorizes observer dismissal in windows of
-        # at most five turns, even when the diagnostic covers a longer span.
-        for boundary in range(start + 5, end, 5):
-            controller.play(boundary)
-        controller.play(end)
+        play_between(preparation_turn, end)
         state = controller.state_read('later-stage-final-clock')
         require(state['turn'] == end and not state['active'], 'Wrong replay boundary')
         census(end, 'endpoint-census')
@@ -177,8 +207,10 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
     log = read(output / 'Lua.log')
     for marker in ('CSC_AI_BAKERS_DISTRICTS_FAILED', 'CSC_MILESTONE_SERVICE_FAULT'):
         require(marker not in log, 'Replay log contains ' + marker)
-    write_json(output / 'observed-services.json', service_durations(log, start + 1, end))
+    write_json(output / 'observed-services.json', service_durations(log, preparation_turn + 1, end))
     write_json(output / 'complete.json', dict(verified=True, turn=end))
+    if natural_sacristan is not None:
+        return dict(census=prepared, civic_start=civic_start)
 
 
 if __name__ == '__main__':
@@ -197,19 +229,28 @@ if __name__ == '__main__':
                           help='Prepare the adjacent Arena on both turn-200 copies to isolate Zoo production')
     fixtures.add_argument('--sacristan-preparation', action='store_true',
                           help='Reset Divine Right and add the missing Tailor beside an existing Temple on both copies')
+    fixtures.add_argument('--sacristan-natural', action='store_true',
+                          help='Prepare the Tailor and Temple at turn 70 while Divine Right is naturally unowned')
     args = parser.parse_args()
     # The early civic replay needs to pass the natural Guilds completion near
     # turn 76. Keep the other diagnostic windows short.
-    max_turns = 30 if args.storekeeper_preparation else 25
+    max_turns = 50 if args.sacristan_natural else 30 if args.storekeeper_preparation else 25
     require(0 < args.end - args.start <= max_turns, f'Replay window must be 1 to {max_turns} turns')
     require(not args.market_rebuild or args.start == 200, 'Market fixture requires the turn-200 source')
     require(not args.storekeeper_preparation or args.start == 50, 'Storekeeper fixture requires the turn-50 source')
     require(not args.entertainment_preparation or args.start == 200, 'Entertainment fixture requires the turn-200 source')
     require(not args.sacristan_preparation or args.start == 100, 'Sacristan fixture requires the turn-100 source')
+    require(not args.sacristan_natural or (args.start == 50 and args.end > 70),
+            'Natural Sacristan fixture needs the turn-50 source and an endpoint after preparation at turn 70')
     fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
                     (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
-                    (args.sacristan_preparation, 'sacristan'))
+                    (args.sacristan_preparation or args.sacristan_natural, 'sacristan'))
                     if enabled), None)
+    preparation = None
     for arm in args.arm or ('control', 'treatment'):
-        run_arm(args.source, args.output / arm, args.start, args.end,
-                args.candidate_source if arm == 'treatment' else None, fixture)
+        candidate = args.candidate_source if arm == 'treatment' or args.sacristan_natural else None
+        natural = arm == 'treatment' if args.sacristan_natural else None
+        result = run_arm(args.source, args.output / arm, args.start, args.end, candidate, fixture,
+                         natural_sacristan=natural, expected_preparation=preparation)
+        if result is not None:
+            preparation = result

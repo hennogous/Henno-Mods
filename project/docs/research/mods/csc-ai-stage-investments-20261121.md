@@ -87,6 +87,8 @@ The current ownership routine evidence is `ev_73c6c355b1d543b036c45af5fea9bc5d1e
 
 The live turn-100 control verified the split Lua surface. `PlotInfo` reported Divine Right as owned with stored progress zero before preparation. The Gameplay script confirmed both setters, cleared ownership and prepared the producer. `PlotInfo` then reported the civic unowned with progress zero. The Gameplay context had no progress getter. The readbacks establish the starting civic state for this copy. The AI then plays toward the unlock under ordinary research rules.
 
+Both turn-100 copies reached turn 125 with the Tailor and Temple operating. The treatment published 25 Divine Right quotes for one chain. All seven measured civic receipts were for another player and topic. Divine Right stayed unowned in both copies and the prepared Sacristan remained inactive. The next fixture starts from the earlier turn-50 save, advances both copies to 70 and uses a naturally unowned Divine Right. It checks the current civic and stored progress across both copies, adds the same missing local buildings and toggles only the prepared player's Divine Right Service credit. Astra reviewed the boundary. Raw reset evidence is under `Desktop/Codex/csc-ai-stage6-12-20261121/sacristan-reset-100-125-v2`.
+
 ## Preselected full-game pairs
 
 Each pair uses a fresh Small Online game through turn 250 on the shared controller, with the same map and game seed, gameplay and UI mods, and pinned Firaxis GameCore and CE build. The control retains CSC gameplay with guidance and private customer adjacency disabled. The treatment runs the integrated CSC policy. Both use stock AI. Seeds are fixed before qualification begins.
@@ -177,6 +179,8 @@ The native `DISTRICT_WONDER` placeholder at 1354 already reported `IsComplete` a
 The stock Hagmatana link identifies a native-legal physical layout and a witnessed selection and production window. The placement guidance requires viable Base and Specialty because it targets a supportable chain. The stock city had no surveyed legal supplier of either class at that Quarter, and the actual Wonder transaction can pay once the two buildings operate. The paired 11.2 replay still needs a CSC bid at the upstream site comparison.
 
 Astra reviewed the fallback. A replay must reach the same world before the turn-144 contract and confirm two distinct legal supplier plots while Broadway's footprint remains available. The diagnostic runner can now follow ordinary play from an archived checkpoint to an exact earlier preparation turn. It verifies matched structure there before applying any controlled setup. Prefer a naturally viable candidate in a guided archive first. Reusing Hagmatana's stock save would need an explicit stock-derived diagnostic with its original package identity verified and the same supply and publisher setup in both arms.
+
+The turn-150 guided Pangaea survey checked all three unbuilt mapped Wonders and found zero legal layouts beside a Tailors plot with both viable supplier classes. The next matched replay uses stock-derived Hagmatana with the original gameplay state followed to turn 142, then adds the same supplier and producer setup on both copies. Exact raw survey evidence is under `Desktop/Codex/csc-ai-stage6-12-20261121/wonder-pangaea-150-survey`.
 
 ## Pangaea through turn 250
 
