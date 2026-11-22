@@ -464,6 +464,13 @@ valued, owned site at known-full capacity if the plot passes the native type che
 This lets it value loss of the site while waiting for growth. The final
 request still needs live admission. Capacity-waiting sites have a separate
 trace and are excluded from the currently legal opportunity denominator.
+Ghidra's reference body and the active Steam core `4de40abf` have the same
+three-argument Lua binding at RVA `1c380`. The active registration points
+to that body and it dispatches indirectly through slot `+0x58`. Its active
+Cities accessor at `363170` reads the singleton at `b8e238`; constructor
+`362d60` installs a table whose slot points to the plot-rules method at
+`362a40`. Use that read for map potential and the separate controller query
+for current city admission. [Reference predicate evidence](csc-native-future-customer-legality-20261101.md)
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
