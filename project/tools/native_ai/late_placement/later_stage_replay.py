@@ -143,6 +143,11 @@ def run_arm(source, output, start, end, candidate_source, fixture=None):
         service_observation('service-before')
         service_observation('service-observer', every_turn=True)
         native_status('native-before')
+        # Keep presentation recovery eligible throughout this matched replay.
+        # The shared controller authorizes observer dismissal in windows of
+        # at most five turns, even when the diagnostic covers a longer span.
+        for boundary in range(start + 5, end, 5):
+            controller.play(boundary)
         controller.play(end)
         state = controller.state_read('later-stage-final-clock')
         require(state['turn'] == end and not state['active'], 'Wrong replay boundary')

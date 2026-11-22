@@ -93,6 +93,18 @@ class SpyControllerTests(unittest.TestCase):
   self.assertEqual(self.f.cmd.call_count,1)
   self.assertEqual(self.writes[-1][1]['guard_resource'],'spy_warning_cancellation.lua')
   self.assertIn('local target=210',self.f.cmd.call_args.args[0])
+ def test_first_meet_requires_an_immediate_initial_observer_invitation(self):
+  self.f.state_read.return_value=dict(turn=205,active=True,remaining=5,local_player=-1,player0_human=False)
+  statement='FIRST_MEET_NO_MANS'
+  row=f'205, 5, 0, 5, {statement}, NONE, INITIAL, '
+  self.log.write_text(row+'Processing Statement\n')
+  self.f.dismiss_observer_warning(210)
+  self.f.cmd.assert_not_called()
+  self.log.write_text(row+'Processing Statement\n'+row+'Processing Immediately\n')
+  self.f.dismiss_observer_warning(210)
+  self.assertEqual(self.f.cmd.call_count,1)
+  self.assertEqual(self.writes[-1][1]['guard_resource'],'first_meet_session_dismissal.lua')
+  self.assertIn(f"local statement='{statement}'",self.f.cmd.call_args.args[0])
  def test_newer_deal_or_wrong_csv_phase_blocks_older_warning(self):
   for row in('205,4,0,4,MAKE_DEAL,NONE,INITIAL,Processing Immediately\n',
    '205,4,0,4,'+STATEMENT+',POSITIVE,INITIAL,Processing Immediately\n',

@@ -90,13 +90,15 @@ AutoplayManager={SetActive=function()error('forbidden activation')end,
         self.assertEqual(self.execute('first_meet_session_dismissal.lua', 'human=true',
                                       STATEMENT='UNREVIEWED_STATEMENT')[0], 0)
 
-    def test_hidden_near_initiator_first_meet_uses_only_the_shipped_exit(self):
+    def test_all_reviewed_initial_first_meets_use_only_the_shipped_exit(self):
         template = 'first_meet_session_dismissal.lua'
-        setup = "statement='FIRST_MEET_NEAR_INITIATOR'"
-        evidence = dict(STATEMENT='FIRST_MEET_NEAR_INITIATOR')
-        self.assertEqual(self.execute(template, setup, **evidence)[0], 1)
-        self.assertEqual(self.execute(template, setup+";key='CHOICE_POSITIVE'", **evidence)[0], 0)
-        self.assertEqual(self.execute(template, setup, CORE_HUMAN=True, **evidence)[0], 0)
+        for statement in ('FIRST_MEET_NEAR_RECIPIENT','FIRST_MEET_NEAR_INITIATOR','FIRST_MEET_NO_MANS'):
+            with self.subTest(statement=statement):
+                setup = f"statement='{statement}'"
+                evidence = dict(STATEMENT=statement)
+                self.assertEqual(self.execute(template, setup, **evidence)[0], 1)
+                self.assertEqual(self.execute(template, setup+";key='CHOICE_POSITIVE'", **evidence)[0], 0)
+                self.assertEqual(self.execute(template, setup, CORE_HUMAN=True, **evidence)[0], 0)
 
 
 if __name__ == '__main__':

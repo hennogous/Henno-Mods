@@ -8,9 +8,10 @@
 -- No AddResponse/AddStatement, treaty choice, turn forcing or budget change.
 local function skip(reason) print('CSC_OBSERVER_WARNING_DISMISS_SKIPPED',reason) end
 local statement='__STATEMENT__'
--- Shipped FirstMeet data defines the exit-only choice for both near-city
--- invitations. The hidden near-initiator variant blocked Pangaea at turn 205.
-if statement~='FIRST_MEET_NEAR_RECIPIENT' and statement~='FIRST_MEET_NEAR_INITIATOR' then skip('statement');return end
+-- The shipped initial contact branches have a standard exit. Pangaea's
+-- blocked turn used the near-initiator branch and then no-man's-land on reload.
+if statement~='FIRST_MEET_NEAR_RECIPIENT' and statement~='FIRST_MEET_NEAR_INITIATOR'
+ and statement~='FIRST_MEET_NO_MANS' then skip('statement');return end
 local exit=false
 for row in GameInfo.DiplomacySelections()do
  if row.Type==statement and row.Key=='CHOICE_EXIT'then exit=true end

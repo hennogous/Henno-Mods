@@ -29,7 +29,7 @@ def make_controller(base_class,*,diagnostics,boundary_decision,tuner_port,prepar
   'state_discovery':staticmethod(state_discovery)if state_discovery else None})
 
 EXIT_ONLY_OBSERVER_WARS=frozenset(('DECLARE_SURPRISE_WAR','DECLARE_FORMAL_WAR'))
-FIRST_MEET_OBSERVER_STATEMENTS=frozenset(('FIRST_MEET_NEAR_RECIPIENT','FIRST_MEET_NEAR_INITIATOR'))
+FIRST_MEET_OBSERVER_STATEMENTS=frozenset(('FIRST_MEET_NEAR_RECIPIENT','FIRST_MEET_NEAR_INITIATOR','FIRST_MEET_NO_MANS'))
 PASSIVE_OBSERVER_STATEMENTS=frozenset(('WARNING_TOO_MANY_TROOPS_NEAR_ME','DIPLOMATIC_KUDO','DIPLOMATIC_WARNING','DIPLOMATIC_HIDDEN_AGENDA_KUDO','DIPLOMATIC_HIDDEN_AGENDA_WARNING'))
 # Choice-bearing prompts are NOT passive messages. This narrow opt-in uses the
 # shipped Escape/ExitConversationMode cancellation semantics for the artificial
@@ -227,13 +227,14 @@ class FullGameController:
    if row[1]in seen_from:continue
    seen_from.add(row[1]) # A newer deal/demand prevents fallback to an old warning.
    cancellable=row[4]in CANCELLABLE_OBSERVER_PROMPTS
+   first_meet=row[4]in FIRST_MEET_OBSERVER_STATEMENTS
    # Keep the newest row authoritative even when its phase is ineligible. A
    # pending/response/deal record must never expose an older initial warning.
    # Processing Immediately is the reviewed hidden-view stall; other log phases
    # remain diagnostic. The CSV initiator is not a native session identifier.
-   if cancellable and(len(row)<8 or row[5]!='NONE' or row[6]!='INITIAL'
+   if (cancellable or first_meet) and(len(row)<8 or row[5]!='NONE' or row[6]!='INITIAL'
                       or row[7].replace(' ','')!='ProcessingImmediately'):continue
-   if row[4]in PASSIVE_OBSERVER_STATEMENTS or row[4]in EXIT_ONLY_OBSERVER_WARS or row[4]in FIRST_MEET_OBSERVER_STATEMENTS or cancellable:
+   if row[4]in PASSIVE_OBSERVER_STATEMENTS or row[4]in EXIT_ONLY_OBSERVER_WARS or first_meet or cancellable:
     candidates.append({'turn':int(row[0]),'from':int(row[1]),'to':0,'initiator_raw':row[3],'statement':row[4],
                        'subtype':row[5]if len(row)>5 else None,'response':row[6]if len(row)>6 else None,
                        'processing':row[7]if len(row)>7 else None})

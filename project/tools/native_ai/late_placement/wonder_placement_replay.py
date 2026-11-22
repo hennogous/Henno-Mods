@@ -180,6 +180,10 @@ def run_arm(source, out, dependencies, enabled, at, through, candidate, target=N
             require(f'CSC_WONDER_FIXTURE_VERIFIED\t{prepare_at}\t' in raw,'Legal fixture validation failed')
             raw=fixture('outcome','CSC_AI_BakersGameplay',label='initial-outcome')
             require(f'CSC_WONDER_FIXTURE_OUTCOME\t{prepare_at}\tfalse\t' in raw,'Wonder already completed at the replay start')
+            # As in the pre-roll, preserve the shared controller's guarded
+            # observer recovery windows while the ordinary AI chooses work.
+            for boundary in range(prepare_at+5,through,5):
+                controller.play(boundary)
             controller.play(through)
             state=controller.state_read('wonder-final-clock')
             require(state['turn']==through and not state['active'],'Wrong diagnostic endpoint')
