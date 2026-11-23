@@ -731,6 +731,46 @@ Wonder on turn 243. The logs establish the deposits' disappearance and its
 timing. Raw comparisons are in
 `Desktop/Codex/csc-ai-anchored-links-20261122/campaign-strong-relief-1522abc1`.
 
+##### Tailors follow-through on Continents
+
+| Original AI Tailors placement | Control | Guided |
+| --- | ---: | ---: |
+| Distinct city–plot options that cleared the observer's adjacency screen | 266 | 261 |
+| Distinct city–plot options with a positive bid | 36 | 27 |
+| Cities with a positive bid on an owned site and a free slot at publication | 11 | 11 |
+| City publications with such an offer | 325 | 511 |
+| Those publications with an exact positive native score write | 323 | 509 |
+| Those publications with an exact positive `GetBestDistrict` site result | 0 | 1 |
+| Completed Tailors | 0 | 1 |
+
+The adjacency screen uses the geometric upper bound before later checks for
+Base supply, material protection, purchase eligibility and economics. The
+publication comparison joins player, city, district, plot, version and exact
+positive value. The native journal never reported saturation in either arm.
+Slots describe the city when CSC published the bid and can change before use.
+The native scorer did apply the bids in almost every city publication that
+had an owned site and a free slot. Few of those bids subsequently appeared as
+the returned native best Tailors site.
+
+Quito's plot 2452 had positive bids from turn 83 in both games. The guided
+arm's exact native best-site receipts for this plot matched 17 publications
+with a full city. On publication 203 the city had used three of five slots,
+and the engine returned plot 2452 at 940,800 Q8. Quito submitted contract
+5207 on turn 203, founded the Tailors on 209 and completed it on 210. The
+control remained at three of three slots late in the game. Its earlier
+openings coincided with Campus and Theater Square construction.
+
+Quito's working Bamboo supplier was pillaged on turn 210 and restored on
+224. The Textile Workshop completed on 228. There was no adjacent Harbor
+for Dockmaster or adjacent Holy Site and Temple for Sacristan, although
+player 1 already owned Naval Tradition and Divine Right by turn 86. Both
+adjacent Theater Squares had Amphitheaters and could be Stage 4 customers.
+The Quarter had no adjacent Specialty source or Fashion House, and the
+player reached Opera and Ballet on turn 243. These were two completed
+district pairs with no operating Tailors Service.
+
+##### Fractal recovery
+
 The first Fractal control stopped with turn 159 as its last reported turn
 and turn 150 as its last verified save. The game controller restored the
 original mod and autoplay preferences in a menu-only session and preserved
