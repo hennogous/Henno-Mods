@@ -844,6 +844,55 @@ In a separate request, Tbilisi submitted Bakers contract 213 on turn 16
 and it failed on 19. The city recorded two turns of Settler production
 during that request window.
 
+##### Revised Continents result
+
+The revised campaign pins CSC `e2fd989b` and Dev CE `6244570`. On
+Continents both arms reached turn 250, verified the same opening world and
+AI seats, and loaded the same 48 private-yield adjacency rows.
+
+| Continents measure | Control | Revised treatment |
+| --- | ---: | ---: |
+| Converted ordinary partner opportunities | 7 / 45 (15.6%) | 10 / 62 (16.1%) |
+| Completed physical ordinary pairs | 7 | 10 |
+| Bakers Quarter-first / customer-first | 6 / 1 | 6 / 1 |
+| Tailors Quarter-first / customer-first | 0 / 0 | 1 / 2 |
+| Offered footprints taken by a different district | 26 | 21 |
+| Working Quarter–material links at turn 250 | 15 | 21 |
+| Links continuously working after first observation | 12 | 18 |
+| Mean publisher time | 1.171 s | 1.227 s |
+| Maximum publisher time | 2.843 s | 2.528 s |
+
+The two completed Tailors both had working Flax at turn 250. Batumi's at
+3087 completed on turn 206 beside an existing Commercial Hub and Market.
+That customer was later pillaged. The same city founded a Harbor on the
+former Hub tile 3161 on turn 241 and completed it on 244. The Lighthouse
+was working on turn 245 and Dockmaster operated on the four measured turns
+246–249. Tskhinvali completed its Tailors at 3009 on turn 217 beside an
+existing Theater Square and ended with a working Fashion House exchange.
+The Commercial Hub and later Harbor were distinct built customers. The
+endpoint retained the Harbor and Theater pairs.
+
+Across 199 common Service observations, distinct Storekeepers rose from
+11 to 12 and Innkeepers fell from 5 to 4. The treatment added one Dockmaster.
+Together they supplied 889 active link-turns, compared with 739 in control.
+Both arms logged zero named Wonder opportunities and completed pairs.
+
+The planner identified 18 layouts before either member had a foundation.
+Seventeen received an exact positive native score write. Three layout
+variants across two possible Quarter tiles in Quito reached the native
+best-site return, with its district slots occupied at publication. Neither
+of those Quarter tiles was founded. The new pre-foundation layout path
+therefore produced zero completed pairs on this seed. Six strengthened
+Bakers sites with an existing customer were founded on their proposed tiles.
+
+The loss audit joins 44 higher-scoring winners to strengthened prospective
+Quarter bids. Rural Communities accounted for 36 of those comparisons.
+One high-quality Tailors layout on plot 1935 is a direct example. The CSC
+cell was 86,502 Q8, and the Campus won that same plot at 162,326 Q8 before
+foundation on turn 57. Full score and queue reports sit in the two
+`audited-connection-result.json` files under
+`Desktop/Codex/csc-ai-anchored-links-20261122/campaign-strong-layout-e2fd989b`.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions

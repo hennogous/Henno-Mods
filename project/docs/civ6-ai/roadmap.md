@@ -14,7 +14,7 @@
 | 1.7 Place or defer | Defer weak city plans and reconsider when viable supply appears. | Deferral and reconsideration verified in separate representative cases. |
 | 1.8 Discourage poor placements | Reduce the value of individual weak or destructive sites. | Weak-site suppression verified. Wider siting calibration remains open. |
 | [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Site preferences and finite material protection verified. Coordination and broader protection remain open. |
-| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Matched replays show completion in both orders, a stronger ordinary choice and live backup redirects. The first Continents comparison rose from 7 to 12 pairs. Requalify the stronger layout policy from Continents. |
+| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | In the revised matched Continents run, completed pairs rose from 7 to 10 and a Dockmaster operated. Fractal and Pangaea qualification are pending. |
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Builder follow-through verified in matched and ordinary play. Track recurring delays in combined runs. |
 | 3.1 Exact job and timing | Prepare mapped supply ahead of the buyer and aim for working supply by Online turn +10. | Base results were mixed in the two matched pairs. Treatment reached 8/11 and 4/9. Tailors and Specialty coverage are limited. |
@@ -58,6 +58,13 @@
 | 15.2 Value supplied Quarter destinations | Price eligible CSC returns in the native route comparison. | Deferred. |
 
 ## Current work
+
+**23 November — Revised Continents comparison, Problems 1.2 and 2.1.**
+Completed pairs rose from 7 to 10, including three Tailors connections.
+Conversion rose from 15.6% to 16.1%, and working suppliers at turn 250
+rose from 15 to 21. One Dockmaster operated. The early layout bids reached
+the scorer, and completing a plan started before either district exists
+remains open. [Revised Continents evidence](../research/mods/csc-ai-stage-investments-20261121.md#revised-continents-result).
 
 **23 November — Problems 1.2 and 2.1, first matched seed complete.** On
 Continents, 7 of 45 ordinary district partner opportunities converted in
