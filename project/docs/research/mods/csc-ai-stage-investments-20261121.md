@@ -672,6 +672,24 @@ packages differ only in whether the anchored planner is enabled. Keep
 the short timing result with `cc37c87` separate from the campaign's
 timing on the public Dev CE revision.
 
+In the conversion count, alternate tiles for the same anchor, builder
+city and district type are one opportunity. It converts when the same
+player builds a matching district on an offered tile and both members
+complete. The physical-pair count also records completed pairs outside
+the observed opportunity set and counts a captured pair once. Footprint
+loss counts individual offered tiles taken by a different build. A city
+can lose one tile and still complete the pair on another. Report named
+Wonder pairs and City Lights goods-provider or sales-only links separately
+from ordinary district transactions.
+
+For material retention, report working suppliers at turn 250 alongside
+the subset that stayed working after their first observed improvement.
+An interruption can come from pillage, ownership change or loss of the
+improvement. The tagged-resource disappearance count records the
+physical loss of the deposit. The historical audit matched the working
+supplier history to all 21 endpoint supplier links in both the Continents
+and Fractal checks.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions
