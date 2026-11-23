@@ -872,6 +872,13 @@ existing Theater Square and ended with a working Fashion House exchange.
 The Commercial Hub and later Harbor were distinct built customers. The
 endpoint retained the Harbor and Theater pairs.
 
+Batumi's only recorded legal Harbor candidate on turn 239 was plot 3161.
+It was adjacent to the completed Tailors. The joint selector returned it
+at 868,951 Q8 in publication 240. The foundation reading measured +1 Gold
+and +1 private CSC placement yield. This case follows native selection
+with the private yield present and shows how a new customer footprint can
+become useful after the Quarter already exists.
+
 Across 199 common Service observations, distinct Storekeepers rose from
 11 to 12 and Innkeepers fell from 5 to 4. The treatment added one Dockmaster.
 Together they supplied 889 active link-turns, compared with 739 in control.
@@ -884,6 +891,12 @@ best-site return, with its district slots occupied at publication. Neither
 of those Quarter tiles was founded. The new pre-foundation layout path
 therefore produced zero completed pairs on this seed. Six strengthened
 Bakers sites with an existing customer were founded on their proposed tiles.
+
+Quito's last boosted prospective Bakers bid was on turn 167, when it had
+used both slots. Plot 2529 fell below the adjacency threshold on turn 168.
+Population opened a third slot on turn 183. Quito selected a Theater Square
+on the proposed Commercial Hub footprint 2527 in publication 197 and
+founded it on 198. The slot opened 16 turns after the last strengthened bid.
 
 The loss audit joins 44 higher-scoring winners to strengthened prospective
 Quarter bids. Rural Communities accounted for 36 of those comparisons.
