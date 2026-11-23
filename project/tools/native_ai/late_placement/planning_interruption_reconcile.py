@@ -38,13 +38,16 @@ def run(source):
     for path, row in packages.items():
         package, installed = Path(path).resolve(strict=True), Path(row['install']).resolve(strict=True)
         require(installed.parent.name == 'Mods' and installed.name in
-                ('CSC Bakers Development CE', 'CSC Bakers Development Mod'), 'Unexpected installed target')
+                ('CSC Bakers Development CE', 'CSC Bakers Development Mod', 'Civ Supply Chains'),
+                'Unexpected installed target')
         require(development_package_files(package) == row['files'] == development_package_files(installed),
                 'Test package changed')
         reused = row.get('reused', False)
-        require(not reused or (installed/'DevCE.modinfo').is_file(), 'Unexpected persistent package')
-        archive = source/installed.name
-        require(not archive.exists(), 'Package archive already exists')
+        main_csc = installed.name == 'Civ Supply Chains'
+        require(not main_csc or reused, 'The main installed mod must be preserved')
+        require(not reused or main_csc or (installed/'DevCE.modinfo').is_file(), 'Unexpected persistent package')
+        archive = package if main_csc else source/installed.name
+        require(main_csc or not archive.exists(), 'Package archive already exists')
         installs.append((installed, archive, row['files'], reused))
     require(len(installs) == 2, 'Expected exact CE/CSC test copies')
     out = source/'interruption-cleanup'
@@ -57,7 +60,8 @@ def run(source):
         for installed, archive, files, reused in installs:
             require(development_package_files(installed) == files, 'Installed package changed during cleanup')
             # Preserve an existing provider and move only the test-owned copies.
-            archive_development_package(installed, archive, reused)
+            if installed.name != 'Civ Supply Chains':
+                archive_development_package(installed, archive, reused)
     session.start(lambda: launch(SimpleNamespace(binary=binary), out))
     try:
         session.wait_context('MainMenu')

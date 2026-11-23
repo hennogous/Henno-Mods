@@ -197,6 +197,9 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             if item['role']=='ce' and replay_ce is not None:
                 item=dict(item,source=replay_ce,files=development_package_files(replay_ce),reused=item['install'].is_dir())
                 if not item['reused']:shutil.copytree(item['source'],item['install'])
+            elif item['reused']:
+                require(item['role']!='csc' or candidate_source is None,
+                        'Use an isolated package for a CSC overlay replay')
             else:
                 require(not item['install'].exists(), 'Test mod destination already exists')
                 if item['role'] == 'csc' and candidate_source:
@@ -328,7 +331,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                           restore_package=verify_packages)
         if session.closed or session.owner is None and not native_inventory():
             for item in installed:
-                archive_development_package(item['install'],output/item['install'].name,item.get('reused',False))
+                if item['role']!='csc' or not item['reused']:
+                    archive_development_package(item['install'],output/item['install'].name,item['reused'])
         if session.closed:
             for name in LOGS:
                 log = plan.user_root / 'Logs' / name

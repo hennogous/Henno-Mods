@@ -27,6 +27,21 @@ For a replay pinned to the former fork or another build, park the installed
 Dev CE package outside `Mods` while the old snapshot owns the same mod ID.
 A public Workshop dependency still needs its own release qualification.
 
+### Ordinary controller games use the installed CSC
+
+The fresh-game driver uses the main installed `Civ Supply Chains` package
+when `--csc` is omitted. It snapshots that input once, records the hashes of
+the loaded package and optional mods, and leaves the main install in place
+when it archives the save and restores preferences. An explicitly supplied
+snapshot can reuse the main install when their bytes match. Frozen
+development identities remain available for historical and dormant-control
+comparisons.
+
+The save refers to its original mod identities. Keep the matching Dev CE
+and gameplay dependencies installed for later inspection. A rebuild can
+change the mechanics of a reloaded save even when the identities still
+match. The run's frozen package provides a reference for exact replay.
+
 ### Shadow cutover on 22 November 2026
 
 Dev CE `6244570` contains all 47 native AI method names referenced by CSC.

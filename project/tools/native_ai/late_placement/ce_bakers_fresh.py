@@ -18,6 +18,7 @@ from driver import (
     restore_preferences, sha, write_json,
 )
 from full_game_controller.checkpoint import SaveFileUnavailable, SavePermissionUnavailable, save_inactive_boundary
+from full_game_controller.environment import CSC as MAIN_CSC_ID
 from storekeeper_runtime import audit
 
 
@@ -312,7 +313,8 @@ def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_tur
 
 def run(args):
     out, mods = args.output.resolve(), args.mods.resolve(strict=True)
-    ce, csc = (path.resolve(strict=True) for path in (args.ce, args.csc))
+    ce = args.ce.resolve(strict=True)
+    csc = (args.csc or mods / 'Civ Supply Chains').resolve(strict=True)
     ce_id, _ = package_identity(ce)
     csc_id, csc_manifest = package_identity(csc)
     # Optional Workshop content is explicitly allowlisted and pinned in place.
@@ -328,17 +330,29 @@ def run(args):
         'Data/CSC_AI_Connectors.sql','Data/CSC_Q_ALL_AI_Connectors.sql'}for file in action.findall('File'))
         for action in csc_manifest.find('InGameActions'))
     optional_gate=csc_manifest.find("ActionCriteria/Criteria[@id='CSC_CE_SupplierExclusion']/ModInUse")
-    main_mod_optional=(getattr(args,'main_mod_package',False) and optional_gate is not None
+    main_csc = csc_id == MAIN_CSC_ID
+    main_mod_optional=((main_csc or getattr(args,'main_mod_package',False)) and optional_gate is not None
                        and optional_gate.text==ce_id)
     require(ce_id != csc_id and (csc_manifest.find(f"Dependencies/Mod[@id='{ce_id}']") is not None
                                or main_mod_optional),
             'CSC must depend on CE, or explicitly qualify its main-mod optional CE criterion')
-    local = {ce: mods / 'CSC Bakers Development CE', csc: mods / 'CSC Bakers Development Mod'}
-    reuse_ce = (ce / 'DevCE.modinfo').is_file() and local[ce].is_dir()
-    require(not out.exists() and not native_inventory() and not local[csc].exists()
-            and (reuse_ce or not local[ce].exists()),
+    # The usual run uses the player's installed CSC identity. Its matching
+    # snapshot is read-only and archived on exit, so the save can still find
+    # the installed package. Historical and dormant controls retain their
+    # explicitly supplied development identity and isolated install.
+    local = {ce: mods / 'CSC Bakers Development CE',
+             csc: mods / ('Civ Supply Chains' if main_csc else 'CSC Bakers Development Mod')}
+    snapshot_main = main_csc and csc == local[csc].resolve()
+    require(not main_csc or (local[csc].is_dir() and not args.untuned),
+            'Main CSC runs require the installed package. Use a frozen test identity for dormant controls.')
+    reused = {csc} if main_csc else set()
+    if (ce / 'DevCE.modinfo').is_file() and local[ce].is_dir():
+        reused.add(ce)
+    require(not out.exists() and not native_inventory()
+            and all(source in reused or not destination.exists() for source, destination in local.items()),
             'Fresh output, expected development paths and exclusive native ownership required')
-    require(not any(path.is_relative_to(mods) for path in (out, ce, csc)),
+    require(not any(path.is_relative_to(mods) for path in (out, ce))
+            and (snapshot_main or not csc.is_relative_to(mods)),
             'Staging and output must be outside the installed Mods directory')
     require(not args.saves or args.saves.is_dir(), 'The native save directory must already exist')
     executable_sha, core_sha = native_profile(args.binary)
@@ -348,10 +362,11 @@ def run(args):
     ce_dll = Path('Binaries/Win64') / DLL
     require(sha(ce / ce_dll) == args.ce_sha256, 'The staged CE DLL hash differs from the expected build')
     pins = {source: development_package_files(source) for source in local}
-    # An installed Dev CE may serve as the test provider when its contents
-    # match the pinned source. Its runtime log is generated beside the DLL.
-    if reuse_ce:
-        require(development_package_files(local[ce]) == pins[ce], 'Installed Dev CE differs from the pinned provider')
+    # An installed package is reused only while its bytes match the snapshot.
+    # CE's generated runtime log is excluded by development_package_files.
+    for source in reused:
+        require(development_package_files(local[source]) == pins[source],
+                f'Installed package differs from its pinned snapshot: {local[source]}')
     installed_pins = dict(pins)
     measured_control = args.untuned and args.harmonised_observation
     if args.untuned:
@@ -561,13 +576,20 @@ def run(args):
                     and load(other_source.parent / 'result.json')['reached'] == QUALIFICATION_ENDPOINT,
                     'The matched qualification arm must have archived its full tuned run')
     out.mkdir(parents=True)
+    # Archive the default installed input once. A test with an explicit
+    # snapshot already has an immutable source outside Mods in its ledger.
+    archived_csc = csc
+    if snapshot_main:
+        archived_csc = out / 'Civ Supply Chains'
+        shutil.copytree(csc, archived_csc)
+        require(manifest(archived_csc) == pins[csc], 'Installed CSC changed during the snapshot')
     if getattr(args,'harmonised_observation',False):
         require(not(prior or args.probe_dependencies or args.observe_supplier_at
             or args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair),
             'Full integrated observation requires a normal start without diagnostic interventions')
         shutil.copyfile(Path(__file__),out/Path(__file__).name)
-    write_json(out / 'packages.json', {str(source): dict(install=str(local[source]), files=files,
-                                                        reused=source == ce and reuse_ce)
+    write_json(out / 'packages.json', {str(archived_csc if source == csc else source): dict(install=str(local[source]), files=files,
+                                                        reused=source in reused)
                                      for source, files in installed_pins.items()})
     write_json(out / 'protocol.json', protocol)
     write_json(out / 'extra-mods.json', extra_mods)
@@ -725,7 +747,7 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
 
     try:
         for source, destination in local.items():
-            if source != ce or not reuse_ce:
+            if source not in reused:
                 shutil.copytree(source, destination)
             copied.append(source)
             if args.untuned and source == csc:
@@ -1111,7 +1133,8 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             savings_watch.after_exit()
         if session.closed or (session.owner is None and not native_inventory()):
             for source in copied:
-                archive_development_package(local[source], out / local[source].name, source == ce and reuse_ce)
+                if source != csc or not main_csc:
+                    archive_development_package(local[source], out / local[source].name, source in reused)
             for name in LOGS:
                 log = args.user_root / 'Logs' / name
                 if session.closed and log.is_file():
@@ -1129,13 +1152,15 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--main-mod-package',action='store_true',
-                        help='Accept main CSC optional CE gating; actual native capabilities must still pass preflight')
+                        help='Allow optional CE gating on older diagnostic CSC snapshots. The main CSC identity uses its installed package automatically.')
     parser.add_argument('--reference-source',type=Path,
                         help='Require initial world/AI/unit parity for a fresh tuned source-regression game')
     parser.add_argument('--government-screen-check',action='store_true',
                         help='Open/close Government and Policies at an inactive observer boundary; no game orders')
-    for name in ('output', 'mods', 'user-root', 'binary', 'ce', 'csc'):
+    for name in ('output', 'mods', 'user-root', 'binary', 'ce'):
         parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--csc', type=Path,
+                        help='Explicit frozen CSC input. Defaults to the installed main Civ Supply Chains package.')
     for name in ('map-seed', 'game-seed', 'through'):
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--map', choices=MAPS, default='Continents')

@@ -25,7 +25,7 @@ from ce_bakers_fresh import (LOGS, MAPS, capture_census, check_native_status,
 from ce_replay import (DLL, STEAM_26595377_CORE_SHA, archive_development_package,
                        development_package_files, native_profile, verify_modules)
 from full_game_controller.checkpoint import SaveFileUnavailable, SavePermissionUnavailable, save_inactive_boundary
-from full_game_controller.environment import archive_sources
+from full_game_controller.environment import CSC as MAIN_CSC_ID, archive_sources
 
 
 STRUCTURAL_FIELDS = {'PLAYER': None, 'CITY': 3, 'QUARTER': 7,
@@ -210,9 +210,10 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
         role = 'ce' if (package/'Binaries/Win64'/DLL).is_file() else 'csc'
         require(identity_id == protocol[role], 'Package role/identity differs')
         originals[role] = development_package_files(package)
-        # A current Dev CE can stay installed between ordinary runs and
-        # continuations. Old snapshots still require their exact archived DLL.
-        reused = role == 'ce' and (package/'DevCE.modinfo').is_file() and install.is_dir()
+        # Main CSC and Dev CE can stay installed while their bytes agree with
+        # the snapshot. Exact historical replays still verify their own inputs.
+        live_main = role == 'csc' and identity_id == MAIN_CSC_ID and item.get('reused') is True
+        reused = install.is_dir() and (live_main or (role == 'ce' and (package/'DevCE.modinfo').is_file()))
         # The original artifact remains pinned below. A matched diagnostic can
         # explicitly select a newer installed CE for both copies of the save.
         expected_install = development_package_files(replay_ce) if replay_ce is not None and role=='ce' else None
@@ -482,7 +483,8 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
             watch.after_exit()
         if session.closed or session.owner is None and not native_inventory():
             for p in copied:
-                archive_development_package(p['install'], out/p['install'].name, p['reused'])
+                if p['role'] != 'csc' or not p['reused']:
+                    archive_development_package(p['install'], out/p['install'].name, p['reused'])
             if session.closed:
                 for name in LOGS:
                     path = plan.user_root/'Logs'/name
