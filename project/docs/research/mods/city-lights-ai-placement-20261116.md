@@ -162,3 +162,50 @@ stores the rate in the city build queue's per-district array at offset `0x2d8`
 The leader's explicit district preference is a separate input. This static
 trace establishes the route into the estimate. The observed win margins above
 still combine all inputs. See [district score anatomy](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-score-anatomy.md#how-do-construction-bonuses-affect-the-forecast).
+
+### Would a higher bid save contested Tailors sites?
+
+The revised Continents treatment recorded 13 same-tile losses to Rural
+Communities for strengthened layouts whose Quarter and customer were both
+prospective. They came from two distinct plots. Match each loss to an exact
+positive Quarter write and the joint selector in the same native generation,
+then join the offered cell to the same turn's `CSC_AI_STRONG_QUARTER_LAYOUT`
+record. The table reports how many published scores would strictly overtake
+the observed winner if that Quarter alone received the additional utility.
+
+| Quarter | Comparisons | Distinct plots | Gap range, native utility | +64 | +128 | +160 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Bakers | 10 | 1 | 1,247.54–2,500.94 | 0 | 0 | 0 |
+| Tailors | 3 | 1 | 123.11–135.94 | 0 | 1 | 3 |
+
+All three Tailors comparisons were at Bolívar's owned +2 site on plot 1934
+on turns 171–173. It had Base and Specialty supply and a prospective Theater
+Square footprint on 1933. The city had no free population district slot. The
+Farming Town ranked first at roughly 1,252 utility each time. The exact
+observed Quarter writes show no other strengthened Tailors offer for that city
+before those decisions. The targeted customer trace supplied no comparable
+Farming Town score for an alternative tile at those decisions. A Spaceport
+occupied 1934 on turn 194.
+
+Across all positively adjusted Tailors offers, 107 same-tile losses to a
+Rural Community came from five candidate plots. The only four comparisons
+within 160 utility were on plot 1934, including one ordinary offer on turn
+120 whose gap was 117.07. By turn 250 a Rural Community had occupied zero
+of the five disputed tiles. A Spaceport and a Commercial Hub occupied two,
+with the other three showing no subsequent foundation.
+City Lights' native `NoAdjacentCity=1` rule removes these rural districts
+from the direct competition at City Center-adjacent sites such as a Bakers
+Storekeeper pairing with a Granary.
+
+On these records a +64 same-tile boost never changes a Tailors result.
+A +160 boost changes the score order for one distinct Tailors site, while
+its strengthened layout is waiting for capacity and the land stays free
+of City Lights construction. Keep current bid values until a replay case
+has a strong, buildable Quarter and an actual close conflict for its
+footprint. The broader comparison still includes competition for the city's
+investment across different tiles.
+
+Evidence is `audited-connection-result.json`, `Lua.log` and
+`AI_CityBuild.csv` in the revised `continents-candidate` archive. Score
+gaps are Q8 values divided by 256. The arithmetic holds the recorded scores
+fixed. Reservation, production and construction use later decisions.
