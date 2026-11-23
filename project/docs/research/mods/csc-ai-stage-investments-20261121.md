@@ -696,7 +696,7 @@ Both Continents arms reached turn 250 with verified observation and closure.
 They began with matching AI seats, map signatures, starts, units and all 48
 private-yield rows.
 
-| Continents measure | Control | Guided |
+| Continents measure from the first campaign | Control | Guided |
 | --- | ---: | ---: |
 | Converted ordinary partner opportunities | 7 / 45 (15.6%) | 12 / 55 (21.8%) |
 | Completed physical ordinary pairs | 7 | 12 |
@@ -775,6 +775,18 @@ The Quarter had no adjacent Specialty source or Fashion House, and the
 player reached Opera and Ballet on turn 243. These were two completed
 district pairs with no operating Tailors Service.
 
+The planner logs its top two positive sites per city and Quarter type.
+Across this sample, only plots 1934 and 1935 in one city earned the
+Base-plus-Specialty premium in either arm. Their logged prospective links
+were to City Lights Rural Communities. Neither plot appeared in the
+customer-first ordinary partner opportunities on the same publication as
+its two-material bid. Quito showed the complementary constraint, with
+Stage 4 customers present and no Specialty source. An earlier planning
+pass can track the overlap of both materials and a specific competitive
+Stage 4 customer footprint before either district exists. The current
+log samples leading bids, so estimating how many such layouts the map
+offered requires counting them before site ranking.
+
 ##### Fractal recovery
 
 The first Fractal control stopped with turn 159 as its last reported turn
@@ -782,6 +794,33 @@ and turn 150 as its last verified save. The game controller restored the
 original mod and autoplay preferences in a menu-only session and preserved
 the partial attempt as `fractal-control-interrupted-159`. The qualification
 run restarts the control from turn 1 using the same pinned seeds and mods.
+
+Henno stopped that restarted run with turn 247 as its last reported turn
+to strengthen the treatment before repeating the comparison. The game
+controller restored the starting preferences. The completed Continents
+result above remains evidence for the original candidate.
+
+##### Proactive high-quality Quarter layouts
+
+The revised candidate recognises a site with two viable Base deposits or
+distinct Base and Specialty deposits and a specific customer. Existing
+customers qualify through their loaded adjacent transactions. A planned
+district must have a mapped buyer at a stage those suppliers can support
+and match its city's best ordinary adjacency. Stage 4 needs Specialty.
+Goods-provider and sales-only links keep their ordinary value. A competing
+native reservation on a deposit removes it from the extra layout credit.
+
+This spatial preference adds 12% of the ordinary district reference at +2,
+rising to 20% at +3 and capped at 256 native utility. Apply the premium after
+the ordinary forecast cap so the latter still limits speculative building
+income. The usual minimum quality, positive economics and material guards
+still apply. The exact planned customer can receive 16 utility within the
+existing 32-utility customer-side cap when it is a legal target and has
+capacity. After the Quarter is founded its chosen footprint can seed the
+existing partner planner. Live facts revalidate both directions on each
+publication. Saved one-turn continuity uses the underlying Quarter score.
+The controlled campaign enables this policy with the anchored treatment
+and keeps the private adjacency loaded in both arms.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20

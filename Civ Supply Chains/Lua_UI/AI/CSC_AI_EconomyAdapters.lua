@@ -467,6 +467,63 @@ function E.SpatialPlan(options)
     return best
 end
 
+function E.StrongQuarterLayout(site,options,reserved)
+    -- Recognise a supply-backed layout before either district exists. Count
+    -- usable plots, not resource tags. A live reservation can consume a
+    -- deposit before this Quarter uses it. Two Base plots can support earlier
+    -- stages, while Stage 4 needs a distinct Specialty source.
+    local base,specialty={},{}
+    for _,supplier in ipairs(site.suppliers or{})do
+        if supplier.ready<site.horizon and not reserved[supplier.plot]then
+            if supplier.kind=='base'then base[supplier.plot]=true
+            elseif supplier.kind=='specialty'then specialty[supplier.plot]=true end
+        end
+    end
+    local firstBase=next(base)
+    if not firstBase then return nil end
+    local firstSpec=next(specialty)
+    local extraBase=next(base,firstBase)~=nil
+    local hasSpec=firstSpec~=nil and (firstSpec~=firstBase or next(specialty,firstSpec)~=nil or extraBase)
+    if not (extraBase or hasSpec) then return nil end
+
+    local best
+    local function consider(option,stage,existing)
+        -- Prefer established customers, then later supported stages and
+        -- stronger ordinary adjacency, with deterministic plot tie breaks.
+        if not stage or stage==4 and not hasSpec then return end
+        local candidate={plot=option.plot,city=option.city,district=option.district,stage=stage,
+            existing=existing,adjacency=option.adjacency or 0,extraBase=extraBase,hasSpec=hasSpec}
+        if best then
+            if candidate.existing~=best.existing then
+                if not candidate.existing then return end
+            elseif stage~=best.stage then
+                if stage<best.stage then return end
+            elseif candidate.adjacency~=best.adjacency then
+                if candidate.adjacency<best.adjacency then return end
+            elseif candidate.plot~=best.plot then
+                if candidate.plot>best.plot then return end
+            elseif (candidate.district or -1)>=(best.district or -1)then return end
+        end
+        best=candidate
+    end
+    for _,venue in ipairs(site.customers or{})do
+        if venue.transaction and venue.transaction.spatial=='ADJACENT_OWNED' and not venue.excluded then
+            consider(venue,venue.stage,true)
+        end
+    end
+    for _,option in ipairs(options)do
+        -- Apply the extra preference to a customer that can already match
+        -- its city's other sites on ordinary adjacency. Some spatial links
+        -- are providers only and have no compatible customer stage.
+        if option.stages and option.adjacency>=math.max(option.bestAdjacency,option.displacedAdjacency)then
+            for stage=4,2,-1 do if option.stages[stage] and(stage<4 or hasSpec)then
+                consider(option,stage,false);break
+            end end
+        end
+    end
+    return best
+end
+
 function E.NativeInvestmentReference(turn,horizon)
     -- Native-control medians, not a new gameplay yield or universal native
     -- formula. The three-map exact+2 Campus/Hub/Theater samples anchor ordinary
@@ -545,11 +602,23 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
         proposed=math.min(proposed,qualityCap)
     end
     proposed=proposed+service
-    local bid=math.floor(math.max(-4096*256,math.min(4096*256,proposed))+.5)
+    -- The ordinary forecast cap still limits projected income. A concrete
+    -- competitive customer layout with redundant or diverse supply receives
+    -- separate spatial credit of 12% of the normal district reference at +2,
+    -- rising to 20% at +3. Scale with ordinary opportunities, up to 256 native
+    -- utility. The lower +1 Harbor exception keeps its usual bid.
+    local limit=4096*256
+    local bid=math.floor(math.max(-limit,math.min(limit,proposed))+.5)
+    local layoutCredit=0
+    if site.strongLayout and reference and quote.adjacency>=E.MinimumAdjacency then
+        local fraction=math.min(.20,.12+.08*(quote.adjacency-E.MinimumAdjacency))
+        layoutCredit=math.min(256*256,math.floor(reference*fraction+.5),limit-bid)
+    end
+    bid=bid+layoutCredit
     return bid,'positive',{adjacencyQ8=math.floor(premium+.5),materialsQ8=materials*256,
-        layoutQ8=layout*256,penaltyQ8=penalty,forecastQ8=(quote.bidValueQ8 or quote.valueQ8)-quote.valueQ8,
+        layoutQ8=layout*256,strongLayoutQ8=layoutCredit,penaltyQ8=penalty,forecastQ8=(quote.bidValueQ8 or quote.valueQ8)-quote.valueQ8,
         qualityCapQ8=qualityCap and math.floor(qualityCap+.5),serviceQ8=service,
-        capAdjustmentQ8=bid-value-math.floor(premium+.5)-(materials+layout)*256}
+        capAdjustmentQ8=bid-value-math.floor(premium+.5)-(materials+layout)*256-layoutCredit}
 end
 
 local function siteKey(city,district,plot)return city..':'..district..':'..plot end
@@ -730,8 +799,12 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         -- ownership diagnostics, but do not charge a second Gold payment.
         site.purchaseGold=site.nativeSiteIncludesPurchase and 0 or invoice
         if site.nativeSiteAdjustmentQ8~=nil then site.footprintCostMode='native_site'end
-        site.spatialPlan=E.SpatialPlan(snapshot.CustomerOptions
-            and snapshot.CustomerOptions(city,plot,profile,protected)or{})
+        local options=snapshot.CustomerOptions
+            and snapshot.CustomerOptions(city,plot,profile,protected,E.AnchoredConnectionsEnabled)or{}
+        site.spatialPlan=E.SpatialPlan(options)
+        if E.AnchoredConnectionsEnabled then
+            site.strongLayout=E.StrongQuarterLayout(site,options,snapshot.intentFootprints or{})
+        end
         -- The legacy single-chain Stage2 estimate must not stack with the new
         -- attachment-driven joint Service ledger. Copy the cached site so
         -- building/repair marginals retain their narrow existing Stage2 input;
@@ -819,6 +892,10 @@ function E.CustomerFirstPreference(option)
         or adjacency+1e-6<best then return 0 end
     local preference=math.min(16,8+2*math.min(2,base-1)+(spec>0 and 4 or 0))
     if option.quarterKey=='TAILORS'and option.customerFamily=='DISTRICT_HARBOR'then preference=preference+8 end
+    -- Both directions now point to the exact same shortlisted layout. Use the
+    -- existing capped customer-side placement preference. The positive native
+    -- customer site still has to compete on its ordinary placement score.
+    if option.strongLayout then preference=preference+16 end
     return preference
 end
 
@@ -1246,6 +1323,10 @@ function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
     if snapshot.planState then for _,plan in pairs(snapshot.planState.plans)do quarterClaims[plan.plot]=plan.district end end
     local grouped={}
     for _,option in ipairs(snapshot.CustomerFirstOptions(protectedPlots))do
+        local quarter=best[option.quarterCity..':'..option.quarterDistrict]
+        local layout=quarter and quarter.strongLayout
+        option.strongLayout=layout and not layout.existing and quarter.plot==option.quarterPlot
+            and layout.city==option.city and layout.district==option.district and layout.plot==option.plot
         local key=option.city..':'..option.district..':'..option.plot
         local group=grouped[key]or{city=option.city,district=option.district,plot=option.plot,
             adjacency=option.adjacency,options={}}
@@ -1289,11 +1370,11 @@ function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
                     Game.GetCurrentGameTurn(),snapshot.id,offer.city,offer.district,offer.plot,#plan.links,offer.rawPreferenceQ8,offer.delta))
                 for _,link in ipairs(plan.links)do local option=link.option
                     quarterClaims[option.quarterPlot]=option.quarterDistrict
-                    print(string.format('CSC_AI_CUSTOMER_FUTURE_LINK turn=%d player=%d city=%d district=%d plot=%d quarterCity=%d quarterDistrict=%d quarterPlot=%d base=%d spec=%d basePlots=%s specPlots=%s ordinaryAdjacency=%.3f bestOrdinaryAdjacency=%.3f contributionQ8=%d',
+                    print(string.format('CSC_AI_CUSTOMER_FUTURE_LINK turn=%d player=%d city=%d district=%d plot=%d quarterCity=%d quarterDistrict=%d quarterPlot=%d base=%d spec=%d basePlots=%s specPlots=%s ordinaryAdjacency=%.3f bestOrdinaryAdjacency=%.3f contributionQ8=%d strongLayout=%s',
                         Game.GetCurrentGameTurn(),snapshot.id,offer.city,offer.district,offer.plot,
                         option.quarterCity,option.quarterDistrict,option.quarterPlot,option.baseCount,option.specialtyCount,
                         table.concat(option.basePlots,','),table.concat(option.specialtyPlots,','),
-                        option.adjacency,option.bestAdjacency,link.preference*256))
+                        option.adjacency,option.bestAdjacency,link.preference*256,tostring(option.strongLayout==true)))
                 end
             end
         end
@@ -1873,6 +1954,8 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 adjacencyPreferenceQ8=parts and parts.adjacencyQ8,materialPreferenceQ8=parts and parts.materialsQ8,
                                                 layoutPreferenceQ8=parts and parts.layoutQ8,protectionPenaltyQ8=parts and parts.penaltyQ8,
                                                 customerLayout=site and site.spatialPlan.links or{},
+                                                strongLayout=parts and parts.strongLayoutQ8>0 and site.strongLayout or nil,
+                                                strongLayoutQ8=parts and parts.strongLayoutQ8,
                                                 startingAdjacency=site and site.startingAdjacency,startingGold=site and site.startingGold,
                                                 quarterReadyEstimate=site and site.quarterReady,
                                                 footprintWorkers=site and site.footprintWorkers,
@@ -1889,6 +1972,14 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 capacityPopulation=capacity and capacity.population,
                                                 capacityState=capacityState,
                                                 frontier=frontier,purchaseGold=frontier and invoice or nil}
+                                            local layout=result[#result].strongLayout
+                                            if layout then
+                                                print(string.format('CSC_AI_STRONG_QUARTER_LAYOUT turn=%d player=%d city=%d district=%d plot=%d customerCity=%d customerDistrict=%d customerPlot=%d stage=%d existing=%s extraBase=%s specialty=%s capacity=%s frontier=%s creditQ8=%d',
+                                                    Game.GetCurrentGameTurn(),pid,city:GetID(),profile.district.Index,
+                                                    plot:GetIndex(),layout.city,layout.district or -1,layout.plot,layout.stage,
+                                                    tostring(layout.existing),tostring(layout.extraBase),tostring(layout.hasSpec),
+                                                    capacityState,tostring(frontier),parts.strongLayoutQ8))
+                                            end
                                             if snapshot.captureConnections and not frontier and site
                                                 and not evaluation.carried and bid>0 then
                                                 snapshot.connectionQuarters[#snapshot.connectionQuarters+1]=
@@ -1924,6 +2015,10 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         if entry.player==snapshot.id and entry.economy and host and host.type==entry.district and host.city==entry.city then
             for _,link in ipairs(entry.customerLayout or{})do
                 snapshot.customerFoundationHints[link.city..':'..link.district]=link.plot
+            end
+            local layout=entry.strongLayout
+            if layout and not layout.existing then
+                snapshot.customerFoundationHints[layout.city..':'..layout.district]=layout.plot
             end
         end
     end

@@ -40,6 +40,43 @@ assert(signature(plot)=='_')
         vm.execute((AI / 'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
         return vm
 
+    def test_strong_layout_supports_two_base_or_distinct_specialty_and_a_real_customer(self):
+        self.adapters().execute('''
+local E=CSC_AI_EconomyAdapters
+local base={kind='base',plot=10,ready=0}
+local other={kind='base',plot=11,ready=5}
+local specialty={kind='specialty',plot=12,ready=5}
+local site={suppliers={base,other},horizon=50}
+local harbor={city=2,district=7,plot=21,adjacency=2,bestAdjacency=2,displacedAdjacency=1,stages={[2]=true}}
+local theater={city=2,district=8,plot=22,adjacency=3,bestAdjacency=3,displacedAdjacency=2,stages={[4]=true}}
+local rural={city=2,district=9,plot=23,adjacency=4,bestAdjacency=4,displacedAdjacency=1,stages={}}
+assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{}).plot==21)
+assert(E.StrongQuarterLayout(site,{theater},{})==nil)
+assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{[11]=true})==nil)
+site.suppliers={base,specialty}
+assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{}).plot==22)
+theater.bestAdjacency=4
+assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{}).plot==21)
+specialty.plot=10 -- two tags on one plot cannot provide redundant supply
+assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{})==nil)
+''')
+
+    def test_strong_layout_credit_survives_forecast_cap_and_preserves_admission(self):
+        self.adapters().execute('''
+local E=CSC_AI_EconomyAdapters
+local quote={adjacency=2,valueQ8=900*256}
+local site={baseCount=2,comparisonReferenceQ8=600*256}
+local ordinary,_,before=E.PlacementValue(quote,site)
+site.strongLayout={plot=21,stage=2}
+local guided,_,after=E.PlacementValue(quote,site)
+assert(guided==ordinary+72*256)
+assert(after.strongLayoutQ8==72*256 and after.capAdjustmentQ8==before.capAdjustmentQ8)
+quote.adjacency=1
+assert(E.PlacementValue(quote,site)==E.DeferredQuarterQ8)
+quote.adjacency=3;quote.valueQ8=-1
+assert(E.PlacementValue(quote,site)==-1)
+''')
+
     def test_native_terrain_and_alternative_tiles_change_customer_preference(self):
         vm = self.adapters()
         vm.execute('''
@@ -115,6 +152,12 @@ local snapshot={id=1,cities={[1]={object={}}},
  CustomerFirstOptions=function()return options end}
 local offers=E.CustomerOffers(snapshot,{},{});
 assert(#offers==1 and offers[1].delta==24*256 and #offers[1].futureSuppliers==2)
+local paired={economy=true,city=1,district=10,plot=2,finalQ8=100,
+ strongLayout={city=1,district=20,plot=5,stage=4}}
+local coordinated=E.CustomerOffers(snapshot,{paired},{})
+assert(coordinated[1].delta==32*256 and coordinated[1].futureSuppliers[1].option.strongLayout)
+paired.strongLayout.plot=6
+assert(E.CustomerOffers(snapshot,{paired},{})[1].delta==24*256)
 free=0;assert(#E.CustomerOffers(snapshot,{},{})==0)
 GameInfo.Districts[20].RequiresPopulation=0
 assert(#E.CustomerOffers(snapshot,{},{})==1)

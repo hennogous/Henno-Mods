@@ -1359,7 +1359,30 @@ function F.New(player,placement,ui,context)
         end)
         return result
     end
-    function snapshot.CustomerOptions(city,plot,profile,protectedPlots)
+    local customerStages={}
+    local function mappedCustomerStages(profile,district)
+        local key=profile.key..':'..district
+        if customerStages[key] then return customerStages[key] end
+        -- A native adjacency edge can also describe a goods provider or a
+        -- sales-only link. Use the loaded transaction catalogue to identify
+        -- a district that can actually host a building buying from this Quarter.
+        local stages={}
+        for _,mapping in ipairs(c.customers[profile.key]or{})do
+            local expected=GameInfo.Districts[mapping.DistrictType]
+            local stage=mapping.ProducerStage
+            local buyer=resolve(mapping.BuildingType)
+            if expected and buyer and allowed(buyer) and F.DistrictFamily(expected.Index)==F.DistrictFamily(district)then
+                local kind=c.replacements[buyer.BuildingType]or buyer.BuildingType
+                for _,producer in ipairs((c.stages[profile.key]or{})[stage]or{})do
+                    local transaction=c.transactions[producer.BuildingType..':'..kind]
+                    if transaction and transaction.spatial=='ADJACENT_OWNED'then stages[stage]=true;break end
+                end
+            end
+        end
+        customerStages[key]=stages
+        return stages
+    end
+    function snapshot.CustomerOptions(city,plot,profile,protectedPlots,readTransactionStages)
         local options={}
         if not CSC_AI_SitingDistricts then return options end
         local permitted=CSC_AI_SitingDistricts(profile)
@@ -1388,6 +1411,7 @@ function F.New(player,placement,ui,context)
                             end end
                             options[#options+1]={player=pid,city=buyer:GetID(),district=definition.Index,
                                 family=parent,plot=near:GetIndex(),adjacency=candidate.adjacency,
+                                stages=readTransactionStages and mappedCustomerStages(profile,definition.Index)or nil,
                                 bestAdjacency=best and best.adjacency or 0,
                                 -- A Quarter can consume the city's best native
                                 -- customer tile. Expose that opportunity cost;
