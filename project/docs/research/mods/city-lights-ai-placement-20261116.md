@@ -242,5 +242,39 @@ forecast before applying the shared reference credit, preserving the intended
 distance between the alternative and reference. The existing early-positive
 guard and the final native score ceiling still apply.
 
-The frozen Continents test uses the same planner settings as the reference
-game. Only the scoring, ledger and continuity Lua modules differ.
+### Turn-250 run with the installed CSC package
+
+The controller verified the same Continents opening and used the same pinned
+Dev CE DLL. It ran the installed CSC package with anchored connection guidance
+and its diagnostics enabled. The installed package also contains newer gameplay
+and presentation files, so the earlier run is a same-seed benchmark for the
+whole package.
+
+| AI outcome through turn 250 | Earlier run | Installed CSC |
+|---|---:|---:|
+| Bakers founded / completed | 18 / 17 | 15 / 14 |
+| Tailors founded / completed | 2 / 2 | 1 / 1 |
+| Prospective strong layouts with native score writes | 17 | 19 |
+| Quarter sites built from those layouts | 0 | 3 |
+| Exact planned customer pairs completed at those sites | 0 | 1 |
+| Completed Quarter/customer opportunity pairs, all tracked layouts | 10 | 13 |
+| Distinct realised Bakers Service chains, stages 2 / 3 / 4 | 12 / 4 / 0 | 10 / 6 / 2 |
+| Distinct realised Tailors Service chains | 1 | 0 |
+| Active Service link-turns across 200 common observed turns | 891 | 996 |
+| Per-turn publisher wall time, average / maximum | 1.23 / 2.53 s | 1.14 / 2.29 s |
+
+The two-Base Tailors layout on plot 2603 got a native best-site receipt and
+was founded on turn 232. Its planned customer pair was still incomplete at
+turn 250. At plot 1934, the Base-plus-Specialty Tailors layout also reached a
+native best-site decision. A later same-tile comparison scored the Theater
+Square at 1,778 against the Tailors at 1,035. The Theater Square was founded
+on turn 142. The fixed-input comparison above measures the original score
+clipping; the live run reached a different build decision on the same tile.
+
+Evidence is in `Desktop/Codex/csc-ai-main-layout-scoring-20261123/continents`,
+including the pinned inputs, endpoint save, `main-package-layout-comparison.json`
+and `audited-connection-result.json`. Both runs recorded zero native faults.
+The named turn-250 save also reloaded under the normal mod preferences. The
+controller checked the pinned Dev CE provider, human control of the local seat
+and parity across 222 structural census rows. See `reload-check/inspection-save.json`
+beside the run directory.
