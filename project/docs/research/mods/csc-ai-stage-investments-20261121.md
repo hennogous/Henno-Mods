@@ -690,15 +690,36 @@ physical loss of the deposit. The historical audit matched the working
 supplier history to all 21 endpoint supplier links in both the Continents
 and Fractal checks.
 
-The first Continents control completed turn 250 with verified observation
-and closure. It converted 7 of 45 ordinary partner opportunities (15.6%).
-Its seven completed pairs were all Bakers, six Quarter-first and one
-customer-first. It lost 26 offered footprints to other foundations.
-Fifteen Quarter–material links were working at the endpoint, with
-12 continuously working after their first observation. The publisher
-averaged 1.20 s per turn and peaked at 2.95 s. The guided game started
-with the same original AI seats, map signature, starts, units and all
-48 private-yield rows. Raw comparisons are in
+Both Continents arms reached turn 250 with verified observation and closure.
+They began with matching AI seats, map signatures, starts, units and all 48
+private-yield rows.
+
+| Continents measure | Control | Guided |
+| --- | ---: | ---: |
+| Converted ordinary partner opportunities | 7 / 45 (15.6%) | 12 / 55 (21.8%) |
+| Completed physical ordinary pairs | 7 | 12 |
+| Bakers Quarter-first pairs | 6 | 8 |
+| Bakers customer-first pairs | 1 | 2 |
+| Tailors Quarter-first pairs | 0 | 0 |
+| Tailors customer-first pairs | 0 | 2 |
+| Offered footprints taken by a different district | 26 | 20 |
+| Working Quarter–material links at turn 250 | 15 | 15 |
+| Links continuously working after first observation | 12 | 10 |
+| Mean publisher time per turn | 1.195 s | 1.102 s |
+| Maximum publisher time per turn | 2.950 s | 2.225 s |
+
+The two guided Tailors pairs share Quarter 2452, which completed on turn 210
+beside two Theater Squares. The guided arm completed seven Commercial Hub,
+three Entertainment Complex and two Theater Square pairs. The control
+completed five Commercial Hub and two Entertainment Complex pairs. Neither
+arm logged an offered named Wonder site or a completed named Wonder pair.
+Goods-provider-only pairs fell from 13 to 9 and sales-only pairs stayed at 3.
+
+Two Bakers Base deposits disappeared in the guided arm. The observer saw
+Cattle 2644 disappear on turn 165 and Wheat 2651 on turn 222, both on tiles
+without a district that turn. The first recorded foundation at 2644 was a
+Wonder on turn 243. The logs establish the deposits' disappearance and its
+timing. Raw comparisons are in
 `Desktop/Codex/csc-ai-anchored-links-20261122/campaign-strong-relief-1522abc1`.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
