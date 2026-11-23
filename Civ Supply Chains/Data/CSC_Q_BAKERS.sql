@@ -13,6 +13,8 @@
 -- that policy and its native consumers; SQL does no recurring per-turn work.
 -- Population and route Lua publish the live amount properties.
 
+
+
 --========================================================================================================================--
 /*	1. TYPES */
 --========================================================================================================================--
@@ -44,6 +46,8 @@ VALUES  (   'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',         'KIND_NOTIFICATION'   
         (   'NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED',   'KIND_NOTIFICATION'   ),
         (   'NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED',   'KIND_NOTIFICATION'   ),
         (   'NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED',     'KIND_NOTIFICATION'   );
+
+
 
 --========================================================================================================================--
 /*	2. RESOURCES */
@@ -94,6 +98,8 @@ VALUES  (   'RESOURCE_BANANAS',                       'CLASS_CSC_BAKERS_BASE'   
         (   'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',   'CLASS_CSC_BAKERS_SALES'   ),
         (   'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',   'CLASS_CSC_BAKERS_SALES_CULTURE'   );
 
+
+
 --========================================================================================================================--
 /*	3. STAGE 1 - MATERIAL IMPROVEMENTS */
 --========================================================================================================================--
@@ -118,6 +124,8 @@ VALUES  (   'IMPROVEMENT_FARM',         'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_
         (   'IMPROVEMENT_CAMP',         'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER'   ),
         (   'IMPROVEMENT_MINE',         'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER'   ),
         (   'IMPROVEMENT_PLANTATION',   'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER'   );
+
+
 
 --========================================================================================================================--
 /*	4. QUARTER DEFINITION AND MODIFIERS */
@@ -221,6 +229,8 @@ INSERT OR IGNORE INTO DistrictModifiers
         (   DistrictType,                    ModifierId   )
 VALUES  (   'DISTRICT_CSC_BAKERS_QUARTER',   'MOD_CSC_BAKERS_RIVER_ACCESS_FLAG'   ),
         (   'DISTRICT_CSC_BAKERS_QUARTER',   'MOD_CSC_BAKERS_NO_RIVER_ACCESS_FLAG'   );
+
+
 
 --========================================================================================================================--
 /*	5. STAGES 2-4 - BUILDINGS AND SERVICES */
@@ -427,7 +437,7 @@ SET MustPurchase = 1
 WHERE BuildingType IN (
     'BUILDING_CSC_BAKERS_RIVER_ACCESS',
     'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',
-	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',
+    'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',
     'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',
     'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',
     'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'
@@ -846,6 +856,8 @@ VALUES
         'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',
         'CSC_BAKERS_EXPORT_CAFE_ROUTE'
     );
+
+
 
 --========================================================================================================================--
 /*	6. PLUMBING */
@@ -1708,6 +1720,8 @@ FROM CSC_BakersImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit F
 DROP TABLE CSC_BakersImportEffects;
 
 DROP TABLE CSC_BakersImportChannels;
+
+
 
 --========================================================================================================================--
 /*	7. UI AND ART */
