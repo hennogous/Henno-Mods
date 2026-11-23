@@ -198,6 +198,7 @@ local plot={GetIndex=function()return 1 end,GetOwner=function()return -1 end}
 local profile={district={Index=42}}
 local r=E.QuotePlacement(snapshot,city,plot,profile,{upper=4},true,50,0,0,false,{})
 assert(r.quote and r.site.purchaseGold==0 and r.quote.siteAdjustmentQ8==-50*256)
+assert(r.quote.footprintBidQ8==-50*256)
 assert(not find(r.quote,'footprint-purchase'))
 local total=-50*256
 for _,f in ipairs(r.quote.streams)do total=total+f.valueQ8 end

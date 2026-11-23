@@ -209,3 +209,38 @@ Evidence is `audited-connection-result.json`, `Lua.log` and
 `AI_CityBuild.csv` in the revised `continents-candidate` archive. Score
 gaps are Q8 values divided by 256. The arithmetic holds the recorded scores
 fixed. Reservation, production and construction use later decisions.
+
+### Keep the spatial score for a qualified layout
+
+The comparison at plot 1934 exposed where the score was lost. On turn 171
+the ordinary economic quote with its building forecast was about 953
+utility. Adjacency, materials and customer space contributed another 276.
+The combined +2 cap reduced 1,229 to 900. The separate 216 utility for the
+validated layout brought the final bid to 1,116, against the Farming Town's
+1,252.
+
+For a validated strong layout, cap the ordinary forecast before adding
+adjacency, material and customer-spacing preferences. Reapply the signed
+site subtotal and explicit protection penalty after the cap. The site
+subtotal includes the native footprint adjustment or separately priced
+purchase and displacement streams where applicable. The model keeps the
+native invoice deduplication. The marginal Service and separate strong-layout
+preference enter once. Ordinary layouts retain their combined cap for
+forecast and siting. The recorded turn-171 inputs produce approximately
+1,301 under the new ordering, including the same 216 for the layout and a
+91-utility site cost. The fix uses the existing anchored qualification
+and applies independently of the competing district family.
+
+The scoring audit corrected four related boundaries. A ceiling-limited
+Quarter carries its validated customer identity even when its separate
+layout credit is zero. Continuity stores the ordinary bid for a one-round
+missing-facts window, with no strong-layout or connection premium carried.
+Customer-first backup value charges the connection difference once by
+comparing the complete Quarter bids after removing the estimated contribution
+of each already-priced link. The customer valuation caps the relative
+forecast before applying the shared reference credit, preserving the intended
+distance between the alternative and reference. The existing early-positive
+guard and the final native score ceiling still apply.
+
+The frozen Continents test uses the same planner settings as the reference
+game. Only the scoring, ledger and continuity Lua modules differ.

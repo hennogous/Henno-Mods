@@ -140,6 +140,23 @@ local first=publish();turn=2;confirm(first);missing=true
 assert(target(publish(first))==nil)
 ''')
 
+    def test_continuity_keeps_the_ordinary_bid_without_stale_layout_credit(self):
+        self.runtime().execute('''
+local C=CSC_AI_PlanContinuity
+local state=C.New(1,20)
+local entry={player=1,city=7,district=36,plot=2,economy=true,finalQ8=420*256,
+    ordinaryBidQ8=300*256,publishedTurn=19}
+local plan=C.Selected(state,entry)
+assert(plan.lastQ8==300*256)
+entry.finalQ8=425*256;entry.ordinaryBidQ8=305*256
+C.Committed(state,{entry})
+assert(C.Grace(state,plan,'pricing_unavailable',true)==305*256)
+entry.ordinaryBidQ8=-50
+C.Committed(state,{entry})
+local restored=next(C.New(1,21,C.Encode(state)).plans)
+assert(restored and plan.lastQ8==0 and C.Grace(state,plan,'pricing_unavailable',true)==nil)
+''')
+
     def test_material_loss_does_not_get_missing_price_grace(self):
         vm=self.runtime()
         vm.execute('''

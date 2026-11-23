@@ -38,7 +38,7 @@ function C.New(player,turn,encoded)
             for i=1,11 do if i~=8 then f[i]=tonumber(f[i]);valid=valid and integer(f[i])end end
             if valid and f[1]>=0 and f[2]>0 and f[3]>=0 and f[4]>=0
                 and f[5]>=-1 and (f[6]==0 or f[6]==1)and f[7]>=-1
-                and (f[8]=='_'or f[8]:match('^[-%d,]+$'))and f[9]>0
+                and (f[8]=='_'or f[8]:match('^[-%d,]+$'))and f[9]>=0
                 and f[9]<=4096*256 and f[10]>=-2 and (f[11]==0 or f[11]==1)then
                 local plan={city=f[1],district=f[2],plot=f[3],observed=f[4],acquired=f[5],
                     frontier=f[6]==1,baselineWorkers=f[7],signature=f[8],lastQ8=f[9],
@@ -66,7 +66,7 @@ function C.Selected(state,entry)
     plan={city=entry.city,district=entry.district,plot=entry.plot,observed=state.turn,
         acquired=entry.frontier and -1 or state.turn,frontier=entry.frontier==true,
         baselineWorkers=entry.footprintWorkers or -1,signature=entry.footprintSignature or '_',
-        lastQ8=(entry.beforeConnectionQ8 or entry.finalQ8)-(entry.strongLayoutQ8 or 0),
+        lastQ8=math.max(0,entry.ordinaryBidQ8 or entry.finalQ8),
         lastFresh=entry.publishedTurn or state.turn-1,unknownUsed=0}
     state.plans[id]=plan;event(state,'selected',plan,'native_best')
     -- Bound persisted memory independently of publication size. Keep recent
@@ -139,7 +139,7 @@ function C.Grace(state,plan,reason,safe)
     -- A single missing native price/staffing read can preserve an already
     -- confirmed plan. Never turn unknown into a new project or carry through
     -- a known quality/material/ownership failure. Carried bids do not renew age.
-    if plan and safe and (reason=='pricing_unavailable'or reason=='footprint_staffing_unavailable')
+    if plan and plan.lastQ8>0 and safe and (reason=='pricing_unavailable'or reason=='footprint_staffing_unavailable')
         and plan.unknownUsed==0 and state.turn-plan.lastFresh>=0 and state.turn-plan.lastFresh<=1 then
         plan.unknownUsed=1;event(state,'grace',plan,reason);return plan.lastQ8
     end
@@ -153,7 +153,7 @@ function C.Committed(state,entries)
             -- Connection costs and the extra supply-layout preference require
             -- fresh partners and sources. Retain only the underlying Quarter
             -- quote for one-publication grace if a native fact goes missing.
-            plan.lastQ8=(entry.beforeConnectionQ8 or entry.finalQ8)-(entry.strongLayoutQ8 or 0)
+            plan.lastQ8=math.max(0,entry.ordinaryBidQ8 or entry.finalQ8)
             plan.lastFresh=state.turn;plan.unknownUsed=0
         end
     end

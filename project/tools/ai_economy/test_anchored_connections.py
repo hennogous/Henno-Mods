@@ -255,15 +255,22 @@ snapshot.connectionQuarters[2].entry.finalQ8=510*256
 plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==20 and plans[1].backup.plot==21)
 assert(plans[1].competitiveBackupQ8==0 and plans[1].costQ8==32*256)
+-- The first full bid leads solely because of the local transaction.
+-- Preserve the backup's real link and charge only half the 16-utility loss.
+snapshot.connectionQuarters[1].entry.finalQ8=164*256
+snapshot.connectionQuarters[2].entry.finalQ8=148*256
+values[21]=48*256
+plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(plans[1].competitiveBackupQ8==48*256 and plans[1].costQ8==8*256)
 ''')
 
     def test_managed_deduction_keeps_fresh_basis_and_skips_carried_score(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
 local plans=E.AnchoredConnectionPlans(snapshot,{})
-local row={player=1,city=7,district=3,plot=20,delta=0,finalQ8=100*256}
+local row={player=1,city=7,district=3,plot=20,delta=0,finalQ8=100*256,ordinaryBidQ8=100*256}
 E.ApplyConnectionCosts(snapshot,{row},plans,{[3]=true})
-assert(row.finalQ8==68*256 and row.beforeConnectionQ8==100*256)
+assert(row.finalQ8==68*256 and row.ordinaryBidQ8==100*256)
 row.finalQ8=100*256;row.carried=true
 E.ApplyConnectionCosts(snapshot,{row},plans,{[3]=true})
 assert(row.finalQ8==100*256)
@@ -363,9 +370,27 @@ snapshot.CustomerWorld=function(_,_,plot)return {},{value=plot==20 and 64*256 or
 snapshot.WorldQuote=function(world)return {valueQ8=world.value}end
 local entries=E.CustomerEconomicOffers(snapshot,{})
 assert(#entries==1 and entries[1].plot==20 and entries[1].delta==32*256)
+-- Even near the positive limit, the reference's 64-utility credit reaches
+-- both scores. The 240-point standalone difference stays intact.
+values[20]=64*256
+snapshot.CustomerNetValue=function()return 1000*256 end
+local relative=240
+snapshot.CustomerWorld=function(_,_,plot)
+ return {},{value=(plot==20 and 400 or 400+relative)*256,customer={ready=3}}
+end
+local function deltas()
+ local byPlot={}
+ for _,entry in ipairs(E.CustomerEconomicOffers(snapshot,{}))do byPlot[entry.plot]=entry.delta end
+ return byPlot
+end
+local positive=deltas()
+assert(positive[20]==64*256 and positive[19]-positive[20]==240*256)
+relative=-300
+local negative=deltas()
+assert(negative[20]==64*256 and negative[19]-negative[20]==-256*256)
 group.candidates={main}
 entries=E.CustomerEconomicOffers(snapshot,{})
-assert(#entries==1 and entries[1].plot==20 and entries[1].delta==32*256)
+assert(#entries==1 and entries[1].plot==20 and entries[1].delta==64*256)
 ''')
 
     def test_existing_customer_only_recovers_a_measured_quarter_cap_deduction(self):
@@ -373,12 +398,12 @@ assert(#entries==1 and entries[1].plot==20 and entries[1].delta==32*256)
 local E=CSC_AI_EconomyAdapters
 snapshot.connectionGroups={};snapshot.connectionQuarters={quarterAt(20)}
 local plans=E.AnchoredConnectionPlans(snapshot,{})
-local entry={city=7,district=3,plot=20,economy=true,finalQ8=100*256,qualityCapQ8=100*256}
+local entry={city=7,district=3,plot=20,economy=true,finalQ8=100*256,qualityCapQ8=100*256,ordinaryBidQ8=100*256}
 E.ApplyQuarterConnectionCredit(snapshot,{entry},plans)
 assert(entry.finalQ8==100*256)
 entry.qualityCapAdjustmentQ8=-20*256
 E.ApplyQuarterConnectionCredit(snapshot,{entry},plans)
-assert(entry.finalQ8==120*256 and entry.beforeConnectionQ8==100*256)
+assert(entry.finalQ8==120*256 and entry.ordinaryBidQ8==100*256)
 ''')
 
     def test_strong_site_measured_relief_scales_with_ordinary_district_value(self):

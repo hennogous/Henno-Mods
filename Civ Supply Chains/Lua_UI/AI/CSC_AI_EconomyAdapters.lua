@@ -589,19 +589,30 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     end
     local layout=site.spatialPlan and site.spatialPlan.preference or 0
     local service=quote.serviceValueQ8 or 0
+    local spatial=premium+(materials+layout)*256
+    -- The quoted bid already includes this signed land subtotal and the
+    -- local protection charge. Cap the forecast before reapplying both
+    -- exactly once. Otherwise two capped sites look equally good even when
+    -- only one requires a purchase or removes a working improvement.
+    local footprint=(quote.footprintBidQ8 or quote.siteAdjustmentQ8 or 0)-penalty
+    local ordinary=value-service-footprint
+    local strongLayout=site.strongLayout and quote.adjacency>=E.MinimumAdjacency
     -- The adjacency-based ceiling was calibrated against ordinary future
-    -- income/amenities, before Services were priced. Cap that SAME portion;
-    -- then add the native-priced marginal Service once. Otherwise a capped
-    -- good site would ignore every real Service benefit. Quality/Base gates,
-    -- lost-supplier costs and the final CE score ceiling still apply.
-    local proposed=value-service+premium+(materials+layout)*256
+    -- income/amenities. A strong layout has usable supply and a competitive
+    -- mapped customer footprint. Keep its already-priced spatial preference
+    -- outside that forecast ceiling. Less certain layouts retain the existing
+    -- combined ceiling so projected income cannot make a middling site win.
+    -- Service utility enters once, after either path.
+    local ordinaryBid=ordinary+spatial
+    local proposed=ordinaryBid
     local qualityCap
     if reference then
         local extra=math.max(0,math.min(4,sitingAdjacency-2))
         qualityCap=reference*(.5+.65*math.min(1,extra)+.6*math.max(0,extra-1))
-        proposed=math.min(proposed,qualityCap)
+        ordinaryBid=math.min(ordinaryBid,qualityCap)
+        proposed=strongLayout and math.min(ordinary,qualityCap)+spatial or ordinaryBid
     end
-    proposed=proposed+service
+    proposed=proposed+service+footprint
     -- The ordinary forecast cap still limits projected income. A concrete
     -- competitive customer layout with redundant or diverse supply receives
     -- separate spatial credit of 12% of the normal district reference at +2,
@@ -610,13 +621,17 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     local limit=4096*256
     local bid=math.floor(math.max(-limit,math.min(limit,proposed))+.5)
     local layoutCredit=0
-    if site.strongLayout and reference and quote.adjacency>=E.MinimumAdjacency then
+    if strongLayout and reference then
         local fraction=math.min(.20,.12+.08*(quote.adjacency-E.MinimumAdjacency))
         layoutCredit=math.min(256*256,math.floor(reference*fraction+.5),limit-bid)
     end
     bid=bid+layoutCredit
     return bid,'positive',{adjacencyQ8=math.floor(premium+.5),materialsQ8=materials*256,
-        layoutQ8=layout*256,strongLayoutQ8=layoutCredit,penaltyQ8=penalty,forecastQ8=(quote.bidValueQ8 or quote.valueQ8)-quote.valueQ8,
+        layoutQ8=layout*256,strongLayoutQ8=layoutCredit,strongLayout=strongLayout and site.strongLayout,
+        -- Grace retains the ordinary score. Both forms of fresh strong-layout
+        -- credit require rechecking the suppliers and customer footprint.
+        ordinaryBidQ8=math.floor(math.max(-limit,math.min(limit,ordinaryBid+service+footprint))+.5),
+        penaltyQ8=penalty,forecastQ8=(quote.bidValueQ8 or quote.valueQ8)-quote.valueQ8,
         qualityCapQ8=qualityCap and math.floor(qualityCap+.5),serviceQ8=service,
         capAdjustmentQ8=bid-value-math.floor(premium+.5)-(materials+layout)*256-layoutCredit}
 end
@@ -765,6 +780,8 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
         return{valueQ8=raw,bidValueQ8=raw+premium,
             adjacency=(site.adjacency or 0)+terrain,streams=streams,omissions=result.omissions,
             siteAdjustmentQ8=result.siteAdjustmentQ8-baseline.siteAdjustmentQ8,
+            footprintBidQ8=(result.footprintBidQ8 or result.siteAdjustmentQ8)
+                -(baseline.footprintBidQ8 or baseline.siteAdjustmentQ8),
             forecastAdjustmentQ8=premium,jointEconomy=true,
             affectedChains=result.affectedChains,jointEvaluations=result.evaluations,servicesExcluded=result.servicesExcluded,
             serviceValueQ8=(result.serviceValueQ8 or 0)-(baseline.serviceValueQ8 or 0),serviceStreams=result.serviceStreams or 0,
@@ -1099,10 +1116,12 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
             -- The linked reference correction restores the comparison's
             -- common origin. A scarce alternative can use that much or its
             -- own last-slot preference. They never stack in the same cell.
-            local ordinaryDelta=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,
-                math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw+referenceCreditQ8))
-            local delta=pressure>referenceCreditQ8 and
-                math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw+pressure))or ordinaryDelta
+            -- Cap the relative forecast first. Clipping the common origin
+            -- only on the positively saturated alternative changes its
+            -- distance from the linked reference in the native comparison.
+            local residual=math.max(-CUSTOMER_RESIDUAL_LIMIT_Q8,math.min(CUSTOMER_RESIDUAL_LIMIT_Q8,raw))
+            local ordinaryDelta=residual+referenceCreditQ8
+            local delta=residual+math.max(pressure,referenceCreditQ8)
             local net=snapshot.CustomerNetValue(group.city,group.district,candidate.plot,investment.ready)
             netValue=net
             if net and net>0 then
@@ -1580,10 +1599,12 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         local best,backup
         if a.city==b.city and a.district==b.district then
             if not a.projected then
-                -- Fresh complete Quarter bids include the local economy,
-                -- ordinary siting and the native site costs. A much weaker
-                -- alternative cannot absorb the whole lost connection value.
-                best,backup=a.rank,b.rank
+                -- Whole Quarter bids already reflect the proposed link.
+                -- Use the individually priced link as the overlap estimate
+                -- so that losing that link enters the footprint cost once.
+                -- The remainder still makes a genuinely weaker site a
+                -- less useful substitute within the city's same district.
+                best,backup=a.rank-first.valueQ8,b.rank-second.valueQ8
             elseif not a.waiting and not b.waiting and snapshot.CustomerNetValue then
                 -- The ordinary customer's future building subtotal is common
                 -- to this city and district. Compare its two positive native
@@ -1730,7 +1751,6 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
                     -- native reader. Fresh rows are safe to edit once here.
                     cost=entry and not entry.carried and math.min(cost,entry.finalQ8-1)or 0
                     if cost>0 then
-                        entry.beforeConnectionQ8=entry.beforeConnectionQ8 or entry.finalQ8
                         entry.finalQ8=entry.finalQ8-cost
                     end
                 else
@@ -1802,7 +1822,6 @@ function E.ApplyQuarterConnectionCredit(snapshot,entries,plans)
         -- still compare the resulting bid with their ordinary competitors.
         local credit=math.min(math.max(relief,pressure[key]or 0),4096*256-entry.finalQ8)
         if credit>0 then
-            entry.beforeConnectionQ8=entry.finalQ8
             entry.finalQ8=entry.finalQ8+credit
             entry.connectionPressureQ8=math.max(0,credit-relief)
             print(string.format('CSC_AI_CONNECTION_COMPLETION turn=%d player=%d city=%d district=%d plot=%d order=customerFirst creditQ8=%d',
@@ -1954,8 +1973,10 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 adjacencyPreferenceQ8=parts and parts.adjacencyQ8,materialPreferenceQ8=parts and parts.materialsQ8,
                                                 layoutPreferenceQ8=parts and parts.layoutQ8,protectionPenaltyQ8=parts and parts.penaltyQ8,
                                                 customerLayout=site and site.spatialPlan.links or{},
-                                                strongLayout=parts and parts.strongLayoutQ8>0 and site.strongLayout or nil,
-                                                strongLayoutQ8=parts and parts.strongLayoutQ8,
+                                                -- A bid at the native ceiling can retain this
+                                                -- customer footprint for the other decision.
+                                                strongLayout=parts and parts.strongLayout or nil,
+                                                ordinaryBidQ8=parts and parts.ordinaryBidQ8,
                                                 startingAdjacency=site and site.startingAdjacency,startingGold=site and site.startingGold,
                                                 quarterReadyEstimate=site and site.quarterReady,
                                                 footprintWorkers=site and site.footprintWorkers,

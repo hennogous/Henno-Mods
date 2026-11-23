@@ -182,12 +182,16 @@ local function ledger(site, second, shared)
     for _,flow in ipairs(site.direct or {})do
         local ready=flow.ready==nil and quarter or flow.ready
         if flow.quarterStartKey then ready=maximum(ready,result.quarterStartByChain[flow.quarterStartKey]or INF)end
-        emit('site:'..flow.id,flow.yield,flow.amount,ready,flow.city)
+        local stream=emit('site:'..flow.id,flow.yield,flow.amount,ready,flow.city)
+        -- The fallback loses worked yields when the footprint is built over.
+        -- Pricing marks these alongside the native footprint adjustment so
+        -- the placement adapter can preserve the charge through its cap.
+        if stream and flow.id:sub(1,10)=='displaced:'then stream.footprint=true end
     end
     if not site.existing then emit('quarter-upkeep','YIELD_GOLD',-(site.maintenance or 0),quarter)end
     if (site.purchaseGold or 0)>0 then
-        emit('footprint-purchase','YIELD_GOLD',-site.purchaseGold,0,site.city)
-        result.streams[#result.streams].fixed=true
+        local invoice=emit('footprint-purchase','YIELD_GOLD',-site.purchaseGold,0,site.city)
+        if invoice then invoice.fixed=true;invoice.footprint=true end
     end
     local stages={}
     local function populationFlow(id,yield,target,ready,city,population,property,building,multiplier)
@@ -840,6 +844,7 @@ end
 
 function M.Price(result,price,horizon)
     local total,bid=result.siteAdjustmentQ8 or 0,result.siteAdjustmentQ8 or 0
+    local footprint=bid
     for _,stream in ipairs(result.streams)do
         local value,weighted=price(stream, horizon)
         if stream.service and not numeric(value)then
@@ -855,8 +860,11 @@ function M.Price(result,price,horizon)
         if weighted==nil then weighted=value end
         if not numeric(weighted)or weighted~=math.floor(weighted)then return nil,'Native bid price unavailable for '..stream.id end
         stream.valueQ8=value;stream.bidValueQ8=weighted;total=total+value;bid=bid+weighted
+        if stream.footprint then footprint=footprint+weighted end
     end
-    result.bidValueQ8=bid;result.forecastAdjustmentQ8=bid-total
+    -- This signed Q8 subtotal is already in bidValueQ8. It lets the site
+    -- adapter cap speculative income without erasing a real land cost.
+    result.bidValueQ8=bid;result.forecastAdjustmentQ8=bid-total;result.footprintBidQ8=footprint
     return total
 end
 

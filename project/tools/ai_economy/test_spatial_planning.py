@@ -61,7 +61,7 @@ specialty.plot=10 -- two tags on one plot cannot provide redundant supply
 assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{})==nil)
 ''')
 
-    def test_strong_layout_credit_survives_forecast_cap_and_preserves_admission(self):
+    def test_strong_layout_keeps_spatial_terms_after_the_forecast_cap(self):
         self.adapters().execute('''
 local E=CSC_AI_EconomyAdapters
 local quote={adjacency=2,valueQ8=900*256}
@@ -69,12 +69,38 @@ local site={baseCount=2,comparisonReferenceQ8=600*256}
 local ordinary,_,before=E.PlacementValue(quote,site)
 site.strongLayout={plot=21,stage=2}
 local guided,_,after=E.PlacementValue(quote,site)
-assert(guided==ordinary+72*256)
-assert(after.strongLayoutQ8==72*256 and after.capAdjustmentQ8==before.capAdjustmentQ8)
+assert(ordinary==300*256 and after.qualityCapQ8==before.qualityCapQ8)
+assert(guided==ordinary+(48+24+72)*256)
+assert(after.strongLayoutQ8==72*256 and after.capAdjustmentQ8==-(900-300)*256)
+assert(after.ordinaryBidQ8==ordinary)
+-- The same validated host survives even when the native score ceiling
+-- leaves exactly zero room for the separate layout credit.
+quote.adjacency=4;quote.valueQ8=9000*256
+site.comparisonReferenceQ8=2100*256
+local capped,_,ceiling=E.PlacementValue(quote,site)
+assert(capped==4096*256 and ceiling.strongLayoutQ8==0 and ceiling.strongLayout==site.strongLayout)
+-- Forecast headroom is preserved. An uncapped layout earns each component
+-- once, and an independently priced Service enters the result once.
+quote.adjacency=2;site.comparisonReferenceQ8=600*256
+quote.valueQ8=204*256;quote.serviceValueQ8=4*256
+local uncapped,_,parts=E.PlacementValue(quote,site)
+assert(uncapped==(200+48+24+72+4)*256 and parts.capAdjustmentQ8==0)
 quote.adjacency=1
 assert(E.PlacementValue(quote,site)==E.DeferredQuarterQ8)
 quote.adjacency=3;quote.valueQ8=-1
 assert(E.PlacementValue(quote,site)==-1)
+''')
+
+    def test_exact_footprint_charges_survive_the_forecast_cap(self):
+        self.adapters().execute('''
+local E=CSC_AI_EconomyAdapters
+local site={baseCount=2,comparisonReferenceQ8=600*256,strongLayout={plot=21,stage=2}}
+local clean=E.PlacementValue({adjacency=2,valueQ8=900*256},site)
+local paid={adjacency=2,valueQ8=800*256,footprintBidQ8=-100*256}
+assert(E.PlacementValue(paid,site)==clean-100*256)
+assert(E.PlacementValue(paid,site,0,true)==clean-(100+256)*256)
+site.strongLayout=nil
+assert(E.PlacementValue(paid,site)==200*256)
 ''')
 
     def test_native_terrain_and_alternative_tiles_change_customer_preference(self):
