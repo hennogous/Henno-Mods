@@ -99,3 +99,39 @@ rural district to Commercial Hub and Harbor. These penalties target customers,
 while the preceding finding about no rural penalty on CSC Quarters remains true.
 Include them when comparing a Quarter-adjacent customer site with an alternative;
 a river and several districts need not produce the naive unmodified Gold total.
+
+## Revised Continents comparison, 23 November 2026
+
+The control and treatment both ran main CSC guidance, Dev CE `6244570`,
+the native private yield and the same City Lights stack. The only differing
+CSC file was `CSC_AI_EconomyAdapters.lua`, where the switch enabled the
+bidirectional partner planner and stronger supply-backed layout bids in
+the treatment. Both `Modding.log` files record loading `COREX_Civ_Ai_Updates.sql`.
+
+Among the five AI players, City Lights assigns Pachacuti, Lautaro and Tamar
+the rural trait and assigns Bolívar and Gilgamesh the hybrid trait. Rural
+leaders favour the town types and receive +40% Production toward ordinary
+rural districts. Both groups receive the improvement-based Gold adjacency
+for those types. Farming Towns open at Irrigation and use no population
+district slot. Their ordinary economy includes a Farmer on completion and
+Food for incoming domestic routes. The Feudalism building can add a route
+slot in a city without a Market or Lighthouse. Tamar's separate favoured
+district row is for Tsikhe. The Georgia variant replaces the Mining Colony,
+uses no population slot, grants a Miner, and adds mountain Production
+adjacency and conditional Faith and Tourism. The ordinary rural AI modifier
+rows name the base district types. The contribution of individual modifiers
+to the observed native score gaps remains unmeasured.
+
+Rural Communities A/B/C and Tsikhe were the returned winner in 570 of 762
+recorded outscored Quarter comparisons in control and 742 of 975 in the
+treatment. The treatment had 172 same-tile losses in that group. Among
+the 36 losses to Rural Communities for the stronger early layout bids,
+13 used the same tile. Counts are native comparisons and can repeat across
+turns for one city. The remaining differences show city-wide investment
+competition between distinct footprints.
+
+CSC tagged those four types as goods providers for both Quarters. Both arms
+loaded the +1 private placement yield for the City Lights district beside
+either Quarter. The completed-district histories record 13 provider links
+in control, all Bakers, and 11 in the treatment, including three Tailors
+links. [Revised run and decision evidence](csc-ai-stage-investments-20261121.md#revised-continents-result).
