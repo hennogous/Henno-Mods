@@ -717,6 +717,13 @@ completed five Commercial Hub and two Entertainment Complex pairs. Neither
 arm logged an offered named Wonder site or a completed named Wonder pair.
 Goods-provider-only pairs fell from 13 to 9 and sales-only pairs stayed at 3.
 
+Across the 199 turns observed in both games, operating Storekeeper links
+rose from 11 to 12 and Innkeeper links from 5 to 7. Storekeepers provided
+584 and 798 active link-turns respectively, and Innkeepers provided 155
+and 310. Total Service time rose from 739 to 1,108 active link-turns
+(+50%). Each active producer–customer link contributes one per observed
+turn. All operating Services in these two games were Bakers Stage 2 or 3.
+
 Two Bakers Base deposits disappeared in the guided arm. The observer saw
 Cattle 2644 disappear on turn 165 and Wheat 2651 on turn 222, both on tiles
 without a district that turn. The first recorded foundation at 2644 was a
