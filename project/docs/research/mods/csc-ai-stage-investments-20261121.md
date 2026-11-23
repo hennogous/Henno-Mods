@@ -740,6 +740,8 @@ timing. Raw comparisons are in
 | Cities with a positive bid on an owned site and a free slot at publication | 11 | 11 |
 | City publications with such an offer | 325 | 511 |
 | Those publications with an exact positive native score write | 323 | 509 |
+| Publications with a write but no joint native district comparison recorded | 251 | 390 |
+| Publications with a write where a higher-scoring district won | 72 | 118 |
 | Those publications with an exact positive `GetBestDistrict` site result | 0 | 1 |
 | Completed Tailors | 0 | 1 |
 
@@ -748,9 +750,13 @@ Base supply, material protection, purchase eligibility and economics. The
 publication comparison joins player, city, district, plot, version and exact
 positive value. The native journal never reported saturation in either arm.
 Slots describe the city when CSC published the bid and can change before use.
-The native scorer did apply the bids in almost every city publication that
-had an owned site and a free slot. Few of those bids subsequently appeared as
-the returned native best Tailors site.
+For each logged joint comparison, compare the returned district's cached score
+with the highest exact Tailors write in the same city publication. In the
+guided arm the median winning margin was 823 native utility. Only one of the
+118 losses had a margin of 64 utility or less. Tsikhe won 49 of these repeated
+city comparisons and the first Rural Community type won 25. Both come from
+City Lights in this mod stack. The vacancies and gaps are publication counts,
+so a long-running city plan can contribute more than once.
 
 Quito's plot 2452 had positive bids from turn 83 in both games. The guided
 arm's exact native best-site receipts for this plot matched 17 publications
