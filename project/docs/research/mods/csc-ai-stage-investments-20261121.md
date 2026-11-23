@@ -690,6 +690,17 @@ physical loss of the deposit. The historical audit matched the working
 supplier history to all 21 endpoint supplier links in both the Continents
 and Fractal checks.
 
+The first Continents control completed turn 250 with verified observation
+and closure. It converted 7 of 45 ordinary partner opportunities (15.6%).
+Its seven completed pairs were all Bakers, six Quarter-first and one
+customer-first. It lost 26 offered footprints to other foundations.
+Fifteen Quarter–material links were working at the endpoint, with
+12 continuously working after their first observation. The publisher
+averaged 1.20 s per turn and peaked at 2.95 s. The guided game started
+with the same original AI seats, map signature, starts, units and all
+48 private-yield rows. Raw comparisons are in
+`Desktop/Codex/csc-ai-anchored-links-20261122/campaign-strong-relief-1522abc1`.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions
