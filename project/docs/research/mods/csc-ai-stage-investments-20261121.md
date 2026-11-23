@@ -666,6 +666,8 @@ The existing Colosseum still completed on turn 133. The control had
 no Tailors there by turn 140. The single extra slot was identical in
 both worlds. This completes the matched customer-first check.
 
+##### Ordinary campaign and counting rules
+
 The full-game campaign starts both arms from ordinary new games, with
 the private yield enabled and Dev CE `6244570` in both. The frozen CSC
 packages differ only in whether the anchored planner is enabled. Keep
@@ -721,6 +723,12 @@ without a district that turn. The first recorded foundation at 2644 was a
 Wonder on turn 243. The logs establish the deposits' disappearance and its
 timing. Raw comparisons are in
 `Desktop/Codex/csc-ai-anchored-links-20261122/campaign-strong-relief-1522abc1`.
+
+The first Fractal control stopped with turn 159 as its last reported turn
+and turn 150 as its last verified save. The game controller restored the
+original mod and autoplay preferences in a menu-only session and preserved
+the partial attempt as `fractal-control-interrupted-159`. The qualification
+run restarts the control from turn 1 using the same pinned seeds and mods.
 
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20

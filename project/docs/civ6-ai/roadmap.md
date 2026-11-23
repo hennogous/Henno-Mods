@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | [1. Quarter placement](#1-quarter-placement) | Choose productive, legal Quarter sites. Buy viable sites when justified and defer weak options. | Bakers and Tailors guidance integrated. Broader purchase and construction reliability remains open. |
 | 1.1 Materials | Prefer viable mapped Base and Specialty deposits, including compatibility resources. | Base-aware siting verified in a matched native choice. |
-| 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | A prospective customer changed a matched native choice. Carrying the connection through later placement remains open. |
+| 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | A matched customer-first replay changed the native choice and completed the Quarter beside its customers. Ordinary-game qualification is in progress. |
 | 1.3 Rivers | Price the river and Mill geometry the site can use. | River/Mill geometry changed the chosen Bakers site. |
 | 1.4 Adjacency | Prefer +3 with +2 as the ordinary minimum and a narrow Tailors exception. | Stronger siting verified in a replay and observed in full games. |
 | 1.5 Tile purchase | Secure worthwhile Quarter footprints and material deposits. | Paid footprint and supplier acquisition verified. Wider reliability remains open. |
@@ -14,7 +14,7 @@
 | 1.7 Place or defer | Defer weak city plans and reconsider when viable supply appears. | Deferral and reconsideration verified in separate representative cases. |
 | 1.8 Discourage poor placements | Reduce the value of individual weak or destructive sites. | Weak-site suppression verified. Wider siting calibration remains open. |
 | [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Site preferences and finite material protection verified. Coordination and broader protection remain open. |
-| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Matched replays show completion in both orders, a stronger ordinary choice and live backup redirects. Three fresh matched games are in progress. |
+| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Matched replays show completion in both orders, a stronger ordinary choice and live backup redirects. Continents rose from 7 to 12 completed pairs. Two matched seeds remain. |
 | 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Builder follow-through verified in matched and ordinary play. Track recurring delays in combined runs. |
 | 3.1 Exact job and timing | Prepare mapped supply ahead of the buyer and aim for working supply by Online turn +10. | Base results were mixed in the two matched pairs. Treatment reached 8/11 and 4/9. Tailors and Specialty coverage are limited. |
@@ -58,6 +58,13 @@
 | 15.2 Value supplied Quarter destinations | Price eligible CSC returns in the native route comparison. | Deferred. |
 
 ## Current work
+
+**23 November — Problems 1.2 and 2.1, first matched seed complete.** On
+Continents, 7 of 45 ordinary district partner opportunities converted in
+control and 12 of 55 with the new planner. Other builds took 26 and 20
+offered footprints respectively. Both games ended with 15 working material
+links, and 12 and 10 links stayed working after their first observation.
+[Matched comparison](../research/mods/csc-ai-stage-investments-20261121.md#ordinary-campaign-and-counting-rules).
 
 **22 November — Active goal for 1.2 and 2.1.** Close the loop from anchored scoring to completed district pairs in both orders, then compare conversion on three preselected seeds. Track Bolshoi Theatre, Broadway and Sydney Opera House alongside the ordinary customer districts using each Wonder's exact native placement requirements. The inland audit found that six of seven unconnected guided Tailors had a legal Stage 3 customer footprint and native scoring activity. Five later lost one or more sites to another build. [Evidence and validation gates](../research/mods/csc-ai-stage-investments-20261121.md#qualification-for-completed-district-pairs).
 
