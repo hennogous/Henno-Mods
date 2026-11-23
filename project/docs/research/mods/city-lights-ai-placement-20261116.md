@@ -278,3 +278,8 @@ The named turn-250 save also reloaded under the normal mod preferences. The
 controller checked the pinned Dev CE provider, human control of the local seat
 and parity across 222 structural census rows. See `reload-check/inspection-save.json`
 beside the run directory.
+
+At the endpoint, Score Victory was enabled with a 250-turn limit. The world
+entered the Future Era on turn 241. Bolívar, Pachacuti and Tamar reached the
+Future Era. Shaka, Gilgamesh and Lautaro reached the Information Era. See
+`era-check-ui/era-and-victory.txt` for the saved game's own readings.
