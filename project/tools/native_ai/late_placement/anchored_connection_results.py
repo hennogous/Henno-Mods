@@ -16,6 +16,86 @@ OPPORTUNITY = re.compile(
 WONDER_OPPORTUNITY = re.compile(
     r'CSC_AI_WONDER_CONNECTION_OPPORTUNITY turn=(\d+) player=(\d+) order=(quarterFirst|customerFirst) '
     r'quarter=([A-Z_]+) anchor=(\d+) building=(BUILDING_[A-Z0-9_]+) city=\d+ plot=(\d+)')
+STRONG_LAYOUT = re.compile(
+    r'CSC_AI_STRONG_QUARTER_LAYOUT turn=(\d+) player=(\d+) city=(\d+) district=(\d+) plot=(\d+) '
+    r'customerCity=(\d+) customerDistrict=(-?\d+) customerPlot=(\d+) stage=([234]) '
+    r'existing=(true|false) extraBase=(true|false) specialty=(true|false)')
+QUARTER_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\tDISTRICT_CSC_([A-Z_]+)_QUARTER\t')
+QUARTER_RECEIPT = re.compile(r'CSC_QUARTER_WATCH_(WRITE|BEST)\t([^\r\n]+)')
+
+
+def prospective_layouts(log, observations, players, through):
+    """Follow early mapped layouts through publication, writes and construction.
+
+    The planning log precedes packet acceptance. Join exact Quarter cells via
+    the published packet and the native value. Count actual matching district
+    pairs separately from native best-site receipts. A native decision can
+    use a retained request and complete without a new best-site lookup.
+    """
+    layouts = {}
+    by_turn = defaultdict(set)
+    for match in STRONG_LAYOUT.finditer(log):
+        turn, player, city, district, plot, buyer, customer, target, stage = map(int, match.groups()[:9])
+        existing, _, specialty = match.groups()[9:]
+        if player not in players or turn > through or existing == 'true':
+            continue
+        key = (player, city, district, plot, buyer, customer, target, stage)
+        supply = 'BASE_AND_SPECIALTY' if specialty == 'true' else 'TWO_BASE'
+        layouts.setdefault(key, (turn, supply))
+        by_turn[turn, player, city, district, plot].add(key)
+
+    if not layouts:
+        return {}
+
+    quarters = {int(district): title for district, title in QUARTER_TITLE.findall(log)}
+    packets = defaultdict(set)
+    first_foundation = {}
+    completed = set()
+    links = defaultdict(list)
+    for key in layouts:
+        player, city, district, plot, buyer, customer, target, stage = key
+        links[player, city, quarters.get(district), plot, buyer, customer, target, stage].append(key)
+    for row in observations:
+        if row.get('turn', 0) > through or row.get('player') not in players:
+            continue
+        if row['kind'] == 'OPPORTUNITY' and row['offered']:
+            key = tuple(row[k] for k in ('turn', 'player', 'city', 'district', 'plot'))
+            for layout in by_turn.get(key, ()):
+                packets[(row['version'], *key[1:], row['bidQ8'])].add(layout)
+        elif row['kind'] == 'FOUNDATION' and row.get('foundationDateKnown'):
+            cell = tuple(row[k] for k in ('player', 'city', 'district', 'plot'))
+            turn = row.get('foundationTurn', row['turn'])
+            first_foundation[cell] = min(turn, first_foundation.get(cell, turn))
+        elif (row['kind'] == 'RELATION' and row.get('role') == 'customer' and row.get('present')
+              and row.get('quarterComplete') and row.get('neighbourComplete')):
+            relation = tuple(row.get(k) for k in ('player', 'city', 'quarter', 'quarterPlot', 'neighbourCity',
+                                                   'neighbourDistrict', 'neighbourPlot', 'stage'))
+            for key in links.get(relation, ()):
+                other_foundation = row.get('neighbourFoundationTurn')
+                quarter_foundation = row.get('quarterFoundationTurn')
+                if (other_foundation is not None and quarter_foundation is not None
+                        and layouts[key][0] <= min(other_foundation, quarter_foundation)):
+                    completed.add(key)
+
+    outcomes = {'WRITE': set(), 'BEST': set()}
+    for match in QUARTER_RECEIPT.finditer(log):
+        kind, payload = match.groups()
+        row = dict(field.split('=', 1) for field in payload.split('\t') if '=' in field)
+        if row['eligible'] == '1':
+            key = tuple(int(row[k]) for k in ('version', 'player', 'city', 'district', 'plot', 'result'))
+            outcomes[kind].update(packets.get(key, ()))
+    publish = set().union(*packets.values())
+    result = defaultdict(Counter)
+    for key, (first, supply) in layouts.items():
+        quarter = quarters.get(key[2], str(key[2]))
+        group = result[f'{quarter}:{supply}']
+        group['layouts'] += 1
+        group['published'] += key in publish
+        group['native_score_write'] += key in outcomes['WRITE']
+        group['native_best'] += key in outcomes['BEST']
+        group['quarter_founded'] += first <= first_foundation.get(key[:4], -1)
+        group['completed_pair'] += key in completed
+    return {key: dict(counts) for key, counts in result.items()}
 
 
 def connection_counts(log, original_ai, through, *, observations=None):
@@ -217,6 +297,7 @@ def run_result(root):
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
                 supplier_history=supplier_history(observations, players, through),
+                prospective_layouts=prospective_layouts(log, observations, players, through),
                 wonder_connections=wonder_connections(log, observations, players, through))
 
 

@@ -1,6 +1,6 @@
 import unittest
 
-from anchored_connection_results import connection_counts, supplier_history, wonder_connections
+from anchored_connection_results import connection_counts, prospective_layouts, supplier_history, wonder_connections
 from planning_results import parse
 
 
@@ -17,6 +17,26 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_prospective_layout_follows_exact_packet_and_both_foundations(self):
+        def plan(target):
+            return ('CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
+                    f'customerCity=8 customerDistrict=6 customerPlot={target} stage=3 '
+                    'existing=false extraBase=true specialty=false')
+
+        log = '\n'.join([
+            'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
+            plan(20), plan(22), plan(20),
+            record('OPPORTUNITY', player=1, city=7, district=43, plot=10,
+                   turn=3, version=2, offered='true', bidQ8=120),
+            'CSC_QUARTER_WATCH_WRITE\tplayer=1\tcity=7\tdistrict=43\tplot=10\tversion=2\teligible=1\tresult=120',
+            'CSC_QUARTER_WATCH_BEST\tplayer=1\tcity=7\tdistrict=43\tplot=10\tversion=1\teligible=1\tresult=120',
+            record('FOUNDATION', player=1, city=7, district=43, plot=10, turn=4, foundationDateKnown='true'),
+            relation(1, 'TAILORS', 10, 20, 12, 'quarterFirst', city=7, neighbourCity=8, stage=3),
+        ])
+        groups = prospective_layouts(log, parse(log, 'CSC_PLANNING_'), {1}, 250)
+        self.assertEqual(groups, {'TAILORS:TWO_BASE': dict(layouts=2, published=2, native_score_write=2,
+                                                          native_best=0, quarter_founded=2, completed_pair=1)})
+
     def test_folds_stage_duplicates_and_joins_both_orders(self):
         log = '\n'.join([
             'CSC_AI_CONNECTION_OPPORTUNITY turn=5 player=1 identity=quarterFirst:10:3:BAKERS:7:6:20',

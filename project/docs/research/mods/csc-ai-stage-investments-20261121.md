@@ -822,6 +822,13 @@ publication. Saved one-turn continuity uses the underlying Quarter score.
 The controlled campaign enables this policy with the anchored treatment
 and keeps the private adjacency loaded in both arms.
 
+The endpoint analysis follows the extra-credit layouts that were offered
+before either district started. It joins the exact Quarter cell and value
+through publication, score write and best-site return. It checks foundations
+and completion independently. Group these counts by Quarter and two-Base
+or Base-plus-Specialty supply. A layout includes a particular customer plot
+and stage, so several logged layouts can lead to one physical Quarter.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions
