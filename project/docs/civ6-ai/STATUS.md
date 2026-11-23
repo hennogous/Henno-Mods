@@ -41,6 +41,136 @@ built the Sawmill on 154. The original outage had already spent much longer
 waiting for an available Builder. Track recurring delays alongside Problem 4.
 [Worker and operation trace](../research/mods/csc-ai-axum-builder-handoff-20261120.md).
 
+**20 November: all three Continents variants reached turn 250 on the
+updated dev CE build.** Both tuned variants finished with 27 working
+supplier plots and 13 Storekeeper chains. The finishing scheduler
+delivered two updates for one Barley Farm, and both tuned runs repaired
+it on turn 119. The earlier Kish replay reproduced its repair gain on the
+updated build. Sole-supplier repair finishing is now on by default with
+a compatible CE build. Pangaea is deferred.
+[Port and matched results](../research/mods/csc-ce-steam-26595377-port-20261120.md)
+
+**19 November: opt-in finishing restored Kish's sole Flax supplier.**
+Both replay arms opened on 166 with the same on-site Builder and operating
+Water Mill. The opt-in arm advanced the existing repair once and the Builder
+completed it on 166. The scheduler-off arm stayed pillaged through 170.
+The same Builder's new Farm at Olympia moved from 168 to 169.
+[Matched finishing-only replay](../research/mods/csc-ai-material-development-matched-20261118.md#finishing-only-replay-from-the-same-kish-assignment).
+
+**19 November: Fractal dispatch logged more work and supplied fewer buyers on time.**
+At the common turn-240 boundary, the baseline supplied 18 of 20 eligible
+buyers within 15 turns, and the treatment supplied 17 of 20. Treatment
+logged 27 new improvements and 10 repairs, up from 25 and 8. The treatment
+reached turn 250 and closed cleanly. The baseline had observations through
+240 and a verified save at 200.
+[Matched snapshot comparison](../research/mods/csc-ai-material-development-matched-20261118.md#fractal-dispatch-comparison-at-verified-snapshots).
+
+**19 November: integrated Builder dispatch restored Kish's Flax.**
+Both arms used the same CSC Lua. With the new CE consumer, native AI
+recruited Builder 4390912 on 165 and repaired the sole Farm on 166.
+The control's Flax was still pillaged at 175. Umma's next two Farm jobs
+each finished two turns later in treatment.
+[Packaged decision and work evidence](../research/mods/csc-ai-material-development-matched-20261118.md#the-integrated-policy-restored-kishs-flax).
+
+**19 November: Quebec priced Specialty work during Café construction.**
+CSC published three offers of 16,796 Q8 for the same Berries Plantation.
+Both matched arms reserved the repair on 164, recruited a Builder on 165
+and still had pillaged Berries at 166. The Café had opened on 163.
+[Matched queue and repair evidence](../research/mods/csc-ai-material-development-matched-20261118.md#quebecs-specialty-bid-before-the-cafe-opened).
+An archived Continents game gives a physical construction-period example.
+Aachen built its adjacent Honey Camp on 195 and completed the Café on 196.
+[Aachen production and work records](../research/mods/csc-ai-material-development-matched-20261118.md#aachen-built-a-specialty-supplier-before-the-cafe-opened).
+
+**19 November: Kish's Builder repaired the last working Flax supplier.**
+The matched probe recruited a Builder on 172 and gave the assigned worker
+one finishing opportunity on the Farm on 173. The Farm was working at
+175 while the passive control's remained pillaged. The Water Mill kept
+operating in both. Isin's Ziggurat recruited the same Builder two turns
+later than in the passive control. The integrated CE and CSC policy is
+the next verification step, alongside the Specialty construction replay.
+[Physical repair and trade-off](../research/mods/csc-ai-material-development-matched-20261118.md#kish-completed-the-repair-before-the-next-reassignment).
+
+**19 November: Kish dispatch and Umma recovery tested on matched saves.**
+Kish chose the Flax repair twice and made 20 unsuccessful Builder searches
+in both arms. The Farm stayed pillaged through turn 175. At Umma, the
+new CSC rule offered a Quarter repair while both legal Wheat deposits
+were bare. CE considered it and found a duplicate when stock nominated
+the repair on 214. Both arms were still down at 215.
+[Matched replay evidence](../research/mods/csc-ai-material-development-matched-20261118.md#kish-dispatch-and-umma-recovery-prerequisite).
+
+**19 November: the active-buyer Fractal reached turn 250.** It worked 21
+distinct plots versus 17 in the previous candidate and 16 in the tuned
+control. It finished with 15 working suppliers, versus 18 in both reference
+runs. The game received the earlier Farm score at Kish and completed the
+Farm on the same turn as both references. The 19 active-buyer samples cover
+eight Base jobs and seven eventually received work. Of 205 Builder offers,
+seven reached native initialization. Two were cancelled and five had only
+submissions recorded. Two of their plots received work through later jobs.
+[Matched results and exact contracts](../research/mods/csc-ai-material-development-matched-20261118.md#candidate-10-active-buyer-test).
+
+**19 November: the fresh Problem 3 candidate closed at Online turn 250.**
+It worked 17 distinct plots versus 16 in the matched tuned control. New
+improvements rose from 15 to 16. Four repair events were on one plot,
+compared with three repairs on three control plots. Both ended with 18
+working suppliers, out of 23 and 24 respectively. The candidate repaired
+an Aztec Wheat Farm on 209 and restored two Storekeepers on 210. At Kish,
+the Textile Workshop finished on 103 and its legal Flax remained bare
+at 250. The next code reads the active producer queue so Builder jobs can
+prepare Base and Specialty suppliers while their buyers are under construction.
+[Matched results and follow-through](../research/mods/csc-ai-material-development-matched-20261118.md#candidate-09-fresh-endpoint).
+
+**18 November: the first Problem 3 matched pair reached Online turn 250.**
+Distinct worked material plots fell from 16 to 15, and eligible working
+plots fell from 18/24 to 12/20. New improvements fell from 15 to 14, while
+repair events rose from 3 to 5 across 2 distinct plots. Average publisher
+time was 1.321 s in the control and 1.322 s in the treatment. The treatment
+recorded 674 positive improvement-score writes and 133 Builder offers.
+The higher ceiling advanced Kish's Tailors reservation by four turns in a
+paired replay, with the Farm still bare at the endpoint. The separate
+Irrigation offer reached the native comparison. The corrected follow-up
+submitted four exact Builder bids and matched the control's 15 worked
+plots through verified turn 240. The test stalled at 242 and the verified
+turn-200 save continued to 250. The combined treatment worked 15 distinct
+plots versus control's 16. It repaired three plots in six repair events
+versus control's three plots in three events, with working shares 18/22
+and 18/24 respectively. Kish's Flax repair completed at 248 after a
+fresh native recruitment. The earlier sponsored offers remained at submission.
+[Campaign and native boundaries](../research/mods/csc-ai-material-development-matched-20261118.md).
+
+**19 November: the worker replay identifies Kish's missed handoff.**
+Its charged Builder switched from a 210-utility Tailors Farm to Umma's
+581-utility Mine at equal native priority. The controller and charge
+were observed after the switch. Earlier nearby Builders had already
+processed their turns. The next same-start run tests an exact backup
+production quote when the native job fails to recruit an available Builder.
+[Kish trace and candidate](../research/mods/csc-ai-material-development-matched-20261118.md#kishs-worker-was-reassigned-to-umma).
+
+**19 November: both backup production bids reached the game.**
+Candidate 08 recorded four native Builder receipts through turn 160,
+including two earlier contingency bids. It had worked 14 distinct plots
+versus 13 in the control. Shadow's outage interrupted the run after its
+verified turn-185 boundary. The controller matched all 176 retained
+rows of the turn-150 save and finished at 250. The recovered game
+worked 23 distinct plots versus the control's 16, with 20 versus
+15 new improvements and six versus three repair events. The working
+supply was 19/27 versus 18/24. The subsequent fresh candidate 09 adds
+the value of Services that a single material job can restore.
+[Recovery and valuation scope](../research/mods/csc-ai-material-development-matched-20261118.md#value-the-service-that-the-job-would-restore).
+
+**18 November: native follow-through verified for an exact Tailors supplier.**
+Main CSC values material jobs from live transactions, and the Fractal candidate
+reserves Mycenae's Sheep Pasture two turns earlier. Both arms finish it on 169.
+Candidate save readback verifies the working supply at 183. Tenochtitlan's
+Farm request rises from 147 to 155 and still waits for an available Builder.
+[Material pricing and follow-through](../research/mods/csc-ai-material-job-followthrough-20261118.md).
+
+**18 November: Problem 3.1 replay reproduced the Angkor Thom supplier gap.**
+The legal Sheep Pasture received the exact +26 and +64 native score writes.
+Both arms opened the same Mine job and reached turn 112 with bare Sheep.
+Native recruitment can run across cities, and a charged Builder was observed
+one tile away. Trace the next economically competitive job at admission.
+[Replay and AI mod comparison](../research/mods/csc-ai-material-development-audit-20261118.md).
+
 **18 November: the joint guidance optimization is verified on Pangaea.**
 Exact plans are reused within a forecast. The turn-200 comparison matched
 bids and forecasts for both tested players. The fresh 250-turn run lowered
@@ -78,7 +208,6 @@ Diagnostic cost adds
 0.069s at100 and0.425s in a nine-chain mature player pass; whole-turn cost awaits
 the next full run. Requires the new optional CE APIs; older CE keeps ordinary
 forecasts. [Implementation/results](../research/mods/csc-ai-service-valuation-implementation-20261118.md).
-No game is running. The3.1 supplier case remains available for later work.
 
 **18 November: Problem2.1 is complete at the integrated Bakers/Tailors scope.**
 All six matched Online250 games qualify/restore. Physical links75→86; customer
@@ -89,12 +218,10 @@ source/input/v3 audits pass. Fractal produces an active Dockmaster and Sacristan
 Astra agrees with closure. No additional tuning change or full run is needed.
 [Results, map variation and completion audit](../research/mods/csc-ai-customer-scheduling-20261117.md).
 
-Initial **3.1–3.3 research is written up**: seven treatment endpoint Quarters have
-working Stage2 producers but no working Base supplier. Both families already
-offer26 utility for producer-only supply and56 with a working customer too.
-Next diagnostic: Pangaea Tailors1753/Sheep1680 from the retained100 checkpoint,
-to locate the first job, worker or unlock bottleneck. [Initial audit](../research/mods/csc-ai-material-development-audit-20261118.md).
-The customer-placement goal, including this initial research, is complete.
+The customer-placement goal, including the initial 3.1–3.3 census, is complete.
+Seven treatment endpoint Quarters had working Stage 2 producers with no working
+Base supplier. Both families offer 26 utility for producer-only supply and 56
+with a working customer too.
 No fresh full game is scheduled. The qualified
 CE fork remains necessary; no upstream PR has been made. Keep the follow-ups on
 customer-first efficacy, coastal opportunities and Service pricing on the roadmap.

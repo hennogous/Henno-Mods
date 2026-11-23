@@ -1,12 +1,12 @@
 # Problem 3: first material-development investigation
 
-18 November2026. Initial research after completing customer placement2.1.
-No new game or tuning change. [Machine-readable census screen](csc-ai-material-development-audit-20261118.json).
+18 November 2026. Initial research and matched replay after completing customer
+placement 2.1. [Machine-readable census screen](csc-ai-material-development-audit-20261118.json).
 
-**Next, trace why an operating producer fails to obtain its first working Base
-supplier.** Both Bakers and Tailors already receive supplier guidance. The useful
-question is where that guidance stops producing work, before changing its value.
-Astra recommends one short, exact job-to-execution investigation.
+**First case: the native scorer accepts the Pasture bid, and Angkor Thom opens
+a Mine job even at the current CE bid ceiling.** Both Bakers and Tailors already
+receive supplier guidance. The next question is how much late job preference
+is justified by the work that becomes possible once the exact supplier is ready.
 
 ## What the integrated policy already does
 
@@ -56,15 +56,78 @@ case, directly exercising the existing26-point policy. Fractal's Tailors853 with
 Sheep928 is a second case: its producer is damaged at175 and working at200–250,
 while the supplier remains non-working.
 
-## One bounded next experiment
+## What the other AI mods contribute
 
-Use the retained Pangaea100 checkpoint and the shared controller for at most
-12 turns. First inspect Sheep1680's current improvement, unlocks, build legality,
-purchase city and reachable Builders. If executable, join the publication to
-native job comparison, reservation, worker assignment or Builder recruitment,
-then physical improvement and material exchange. Identify the first actual loss
-and its competing job/offer. An occupied planning tree or committed Builder is
-an availability result; locked work belongs to3.3.
+Read-only review of the installed Workshop files. The replay uses stock game
+AI with CSC and its recorded CE package.
+
+| Mod | Source pattern | Application to Problem 3 |
+|---|---|---|
+| AI+ | `behaviortrees.xml` sets Required City to `-1` on both Build Unit nodes in Build City Improvement. | CSC already uses this pattern in `CSC_Q_ALL_AI_Connectors.sql`. An admitted job can recruit production from other eligible cities. The game still performs its own unit selection and queue comparisons. |
+| Real Strategy | `base/RealStrategy_Main.sql` has a base improvement pseudo-yield of 4. Peace, military defense and war apply different biases. | Treat the appetite for improvement work and ability to staff a selected job as separate decisions. CSC already has a distinct +10 Builder request-priority default. |
+| RHAI5 | `core/Strategies/m01/m03/m07/RH_m023.lua` scores eligible resource work, useful ordinary plots and existing improvements before considering Builder acquisition. | Count valuable work against available capacity. CSC can do this over its much smaller set of mapped jobs, counting a pillaged supplier as unfinished work. |
+
+For 3.3, RHAI5 also provides examples of conditional technology and civic
+strategies. Our earlier civic replay confirmed activation of the strategy and
+identical research choices in both arms. Qualify a specific missing material
+prerequisite at the native research comparison before using that design.
+[Earlier mod audit](csc-ai-material-preservation-and-repair-review-20261023.md).
+[Research replay](csc-ai-research-priorities-20261019.md).
+
+## Matched Pangaea replay
+
+The original Pangaea run recorded 145 exact Pasture writes of 6,656 Q8 across
+the turn 99–249 offer window. A Builder moved through (52,22) on turns 174–178
+while Hariharalaya was pursuing a Ski Resort at (53,22). Count that as movement
+for the Ski Resort, based on the tree's decoded improvement and reservation.
+
+Both replay arms load the same retained turn-100 save, unmodified packages and
+stock setup. Angkor Thom owns the bare Sheep at (52,22). Its Tailors Quarter has
+a functioning Textile Workshop. The Pasture is unlocked and native placement
+legality is true. Two Khmer Builders have a combined four charges at hex
+distances six and nine. A unit census measures nearby charges. The behavior
+tree measures eligibility and assignment for a specific job.
+
+The ordinary arm forwards the original 6,656 Q8 (+26 utility). The treatment
+raises only the exact city, Sheep plot and Pasture entry to 16,384 Q8 (+64
+utility), the tested CE capability's ceiling. The first interval uses the
+policy published during save loading. The adjusted publication begins on
+turn 101. The receipt for turn 102 is 22,023 → 28,679 Q8 in ordinary and
+22,023 → 38,407 Q8 at the ceiling. Zero-turn setup observes the world and
+wraps publication in memory. Civ plays both arms through turn 112 and makes
+its own construction and Builder decisions.
+
+In both arms the existing Mine tree finds a Builder on turn 100. Angkor Thom
+opens a new Mine job on turn 102 at (50,28), with a native job value of 265.
+A three-charge Builder is one hex from the Sheep on turn 109 while other
+improvement jobs proceed. The Sheep remains bare at the turn-112 boundary.
+The first observed barrier for this Pasture is getting an ordinary job slot
+and winning admission. Changing empire-wide Builder production or researching
+another technology would leave the observed job choice in place.
+
+The comparison audit verified 12 exact receipts per arm, including 11 at the
+ceiling, and zero Builder hook faults. Both sessions closed at exit code 0,
+restored preferences and preserved the matching source save. The archived
+`comparison.json` includes the score changes, turn-109 Builder and digests
+for the source and raw evidence. The retained frozen packages matched all
+duplicates before 0.76 GiB was removed.
+
+## Follow-through
+
+The subsequent [implementation and Fractal replay](csc-ai-material-job-followthrough-20261118.md)
+prices the exact native job from the shared economic model and verifies working
+Tailors Base supply. It also follows the separate Farm case through Builder
+recruitment.
+
+Measure the native margin at an open improvement admission for a chain whose
+first Base or Specialty improvement delivers a substantial immediate benefit.
+Use the gameplay-defined transaction data to price the contribution. If the
+existing score hook reaches an economically justified win, keep that simpler
+route. If the timing or native gate defeats a sound bid, prototype an exact
+offer at ordinary job admission and retain the game's existing reservation,
+recruitment and build checks. Follow the chosen job through physical work and
+its working supply link. For 3.2, count available capacity only when a valuable
+admitted job waits. For 3.3, use a separate case with a missing prerequisite.
 
 Previous Bakers evidence already shows both outcomes: Alexandria's Pasture
 completed and Storekeeper operated (AI-C111); Melbourne's Farm reservation
@@ -73,8 +136,11 @@ lost stronger queue comparisons (AI-C113/115/116). This next case tests the
 current shared policy on Tailors. No global Builder bonus, new API or additional
 economic forecasts are justified before finding that boundary.
 
-Sources: current main-CSC `CSC_AI_QuarterPlacement.lua`,
-`CSC_AI_DistrictBridge.lua`, retained campaign censuses and the
-[native finding register](../../civ6-ai/findings.md#ai-c111). The open Ghidra
-program is the historical324c51e9 XP2 binary; this source/data audit introduces
-no addresses or runtime claims for the current092abfbb binary.
+Sources include current main CSC `CSC_AI_QuarterPlacement.lua`,
+`CSC_AI_DistrictBridge.lua`, the campaign censuses and the
+[native finding register](../../civ6-ai/findings.md#ai-c111). The replay is in
+`Desktop/Codex/csc-ai-material-development-20261118`. The native-trace check
+matched the relevant sections of ordinary admission, location selection and
+improvement score storage in Ghidra's reference `324c51e9` to the live XP2
+binary `092abfbb`. The previously qualified REA score record is documented
+in the [native research log](csc-ai-bakers-natural-research-20261106.md#ce-score-producer-and-execution-limits).

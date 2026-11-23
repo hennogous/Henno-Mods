@@ -49,6 +49,7 @@ flowchart LR
     MODEL["Central economic ledger<br/>actual legs, recipients, timing, rounding"]
     Q["Quarter bid adapter"]
     P["Material protection adapter"]
+    D["Material development adapter<br/>exact jobs, Builder capacity, prerequisites"]
     C["Signed customer residual<br/>same-city/type reference"]
     R["Observed routes<br/>actual endpoints and paid counters"]
     T["Joint scheduling then route network<br/>pooled amenity counterfactuals"]
@@ -62,6 +63,7 @@ flowchart LR
     LIVE --> MODEL
     MODEL --> Q --> N
     MODEL --> P --> N
+    LIVE --> D --> N
     GEN --> R
     R --> T
     MODEL --> T
@@ -71,6 +73,7 @@ flowchart LR
     W --> PRICE
     PRICE --> C --> N
     PRICE --> Q
+    PRICE --> D
 ```
 
 **16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed
@@ -219,11 +222,44 @@ and acceptance data. All reusable CSC policy is in `Civ Supply Chains/Lua_UI/AI/
 | Central rules | `CSC_AI_EconomyModel.lua`: transaction recipients, population rounding, exclusive producers, prerequisite and queue timing, bounded optional investment plans, recurring yields and marginal loss. No game writes. |
 | Economic decisions | `CSC_AI_EconomyAdapters.lua`: native pricing, complete Quarter bids, weak-site policy and material-loss quotes. Managed types defer unquoted/unknown sites; unavailable economic capability retains the older policy explicitly. |
 | Placement preparation | `CSC_AI_AdjacencyScan.lua`: adjacency, viable present/future footprints, quoted frontier options and poor-site/deferral facts. Future customer space can establish feasibility; it earns no speculative customer yield. |
-| Existing chain decisions | `CSC_AI_QuarterPlacement.lua`: shared suppliers/chains, material deductions, exclusions, supplier acquisition, Builder and building/repair offers. Economic loss enriches protection; structural safeguards remain. |
+| Existing chain decisions | `CSC_AI_QuarterPlacement.lua`: shared suppliers/chains, exclusions, material and building development, and repair. The economy reader prices exact material work from signed gameplay transactions and starts eligible jobs when the matching producer enters active construction. Separate adapters send a bounded value to the improvement selector, extra present value to an uncovered Builder production request, and delayed income to a prerequisite's native research comparison. All three offers renew from each live snapshot. |
 | Publication | `CSC_AI_BakersGameplay.lua`: despite its historical name, coordinates Bakers and Tailors; refreshes and publishes one bounded packet, then reads receipts. |
 | Transport | `CSC_AI_DistrictBridge.lua`: validates and publishes typed CE entries atomically. Complete Quarter bids are exclusive with the old early score adjustment for the same pair. |
 | Native database input | `Data/CSC_Q_ALL_AI_Connectors.sql`: moderate private-yield adjacency for mapped customer districts, with replacement expansion and edge deduplication; also retains the existing modest Builder controls. |
 | CE mechanism | Isolated CE feature branch `codex/quarter-value-delivery`: managed-type defaults, consumer refresh, retained-request repricing and native economic quotes. CSC rules do not belong in CE. No upstream PR is submitted. |
+
+Material development compares the legal improvement or repair on the
+original supplier plot. CSC refreshes that bid each turn from the current
+buyer and supplier facts. Stock terrain analysis chooses a preferred
+improvement type, then the city looks for a tile when its ordinary
+improvement slot opens. A supplier can compete again at a later opening.
+Its score follows the admitted job through the native tree and helps
+price both existing-worker recruitment and an
+ordinary Builder production request. The separate production offer
+credits value already carried by that job. CSC's capacity estimate
+matches nearby charged workers and imminent local queues to jobs.
+The engine still owns recruitment, queue selection and legal orders.
+Finishing is enabled by default when CE exposes the finishing-only
+consumer. CSC publishes an exact repair offer when an operating buyer has
+one mapped supplier and a charged Builder is on its pillaged tile.
+Matched controls set `CSC_AI_TEST_LAST_SUPPLIER_FINISH=false` in their
+test package. The CE consumer rechecks that
+the native repair tree controls that Builder at the start of its normal
+worker pass. Each assignment can move earlier once, with at most one
+advance per player and turn. The native tree issues the repair and checks
+its legality. Offers, reordered updates and observed repairs have separate
+records.
+
+Research offers price delayed transactions from exact missing prerequisites.
+The current material qualification starts when the job is legal. The
+outcome observer counts completed material changes independently of the
+decision adapters.
+
+The follow-up material valuation also prices a Service when an exact job
+can restore it using the live buildings, unlocks and other suppliers.
+Quarter and material decisions share the same gameplay-derived effects
+and native price adapters. A separate ordinary material subtotal keeps
+additional Builder charges from claiming the same activation twice.
 
 The adjacent Builder, building, research and recovery problems remain distinct
 roadmap capabilities. Keeping their working adapters does not mean the new

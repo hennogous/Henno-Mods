@@ -57,16 +57,18 @@ local function sample(row, phase)
     local producerDamage = test.damage == 'producer'
     local city = cityFor(player, producerDamage and test.city or row.recipient)
     local building = producerDamage and row.producer or row.buyer
-    local queue = city and city:GetBuildQueue()
-    local production = queue and queue.GetCurrentProductionTypeHash and queue:GetCurrentProductionTypeHash()
     local service = source and source:GetProperty(row.profile.service.property) or 0
     local ui = ExposedMembers and ExposedMembers.CSC_Adjacency
     local canProduce = ui and ui.CanProduceItem
     local eligible = canProduce and city and tostring(canProduce(test.player, city:GetID(), building.Hash)) or 'unknown'
-    print(string.format('CSC_STAGE_TWO_BUILDING_REPAIR phase=%s turn=%d player=%d quarter=%d customer=%d recipient=%d role=%s building=%s era=%d producer=%s buyer=%s service=%s canProduce=%s queue=%s',
+    -- Current production is a UI-only read in this gameplay context. The
+    -- stock queue journal supplies competing non-building orders.
+    local cityNumber = ui and ui.GetEconomyCityNumber
+    local queuedBuilding = cityNumber and city and cityNumber(test.player, city:GetID(), 'currentBuilding', 0)
+    print(string.format('CSC_STAGE_TWO_BUILDING_REPAIR phase=%s turn=%d player=%d quarter=%d customer=%d recipient=%d role=%s building=%s era=%d producer=%s buyer=%s service=%s canProduce=%s queuedBuilding=%s',
         phase, Game.GetCurrentGameTurn(), test.player, test.quarter, test.customer, row.recipient, test.damage,
         building.BuildingType, player and player:GetEra() or -1, buildingStatus(source, row.producer, test.quarter),
-        buildingStatus(recipient, row.buyer, test.customer), tostring(service), eligible, tostring(production)))
+        buildingStatus(recipient, row.buyer, test.customer), tostring(service), eligible, tostring(queuedBuilding)))
 end
 
 local qualified, used = {}, {}
