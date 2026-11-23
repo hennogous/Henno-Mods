@@ -1,6 +1,7 @@
 import unittest
 
-from anchored_connection_results import connection_counts, prospective_layouts, supplier_history, wonder_connections
+from anchored_connection_results import (bid_competition, connection_counts, failed_district_requests,
+                                         prospective_layouts, supplier_history, wonder_connections)
 from planning_results import parse
 
 
@@ -17,6 +18,43 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_failed_bids_use_scores_seen_before_the_exact_native_winner(self):
+        def n(kind, ordinal, plot, base, result):
+            return ('CSC_CUSTOMER_WATCH_NATIVE observedTurn=5 generation=6 '
+                    f'ordinal={ordinal} record={{"k":"{kind}","generation":6,"version":4,"player":1,'
+                    f'"city":7,"district":6,"plot":{plot},"base":{base},"result":{result},"eligible":1}}')
+
+        log = '\n'.join([
+            'CSC_DISTRICT_CATALOGUE\t33\tDISTRICT_RURALCOMMUNITYA\ttrue',
+            record('PUBLICATION', accepted='true', version=4, pendingTurn=4),
+            record('OPPORTUNITY', turn=4, version=4, player=1, city=7, district=43, plot=10, offered='true', bidQ8=120),
+            record('OPPORTUNITY', turn=4, version=4, player=1, city=7, district=43, plot=12, offered='true', bidQ8=200),
+            'CSC_AI_CUSTOMER_FUTURE_BID turn=4 player=1 city=7 district=6 plot=20 deltaQ8=16',
+            'CSC_QUARTER_WATCH_WRITE\tversion=4\tplayer=1\tcity=7\tdistrict=43\tplot=10\tresult=120\t'
+            'eligible=1\tgeneration=6\tnativeOrdinal=13',
+            'CSC_QUARTER_WATCH_WRITE\tversion=4\tplayer=1\tcity=7\tdistrict=43\tplot=12\tresult=200\t'
+            'eligible=1\tgeneration=6\tnativeOrdinal=35',
+            n('net', 14, 20, 54, 70), n('cache', 16, 20, 91, 91),
+            record('NATIVE_BEST', turn=5, version=4, player=1, city=7, district=33, plot=15,
+                   nativeOrdinal=20, generation=6, result=160),
+        ])
+        competition = bid_competition(log, parse(log, 'CSC_PLANNING_'), {1}, 250)
+        self.assertEqual(competition['lost_to'], {kind: {'DISTRICT_RURALCOMMUNITYA': 1}
+                                                 for kind in ('quarter', 'customer')})
+        self.assertEqual({loss['kind']: loss['gap_q8'] for loss in competition['losses']},
+                         {'quarter': 40, 'customer': 69})
+
+    def test_expired_request_lists_actual_production_in_the_right_owner_window(self):
+        district = 'DISTRICT_CSC_TAILORS_QUARTER'
+        submit = ['4', '1', 'CITY_A', '', 'CONTRACT 11', 'SUBMITTED', 'NO_UNIT', 'NO_BUILDING', district]
+        failed = ['6', '1', 'CITY_A', '', 'CONTRACT 11', 'FAILED', 'NO_UNIT', 'NO_BUILDING', district]
+        result = failed_district_requests([submit, ['5', '1', 'CITY_A'], failed, ['6', '2', 'CITY_A']],
+            [['4', 'CITY_A', '2.0', 'UNIT_BUILDER'], ['5', 'CITY_A', '10.0', 'UNIT_BUILDER'],
+             ['6', 'CITY_A', '1.0', 'UNIT_ARCHER']], {1}, {district}, 250)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]['contract'], 'CONTRACT 11')
+        self.assertEqual(result[0]['concurrent_production_turns'], {'UNIT_BUILDER': 2})
+
     def test_prospective_layout_follows_exact_packet_and_both_foundations(self):
         def plan(target):
             return ('CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '

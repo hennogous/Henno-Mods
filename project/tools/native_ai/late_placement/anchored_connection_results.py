@@ -2,6 +2,7 @@
 
 import argparse
 from collections import Counter, defaultdict
+import csv
 import json
 from pathlib import Path
 import re
@@ -22,6 +23,134 @@ STRONG_LAYOUT = re.compile(
     r'existing=(true|false) extraBase=(true|false) specialty=(true|false)')
 QUARTER_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\tDISTRICT_CSC_([A-Z_]+)_QUARTER\t')
 QUARTER_RECEIPT = re.compile(r'CSC_QUARTER_WATCH_(WRITE|BEST)\t([^\r\n]+)')
+DISTRICT_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t([^\t\r\n]+)')
+CUSTOMER_BID = re.compile(r'CSC_AI_CUSTOMER_(?:FUTURE|ECONOMIC)_BID ([^\r\n]+)')
+CUSTOMER_RECEIPT = re.compile(r'CSC_CUSTOMER_WATCH_NATIVE [^\r\n]*? ordinal=(\d+) record=(\{[^\r\n]+\})')
+
+
+def bid_competition(log, observations, players, through):
+    """Name winners only when a positive CSC cell was observed before selection.
+
+    An overwritten last-write row can fall after a comparison in the same
+    packet. Keep such comparisons out of the score-gap sample. For an ordinary
+    customer, require a positive native application followed by a cached score
+    read. A NetValue delta alone is an earlier input, not the final score.
+    """
+    names = {int(index): title for index, title in DISTRICT_TITLE.findall(log)}
+    versions = defaultdict(set)
+    for row in observations:
+        if row['kind'] == 'PUBLICATION' and row['accepted'] and row['pendingTurn'] <= through:
+            versions[row['pendingTurn']].add(row['version'])
+    quarters = {tuple(r[k] for k in ('version', 'player', 'city', 'district', 'plot')): r['bidQ8']
+                for r in observations if r['kind'] == 'OPPORTUNITY' and r.get('offered')
+                and r['player'] in players and r['turn'] <= through}
+    customers = set()
+    for match in CUSTOMER_BID.finditer(log):
+        row = dict(field.split('=', 1) for field in match[1].split() if '=' in field)
+        published = versions.get(int(row['turn']), ())
+        if len(published) == 1 and int(row['deltaQ8']) > 0 and int(row['player']) in players:
+            version = next(iter(published))
+            customers.add((version, *(int(row[k]) for k in ('player', 'city', 'district', 'plot'))))
+
+    decisions = defaultdict(list)
+    for row in observations:
+        if row['kind'] == 'NATIVE_BEST' and row.get('player') in players and row['turn'] <= through:
+            group = tuple(row[k] for k in ('generation', 'version', 'player', 'city'))
+            decisions[group].append((row['nativeOrdinal'], 'winner', row['district'], row['plot'], row['result']))
+    for match in QUARTER_RECEIPT.finditer(log):
+        if match[1] != 'WRITE':
+            continue
+        row = dict(field.split('=', 1) for field in match[2].split('\t') if '=' in field)
+        key = tuple(int(row[k]) for k in ('version', 'player', 'city', 'district', 'plot'))
+        group = (int(row['generation']), *key[:3])
+        if group in decisions and row['eligible'] == '1' and quarters.get(key) == int(row['result']):
+            decisions[group].append((int(row['nativeOrdinal']), 'quarter', *key[3:], int(row['result'])))
+
+    if customers:
+        positive = set()
+        for match in CUSTOMER_RECEIPT.finditer(log):
+            row = json.loads(match[2])
+            key = tuple(row[k] for k in ('version', 'player', 'city', 'district', 'plot'))
+            group = (row['generation'], *key[:3])
+            if group not in decisions or key not in customers:
+                continue
+            cell = (row['generation'], *key)
+            if row['k'] == 'net':
+                if row['result'] > row['base'] and row['eligible'] == 1:
+                    positive.add(cell)
+                else:
+                    positive.discard(cell)
+            if row['k'] == 'cache' and row['result'] > 0 and row['eligible'] == 1 and cell in positive:
+                decisions[group].append((int(match[1]), 'customer', *key[3:], row['result']))
+
+    outcomes = defaultdict(Counter)
+    lost_to = defaultdict(Counter)
+    losses = []
+    for (generation, version, player, city), events in sorted(decisions.items()):
+        cells = defaultdict(dict)
+        for ordinal, kind, district, plot, score in sorted(events):
+            if kind != 'winner':
+                cells[kind, district][plot] = score
+                continue
+            for (bid_kind, bid_district), plots in cells.items():
+                # Each district/type contributes its strongest observed site
+                # once in this decision. Counting its alternative tiles would
+                # turn a single missed investment into several apparent losses.
+                bid_score = max(plots.values())
+                bid_plot = min(p for p, value in plots.items() if value == bid_score)
+                if district == bid_district and plots.get(plot) == score:
+                    outcomes[bid_kind]['exact_win'] += 1
+                elif district >= 0 and score > bid_score:
+                    winner, bidder = names.get(district, str(district)), names.get(bid_district, str(bid_district))
+                    outcomes[bid_kind]['outscored'] += 1
+                    lost_to[bid_kind][winner] += 1
+                    losses.append(dict(kind=bid_kind, generation=generation, version=version,
+                        player=player, city=city, ordinal=ordinal, district=bidder, plot=bid_plot,
+                        score_q8=bid_score, winner=winner, winner_plot=plot, winner_q8=score,
+                        gap_q8=score-bid_score))
+                else:
+                    outcomes[bid_kind]['other_or_unresolved'] += 1
+    return dict(outcomes={k: dict(v) for k, v in outcomes.items()},
+                lost_to={k: dict(v) for k, v in lost_to.items()}, losses=losses)
+
+
+def failed_district_requests(build_rows, queue_rows, players, district_types, through):
+    """Identify items receiving production while a district request was pending."""
+    owners, requests, failed = defaultdict(set), {}, []
+    for row in build_rows:
+        if len(row) < 3 or not row[0].isdigit() or not row[1].isdigit():
+            continue
+        turn, player, city = int(row[0]), int(row[1]), row[2]
+        if turn > through:
+            continue
+        owners[turn, city].add(player)
+        if len(row) < 9 or player not in players or not row[4].startswith('CONTRACT '):
+            continue
+        contract, status, district = row[4], row[5], row[8]
+        if district not in district_types:
+            continue
+        key = (player, city, contract)
+        if status == 'SUBMITTED':
+            requests.setdefault(key, turn)
+        elif status in {'FAILED', 'CANCELLED', 'COMPLETED'} and key in requests:
+            submitted = requests.pop(key)
+            if status != 'COMPLETED':
+                failed.append(dict(player=player, city=city, contract=contract, district=district,
+                                   submitted=submitted, ended=turn, status=status))
+
+    production = defaultdict(set)
+    for row in queue_rows:
+        if len(row) < 4 or not row[0].isdigit():
+            continue
+        turn, city, item = int(row[0]), row[1], row[3]
+        owned = owners.get((turn, city), ())
+        if item and row[2] and len(owned) == 1 and float(row[2]) > 0:
+            production[next(iter(owned)), city, turn].add(item)
+    for row in failed:
+        row['concurrent_production_turns'] = dict(Counter(
+            item for turn in range(row['submitted'], row['ended'] + 1)
+            for item in production.get((row['player'], row['city'], turn), ()) if item != row['district']))
+    return failed
 
 
 def prospective_layouts(log, observations, players, through):
@@ -293,11 +422,21 @@ def run_result(root):
                 supplier_losses[f'{quarter}:{material}:working_loss'] += 1
             if row.get('lostBase' if material == 'BASE' else 'lostSpec'):
                 supplier_losses[f'{quarter}:{material}:material_loss'] += 1
+    build_log, queue_log = root / 'AI_CityBuild.csv', root / 'City_BuildQueue.csv'
+    failed_requests = None
+    if build_log.is_file() and queue_log.is_file():
+        types = {r['districtType'] for r in observations if r['kind'] == 'MAPPING' and r['role'] == 'customer'}
+        types.update(f'DISTRICT_CSC_{title}_QUARTER' for _, title in QUARTER_TITLE.findall(log))
+        with build_log.open(encoding='utf-8-sig', newline='') as builds, queue_log.open(encoding='utf-8-sig', newline='') as queue:
+            failed_requests = failed_district_requests(csv.reader(builds, skipinitialspace=True),
+                csv.reader(queue, skipinitialspace=True), players, types, through)
     return dict(counts=counts, timing=timing['publisher_wall'],
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
                 supplier_history=supplier_history(observations, players, through),
                 prospective_layouts=prospective_layouts(log, observations, players, through),
+                bid_competition=bid_competition(log, observations, players, through),
+                failed_district_requests=failed_requests,
                 wonder_connections=wonder_connections(log, observations, players, through))
 
 

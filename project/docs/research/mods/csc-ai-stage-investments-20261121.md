@@ -829,6 +829,21 @@ and completion independently. Group these counts by Quarter and two-Base
 or Base-plus-Specialty supply. A layout includes a particular customer plot
 and stage, so several logged layouts can lead to one physical Quarter.
 
+The same report records what beats delivered placement bids. Join each
+positive Quarter write or positively adjusted customer cache cell to the
+joint district choice in the same native generation, with the cell observed
+before the choice. Compare the strongest observed site for each district
+type and retain the winning type, plot and score margin. For district
+requests that later fail or are cancelled, read the production queue during
+the request window. These rows show which items received production while
+the request was pending. The controller already records both sources.
+
+The archived Continents treatment verifies the join. In one early case,
+Tbilisi's Bakers value of 24,502 Q8 lost to a Rural Community at 29,143 Q8.
+In a separate request, Tbilisi submitted Bakers contract 213 on turn 16
+and it failed on 19. The city recorded two turns of Settler production
+during that request window.
+
 The matched Fractal replay from turn 100 to 120 on Dev CE `6244570` verified
 all 106 retained source rows in each arm. The treatment published 20
 quarter-first and 12 customer-first credit offers. The footprint deductions
