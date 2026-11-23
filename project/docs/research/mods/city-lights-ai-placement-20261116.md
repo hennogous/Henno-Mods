@@ -135,3 +135,30 @@ loaded the +1 private placement yield for the City Lights district beside
 either Quarter. The completed-district histories record 13 provider links
 in control, all Bakers, and 11 in the treatment, including three Tailors
 links. [Revised run and decision evidence](csc-ai-stage-investments-20261121.md#revised-continents-result).
+
+### How the Gold and Production bonuses enter the game
+
+City Lights attaches the Gold rule to rural and hybrid AI leaders through
+`MODIFIER_PLAYER_CITIES_IMPROVEMENT_ADJACENCY`. Firaxis ships that modifier type
+in Byzantium & Gaul, where Gaul's Commercial Hub gets minor Gold adjacency
+from Mines. City Lights supplies its own improvement lists and sets
+`Amount=1`, `TilesRequired=1`. For example, two Farms and one Pasture give a
+completed Farming Town +3 ongoing Gold adjacency. The bonus belongs to the
+district, requires no citizen working those tiles, and grows as matching
+improvements are added. The normal Farming Town bonus to nearby improvement
+tiles is a separate effect. See City Lights `COREX_Civ_Ai_Updates.sql` lines
+67–75, 118–171 and 393–411, and Firaxis `Byzantium_Gaul_Modifiers.xml` lines
+47–52 and `Byzantium_Gaul_Civilizations.xml` lines 516–544.
+
+The rural-only +40% construction modifier enters the native district forecast
+through build time. In the tested Windows XP2 build (SHA256
+`4de40abf7c739f53c1f3f825863ace84dc220e5a42d87620e56fceaf3fbd4dc8`),
+`AdjustDistrictProduction::Apply` resolves the player's buildable district and
+stores the rate in the city build queue's per-district array at offset `0x2d8`
+(write RVA `0x8c3aa6`). District `GetTurnsLeft` reads that array (RVA
+`0x0fe6f0`). The ordinary AI district evaluator calls `GetTurnsLeft` at RVA
+`0x3e2928` and passes the estimate plus unlock delay into `NetValue` at RVA
+`0x3e2979`. Faster construction brings the benefits forward in the forecast.
+The leader's explicit district preference is a separate input. This static
+trace establishes the route into the estimate. The observed win margins above
+still combine all inputs. See [district score anatomy](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-score-anatomy.md#how-do-construction-bonuses-affect-the-forecast).
