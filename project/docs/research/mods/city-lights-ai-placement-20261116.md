@@ -911,7 +911,19 @@ on 603 (154) and Tailors on 602 (163). The native AI had already selected
 the Quarter site before this save. Switch at 151 and follow both cities
 through 168. The turn-200 save has Bakers on 1162. Switch at 211, before
 the Hub selection recorded in packet 216, and follow 1163 through 235.
-These same-state tests isolate follow-through in each build order.
+Both arms inherit the same existing districts, native requests and saved
+layout properties from the candidate checkpoint. The short-replay
+control keeps anchored guidance on and the switch changes prospective
+guidance. A saved layout can remain fresh enough to resume when the
+candidate is enabled. These cases test continuation from a common state
+in each build order. Attribute a native choice to the switch only after
+CE consumes the new candidate packet.
+
+The replay report joins CE's version to the turn when that packet was
+accepted. The turn when the controller reads the result can be later.
+For example, Sodo's district choice observed on turn 129 used the packet
+published on 128. The spending trace also reports when the latest offer
+was made and requires the intended city's name to confirm its own request.
 
 #### Forecast performance follow-up
 

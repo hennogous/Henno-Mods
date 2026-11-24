@@ -167,11 +167,20 @@ class ConnectionCounts(unittest.TestCase):
             for name in ('complete.json', 'session-closed.json'):
                 (folder / name).write_text('{"verified":true,"turn":15}', encoding='utf-8')
             (folder / 'observed-services.json').write_text('{"chains":[]}', encoding='utf-8')
+            def winner(version):
+                row = dict(player=1, city=5, district=4, plot=23, k='best', eligible=1, reservationId=-1,
+                           version=version, generation=version, result=200)
+                return f'CSC_CUSTOMER_WATCH_NATIVE observedTurn=9 generation={version} ordinal=4 record=' + json.dumps(row)
+
             (folder / 'Lua.log').write_text('\n'.join([
                 'CSC_CUSTOMER_LAND_WATCH_INSTALLED',
+                record('PUBLICATION',turn=7,version=3,pendingTurn=7,accepted='true'),
+                record('PUBLICATION',turn=8,version=4,pendingTurn=8,accepted='true'),
                 'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',
                 'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
                 'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
+                winner(3),
+                winner(4),
                 record('FOUNDATION', turn=10, player=1, city=5, district=4, plot=23, foundationDateKnown='true'),
                 relation(1,'TAILORS',10,23,11,'quarterFirst',city=7,neighbourCity=6,neighbourDistrict=4),
                 relation(1,'TAILORS',10,23,12,'quarterFirst',city=7,neighbourCity=5,neighbourDistrict=4),
@@ -183,12 +192,16 @@ class ConnectionCounts(unittest.TestCase):
                 out.write('8,1,City OTHER,Build City District,RUNNING,Purchase Plot,Purchase 3 2: Accepted on #13\n')
             (folder/'AI_CityBuild.csv').touch()
             rows = trace_arm(folder, ((7,43,10),(5,4,23)), 1,
-                             {43:'DISTRICT_CSC_TAILORS_QUARTER',4:'DISTRICT_HARBOR'}, 10, {5:'BUYER'})
+                             {43:'DISTRICT_CSC_TAILORS_QUARTER',4:'DISTRICT_HARBOR'}, 10, {5:'BUYER'}, switch_turn=7)
         self.assertEqual(rows['exact_pair_build_order'], 'quarterFirst')
         self.assertEqual(rows['exact_pair_first_completed_link']['turn'], 12)
+        self.assertTrue(rows['exact_pair_first_completed_after_switch'])
+        self.assertEqual([row['post_switch_packet'] for row in rows['comparisons']], [False, True])
         self.assertEqual(rows['quarter_materials']['working_at_endpoint'], {'TAILORS:BASE':1})
         purchase, = rows['exact_customer_land']['spending']
         self.assertTrue(purchase['matching_debit'] and purchase['built_offered_type'])
+        self.assertFalse(purchase['offer_during_post_switch_publication'])
+        self.assertTrue(purchase['purchase_after_switch'])
         self.assertEqual((purchase['district_request_turn'], purchase['buying_city_request_turn']), (8,7))
         linked, = rows['exact_customer_land']['completed_on_purchased_plot']
         self.assertEqual(linked['linked'], 12)

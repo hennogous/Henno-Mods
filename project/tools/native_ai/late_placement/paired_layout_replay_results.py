@@ -21,11 +21,25 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
 
-def trace_arm(folder, targets, player, names, width=None, city_labels=None):
+def trace_arm(folder, targets, player, names, width=None, city_labels=None, switch_turn=None):
     completion = read_json(folder / 'complete.json')
     if not (completion['verified'] and read_json(folder / 'session-closed.json')['verified']):
         raise ValueError(f'Incomplete replay arm {folder}')
     log = (folder / 'Lua.log').read_text(encoding='utf-8-sig')
+    observations = parse(log, 'CSC_PLANNING_')
+    publications = defaultdict(set)
+    for row in observations:
+        if row['kind'] == 'PUBLICATION' and row['accepted']:
+            publications[row['version']].add(row['pendingTurn'])
+    # A readback can occur after the switch while the native consumer still
+    # uses the previous packet. Only the packet's publication clock can place
+    # the write or comparison in the switched part of the replay.
+    packet_turns = {version: next(iter(turns)) for version, turns in publications.items() if len(turns) == 1}
+    accepted_turns = set(packet_turns.values())
+
+    def after_switch(turn):
+        return turn > switch_turn if turn is not None and switch_turn is not None else None
+
     wanted = set((city, plot) for city, _, plot in targets)
     stages = defaultdict(list)
     for name, pattern in (('proposals', PLAN), ('observed_substitutes', PROSPECTIVE_SUBSTITUTE)):
@@ -53,13 +67,15 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
         if row['player'] != player:
             continue
         observed = int(re.search(r'observedTurn=(\d+)', match[0])[1])
+        publication = packet_turns.get(row['version'])
         ordinal = int(match[1])
         city, plot, district = row['city'], row['plot'], row['district']
         key = row['generation'], row['version'], city, district, plot
         if row['k'] == 'cache' and row['eligible'] == 1:
             last_cache[key] = ordinal, row['result']
         if row['k'] in ('net', 'final') and row['base'] != row['result'] and (city, plot) in wanted:
-            stages['value_changes'].append(dict(observed_turn=observed, plot=plot, city=city,
+            stages['value_changes'].append(dict(observed_turn=observed, publication_turn=publication,
+                post_switch_packet=after_switch(publication), plot=plot, city=city,
                 district=names.get(district, str(district)), stage=row['k'],
                 before_q8=row['base'], after_q8=row['result'], eligible=row['eligible']))
         if row['k'] == 'best' and row['eligible'] == 1:
@@ -69,12 +85,12 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
                 score = last_cache.get((row['generation'], row['version'], city, target_type, target_plot))
                 target_score = score[1] if score and score[0] < ordinal else None
                 stages['comparisons'].append(dict(observed_turn=observed, version=row['version'],
+                    publication_turn=publication, post_switch_packet=after_switch(publication),
                     target_district=names.get(target_type, str(target_type)), target_plot=target_plot,
                     target_q8=target_score, winner=names.get(district, str(district)), winner_plot=plot,
                     winner_q8=row['result'], reported_reservation_id=row['reservationId'],
                     target_selected=(district, plot) == (target_type, target_plot),
                     recorded_gap_q8=row['result']-target_score if target_score is not None else None))
-    observations = parse(log, 'CSC_PLANNING_')
     native_ids = defaultdict(set)
     for row in observations:
         if row['kind'] not in ('FOUNDATION', 'COMPLETION', 'FIRST_OBSERVED') or row.get('player') != player:
@@ -147,7 +163,11 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
                 # named city resolves competing requests for the same plot.
                 confirmed = [turn for turn, _, status, city in row['request_history']
                              if buying_city and city == 'City ' + buying_city and status == 'Accepted']
-                spending.append(dict(row, buying_city_request_turn=max(confirmed, default=None)))
+                offered_after_switch = (after_switch(row['quote_turn'])
+                                        if row['quote_turn'] in accepted_turns else None)
+                spending.append(dict(row, buying_city_request_turn=max(confirmed, default=None),
+                                     offer_during_post_switch_publication=offered_after_switch,
+                                     purchase_after_switch=after_switch(row['turn'])))
             land = dict(
                 spending=spending,
                 completed_on_purchased_plot=[row for row in audit['completed_partners_on_purchased_land']
@@ -156,6 +176,7 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
             )
     return dict(stages, services=services, exact_pair_services=pair_services, exact_pair_first_completed_link=first_link,
                 exact_pair_build_order=foundation_order(first_link) if first_link is not None else None,
+                exact_pair_first_completed_after_switch=after_switch(first_link['turn'] if first_link else None),
                 quarter_materials=supplies, exact_customer_land=land)
 
 
@@ -169,7 +190,7 @@ def report(root, player, quarter, customer, city_labels=None):
     types = {title: index for index, title in names.items()}
     targets = [(city, types[district], plot) for city, district, plot in (quarter, customer)]
     width = read_json(source / 'source.json')['map_signature'][0]
-    return {arm: trace_arm(root / arm, targets, player, names, width, city_labels)
+    return {arm: trace_arm(root / arm, targets, player, names, width, city_labels, setup['switch_turn'])
             for arm in ('control', 'treatment')}
 
 
