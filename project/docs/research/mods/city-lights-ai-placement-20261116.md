@@ -858,6 +858,16 @@ native score, exact wins increased from seven to 14. Campus beat a customer
 another 23 losses and Bakers for 17. A district comparison can recur
 before construction.
 
+Barcelona's Holy Site demonstrates that a stronger rival can take a
+protected tile. In packet 154, the planner used half its link allowance
+to bid for a Bakers–Commercial Hub pair on 2457 and 2383. CE confirmed a
+1,443 Q8 site cost on Holy Site 2383, then recorded it winning the city
+comparison at 353,637 Q8 against the Hub's 299,765 on the same tile and
+packet. Contract 3465 was submitted on 154. The Holy
+Site took plot 2383 on 157 and completed on 160. In the candidate's
+prospective-site readbacks, six wins on four distinct sites reported
+both a cost write and a site win.
+
 In the candidate, 55 of 272 newly logged Quarter-first opportunities
 matched a customer plot recorded as unowned on the same turn. Fifty
 were in cities with all slots used. Those records mark changes in
