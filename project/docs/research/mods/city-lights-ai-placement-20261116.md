@@ -1103,6 +1103,26 @@ fewer customers and providers on this seed. The remaining release
 evidence includes direct paid-site follow-through, both build orders
 on the newer continuity code, and live timing after the optimization.
 
+#### Which Bakers links changed
+
+Both arms ended with 25 Bakers, but only ten Bakers shared both their
+plot and owner at turn 250. Of the 13 control provider pairs, five had
+the same footprints and owner in the candidate. Six of the eight lost
+links had no completed Bakers under that owner on the original plot.
+The other two kept Bakers and used the former provider plots for a
+Commercial Hub (1677) and an Entertainment Complex (1160). The candidate
+also formed three Bakers provider pairs on different layouts.
+
+Of 17 control customer or sales pairs, two kept both footprints and
+owner. Eleven of the other 15 had no completed Bakers under that owner
+on the original plot. Three of the remaining four Bakers got a different
+adjacent customer. At 1170, a plot that became a control provider,
+the candidate founded a Tailors on turn 54 after publishing a
+Tailors–Hub proposal for that plot. A provider-first replay should trace
+the actual two footprints and native opportunity. The aggregate loss of
+Bakers links includes relocation and capture as well as a later district
+winning a contested plot.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
