@@ -1280,3 +1280,31 @@ The fixture also covers a completed pillaged district plus an intact
 unfinished copy. Those two copies satisfy the native check together.
 The same archived turn-150 save is the follow-up for the revised
 planner's bid and actual construction.
+
+The same kinds of choices recur across both completed games. The
+control had 824 of 910 positive Rural A/B/C choice records for a
+different plot while that city already had a completed copy of the
+exact requested type and an intact copy. The candidate had 911 of
+1,032. Among the candidate's 538 Quarter-first provider plan records,
+224 pointed to a type already fulfilled in the receiving city.
+These are distinct observed turn/city/type/plot records, not a count
+of submitted contracts. The retrospective joins district foundation,
+completion, ownership, damage and removal events observed before
+the relevant turn.
+
+The strongest next replay is the candidate's turn-200 save
+(`7f3c0bf04524…`), player 4, city 458758. The city completed Rural A
+on 353 on turn 175. In packet 207 the native selector chose another
+Rural A on plot 425 at 443,918 Q8. The same packet offered +16,052 Q8
+for Rural B on that plot with one linked Quarter and positive native
+net value. Check current admission for B in the replay. The existing
+typed decline can temporarily withhold the empty A sites in that
+city's comparison while preserving real repair targets and ordinary
+rival bids. Test it only when a different provider has a ready,
+worthwhile link, and verify the native winner, request and foundation.
+Te Hokianga-nui-a-Kupe has both A and B already. It can check that the
+planner abstains when no alternate provider is ready.
+
+Current-build static evidence for district admission and BuildFromCity
+is retained as REA record
+`ev_cc0b4b68a69f0354c95f43c1d4b26f5050bcd21c78f5c5e03661609f6fcbf996`.
