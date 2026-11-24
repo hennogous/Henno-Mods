@@ -625,3 +625,21 @@ reserved on 91 and founded on 93, before the planned Bakers 1690. It gives
 the same replay a customer-first case. The matched window loads turn 50,
 switches the prospective policy on turn 90, and follows both through turn
 125 on the same package and City Lights stack.
+
+The control reached turn 125. In the treatment, Windows reported
+`EXCEPTION_IN_PAGE_ERROR` in the controller-owned Civ process at turn 100.
+The preserved log covers ten common post-switch turns, 91–100. The cause
+of the native exception is undetermined.
+
+| City | Both arms through turn 100 | What the candidate did |
+| --- | --- | --- |
+| Mbanza Kongo | Founded Commercial Hub 1615 on turn 93 and completed it on 96. | On turn 94 the saved plan identified the standing Hub and priced the missing Bakers on its original plot 1690 at 18,892 Q8 (73.8 native utility). |
+| Delhi | Founded Tailors 940 on turn 96 and completed it on 97. | The planner named Harbor 865 on turns 91–96. Its construction required a later unlock. |
+
+The candidate logged 80 prospective layout evaluations representing 14
+distinct site pairs. Four distinct prospective pairs qualified with a City
+Lights goods provider. No exact proposed pair founded both districts
+inside the common window. The interrupted treatment logs are in
+`continents-layout-continuity-v8/treatment/exception-turn100` under the
+24 November paired-footprints study. The customer-land replay starts from
+the separate archived turn-100 source.

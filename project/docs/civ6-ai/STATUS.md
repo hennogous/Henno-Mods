@@ -7,8 +7,22 @@ from a rival district. A Stage 4 buyer extends that protection to its last
 Specialty. The supplier protection shares the plan's existing deterrent and
 keeps its positive district bids intact. A fixture verified that a second
 usable Base releases the first tile. The economy suite passes 222 checks.
-The pinned v8 replay covers continuity and the provider handoff. The v9
-package carries the land and supplier changes for the next matched replay.
+The matched Continents replay recorded a customer-first handoff. Mbanza
+Kongo founded its Commercial Hub on plot 1615 on turn 93. On turn 94 the
+candidate repriced the missing Bakers on the original plot 1690 at 73.8
+native utility. Delhi founded Tailors on plot 940 on turn 96. Its proposed
+Harbor was still locked at turn 100. Both arms built those same first
+districts. The control reached 125. Civ reported an in-page exception at
+turn 100 in the treatment, so the comparison covers turns 91–100.
+
+The next short replay starts from a separate turn-100 save and tracks
+customer land offers. The full-game candidate also fixes an accounting
+error on purchased customer sites. Part of the site's value can fund the
+purchase bid, with the remainder discouraging a competing district. The
+old code copied the original amount back into the deterrent after the
+split. A regression now exercises both bids together. All 223 economy
+checks pass. Live purchase through customer construction and improved
+full-game pair conversion remain open.
 
 The revised-cap baseline modeled 20 strong Quarter–customer pairs. One
 completed both planned districts. Short replays verified the provisional

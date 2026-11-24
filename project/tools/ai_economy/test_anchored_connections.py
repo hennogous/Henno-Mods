@@ -261,6 +261,23 @@ stage=2;partner.stage=2
 cost=costs();assert(not cost[31] and cost[20]==24*256 and cost[21]==24*256)
 ''')
 
+    def test_customer_purchase_and_rival_cost_share_the_same_anchored_allowance(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+main.purchaseGold=32
+snapshot.cities={[7]={object={}}}
+snapshot.DistrictCapacity=function()return {known=true,allowed=2,used=1}end
+snapshot.Price=function(stream)
+    assert(stream.fixed and stream.yield=='YIELD_GOLD' and stream.amount==-32)
+    return -32*256
+end
+local plan=E.AnchoredConnectionPlans(snapshot,{})[1]
+assert(plan.best.valueQ8==32*256)
+local allowance=E.ConnectionLossQ8(plan.best.valueQ8,0)
+assert(plan.purchaseCreditQ8>0 and plan.costQ8>0)
+assert(plan.costQ8+plan.purchaseCreditQ8==allowance)
+''')
+
     def test_quarter_first_changes_a_near_tie_and_preserves_strong_competition(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

@@ -2307,7 +2307,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     local net=ready and snapshot.CustomerNetValue(target.city,target.district,first.plot,ready)
                     if net and net>0 and (not needsSlot or capacity and capacity.known and capacity.used<capacity.allowed) then
                         group.purchaseCreditQ8=math.floor(cost/2)
-                        group.costQ8=cost-group.purchaseCreditQ8
+                        cost=cost-group.purchaseCreditQ8
                         if group.purchaseCreditQ8>0 and snapshot.nextLayouts then
                             local chain=target.chain
                             local quarter={city=chain.city:GetID(),district=chain.profile.district.Index,plot=chain.plot:GetIndex()}

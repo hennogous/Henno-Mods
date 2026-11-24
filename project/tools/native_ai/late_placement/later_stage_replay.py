@@ -84,7 +84,8 @@ def require_clean_replay_log(log):
 def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
-            connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None):
+            connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None,
+            recover_preferences_from=None):
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
@@ -231,6 +232,14 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                    packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
+        # A native exception can strand the previous game's mod choices.
+        # Restore the player's captured menu settings before configure() saves
+        # this arm's starting state. This operates before loading any world.
+        if recover_preferences_from is not None:
+            recovery = output / 'previous-session-menu'
+            recovery.mkdir()
+            shutil.copyfile(recover_preferences_from / 'original-preferences.json', recovery / 'original-preferences.json')
+            restore_preferences(controller, recovery)
         configure(controller, output, csc_id=plan.protocol['ce'])
         addons = {plan.protocol['ce'], plan.protocol['csc'], *plan.extras}
         for addon in [plan.protocol['csc'], *plan.extras]:
@@ -374,6 +383,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('source', 'output', 'candidate-source'):
         parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--recover-preferences-from', type=Path,
+                        help="Restore an interrupted session's original mod and auto-start settings before the first arm")
     for name in ('start', 'end'):
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--arm', choices=('control', 'treatment'), action='append')
@@ -469,7 +480,8 @@ if __name__ == '__main__':
                          connection_scout=args.connection_scout,connection_enabled=connection,
                          connection_switch_turn=args.connection_switch_turn,
                          connection_timing_player=args.connection_timing_player, paired_layout_csc=paired_layout,
-                         paired_layout_switch_turn=args.paired_layout_switch_turn)
+                         paired_layout_switch_turn=args.paired_layout_switch_turn,
+                         recover_preferences_from=args.recover_preferences_from if arm == arms[0] else None)
         if result is not None:
             preparation = result
     if (args.matched_connection_switch or paired_layout) and set(arms)=={'control','treatment'}:
