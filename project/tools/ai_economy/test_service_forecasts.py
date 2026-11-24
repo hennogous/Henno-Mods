@@ -564,13 +564,22 @@ snapshot.WorldQuote=function(w)
  assert(w.includeServices)
  if not w.baselineWorld then seen=w;return{valueQ8=1000,serviceValueQ8=50,siteAdjustmentQ8=0}end
  assert(w.baselineWorld==seen)
- return{valueQ8=1100,bidValueQ8=1100,serviceValueQ8=75,serviceStreams=2,servicesExcluded=false,siteAdjustmentQ8=0,
-  chainStages={new={second='Mill'}},streams={},evaluations=1,affectedChains=1}
+ local result={valueQ8=1100,bidValueQ8=1130,serviceValueQ8=75,serviceStreams=2,servicesExcluded=false,siteAdjustmentQ8=0,
+  chainStages={new={second='Mill'}},streams={
+   {id='new/exchange',valueQ8=100,bidValueQ8=120},
+   {id='other/exchange',valueQ8=100,bidValueQ8=110}},
+  evaluations=1,affectedChains=1}
+ result.selectionQ8=w.objective(result)
+ seen.winner=result
+ return result
 end
 local s=site();s.key='new'
 local city={GetID=function()return 10 end};local plot={GetIndex=function()return 20 end}
 local q=E.QuarterForecast(snapshot,city,plot,{district={Index=7}},s,0,false)
 assert(q.valueQ8==100 and q.serviceValueQ8==25 and not q.servicesExcluded)
+assert(q.bidValueQ8==120 and E.PlacementValue(q,s,0,false)==seen.winner.selectionQ8)
+assert(#q.streams==1 and q.streams[1].id=='exchange' and q.streams[1].bidValueQ8==120)
+assert(seen.winner.streams[1].id=='new/exchange')
 assert(not before.includeServices and not after.includeServices and after.baselineWorld==before)
 ''')
 

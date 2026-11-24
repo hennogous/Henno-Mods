@@ -937,15 +937,20 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
     local baseline,problem=snapshot.WorldQuote(before)
     if not baseline then return nil,problem end
     site.jointEconomy=true
-    local function marginal(result)
+    local prefix=site.key..'/'
+    local prefixLength=#prefix
+    local function marginal(result,includeStreams)
         local stages=result.chainStages[site.key]
         local terrain=0
         for _,second in ipairs(site.seconds or{})do if stages and second.type==stages.second then terrain=second.terrain or 0 end end
-        local streams,premium={},0
-        local prefix=site.key..'/'
-        for _,flow in ipairs(result.streams)do if flow.id:sub(1,#prefix)==prefix then
-            local copy={};for k,v in pairs(flow)do copy[k]=v end
-            copy.id=flow.id:sub(#prefix+1);streams[#streams+1]=copy
+        local streams,premium=includeStreams and {} or nil,0
+        -- PlacementValue reads totals on every trial. Only the winning
+        -- forecast needs its own stream headers for diagnostics and accounting.
+        for _,flow in ipairs(result.streams)do if flow.id:sub(1,prefixLength)==prefix then
+            if streams then
+                local copy={};for k,v in pairs(flow)do copy[k]=v end
+                copy.id=flow.id:sub(prefixLength+1);streams[#streams+1]=copy
+            end
             premium=premium+(flow.bidValueQ8 or flow.valueQ8)-flow.valueQ8
         end end
         -- Only the new Quarter receives its stock-style building-depth premium.
@@ -965,7 +970,7 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
     after.objective=function(result)return E.PlacementValue(marginal(result),site,protectionQ8,covers)end
     local result,error=snapshot.WorldQuote(after)
     if not result then return nil,error end
-    local quote=marginal(result)
+    local quote=marginal(result,true)
     -- The whole new Quarter owns its marginal bid. Existing-chain income,
     -- shared buildings/rounding and current route income cancel against the
     -- common baseline; the footprint's losses and import-blocking flag remain.

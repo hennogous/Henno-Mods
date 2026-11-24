@@ -873,6 +873,27 @@ through 168. The turn-200 save has Bakers on 1162. Switch at 211, before
 the Hub selection recorded in packet 216, and follow 1163 through 235.
 These same-state tests isolate follow-through in each build order.
 
+#### Forecast performance follow-up
+
+Quarter placement used to copy the streams belonging to the proposed
+Quarter on every search trial. Its scoring function reads the totals.
+The candidate now copies streams only for the winning forecast, keeping
+the Q8 objective and final breakdown intact. On four offline worlds with
+2–9 chains, it produced identical forecasts, scores and evaluation counts.
+The full economy suite passed all 233 checks.
+
+The existing 16-state cache already covered a small shared-customer world.
+In larger offline worlds the first 32 slots eliminated 25 of 53 candidate
+ledger builds with four chains and 28 of 102 with seven. These worlds had
+several optional investments tied to a shared customer. To estimate the
+effect on the live game, build the diagnostic-only model overlay using
+`project/tools/native_ai/late_placement/joint_forecast_profile.py`. It
+counts real ledger builds, pricing, 16-state hits and the additional hits
+that a 32-state cache would give on the same winning search. The diagnostic
+uses the existing 16-state results for every bid. Compare its counters from
+the turn-200 standalone save with the ordinary turn-250 evidence. Use
+measured turn times from an ordinary candidate for release qualification.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
