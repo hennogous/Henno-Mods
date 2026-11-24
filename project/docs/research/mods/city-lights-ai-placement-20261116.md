@@ -516,3 +516,14 @@ same two tiles. The planner now keeps the loss allowance on each tile until
 it finds a complete layout that leaves that tile unused. Genuine
 alternatives still release the tile and the price bands stay the same.
 The regression also checks a substitute that rescues just one footprint.
+
+The next scouting cases use the known Continents seed. Before turn 124,
+Quito's Bakers on 2528 had two mapped Base deposits, Wheat 2454 and Flax
+2602. It lost to a Farming Town on the same plot by 56.53 utility in
+packet 106. The linked Hub on 2453 remained unbuilt. A scout from the
+turn-50 archive can identify the first unreserved comparison. The separate
+no-City-Lights source recorded promising Tailors and Theater layouts at
+1934/1933 and 1935/1936 before turn 50, while the Quarter tiles were still
+outside the city's ownership. Its scout follows practical owned layouts
+and checks the exact archived four-mod stack. Scouting leaves the policy on
+the revised baseline and reads the existing native journal.

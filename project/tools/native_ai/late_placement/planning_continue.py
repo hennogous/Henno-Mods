@@ -262,8 +262,11 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     # The Government-screen regression adds the pinned BRS/EPC UI pair. A
     # zero-turn survey must reload that original stack, never silently drop it.
     # Playing continuations retain their qualified three-gameplay-mod contract.
+    # The read-only paired layout study explicitly varies City Lights between
+    # source games. Its exact archived mod set/digests are still checked here.
     ui_pair = {'6f2888d4-79dc-415f-a8ff-f9d81d7afb53', '382a187f-c8ba-4094-a6a7-0d5315661f33'}
-    extra_count_ok = len(extras) == 3 or (no_savings and len(extras) == 5 and ui_pair <= set(extras))
+    extra_count_ok = (len(extras) == 3 or paired_layout_csc is not None
+                      or (no_savings and len(extras) == 5 and ui_pair <= set(extras)))
     require(extra_count_ok and set(extras) == set(protocol['extra_mods']), 'Expected exact original optional packages')
     for mod_id, item in extras.items():
         package = Path(item['path']).resolve(strict=True)

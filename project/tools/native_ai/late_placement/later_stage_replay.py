@@ -289,6 +289,12 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-timing')
             require(f'CSC_CONNECTION_TIMING_READY={connection_timing_player}' in raw, 'Connection timer did not install')
         if switch_turn is None:
+            if paired_layout_csc:
+                code = ('local A=assert(CSC_AI_EconomyAdapters);'
+                        'assert(A.AnchoredConnectionsEnabled==true and A.ProspectiveConnectionsEnabled==false);'
+                        'print("CSC_CONNECTION_SCOUT_BASELINE")')
+                raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-scout-baseline')
+                require('CSC_CONNECTION_SCOUT_BASELINE' in raw, 'Scout did not load the revised baseline')
             play_between(preparation_turn, end)
         else:
             # Both copies run the same pre-roll from the archived save. Delay
@@ -375,7 +381,7 @@ if __name__ == '__main__':
     parser.add_argument('--connection-switch-turn',type=int,
                         help='Use the identical inactive pre-roll in both arms before switching the experiment on')
     parser.add_argument('--paired-layout-csc', type=Path,
-                        help='Shared installed CSC snapshot with the prospective-placement Lua')
+                        help='Shared installed CSC snapshot for a matched switch or a control-only connection scout')
     parser.add_argument('--paired-layout-switch-turn', type=int,
                         help='Change only the prospective-placement policy after the same inactive pre-roll')
     parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
@@ -428,13 +434,17 @@ if __name__ == '__main__':
     arms=args.arm or ('control', 'treatment')
     paired_layout = args.paired_layout_csc.resolve(strict=True) if args.paired_layout_csc else None
     if paired_layout or args.paired_layout_switch_turn:
-        require(paired_layout and args.paired_layout_switch_turn
-                and fixture in (None, 'quito_capacity')
+        require(paired_layout
                 and not (args.connection_prototype or args.matched_connection_switch
-                         or args.connection_switch_turn or args.replay_ce)
-                and arms == ('control', 'treatment')
-                and args.start < args.paired_layout_switch_turn < args.end,
-                'The paired-layout experiment uses both arms, one installed pin and one switch turn')
+                         or args.connection_switch_turn or args.replay_ce),
+                'The paired-layout study uses one installed CSC pin and its archived CE build')
+        if args.paired_layout_switch_turn is not None:
+            require(fixture in (None, 'quito_capacity') and arms == ('control', 'treatment')
+                    and args.start < args.paired_layout_switch_turn < args.end,
+                    'The paired-layout experiment needs both arms and one interior switch turn')
+        else:
+            require(fixture is None and list(arms) == ['control'] and args.connection_scout,
+                    'A no-switch paired-layout run is a control-only connection scout')
     require(not args.quito_capacity or (paired_layout and args.start == 200 and args.paired_layout_switch_turn == 224),
             'The Quito slot fixture needs the natural turn-200 replay and turn-224 preparation')
     require(args.connection_switch_turn is None or (args.matched_connection_switch and fixture in (None, 'stirling_capacity')
