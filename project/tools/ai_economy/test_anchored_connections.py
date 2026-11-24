@@ -61,7 +61,8 @@ local E=CSC_AI_EconomyAdapters
 E.ProspectiveConnectionsEnabled=true
 local candidate=quarterAt(20)
 candidate.site.city=7;candidate.site.key='Q';candidate.site.quarterReady=6
-candidate.entry.strongLayout={plot=21,city=7,district=1,stage=3,adjacency=2}
+candidate.entry.strongLayout={plot=9,city=7,stage=2,existing=true}
+candidate.entry.prospectiveLayout={plot=21,city=7,district=1,stage=3,adjacency=2}
 snapshot.connectionQuarters={candidate};snapshot.cities={[7]={object={}}}
 snapshot.ProspectiveCustomerReady=function()return 3 end
 snapshot.CustomerNetValue=function()return -1 end

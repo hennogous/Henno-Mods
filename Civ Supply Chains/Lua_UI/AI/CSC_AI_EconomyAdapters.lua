@@ -489,17 +489,17 @@ function E.StrongQuarterLayout(site,options,reserved)
     local hasSpec=firstSpec~=nil and (firstSpec~=firstBase or next(specialty,firstSpec)~=nil or extraBase)
     if not (extraBase or hasSpec) then return nil end
 
-    local best
+    local bestByState={}
     local function consider(option,stage,existing)
-        -- Prefer established customers, then later supported stages and
-        -- stronger ordinary adjacency, with deterministic plot tie breaks.
+        -- Rank established and unbuilt customers separately. The site bid
+        -- still prefers an established link. The prospective quote can then
+        -- price what a second, unbuilt customer adds to that same site.
         if not stage or stage==4 and not hasSpec then return end
         local candidate={plot=option.plot,city=option.city,district=option.district,stage=stage,
             existing=existing,adjacency=option.adjacency or 0,extraBase=extraBase,hasSpec=hasSpec}
+        local best=bestByState[existing]
         if best then
-            if candidate.existing~=best.existing then
-                if not candidate.existing then return end
-            elseif stage~=best.stage then
+            if stage~=best.stage then
                 if stage<best.stage then return end
             elseif candidate.adjacency~=best.adjacency then
                 if candidate.adjacency<best.adjacency then return end
@@ -507,7 +507,7 @@ function E.StrongQuarterLayout(site,options,reserved)
                 if candidate.plot>best.plot then return end
             elseif (candidate.district or -1)>=(best.district or -1)then return end
         end
-        best=candidate
+        bestByState[existing]=candidate
     end
     for _,venue in ipairs(site.customers or{})do
         if venue.transaction and venue.transaction.spatial=='ADJACENT_OWNED' and not venue.excluded then
@@ -524,7 +524,7 @@ function E.StrongQuarterLayout(site,options,reserved)
             end end
         end
     end
-    return best
+    return bestByState[true]or bestByState[false],bestByState[false]
 end
 
 function E.NativeInvestmentReference(turn,horizon)
@@ -823,8 +823,8 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
             and snapshot.CustomerOptions(city,plot,profile,protected,E.AnchoredConnectionsEnabled)or{}
         site.spatialPlan=E.SpatialPlan(options)
         if E.AnchoredConnectionsEnabled then
-            site.strongLayout=E.StrongQuarterLayout(site,options,snapshot.intentFootprints or{})
-            if E.ProspectiveConnectionsEnabled and site.strongLayout and not site.strongLayout.existing then
+            site.strongLayout,site.prospectiveLayout=E.StrongQuarterLayout(site,options,snapshot.intentFootprints or{})
+            if E.ProspectiveConnectionsEnabled and site.prospectiveLayout then
                 site.prospectiveCustomers=options
             end
         end
@@ -1510,14 +1510,13 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
     local priced=0
     for _,group in ipairs(ranked)do
         local best=group.best
-        local quarter,layout=best.entry,best.entry.strongLayout
+        local quarter=best.entry
+        local layout=quarter.prospectiveLayout or quarter.strongLayout
         if layout and not layout.existing and layout.plot~=quarter.plot
             and available(quarter.plot,quarter)and available(layout.plot)
             and not claimed[quarter.plot]and not claimed[layout.plot]then
             local alternateQuarter,alternateCustomer
-            for _,alternative in ipairs(group)do
-                local other=alternative.entry
-                local partner=other.strongLayout
+            local function considerBackup(other,partner)
                 -- A comparably strong full plan can replace both empty
                 -- targets. An established buyer is also a credible substitute.
                 -- Treat bids within 10% as credible backups in this first
@@ -1533,6 +1532,11 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                         alternateCustomer=alternateCustomer or partner.plot
                     end
                 end
+            end
+            for _,alternative in ipairs(group)do
+                local other=alternative.entry
+                considerBackup(other,other.strongLayout)
+                if other.prospectiveLayout~=other.strongLayout then considerBackup(other,other.prospectiveLayout)end
             end
             for _,other in ipairs(best.site.prospectiveCustomers or{})do
                 if other.plot~=layout.plot and available(other.plot)and other.stages and other.stages[layout.stage]
@@ -2175,6 +2179,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 -- A bid at the native ceiling can retain this
                                                 -- customer footprint for the other decision.
                                                 strongLayout=parts and parts.strongLayout or nil,
+                                                prospectiveLayout=parts and parts.strongLayout and site and site.prospectiveLayout or nil,
                                                 ordinaryBidQ8=parts and parts.ordinaryBidQ8,
                                                 startingAdjacency=site and site.startingAdjacency,startingGold=site and site.startingGold,
                                                 quarterReadyEstimate=site and site.quarterReady,
@@ -2192,13 +2197,16 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 capacityPopulation=capacity and capacity.population,
                                                 capacityState=capacityState,
                                                 frontier=frontier,purchaseGold=frontier and invoice or nil}
-                                            local layout=result[#result].strongLayout
-                                            if layout then
+                                            local entry=result[#result]
+                                            local primary,prospect=entry.strongLayout,entry.prospectiveLayout
+                                            -- A second qualified footprint shares this site's bid.
+                                            -- Only the primary layout earned the quoted site premium.
+                                            for _,layout in ipairs({primary,prospect~=primary and prospect or nil})do
                                                 print(string.format('CSC_AI_STRONG_QUARTER_LAYOUT turn=%d player=%d city=%d district=%d plot=%d customerCity=%d customerDistrict=%d customerPlot=%d stage=%d existing=%s extraBase=%s specialty=%s capacity=%s frontier=%s creditQ8=%d',
                                                     Game.GetCurrentGameTurn(),pid,city:GetID(),profile.district.Index,
                                                     plot:GetIndex(),layout.city,layout.district or -1,layout.plot,layout.stage,
                                                     tostring(layout.existing),tostring(layout.extraBase),tostring(layout.hasSpec),
-                                                    capacityState,tostring(frontier),parts.strongLayoutQ8))
+                                                    capacityState,tostring(frontier),layout==primary and parts.strongLayoutQ8 or 0))
                                             end
                                             if snapshot.captureConnections and not frontier and site
                                                 and not evaluation.carried and bid>0 then
@@ -2236,7 +2244,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
             for _,link in ipairs(entry.customerLayout or{})do
                 snapshot.customerFoundationHints[link.city..':'..link.district]=link.plot
             end
-            local layout=entry.strongLayout
+            local layout=E.ProspectiveConnectionsEnabled and entry.prospectiveLayout or entry.strongLayout
             if layout and not layout.existing then
                 snapshot.customerFoundationHints[layout.city..':'..layout.district]=layout.plot
             end

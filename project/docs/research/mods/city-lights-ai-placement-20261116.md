@@ -558,3 +558,13 @@ turn 94, player 4's city `458758` offered Bakers 2124 and Hub 2198 with
 two Base deposits, and Bakers 2273 and Entertainment Complex 2198 with
 Base and Specialty. The matched no-City-Lights replay scopes both cities
 before the first strong offer and follows their alternate layouts too.
+
+The same scout exposed a coverage gap on the stronger Bakers site at 1684.
+Its turn-67 bid was 232,468 Q8 with an existing City Centre customer. The
+planner also found a legal Entertainment Complex footprint at 1610 beside
+that site, but the established customer occupied the single layout field and
+left the future link unpriced. The planner now keeps the established customer
+for the initial Quarter valuation and retains the strongest unbuilt customer
+separately. Their shared forecast prices only what the new connection adds
+over the existing one. The separate footprint can follow through to the
+anchored planner if the Quarter is built first.

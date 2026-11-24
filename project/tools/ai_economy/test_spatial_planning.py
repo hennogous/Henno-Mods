@@ -55,6 +55,11 @@ assert(E.StrongQuarterLayout(site,{theater},{})==nil)
 assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{[11]=true})==nil)
 site.suppliers={base,specialty}
 assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{}).plot==22)
+site.customers={{city=1,plot=13,stage=2,transaction={spatial='ADJACENT_OWNED'}}}
+local primary,prospect=E.StrongQuarterLayout(site,{theater,harbor,rural},{})
+assert(primary.existing and primary.plot==13)
+assert(not prospect.existing and prospect.plot==22 and prospect.stage==4)
+site.customers={}
 theater.bestAdjacency=4
 assert(E.StrongQuarterLayout(site,{theater,harbor,rural},{}).plot==21)
 specialty.plot=10 -- two tags on one plot cannot provide redundant supply

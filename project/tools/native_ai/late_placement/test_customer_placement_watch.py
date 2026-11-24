@@ -81,7 +81,8 @@ assert(table.concat(lines,'\n'):find('faults=2 dropped=0',1,true))
         self.vm().execute(r'''
 local publish=CSC_AI_DistrictBridge.Publish
 local q={player=1,city=7,district=43,plot=30,
-  strongLayout={city=7,district=6,plot=20,existing=false}}
+  strongLayout={city=7,district=4,plot=28,existing=true},
+  prospectiveLayout={city=7,district=6,plot=20,existing=false}}
 assert(publish(123,60,60,44,{1},{q}))
 CE_AIDistrictScoresTraceRead=function()return [[{"offset":0,"total":2,"records":[
 {"k":"cache","player":1,"city":7,"district":6,"plot":20},

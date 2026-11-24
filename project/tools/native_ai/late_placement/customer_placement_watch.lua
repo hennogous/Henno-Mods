@@ -119,7 +119,7 @@ B.Publish=function(version,width,height,count,players,entries,...)
   -- if no customer delta was published. This just filters existing receipts.
   plannedFootprints={}
   for _,entry in ipairs(entries or{})do
-   local layout=entry.strongLayout
+   local layout=entry.prospectiveLayout or entry.strongLayout
    if layout and not entry.carried and not layout.existing and layout.district then
     plannedFootprints[scope(entry.player,entry.city,entry.district)..':'..entry.plot]=true
     plannedFootprints[scope(entry.player,layout.city,layout.district)..':'..layout.plot]=true
