@@ -81,8 +81,10 @@ tile. That accounting and the replacement test are now corrected. The
 no-City-Lights scout found two owned strong layouts in a city with a free
 slot. In the matched replay, both sides completed the same Rustavi
 Bakers. Only the Quarter received the prospective credit because the
-customer had a viable alternate. The earlier Quito comparison now uses
-the planner that can price an additional customer alongside an existing one.
+customer had a viable alternate. Earlier Quito kept the stronger Bakers
+site, which led the planned site by 167 utility. The next comparison needs
+a closer native margin and room for both districts. The preselected fresh
+seed supplies the next ordinary scouting game.
 
 **23 November — Revised Continents comparison, Problems 1.2 and 2.1.**
 Completed pairs rose from 7 to 10, including three Tailors connections.

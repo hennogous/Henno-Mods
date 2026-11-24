@@ -604,3 +604,13 @@ economic comparisons keep the same production schedule, so the result
 isolates the new connection. The native engine still chooses the actual
 order, and both sides of the quote still apply the customer's research and
 the actual supplier and building prerequisites.
+
+The earlier Quito replay matched at turn 95 and closed at turn 132. In
+both arms, the alternative Bakers on plot 2603 led the proposed Bakers
+on 2528 by 167.40 utility in the closest observed comparison. That
+proposed Quarter–Hub pair received no extra support. The treatment did
+price other links, including Bakers 2529 with Hub 2455 in the same city.
+Both arms matched all 53 foundations after the switch, and logged 76
+Bakers Stage 2 link-turns and 20 Bakers Stage 3 link-turns. Use this as
+a stronger-choice comparison. Continue scouting for lower native margins
+where the city can build both sides of the connection.

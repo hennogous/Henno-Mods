@@ -6,9 +6,10 @@ completed both planned districts. Short replays verified the provisional
 cost on both Quito tiles and preserved Panama's higher-scoring Campus.
 Quito's matched one-slot replay narrowed the closest Tailors loss from 60
 to 50 utility. Neither arm built the pair. The trace exposed an extra
-deduction from the prospective footprint cost, now fixed. The no-City-Lights
-scout found two owned strong layouts in a city with one free slot for the
-next matched test.
+deduction from the prospective footprint cost, now fixed. The matched tests
+without City Lights and at earlier Quito preserved 120 and 53 foundations,
+respectively. The next scout looks for a closer contest with room for both
+districts. The capacity and build-order forecasts have offline coverage.
 [Current placement evidence](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation).
 
 **22 November — Problems 6–12 qualification complete.**
