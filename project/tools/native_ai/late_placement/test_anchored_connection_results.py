@@ -181,6 +181,11 @@ class ConnectionCounts(unittest.TestCase):
                            version=version, generation=version, result=200)
                 return f'CSC_CUSTOMER_WATCH_NATIVE observedTurn=9 generation={version} ordinal=4 record=' + json.dumps(row)
 
+            def provider_mask(version):
+                row=dict(player=1, city=5, district=5, plot=23, k='decline', eligible=1,
+                         version=version, generation=version, base=250, result=-262145)
+                return f'CSC_CUSTOMER_WATCH_NATIVE observedTurn=9 generation={version} ordinal=3 record=' + json.dumps(row)
+
             replay_log = '\n'.join([
                 'CSC_CUSTOMER_LAND_WATCH_INSTALLED',
                 record('PUBLICATION',turn=7,version=3,pendingTurn=7,accepted='true'),
@@ -188,6 +193,10 @@ class ConnectionCounts(unittest.TestCase):
                 'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',
                 'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
                 'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
+                'CSC_AI_PROVIDER_DECLINE_PROPOSED turn=8 version=4 player=1 city=5 district=5 alternative=4 alternativePlot=23 sites=2',
+                'CSC_AI_PROVIDER_DECLINE_PROPOSED turn=8 version=5 player=1 city=5 district=5 alternative=4 alternativePlot=23 sites=2',
+                provider_mask(4),
+                provider_mask(5),
                 winner(3),
                 winner(4),
                 record('FOUNDATION', turn=10, player=1, city=5, district=4, plot=23, foundationDateKnown='true'),
@@ -226,6 +235,11 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(rows['exact_pair_first_completed_link']['turn'], 12)
         self.assertTrue(rows['exact_pair_first_completed_after_switch'])
         self.assertEqual([row['post_switch_packet'] for row in rows['comparisons']], [False, True])
+        self.assertEqual([p['publication_accepted'] for p in rows['provider_admission_proposals']], [True, False])
+        mask,=rows['provider_admission_masks']
+        self.assertEqual((mask['district'],mask['plot'],mask['masked_q8']), (5,23,-262145))
+        self.assertEqual(mask['generation'],rows['comparisons'][-1]['generation'])
+        self.assertLess(mask['ordinal'],rows['comparisons'][-1]['ordinal'])
         self.assertEqual(rows['quarter_materials']['working_at_endpoint'], {'TAILORS:BASE':1})
         purchase, = rows['exact_customer_land']['spending']
         self.assertTrue(purchase['matching_debit'] and purchase['built_offered_type'])

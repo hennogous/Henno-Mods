@@ -15,6 +15,10 @@ from planning_results import parse
 
 
 PLAN = re.compile(r'CSC_AI_PROSPECTIVE_CONNECTION ([^\r\n]+)')
+PROVIDER_SCOPE = re.compile(
+    r'CSC_AI_PROVIDER_DECLINE_PROPOSED turn=(\d+) version=(\d+) player=(\d+) city=(\d+) '
+    r'district=(\d+) alternative=(\d+) alternativePlot=(\d+) sites=(\d+)'
+)
 
 
 def read_json(path):
@@ -42,6 +46,15 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
 
     wanted = set((city, plot) for city, _, plot in targets)
     stages = defaultdict(list)
+    provider_packets = {}
+    for match in PROVIDER_SCOPE.finditer(log):
+        turn, version, owner, city, district, alternate, plot, sites = map(int, match.groups())
+        if owner == player and (city, alternate, plot) == targets[1]:
+            scope = dict(turn=turn, version=version, city=city, district=district, sites=sites,
+                         publication_accepted=packet_turns.get(version)==turn, post_switch_packet=after_switch(turn))
+            stages['provider_admission_proposals'].append(scope)
+            if scope['publication_accepted']:
+                provider_packets[version, city, district] = scope
     for name, pattern in (('proposals', PLAN), ('observed_substitutes', PROSPECTIVE_SUBSTITUTE)):
         stages[name] = []
         related = 'related_' + name
@@ -70,6 +83,14 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
         publication = packet_turns.get(row['version'])
         ordinal = int(match[1])
         city, plot, district = row['city'], row['plot'], row['district']
+        if row['k'] == 'decline' and (row['version'], city, district) in provider_packets:
+            # The native decline record is written only when the selector
+            # actually masks the cell. Read it separately from the proposed
+            # scope and from the winning city comparison below.
+            scope = provider_packets[row['version'], city, district]
+            stages['provider_admission_masks'].append(dict(scope, plot=plot,
+                generation=row['generation'], ordinal=ordinal, observed_turn=observed,
+                before_q8=row['base'], masked_q8=row['result']))
         key = row['generation'], row['version'], city, district, plot
         if row['k'] == 'cache' and row['eligible'] == 1:
             last_cache[key] = ordinal, row['result']
@@ -85,6 +106,7 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                 score = last_cache.get((row['generation'], row['version'], city, target_type, target_plot))
                 target_score = score[1] if score and score[0] < ordinal else None
                 stages['comparisons'].append(dict(observed_turn=observed, version=row['version'],
+                    generation=row['generation'], ordinal=ordinal,
                     publication_turn=publication, post_switch_packet=after_switch(publication), city=city,
                     target_district_index=target_type,
                     target_district=names.get(target_type, str(target_type)), target_plot=target_plot,
