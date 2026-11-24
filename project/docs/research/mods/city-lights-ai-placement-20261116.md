@@ -1193,3 +1193,12 @@ arms, switch on 87 and follow through 140. The short-replay land observer
 can now record the raw price, whether that city is the unique buyer, its
 treasury and the native terrain check on each chosen plot, starting before
 CSC submits an offer. This diagnostic adds no work to ordinary games.
+
+The Gori replay reached turn 87 with different buying power before either
+copy switched policy. The tile cost 70 Gold in both copies. Player 5 had
+15.08 Gold in the control and 73.68 in the other copy. The first observed
+treasury difference was on turn 81. The completed control also founded
+Rural Community 3011 from a different city on turn 128. Keep these runs as
+separate observations. For the Sodo follow-up, both arms switch at the
+loaded turn-100 boundary. The replay now checks the original AI seats'
+treasuries as well as the structural census before switching.

@@ -334,16 +334,28 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 require('CSC_CONNECTION_SCOUT_BASELINE' in raw, 'Scout did not load the revised baseline')
             play_between(preparation_turn, end)
         else:
-            # Both copies run the same pre-roll from the archived save. Delay
-            # the experimental flag until immediately before the native choice
-            # under study. The game controller leaves an inactive boundary and
-            # the scope's structural census must agree across the two copies.
-            play_between(start, switch_turn)
+            # Switch at the loaded inactive checkpoint when an independent
+            # pre-roll would risk changing the world's condition before the test.
+            # An interior switch still compares both worlds after the pre-roll.
+            if start < switch_turn:
+                play_between(start, switch_turn)
             prepared = census(switch_turn, 'connection-switch-census')
             if expected_preparation is not None:
-                proof = compare_structure(expected_preparation['census'], prepared)
+                prior = expected_preparation['census']
+                proof = compare_structure(prior, prepared)
+                if paired_layout_csc:
+                    # Equal geography and population alone do not establish
+                    # equal buying power for a prospective district footprint.
+                    prior_treasury, treasury = (
+                        sorted(row for kind, row in snapshot['rows'] if kind == 'TREASURY')
+                        for snapshot in (prior, prepared)
+                    )
+                    proof['treasury_matches'] = prior_treasury == treasury
+                    if not proof['treasury_matches']:
+                        proof.update(verified=False, expected_treasury=prior_treasury,
+                                     actual_treasury=treasury)
                 write_json(output / 'connection-switch-comparison.json', proof)
-                require(proof['verified'], 'Connection switch pre-roll diverged')
+                require(proof['verified'], 'Connection switch starting states differ')
             if deferred_capacity:
                 fixture_receipt('before', 'PlotInfo')
                 fixture_receipt('setup', 'CSC_AI_BakersGameplay')
@@ -422,7 +434,7 @@ if __name__ == '__main__':
     parser.add_argument('--paired-layout-csc', type=Path,
                         help='Shared installed CSC snapshot for a matched switch or a control-only connection scout')
     parser.add_argument('--paired-layout-switch-turn', type=int,
-                        help='Change only the prospective-placement policy after the same inactive pre-roll')
+                        help='Switch prospective placement at the loaded turn or after a matched inactive pre-roll')
     parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
                         help='Read the existing native score and choice journal for this AI city')
     parser.add_argument('--land-target', nargs=4, action='append', type=int, default=[],
@@ -487,8 +499,8 @@ if __name__ == '__main__':
                 'The paired-layout study uses one installed CSC pin and its archived CE build')
         if args.paired_layout_switch_turn is not None:
             require(fixture in (None, 'quito_capacity') and arms == ('control', 'treatment')
-                    and args.start < args.paired_layout_switch_turn < args.end,
-                    'The paired-layout experiment needs both arms and one interior switch turn')
+                    and args.start <= args.paired_layout_switch_turn < args.end,
+                    'The paired-layout experiment needs both arms and a switch from start through end minus one')
         else:
             require(fixture is None and list(arms) == ['control'] and args.connection_scout,
                     'A no-switch paired-layout run is a control-only connection scout')
