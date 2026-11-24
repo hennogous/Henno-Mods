@@ -577,6 +577,20 @@ def run(args):
                 and load(other_source.parent / 'full-game-observation-complete.json')['verified'],
                 'Legacy cap control requires the same build, setup, observations and endpoint')
         protocol.update(external_policy=True, quarter_cap_control='legacy_combined_including_footprint')
+    paired_layout_policy = getattr(args, 'paired_layout_policy', None)
+    if paired_layout_policy:
+        require(main_csc and not snapshot_main and not (args.untuned or legacy_quarter_cap or args.resume_from
+                or args.qualification or args.matched_source) and args.through==250
+                and args.harmonised_observation and args.planning_observation and args.service_observation,
+                'Paired-layout full games require the explicit shared CSC pin and the complete observations')
+        protocol['paired_layout_policy'] = paired_layout_policy
+        if paired_layout_policy == 'on':
+            require(other_source, 'The treatment needs the completed paired-layout baseline')
+            prior_protocol = load(other_source.parent / 'protocol.json')
+            comparable = lambda record: {k: v for k, v in record.items() if k != 'regression_reference'}
+            require(comparable(prior_protocol) == comparable(dict(protocol, paired_layout_policy='off'))
+                    and load(other_source.parent / 'full-game-observation-complete.json')['verified'],
+                    'Paired-layout full-game baseline differs in build, setup or observation')
     if args.matched_source:
         other_source = args.matched_source.resolve(strict=True)
         previous = load(other_source.parent / 'protocol.json')
@@ -804,6 +818,22 @@ Modding.EnableMod(chosen.Handle,true)
         if legacy_quarter_cap:
             from quarter_cap_control import install as install_quarter_cap_control
             install_quarter_cap_control(controller, out, csc)
+        if paired_layout_policy:
+            # Both arms load the exact same normal CSC files. The turn-one
+            # native packet has no Quarter placements, so the switch changes
+            # every scored decision in the treatment from the same opening.
+            raw = controller.cmd('print("CSC_PAIR_OPENING="..CE_AIDistrictScoresStatus())',
+                                 'GameCore_Tuner', 'paired-layout-opening')
+            opening = parse(raw, 'CSC_PAIR_OPENING')
+            require(opening['ready']==opening['version']==1 and opening['entries']==0
+                    and opening['faults']==0, 'Unexpected paired-layout opening packet')
+            setting = 'true' if paired_layout_policy == 'on' else 'false'
+            script = ('local A=assert(CSC_AI_EconomyAdapters);assert(A.AnchoredConnectionsEnabled==true);'
+                      'assert(Game.GetCurrentGameTurn()==1 and A.ProspectiveConnectionsEnabled==false);'
+                      f'A.ProspectiveConnectionsEnabled={setting};'
+                      'print("CSC_PAIR_POLICY="..tostring(A.ProspectiveConnectionsEnabled))')
+            reply = controller.cmd(script, 'CSC_AI_BakersGameplay', 'paired-layout-policy')
+            require(f'CSC_PAIR_POLICY={setting}' in reply, 'Paired layout switch did not acknowledge')
         if args.mill_opening_components:
             # A controlled opening fixture: preserve the Rice and Granary
             # while removing only the Farm. The native probe writes no scores.
@@ -1172,6 +1202,8 @@ if __name__ == '__main__':
                         help='Require initial world/AI/unit parity for a fresh tuned source-regression game')
     parser.add_argument('--legacy-quarter-cap', action='store_true',
                         help='Replay the former cap with the same pinned CSC and completed observed treatment')
+    parser.add_argument('--paired-layout-policy', choices=('off','on'),
+                        help='Compare the prospective policy with one shared CSC package through turn 250')
     parser.add_argument('--government-screen-check',action='store_true',
                         help='Open/close Government and Policies at an inactive observer boundary; no game orders')
     for name in ('output', 'mods', 'user-root', 'binary', 'ce'):
