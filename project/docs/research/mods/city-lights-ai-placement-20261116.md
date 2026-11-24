@@ -1245,3 +1245,13 @@ had a Mine and no visible resource, and logged `Build Production` as
 contract was submitted after the Tailors foundation. This case has
 passed the site comparison and needs follow-through investigation at
 the construction tree.
+
+The stock tree gives the district request to node 24, `Build Unit`,
+and runs the optional unit production contribution through node 34,
+`Build Production`. For this case, node 24 logged `Not Building`.
+In the loaded XP2 GameCore (`4de40abf…`), node 34's formatter at RVA
+`0x551a40` prints the stored plot coordinates. The execution path at
+`0x5516a0` checks for an eligible unit at the site and an existing
+Wonder or district before trying the unit production command. This
+puts the unresolved decision at district request submission. Increasing
+the site score would leave that step untouched.
