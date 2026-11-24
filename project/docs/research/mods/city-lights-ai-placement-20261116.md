@@ -1285,6 +1285,17 @@ and reported it clear on 163. The district-build node reported
 The candidate started a Water Park in Texcoco on 161. The observed
 difference reaches the production request and actual construction.
 
+### Skedsmo completed the same Quarter-first layout in both arms
+
+Both copies started from the turn-200 checkpoint with Bakers 1162
+already complete. Skedsmo submitted a Commercial Hub request for
+1163 at turn 216 and founded it at turn 226 in both copies. The Hub
+completed on 230 in control and 229 in the candidate. Both had one
+working Base deposit by the turn-235 endpoint. This case verifies
+the existing Quarter's partner through execution under both planners.
+Native competition also chose a Campus and a Neighborhood in the
+receiving city during the replay.
+
 #### What happened after a priced City Lights layout began
 
 The candidate priced 168 distinct exact layouts. Fifty saw at least one

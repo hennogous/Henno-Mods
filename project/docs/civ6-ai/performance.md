@@ -90,3 +90,21 @@ The same-save comparison records the number screened out and must return
 identical offers and saved layouts. The old rejection counts are the upper
 limit on what this check can save, because some sites excluded by the full
 forecast can still pass its conservative upper bound.
+
+The turn-200 standalone profiling replay measured seven turns after the
+matched switch, across all original AI seats. It sampled successful
+Quarter forecasts with a variable investment plan.
+
+| Measured work, turns 203–209 | Control | Candidate |
+| --- | ---: | ---: |
+| Forecasts | 160 | 499 |
+| Actual ledger builds | 2,370 | 5,576 |
+| Time building those ledgers | 3.20 s | 7.16 s |
+| Time pricing the built ledgers | 1.00 s | 2.11 s |
+
+Building the candidate's ledgers took 77% of these measured stages. A
+shadow cache for 16 extra previously priced states found 569 revisits
+with 0.87 seconds of gross build and pricing time across the seven turns.
+Avoiding impossible placements before building their ledgers is a larger
+opportunity than retaining more trial states. The screen still needs its
+same-save timing and full-game measurement.

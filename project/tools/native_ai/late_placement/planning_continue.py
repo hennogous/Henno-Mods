@@ -223,15 +223,21 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
         replacement = expected_install is not None and (install/'DevCE.modinfo').is_file() and (
             development_package_files(install)==expected_install)
         if paired_layout_csc is not None and role == 'csc':
-            permitted = {'Lua_UI/AI/CSC_AI_BakersGameplay.lua', 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua',
+            # The adjacency scanner also owns the native city/type admission
+            # read for repeatable provider districts in these matched replays.
+            permitted = {'Lua_UI/AI/CSC_AI_AdjacencyScan.lua',
+                         'Lua_UI/AI/CSC_AI_BakersGameplay.lua', 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua',
                          'Lua_UI/AI/CSC_AI_EconomyFacts.lua', 'Lua_UI/AI/CSC_AI_EconomyModel.lua',
                          'Lua_UI/AI/CSC_AI_PlanContinuity.lua',
                          'Lua_UI/Adjacencies/CSC_AdjacencyUI.lua'}
             new_pin = development_package_files(paired_layout_csc)
             differences = {Path(name).as_posix() for name in originals[role] if originals[role][name] != new_pin.get(name)}
+            unexpected = differences - permitted
+            require(not unexpected, 'Paired-layout replay changed files outside its Lua overlay: '
+                    + ', '.join(sorted(unexpected)))
             require(live_main and reused and not paired_layout_csc.is_relative_to(install.parent)
                     and package_identity(paired_layout_csc)[0] == identity_id
-                    and new_pin.keys() == originals[role].keys() and differences <= permitted
+                    and new_pin.keys() == originals[role].keys()
                     and new_pin == development_package_files(install),
                     'Paired-layout replay must use its installed pinned Lua-only overlay')
             replacement = True
