@@ -456,6 +456,15 @@ limited change when the competing district is on another plot. A waiting
 leg receives only the footprint cost. The native legal-target read and a
 positive customer net quote guard the additional bid.
 
+The turn-50 Panama replay used that revised policy and switched it on only
+in the treatment after the matching turn-52 census. Both arms recorded the
+same 634-utility Campus, 338-utility Tailors on plot 1935, and 436-utility
+Theater Square on plot 1934. The Campus reserved its tile on 56 and was
+founded on 57 in both arms. The prototype staged no local prospective offer.
+This verifies that the trial leaves that stronger native case alone. The
+both-footprint trace is under
+`Desktop/Codex/csc-ai-paired-footprints-20261124/panama-prospective-v2-replay`.
+
 The separate Quito capacity fixture opens one slot in both arms before
 the compared choice. It verifies the Quarter, Hub and Farming Town through
 the actual legal-target reader and measures the prepared control's score

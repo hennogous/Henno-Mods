@@ -70,6 +70,12 @@ matter. The full-game comparison uses the known Continents seeds
 pairs use City Lights. Short replays also include cases without it.
 [Baseline cases](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation).
 
+The first natural Quito replay verified writes on both sites without changing
+its builds. The updated policy can also support an admitted bid across
+plots from the same budget. In matched Panama runs it left the 634-utility
+Campus choice and construction intact. The next replay opens a Quito slot
+in both copies and measures its resulting untreated competition.
+
 **23 November — Revised Continents comparison, Problems 1.2 and 2.1.**
 Completed pairs rose from 7 to 10, including three Tailors connections.
 Conversion rose from 15.6% to 16.1%, and working suppliers at turn 250
