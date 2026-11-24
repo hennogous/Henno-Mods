@@ -420,7 +420,7 @@ def prospective_footprint_counts(layouts):
     return {family: dict(values) for family, values in counts.items()}
 
 
-def common_layout_conversion(log, observations, players, through):
+def common_layout_report(log, observations, players, through):
     """Both policies log their top two Quarter bids and ordinary owned partner sites.
 
     Count each physical pair once at its first qualifying observation. Future-only
@@ -453,10 +453,11 @@ def common_layout_conversion(log, observations, players, through):
         elif (r['kind']=='RELATION' and r.get('present') and r.get('quarterComplete') and r.get('neighbourComplete')
               and r.get('role') in ('customer','goodsProvider','sales')):
             key = tuple(r.get(k) for k in ('player','city','quarter','quarterPlot','neighbourCity','neighbourDistrict','neighbourPlot'))
-            if key in layouts and r['turn']>=layouts[key]:
+            if r['turn'] >= layouts.get(key, 0):
                 linked.setdefault(key,r['turn'])
     district_ids = {name: i for i,name in titles.items()}
     counts = defaultdict(Counter)
+    targets = defaultdict(set)
     for key,seen in layouts.items():
         player,city,quarter,plot,buyer,customer,target=key
         q=foundations.get((player,city,district_ids[quarter],plot))
@@ -467,13 +468,80 @@ def common_layout_conversion(log, observations, players, through):
                else 'partnerFirst' if q is None or p<q else 'sameTurn')
         count=counts[f'{quarter}:{order}']
         count['eligible_pairs']+=1
+        if order in ('quarterFirst', 'partnerFirst'):
+            quarter_site = (player, city, district_ids[quarter], plot)
+            customer_site = (player, buyer, customer, target)
+            first, second = (quarter_site, customer_site) if order == 'quarterFirst' else (customer_site, quarter_site)
+            targets[quarter, order, first, second[:3]].add(second[3])
         if p is not None and q is not None:
             count['both_founded']+=1
             count['total_turns_between_foundations']+=abs(p-q)
             if key in linked and linked[key]>=max(q,p):
                 count['both_completed_adjacent']+=1
                 count['total_turns_to_completed_pair_from_first_foundation']+=linked[key]-min(p,q)
-    return {key:dict(value) for key,value in sorted(counts.items())}
+    return ({key:dict(value) for key,value in sorted(counts.items())},
+            anchored_target_results(targets, foundations, linked, district_ids))
+
+
+def common_layout_conversion(log, observations, players, through):
+    """Exact-tile projection retained for callers comparing earlier reports."""
+    return common_layout_report(log, observations, players, through)[0]
+
+
+def anchored_target_results(targets, foundations, linked, district_ids):
+    """What happened once one surveyed tile received its intended district?
+
+    Two suggested Hub plots for the same Quarter and buying city are one
+    investment decision. A Hub across the river can satisfy that decision on
+    a different tile. Require the observer's completed gameplay relationship
+    in both original cities before giving credit for that alternate.
+    """
+    built_by_type = defaultdict(dict)
+    for site, turn in foundations.items():
+        built_by_type[site[:3]][site[3]] = turn
+    links = defaultdict(set)
+    for player, city, quarter, plot, buyer, customer, target in linked:
+        if quarter not in district_ids:
+            continue
+        q = (player, city, district_ids[quarter], plot)
+        c = (player, buyer, customer, target)
+        links[q, c[:3]].add(c)
+        links[c, q[:3]].add(q)
+
+    outcomes = defaultdict(Counter)
+    realized = {}
+    for (quarter, order, first, second_type), planned_plots in targets.items():
+        completed = links[first, second_type]
+        built = built_by_type[second_type]
+        if completed:
+            exact = any(site[3] in planned_plots for site in completed)
+            outcome = 'completed_on_surveyed_tiles' if exact else 'completed_on_other_adjacent_tile'
+            for site in completed:
+                q, c = (first, site) if order == 'quarterFirst' else (site, first)
+                # The same completed pair can satisfy two surveys, one from
+                # each side. Its actual order comes from its two foundations.
+                realized[quarter, q, c] = foundations.get(q), foundations.get(c)
+        elif not built:
+            outcome = 'second_type_never_founded_in_city'
+        elif planned_plots.intersection(built):
+            outcome = 'both_founded_without_observed_completed_link'
+        elif min(built.values()) < foundations[first]:
+            outcome = 'second_type_already_elsewhere_when_first_tile_founded'
+        else:
+            outcome = 'second_type_founded_elsewhere_without_completed_link'
+        outcomes[f'{quarter}:{order}'][outcome] += 1
+
+    actual = defaultdict(Counter)
+    for (quarter, _, _), (q, c) in realized.items():
+        if q is None or c is None:
+            order = 'unknown'
+        elif q == c:
+            order = 'sameTurn'
+        else:
+            order = 'quarterFirst' if q < c else 'partnerFirst'
+        actual[quarter][order] += 1
+    return dict(targets_by_first_surveyed_tile={k:dict(v) for k,v in sorted(outcomes.items())},
+                distinct_completed_pairs_by_actual_order={k:dict(v) for k,v in sorted(actual.items())})
 
 
 def completed_substitute_pairs(priced, observations, through):
@@ -910,9 +978,10 @@ def run_result(root):
         land = customer_land_purchases(log, observations, players, through, ())
     footprints = prospective_footprints(log, observations, players, through, competition)
     priced = prospective_footprints(log, observations, players, through, competition, priced=True)
+    common, anchored_targets = common_layout_report(log, observations, players, through)
     return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
                 endpoint_pair_supply=endpoint_pair_supply(census, observations, players),
-                common_layouts=common_layout_conversion(log, observations, players, through),
+                common_layouts=common, anchored_targets=anchored_targets,
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
                 supplier_history=supplier_history(observations, players, through),
@@ -982,6 +1051,7 @@ def paired_full_game_result(control, treatment):
                            completed_pairs=result['counts']['completed_physical_pairs'],
                            endpoint_pair_supply=result['endpoint_pair_supply'],
                            common_owned_partner_sites=result['common_layouts'],
+                           anchored_target_followthrough=result['anchored_targets'],
                            provider_pairs=result['counts']['completed_provider_pairs'],
                            eligible_provider_districts=result['counts']['provider_district_opportunities'],
                            completed_provider_districts=result['counts']['completed_provider_opportunities'],

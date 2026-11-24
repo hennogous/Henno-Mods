@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from anchored_connection_results import (bid_competition, common_layout_conversion, completed_substitute_pairs,
+from anchored_connection_results import (anchored_target_results, bid_competition, common_layout_conversion, completed_substitute_pairs,
                                          connection_counts, customer_land_purchases, endpoint_pair_supply, failed_district_requests,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
@@ -72,6 +72,24 @@ class ConnectionCounts(unittest.TestCase):
         counts=common_layout_conversion(log,parse(log,'CSC_PLANNING_'),{1},15)['TAILORS:partnerFirst']
         self.assertEqual(counts,dict(eligible_pairs=1,both_founded=1,total_turns_between_foundations=5,
                                     both_completed_adjacent=1,total_turns_to_completed_pair_from_first_foundation=8))
+
+    def test_actual_adjacent_partner_can_precede_the_surveyed_quarter(self):
+        quarter = (1, 7, 43, 10)
+        hub = (1, 8, 6, 20)
+        targets = {('TAILORS', 'quarterFirst', quarter, hub[:3]): {21, 22},
+                   ('TAILORS', 'partnerFirst', hub, quarter[:3]): {10, 11},
+                   ('TAILORS', 'quarterFirst', quarter, (1, 9, 6)): {23},
+                   ('TAILORS', 'quarterFirst', quarter, (1, 7, 5)): {24}}
+        # The same completed pair fulfilled two surveyed targets. The actual
+        # Hub was founded first. The other city's Hub qualified for neither.
+        links = {(1,7,'TAILORS',10,8,6,20): 18}
+        found = {quarter:15, hub:7, (1,9,6,25):21}
+        result = anchored_target_results(targets, found, links, {'TAILORS':43})
+        self.assertEqual(result['targets_by_first_surveyed_tile'], {
+            'TAILORS:quarterFirst': {'completed_on_other_adjacent_tile':1,
+                'second_type_founded_elsewhere_without_completed_link':1, 'second_type_never_founded_in_city':1},
+            'TAILORS:partnerFirst': {'completed_on_surveyed_tiles':1}})
+        self.assertEqual(result['distinct_completed_pairs_by_actual_order'], {'TAILORS':{'partnerFirst':1}})
 
     def test_purchased_customer_tile_joins_the_district_request_and_debit(self):
         log = '\n'.join(['CSC_CUSTOMER_LAND_WATCH_INSTALLED',

@@ -768,6 +768,43 @@ partner on every publication and reached all five alternatives. A separate
 case confirms that a competing foundation releases the saved customer.
 Live conversion of the Sodo pair remains an open test.
 
+### Standalone turn-250 control, 24 November
+
+The default planner's common survey identified 34 targets where at least
+one proposed tile received its intended district. A target is one founded
+district and one mapped partner type in a specific city. Several proposed
+tiles for that partner count once. These targets cover the common survey
+of owned sites. The endpoint census also includes links made elsewhere.
+
+| Outcome of the 34 targets | Count |
+| --- | ---: |
+| Completed on the surveyed tiles | 4 |
+| Completed with the intended partner on another adjacent tile | 5 |
+| Partner type already built elsewhere when the first surveyed tile was founded, with no completed link | 2 |
+| Partner type founded elsewhere afterward, with no completed link | 6 |
+| Partner city never founded the requested district type | 17 |
+
+The nine successful targets produced eight distinct adjacent pairs. One
+Bakers–Entertainment Complex pair fulfilled two surveys. From actual
+foundation dates, Bakers had three Quarter-first and three customer-first
+pairs. Both Tailors pairs were Quarter-first. On the whole endpoint map,
+including sites outside that survey and excluding City Centers, Bakers had
+12 completed pairs and Tailors five. Nine Bakers and four Tailors pairs had
+both a working Base supplier and a functioning mapped buying building.
+
+The 17 unbuilt partners were eleven Commercial Hubs and six Entertainment
+Complexes. The median time from Quarter foundation to the endpoint was 158
+turns. All 17 had an observed free population slot at some point, and 16
+saw their city found another district later. On eight of the 17, CE recorded
+positive customer-site adjustments after Quarter foundation. None of those
+exact proposed tiles subsequently appeared as the native district winner.
+The matched candidate should show whether it gets more of these investments
+into the queue or completes them on a suitable adjacent alternative.
+
+Source on Shadow: `csc-ai-paired-footprints-20261124/full-v13-standalone-control`
+under Desktop/Codex. The paired report's `anchored_target_followthrough`
+field groups the targets and records the order of each distinct completed pair.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
