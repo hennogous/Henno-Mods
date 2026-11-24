@@ -85,6 +85,9 @@ class ConnectionCounts(unittest.TestCase):
             with_working_base=1,with_working_base_and_spec=1,with_working_base_and_customer_building=1),
             'TAILORS:provider:partnerFirst':dict(completed=1,with_working_base=1,with_working_base_and_spec=1),
             'BAKERS:customer:partnerFirst':dict(completed=1,mapped_buyer_district=1)})
+        timed = endpoint_pair_supply(census,parse(log,'CSC_PLANNING_'),{1},include_timing=True)
+        self.assertEqual(timed['TAILORS:customer:partnerFirst']['second_foundation_turns'],
+                         dict(known=2,unknown=0,mean=5,median=5,maximum=5))
 
     def test_common_survey_needs_the_original_partner_city_to_complete(self):
         offer=('CSC_AI_SPATIAL_BID turn=3 player=1 city=7 district=43 plot=10 rank=1 adjacency=2.000 '

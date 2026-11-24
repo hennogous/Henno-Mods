@@ -6,6 +6,7 @@ import csv
 import json
 from pathlib import Path
 import re
+from statistics import median
 
 from planning_results import parse
 from processing_time_summary import summarise
@@ -740,8 +741,8 @@ def supplier_history(observations, players, through):
                 working_again_after_loss=counts(endpoint & interrupted))
 
 
-def endpoint_pair_supply(census, observations, players):
-    """Count completed adjacent pairs and their own functioning suppliers on the final map."""
+def endpoint_pair_supply(census, observations, players, *, include_timing=False):
+    """Count completed pairs, their working suppliers and known foundation intervals."""
     quarter_hosts, materials = {}, defaultdict(set)
     for kind, payload in census['rows']:
         fields = payload.split('\t')
@@ -782,15 +783,20 @@ def endpoint_pair_supply(census, observations, players):
         if order == 'neighbourFirst':
             order = 'partnerFirst'
         pair = qplot,target,family
+        founded = row.get('quarterFoundationTurn'), row.get('neighbourFoundationTurn')
+        gap = abs(founded[0] - founded[1]) if all(type(t) is int and 0 <= t <= census['turn'] for t in founded) else None
         pairs[pair] = (f'{host[0]}:{family}:{order}', materials[qplot],
-                       not (host[3] or row['neighbourPillaged']))
+                       not (host[3] or row['neighbourPillaged']), gap)
         if role == 'customer':
             buyer_districts.add(pair)
             if row.get('buildingStatus') == 2:
                 working_buyers.add(pair)
     counts = defaultdict(Counter)
-    for pair, (label, working, healthy) in pairs.items():
+    gaps = defaultdict(list)
+    for pair, (label, working, healthy, gap) in pairs.items():
         counts[label]['completed'] += 1
+        if include_timing and gap is not None:
+            gaps[label].append(gap)
         if pair[-1] == 'customer':
             counts[label]['mapped_buyer_district' if pair in buyer_districts else 'sales_only_district'] += 1
         if healthy and 'BASE' in working:
@@ -799,7 +805,14 @@ def endpoint_pair_supply(census, observations, players):
                 counts[label]['with_working_base_and_customer_building'] += 1
             if 'SPEC' in working:
                 counts[label]['with_working_base_and_spec'] += 1
-    return {label: dict(values) for label, values in sorted(counts.items())}
+    result = {label: dict(values) for label, values in sorted(counts.items())}
+    if include_timing:
+        for label, values in result.items():
+            observed = gaps[label]
+            values['second_foundation_turns'] = dict(known=len(observed), unknown=values['completed']-len(observed),
+                mean=sum(observed)/len(observed) if observed else None, median=median(observed) if observed else None,
+                maximum=max(observed, default=None))
+    return result
 
 
 def customer_land_purchases(log, observations, players, through, tree_rows):
@@ -1003,7 +1016,7 @@ def run_result(root):
     priced = prospective_footprints(log, observations, players, through, competition, priced=True)
     common, anchored_targets = common_layout_report(log, observations, players, through)
     return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
-                endpoint_pair_supply=endpoint_pair_supply(census, observations, players),
+                endpoint_pair_supply=endpoint_pair_supply(census, observations, players, include_timing=True),
                 common_layouts=common, anchored_targets=anchored_targets,
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),

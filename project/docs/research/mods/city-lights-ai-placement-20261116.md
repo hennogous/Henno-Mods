@@ -850,6 +850,14 @@ larger sample includes some long waits. The candidate's additional
 scarcity pricing covered 54 Bakers and 58 Tailors layouts, of which four
 and one completed on the priced tiles. These tracked sets overlap.
 
+Across all linked districts still on the turn-250 map, the median
+interval to a second foundation for Quarter-first Bakers rose from
+27.5 to 93.5 turns. For customer-first Bakers it was 50 and 48 turns.
+For Tailors the corresponding medians were 75.5 and 81.5 turns
+Quarter-first, and 63 and 41.5 turns customer-first. These are
+completion cohorts with different sizes and site mixes. The matched
+short replays supply comparisons at the same opportunity.
+
 Two customer sites on land acquired in ordinary play completed a pair in
 each arm. There were zero explicit CSC offers to buy customer land. No
 Tailors Stage 2 Service was observed. For customer bids with a matched
