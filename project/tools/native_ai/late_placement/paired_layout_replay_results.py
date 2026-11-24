@@ -19,6 +19,10 @@ PROVIDER_SCOPE = re.compile(
     r'CSC_AI_PROVIDER_DECLINE_PROPOSED turn=(\d+) version=(\d+) player=(\d+) city=(\d+) '
     r'district=(\d+) alternative=(\d+) alternativePlot=(\d+) sites=(\d+)'
 )
+CUSTOMER_APPRAISAL = re.compile(
+    r'CSC_AI_CUSTOMER_LAND_APPRAISED turn=(\d+) player=(\d+) city=(\d+) district=(\d+) '
+    r'plot=(\d+) invoice=(\d+) ownedMarginQ8=(-?\d+) scarcityQ8=(-?\d+) creditQ8=(\d+)'
+)
 
 
 def read_json(path):
@@ -213,8 +217,15 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                                      offer_during_post_switch_publication=offered_after_switch,
                                      purchase_after_switch=after_switch(row['turn'])))
             land = dict(
+                appraisals=[dict(turn=turn, invoice=invoice, owned_margin_q8=margin,
+                                 scarcity_q8=scarcity, credit_q8=credit, post_switch=after_switch(turn))
+                            for turn, owner, city, district, plot, invoice, margin, scarcity, credit
+                            in (map(int, match.groups()) for match in CUSTOMER_APPRAISAL.finditer(log))
+                            if owner == player and (city, district, plot) == targets[1]],
                 offers=offers,
                 spending=spending,
+                acquisitions=[row for row in audit['observed_plot_purchases']
+                              if (row['city'], row['plot']) == (customer_city, customer_plot)],
                 completed_on_purchased_plot=[row for row in audit['completed_partners_on_purchased_land']
                                              if (row['city'], row['district'], row['plot']) == targets[1]
                                              and (row['quarter'], row['quarter_plot']) == (quarter, quarter_plot)],

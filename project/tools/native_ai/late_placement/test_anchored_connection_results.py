@@ -152,6 +152,8 @@ class ConnectionCounts(unittest.TestCase):
         result = customer_land_purchases(log,parse(log,'CSC_PLANNING_'),{1},15,[])
         self.assertEqual((result['offered_tiles'], result['purchases']), (0, []))
         self.assertEqual(result['ai_plot_purchases'], 1)
+        acquisition, = result['observed_plot_purchases']
+        self.assertEqual((acquisition['turn'], acquisition['plot'], acquisition['foundation']), (7,23,(9,4)))
         self.assertEqual(result['districts_on_purchased_plots'], [
             dict(player=1,city=5,plot=23,bought=7,founded=9,district=4)])
         self.assertEqual(result['completed_partners_on_purchased_land'], [
@@ -190,6 +192,8 @@ class ConnectionCounts(unittest.TestCase):
                 'CSC_CUSTOMER_LAND_WATCH_INSTALLED',
                 record('PUBLICATION',turn=7,version=3,pendingTurn=7,accepted='true'),
                 record('PUBLICATION',turn=8,version=4,pendingTurn=8,accepted='true'),
+                'CSC_AI_CUSTOMER_LAND_APPRAISED turn=8 player=1 city=5 district=4 plot=23 invoice=40 ownedMarginQ8=800 scarcityQ8=-100 creditQ8=200',
+                'CSC_AI_CUSTOMER_LAND_APPRAISED turn=8 player=1 city=5 district=5 plot=23 invoice=40 ownedMarginQ8=800 scarcityQ8=-100 creditQ8=200',
                 'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',
                 'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
                 'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
@@ -246,6 +250,11 @@ class ConnectionCounts(unittest.TestCase):
         self.assertFalse(purchase['offer_during_post_switch_publication'])
         self.assertTrue(purchase['purchase_after_switch'])
         self.assertEqual((purchase['district_request_turn'], purchase['buying_city_request_turn']), (8,7))
+        appraisal, = rows['exact_customer_land']['appraisals']
+        self.assertEqual((appraisal['owned_margin_q8'], appraisal['scarcity_q8'], appraisal['credit_q8'],
+                          appraisal['post_switch']), (800,-100,200,True))
+        acquisition, = rows['exact_customer_land']['acquisitions']
+        self.assertEqual(acquisition['treasury_changes'], [40.0])
         linked, = rows['exact_customer_land']['completed_on_purchased_plot']
         self.assertEqual(linked['linked'], 12)
 

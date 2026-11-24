@@ -876,6 +876,7 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
             pair = row['quarter'], row['quarterPlot']
             completed_links[key].setdefault(pair, row['turn'])
     purchases = []
+    observed_purchases = []
     ai_purchases = 0
     district_uses = []
     completed_on_purchased_land = []
@@ -888,6 +889,15 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
             continue
         ai_purchases += 1
         actual = min(((t,d) for t,d in founded[key] if turn-1 <= t <= through), default=None)
+        debits = [treasury[player, i][1] for i in (ordinal-1, ordinal+1)
+                  if (player,i) in treasury and treasury[player,i][0] == turn
+                  and (player,2*i-ordinal) not in purchase_ordinals]
+        requests = sorted(r for r in trees[player,x,y] if r[0] <= min(through,turn+1))
+        # Preserve physical acquisition in both arms even if CSC never bid.
+        # Treasury changes and request history are observations, with exact
+        # expected-invoice and policy-packet checks retained below.
+        observed_purchases.append(dict(turn=turn, player=player, city=city, plot=plot,
+                                       treasury_changes=debits, request_history=requests, foundation=actual))
         if actual:
             # Include every district founded by the paying city. This lets us
             # see where the ordinary land path succeeds before a partner exists.
@@ -907,12 +917,8 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
             continue
         last_turn = max(o[1] for o in prior)
         quotes = sorted({(o[2], o[3]) for o in prior if o[1] == last_turn})
-        debits = [treasury[player, i][1] for i in (ordinal-1, ordinal+1)
-                  if (player,i) in treasury and treasury[player,i][0] == turn
-                  and (player,2*i-ordinal) not in purchase_ordinals]
         # Keep the full observed request history. A contract already accepted
         # before the first offer can stay accepted until its treasury pays.
-        requests = sorted(r for r in trees[player,x,y] if r[0] <= min(through,turn+1))
         accepted = [r[0] for r in requests if r[2]=='Accepted']
         purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
                               quotes=quotes, district_request_turn=max(accepted,default=None), request_history=requests,
@@ -920,6 +926,7 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                               foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
     return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, ai_plot_purchases=ai_purchases,
                 districts_on_purchased_plots=district_uses, offered_tiles=len(offers), offers=native_offers, purchases=purchases,
+                observed_plot_purchases=observed_purchases,
                 completed_partners_on_purchased_land=completed_on_purchased_land)
 
 
