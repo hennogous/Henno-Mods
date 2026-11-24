@@ -410,6 +410,11 @@ if __name__ == '__main__':
     # leave time to complete the selected district. Native scouting is scoped
     # to a few named cities throughout that window.
     max_turns = 65 if args.connection_scout else 50 if args.sacristan_natural else 30 if args.storekeeper_preparation else 25
+    if args.paired_layout_csc and args.connection_scout:
+        # An archived checkpoint can predate the matched switch substantially.
+        # Keep the ordinary qualification endpoint and native record bounds,
+        # and leave enough later turns to observe both districts completing.
+        max_turns = 250-args.start
     require(0 < args.end - args.start <= max_turns, f'Replay window must be 1 to {max_turns} turns')
     require(not args.market_rebuild or args.start == 200, 'Market fixture requires the turn-200 source')
     require(not args.storekeeper_preparation or args.start == 50, 'Storekeeper fixture requires the turn-50 source')

@@ -568,3 +568,17 @@ for the initial Quarter valuation and retains the strongest unbuilt customer
 separately. Their shared forecast prices only what the new connection adds
 over the existing one. The separate footprint can follow through to the
 anchored planner if the Quarter is built first.
+
+Both no-City-Lights replays matched at turn 65 and finished at turn 112.
+Nippur reserved Bakers 1684 on turn 69 and completed it on turn 73 in
+both. Its Hub 1610 got within 114.12 utility of Theater Square 1756 and
+remained unbuilt. Rustavi reserved Bakers 2273 on turn 94, founded it on 97
+and completed it on 100 in both. The treatment moved its native bid from
+978.37 to 979.99 and released customer plot 2198 because Entertainment
+Complex 2274 offered a substitute. A later proposal moved the scarcity
+allowance to the customer side when Quarter 2273 was a viable alternate
+for Quarter 2125. Rustavi reserved 2198 on 111 and had no foundation there
+at the endpoint. Both arms modeled 11 exact pairs, matched all 120 observed
+foundation sites and turns, and recorded 115 Bakers Stage 2 link-turns. The
+comparison used the package before the additional unbuilt-customer coverage
+in Nippur.
