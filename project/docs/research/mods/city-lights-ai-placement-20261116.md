@@ -954,6 +954,22 @@ uses the existing 16-state results for every bid. Compare its counters from
 the turn-200 standalone save with the ordinary turn-250 evidence. Use
 measured turn times from an ordinary candidate for release qualification.
 
+The City Lights control also made 9,276 existing-Quarter adjacency
+comparisons across 1,570 successful Quarter forecasts in turns 200–250.
+Each comparison read both the observed and projected adjacency. The
+forecast now keeps one observed reading per existing Quarter and the
+exact plots its eligible rules visit. A candidate outside that footprint
+has zero effect on the Quarter's adjacency. Supplier, transaction, queue
+and trade effects still use the full world. Shared facts expire with the
+player's publication, so the next turn sees map and ownership changes.
+The offline second-ring case cut rule traversals from 16 to six and
+touching-neighbour scans from four to one. It retained the resource
+removal and district yield deltas, and preserved unsupported-rule
+handling. The same-state timing query can compare the original and
+cached facts on the archived City Lights turn-200 save, with both
+evaluators running the full layout policy and comparing exact bids,
+chosen plans and streams.
+
 ### City Lights turn-250 control, 24 November
 
 Small Continents, Online speed, map seed 171124603, game seed 171124604.

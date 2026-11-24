@@ -2367,10 +2367,36 @@ function F.New(player,placement,ui,context)
         end
         return snapshot.AdjacencyAmounts(city,center,kind,projection)
     end
-    local function quarterAdjacencyChange(chain,project)
+    -- A world projection replaces one tile. Remember each existing
+    -- receiver's unchanged amounts and the exact tiles its loaded rules
+    -- read. The facts snapshot lives for one player publication, so ownership,
+    -- improvements, rule eligibility and all prices are read afresh next turn.
+    local receiverAdjacency={}
+    local function quarterAdjacencyChange(chain,project,changedPlot)
         local kind=chain.profile.district.DistrictType
-        local old,problem=checkedAmounts(chain.city,chain.plot,kind)
-        if not old then return nil,problem end
+        local old
+        if changedPlot~=nil then
+            local actual=receiverAdjacency[chain]
+            if not actual then
+                local footprint={}
+                local amounts,problem=checkedAmounts(chain.city,chain.plot,kind,function(plot)
+                    -- Count calls the projection before checking ownership
+                    -- and quantity. Include an unowned source that a candidate
+                    -- could change. Native traversal includes wrap and rings.
+                    footprint[plot:GetIndex()]=true
+                    return plot
+                end)
+                if not amounts then return nil,problem end
+                actual={amounts=amounts,footprint=footprint}
+                receiverAdjacency[chain]=actual
+            end
+            if not actual.footprint[changedPlot] then return {} end
+            old=actual.amounts
+        else
+            local problem
+            old,problem=checkedAmounts(chain.city,chain.plot,kind)
+            if not old then return nil,problem end
+        end
         local new,err=checkedAmounts(chain.city,chain.plot,kind,project)
         if not new then return nil,err end
         local delta={}
@@ -2396,6 +2422,7 @@ function F.New(player,placement,ui,context)
         for yield,amount in pairs(delta)do delta[yield]=-amount end
         return delta
     end
+    local receiverNeighbours={}
     local function investmentWorld(cityID,districtIndex,plotIndex,quarterSite)
         -- First correctness path: include ALL owned implemented chains. Queue
         -- sharing/population pools are not the only links: distant exporters
@@ -2440,11 +2467,18 @@ function F.New(player,placement,ui,context)
                 if supplier.plot~=plotIndex then changed.suppliers[#changed.suppliers+1]=supplier end
             end
             for _,customer in ipairs(site.customers)do changed.customers[#changed.customers+1]=customer end
-            local adjacent=false
-            for _,neighbor in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
-                if neighbor:GetIndex()==plotIndex then adjacent=true;break end
+            -- Partner transactions always use the touching tiles, even
+            -- when a gameplay adjacency rule reads a wider ring. Reuse
+            -- that separate geometry across the city's candidate worlds.
+            local neighbours=receiverNeighbours[chain]
+            if not neighbours then
+                neighbours={}
+                for _,neighbour in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
+                    neighbours[neighbour:GetIndex()]=true
+                end
+                receiverNeighbours[chain]=neighbours
             end
-            if adjacent then
+            if neighbours[plotIndex] then
                 after.affectedChains[site.key]=true
                 for _,source in ipairs(snapshot.ProjectedCustomers(chain.profile,cityID,districtIndex,plotIndex))do
                     local venue=copy(source);venue.complete=true;venue.projected=true;venue.working=false;venue.intactOwner=false
@@ -2457,7 +2491,7 @@ function F.New(player,placement,ui,context)
             end
             after.sites[#after.sites+1]=changed
             if #changed.suppliers~=#site.suppliers then after.affectedChains[site.key]=true end
-            local yields,problem=quarterAdjacencyChange(chain,project)
+            local yields,problem=quarterAdjacencyChange(chain,project,plotIndex)
             if not yields then return nil,problem end
             for yield,delta in pairs(yields)do
                 if delta~=0 then after.extraStreams[#after.extraStreams+1]={id='quarter-adjacency:'..site.key..':'..yield,

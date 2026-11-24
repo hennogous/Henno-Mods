@@ -17,15 +17,21 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parents[3]
 
 
-def build(control,candidate,prototype=None,players=(5,),service_comparison=False):
+def build(control,candidate,prototype=None,players=(5,),service_comparison=False,*,facts_equivalence=False):
     assert 1<=len(players)<=2 and len(set(players))==len(players) and all(type(p)is int and 1<=p<=5 for p in players)
     control,candidate=Path(control)/'Lua_UI/AI',Path(candidate)/'Lua_UI/AI'
     facts='CSC_AI_EconomyFacts.lua';model='CSC_AI_EconomyModel.lua';adapter='CSC_AI_EconomyAdapters.lua'
-    assert (control/facts).read_bytes()==(candidate/facts).read_bytes()
+    if facts_equivalence:
+        assert not prototype and not service_comparison, 'Compare one facts change in the full layout policy'
+        assert (control/adapter).read_bytes()==(candidate/adapter).read_bytes()
+    else:
+        assert (control/facts).read_bytes()==(candidate/facts).read_bytes()
     assert (control/model).read_bytes()==(candidate/model).read_bytes()
     arms={'A':[control/facts,control/model,control/adapter],
           'B':[candidate/facts,candidate/model,candidate/adapter]}
     names={'A':'control_adapter','B':'candidate_adapter'}
+    if facts_equivalence:
+        names={'A':'control_facts','B':'candidate_facts'}
     if service_comparison:
         assert not prototype and control.resolve()==candidate.resolve(),'Service mode requires identical current sources'
         names={'A':'services_excluded','B':'services_included'}
@@ -98,7 +104,8 @@ local print=function()end
 local prior,priorObjects,common,proofs={},{},{},{}
 local order={'B','A','A','B'}
 local players='''+'{'+','.join(map(str,players))+'}'+'''
-local modelEquality='''+('true'if prototype else'false')+'''
+local modelEquality='''+('true'if prototype or facts_equivalence else'false')+'''
+local layoutPolicy='''+('true'if facts_equivalence else'false')+'''
 local serviceComparison='''+('true'if service_comparison else'false')+'''
 if serviceComparison then
  assert(CE_AIEconomyStatus():find('"servicePricingReady":1',1,true),'Native Service quotes unavailable')
@@ -156,6 +163,7 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
  else
  -- Module construction/compilation and proof formatting are outside timers.
  local E,M=factories[arm]()
+ if layoutPolicy then E.AnchoredConnectionsEnabled=true;E.ProspectiveConnectionsEnabled=true end
  local worlds,worldSeconds={},0;local originalWorld=M.JointForecast
  M.JointForecast=function(w,p)
   local started=clock()
@@ -242,7 +250,8 @@ emit('CSC_CUSTOMER_TIMING_COMPLETE='..encode({turn=turn,verified=true,passes=4,p
 emit('CSC_COAST_END\\t'..turn)
 '''
     return code,dict(scope='Cold-history integrated economic pass; no Builder nominations/repairs/publication',
-                     arms=names,order=['B','A','A','B'],players=list(players),sources=pins,service_comparison=service_comparison)
+                     arms=names,order=['B','A','A','B'],players=list(players),sources=pins,
+                     service_comparison=service_comparison,facts_equivalence=facts_equivalence)
 
 
 if __name__=='__main__':
@@ -251,7 +260,9 @@ if __name__=='__main__':
     p.add_argument('--prototype-model',type=Path)
     p.add_argument('--players',type=int,nargs='+',default=[5])
     p.add_argument('--service-comparison',action='store_true')
-    args=p.parse_args();code,meta=build(args.control,args.candidate,args.prototype_model,args.players,args.service_comparison)
+    p.add_argument('--facts-equivalence',action='store_true')
+    args=p.parse_args();code,meta=build(args.control,args.candidate,args.prototype_model,args.players,
+                                       args.service_comparison,facts_equivalence=args.facts_equivalence)
     args.output.write_text(code,encoding='utf-8')
     args.output.with_suffix('.inputs.json').write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(output=str(args.output),bytes=len(code.encode()),**meta),indent=2))

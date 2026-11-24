@@ -399,6 +399,69 @@ invoice=nil
 check(true,0);assert(calls==2)
 ''')
 
+    def test_investment_world_reuses_observed_adjacency_and_visits_actual_rule_rings(self):
+        vm = self.facts()
+        vm.execute('DefenseTypes={DISTRICT_GARRISON=0,DISTRICT_OUTER=1}')
+        vm.execute((AI.parent/'Adjacencies/CSC_AdjacencyCore.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local A,F=CSC_Adjacency,CSC_AI_EconomyFacts
+local visits,neighbourReads=0,0
+Map.GetPlotByIndex=function(index)return plots[index]end
+Map.GetAdjacentPlots=function()neighbourReads=neighbourReads+1;return{}end
+city.GetOwner=function()return 1 end
+city.GetBuildQueue=function()return{}end
+plots[2].GetResourceType=function()return 99 end
+GameInfo.Resources={[99]={ResourceType='RESOURCE_TEST'}}
+GameInfo.Tags={BASE_TEST={Vocabulary='RESOURCE_CLASS'}}
+A.HasTag=function(tag,resource)return tag=='BASE_TEST' and resource=='RESOURCE_TEST'end
+local visible=true
+A.ResourceVisible=function()return visible end
+A.Eligible=function()return true end
+A.PlotsInBand=function(center,first,last)
+    visits=visits+1
+    assert(center==plots[1] and first==2 and last==2)
+    return{plots[2],plots[3]}
+end
+local targetType,quarterType='DISTRICT_CSC_TAILORS_QUARTER','DISTRICT_CSC_BAKERS_QUARTER'
+GameInfo.Districts[36]={Index=36,DistrictType=targetType}
+local districtRule={ID='district',ModifierOwner='DistrictModifiers',AdjacencyType='FROM_RINGS_CAO_DISTRICT',
+    ProvideType='SelfBonus',YieldType='YIELD_GOLD',CustomAdjacentObject=targetType,YieldChange=3,MinRings=2,MaxRings=2}
+local resourceRule={ID='resource',ModifierOwner='DistrictModifiers',AdjacencyType='FROM_RINGS_TYPETAG_RESOURCE',
+    ProvideType='SelfBonus',YieldType='YIELD_PRODUCTION',CustomAdjacentObject='BASE_TEST',YieldChange=2,MinRings=2,MaxRings=2}
+A.ByDistrict={[quarterType]={districtRule,resourceRule}}
+local function buildSnapshot()
+    local world=F.New(player,placement,ui)
+    world.cities[7]={object=city}
+    world.chains={{city=city,plot=plots[1],profile={district={DistrictType=quarterType}},
+        economy={key='old',city=7,suppliers={},customers={}}}}
+    world.CurrentWorld=function()return{}end
+    world.TradeWorld=function()return{}end
+    return world
+end
+local function project(world,plot)
+    local before,after=world.QuarterWorld(city,plots[plot],{district={Index=36}},{key='new',quarterReady=1})
+    assert(before,after)
+    local amounts={}
+    for _,stream in ipairs(after.extraStreams)do amounts[stream.yield]=stream.amount end
+    return amounts
+end
+local world=buildSnapshot()
+assert(not next(project(world,4)) and visits==2)
+assert(not next(project(world,5)) and visits==2)
+local changed=project(world,2)
+assert(changed.YIELD_GOLD==3 and changed.YIELD_PRODUCTION==-2 and visits==4)
+assert(project(world,3).YIELD_GOLD==3 and visits==6)
+assert(neighbourReads==1)
+visible=false
+changed=project(buildSnapshot(),2)
+assert(changed.YIELD_GOLD==3 and changed.YIELD_PRODUCTION==nil and visits==10)
+assert(neighbourReads==2)
+-- Preserve a failed source check even when the candidate is far away.
+districtRule.AdjacencyType='FROM_UNSUPPORTED'
+local before,reason=buildSnapshot().QuarterWorld(city,plots[4],{district={Index=36}},{key='new',quarterReady=1})
+assert(not before and reason:find('FROM_UNSUPPORTED',1,true))
+''')
+
     def test_customer_projection_uses_native_district_pairs_and_displaced_improvements(self):
         vm=self.facts()
         vm.execute('''

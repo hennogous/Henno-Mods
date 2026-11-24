@@ -85,7 +85,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
             connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None,
-            recover_preferences_from=None, land_targets=()):
+            recover_preferences_from=None, land_targets=(), timing_query=None):
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
@@ -233,6 +233,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                    paired_layout_switch_turn=paired_layout_switch_turn,
                    paired_layout_csc=str(paired_layout_csc) if paired_layout_csc else None,
                    connection_timing_player=connection_timing_player,
+                   timing_query_sha256=sha(timing_query) if timing_query is not None else None,
                    packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
@@ -267,6 +268,13 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     'tostring(A.AnchoredConnectionAuditEnabled))')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'paired-layout-common-opening')
             require(re.search(r'CSC_REPLAY_ANCHORED\s+true\s+true',raw), 'Missing common replay policy')
+        if timing_query is not None:
+            # This compares private copies of the model on the same paused
+            # world. Neither evaluator publishes scores or advances turns.
+            raw = controller.cmd(read(timing_query), 'CSC_AI_BakersGameplay', 'same-state-timing', wait=60)
+            (output / 'same-state-timing.txt').write_text(raw, encoding='utf-8')
+            require('CSC_CUSTOMER_TIMING_COMPLETE=' in raw and 'CSC_COAST_END\t'+str(start) in raw,
+                    'Same-state timing checks did not complete')
         if natural_sacristan is not None:
             # Both arms use the same integrated package throughout pre-roll.
             # Only the target civic's Service credit is toggled after setup.
