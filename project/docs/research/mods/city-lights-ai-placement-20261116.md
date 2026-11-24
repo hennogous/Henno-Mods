@@ -877,6 +877,17 @@ Bakers 1454. The city had a slot, but its two quotes went to owned sites
 zero while the owned 2875 was positive. Purchasing that plot would have
 reduced the value of the connection.
 
+The diagnostic overlay generator `customer_land_appraisal.py` prices one
+named frontier option and the backups for the same Quarter and seller
+stage, including sites outside the planner's two-quote shortlist. It
+records the Gold quote, the link after that expense, the best equivalent
+owned option, other paid alternatives, capacity, and the plan that
+actually went forward. An offline three-site example chose the same owned
+plot with and without the overlay. The diagnostic appraised the skipped
+paid plot at 70 utility after a 20 Gold invoice, against 60 for the best
+owned option. This establishes that the shortlist can miss an economic
+advantage. Replaying 1453 will show whether it did so on Continents.
+
 Quarter forecasts accounted for 408,958 of the 419,188 additional logical
 model evaluations. All 18,585 candidate Quarter quotes were distinct by
 turn, player, city, type and plot. The next performance check should count
