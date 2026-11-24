@@ -614,6 +614,10 @@ def paired_full_game_result(control, treatment):
                 control / 'source.json').resolve():
             raise ValueError('Treatment used a different reference game')
         switch = load(root / 'paired-layout-opening.json')
+        if 'layout_defaults' in protocol:
+            expected_anchor = arm == 'treatment' or protocol['layout_defaults']['anchored']
+            if switch.get('anchored') is not expected_anchor:
+                raise ValueError(f'Anchored planner receipt differs from the pinned comparison for {arm}')
         packet = switch['opening']
         if (switch['turn'] != 1 or switch['policy'] != expected or not switch['acknowledged']
                 or packet['ready'] != 1 or packet['version'] != 1 or packet['entries'] or packet['faults']):

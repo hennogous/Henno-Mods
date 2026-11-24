@@ -584,6 +584,16 @@ def run(args):
                 and args.harmonised_observation and args.planning_observation and args.service_observation,
                 'Paired-layout full games require the shared CSC pin, full observations and a Load Game endpoint')
         protocol['paired_layout_policy'] = paired_layout_policy
+        # The earlier experiment pinned the anchored planner on in both arms.
+        # Read this package's actual control from the frozen input before launch.
+        adapter = (csc / 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8-sig')
+        def default_enabled(field):
+            values = re.findall(r'^E\.' + field + r'\s*=\s*(false|true)\s*$', adapter, re.MULTILINE)
+            require(len(values) == 1, f'Ambiguous packaged default for {field}')
+            return values[0] == 'true'
+        protocol['layout_defaults'] = dict(anchored=default_enabled('AnchoredConnectionsEnabled'),
+                                           prospective=default_enabled('ProspectiveConnectionsEnabled'))
+        require(not protocol['layout_defaults']['prospective'], 'Select a pre-rollout control package')
         if paired_layout_policy == 'on':
             require(other_source, 'The treatment needs the completed paired-layout baseline')
             prior_protocol = load(other_source.parent / 'protocol.json')
@@ -828,14 +838,17 @@ Modding.EnableMod(chosen.Handle,true)
             require(opening['ready']==opening['version']==1 and opening['entries']==0
                     and opening['faults']==0, 'Unexpected paired-layout opening packet')
             setting = 'true' if paired_layout_policy == 'on' else 'false'
-            script = ('local A=assert(CSC_AI_EconomyAdapters);assert(A.AnchoredConnectionsEnabled==true);'
+            default_anchor = str(protocol['layout_defaults']['anchored']).lower()
+            anchor = 'true' if paired_layout_policy == 'on' else default_anchor
+            script = (f'local A=assert(CSC_AI_EconomyAdapters);assert(A.AnchoredConnectionsEnabled=={default_anchor});'
                       'assert(Game.GetCurrentGameTurn()==1 and A.ProspectiveConnectionsEnabled==false);'
-                      f'A.ProspectiveConnectionsEnabled={setting};'
-                      'print("CSC_PAIR_POLICY="..tostring(A.ProspectiveConnectionsEnabled))')
+                      f'A.AnchoredConnectionsEnabled={anchor};A.ProspectiveConnectionsEnabled={setting};'
+                      'print("CSC_PAIR_POLICY="..tostring(A.ProspectiveConnectionsEnabled)..'
+                      '",anchored="..tostring(A.AnchoredConnectionsEnabled))')
             reply = controller.cmd(script, 'CSC_AI_BakersGameplay', 'paired-layout-policy')
-            require(f'CSC_PAIR_POLICY={setting}' in reply, 'Paired layout switch did not acknowledge')
+            require(f'CSC_PAIR_POLICY={setting},anchored={anchor}' in reply, 'Paired layout switch did not acknowledge')
             write_json(out / 'paired-layout-opening.json', dict(turn=1, opening=opening,
-                       policy=paired_layout_policy, acknowledged=True))
+                       policy=paired_layout_policy, anchored=anchor=='true', acknowledged=True))
         if args.mill_opening_components:
             # A controlled opening fixture: preserve the Rice and Granary
             # while removing only the Farm. The native probe writes no scores.
