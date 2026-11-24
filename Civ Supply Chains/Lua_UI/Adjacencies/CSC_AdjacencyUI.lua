@@ -187,8 +187,12 @@ ExposedMembers.CSC_Adjacency.GetDistrictCapacity = function(playerID, cityID)
     local city = CityManager.GetCity(playerID, cityID);
     if not city then return nil; end
     local districts = city:GetDistricts();
+    local growth = city.GetGrowth and city:GetGrowth();
     return {
         population = economyNumber(city, 'GetPopulation'),
+        -- The next citizen's ETA is the only growth date used by the planner.
+        -- Native zoning continues to use the current allowed and used counts.
+        turnsToGrowth = economyNumber(growth, 'GetTurnsUntilGrowth'),
         used = economyNumber(districts, 'GetNumZonedDistrictsRequiringPopulation'),
         allowed = economyNumber(districts, 'GetNumAllowedDistrictsRequiringPopulation')
     };

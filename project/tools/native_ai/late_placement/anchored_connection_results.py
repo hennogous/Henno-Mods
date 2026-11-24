@@ -380,6 +380,62 @@ def prospective_footprint_counts(layouts):
     return {family: dict(values) for family, values in counts.items()}
 
 
+def common_layout_conversion(log, observations, players, through):
+    """Both policies log their top two Quarter bids and ordinary owned partner sites.
+
+    Count each physical pair once at its first qualifying observation. Future-only
+    +1 and paid partners have separate candidate diagnostics. Founding and a live
+    completed relationship must agree on cities as well as coordinates.
+    """
+    titles = {int(i): title for i,title in QUARTER_TITLE.findall(log)}
+    layouts = {}
+    for match in re.finditer(r'CSC_AI_SPATIAL_BID ([^\r\n]+)', log):
+        fields = dict(item.split('=',1) for item in match[1].split() if '=' in item)
+        turn,player = int(fields['turn']),int(fields['player'])
+        if player not in players or turn > through or float(fields['adjacency']) < 2:
+            continue
+        quarter = titles.get(int(fields['district']))
+        if quarter is None:
+            continue
+        for n in ('1','2'):
+            partner_city = int(fields.get('customerCity'+n,-1))
+            if partner_city >= 0:
+                key = (player,int(fields['city']),quarter,int(fields['plot']),partner_city,
+                       int(fields['customerType'+n]),int(fields['customerPlot'+n]))
+                layouts.setdefault(key,turn)
+    foundations, linked = {}, {}
+    for r in observations:
+        if r.get('player') not in players or r.get('turn',0)>through:
+            continue
+        if r['kind']=='FOUNDATION' and r.get('foundationDateKnown'):
+            key = (r['player'],r['city'],r['district'],r['plot'])
+            foundations.setdefault(key,r.get('foundationTurn',r['turn']))
+        elif (r['kind']=='RELATION' and r.get('present') and r.get('quarterComplete') and r.get('neighbourComplete')
+              and r.get('role') in ('customer','goodsProvider','sales')):
+            key = tuple(r.get(k) for k in ('player','city','quarter','quarterPlot','neighbourCity','neighbourDistrict','neighbourPlot'))
+            if key in layouts and r['turn']>=layouts[key]:
+                linked.setdefault(key,r['turn'])
+    district_ids = {name: i for i,name in titles.items()}
+    counts = defaultdict(Counter)
+    for key,seen in layouts.items():
+        player,city,quarter,plot,buyer,customer,target=key
+        q=foundations.get((player,city,district_ids[quarter],plot))
+        p=foundations.get((player,buyer,customer,target))
+        if (q is not None and q<seen) or (p is not None and p<seen):
+            continue
+        order=('unstarted' if q is None and p is None else 'quarterFirst' if p is None or q is not None and q<p
+               else 'partnerFirst' if q is None or p<q else 'sameTurn')
+        count=counts[f'{quarter}:{order}']
+        count['eligible_pairs']+=1
+        if p is not None and q is not None:
+            count['both_founded']+=1
+            count['total_turns_between_foundations']+=abs(p-q)
+            if key in linked and linked[key]>=max(q,p):
+                count['both_completed_adjacent']+=1
+                count['total_turns_to_completed_pair_from_first_foundation']+=linked[key]-min(p,q)
+    return {key:dict(value) for key,value in sorted(counts.items())}
+
+
 def connection_counts(log, original_ai, through, *, observations=None):
     """Join observed legal options to real foundations and completed links.
 
@@ -529,9 +585,13 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
             continue
         if fields[3].strip() != 'Build City District' or fields[5].strip() != 'Purchase Plot':
             continue
-        request = re.search(r'Purchase (\d+) (\d+): Accepted', fields[6])
+        # Current XP2 prints coordinates, the retained contract state and its
+        # ID here. Repetition is a continuing request. Payment is joined from
+        # the independent UI events further below.
+        request = re.search(r'Purchase (\d+) (\d+): (Submitted|Accepted|Building) on #(\d+)', fields[6])
         if request:
-            trees[int(fields[1]), *map(int, request.groups())].add(int(fields[0]))
+            x,y,state,contract = request.groups()
+            trees[int(fields[1]),int(x),int(y)].add((int(fields[0]),int(contract),state,fields[2].strip()))
     founded = defaultdict(list)
     for row in observations:
         if row['kind'] == 'FOUNDATION' and row.get('foundationDateKnown'):
@@ -555,10 +615,12 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
         debits = [treasury[player, i][1] for i in (ordinal-1, ordinal+1)
                   if (player,i) in treasury and treasury[player,i][0] == turn
                   and (player,2*i-ordinal) not in purchase_ordinals]
-        requests = [t for t in trees[player,x,y] if last_turn-1 <= t <= turn+1]
+        first_offer = min(o[1] for o in prior)
+        requests = sorted(r for r in trees[player,x,y] if first_offer-1 <= r[0] <= turn+1)
+        accepted = [r[0] for r in requests if r[2]=='Accepted']
         actual = min(((t,d) for t,d in founded[key] if turn-1 <= t <= through), default=None)
         purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
-                              quotes=quotes, district_request_turn=max(requests,default=None),
+                              quotes=quotes, district_request_turn=max(accepted,default=None), request_history=requests,
                               matching_debit=sum(amount in {cost for _,cost in quotes} for amount in debits)==1,
                               foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
     return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, offered_tiles=len(offers), purchases=purchases)
@@ -654,6 +716,7 @@ def run_result(root):
         land = customer_land_purchases(log, observations, players, through, ())
     footprints = prospective_footprints(log, observations, players, through, competition)
     return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
+                common_layouts=common_layout_conversion(log, observations, players, through),
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
                 supplier_history=supplier_history(observations, players, through),
@@ -717,6 +780,7 @@ def paired_full_game_result(control, treatment):
         result = run_result(root)
         report[arm] = dict(load_game=saves[arm], strong_layouts=result['prospective_pair_counts'],
                            completed_pairs=result['counts']['completed_physical_pairs'],
+                           common_owned_partner_sites=result['common_layouts'],
                            provider_pairs=result['counts']['completed_provider_pairs'],
                            customer_land=result['customer_land'],
                            eligible_missing_partner=result['counts']['district_opportunities'],

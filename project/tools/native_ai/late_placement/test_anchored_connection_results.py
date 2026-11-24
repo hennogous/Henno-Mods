@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from anchored_connection_results import (bid_competition, connection_counts, customer_land_purchases, failed_district_requests,
+from anchored_connection_results import (bid_competition, common_layout_conversion, connection_counts, customer_land_purchases, failed_district_requests,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
 from paired_layout_replay_results import trace_arm
@@ -22,6 +22,18 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_common_survey_needs_the_original_partner_city_to_complete(self):
+        offer=('CSC_AI_SPATIAL_BID turn=3 player=1 city=7 district=43 plot=10 rank=1 adjacency=2.000 '
+               'customerCity1=8 customerPlot1=20 customerType1=6 customerCity2=-1')
+        log='\n'.join(['CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',offer,offer,
+            record('FOUNDATION',turn=4,player=1,city=8,district=6,plot=20,foundationDateKnown='true'),
+            record('FOUNDATION',turn=9,player=1,city=7,district=43,plot=10,foundationDateKnown='true'),
+            relation(1,'TAILORS',10,20,10,'neighbourFirst',city=7,neighbourCity=12),
+            relation(1,'TAILORS',10,20,12,'neighbourFirst',city=7,neighbourCity=8)])
+        counts=common_layout_conversion(log,parse(log,'CSC_PLANNING_'),{1},15)['TAILORS:partnerFirst']
+        self.assertEqual(counts,dict(eligible_pairs=1,both_founded=1,total_turns_between_foundations=5,
+                                    both_completed_adjacent=1,total_turns_to_completed_pair_from_first_foundation=8))
+
     def test_purchased_customer_tile_joins_the_district_request_and_debit(self):
         log = '\n'.join(['CSC_CUSTOMER_LAND_WATCH_INSTALLED',
             'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',

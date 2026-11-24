@@ -902,6 +902,15 @@ function F.New(player,placement,ui,context)
                 and value.used==facts.populationDistricts then
                 result.known=true
                 result.reason=value.used<value.allowed and'ready'or'full'
+                -- Predict only the very next citizen crossing a normal slot
+                -- threshold. A changed growth rate, food shortage or native
+                -- capacity exception is re-read at the next publication.
+                local rule=GameInfo.GlobalParameters and GameInfo.GlobalParameters.DISTRICT_POPULATION_REQUIRED_PER
+                local step=rule and tonumber(rule.Value)
+                if step and step>=1 and value.population>0 and value.population%step==0
+                    and value.allowed==math.ceil(value.population/step) and finite(value.turnsToGrowth) then
+                    result.nextSlotTurns=math.max(1,value.turnsToGrowth)
+                end
             else result.reason='stale'end
         end
         facts.capacity=result;return result

@@ -575,14 +575,14 @@ local function connectionSchedule(snapshot,site,layout)
         ready=math.max(queue,unlock)+turns
         local lastQuarter=math.max(ready,work.unlock)+work.turns
         if lastCustomer<lastQuarter then
-            return lastCustomer,firstQuarter,lastCustomer
+            return lastCustomer,firstQuarter,lastCustomer,lastCustomer-turns
         end
-        return ready,nil,lastQuarter
+        return ready,nil,lastQuarter,lastQuarter-work.turns
     end
     return ready,nil,math.max(ready,site.quarterReady)
 end
 
-local function hasSlotsForBoth(snapshot,quarter,customer)
+local function hasSlotsForBoth(snapshot,quarter,customer,secondStart)
     if not snapshot.DistrictCapacity then return false end
     local required={}
     for _,option in ipairs({quarter,customer})do
@@ -595,7 +595,15 @@ local function hasSlotsForBoth(snapshot,quarter,customer)
     for city,count in pairs(required)do
         local host=snapshot.cities[city]
         local slots=host and snapshot.DistrictCapacity(host.object)
-        if not slots or not slots.known or slots.allowed-slots.used<count then return false end
+        if not slots or not slots.known then return false end
+        if slots.allowed-slots.used<count then
+            -- Use future capacity only for a forecast of two successive
+            -- builds in one city. Publication of a ready-pair credit calls
+            -- this same check without an estimated start and needs both
+            -- live slots. Neither case bypasses the game's zoning decision.
+            if not (count==2 and slots.allowed-slots.used==1 and secondStart
+                and slots.nextSlotTurns and slots.nextSlotTurns<=secondStart) then return false end
+        end
     end
     return true
 end
@@ -605,10 +613,10 @@ local function forecastPairedAdjacency(snapshot,site,city,plot,profile,partner)
     -- remain in projectedLinkValue. Counting the hypothetical neighbour as
     -- current income here would charge its value again in that quote.
     if not (partner and snapshot.ProjectedConnectionYields and snapshot.ProspectiveCustomerReady) then return end
-    local _,_,bothReady=connectionSchedule(snapshot,site,partner)
+    local _,_,bothReady,secondStart=connectionSchedule(snapshot,site,partner)
     if not bothReady or bothReady>=site.horizon then return end
     local quarter={city=city:GetID(),district=profile.district.Index}
-    if not hasSlotsForBoth(snapshot,quarter,partner) then return end
+    if not hasSlotsForBoth(snapshot,quarter,partner,secondStart) then return end
     local gain=partner.gain
     if gain==nil then
         local yields=snapshot.ProjectedConnectionYields({city=city,plot=plot,profile=profile},partner.district,partner.plot,partner.purchaseGold)
@@ -2768,7 +2776,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     local keys={};for key in pairs(groups)do keys[#keys+1]=key end;table.sort(keys)
     for _,key in ipairs(keys)do for rank,entry in ipairs(groups[key])do
         local first,second=entry.customerLayout[1],entry.customerLayout[2]
-        print(string.format('CSC_AI_SPATIAL_BID turn=%d player=%d city=%d district=%d plot=%d rank=%d adjacency=%.3f economicQ8=%d forecastAdjustmentQ8=%d nativeSiteAdjustmentQ8=%d horizon=%d discountQ8=%d referenceQ8=%d qualityCapQ8=%d capAdjustmentQ8=%d adjacencyPreferenceQ8=%d materialPreferenceQ8=%d layoutPreferenceQ8=%d protectionPenaltyQ8=%d finalQ8=%d customerPlot1=%d customerType1=%d customerPlot2=%d customerType2=%d dockmasterHarborPlot=%d',
+        print(string.format('CSC_AI_SPATIAL_BID turn=%d player=%d city=%d district=%d plot=%d rank=%d adjacency=%.3f economicQ8=%d forecastAdjustmentQ8=%d nativeSiteAdjustmentQ8=%d horizon=%d discountQ8=%d referenceQ8=%d qualityCapQ8=%d capAdjustmentQ8=%d adjacencyPreferenceQ8=%d materialPreferenceQ8=%d layoutPreferenceQ8=%d protectionPenaltyQ8=%d finalQ8=%d customerPlot1=%d customerType1=%d customerPlot2=%d customerType2=%d dockmasterHarborPlot=%d customerCity1=%d customerCity2=%d',
             Game.GetCurrentGameTurn(),pid,entry.city,entry.district,entry.plot,rank,entry.adjacency,
             entry.economicQ8,entry.forecastAdjustmentQ8 or 0,entry.nativeSiteAdjustmentQ8 or 0,
             entry.evaluationHorizon or 50,entry.evaluationDiscountQ8 or 1024,
@@ -2776,7 +2784,8 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
             entry.adjacencyPreferenceQ8,entry.materialPreferenceQ8,
             entry.layoutPreferenceQ8,entry.protectionPenaltyQ8,entry.finalQ8,
             first and first.plot or -1,first and first.district or -1,
-            second and second.plot or -1,second and second.district or -1,entry.dockmasterHarborPlot or -1))
+            second and second.plot or -1,second and second.district or -1,entry.dockmasterHarborPlot or -1,
+            first and first.city or -1,second and second.city or -1))
     end end
     if snapshot.SpatialStats then
         local spatial=snapshot.SpatialStats()

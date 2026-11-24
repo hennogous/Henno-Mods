@@ -211,8 +211,8 @@ local E=CSC_AI_EconomyAdapters
 E.AnchoredConnectionsEnabled=true
 E.ProspectiveConnectionsEnabled=true
 GameInfo.Districts={[36]={RequiresPopulation=true},[8]={RequiresPopulation=true}}
-local slots,ready,gold=2,5,1
-snapshot.DistrictCapacity=function()return{known=true,used=0,allowed=slots,population=4,reason='ready'}end
+local slots,ready,gold,growth=2,5,1,nil
+snapshot.DistrictCapacity=function()return{known=true,used=0,allowed=slots,population=6,reason='ready',nextSlotTurns=growth}end
 snapshot.Geometry=function()return{upper=1}end
 snapshot.Supply=function()return{base={{plot=16}}}end
 snapshot.Site=function(_,p)return{city=7,value=1000,plot=p:GetIndex(),baseCount=1,
@@ -237,6 +237,10 @@ end
 gold=2
 assert(offers()[1].adjacencyPreferenceQ8==144*256)
 slots=1
+assert(#offers()==0)
+growth=5 -- Customer first for five turns, Quarter can start as the slot opens.
+assert(#offers()==3)
+growth=6
 assert(#offers()==0)
 slots=2;ready=49
 assert(#offers()==0)
@@ -358,6 +362,15 @@ ui.GetDistrictCapacity=function()return{population=3,used=1,allowed=3}end
 assert(CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).reason=='stale')
 ui.GetDistrictCapacity=function()return{population=4,used=0,allowed=3}end
 assert(not CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).known)
+GameInfo.GlobalParameters={DISTRICT_POPULATION_REQUIRED_PER={Value='3'}}
+local pop,slots,growth=6,2,4
+city.GetPopulation=function()return pop end
+ui.GetDistrictCapacity=function()return{population=pop,used=1,allowed=slots,turnsToGrowth=growth}end
+local function nextSlot()return CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).nextSlotTurns end
+assert(nextSlot()==4)
+growth=-1;assert(nextSlot()==nil)
+growth=1;pop=5;assert(nextSlot()==nil)
+pop=6;slots=3;assert(nextSlot()==nil)
 ui.GetDistrictCapacity=nil
 assert(CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).reason=='unavailable')
 ''')
