@@ -470,7 +470,7 @@ function E.SpatialPlan(options)
     return best
 end
 
-function E.StrongQuarterLayout(site,options,reserved)
+function E.StrongQuarterLayout(site,options,reserved,pairedPlanning,partnerRank)
     -- Recognise a supply-backed layout before either district exists. Count
     -- usable plots, not resource tags. A live reservation can consume a
     -- deposit before this Quarter uses it. Two Base plots can support earlier
@@ -487,7 +487,8 @@ function E.StrongQuarterLayout(site,options,reserved)
     local firstSpec=next(specialty)
     local extraBase=next(base,firstBase)~=nil
     local hasSpec=firstSpec~=nil and (firstSpec~=firstBase or next(specialty,firstSpec)~=nil or extraBase)
-    if not (extraBase or hasSpec) then return nil end
+    local strongSupply=extraBase or hasSpec
+    if not strongSupply and not pairedPlanning then return nil end
 
     local bestByState={}
     local function consider(option,stage,existing)
@@ -497,10 +498,22 @@ function E.StrongQuarterLayout(site,options,reserved)
         if not stage or stage==4 and not hasSpec then return end
         local candidate={plot=option.plot,city=option.city,district=option.district,stage=stage,
             existing=existing,adjacency=option.adjacency or 0,extraBase=extraBase,hasSpec=hasSpec}
+        if pairedPlanning and not existing and partnerRank then
+            candidate.rank,candidate.gain=partnerRank(option,stage)
+            if not candidate.rank then return end
+        end
+        if stage==0 then candidate.role='provider' end
         local best=bestByState[existing]
         if best then
-            if stage~=best.stage then
-                if stage<best.stage then return end
+            if candidate.rank~=best.rank then
+                if candidate.rank<best.rank then return end
+            elseif stage~=best.stage then
+                -- Equal returns favour the first seller with a buyer. A
+                -- provider supplies the Quarter and has no seller stage of
+                -- its own. In a tie give the transaction partner precedence.
+                if pairedPlanning then
+                    if stage==0 or (best.stage~=0 and stage>best.stage) then return end
+                elseif stage<best.stage then return end
             elseif candidate.adjacency~=best.adjacency then
                 if candidate.adjacency<best.adjacency then return end
             elseif candidate.plot~=best.plot then
@@ -518,13 +531,122 @@ function E.StrongQuarterLayout(site,options,reserved)
         -- Apply the extra preference to a customer that can already match
         -- its city's other sites on ordinary adjacency. Some spatial links
         -- are providers only and have no compatible customer stage.
-        if option.stages and option.adjacency>=math.max(option.bestAdjacency,option.displacedAdjacency)then
+        if pairedPlanning and partnerRank then
+            for stage=2,4 do
+                if option.stages and option.stages[stage] then consider(option,stage,false) end
+            end
+            if option.goodsProvider then consider(option,0,false) end
+        elseif option.stages and option.adjacency>=math.max(option.bestAdjacency,option.displacedAdjacency)then
             for stage=4,2,-1 do if option.stages[stage] and(stage<4 or hasSpec)then
                 consider(option,stage,false);break
             end end
         end
     end
-    return bestByState[true]or bestByState[false],bestByState[false]
+    return strongSupply and (bestByState[true]or bestByState[false]) or nil,bestByState[false]
+end
+
+-- Both the siting preference and the economic quote use the same two-district
+-- schedule. A shared city can build the Quarter while it researches its
+-- customer. Separate cities can work in parallel. The second return value
+-- fixes the Quarter completion date only when that city builds it first.
+local function connectionSchedule(snapshot,site,layout)
+    local ready,unlock,turns=snapshot.ProspectiveCustomerReady(layout.city,layout.district)
+    if not ready or site.quarterReady>=site.horizon then return nil end
+    local work=site.quarterWork
+    if layout.city==site.city and work and unlock and turns then
+        local queue=site.queueReady and site.queueReady[site.city]or 0
+        local firstQuarter=math.max(queue,work.unlock)+work.turns
+        local lastCustomer=math.max(firstQuarter,unlock)+turns
+        ready=math.max(queue,unlock)+turns
+        local lastQuarter=math.max(ready,work.unlock)+work.turns
+        if lastCustomer<lastQuarter then
+            return lastCustomer,firstQuarter,lastCustomer
+        end
+        return ready,nil,lastQuarter
+    end
+    return ready,nil,math.max(ready,site.quarterReady)
+end
+
+local function hasSlotsForBoth(snapshot,quarter,customer)
+    if not snapshot.DistrictCapacity then return false end
+    local required={}
+    for _,option in ipairs({quarter,customer})do
+        local definition=GameInfo.Districts[option.district]
+        if not definition or definition.RequiresPopulation==nil then return false end
+        if definition.RequiresPopulation==true or definition.RequiresPopulation==1 then
+            required[option.city]=(required[option.city]or 0)+1
+        end
+    end
+    for city,count in pairs(required)do
+        local host=snapshot.cities[city]
+        local slots=host and snapshot.DistrictCapacity(host.object)
+        if not slots or not slots.known or slots.allowed-slots.used<count then return false end
+    end
+    return true
+end
+
+local function forecastPairedAdjacency(snapshot,site,city,plot,profile,partner)
+    -- This is a siting preference for one named adjacent district. Cash flows
+    -- remain in projectedLinkValue. Counting the hypothetical neighbour as
+    -- current income here would charge its value again in that quote.
+    if not (partner and snapshot.ProjectedConnectionYields and snapshot.ProspectiveCustomerReady) then return end
+    local _,_,bothReady=connectionSchedule(snapshot,site,partner)
+    if not bothReady or bothReady>=site.horizon then return end
+    local quarter={city=city:GetID(),district=profile.district.Index}
+    if not hasSlotsForBoth(snapshot,quarter,partner) then return end
+    local gain=partner.gain
+    if gain==nil then
+        local yields=snapshot.ProjectedConnectionYields({city=city,plot=plot,profile=profile},partner.district,partner.plot)
+        if not yields then return end
+        gain=(yields.YIELD_GOLD or 0)+(yields.YIELD_PRODUCTION or 0)
+    end
+    if gain<=0 then return end
+    site.pairAdjacencyGain=gain
+    site.pairReady=bothReady
+end
+
+local function rankPartners(snapshot,site,city,plot,profile)
+    if not (snapshot.CustomerStageSchedule and snapshot.ProjectedConnectionYields) then return nil end
+    local sellerReady={}
+    local function completion(building,start)
+        if not building or building.excluded then return math.huge end
+        if building.working then return start end
+        return math.max(start,building.unlock or math.huge)+(building.turns or math.huge)
+    end
+    for _,producer in ipairs(site.seconds or {}) do
+        sellerReady[2]=math.min(sellerReady[2] or math.huge,completion(producer,site.quarterReady))
+    end
+    sellerReady[3]=completion(site.third,sellerReady[2] or math.huge)
+    -- Both later sellers depend on Stage 2 in the shared ledger. Either
+    -- can be the next investment when the other has a distant unlock.
+    sellerReady[4]=completion(site.fourth,sellerReady[2] or math.huge)
+    local chain={city=city,plot=plot,profile=profile}
+    local gains={}
+    return function(option,stage)
+        local _,_,both=connectionSchedule(snapshot,site,option)
+        if not both or both>=site.horizon then return nil end
+        if gains[option]==nil then
+            local amounts=snapshot.ProjectedConnectionYields(chain,option.district,option.plot)
+            gains[option]=amounts and ((amounts.YIELD_PRODUCTION or 0)+(amounts.YIELD_GOLD or 0)) or false
+        end
+        local gain=gains[option]
+        if not gain or (stage==0 and gain<=0) then return nil end
+        local elsewhere=math.max(option.bestAdjacency,option.displacedAdjacency)
+        if option.adjacency+gain<elsewhere then return nil end
+        -- Rank in rough yield-turns solely to choose the partner for a full
+        -- quote. Credit the district's own terrain and the supported Quarter
+        -- gain, less adjacency sacrificed elsewhere. A transaction gets one
+        -- additional point for each turn both buildings could operate. The
+        -- native bid later uses the actual economic terms and shared queue.
+        local score=(site.horizon-both)*(option.adjacency+gain-math.max(0,elsewhere-option.adjacency))
+        if stage>0 then
+            local buyer=snapshot.CustomerStageSchedule(profile,option.city,option.district,option.plot)[stage]
+            local ready=math.max(both,buyer or math.huge,sellerReady[stage] or math.huge)
+            score=score+math.max(0,site.horizon-ready)
+        end
+        if score<=0 then return nil end
+        return score,gain
+    end
 end
 
 function E.NativeInvestmentReference(turn,horizon)
@@ -547,7 +669,8 @@ function E.NativeInvestmentReference(turn,horizon)
 end
 
 function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
-    if quote.adjacency+1e-6<E.PlacementMinimumAdjacency(site) or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
+    local qualifyingAdjacency=quote.adjacency+(site.pairAdjacencyGain or 0)
+    if qualifyingAdjacency+1e-6<E.PlacementMinimumAdjacency(site) or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
     -- Only named supply loss enters the complete ledger. Old no-host/readiness
     -- heuristics were ownership-dependent and duplicated its own valuation.
     -- Missing customer space loses its current layout preference/income; it
@@ -568,7 +691,7 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     -- exception adds no automatic Dockmaster income. Only separately admitted
     -- gameplay Service attachments can earn that value; total economics must
     -- still be positive. Stronger Quarters retain their usual siting bands.
-    local sitingAdjacency=math.max(E.MinimumAdjacency,quote.adjacency)
+    local sitingAdjacency=math.max(E.MinimumAdjacency,qualifyingAdjacency)
     if reference then
         -- Spatial policy, kept separate from actual economic income. At the
         -- early600 reference, +2/+3/+4 preferences are48/240/600. Strong +4
@@ -599,7 +722,7 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     -- only one requires a purchase or removes a working improvement.
     local footprint=(quote.footprintBidQ8 or quote.siteAdjustmentQ8 or 0)-penalty
     local ordinary=value-service-footprint
-    local strongLayout=site.strongLayout and quote.adjacency>=E.MinimumAdjacency
+    local strongLayout=site.strongLayout and qualifyingAdjacency>=E.MinimumAdjacency
     -- The adjacency-based ceiling was calibrated against ordinary future
     -- income/amenities. A strong layout has usable supply and a competitive
     -- mapped customer footprint. Keep its already-priced spatial preference
@@ -625,7 +748,7 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     local bid=math.floor(math.max(-limit,math.min(limit,proposed))+.5)
     local layoutCredit=0
     if strongLayout and reference then
-        local fraction=math.min(.20,.12+.08*(quote.adjacency-E.MinimumAdjacency))
+        local fraction=math.min(.20,.12+.08*(qualifyingAdjacency-E.MinimumAdjacency))
         layoutCredit=math.min(256*256,math.floor(reference*fraction+.5),limit-bid)
     end
     bid=bid+layoutCredit
@@ -633,7 +756,7 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
         layoutQ8=layout*256,strongLayoutQ8=layoutCredit,strongLayout=strongLayout and site.strongLayout,
         -- Grace retains the ordinary score. Both forms of fresh strong-layout
         -- credit require rechecking the suppliers and customer footprint.
-        ordinaryBidQ8=math.floor(math.max(-limit,math.min(limit,ordinaryBid+service+footprint))+.5),
+        ordinaryBidQ8=site.pairAdjacencyGain and 0 or math.floor(math.max(-limit,math.min(limit,ordinaryBid+service+footprint))+.5),
         penaltyQ8=penalty,forecastQ8=(quote.bidValueQ8 or quote.valueQ8)-quote.valueQ8,
         qualityCapQ8=qualityCap and math.floor(qualityCap+.5),serviceQ8=service,
         capAdjustmentQ8=bid-value-math.floor(premium+.5)-(materials+layout)*256-layoutCredit}
@@ -804,7 +927,7 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
     return quote
 end
 
-function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,protectionQ8,ignoredLegacy,covers,protected)
+function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,protectionQ8,ignoredLegacy,covers,protected,screenedOptions)
     local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
     local state=snapshot.planState
     local facts,reason=snapshot.Site(city,plot,profile)
@@ -819,13 +942,15 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         -- ownership diagnostics, but do not charge a second Gold payment.
         site.purchaseGold=site.nativeSiteIncludesPurchase and 0 or invoice
         if site.nativeSiteAdjustmentQ8~=nil then site.footprintCostMode='native_site'end
-        local options=snapshot.CustomerOptions
+        local options=screenedOptions or snapshot.CustomerOptions
             and snapshot.CustomerOptions(city,plot,profile,protected,E.AnchoredConnectionsEnabled)or{}
         site.spatialPlan=E.SpatialPlan(options)
         if E.AnchoredConnectionsEnabled then
-            site.strongLayout,site.prospectiveLayout=E.StrongQuarterLayout(site,options,snapshot.intentFootprints or{})
+            local rank=E.ProspectiveConnectionsEnabled and rankPartners(snapshot,site,city,plot,profile)
+            site.strongLayout,site.prospectiveLayout=E.StrongQuarterLayout(site,options,snapshot.intentFootprints or{},E.ProspectiveConnectionsEnabled,rank)
             if E.ProspectiveConnectionsEnabled and site.prospectiveLayout then
                 site.prospectiveCustomers=options
+                forecastPairedAdjacency(snapshot,site,city,plot,profile,site.prospectiveLayout)
             end
         end
         -- The legacy single-chain Stage2 estimate must not stack with the new
@@ -1432,45 +1557,35 @@ end
 
 local function projectedLinkValue(snapshot,candidate,layout)
     local site,profile=candidate.site,candidate.profile
-    local ready,unlock,turns=snapshot.ProspectiveCustomerReady(layout.city,layout.district)
-    if not ready or site.quarterReady>=site.horizon then return nil end
-    local quarterFirstReady
-    local work=site.quarterWork
-    if layout.city==site.city and work and unlock and turns then
-        -- Both districts share one production queue. Building the ready
-        -- Quarter during research for the customer can bring the connection
-        -- forward. Compare just the two district orders before calling the
-        -- heavier transaction forecast. Separate cities already run in parallel.
-        local queue=site.queueReady and site.queueReady[site.city]or 0
-        local firstQuarter=math.max(queue,work.unlock)+work.turns
-        local lastCustomer=math.max(firstQuarter,unlock)+turns
-        ready=math.max(queue,unlock)+turns
-        local lastQuarter=math.max(ready,work.unlock)+work.turns
-        if lastCustomer<lastQuarter then ready=lastCustomer;quarterFirstReady=firstQuarter end
-    end
-    if ready>=site.horizon then return nil end
+    local ready,quarterFirstReady,bothReady=connectionSchedule(snapshot,site,layout)
+    if not bothReady or bothReady>=site.horizon then return nil end
     local venues={}
     for _,venue in ipairs(snapshot.ProjectedCustomers(profile,layout.city,layout.district,layout.plot,ready))do
         if venue.stage<4 or layout.hasSpec then venues[#venues+1]=venue end
     end
-    if #venues==0 then return nil end
     -- Quote the same Quarter with and without the linked buyer. The model
     -- schedules the shared city queue and carries the actual buyer timings.
     -- The customer's private native adjacency and Services stay outside
     -- this incremental link quote and retain their ordinary consumers.
-    local forecast=M.CustomerBuildingForecast(site,venues,layout.city,ready,snapshot.Price,quarterFirstReady)
-    if not forecast then return nil end
+    local value=0
+    if #venues>0 then
+        local forecast=M.CustomerBuildingForecast(site,venues,layout.city,ready,snapshot.Price,quarterFirstReady)
+        if not forecast then return nil end
+        value=forecast.valueQ8
+        bothReady=math.max(ready,forecast.with.quarterReadyByChain[site.key] or bothReady)
+    elseif layout.role~='provider' then
+        return nil
+    end
     local city=snapshot.cities[site.city]
     local quarterPlot=Map.GetPlotByIndex(site.plot)
     local yields=city and quarterPlot and snapshot.ProjectedConnectionYields(
         {city=city.object,plot=quarterPlot,profile=profile},layout.district,layout.plot)
     if not yields then return nil end
-    local scheduled=forecast.with.quarterReadyByChain[site.key]or site.quarterReady
-    local both=math.max(ready,scheduled)
-    local value=forecast.valueQ8
+    -- A Rural Community can be a pure goods provider. Its adjacency begins
+    -- when the linked districts exist, with no customer building to schedule.
     for yield,amount in pairs(yields)do
         if amount~=0 then
-            local price=snapshot.Price({player=snapshot.id,city=site.city,yield=yield,amount=amount,ready=both},site.horizon)
+            local price=snapshot.Price({player=snapshot.id,city=site.city,yield=yield,amount=amount,ready=bothReady},site.horizon)
             if price==nil then return nil end
             value=value+price
         end
@@ -1522,23 +1637,6 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
         local net=ready and snapshot.CustomerNetValue and snapshot.CustomerNetValue(option.city,option.district,option.plot,ready)
         return net and net>0
     end
-    local function hasSlotsForBoth(quarter,customer)
-        if not snapshot.DistrictCapacity then return false end
-        local required={}
-        for _,option in ipairs({quarter,customer})do
-            local definition=GameInfo.Districts[option.district]
-            if not definition or definition.RequiresPopulation==nil then return false end
-            if definition.RequiresPopulation==true or definition.RequiresPopulation==1 then
-                required[option.city]=(required[option.city]or 0)+1
-            end
-        end
-        for city,count in pairs(required)do
-            local host=snapshot.cities[city]
-            local slots=host and snapshot.DistrictCapacity(host.object)
-            if not slots or not slots.known or slots.allowed-slots.used<count then return false end
-        end
-        return true
-    end
     local priced=0
     for _,group in ipairs(ranked)do
         local best=group.best
@@ -1547,6 +1645,16 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
         if layout and not layout.existing and layout.plot~=quarter.plot
             and available(quarter.plot,quarter)and available(layout.plot)
             and not claimed[quarter.plot]and not claimed[layout.plot]then
+            if snapshot.auditConnections and quarter.pairedAdjacency then
+                -- Diagnostic only, one shortlisted offer per city and Quarter
+                -- type. Adjacency figures are gameplay yield points. The bid
+                -- premium is Q8 native utility and the ETA is turns from now.
+                print(string.format('CSC_AI_PAIR_QUALIFICATION turn=%d player=%d city=%d district=%d plot=%d partnerCity=%d partnerDistrict=%d partnerPlot=%d role=%s stage=%d starting=%.3f withMill=%.3f withPartner=%.3f partnerOwn=%.3f ready=%d premiumQ8=%d',
+                    Game.GetCurrentGameTurn(),snapshot.id,quarter.city,quarter.district,quarter.plot,
+                    layout.city,layout.district,layout.plot,layout.role or 'customer',layout.stage,
+                    quarter.startingAdjacency or 0,quarter.adjacency,quarter.pairedAdjacency,layout.adjacency,
+                    quarter.pairReady,quarter.adjacencyPreferenceQ8))
+            end
             local alternateQuarter,alternateCustomer
             local function considerBackup(other,partner)
                 -- A comparably strong full plan can replace both empty
@@ -1554,7 +1662,8 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 -- Treat bids within 10% as credible backups in this first
                 -- trial. This tolerance only withdraws a scarcity premium.
                 if other.plot~=quarter.plot and other.finalQ8>=quarter.finalQ8*.90 and partner
-                    and partner.stage>=layout.stage and available(other.plot,other)
+                    and partner.role==layout.role and (layout.rank and partner.rank and partner.rank>=layout.rank*.90
+                        or not layout.rank and partner.stage>=layout.stage) and available(other.plot,other)
                     and (partner.existing or available(partner.plot))then
                     -- A replacement has to survive losing the original tile
                     -- entirely. Swapping the district roles still needs both
@@ -1571,7 +1680,8 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 if other.prospectiveLayout~=other.strongLayout then considerBackup(other,other.prospectiveLayout)end
             end
             for _,other in ipairs(best.site.prospectiveCustomers or{})do
-                if other.plot~=layout.plot and available(other.plot)and other.stages and other.stages[layout.stage]
+                if other.plot~=layout.plot and available(other.plot) and
+                    (layout.role=='provider' and other.goodsProvider or other.stages and other.stages[layout.stage])
                     and other.adjacency>=math.max(other.bestAdjacency,other.displacedAdjacency,layout.adjacency)
                 then
                     alternateCustomer=other.plot
@@ -1593,7 +1703,7 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 local value=projectedLinkValue(snapshot,best,layout)
                 if value and value>0 then
                     local quarterReady,customerReady=canBid(quarter,true),canBid(layout,false)
-                    local readyPair=quarterReady and customerReady and hasSlotsForBoth(quarter,layout)
+                    local readyPair=quarterReady and customerReady and hasSlotsForBoth(snapshot,quarter,layout)
                     -- The net link quote already discounts research, queues
                     -- and construction. Spend it once across the scarce
                     -- footprints if both projects fit now. Individual native
@@ -2137,8 +2247,15 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                         local id=siteKey(city:GetID(),profile.district.Index,plot:GetIndex())
                         local geometry=snapshot.Geometry(city,plot,profile)
                         local minimum=E.PlacementMinimumAdjacency(geometry)
-                        local supply=geometry.upper+1e-6>=minimum and snapshot.Supply and snapshot.Supply(plot,profile)
-                        if geometry.upper+1e-6<minimum then
+                        local belowMinimum=geometry.upper+1e-6<minimum
+                        -- A supply-backed site below the individual floor can
+                        -- qualify with a concrete partner. Admit it to the
+                        -- forecast only if the city has a mapped footprint.
+                        local supply=(not belowMinimum or E.ProspectiveConnectionsEnabled) and snapshot.Supply and snapshot.Supply(plot,profile)
+                        local screenedOptions=belowMinimum and E.ProspectiveConnectionsEnabled and E.AnchoredConnectionsEnabled
+                            and supply and #supply.base>0 and not protectedPlots[plot:GetIndex()] and snapshot.CustomerOptions
+                            and snapshot.CustomerOptions(city,plot,profile,protectedPlots,true)
+                        if belowMinimum and not (screenedOptions and #screenedOptions>0) then
                             stats.qualityDeferred=stats.qualityDeferred+1
                             evaluations[id]={reason='below_adjacency',adjacency=geometry.upper,owner=owner}
                             if activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())then
@@ -2173,7 +2290,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                 local covers=resource and(CSC_Adjacency.HasTag(profile.base,resource.ResourceType)
                                     or CSC_Adjacency.HasTag(profile.specialty,resource.ResourceType))
                                 local evaluation=E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,
-                                    protection[id],ignoredLegacy[id],covers,protectedPlots)
+                                    protection[id],ignoredLegacy[id],covers,protectedPlots,screenedOptions)
                                 evaluations[id]=evaluation.details
                                 local quote,site,parts=evaluation.quote,evaluation.site,evaluation.parts
                                 if evaluation.carried then stats.carried=stats.carried+1 end
@@ -2215,7 +2332,9 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 -- A bid at the native ceiling can retain this
                                                 -- customer footprint for the other decision.
                                                 strongLayout=parts and parts.strongLayout or nil,
-                                                prospectiveLayout=parts and parts.strongLayout and site and site.prospectiveLayout or nil,
+                                                prospectiveLayout=parts and site and site.prospectiveLayout or nil,
+                                                pairedAdjacency=site and site.pairAdjacencyGain and quote and quote.adjacency+site.pairAdjacencyGain,
+                                                pairReady=site and site.pairReady,
                                                 ordinaryBidQ8=parts and parts.ordinaryBidQ8,
                                                 startingAdjacency=site and site.startingAdjacency,startingGold=site and site.startingGold,
                                                 quarterReadyEstimate=site and site.quarterReady,

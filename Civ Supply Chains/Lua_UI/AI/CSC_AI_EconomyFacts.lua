@@ -915,15 +915,26 @@ function F.New(player,placement,ui,context)
         local cost=city and cityNumber(city.object,'district',district)
         if cost and city.production and city.production>0 then return math.max(1,math.ceil(cost/city.production)) end
     end
+    local districtSchedules={}
     function snapshot.ProspectiveCustomerReady(cityID,district)
         -- Both footprints are empty. A positive construction duration alone
         -- does not put an unlocked buyer in the queue. Add the researched
         -- start estimate used by the ordinary investment model.
+        local key=cityID..':'..district
+        local cached=districtSchedules[key]
+        if cached~=nil then
+            if cached then return cached.unlock+cached.duration,cached.unlock,cached.duration end
+            return nil
+        end
         local definition=GameInfo.Districts[district]
         local duration=definition and snapshot.ConnectionDistrictTurns(cityID,district)
+        districtSchedules[key]=false
         if not duration then return nil end
         local unlock=math.max(research('tech',definition.PrereqTech),research('civic',definition.PrereqCivic))
-        if finite(unlock)then return unlock+duration,unlock,duration end
+        if finite(unlock)then
+            districtSchedules[key]={unlock=unlock,duration=duration}
+            return unlock+duration,unlock,duration
+        end
     end
     function snapshot.Supply(plot,profile)
         local key=profile.key..':'..plot:GetIndex()
@@ -1283,6 +1294,34 @@ function F.New(player,placement,ui,context)
         end
         return result
     end
+    -- These estimates rank several possible buyers before the full economy
+    -- quote is run on a shortlisted pair. A buyer with a missing prerequisite
+    -- must wait for that building too. Cache static-within-publication times
+    -- per exact site because unique buildings and plot restrictions can vary.
+    local buyerSchedules={}
+    function snapshot.CustomerStageSchedule(profile,city,district,plot)
+        local key=table.concat({profile.key,city,district,plot},':')
+        if buyerSchedules[key] then return buyerSchedules[key] end
+        local schedule={}
+        local function completion(building,start)
+            if building.excluded then return INF end
+            if building.working then return start end
+            for _,prerequisite in ipairs(building.prerequisites or {}) do
+                start=completion(prerequisite,start)
+            end
+            return math.max(start,building.unlock or INF)+(building.turns or INF)
+        end
+        local ready=snapshot.ProspectiveCustomerReady(city,district)
+        if ready then
+            for _,venue in ipairs(snapshot.ProjectedCustomers(profile,city,district,plot,ready)) do
+                if venue.transaction then
+                    schedule[venue.stage]=math.min(schedule[venue.stage] or INF,completion(venue,ready))
+                end
+            end
+        end
+        buyerSchedules[key]=schedule
+        return schedule
+    end
     -- Spatial potential is deliberately separate from transaction income.
     -- Read stock hypothetical adjacency for real customer footprints through
     -- the UI boundary (explicit AI/city/type), including loaded terrain rules.
@@ -1422,6 +1461,9 @@ function F.New(player,placement,ui,context)
                             options[#options+1]={player=pid,city=buyer:GetID(),district=definition.Index,
                                 family=parent,plot=near:GetIndex(),adjacency=candidate.adjacency,
                                 stages=readTransactionStages and mappedCustomerStages(profile,definition.Index)or nil,
+                                goodsProvider=readTransactionStages and
+                                    (CSC_Adjacency.HasTag('CLASS_CSC_'..profile.key..'_GOODS_PROVIDER',parent)
+                                    or CSC_Adjacency.HasTag('CLASS_CSC_'..profile.key..'_GOODS_PROVIDER',definition.DistrictType)),
                                 bestAdjacency=best and best.adjacency or 0,
                                 -- A Quarter can consume the city's best native
                                 -- customer tile. Expose that opportunity cost;

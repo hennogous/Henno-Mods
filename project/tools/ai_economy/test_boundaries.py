@@ -205,6 +205,72 @@ entries,stats=E.QuarterBids(snapshot,placement,{},early)
 assert(#entries==0 and stats.final==0 and stats.qualityDeferred==3)
 ''')
 
+    def test_pair_qualifies_one_adjacency_and_credits_its_forecast_at_publication(self):
+        self.bid_vm().execute('''
+local E=CSC_AI_EconomyAdapters
+E.AnchoredConnectionsEnabled=true
+E.ProspectiveConnectionsEnabled=true
+GameInfo.Districts={[36]={RequiresPopulation=true},[8]={RequiresPopulation=true}}
+local slots,ready,gold=2,5,1
+snapshot.DistrictCapacity=function()return{known=true,used=0,allowed=slots,population=4,reason='ready'}end
+snapshot.Geometry=function()return{upper=1}end
+snapshot.Supply=function()return{base={{plot=16}}}end
+snapshot.Site=function(_,p)return{city=7,value=1000,plot=p:GetIndex(),baseCount=1,
+    suppliers={{kind='base',plot=16,ready=2}},horizon=50,quarterReady=4,
+    quarterWork={unlock=0,turns=4}}end
+snapshot.CustomerOptions=function()return{{city=7,district=8,family='HARBOR',plot=20,adjacency=2,
+    bestAdjacency=2,displacedAdjacency=0,stages={[2]=true}}}end
+snapshot.ProspectiveCustomerReady=function()return ready,0,ready end
+snapshot.ProjectedConnectionYields=function(_,district,plot)
+    assert(district==8 and plot==20)
+    return{YIELD_GOLD=gold}
+end
+CSC_AI_EconomyModel.Forecast=function(site)return{valueQ8=site.value,adjacency=1,streams={},omissions={}}end
+local function offers()return E.QuarterBids(snapshot,placement,{},{})end
+local entries=offers()
+assert(#entries==3)
+for _,entry in ipairs(entries)do
+    assert(entry.adjacency==1 and entry.pairedAdjacency==2 and entry.pairReady==9)
+    assert(entry.adjacencyPreferenceQ8==48*256 and entry.prospectiveLayout.plot==20)
+    assert(entry.economicQ8==1000 and entry.ordinaryBidQ8==0)
+end
+gold=2
+assert(offers()[1].adjacencyPreferenceQ8==144*256)
+slots=1
+assert(#offers()==0)
+slots=2;ready=49
+assert(#offers()==0)
+ready=5;gold=0
+assert(#offers()==0)
+gold=1;E.ProspectiveConnectionsEnabled=false
+assert(#offers()==0)
+-- Competing customers use the real ranking path. The Stage 2 seller
+-- is preferred until another site's earlier district income outweighs it.
+E.ProspectiveConnectionsEnabled=true
+local lateAdj=2
+snapshot.CustomerOptions=function()
+    return {{city=7,district=8,family='HARBOR',plot=20,adjacency=2,bestAdjacency=2,displacedAdjacency=0,stages={[2]=true}},
+            {city=7,district=9,family='HUB',plot=21,adjacency=lateAdj,bestAdjacency=lateAdj,displacedAdjacency=0,stages={[3]=true}}}
+end
+GameInfo.Districts[9]={RequiresPopulation=true}
+local siteReader=snapshot.Site
+snapshot.Site=function(...)
+    local site=siteReader(...)
+    site.seconds={{unlock=0,turns=2}};site.third={unlock=25,turns=3}
+    return site
+end
+snapshot.ProjectedConnectionYields=function()return {YIELD_GOLD=1}end
+snapshot.CustomerStageSchedule=function()return {[2]=11,[3]=28}end
+assert(offers()[1].prospectiveLayout.plot==20)
+lateAdj=4
+assert(offers()[1].prospectiveLayout.plot==21)
+snapshot.CustomerOptions=function()return {{city=7,district=9,family='TOWN',plot=21,adjacency=3,
+    bestAdjacency=3,displacedAdjacency=0,stages={},goodsProvider=true}}end
+assert(offers()[1].prospectiveLayout.role=='provider')
+snapshot.ProjectedConnectionYields=function()return {YIELD_GOLD=0}end
+assert(#offers()==0)
+''')
+
     def test_full_city_retains_future_bids_and_protection_without_raising_values(self):
         vm=self.bid_vm()
         vm.execute('''
