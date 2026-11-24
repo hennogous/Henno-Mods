@@ -507,3 +507,12 @@ The treatment also records any comparable substitute that released a planned
 footprint, with the exact alternate plot and publication turn. This lets the
 report distinguish a contested tile that could be replaced from one that was
 protected because the shared planner found no comparable substitute.
+
+Panama showed why a substitute must avoid the lost tile in either district
+role. On turn 56 of the original revised-cap run, the Tailors bids on 1935
+and 1934 were 86,502 and 85,299 Q8. Each planned its Theater on the other
+tile. Both bids fit the 10% replacement band, but both layouts require the
+same two tiles. The planner now keeps the loss allowance on each tile until
+it finds a complete layout that leaves that tile unused. Genuine
+alternatives still release the tile and the price bands stay the same.
+The regression also checks a substitute that rescues just one footprint.

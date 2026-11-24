@@ -1525,8 +1525,13 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 if other.plot~=quarter.plot and other.finalQ8>=quarter.finalQ8*.90 and partner
                     and partner.stage>=layout.stage and available(other.plot,other)
                     and (partner.existing or available(partner.plot))then
-                    alternateQuarter=alternateQuarter or other.plot
-                    if partner.plot~=layout.plot then alternateCustomer=alternateCustomer or partner.plot end
+                    -- A replacement has to survive losing the original tile
+                    -- entirely. Swapping the district roles still needs both
+                    -- original tiles and cannot release either footprint.
+                    if partner.plot~=quarter.plot then alternateQuarter=alternateQuarter or other.plot end
+                    if other.plot~=layout.plot and partner.plot~=layout.plot then
+                        alternateCustomer=alternateCustomer or partner.plot
+                    end
                 end
             end
             for _,other in ipairs(best.site.prospectiveCustomers or{})do

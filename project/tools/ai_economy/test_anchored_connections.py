@@ -77,6 +77,19 @@ end
 local plans=E.ProspectiveConnectionPlans(snapshot,{})
 assert(#plans==2 and plans[1].costQ8==50*256 and plans[2].costQ8==50*256)
 assert(plans[1].best.plot==20 and plans[2].best.plot==21)
+-- Same geometry as the two Panama layouts. A role swap cannot preserve a
+-- pair if the winner occupies either of the two shared plots.
+local alternate=quarterAt(21)
+alternate.entry.finalQ8=198*256
+alternate.entry.strongLayout={plot=20,city=7,district=1,stage=3,adjacency=2}
+snapshot.connectionQuarters={candidate,alternate}
+plans=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#plans==2 and plans[1].best.plot==20 and plans[2].best.plot==21)
+alternate.entry.plot=22
+plans=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.plot==20)
+snapshot.connectionQuarters={candidate}
+plans=E.ProspectiveConnectionPlans(snapshot,{})
 CE_AIDistrictScoresEarlyCost=function()end
 local rows=E.ApplyConnectionCosts(snapshot,{},plans,{[3]=true})
 for _,row in ipairs(rows)do
