@@ -118,6 +118,14 @@ If a city founds its once-per-city district on a different tile, the live
 district type list retires the old plan even when the planned site stays
 empty. Growth and research can still make an otherwise viable plan ready.
 
+A founded Quarter's land appraisal now compares available paid customer
+sites against owned layouts and the city's leading ordinary owned site.
+The native net quote includes the invoice. The purchase credit uses the
+additional CSC value left after that comparison. The existing native
+savings and spending decisions still govern purchase. A matched replay
+must link the new appraisal to a purchase and construction on the tile.
+[Purchase appraisal and comparison](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november).
+
 ## Current work
 
 **24 November — Problems 1.2 and 2.1, protect both footprints of a strong

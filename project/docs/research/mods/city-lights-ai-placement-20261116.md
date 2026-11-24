@@ -906,6 +906,20 @@ paid plot at 70 utility after a 20 Gold invoice, against 60 for the best
 owned option. This establishes that the shortlist can miss an economic
 advantage. Replaying 1453 will show whether it did so on Continents.
 
+The candidate now appraises up to twelve legal district and building
+options in one rotating Quarter-first group per player and turn. This
+lets a third customer plot compete even when the two leading geometry
+choices are owned. For the same city and district, the comparison combines
+the CSC link with the native net site quote. That quote already charges
+the Gold invoice. Extra native site value remains in the native bid, and
+only a positive CSC margin earns additional purchase credit. A comparable
+second paid site reduces the pressure to protect either individual tile.
+When a quote or required capacity is unavailable, the owned plan remains
+eligible. The regression covers the third plot, an ordinary owned site
+outside the link, a better paid alternative and a full district cap.
+`CSC_AI_CUSTOMER_LAND_APPRAISED` identifies the invoice, owned margin and
+credit to join to the native bid and spending request in a live replay.
+
 Quarter forecasts accounted for 408,958 of the 419,188 additional logical
 model evaluations. All 18,585 candidate Quarter quotes were distinct by
 turn, player, city, type and plot. The next performance check should count

@@ -371,6 +371,7 @@ cost=costs();assert(not cost[31] and cost[20]==24*256 and cost[21]==24*256)
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
 main.purchaseGold=32
+snapshot.planCustomerPurchases=true
 snapshot.cities={[7]={object={}}}
 snapshot.DistrictCapacity=function()return {known=true,allowed=2,used=1}end
 snapshot.Price=function(stream)
@@ -495,6 +496,46 @@ assert(#uncertain==1 and uncertain[1].costQ8==0)
 snapshot.intentFootprints={[20]=true};values[21]=48*256
 plans=E.AnchoredConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==21)
+''')
+
+    def test_paid_customer_beyond_the_geometry_shortlist_can_earn_a_bounded_offer(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local paid={plot=22,adjacency=1,chains={chain},purchaseGold=20}
+snapshot.connectionGroups[1].candidates={main,backup,paid}
+snapshot.planCustomerPurchases=true
+snapshot.cities={[7]={object={}}}
+local free,known=1,true
+GameInfo.Districts[1].RequiresPopulation=true
+snapshot.DistrictCapacity=function()return{known=known,used=2,allowed=2+free}end
+snapshot.Price=function(flow)
+ assert(flow.fixed and flow.yield=='YIELD_GOLD')
+ return flow.amount*256
+end
+local native={[20]=100*256,[21]=90*256,[22]=80*256,[24]=80*256}
+snapshot.CustomerNetValue=function(_,_,plot)return native[plot] end
+values[20],values[21],values[22]=5*256,8*256,40*256
+local function plan()return E.AnchoredConnectionPlans(snapshot,{})[1]end
+local chosen=plan()
+-- The owned site is 100 + 5. The paid site is 80 (invoice already in
+-- native NetValue) + 40. CSC's credit is one quarter of the 15 margin.
+assert(chosen.best.plot==22 and chosen.backup.plot==20)
+assert(chosen.purchaseCreditQ8==960 and chosen.costQ8==960)
+free=0;chosen=plan();assert(chosen.best.plot~=22 and not chosen.purchaseCreditQ8)
+free=1;known=false;assert(plan().best.plot~=22)
+known=true;native[20]=nil;assert(plan().best.plot~=22)
+native[20]=100*256
+snapshot.customerOwnedReferences={['7:1']={plot=24,links=0}}
+native[24]=140*256
+assert(plan().best.plot~=22,'unlinked owned reference beats the combined paid bid')
+snapshot.customerOwnedReferences=nil
+values[20],values[21],native[22]=40*256,40*256,140*256
+assert(plan().best.plot~=22,'native advantage alone earns no CSC purchase credit')
+values[20],values[21],native[22]=5*256,8*256,80*256
+native[23],values[23]=85*256,40*256
+snapshot.connectionGroups[1].candidates[4]={plot=23,adjacency=0,chains={chain},purchaseGold=20}
+chosen=plan()
+assert(chosen.best.plot==23 and chosen.backup.plot==22 and chosen.purchaseCreditQ8==5*256 and chosen.costQ8==0)
 ''')
 
     def test_customer_first_prefers_the_stronger_complete_bid_over_an_older_equal_link(self):

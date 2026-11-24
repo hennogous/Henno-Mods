@@ -2173,6 +2173,8 @@ function F.New(player,placement,ui,context)
         -- and related alternatives. Policy chooses the bounded priced shortlist;
         -- this reader neither bids nor buys and retains no cross-turn targets.
         local groups={};local graph=F.CustomerQuarterMap()
+        local references={}
+        snapshot.customerOwnedReferences=references
         local auditTurn=Game.GetCurrentGameTurn()%25==0
         local query=snapshot.ui or ui
         if type(query.GetLegalDistrictTargets)~='function'then return {}end
@@ -2247,6 +2249,9 @@ function F.New(player,placement,ui,context)
                     -- adjusted native score cache, avoiding feedback next turn.
                     if #choices>0 then
                         group.reference=choices[1];group.candidates={}
+                        if snapshot.planCustomerPurchases then
+                            references[group.city..':'..group.district]=group.reference
+                        end
                         local related,other={},{}
                         for _,choice in ipairs(choices)do
                             local list=choice.links>0 and related or other;list[#list+1]=choice

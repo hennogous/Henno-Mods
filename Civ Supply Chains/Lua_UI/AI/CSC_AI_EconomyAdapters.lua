@@ -1664,6 +1664,10 @@ local connectionMemory={}
 local connectionAuditMemory={}
 local CONNECTION_GROUPS_PER_ORDER=2
 local CONNECTION_COST_CAP_Q8=64*256
+-- One rotating Quarter-first group can use this many distinct venue quotes
+-- per player and publication. Six adjacent plots can host more than six
+-- district/building combinations. An incomplete appraisal keeps the owned plan.
+local CUSTOMER_PURCHASE_QUOTE_LIMIT=12
 E.ConnectionCompletionCapQ8=CONNECTION_COST_CAP_Q8
 local STRONG_SITE_LINK_RELIEF_LIMIT_Q8=128*256
 
@@ -2288,13 +2292,97 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             if price==nil then return nil end
             utility=utility+price
         end end
+        local gross=utility
         if option.purchaseGold then
             local invoice=snapshot.Price({player=pid,city=option.city,yield='YIELD_GOLD',
                 amount=-option.purchaseGold,ready=0,fixed=true},option.site.horizon)
             if not invoice then return nil end
             utility=utility+invoice
         end
-        return utility
+        return utility,gross
+    end
+    local function customerPurchaseChoice(group)
+        if not snapshot.CustomerNetValue then return nil,false end
+        local rows,paidTypes={},{}
+        for _,footprint in pairs(group.plots)do for _,option in ipairs(footprint.options)do
+            if not option.waiting then
+                local admitted=true
+                if option.purchaseGold then
+                    local definition=GameInfo.Districts[option.district]
+                    local city=snapshot.cities[option.city]
+                    local capacity=city and snapshot.DistrictCapacity and snapshot.DistrictCapacity(city.object)
+                    admitted=definition and city and option.purchaseGold>0
+                        and (definition.RequiresPopulation==false or definition.RequiresPopulation==0
+                            or capacity and capacity.known and capacity.allowed>capacity.used)
+                    if admitted then paidTypes[option.city..':'..option.district]=option end
+                end
+                if admitted then rows[#rows+1]={plot=footprint.plot,option=option} end
+            end
+        end end
+        if not next(paidTypes) or #rows>CUSTOMER_PURCHASE_QUOTE_LIMIT then return nil,false end
+        -- A legal ordinary site can compete without touching this Quarter.
+        -- Use the already measured owned reference when it has no CSC link.
+        for key,option in pairs(paidTypes)do
+            local reference=(snapshot.customerOwnedReferences or{})[key]
+            if reference and (reference.links or 0)==0 then
+                rows[#rows+1]={plot=reference.plot,ordinary=true,
+                    option={city=option.city,district=option.district,venue={building=''}}}
+            end
+        end
+        if #rows>CUSTOMER_PURCHASE_QUOTE_LIMIT then return nil,false end
+        table.sort(rows,function(a,b)
+            if a.option.city~=b.option.city then return a.option.city<b.option.city end
+            if a.option.district~=b.option.district then return a.option.district<b.option.district end
+            if a.plot~=b.plot then return a.plot<b.plot end
+            return a.option.venue.building<b.option.venue.building
+        end)
+        for _,row in ipairs(rows)do
+            local option=row.option
+            local ready=snapshot.ConnectionDistrictTurns(option.city,option.district)
+            row.nativeQ8=ready and snapshot.CustomerNetValue(option.city,option.district,row.plot,ready)
+            if row.nativeQ8==nil then return nil,true end
+            if row.nativeQ8>0 then
+                if row.ordinary then row.valueQ8,row.grossQ8=0,0
+                else row.valueQ8,row.grossQ8=value(option) end
+                if row.valueQ8==nil then return nil,true end
+            end
+        end
+        local best
+        for _,row in ipairs(rows)do if row.option.purchaseGold and row.valueQ8 and row.valueQ8>0 then
+            local margin,scarcity,backup,backupMargin=row.valueQ8,row.valueQ8,nil,math.huge
+            local strongerPaid=false
+            for _,other in ipairs(rows)do if other.plot~=row.plot and other.valueQ8 then
+                local difference=row.valueQ8-other.valueQ8
+                local combined=difference
+                local sameDistrict=row.option.city==other.option.city and row.option.district==other.option.district
+                if sameDistrict then
+                    -- Native NetValue already charges the Gold invoice.
+                    -- Combine it with the gross CSC link, and exclude any
+                    -- native-only advantage from CSC's additional credit.
+                    local nativeDifference=row.nativeQ8-other.nativeQ8
+                    difference=row.grossQ8-other.grossQ8+math.min(0,nativeDifference)
+                    combined=row.grossQ8-other.grossQ8+nativeDifference
+                end
+                if other.option.purchaseGold then strongerPaid=strongerPaid or combined<0
+                else margin=math.min(margin,difference) end
+                scarcity=math.min(scarcity,difference)
+                -- The persisted backup stores only a plot for this buyer
+                -- and district. Other rivals cap the price but cannot
+                -- masquerade as an alternate layout for this link.
+                if sameDistrict and not other.ordinary and other.valueQ8>0 and difference<backupMargin then
+                    backup,backupMargin=other,difference
+                end
+            end end
+            -- Comparable paid alternatives can limit protection for this
+            -- exact tile while still leaving a reason to buy instead of
+            -- using an owned plot. Publish only a fraction of the CSC margin.
+            local credit=math.floor(E.ConnectionLossQ8(margin,0)/2)
+            if not strongerPaid and credit>0 and (not best or margin>best.margin
+                or margin==best.margin and row.option.purchaseGold<best.row.option.purchaseGold)then
+                best={row=row,backup=backup,margin=margin,scarcity=scarcity,credit=credit}
+            end
+        end end
+        return best,true
     end
     local function competitiveBackup(first,second)
         if not second or not second.valueQ8 or second.valueQ8<=0 then return 0 end
@@ -2326,6 +2414,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         local disadvantage=best and math.max(0,best-backup)or 0
         return math.max(0,second.valueQ8-disadvantage)
     end
+    local purchaseAppraised=false
     for _,order in ipairs({'quarterFirst','customerFirst'})do
         local candidates={}
         for _,group in pairs(groups[order])do
@@ -2337,9 +2426,9 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             if prior and group.plots[prior]then nextMemory[group.key]=prior end
         end
         table.sort(candidates,function(a,b)return a.key<b.key end)
-        -- Rotate each direction independently. This bounds the local ledger
-        -- work to eight candidate prices across four groups per player even
-        -- when a large empire has many mapped districts.
+        -- Rotate each direction independently. Normally four groups share
+        -- eight local prices per player. One visited Quarter-first group
+        -- may expand to the separately bounded customer-land appraisal.
         local visits={}
         if snapshot.handoffs then
             -- One visit follows an actual foundation through later decision
@@ -2372,11 +2461,12 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         for _,group in ipairs(visits) do
             local handoff=snapshot.handoffs and snapshot.handoffs[group.key]
             local preferred=handoff and handoff.plot or before[group.key]
-            local plots={}
+            local plots,frontier={},false
             for _,row in pairs(group.plots)do
                 table.sort(row.options,byRank)
                 row.option=row.options[1]
-                plots[#plots+1]=row
+                if order=='quarterFirst' and row.option.purchaseGold then frontier=true
+                else plots[#plots+1]=row end
             end
             table.sort(plots,function(a,b)
                 local aWaiting,bWaiting=a.option.waiting==true,b.option.waiting==true
@@ -2388,21 +2478,28 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 if (a.plot==preferred)~=(b.plot==preferred)then return a.plot==preferred end
                 return a.plot<b.plot
             end)
+            local purchase
+            if frontier and snapshot.planCustomerPurchases and not purchaseAppraised then
+                purchase,purchaseAppraised=customerPurchaseChoice(group)
+            end
             local first,second=plots[1],plots[2]
-            first.valueQ8=value(first.option)
-            if second then second.valueQ8=value(second.option) end
+            if purchase then first,second=purchase.row,purchase.backup
+            else
+                if first then first.valueQ8=value(first.option) end
+                if second then second.valueQ8=value(second.option) end
+            end
             -- For two sites of the same Quarter in one city, rank already
             -- includes the link, the rest of the CSC forecast and site costs.
             -- An older preferred plot or a higher local exchange alone must
             -- not displace the stronger fresh bid. Keep that plot as a backup.
             local fullQuarterComparison=second and order=='customerFirst'
                 and first.option.city==second.option.city and first.option.district==second.option.district
-            if second and second.valueQ8 and (not first.valueQ8 or first.valueQ8<=0
+            if not purchase and second and second.valueQ8 and (not first.valueQ8 or first.valueQ8<=0
                 or not fullQuarterComparison and (first.option.waiting==true)==(second.option.waiting==true)
                     and(second.valueQ8>first.valueQ8 or second.valueQ8==first.valueQ8 and second.plot==preferred))then
                 first,second=second,first
             end
-            if first.valueQ8 and first.valueQ8>0 then
+            if first and first.valueQ8 and first.valueQ8>0 then
                 if handoff then
                     local old=handoff.record
                     local qCity,qDistrict,qPlot=old.city,old.district,old.plot
@@ -2433,7 +2530,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 -- Unpriced options can still be backups. Price two leading
                 -- completions even in a rich city, and defer any scarcity
                 -- penalty while a third option or unknown quote survives.
-                local completeSet=#plots<=2 and (not second or second.valueQ8~=nil)
+                local completeSet=not frontier and #plots<=2 and (not second or second.valueQ8~=nil)
                 local fallback=completeSet and competitiveBackup(first,second)or nil
                 local cost=fallback and E.ConnectionLossQ8(first.valueQ8,fallback)or 0
                 group.choices={first}
@@ -2441,27 +2538,25 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 local target=first.option
                 local definition=GameInfo.Districts[target.district]
                 local targetCity=snapshot.cities and snapshot.cities[target.city]
-                if target.purchaseGold then
-                    -- The target can compete in native future-site scoring.
-                    -- Use the same finite scarcity budget for acquiring this
-                    -- tile and deterring rivals. Native Economic checks its
-                    -- own savings and gold before it issues any purchase.
-                    local capacity=targetCity and snapshot.DistrictCapacity(targetCity.object)
-                    local needsSlot=definition and (definition.RequiresPopulation==1 or definition.RequiresPopulation==true)
-                    local ready=snapshot.ConnectionDistrictTurns(target.city,target.district)
-                    local net=ready and snapshot.CustomerNetValue(target.city,target.district,first.plot,ready)
-                    if net and net>0 and (not needsSlot or capacity and capacity.known and capacity.used<capacity.allowed) then
-                        group.purchaseCreditQ8=math.floor(cost/2)
-                        cost=cost-group.purchaseCreditQ8
-                        if group.purchaseCreditQ8>0 and snapshot.nextLayouts then
-                            local chain=target.chain
-                            local quarter={city=chain.city:GetID(),district=chain.profile.district.Index,plot=chain.plot:GetIndex()}
-                            local partner={city=target.city,district=target.district,plot=target.plot,
-                                stage=group.stage,purchaseGold=target.purchaseGold}
-                            local key=quarter.city..':'..quarter.district
-                            local supply=snapshot.Supply(chain.plot,chain.profile)
+                if purchase then
+                    -- The ordinary native district and savings consumers
+                    -- decide whether to use the paid footprint. Any site
+                    -- protection comes from the same bounded link allowance.
+                    group.purchaseCreditQ8=purchase.credit
+                    cost=math.max(0,E.ConnectionLossQ8(purchase.scarcity,0)-purchase.credit)
+                    fallback=first.valueQ8-purchase.scarcity
+                    print(string.format('CSC_AI_CUSTOMER_LAND_APPRAISED turn=%d player=%d city=%d district=%d plot=%d invoice=%d ownedMarginQ8=%d scarcityQ8=%d creditQ8=%d',
+                        turn,pid,target.city,target.district,target.plot,target.purchaseGold,purchase.margin,purchase.scarcity,purchase.credit))
+                    if snapshot.nextLayouts then
+                        local chain=target.chain
+                        local quarter={city=chain.city:GetID(),district=chain.profile.district.Index,plot=chain.plot:GetIndex()}
+                        local partner={city=target.city,district=target.district,plot=target.plot,
+                            stage=group.stage,purchaseGold=target.purchaseGold}
+                        local key=quarter.city..':'..quarter.district
+                        local supply=snapshot.Supply(chain.plot,chain.profile)
+                        if supply and #supply.base>0 then
                             local saved=C.LayoutRecord(quarter,partner,supply,nil,second and second.plot,
-                                snapshot.savedLayouts[key],turn)
+                                (snapshot.savedLayouts or{})[key],turn)
                             saved.phase=1
                             snapshot.nextLayouts[key]=saved
                         end
