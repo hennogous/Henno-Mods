@@ -77,6 +77,11 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual((strongest['plot'], strongest['gap_q8']), (12, 10))
         self.assertEqual((contested['plot'], contested['gap_q8']), (10, 40))
 
+        tied = log.removesuffix('160') + '120'
+        results = bid_competition(tied, parse(tied, 'CSC_PLANNING_'), {1}, 250)
+        self.assertEqual(results['losses'], [])
+        self.assertEqual([loss['gap_q8'] for loss in results['footprint_losses']], [0])
+
     def test_prospective_layout_follows_exact_packet_and_both_foundations(self):
         def plan(target):
             return ('CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '

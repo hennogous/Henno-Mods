@@ -104,7 +104,7 @@ def bid_competition(log, observations, players, through):
                 # is the stronger bid for its district. Audit that physical
                 # contest separately from the district-level comparison.
                 same_plot = plots.get(plot)
-                if district >= 0 and district != bid_district and same_plot is not None and score > same_plot:
+                if district >= 0 and district != bid_district and same_plot is not None and score >= same_plot:
                     footprint_losses.append(loss_at(plot, same_plot))
                 # Each district/type contributes its strongest observed site
                 # once in this decision. Counting its alternative tiles would
@@ -570,11 +570,11 @@ def paired_full_game_result(control, treatment):
     for arm, root in arms.items():
         expected = 'off' if arm == 'control' else 'on'
         protocol = load(root / 'protocol.json')
-        if (protocol.pop('paired_layout_policy') != expected or not protocol['ordinary_setup']
+        if (protocol.pop('paired_layout_policy', None) != expected or not protocol['ordinary_setup']
                 or not protocol['fresh_game'] or protocol['gameplay_interventions'] or protocol['untuned']
                 or not protocol['service_observation']):
             raise ValueError(f'Wrong run protocol for {arm}')
-        if arm == 'treatment' and Path(protocol.pop('regression_reference')).resolve() != (
+        if arm == 'treatment' and Path(protocol.pop('regression_reference', '')).resolve() != (
                 control / 'source.json').resolve():
             raise ValueError('Treatment used a different reference game')
         switch = load(root / 'paired-layout-opening.json')

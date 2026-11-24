@@ -580,9 +580,9 @@ def run(args):
     paired_layout_policy = getattr(args, 'paired_layout_policy', None)
     if paired_layout_policy:
         require(main_csc and not snapshot_main and not (args.untuned or legacy_quarter_cap or args.resume_from
-                or args.qualification or args.matched_source) and args.through==250
+                or args.qualification or args.matched_source) and args.through==250 and args.saves
                 and args.harmonised_observation and args.planning_observation and args.service_observation,
-                'Paired-layout full games require the explicit shared CSC pin and the complete observations')
+                'Paired-layout full games require the shared CSC pin, full observations and a Load Game endpoint')
         protocol['paired_layout_policy'] = paired_layout_policy
         if paired_layout_policy == 'on':
             require(other_source, 'The treatment needs the completed paired-layout baseline')
@@ -1149,8 +1149,12 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             # should leave the read-only evidence available for inspection.
             state = controller.state_read('fresh-endpoint-save-check')
             if state['player0_alive']:
+                name = 'CSC_BAKERS_FRESH'
+                if paired_layout_policy:
+                    arm = 'BASELINE' if paired_layout_policy == 'off' else 'TREATMENT'
+                    name = f'CSC_LAYOUT_{args.map_seed}_{arm}_T{args.through}'
                 try:
-                    checkpoint = save_inactive_boundary(controller, turn=args.through, name='CSC_BAKERS_FRESH',
+                    checkpoint = save_inactive_boundary(controller, turn=args.through, name=name,
                         native_directory=args.saves, archive=out / 'endpoint.Civ6Save')
                 except (SavePermissionUnavailable, SaveFileUnavailable) as error:
                     if not (args.harmonised_observation and args.planning_observation) or args.qualification:
