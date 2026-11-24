@@ -117,6 +117,22 @@ candidate.entry.economy=true;candidate.entry.player=1
 local adjusted=E.ApplyProspectiveConnectionCredit(snapshot,{candidate.entry,
     {player=1,city=7,district=1,plot=21,delta=10*256,customer=true}},credits)
 assert(adjusted[1].finalQ8==225*256 and adjusted[2].delta==35*256)
+GameInfo.Districts[1].RequiresPopulation=true
+GameInfo.Districts[3].RequiresPopulation=true
+local allowed=1
+snapshot.DistrictCapacity=function()return {known=true,allowed=allowed,used=0}end
+plans,credits=E.ProspectiveConnectionPlans(snapshot,{})
+assert(plans[1].costQ8==25*256 and credits[1].valueQ8==25*256)
+allowed=2
+plans,credits=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#plans==2 and #credits==2)
+for i=1,2 do assert(plans[i].costQ8==32*256 and credits[i].valueQ8==32*256)end
+allowed=1
+snapshot.cities[8]={object={}}
+candidate.entry.prospectiveLayout.city=8
+plans,credits=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#plans==2 and #credits==2 and credits[2].city==8)
+for i=1,2 do assert(plans[i].costQ8==32*256 and credits[i].valueQ8==32*256)end
 snapshot.ProspectiveCustomerReady=function()return 50 end
 assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
 ''')

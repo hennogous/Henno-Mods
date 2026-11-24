@@ -1490,7 +1490,7 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
     end)
     local plans,credits,claimed,admitted={},{},{},{}
     local function canBid(option,isQuarter)
-        if isQuarter and option.capacityState~='ready'then return false end
+        if isQuarter and option.capacityState~='ready'and option.capacityState~='exempt'then return false end
         if not(snapshot.ui and snapshot.ui.GetLegalDistrictTargets)then return false end
         local key=option.city..':'..option.district
         local targets=admitted[key]
@@ -1506,6 +1506,23 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
         local ready=snapshot.ProspectiveCustomerReady(option.city,option.district)
         local net=ready and snapshot.CustomerNetValue and snapshot.CustomerNetValue(option.city,option.district,option.plot,ready)
         return net and net>0
+    end
+    local function hasSlotsForBoth(quarter,customer)
+        if not snapshot.DistrictCapacity then return false end
+        local required={}
+        for _,option in ipairs({quarter,customer})do
+            local definition=GameInfo.Districts[option.district]
+            if not definition or definition.RequiresPopulation==nil then return false end
+            if definition.RequiresPopulation==true or definition.RequiresPopulation==1 then
+                required[option.city]=(required[option.city]or 0)+1
+            end
+        end
+        for city,count in pairs(required)do
+            local host=snapshot.cities[city]
+            local slots=host and snapshot.DistrictCapacity(host.object)
+            if not slots or not slots.known or slots.allowed-slots.used<count then return false end
+        end
+        return true
     end
     local priced=0
     for _,group in ipairs(ranked)do
@@ -1560,17 +1577,21 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 priced=priced+1
                 local value=projectedLinkValue(snapshot,best,layout)
                 if value and value>0 then
-                    -- Spend up to half the projected link once across the
-                    -- scarce footprints. Each side stays below the existing
-                    -- native64-utility early-cost ceiling. A legally admitted
-                    -- leg splits its allowance between advancing its own bid
-                    -- across plots and charging a rival on the same plot.
-                    -- A waiting leg can only retain space. It submits no
-                    -- positive offer before the native placement gate admits it.
-                    local perLeg=math.min(CONNECTION_COST_CAP_Q8,math.floor(value/(2*legs)))
+                    local quarterReady,customerReady=canBid(quarter,true),canBid(layout,false)
+                    local readyPair=quarterReady and customerReady and hasSlotsForBoth(quarter,layout)
+                    -- The net link quote already discounts research, queues
+                    -- and construction. Spend it once across the scarce
+                    -- footprints if both projects fit now. Individual native
+                    -- admission can offer both the same last slot, so check
+                    -- their joint demand. Retain half the quote while waiting
+                    -- for a slot or an unlock the two-project timing omits.
+                    -- Each admitted leg splits its capped share between its
+                    -- own bid and the residual cost on a rival at that tile.
+                    local divisor=readyPair and legs or 2*legs
+                    local perLeg=math.min(CONNECTION_COST_CAP_Q8,math.floor(value/divisor))
                     if perLeg>0 then
-                        local function retain(option,backup,isQuarter)
-                            local credit=canBid(option,isQuarter)and math.floor(perLeg/2)or 0
+                        local function retain(option,backup,isQuarter,ready)
+                            local credit=ready and math.floor(perLeg/2)or 0
                             local cost=perLeg-credit
                             local row={plot=option.plot,option=option,options={option}}
                             plans[#plans+1]={order='prospective',anchor=backup,stage=layout.stage,best=row,costQ8=cost}
@@ -1581,12 +1602,12 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                             return cost,credit
                         end
                         local qCost,qCredit,cCost,cCredit=0,0,0,0
-                        if not alternateQuarter then qCost,qCredit=retain(quarter,layout.plot,true)end
-                        if not alternateCustomer then cCost,cCredit=retain(layout,quarter.plot,false)end
+                        if not alternateQuarter then qCost,qCredit=retain(quarter,layout.plot,true,quarterReady)end
+                        if not alternateCustomer then cCost,cCredit=retain(layout,quarter.plot,false,customerReady)end
                         claimed[quarter.plot]=true;claimed[layout.plot]=true
-                        print(string.format('CSC_AI_PROSPECTIVE_CONNECTION turn=%d player=%d quarterCity=%d quarter=%d quarterPlot=%d customerCity=%d customer=%d customerPlot=%d valueQ8=%d quarterCostQ8=%d customerCostQ8=%d quarterCreditQ8=%d customerCreditQ8=%d',
+                        print(string.format('CSC_AI_PROSPECTIVE_CONNECTION turn=%d player=%d quarterCity=%d quarter=%d quarterPlot=%d customerCity=%d customer=%d customerPlot=%d valueQ8=%d quarterCostQ8=%d customerCostQ8=%d quarterCreditQ8=%d customerCreditQ8=%d readyPair=%d',
                             Game.GetCurrentGameTurn(),snapshot.id,quarter.city,quarter.district,quarter.plot,
-                            layout.city,layout.district,layout.plot,value,qCost,cCost,qCredit,cCredit))
+                            layout.city,layout.district,layout.plot,value,qCost,cCost,qCredit,cCredit,readyPair and 1 or 0))
                     end
                 end
             end

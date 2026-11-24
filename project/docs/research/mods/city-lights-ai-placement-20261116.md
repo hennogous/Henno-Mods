@@ -582,3 +582,15 @@ at the endpoint. Both arms modeled 11 exact pairs, matched all 120 observed
 foundation sites and turns, and recorded 115 Bakers Stage 2 link-turns. The
 comparison used the package before the additional unbuilt-customer coverage
 in Nippur.
+
+The calibration keeps half the net quote while either leg is waiting or
+capacity is uncertain. An individual legal-target read can admit both
+districts against the same last city slot. The prospective quote discounts
+research and production but does not forecast the date of the second slot.
+When both legs are admitted and their cities jointly have enough free slots,
+the planner can allocate the full discounted quote once across the scarce
+plots. Each leg still has the 64-utility ceiling and splits its allowance
+between its own bid and the rival's same-tile cost. The native tests need a
+loss within that realizable swing. For example, Quito's 79.76-utility quote
+would move either of two equally scarce sites by at most 39.88 before the
+existing anchored adjustment, short of the observed 60.03 lead.
