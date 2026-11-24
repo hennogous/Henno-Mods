@@ -51,7 +51,7 @@ def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mod
             untuned=False,service_watch=False):
     # Short diagnostic qualification uses the same passive observers/policy as
     # the full games; it cannot claim long-run outcome evidence.
-    require(endpoint in (25,50,200,250) or (start,endpoint) in ((100,175),(150,155)),
+    require(endpoint in (25,50,100,200,250) or (start,endpoint) in ((100,175),(150,155)),
             'Unsupported integrated observation window')
     scope=lua(dict(players=sorted(players),start=start,untuned=untuned))
     preflight=read(HERE/'full_game_preflight.lua').replace('__SCOPE__',scope)
