@@ -136,7 +136,8 @@ class ContinuationPlan:
 
 
 def prepare(source, output, at, through, dependencies, *, read_only=False, material_only=False,
-            finish_port_replay=False, observe_material=False, stock_derived=False, replay_ce=None):
+            finish_port_replay=False, observe_material=False, stock_derived=False, replay_ce=None,
+            paired_layout_csc=None):
     """Read and qualify all provenance before any install, launch or console.
 
     The failed run may have failure.json or an abrupt exit: supported closure
@@ -162,6 +163,8 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     require(not stock_derived or (read_only and dependencies is None),
             'Stock-derived fixtures require an explicit controller-only source inspection')
     require(replay_ce is None or read_only, 'Replacement CE is only supported for diagnostic replay preparation')
+    require(paired_layout_csc is None or read_only and not stock_derived,
+            'A paired-layout CSC pin requires an observed tuned save')
     require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')
@@ -192,7 +195,7 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     checkpoint_path = source/('checkpoint-'+str(at)+'.json')
     # Fresh-game drivers name the final receipt checkpoint.json; intermediate
     # boundaries use checkpoint-N.json. Both still require exact turn/save hashes.
-    if at in (25, 250) and not checkpoint_path.is_file():
+    if (at in (25, 250) or read_only and at == protocol.get('endpoint')) and not checkpoint_path.is_file():
         checkpoint_path = source/'checkpoint.json'
     checkpoint = load(checkpoint_path)
     require(checkpoint['verified'] and checkpoint['turn'] == at and
@@ -219,6 +222,17 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
         expected_install = development_package_files(replay_ce) if replay_ce is not None and role=='ce' else None
         replacement = expected_install is not None and (install/'DevCE.modinfo').is_file() and (
             development_package_files(install)==expected_install)
+        if paired_layout_csc is not None and role == 'csc':
+            permitted = {'Lua_UI/AI/CSC_AI_BakersGameplay.lua', 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua',
+                         'Lua_UI/AI/CSC_AI_EconomyFacts.lua'}
+            new_pin = development_package_files(paired_layout_csc)
+            differences = {Path(name).as_posix() for name in originals[role] if originals[role][name] != new_pin.get(name)}
+            require(live_main and reused and not paired_layout_csc.is_relative_to(install.parent)
+                    and package_identity(paired_layout_csc)[0] == identity_id
+                    and new_pin.keys() == originals[role].keys() and differences <= permitted
+                    and new_pin == development_package_files(install),
+                    'Paired-layout replay must use its installed pinned Lua-only overlay')
+            replacement = True
         require(not install.exists() or replacement or (reused and development_package_files(install) == originals[role]),
                 'Frozen package/install differs: '+path)
         if stock_derived and role == 'csc':

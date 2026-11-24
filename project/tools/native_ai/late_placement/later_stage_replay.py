@@ -83,12 +83,14 @@ def require_clean_replay_log(log):
 def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
-            connection_timing_player=None):
+            connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None):
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
                 (replay_ce/'Binaries/Win64'/DLL).is_file(), 'Expected a staged Dev CE build')
-    plan = prepare(source, output, start, start, None, read_only=True, replay_ce=replay_ce)
+    plan = prepare(source, output, start, start, None, read_only=True, replay_ce=replay_ce,
+                   paired_layout_csc=paired_layout_csc)
+    switch_turn = paired_layout_switch_turn or connection_switch_turn
     if replay_ce is not None:
         require(package_identity(replay_ce)[0]==plan.protocol['ce'], 'Dev CE replay mod identity differs')
     if fixture=='connection':
@@ -197,6 +199,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             if item['role']=='ce' and replay_ce is not None:
                 item=dict(item,source=replay_ce,files=development_package_files(replay_ce),reused=item['install'].is_dir())
                 if not item['reused']:shutil.copytree(item['source'],item['install'])
+            elif item['role']=='csc' and paired_layout_csc is not None:
+                item=dict(item,source=paired_layout_csc,files=development_package_files(paired_layout_csc))
             elif item['reused']:
                 require(item['role']!='csc' or candidate_source is None,
                         'Use an isolated package for a CSC overlay replay')
@@ -219,6 +223,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                    natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
                    connection_scout=connection_scout, connection_enabled=connection_enabled,
                    connection_switch_turn=connection_switch_turn,
+                   paired_layout_switch_turn=paired_layout_switch_turn,
+                   paired_layout_csc=str(paired_layout_csc) if paired_layout_csc else None,
                    connection_timing_player=connection_timing_player,
                    packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
@@ -281,15 +287,15 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             code = f'CSC_CONNECTION_TIMING_PLAYER={connection_timing_player}\n' + read(HERE/'connection_timing_watch.lua')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-timing')
             require(f'CSC_CONNECTION_TIMING_READY={connection_timing_player}' in raw, 'Connection timer did not install')
-        if connection_switch_turn is None:
+        if switch_turn is None:
             play_between(preparation_turn, end)
         else:
             # Both copies run the same pre-roll from the archived save. Delay
             # the experimental flag until immediately before the native choice
             # under study. The game controller leaves an inactive boundary and
             # the scope's structural census must agree across the two copies.
-            play_between(start, connection_switch_turn)
-            prepared = census(connection_switch_turn, 'connection-switch-census')
+            play_between(start, switch_turn)
+            prepared = census(switch_turn, 'connection-switch-census')
             if expected_preparation is not None:
                 proof = compare_structure(expected_preparation['census'], prepared)
                 write_json(output / 'connection-switch-comparison.json', proof)
@@ -304,12 +310,13 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     write_json(output / 'connection-capacity-comparison.json', proof)
                     require(proof['verified'], 'Controlled capacity preparation diverged')
             setting = 'true' if connection_enabled else 'false'
-            code = ('local A=assert(CSC_AI_EconomyAdapters);assert(A.AnchoredConnectionsEnabled==false);'
-                    f'A.AnchoredConnectionsEnabled={setting};'
-                    'print("CSC_CONNECTION_SWITCH="..tostring(A.AnchoredConnectionsEnabled))')
+            switch = 'ProspectiveConnectionsEnabled' if paired_layout_switch_turn else 'AnchoredConnectionsEnabled'
+            baseline = 'assert(A.AnchoredConnectionsEnabled==true);' if paired_layout_switch_turn else ''
+            code = (f'local A=assert(CSC_AI_EconomyAdapters);{baseline}assert(A.{switch}==false);'
+                    f'A.{switch}={setting};print("CSC_CONNECTION_SWITCH="..tostring(A.{switch}))')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-switch')
             require(f'CSC_CONNECTION_SWITCH={setting}' in raw, 'Connection switch did not read back')
-            play_between(connection_switch_turn, end)
+            play_between(switch_turn, end)
         state = controller.state_read('later-stage-final-clock')
         require(state['turn'] == end and not state['active'], 'Wrong replay boundary')
         census(end, 'endpoint-census')
@@ -346,7 +353,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     write_json(output / 'complete.json', dict(verified=True, turn=end))
     if natural_sacristan is not None:
         return dict(census=prepared, civic_start=civic_start)
-    if connection_switch_turn is not None:
+    if switch_turn is not None:
         result = dict(census=prepared)
         if fixture=='stirling_capacity':
             result['capacity_census'] = capacity_census
@@ -366,6 +373,10 @@ if __name__ == '__main__':
                         help='Use the same staged policy in both arms, with only anchored connections switched')
     parser.add_argument('--connection-switch-turn',type=int,
                         help='Use the identical inactive pre-roll in both arms before switching the experiment on')
+    parser.add_argument('--paired-layout-csc', type=Path,
+                        help='Shared installed CSC snapshot with the prospective-placement Lua')
+    parser.add_argument('--paired-layout-switch-turn', type=int,
+                        help='Change only the prospective-placement policy after the same inactive pre-roll')
     parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
                         help='Read the existing native score and choice journal for this AI city')
     parser.add_argument('--connection-timing-player', type=int,
@@ -411,6 +422,14 @@ if __name__ == '__main__':
                     (args.connection_capacity, 'connection'), (args.stirling_capacity, 'stirling_capacity'))
                     if enabled), None)
     arms=args.arm or ('control', 'treatment')
+    paired_layout = args.paired_layout_csc.resolve(strict=True) if args.paired_layout_csc else None
+    if paired_layout or args.paired_layout_switch_turn:
+        require(paired_layout and args.paired_layout_switch_turn
+                and not (fixture or args.connection_prototype or args.matched_connection_switch
+                         or args.connection_switch_turn or args.replay_ce)
+                and arms == ('control', 'treatment')
+                and args.start < args.paired_layout_switch_turn < args.end,
+                'The paired-layout experiment uses both arms, one installed pin and one switch turn')
     require(args.connection_switch_turn is None or (args.matched_connection_switch and fixture in (None, 'stirling_capacity')
             and len(arms)==2 and set(arms)=={'control','treatment'} and args.start < args.connection_switch_turn < args.end),
             'An inactive connection switch requires both matched arms and an interior turn without a setup fixture')
@@ -418,22 +437,24 @@ if __name__ == '__main__':
     for arm in arms:
         candidate = args.candidate_source if arm == 'treatment' or args.sacristan_natural or args.matched_connection_switch else None
         natural = arm == 'treatment' if args.sacristan_natural else None
-        connection = arm == 'treatment' if args.matched_connection_switch else None
+        connection = arm == 'treatment' if args.matched_connection_switch or paired_layout else None
         result = run_arm(args.source, args.output / arm, args.start, args.end, candidate, fixture,
                          natural_sacristan=natural, expected_preparation=preparation,
                          replay_ce=args.replay_ce,connection_prototype=args.connection_prototype,
                          connection_scout=args.connection_scout,connection_enabled=connection,
                          connection_switch_turn=args.connection_switch_turn,
-                         connection_timing_player=args.connection_timing_player)
+                         connection_timing_player=args.connection_timing_player, paired_layout_csc=paired_layout,
+                         paired_layout_switch_turn=args.paired_layout_switch_turn)
         if result is not None:
             preparation = result
-    if args.matched_connection_switch and set(arms)=={'control','treatment'}:
+    if (args.matched_connection_switch or paired_layout) and set(arms)=={'control','treatment'}:
         a,b=(load(args.output / arm / 'inputs.json') for arm in ('control','treatment'))
         left,right=a['packages']['csc'],b['packages']['csc']
         differences={Path(name).as_posix() for name in left.keys() | right.keys() if left.get(name)!=right.get(name)}
-        expected=set() if args.connection_switch_turn is not None else {CONNECTION_ADAPTER}
+        expected=set() if args.connection_switch_turn is not None or paired_layout else {CONNECTION_ADAPTER}
         require(differences==expected and a['checkpoint']==b['checkpoint']
                 and a['connection_enabled'] is False and b['connection_enabled'] is True
                 and a['packages']['ce']==b['packages']['ce'], 'Matched connection replay package or checkpoint drift')
         write_json(args.output / 'matched-switch.json',dict(verified=True,checkpoint=a['checkpoint'],
-                   switch_turn=args.connection_switch_turn,changed=sorted(differences)))
+                   switch_turn=args.paired_layout_switch_turn or args.connection_switch_turn,
+                   policy='prospective' if paired_layout else 'anchored',changed=sorted(differences)))

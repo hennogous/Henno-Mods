@@ -915,6 +915,16 @@ function F.New(player,placement,ui,context)
         local cost=city and cityNumber(city.object,'district',district)
         if cost and city.production and city.production>0 then return math.max(1,math.ceil(cost/city.production)) end
     end
+    function snapshot.ProspectiveCustomerReady(cityID,district)
+        -- Both footprints are empty. A positive construction duration alone
+        -- does not put an unlocked buyer in the queue. Add the researched
+        -- start estimate used by the ordinary investment model.
+        local definition=GameInfo.Districts[district]
+        local duration=definition and snapshot.ConnectionDistrictTurns(cityID,district)
+        if not duration then return nil end
+        local unlock=math.max(research('tech',definition.PrereqTech),research('civic',definition.PrereqCivic))
+        if finite(unlock)then return unlock+duration end
+    end
     function snapshot.Supply(plot,profile)
         local key=profile.key..':'..plot:GetIndex()
         if not snapshot.supplies[key]then snapshot.supplies[key]=placement.ReadSuppliers(player,plot,profile)end

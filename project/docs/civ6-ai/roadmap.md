@@ -59,6 +59,17 @@
 
 ## Current work
 
+**24 November — Problems 1.2 and 2.1, protect both footprints of a strong
+layout.** The revised cap is the baseline. Compare the planned Quarter and
+customer cells separately before either foundation, then follow the surviving
+plan through the existing anchored guidance. Use same-tile competition, viable
+substitutes and the value of the shared link to decide where extra support would
+matter. The full-game comparison uses the known Continents seeds
+`1457395586 / 276090738` and preselected fresh Continents seeds
+`1250106515 / 1113960761`, on Small and Online through turn 250. Both full
+pairs use City Lights. Short replays also include cases without it.
+[Baseline cases](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation).
+
 **23 November — Revised Continents comparison, Problems 1.2 and 2.1.**
 Completed pairs rose from 7 to 10, including three Tailors connections.
 Conversion rose from 15.6% to 16.1%, and working suppliers at turn 250

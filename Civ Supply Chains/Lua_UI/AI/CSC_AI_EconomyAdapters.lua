@@ -21,6 +21,9 @@ E.AnchoredConnectionsEnabled=false
 -- The matched campaign enables this on both packages. The control reads the
 -- same eligible footprint facts and returns before pricing or changing bids.
 E.AnchoredConnectionAuditEnabled=false
+-- The matched layout experiment switches this without changing the package.
+-- Once a footprint exists, the anchored calculation owns its link again.
+E.ProspectiveConnectionsEnabled=false
 -- Match the ceiling used for Stage 2 exchange orders in the shared building
 -- packet. These are Q8 utility points in the native production comparison.
 local LATER_BUILDING_CAP_Q8=64*256
@@ -821,6 +824,9 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         site.spatialPlan=E.SpatialPlan(options)
         if E.AnchoredConnectionsEnabled then
             site.strongLayout=E.StrongQuarterLayout(site,options,snapshot.intentFootprints or{})
+            if E.ProspectiveConnectionsEnabled and site.strongLayout and not site.strongLayout.existing then
+                site.prospectiveCustomers=options
+            end
         end
         -- The legacy single-chain Stage2 estimate must not stack with the new
         -- attachment-driven joint Service ledger. Copy the cached site so
@@ -1422,6 +1428,126 @@ function E.ConnectionLossQ8(best, backup)
     -- up to 64 native utility. With equally valuable distinct sites the cost
     -- is zero. Unknown backup values must be resolved before using this rule.
     return math.min(CONNECTION_COST_CAP_Q8,math.max(0,math.floor((best-backup)/2)))
+end
+
+local function projectedLinkValue(snapshot,candidate,layout)
+    local site,profile=candidate.site,candidate.profile
+    local ready=snapshot.ProspectiveCustomerReady(layout.city,layout.district)
+    if not ready or ready>=site.horizon or site.quarterReady>=site.horizon then return nil end
+    local venues={}
+    for _,venue in ipairs(snapshot.ProjectedCustomers(profile,layout.city,layout.district,layout.plot,ready))do
+        if venue.stage<4 or layout.hasSpec then venues[#venues+1]=venue end
+    end
+    if #venues==0 then return nil end
+    -- Quote the same Quarter with and without the linked buyer. The model
+    -- schedules the shared city queue and carries the actual buyer timings.
+    -- The customer's private native adjacency and Services stay outside
+    -- this incremental link quote and retain their ordinary consumers.
+    local forecast=M.CustomerBuildingForecast(site,venues,layout.city,ready,snapshot.Price)
+    if not forecast then return nil end
+    local city=snapshot.cities[site.city]
+    local quarterPlot=Map.GetPlotByIndex(site.plot)
+    local yields=city and quarterPlot and snapshot.ProjectedConnectionYields(
+        {city=city.object,plot=quarterPlot,profile=profile},layout.district,layout.plot)
+    if not yields then return nil end
+    local scheduled=forecast.with.quarterReadyByChain[site.key]or site.quarterReady
+    local both=math.max(ready,scheduled)
+    local value=forecast.valueQ8
+    for yield,amount in pairs(yields)do
+        if amount~=0 then
+            local price=snapshot.Price({player=snapshot.id,city=site.city,yield=yield,amount=amount,ready=both},site.horizon)
+            if price==nil then return nil end
+            value=value+price
+        end
+    end
+    return value
+end
+
+function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
+    if not(E.ProspectiveConnectionsEnabled and snapshot.ProspectiveCustomerReady
+        and snapshot.ProjectedCustomers and snapshot.ProjectedConnectionYields)then return {}end
+    local groups,ranked={},{}
+    local function available(plot,entry)
+        local intent=snapshot.intentFootprints and snapshot.intentFootprints[plot]
+        return not protectedPlots[plot]and(not intent or entry and intent==siteKey(entry.city,entry.district,entry.plot))
+    end
+    for _,candidate in ipairs(snapshot.connectionQuarters or{})do
+        local entry=candidate.entry
+        local key=entry.city..':'..entry.district
+        local group=groups[key]
+        if not group then group={};groups[key]=group;ranked[#ranked+1]=group end
+        group[#group+1]=candidate
+        if not group.best or entry.finalQ8>group.best.entry.finalQ8
+            or entry.finalQ8==group.best.entry.finalQ8 and entry.plot<group.best.entry.plot then
+            group.best=candidate
+        end
+    end
+    table.sort(ranked,function(a,b)
+        local x,y=a.best.entry,b.best.entry
+        if x.finalQ8~=y.finalQ8 then return x.finalQ8>y.finalQ8 end
+        if x.city~=y.city then return x.city<y.city end
+        return x.district<y.district
+    end)
+    local plans,claimed={},{}
+    local priced=0
+    for _,group in ipairs(ranked)do
+        local best=group.best
+        local quarter,layout=best.entry,best.entry.strongLayout
+        if layout and not layout.existing and layout.plot~=quarter.plot
+            and available(quarter.plot,quarter)and available(layout.plot)
+            and not claimed[quarter.plot]and not claimed[layout.plot]then
+            local movableQuarter,movableCustomer=false,false
+            for _,alternative in ipairs(group)do
+                local other=alternative.entry
+                local partner=other.strongLayout
+                -- A comparably strong full plan can replace both empty
+                -- targets. An established buyer is also a credible substitute.
+                -- Treat bids within 10% as credible backups in this first
+                -- trial. This tolerance only withdraws a scarcity premium.
+                if other.plot~=quarter.plot and other.finalQ8>=quarter.finalQ8*.90 and partner
+                    and partner.stage>=layout.stage and available(other.plot,other)
+                    and (partner.existing or available(partner.plot))then
+                    movableQuarter=true
+                    movableCustomer=movableCustomer or partner.plot~=layout.plot
+                end
+            end
+            for _,other in ipairs(best.site.prospectiveCustomers or{})do
+                if other.plot~=layout.plot and available(other.plot)and other.stages and other.stages[layout.stage]
+                    and other.adjacency>=math.max(other.bestAdjacency,other.displacedAdjacency,layout.adjacency)
+                then
+                    movableCustomer=true
+                    break
+                end
+            end
+            local legs=(movableQuarter and 0 or 1)+(movableCustomer and 0 or 1)
+            if legs>0 then
+                if priced>=4 then break end
+                priced=priced+1
+                local value=projectedLinkValue(snapshot,best,layout)
+                if value and value>0 then
+                    -- Spend up to half the projected link once across the
+                    -- scarce footprints. Each side stays below the existing
+                    -- native64-utility early-cost ceiling. This affects only
+                    -- actual same-tile competitors. An ordinary district on
+                    -- its own site keeps its full bid and queue competition.
+                    local perLeg=math.min(CONNECTION_COST_CAP_Q8,math.floor(value/(2*legs)))
+                    if perLeg>0 then
+                        local function retain(option,backup)
+                            local row={plot=option.plot,option=option,options={option}}
+                            plans[#plans+1]={order='prospective',anchor=backup,stage=layout.stage,best=row,costQ8=perLeg}
+                        end
+                        if not movableQuarter then retain(quarter,layout.plot)end
+                        if not movableCustomer then retain(layout,quarter.plot)end
+                        claimed[quarter.plot]=true;claimed[layout.plot]=true
+                        print(string.format('CSC_AI_PROSPECTIVE_CONNECTION turn=%d player=%d quarterCity=%d quarter=%d quarterPlot=%d customerCity=%d customer=%d customerPlot=%d valueQ8=%d quarterCostQ8=%d customerCostQ8=%d',
+                            Game.GetCurrentGameTurn(),snapshot.id,quarter.city,quarter.district,quarter.plot,
+                            layout.city,layout.district,layout.plot,value,movableQuarter and 0 or perLeg,movableCustomer and 0 or perLeg))
+                    end
+                end
+            end
+        end
+    end
+    return plans
 end
 
 function E.AnchoredConnectionPlans(snapshot,protectedPlots)
@@ -2051,7 +2177,12 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     end
     if snapshot.captureConnections then
         E.ApplyQuarterConnectionCredit(snapshot,result,plans)
-        result=E.ApplyConnectionCosts(snapshot,result,plans,managed)
+        -- Combine before forming packet entries. The footprint allocator
+        -- takes the largest loss per tile, even if an established chain and
+        -- a new layout both have a claim on the same resource-free land.
+        local costs=E.ProspectiveConnectionPlans(snapshot,protectedPlots)
+        for _,plan in ipairs(plans)do costs[#costs+1]=plan end
+        result=E.ApplyConnectionCosts(snapshot,result,costs,managed)
         -- Proposed opportunities and costs. Actual consumption is visible in
         -- CE's early net or late managed journal on the matching packet.
         for _,plan in ipairs(plans)do

@@ -622,7 +622,7 @@ local function refresh(turn)
     -- Receipt caps limit logging work. They do not limit what CE receives.
     local tracked = {turn=turn,version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes,
         connections={}}
-    local connectionReads={quarterFirst=0,customerFirst=0}
+    local connectionReads={quarterFirst=0,customerFirst=0,prospective=0}
     for _, entry in ipairs(entries) do
         local connectionOrder=entry.connectionOrder
         if connectionOrder and connectionReads[connectionOrder]<4 and type(CE_AIDistrictScoresReceipt)=='function'then

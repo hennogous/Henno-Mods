@@ -227,6 +227,61 @@ def prospective_layouts(log, observations, players, through):
     return {key: dict(counts) for key, counts in result.items()}
 
 
+def prospective_footprints(log, observations, players, through, competition):
+    """Track each physical target of a strong proposal through the observed game."""
+    layouts = defaultdict(set)
+    for match in STRONG_LAYOUT.finditer(log):
+        turn, player, city, district, plot, buyer, customer, target, _ = map(int, match.groups()[:9])
+        if player in players and turn <= through and match[10] == 'false' and customer >= 0:
+            layouts[((player, city, district, plot), (player, buyer, customer, target))].add(turn)
+
+    names = {int(index): title for index, title in DISTRICT_TITLE.findall(log)}
+    versions = defaultdict(set)
+    foundations, choices = defaultdict(list), defaultdict(list)
+    for row in observations:
+        kind = row['kind']
+        if kind == 'PUBLICATION' and row['accepted']:
+            versions[row['pendingTurn']].add(row['version'])
+        elif row.get('turn', through + 1) <= through:
+            if kind == 'FOUNDATION' and row.get('foundationDateKnown'):
+                foundations[row['plot']].append(row)
+            if kind == 'NATIVE_BEST' and row.get('player') in players:
+                choices[row['player'], row['city'], row['plot']].append(row)
+    losses = defaultdict(list)
+    for row in competition['losses']:
+        if row['plot'] == row['winner_plot']:
+            losses[row['player'], row['city'], row['district'], row['plot']].append(row)
+
+    def footprint(identity, turns, active):
+        player, city, district, plot = identity
+        name = names.get(district, str(district))
+        first = min(turns)
+        built = sorted((row for row in foundations[plot]
+                        if first <= row.get('foundationTurn', row['turn']) <= through),
+                       key=lambda row: row.get('foundationTurn', row['turn']))
+        foundation = next(iter(built), None)
+        choice_rows = [row for row in choices[player, city, plot] if row['version'] in active]
+        scored_losses = [row for row in losses[player, city, name, plot] if row['version'] in active]
+        nearest = min(scored_losses, key=lambda row: row['gap_q8'], default=None)
+        return dict(player=player, city=city, district=name, plot=plot,
+                    native_same_plot_choices=dict(Counter(names.get(row['district'], str(row['district']))
+                                                          for row in choice_rows)),
+                    exact_same_plot_losses=len(scored_losses), nearest_loss=nearest,
+                    first_occupation=None if not foundation else dict(
+                        turn=foundation.get('foundationTurn', foundation['turn']),
+                        player=foundation['player'], city=foundation['city'],
+                        district=names.get(foundation['district'], str(foundation['district'])),
+                        matched=identity == (foundation['player'], foundation['city'], foundation['district'], plot)))
+
+    result = []
+    for (quarter, customer), turns in sorted(layouts.items(), key=lambda item: (min(item[1]), item[0])):
+        active = set().union(*(versions[turn] for turn in turns))
+        result.append(dict(first_offer=min(turns), last_offer=max(turns), modeled_turns=len(turns),
+                           quarter=footprint(quarter, turns, active),
+                           customer=footprint(customer, turns, active)))
+    return result
+
+
 def connection_counts(log, original_ai, through, *, observations=None):
     """Join observed legal options to real foundations and completed links.
 
@@ -430,12 +485,14 @@ def run_result(root):
         with build_log.open(encoding='utf-8-sig', newline='') as builds, queue_log.open(encoding='utf-8-sig', newline='') as queue:
             failed_requests = failed_district_requests(csv.reader(builds, skipinitialspace=True),
                 csv.reader(queue, skipinitialspace=True), players, types, through)
+    competition = bid_competition(log, observations, players, through)
     return dict(counts=counts, timing=timing['publisher_wall'],
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
                 supplier_history=supplier_history(observations, players, through),
                 prospective_layouts=prospective_layouts(log, observations, players, through),
-                bid_competition=bid_competition(log, observations, players, through),
+                prospective_footprints=prospective_footprints(log, observations, players, through, competition),
+                bid_competition=competition,
                 failed_district_requests=failed_requests,
                 wonder_connections=wonder_connections(log, observations, players, through))
 

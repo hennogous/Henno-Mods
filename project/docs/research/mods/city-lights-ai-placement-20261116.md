@@ -375,3 +375,51 @@ both need support. If an equivalent footprint exists, use the smaller
 value of preserving the edge and leave genuinely stronger district sites
 competitive. Check for a single priced shared benefit before changing
 either bid or charging a conflicting placement.
+
+### Both footprints before either foundation
+
+The revised-cap baseline contains 20 distinct modeled physical pairs after
+deduplicating their stages and repeated turns. A two-footprint audit joins
+same-tile native choices to accepted packet versions while each layout was
+being modeled. It separately follows later occupation and only assigns a
+score gap when the same native comparison supplies both values.
+
+| Case | Quarter footprint | Customer footprint |
+|---|---|---|
+| Panama Tailors and Theater Square | 1934 later hosted a Theater Square. Its exact bid beat the Tailors by 743 utility in the turn-137 packet. | The first target at 1935 hosted a Campus on turn 57. The next target at 1933 later hosted a Spaceport. |
+| Quito Tailors and Commercial Hub | 2603 lost one recorded same-tile comparison to a Farming Town by 38 utility in the turn-225 packet. The Tailors was founded on turn 232. | 2529 received a Commercial Hub choice during a modeled pair. It remained unbuilt at turn 250. |
+| Tamar's Bakers and Entertainment Complex | 3011 hosted a Farming Town on turn 118. | 2936 hosted a Tsikhe on turn 111. |
+| Ayacuchu Bakers and Commercial Hub | 1431 hosted the Bakers on turn 195. | The Commercial Hub was founded on 1357 on turn 187. |
+
+A proposed future footprint currently earns a spatial preference. The exact
+customer can receive an early prospective material offer. The separate
+replacement-cost calculation begins with an existing Quarter or customer
+foundation. A proposal on two empty sites therefore lacks that calculation
+on both legs. Test a bounded shared loss estimate for the two empty sites
+before increasing any general bid band. Founding either half must hand off to
+the existing anchored path, and ownership or a new substitute must invalidate
+stale plans.
+
+A short scout replay reproduced the Panama Campus using the archived turn-50
+save and the pinned revised-cap CSC package. At the comparison observed on
+turn 57, the Campus on 1935 scored 634 utility and the reciprocal Tailors
+candidate on 1935 scored 338. The Theater Square's observed candidate was
+1934, at 436, so there was no observed direct Theater bid at 1935. This is a
+stronger-native-placement control. Quito's 38-utility gap provides a separate
+near tie against a Rural Community. The scout finished on turn 62 with zero
+observer faults or dropped records. The run and its native journal are under
+`Desktop/Codex/csc-ai-paired-footprints-20261124/panama-scout/control`.
+The temporary native copy of the archived checkpoint was removed after close.
+
+The first trial applies a shared footprint cost while both strong targets
+are empty and owned. It prices the ordinary mapped transactions and the
+Quarter's real additional adjacency through the existing economy model.
+Construction and research timing enter that quote. If a similarly strong
+replacement is visible, its leg receives no extra support. Otherwise the
+planner allocates up to half the connection value across the scarce legs,
+with at most 64 utility per leg and four priced pairs per player per turn.
+The existing early-cost consumer charges competing uses of the same tile.
+An established pair and a prospective pair can submit competing claims to
+that consumer, which uses the largest applicable loss once. Short matched
+replays use the same installed package and switch prospective placement on
+at the matched boundary before the choice under study.

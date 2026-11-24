@@ -55,6 +55,42 @@ end
         vm.execute((AI / 'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
         return vm
 
+    def test_prospective_pair_shares_one_loss_allowance_across_both_sites(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+E.ProspectiveConnectionsEnabled=true
+local candidate=quarterAt(20)
+candidate.site.city=7;candidate.site.key='Q';candidate.site.quarterReady=6
+candidate.entry.strongLayout={plot=21,city=7,district=1,stage=3,adjacency=2}
+snapshot.connectionQuarters={candidate};snapshot.cities={[7]={object={}}}
+snapshot.ProspectiveCustomerReady=function()return 3 end
+snapshot.ProjectedConnectionYields=function()return {YIELD_GOLD=1}end
+CSC_AI_EconomyModel.CustomerBuildingForecast=function(_,venues,_,ready)
+    assert(#venues==1 and ready==3)
+    return {valueQ8=180*256,with={quarterReadyByChain={Q=9}}}
+end
+snapshot.Price=function(stream)
+    assert(stream.ready==9)
+    return 20*256
+end
+local plans=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#plans==2 and plans[1].costQ8==50*256 and plans[2].costQ8==50*256)
+assert(plans[1].best.plot==20 and plans[2].best.plot==21)
+CE_AIDistrictScoresEarlyCost=function()end
+local rows=E.ApplyConnectionCosts(snapshot,{},plans,{[3]=true})
+for _,row in ipairs(rows)do
+    assert(row.earlyCostQ8==50*256 and row.connectionOrder=='prospective')
+    assert(not (row.plot==20 and row.district==3) and not (row.plot==21 and row.district==1))
+end
+candidate.site.prospectiveCustomers={{plot=22,city=7,district=1,adjacency=2,
+    bestAdjacency=2,displacedAdjacency=0,stages={[3]=true}}}
+plans=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.plot==20 and plans[1].costQ8==64*256)
+assert(#E.ProspectiveConnectionPlans(snapshot,{[21]=true})==0)
+snapshot.ProspectiveCustomerReady=function()return 50 end
+assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
+''')
+
     def test_quarter_first_changes_a_near_tie_and_preserves_strong_competition(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

@@ -1,7 +1,8 @@
 import unittest
 
 from anchored_connection_results import (bid_competition, connection_counts, failed_district_requests,
-                                         prospective_layouts, supplier_history, wonder_connections)
+                                         prospective_footprints, prospective_layouts, supplier_history,
+                                         wonder_connections)
 from planning_results import parse
 
 
@@ -74,6 +75,31 @@ class ConnectionCounts(unittest.TestCase):
         groups = prospective_layouts(log, parse(log, 'CSC_PLANNING_'), {1}, 250)
         self.assertEqual(groups, {'TAILORS:TWO_BASE': dict(layouts=2, published=2, native_score_write=2,
                                                           native_best=0, quarter_founded=2, completed_pair=1)})
+
+    def test_prospective_footprints_separate_native_choices_from_later_occupation(self):
+        log = '\n'.join([
+            'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
+            'CSC_DISTRICT_CATALOGUE\t6\tDISTRICT_HARBOR\ttrue',
+            'CSC_DISTRICT_CATALOGUE\t33\tDISTRICT_RURALCOMMUNITYA\tfalse',
+            'CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
+            'customerCity=8 customerDistrict=6 customerPlot=20 stage=2 existing=false extraBase=true specialty=false',
+            record('PUBLICATION', accepted='true', pendingTurn=3, version=2),
+            record('NATIVE_BEST', turn=4, version=2, player=1, city=7, district=33, plot=10),
+            record('NATIVE_BEST', turn=5, version=3, player=1, city=8, district=6, plot=20),
+            record('FOUNDATION', turn=5, foundationTurn=5, foundationDateKnown='true',
+                   player=1, city=7, district=43, plot=10),
+            record('FOUNDATION', turn=10, foundationTurn=10, foundationDateKnown='true',
+                   player=2, city=9, district=33, plot=20),
+        ])
+        loss = dict(version=2, player=1, city=7, district='DISTRICT_CSC_TAILORS_QUARTER', plot=10,
+                    winner_plot=10, gap_q8=7)
+        row, = prospective_footprints(log, parse(log, 'CSC_PLANNING_'), {1}, 25, {'losses': [loss]})
+        self.assertEqual(row['quarter']['native_same_plot_choices'], {'DISTRICT_RURALCOMMUNITYA': 1})
+        self.assertEqual(row['quarter']['nearest_loss'], loss)
+        self.assertTrue(row['quarter']['first_occupation']['matched'])
+        self.assertEqual(row['customer']['native_same_plot_choices'], {})
+        self.assertFalse(row['customer']['first_occupation']['matched'])
+        self.assertEqual(row['customer']['first_occupation']['player'], 2)
 
     def test_folds_stage_duplicates_and_joins_both_orders(self):
         log = '\n'.join([
