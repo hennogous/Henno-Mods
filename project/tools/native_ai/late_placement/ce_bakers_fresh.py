@@ -834,6 +834,8 @@ Modding.EnableMod(chosen.Handle,true)
                       'print("CSC_PAIR_POLICY="..tostring(A.ProspectiveConnectionsEnabled))')
             reply = controller.cmd(script, 'CSC_AI_BakersGameplay', 'paired-layout-policy')
             require(f'CSC_PAIR_POLICY={setting}' in reply, 'Paired layout switch did not acknowledge')
+            write_json(out / 'paired-layout-opening.json', dict(turn=1, opening=opening,
+                       policy=paired_layout_policy, acknowledged=True))
         if args.mill_opening_components:
             # A controlled opening fixture: preserve the Rice and Granary
             # while removing only the Farm. The native probe writes no scores.

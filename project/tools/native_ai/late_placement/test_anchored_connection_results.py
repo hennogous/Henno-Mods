@@ -56,6 +56,27 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(result[0]['contract'], 'CONTRACT 11')
         self.assertEqual(result[0]['concurrent_production_turns'], {'UNIT_BUILDER': 2})
 
+    def test_footprint_loss_uses_the_cell_at_risk_instead_of_the_best_other_site(self):
+        log = '\n'.join([
+            'CSC_DISTRICT_CATALOGUE\t33\tDISTRICT_RURALCOMMUNITYA\tfalse',
+            'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
+            record('OPPORTUNITY', turn=4, version=4, player=1, city=7, district=43,
+                   plot=10, offered='true', bidQ8=120),
+            record('OPPORTUNITY', turn=4, version=4, player=1, city=7, district=43,
+                   plot=12, offered='true', bidQ8=150),
+            'CSC_QUARTER_WATCH_WRITE\tversion=4\tplayer=1\tcity=7\tdistrict=43\tplot=10\tresult=120\t'
+            'eligible=1\tgeneration=6\tnativeOrdinal=13',
+            'CSC_QUARTER_WATCH_WRITE\tversion=4\tplayer=1\tcity=7\tdistrict=43\tplot=12\tresult=150\t'
+            'eligible=1\tgeneration=6\tnativeOrdinal=14',
+            record('NATIVE_BEST', turn=5, version=4, player=1, city=7, district=33, plot=10,
+                   nativeOrdinal=20, generation=6, result=160),
+        ])
+        results = bid_competition(log, parse(log, 'CSC_PLANNING_'), {1}, 250)
+        strongest, = results['losses']
+        contested, = results['footprint_losses']
+        self.assertEqual((strongest['plot'], strongest['gap_q8']), (12, 10))
+        self.assertEqual((contested['plot'], contested['gap_q8']), (10, 40))
+
     def test_prospective_layout_follows_exact_packet_and_both_foundations(self):
         def plan(target):
             return ('CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
@@ -93,7 +114,7 @@ class ConnectionCounts(unittest.TestCase):
         ])
         loss = dict(version=2, player=1, city=7, district='DISTRICT_CSC_TAILORS_QUARTER', plot=10,
                     winner_plot=10, gap_q8=7)
-        row, = prospective_footprints(log, parse(log, 'CSC_PLANNING_'), {1}, 25, {'losses': [loss]})
+        row, = prospective_footprints(log, parse(log, 'CSC_PLANNING_'), {1}, 25, {'footprint_losses': [loss]})
         self.assertEqual(row['quarter']['native_same_plot_choices'], {'DISTRICT_RURALCOMMUNITYA': 1})
         self.assertEqual(row['quarter']['nearest_loss'], loss)
         self.assertTrue(row['quarter']['first_occupation']['matched'])
@@ -116,7 +137,7 @@ class ConnectionCounts(unittest.TestCase):
             record('COMPLETION', turn=7, player=1, city=7, district=43, plot=10),
             record('COMPLETION', turn=8, player=1, city=8, district=6, plot=20),
         ])
-        rows = prospective_footprints(log, parse(log, 'CSC_PLANNING_'), {1}, 25, {'losses': []})
+        rows = prospective_footprints(log, parse(log, 'CSC_PLANNING_'), {1}, 25, {'footprint_losses': []})
         counts = prospective_footprint_counts(rows)['DISTRICT_CSC_TAILORS_QUARTER']
         self.assertEqual((counts['modeled_pairs'], counts['pairs_with_quarter_offer'],
                           counts['pairs_completed'], counts['completed_customer_first']), (1, 1, 1, 1))

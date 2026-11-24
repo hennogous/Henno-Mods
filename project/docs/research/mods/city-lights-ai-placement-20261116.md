@@ -389,6 +389,15 @@ Bakers layout. Two Tailors footprints had both a recorded same-tile loss
 and subsequent occupation by a different district. Other footprints were
 occupied without an exact scored loss in the available journal.
 
+The updated audit keeps the strongest bid per district for the district-level
+comparison and also reads the exact cell when a rival wins its plot. In the
+revised-cap archive it finds 376 same-tile losses across scored cells, 108 of
+which disappear when the report only keeps the best site for each type. One
+Bakers footprint and two Tailors footprints in the modeled strong pairs both
+lost a recorded comparison and were occupied by a different district. These
+are observation counts across native comparisons and distinct physical
+footprints respectively.
+
 | Case | Quarter footprint | Customer footprint |
 |---|---|---|
 | Panama Tailors and Theater Square | 1934 later hosted a Theater Square. Its exact bid beat the Tailors by 743 utility in the turn-137 packet. | The first target at 1935 hosted a Campus on turn 57. The next target at 1933 later hosted a Spaceport. |
@@ -473,3 +482,10 @@ contract and the physical foundation are tracked at their own clocks. A
 second district in the same city still needs its own capacity and build
 order. Stronger competition can be checked against the Panama Campus
 and customer-first follow-through against the Ayacuchu pair.
+
+For each completed 250-turn pair, run `anchored_connection_results.py --paired`
+with the control and treatment archives. The report checks the opening policy
+receipt, loaded binaries, ordinary map and roster, pinned content, and both
+Load Game saves against their archives. It reports physical pairs separately
+from realised Services, whose duration uses verified turns available in both
+arms. Guidance timing covers the full observed turn window.

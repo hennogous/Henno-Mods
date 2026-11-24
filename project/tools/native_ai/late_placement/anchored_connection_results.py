@@ -86,6 +86,7 @@ def bid_competition(log, observations, players, through):
     outcomes = defaultdict(Counter)
     lost_to = defaultdict(Counter)
     losses = []
+    footprint_losses = []
     for (generation, version, player, city), events in sorted(decisions.items()):
         cells = defaultdict(dict)
         for ordinal, kind, district, plot, score in sorted(events):
@@ -93,6 +94,18 @@ def bid_competition(log, observations, players, through):
                 cells[kind, district][plot] = score
                 continue
             for (bid_kind, bid_district), plots in cells.items():
+                def loss_at(bid_plot, bid_score):
+                    return dict(kind=bid_kind, generation=generation, version=version,
+                        player=player, city=city, ordinal=ordinal, district=names.get(bid_district, str(bid_district)),
+                        plot=bid_plot, score_q8=bid_score, winner=names.get(district, str(district)),
+                        winner_plot=plot, winner_q8=score, gap_q8=score-bid_score)
+
+                # A planned footprint can be occupied even when another tile
+                # is the stronger bid for its district. Audit that physical
+                # contest separately from the district-level comparison.
+                same_plot = plots.get(plot)
+                if district >= 0 and district != bid_district and same_plot is not None and score > same_plot:
+                    footprint_losses.append(loss_at(plot, same_plot))
                 # Each district/type contributes its strongest observed site
                 # once in this decision. Counting its alternative tiles would
                 # turn a single missed investment into several apparent losses.
@@ -101,17 +114,15 @@ def bid_competition(log, observations, players, through):
                 if district == bid_district and plots.get(plot) == score:
                     outcomes[bid_kind]['exact_win'] += 1
                 elif district >= 0 and score > bid_score:
-                    winner, bidder = names.get(district, str(district)), names.get(bid_district, str(bid_district))
+                    loss = loss_at(bid_plot, bid_score)
                     outcomes[bid_kind]['outscored'] += 1
-                    lost_to[bid_kind][winner] += 1
-                    losses.append(dict(kind=bid_kind, generation=generation, version=version,
-                        player=player, city=city, ordinal=ordinal, district=bidder, plot=bid_plot,
-                        score_q8=bid_score, winner=winner, winner_plot=plot, winner_q8=score,
-                        gap_q8=score-bid_score))
+                    lost_to[bid_kind][loss['winner']] += 1
+                    losses.append(loss)
                 else:
                     outcomes[bid_kind]['other_or_unresolved'] += 1
     return dict(outcomes={k: dict(v) for k, v in outcomes.items()},
-                lost_to={k: dict(v) for k, v in lost_to.items()}, losses=losses)
+                lost_to={k: dict(v) for k, v in lost_to.items()}, losses=losses,
+                footprint_losses=footprint_losses)
 
 
 def failed_district_requests(build_rows, queue_rows, players, district_types, through):
@@ -255,9 +266,8 @@ def prospective_footprints(log, observations, players, through, competition):
                 identity = tuple(row[k] for k in ('player', 'city', 'district', 'plot'))
                 offered[identity].add(row['version'])
     losses = defaultdict(list)
-    for row in competition['losses']:
-        if row['plot'] == row['winner_plot']:
-            losses[row['player'], row['city'], row['district'], row['plot']].append(row)
+    for row in competition['footprint_losses']:
+        losses[row['player'], row['city'], row['district'], row['plot']].append(row)
 
     def footprint(identity, turns, active):
         player, city, district, plot = identity
@@ -546,8 +556,73 @@ def run_result(root):
                 wonder_connections=wonder_connections(log, observations, players, through))
 
 
+def paired_full_game_result(control, treatment):
+    """Compare matched turn-250 games using their final receipts and archives."""
+    from driver import load, sha
+    from later_stage_results import comparable_services
+
+    arms = {'control': control, 'treatment': treatment}
+    protocols = {}
+    saves = {}
+    services = {}
+    openings = {}
+    modules = {}
+    for arm, root in arms.items():
+        expected = 'off' if arm == 'control' else 'on'
+        protocol = load(root / 'protocol.json')
+        if (protocol.pop('paired_layout_policy') != expected or not protocol['ordinary_setup']
+                or not protocol['fresh_game'] or protocol['gameplay_interventions'] or protocol['untuned']
+                or not protocol['service_observation']):
+            raise ValueError(f'Wrong run protocol for {arm}')
+        if arm == 'treatment' and Path(protocol.pop('regression_reference')).resolve() != (
+                control / 'source.json').resolve():
+            raise ValueError('Treatment used a different reference game')
+        switch = load(root / 'paired-layout-opening.json')
+        packet = switch['opening']
+        if (switch['turn'] != 1 or switch['policy'] != expected or not switch['acknowledged']
+                or packet['ready'] != 1 or packet['version'] != 1 or packet['entries'] or packet['faults']):
+            raise ValueError(f'Missing turn-one policy receipt for {arm}')
+        source = load(root / 'source.json')
+        openings[arm] = {key: source[key] for key in ('original_ai', 'map_signature', 'starts', 'units')}
+        modules[arm] = {name: row['sha256'] for name, row in load(root / 'loaded-modules.json').items()}
+        protocols[arm] = protocol
+        receipt = load(root / 'checkpoint.json')
+        archive, native = (Path(receipt[key]) for key in ('archive', 'native_save'))
+        if (receipt['turn'] != 250 or not receipt['verified'] or archive.parent.resolve() != root.resolve()
+                or not native.is_file() or sha(archive) != receipt['sha256'] or sha(native) != receipt['sha256']):
+            raise ValueError(f'Missing matching archived and Load Game endpoint for {arm}')
+        saves[arm] = str(native)
+        services[arm] = load(root / 'observed-services.json')
+    if (protocols['control'] != protocols['treatment'] or openings['control'] != openings['treatment']
+            or modules['control'] != modules['treatment'] or saves['control'] == saves['treatment']):
+        raise ValueError('The full-game arms differ in pins, opening or native binary identity, or share a save')
+
+    # Use only unambiguous Service clocks observed in both arms. This keeps
+    # controller sampling gaps from becoming artificial changes in operation.
+    operation = comparable_services(services['control'], services['treatment'])
+    report = {}
+    for arm, root in arms.items():
+        result = run_result(root)
+        report[arm] = dict(load_game=saves[arm], strong_layouts=result['prospective_pair_counts'],
+                           completed_pairs=result['counts']['completed_physical_pairs'],
+                           surveyed_services=operation['stock' if arm == 'control' else 'combined'],
+                           guidance_wall=result['timing'], native_managed_wall=result['native_managed_timing'],
+                           contested_layouts=[pair for pair in result['prospective_footprints'] if any(
+                               pair[side]['nearest_loss'] for side in ('quarter', 'customer'))])
+    data = protocols['control']
+    return dict(map=data['map'], map_seed=data['map_seed'], game_seed=data['game_seed'],
+                shared_service_turns=len(operation['common_turns']), **report)
+
+
 if __name__ == '__main__':
     options = argparse.ArgumentParser(description=__doc__)
     options.add_argument('run', type=Path, nargs='+')
+    options.add_argument('--paired', action='store_true', help='Verify and compare a full-game control and treatment')
     args = options.parse_args()
-    print(json.dumps({str(run): run_result(run) for run in args.run}, indent=2))
+    if args.paired:
+        if len(args.run) != 2:
+            options.error('--paired needs exactly two runs in control, treatment order')
+        result = paired_full_game_result(*args.run)
+    else:
+        result = {str(run): run_result(run) for run in args.run}
+    print(json.dumps(result, indent=2))
