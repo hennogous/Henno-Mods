@@ -1252,6 +1252,31 @@ and runs the optional unit production contribution through node 34,
 In the loaded XP2 GameCore (`4de40abf…`), node 34's formatter at RVA
 `0x551a40` prints the stored plot coordinates. The execution path at
 `0x5516a0` checks for an eligible unit at the site and an existing
-Wonder or district before trying the unit production command. This
-puts the unresolved decision at district request submission. Increasing
-the site score would leave that step untouched.
+Wonder or district before trying the unit production command.
+
+#### The stock tree considers a completed exact district type fulfilled
+
+Te Hokianga-nui-a-Kupe already had a working Rural A on plot 973,
+founded on turn 50 and completed on 52. City Lights configures Rural A
+with `OnePerCity=0` and `RequiresPopulation=0`. On turns 155–157 the
+stock tree reserved the second Rural A site at 972, reported the plot
+clear, and returned success from `Build Unit` with `Not Building`.
+
+The current BuildFromCity update at RVA `0x55c590` calls
+`HasDistrict` (`0x11ee20`) with completed-only and exact-type flags.
+It then calls `AreAllPillaged` (`0x11dfa0`) for the requested type.
+When the city already has a completed copy and a copy is unpillaged,
+the branch returns success with the submit flag at node `+0x98` clear.
+Execute at `0x55ba80` checks that flag before it creates a request.
+This accounts for the success without a contract on the second Rural A
+site. The control recorded 50 distinct Rural A/B/C foundations across
+50 owner/city/type combinations and the candidate recorded 52 across 52.
+
+CSC now applies this gate when appraising a **new footprint** for the
+ordinary AI district tree. The physical future-type lookup still lists
+repeatable districts. The AI lookup keeps different types and cities,
+existing links, unfinished-only copies and the all-pillaged case.
+The fixture also covers a completed pillaged district plus an intact
+unfinished copy. Those two copies satisfy the native check together.
+The same archived turn-150 save is the follow-up for the revised
+planner's bid and actual construction.

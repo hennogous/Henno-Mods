@@ -18,8 +18,8 @@ GameInfo={Districts=info({
  {Index=17,DistrictType='LAVRA',OnePerCity=true,TraitType='TRAIT_LAVRA'},
  {Index=19,DistrictType='CARNIVAL',OnePerCity=true,TraitType='TRAIT_CARNIVAL'},
  {Index=20,DistrictType='URBAN',OnePerCity=true},
- {Index=21,DistrictType='RURAL_A',OnePerCity=true},
- {Index=22,DistrictType='RURAL_B',OnePerCity=true},
+ {Index=21,DistrictType='RURAL_A',OnePerCity=false},
+ {Index=22,DistrictType='RURAL_B',OnePerCity=false},
  {Index=24,DistrictType='WATER',OnePerCity=true},
  {Index=29,DistrictType='SUGUBA',OnePerCity=true,TraitType='TRAIT_SUGUBA'}},'DistrictType'),
  CivilizationTraits=info({{CivilizationType='RUSSIA',TraitType='TRAIT_LAVRA'}},'TraitType'),
@@ -39,8 +39,13 @@ GameInfo={Districts=info({
 config={civ='HUNGARY',leader='DEFAULT'}
 PlayerConfigurations={[2]={GetCivilizationTypeName=function()return config.civ end,GetLeaderTypeName=function()return config.leader end}}
 placed={}
+unfinished={}
+pillaged={}
 local districts={GetNumDistricts=function()return #placed end,
- GetDistrictByIndex=function(_,i)return {GetType=function()return placed[i+1]end} end}
+ GetDistrictByIndex=function(_,i)return {
+   GetType=function()return placed[i+1]end,
+   IsComplete=function()return not unfinished[i+1]end,
+   IsPillaged=function()return pillaged[i+1]==true end} end}
 city={GetDistricts=function()return districts end,
  GetPopulation=function()error('Future geometry must not require current population')end}
 '''
@@ -52,9 +57,9 @@ class FutureTypes(unittest.TestCase):
         self.lua.execute(FIXTURE)
         self.lua.execute(SCANNER.read_text(encoding='utf-8-sig'))
 
-    def allowed(self,change=''):
+    def allowed(self,change='',ordinary_tree=False):
         self.lua.execute(change)
-        return self.lua.eval('CSC_AI_FutureDistrictTypes(2,city)')
+        return self.lua.globals().CSC_AI_FutureDistrictTypes(2,self.lua.globals().city,ordinary_tree)
 
     def test_foreign_uniques_are_excluded(self):
         result=self.allowed()
@@ -108,8 +113,23 @@ class FutureTypes(unittest.TestCase):
         self.assertFalse(result[20] or result[21] or result[22])
         self.assertTrue(result[24])
         result=self.allowed('placed={22}')
-        self.assertFalse(result[20] or result[22])
-        self.assertTrue(result[21])
+        self.assertFalse(result[20])
+        self.assertTrue(result[21] and result[22])
+
+    def test_ordinary_tree_skips_repeat_of_completed_intact_exact_type(self):
+        raw=self.allowed('placed={21}')
+        tree=self.allowed(ordinary_tree=True)
+        self.assertTrue(raw[21] and raw[22])
+        self.assertFalse(tree[21])
+        self.assertTrue(tree[22])
+
+    def test_repeatable_type_needs_a_completed_copy_and_an_intact_copy(self):
+        tree=self.allowed('placed={21};unfinished={true}',ordinary_tree=True)
+        self.assertTrue(tree[21])
+        tree=self.allowed('unfinished={};pillaged={true}',ordinary_tree=True)
+        self.assertTrue(tree[21])
+        tree=self.allowed('placed={21,21};unfinished={false,true}',ordinary_tree=True)
+        self.assertFalse(tree[21])
 
     def test_exclusion_inherits_base_rule_and_counts_a_placed_replacement(self):
         result=self.allowed("config.leader='CHILD';placed={19}")

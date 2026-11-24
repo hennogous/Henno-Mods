@@ -225,22 +225,34 @@ local function futureTypeRules(pid)
     return cached
 end
 
-function CSC_AI_FutureDistrictTypes(pid, city)
+function CSC_AI_FutureDistrictTypes(pid, city, ordinaryDistrictTree)
     local rules = futureTypeRules(pid)
     if not rules or not city then return nil end -- Unknown actor: no invented future type.
     local districts, present, presentDefinitions = city:GetDistricts(), {}, {}
-    local function observe(definition)
+    local completed, intact = {}, {}
+    local function observe(definition, district)
         if definition then
-            local family = rules.family(definition.DistrictType)
-            present[definition.DistrictType] = true
-            present[family] = true
+            local kind = definition.DistrictType
+            present[kind] = true
+            present[rules.family(kind)] = true
             presentDefinitions[#presentDefinitions+1] = definition
+            -- The stock Build City District tree considers a repeatable type
+            -- fulfilled if the city has a completed exact type and at least
+            -- one copy is unpillaged. Its Build Unit node returns success
+            -- before making a contract. Keep the two tests separate because
+            -- they can refer to different copies. The default mask still
+            -- reports gameplay eligibility for callers outside that tree.
+            if ordinaryDistrictTree and district and (definition.OnePerCity == false or definition.OnePerCity == 0)
+                    and type(district.IsComplete) == 'function' and type(district.IsPillaged) == 'function' then
+                completed[kind] = completed[kind] or district:IsComplete()
+                intact[kind] = intact[kind] or not district:IsPillaged()
+            end
         end
     end
     if type(districts.GetNumDistricts) == 'function' and type(districts.GetDistrictByIndex) == 'function' then
         for i=0,districts:GetNumDistricts()-1 do
             local placed = districts:GetDistrictByIndex(i)
-            if placed then observe(GameInfo.Districts[placed:GetType()]) end
+            if placed then observe(GameInfo.Districts[placed:GetType()], placed) end
         end
     else
         for _, definition in pairs(rules.definitions) do
@@ -277,6 +289,7 @@ function CSC_AI_FutureDistrictTypes(pid, city)
         local onePerCity = definition.OnePerCity ~= false and definition.OnePerCity ~= 0
         if family and not blocked[family] and not (onePerCity and present[family])
             and not (exclusiveFamily and present[exclusiveFamily])
+            and not (completed[kind] and intact[kind])
             and not conflictsWithPlaced(kind) and (kind == family or not conflictsWithPlaced(family)) then
             result[definition.Index] = true
         end
@@ -432,7 +445,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                 if futureCityTypes[cityID] == nil then
                     -- One city snapshot per profile publication; new districts
                     -- are observed on the next publication, not cached forever.
-                    futureCityTypes[cityID] = CSC_AI_FutureDistrictTypes(pid, owner) or false
+                    futureCityTypes[cityID] = CSC_AI_FutureDistrictTypes(pid, owner, true) or false
                 end
                 local permitted = futureCityTypes[cityID]
                 for _, host in ipairs(siting.buildable) do

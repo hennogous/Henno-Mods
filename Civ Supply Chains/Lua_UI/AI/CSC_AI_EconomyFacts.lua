@@ -1343,10 +1343,11 @@ function F.New(player,placement,ui,context)
     function snapshot.FutureDistrictTypes(city)
         -- Share the actor and existing-district mask across placement directions
         -- and displacement quotes. A new snapshot rechecks captures and builds.
+        -- Price only new footprints the ordinary district tree can request.
         -- Capacity and research are separate live admission checks.
         local cityID=city:GetID()
         if customerTypes[cityID]==nil then
-            customerTypes[cityID]=CSC_AI_FutureDistrictTypes and CSC_AI_FutureDistrictTypes(pid,city)or false
+            customerTypes[cityID]=CSC_AI_FutureDistrictTypes and CSC_AI_FutureDistrictTypes(pid,city,true)or false
         end
         return customerTypes[cityID]or nil
     end
