@@ -1,12 +1,21 @@
 # Current CSC AI status
 
+**Sodo matched replay, Problems 1.5–1.6 and 2.1.** Both arms bought
+the Rural plot on turn 102 and completed the same supplied
+Bakers–Rural pair. The candidate placed Bakers seven turns earlier,
+handed off to the planned Rural site on the next pass, and completed
+both districts on turn 137 versus turn 128 in control. The candidate's
+first exact pair quote came after the purchase. Bakavu is the next
+test of a paid customer bid before the purchase decision.
+[Sodo replay and exact outcomes](../research/mods/city-lights-ai-placement-20261116.md#sodo-completed-the-same-supplied-provider-pair-in-opposite-orders).
+
 **Standalone turn-250 result, 24 November.** The experimental layout planner
 raised completed Bakers–customer pairs from 12 to 18 and Tailors–customer
 pairs from five to eight. Pairs with both a working Base and buying building
 rose from 13 to 17. Exact completions among surveyed layouts that got
 started rose from 4/38 to 12/58. Customer-land purchases driven by the
 planner are still open. Mean/max guidance time rose from 1.65/3.55 seconds
-to 2.75/7.82. City Lights and the two targeted replays are next.
+to 2.75/7.82.
 [Full comparison and timing](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november).
 
 **City Lights matched result, 24 November.** Both saves verified at turn
@@ -15,8 +24,7 @@ a working Base and functioning buyer rose from 10 to 14. Goods-provider
 pairs fell from 13 to nine. Guidance rose from 1.97/4.92 seconds
 average/max to 3.93/8.96. The candidate's two land bids on plot 973
 reached CE scoring. The district was built in both arms and the bid
-had no matching purchase. The Gori and Sodo replays and mature-save
-performance check are pending.
+had no matching purchase. The mature-save performance check is pending.
 [Matched City Lights evidence](../research/mods/city-lights-ai-placement-20261116.md#matched-city-lights-result-at-turn-250).
 
 **24 November — Problems 1.2 and 2.1, protect both footprints.**

@@ -1308,3 +1308,30 @@ planner abstains when no alternate provider is ready.
 Current-build static evidence for district admission and BuildFromCity
 is retained as REA record
 `ev_cc0b4b68a69f0354c95f43c1d4b26f5050bcd21c78f5c5e03661609f6fcbf996`.
+
+#### Sodo completed the same supplied provider pair in opposite orders
+
+Both arms began from the same turn-100 checkpoint and matched the
+structural and treasury census before the switch. They ran through
+turn 155. The city bought plot 2611 on turn 102 in both arms. The
+Rural Community A completed beside Bakers 2685 in both arms, with one
+working Bakers Base deposit at the endpoint.
+
+| Sodo event | Control | Candidate |
+| --- | ---: | ---: |
+| Rural plot purchase | 102 | 102 |
+| Rural Community A foundation | 114 | 133 |
+| Bakers foundation | 123 | 116 |
+| Both complete | 128 | 137 |
+| Turns between foundations | 9 | 17 |
+
+The candidate first priced the exact pair on turn 103. On 117, the
+pass after the Bakers foundation, it handed off to the promised
+Rural plot. The game reserved it and accepted district contract
+2624 on turn 127, founded the provider on 133 and completed it on
+137. The candidate brought the Quarter forward by seven turns.
+The completed pair came nine turns later than in control. Both
+purchases came through ordinary play. The candidate's first exact
+pair quote came after acquisition, so this case verifies the
+Quarter-to-provider handoff on bought land. Direct purchase guidance
+is the separate Bakavu test.
