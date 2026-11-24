@@ -737,6 +737,37 @@ Tailors was founded. Across all 41 proposals, 25 saw neither tile taken.
 These counts put the emphasis on getting a ready second district selected
 in time. Increasing tile protection alone has limited reach here.
 
+**Sodo chose the right provider type on a different tile.** The city founded
+Bakers on 2685 on turn 117 and finished it on 127. Plot 2611, adjacent to
+that Quarter, had been priced for Rural Community A through turn 114.
+The planner offered it 6,602 Q8 in extra completion value on 127. In the
+next packet it used 2611 as an economic reference and reduced another
+site's score, but recorded no completion credit on 2611. The city's native
+winner on 128 was Rural Community A on 2612 at 540,434 Q8 (2,111 utility).
+The purchase node immediately accepted contract 2663 there and recorded
+its tenth waiting turn on 138. Sodo put production into its Water Mill,
+a Builder and a Cuirassier during that interval. No Rural Community
+construction contract appeared before the endpoint.
+
+The journal recorded 641,204 Q8 for 2611 in version 28 and the native
+winner in version 29. There was no same-version read for 2611 at the
+choice, so the margin is unknown. In the installed XP2 GameCore
+(`4de40abf`) the joint selector at RVA `0x3e4310` checks the current
+cached cell against its row threshold and running best. An earlier high
+value is useful for locating the decision window but cannot price that
+turn's losing bid.
+
+The follow-up candidate addresses two gaps reproduced in the publisher.
+A Quarter already selected by the engine now remembers its validated
+customer while awaiting foundation, even on turns that skip the pair's
+quote. Its original expiry still applies. After foundation, one of the
+two existing visits per build order can reprice a ready saved partner
+on subsequent turns. The other rotates across the ordinary candidates.
+With six eligible groups, the regression repriced the lone ready saved
+partner on every publication and reached all five alternatives. A separate
+case confirms that a competing foundation releases the saved customer.
+Live conversion of the Sodo pair remains an open test.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |

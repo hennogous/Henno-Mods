@@ -54,6 +54,42 @@ end
 ''')
         return vm
 
+    def test_selected_quarter_remembers_customer_across_a_missed_pair_quote(self):
+        vm=self.runtime()
+        vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true
+snapshot.districts={}
+local first=publish()
+local layout=C.LayoutRecord({city=7,district=36,plot=2},{city=7,district=9,plot=1,stage=2},
+    {base={{plot=9}},specialty={}},nil,nil,nil,1)
+props.CSC_AI_PlannedLayoutsV1_1=C.EncodeLayouts({layout})
+turn=2;confirm(first)
+local pending=publish(first)
+local kept=C.ReadLayouts(props.CSC_AI_PlannedLayoutsV1_1,2)['7:36']
+assert(kept and kept.partnerPlot==1 and kept.fresh==1,'selected site lost its customer')
+turn=3;acquire();plots[2].GetDistrictType=function()return 36 end
+snapshot.districts[2]={city=7,type=36};hasQuarter=true
+publish(pending)
+assert(snapshot.partnerHints['7:9']==1)
+''')
+
+    def test_a_competing_foundation_releases_the_confirmed_quarters_customer(self):
+        self.runtime().execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true;snapshot.districts={}
+local first=publish()
+local layout=C.LayoutRecord({city=7,district=36,plot=2},{city=7,district=9,plot=1,stage=2},
+    {base={{plot=9}},specialty={}},nil,nil,nil,1)
+props.CSC_AI_PlannedLayoutsV1_1=C.EncodeLayouts({layout})
+turn=2;confirm(first);local pending=publish(first)
+assert(C.ReadLayouts(props.CSC_AI_PlannedLayoutsV1_1,2)['7:36'])
+turn=3;plots[1].GetDistrictType=function()return 20 end
+snapshot.districts[1]={city=7,type=20}
+publish(pending)
+assert(not C.ReadLayouts(props.CSC_AI_PlannedLayoutsV1_1,3)['7:36'])
+''')
+
     def test_purchase_to_owned_uses_one_policy_and_preserves_the_selected_unworked_baseline(self):
         vm=self.runtime()
         vm.execute('''

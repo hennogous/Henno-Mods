@@ -2263,14 +2263,27 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         -- when a large empire has many mapped districts.
         local visits={}
         if snapshot.handoffs then
-            -- Spend the first available quote on a newly founded partner.
-            -- Rotate among simultaneous foundations and leave the other
-            -- visit for the ordinary schedule, including competing plans.
-            for step=0,#candidates-1 do
-                local g=candidates[(turn+pid+step)%#candidates+1]
+            -- One visit follows an actual foundation through later decision
+            -- windows. The native city can select a district several turns
+            -- after the first foundation, and a published bid lasts one
+            -- packet. Reprice one ready saved partner now, within the same
+            -- budget. A new handoff gets first claim. Stable rotation within
+            -- each tier shares that visit; the other visit stays open.
+            local fresh,ready={},{}
+            for _,g in ipairs(candidates) do
                 local h=snapshot.handoffs[g.key]
-                if h and h.record.phase~=h.phase and g.plots[h.plot] then visits[1]=g;break end
+                local target=h and g.plots[h.plot]
+                if target then
+                    if h.record.phase~=h.phase then fresh[#fresh+1]=g
+                    else
+                        for _,option in ipairs(target.options)do
+                            if not option.waiting then ready[#ready+1]=g;break end
+                        end
+                    end
+                end
             end
+            local eligible=#fresh>0 and fresh or ready
+            if #eligible>0 then visits[1]=eligible[(turn+pid)%#eligible+1] end
         end
         for step=0,#candidates-1 do
             if #visits>=CONNECTION_GROUPS_PER_ORDER then break end
@@ -2852,7 +2865,23 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
             costs.native or 0,costs.empty or 0,costs.unavailable or 0,
             elapsed and elapsed>0 and elapsed*1000 or -1))
     end
-    if snapshot.nextLayouts then snapshot.planState.nextLayouts=snapshot.nextLayouts end
+    if snapshot.nextLayouts then
+        -- A native Quarter choice can precede its foundation by several
+        -- turns. The pair may miss the limited quote slots in between.
+        -- Keep its original customer identity until the foundation can
+        -- hand it off. restoreLayouts checked both plots and supply today.
+        -- A fresh replacement, withdrawn intent, conflicting footprint or
+        -- normal expiry takes precedence. This carries no bid or extra time.
+        for key,prior in pairs(snapshot.savedLayouts)do
+            local intent=siteKey(prior.city,prior.district,prior.plot)
+            if prior.phase==0 and not snapshot.nextLayouts[key] and snapshot.planState.plans[intent]
+                and snapshot.intentFootprints[prior.plot]==intent and not snapshot.intentFootprints[prior.partnerPlot]
+                and not protectedPlots[prior.plot] and not protectedPlots[prior.partnerPlot] then
+                snapshot.nextLayouts[key]=prior
+            end
+        end
+        snapshot.planState.nextLayouts=snapshot.nextLayouts
+    end
     return result,stats
 end
 

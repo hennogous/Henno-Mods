@@ -383,6 +383,41 @@ snapshot.districts[9].working=false;turn=22
 assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
 ''')
 
+    def test_standing_partner_gets_one_repeat_visit_and_other_sites_keep_rotating(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.connectionGroups={}
+snapshot.Supply=function()return nil end
+for i=1,6 do
+    local anchor,plot=100+i,200+i
+    local standing={ready=true,economy=economy,profile=chain.profile,plot={GetIndex=function()return anchor end}}
+    values[plot]=64*256
+    snapshot.connectionGroups[i]={city=7,district=1,candidates={{plot=plot,adjacency=2,chains={standing}}}}
+end
+snapshot.handoffs={['quarterFirst:101:3:TEST']={record={phase=1},plot=201,phase=1}}
+local others={}
+for now=20,30 do
+    turn=now
+    local plans=E.AnchoredConnectionPlans(snapshot,{})
+    assert(#plans==2)
+    local supported=false
+    for _,p in ipairs(plans)do
+        if p.anchor==101 then supported=true else others[p.anchor]=true end
+    end
+    assert(supported,'ready saved partner missed this publication')
+end
+for i=102,106 do assert(others[i]) end
+-- With no available slot this target releases the priority visit.
+snapshot.connectionGroups[1].candidates[1].waiting=true
+local otherOnly=false
+for now=31,36 do
+    turn=now
+    local p=E.AnchoredConnectionPlans(snapshot,{})
+    if p[1].anchor~=101 and p[2].anchor~=101 then otherOnly=true end
+end
+assert(otherOnly)
+''')
+
     def test_founded_customer_keeps_its_buyable_quarter_until_ordinary_build_admission(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
