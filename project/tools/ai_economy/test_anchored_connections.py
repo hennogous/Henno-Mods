@@ -248,8 +248,42 @@ assert(#credits==2)
 for _,credit in ipairs(credits)do assert(credit.valueQ8==10*256)end
 local rows=E.ApplyProspectiveConnectionCredit(snapshot,{candidate.entry},credits)
 assert(rows[2].plot==21 and rows[2].customerPurchaseGold==40 and rows[2].delta==10*256)
-partner.purchaseGold=81
+local prior={plot=20,partnerCity=7,partnerDistrict=1,partnerPlot=21}
+for _,invoice in ipairs({80,81})do
+    snapshot.savedLayouts={['7:3']=prior};partner.purchaseGold=invoice
+    assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
+    assert(not snapshot.savedLayouts['7:3'],'nonpositive pair survived on a positive Quarter bid')
+end
+snapshot.savedLayouts={['7:3']=prior}
+snapshot.Price=function()return nil end
 assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
+assert(snapshot.savedLayouts['7:3']==prior,'unavailable quote retired the pair')
+''')
+
+    def test_fifth_saved_layout_is_a_carry_candidate_after_four_fresh_quotes(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+E.ProspectiveConnectionsEnabled=true
+snapshot.connectionQuarters={};snapshot.cities={};snapshot.savedLayouts={}
+snapshot.nextLayouts={};snapshot.shortlistedLayouts={}
+snapshot.ProjectedConnectionYields=function()return {}end
+snapshot.ProspectiveCustomerReady=function()return 5,0,5 end
+CSC_AI_EconomyModel.CustomerBuildingForecast=function()return {valueQ8=256,with={quarterReadyByChain={}}}end
+for i=1,5 do
+    local q=quarterAt(10+i)
+    q.site.city=i;q.site.key='Q';q.site.quarterReady=1;q.site.suppliers={}
+    q.entry.city=i;q.entry.prospectiveLayout={plot=20+i,city=i,district=1,stage=3}
+    snapshot.cities[i]={object={}}
+    snapshot.connectionQuarters[i]=q
+    snapshot.savedLayouts[i..':3']={plot=10+i,partnerPlot=20+i,partnerDistrict=1,partnerCity=i}
+end
+E.ProspectiveConnectionPlans(snapshot,{})
+local missed=0
+for key in pairs(snapshot.shortlistedLayouts) do
+    missed=missed+1
+    assert(not snapshot.nextLayouts[key],'unquoted layout took priority over fresh site claims')
+end
+assert(missed==1)
 ''')
 
     def test_customer_substitute_requires_a_comparable_rank_after_price_and_delay(self):

@@ -1868,7 +1868,7 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 -- Its original freshness expires unless it is priced again.
                 if snapshot.nextLayouts and group.retained==best then
                     local key=quarter.city..':'..quarter.district
-                    snapshot.nextLayouts[key]=snapshot.savedLayouts[key]
+                    snapshot.shortlistedLayouts[key]=true
                 end
             else
                 priced=priced+1
@@ -1922,6 +1922,11 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                             Game.GetCurrentGameTurn(),snapshot.id,quarter.city,quarter.district,quarter.plot,
                             layout.city,layout.district,layout.plot,value,qCost,cCost,qCredit,cCredit,readyPair and 1 or 0))
                     end
+                elseif value and group.retained==best then
+                    -- A fresh nonpositive quote retires this exact layout.
+                    -- A missed quote can leave its acquired customer eligible
+                    -- for continuity later in the publication.
+                    snapshot.savedLayouts[quarter.city..':'..quarter.district]=nil
                 end
             end
         end
@@ -1933,7 +1938,7 @@ local function restoreLayouts(snapshot,profiles)
     if not (C and E.ProspectiveConnectionsEnabled and snapshot.planState and snapshot.districts) then return end
     local turn=Game.GetCurrentGameTurn()
     local saved=C.ReadLayouts(snapshot.planState.savedLayouts,turn)
-    snapshot.savedLayouts={};snapshot.nextLayouts={}
+    snapshot.savedLayouts={};snapshot.nextLayouts={};snapshot.shortlistedLayouts={}
     snapshot.handoffs={};snapshot.partnerHints={}
     local hintPlans={}
     local byDistrict={}
@@ -1958,7 +1963,19 @@ local function restoreLayouts(snapshot,profiles)
         local profile=byDistrict[p.district]
         if q and partner and profile and not(q=='founded' and partner=='founded') then
             local supply=snapshot.Supply(Map.GetPlotByIndex(p.plot),profile)
-            if supply and #supply.base>0 and (p.stage~=4 or #supply.specialty>0) then
+            local reserved=snapshot.intentFootprints or {}
+            local function usable(rows,other)
+                for _,source in ipairs(rows or {}) do
+                    if source.plot~=p.plot and source.plot~=p.partnerPlot and source.plot~=other
+                        and not reserved[source.plot] then return source.plot end
+                end
+            end
+            local base=supply and usable(supply.base)
+            -- A dual-tagged deposit can play either role in Stage 4 if
+            -- there is another plot available for the other role.
+            local distinct=base and (p.stage~=4 or usable(supply.specialty,base)
+                or usable(supply.specialty) and usable(supply.base,base))
+            if distinct then
                 snapshot.savedLayouts[key]=p
                 local order=q=='founded' and 'quarterFirst' or partner=='founded' and 'customerFirst'
                 if order then
@@ -2546,6 +2563,78 @@ function E.ApplyQuarterConnectionCredit(snapshot,entries,plans)
     end end
 end
 
+-- During a missed pair quote, retain a validated identity across the delay
+-- between the engine selecting a Quarter (or the city acquiring customer
+-- land) and founding a district. Bid values and the expiry date stay fresh
+-- only through the regular quotation path. An invoice records a previous
+-- price; border growth can give the city the same tile without a payment.
+local function retainPendingLayouts(snapshot,protectedPlots,evaluations)
+    local selected,acquired,shortlisted={},{},{}
+    for key,plan in pairs(snapshot.savedLayouts)do
+        if plan.phase==0 and not snapshot.nextLayouts[key] and not protectedPlots[plan.plot]
+            and not protectedPlots[plan.partnerPlot] and not snapshot.intentFootprints[plan.partnerPlot] then
+            local intent=siteKey(plan.city,plan.district,plan.plot)
+            local reservation=snapshot.intentFootprints[plan.plot]
+            if reservation==intent and snapshot.planState.plans[intent] then
+                selected[#selected+1]=plan
+            elseif not reservation and snapshot.shortlistedLayouts[key] then
+                -- A new quote for another city used the remaining budget.
+                -- This fresh shortlist still has to respect that city's plan.
+                shortlisted[#shortlisted+1]=plan
+            elseif not reservation and plan.invoice>0 and evaluations[intent] and evaluations[intent].reason=='positive' then
+                -- restoreLayouts already checked assignment and live supply.
+                -- Recheck the customer family and terrain after acquisition.
+                local city=snapshot.cities[plan.partnerCity].object
+                local plot=Map.GetPlotByIndex(plan.partnerPlot)
+                local types=snapshot.FutureDistrictTypes and snapshot.FutureDistrictTypes(city)
+                if types and types[plan.partnerDistrict] and plot:GetOwner()==snapshot.id and plot:GetDistrictType()==-1
+                    and plot:CanHaveDistrict(plan.partnerDistrict,snapshot.id,plan.partnerCity) then
+                    acquired[#acquired+1]=plan
+                end
+            end
+        end
+    end
+    if #selected+#acquired+#shortlisted==0 then return end
+    local plots,oncePerCity={},{}
+    local function scope(plan)
+        local def=GameInfo.Districts and GameInfo.Districts[plan.partnerDistrict]
+        if def and def.OnePerCity~=false and def.OnePerCity~=0 then
+            local family=F.DistrictFamily and F.DistrictFamily(plan.partnerDistrict) or plan.partnerDistrict
+            return plan.partnerCity..':'..family
+        end
+    end
+    local function mark(index,key,value)
+        if not key then return end
+        if index[key] and index[key]~=value then
+            index[key]=true
+        else
+            index[key]=value
+        end
+    end
+    local function register(plan)
+        mark(plots,plan.plot,siteKey(plan.city,plan.district,plan.plot))
+        mark(plots,plan.partnerPlot,siteKey(plan.partnerCity,plan.partnerDistrict,plan.partnerPlot))
+        mark(oncePerCity,scope(plan),plan.partnerPlot)
+    end
+    -- Fresh plans take precedence. Two Quarters may share the same customer.
+    -- A city can promise different sites for a repeatable district, while
+    -- a once-per-city customer can occupy only one of those sites.
+    for _,plan in pairs(snapshot.nextLayouts)do register(plan) end
+    for _,list in ipairs({selected,shortlisted,acquired})do
+        table.sort(list,C.PreferLayout)
+        for _,plan in ipairs(list)do
+            local quarterClaim,partnerClaim=plots[plan.plot],plots[plan.partnerPlot]
+            local customerSite=oncePerCity[scope(plan)]
+            if (not quarterClaim or quarterClaim==siteKey(plan.city,plan.district,plan.plot))
+                and (not partnerClaim or partnerClaim==siteKey(plan.partnerCity,plan.partnerDistrict,plan.partnerPlot))
+                and (not customerSite or customerSite==plan.partnerPlot) then
+                snapshot.nextLayouts[plan.city..':'..plan.district]=plan
+                register(plan)
+            end
+        end
+    end
+end
+
 function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     local clock=os and os.clock
     local started=clock and clock()
@@ -2866,20 +2955,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
             elapsed and elapsed>0 and elapsed*1000 or -1))
     end
     if snapshot.nextLayouts then
-        -- A native Quarter choice can precede its foundation by several
-        -- turns. The pair may miss the limited quote slots in between.
-        -- Keep its original customer identity until the foundation can
-        -- hand it off. restoreLayouts checked both plots and supply today.
-        -- A fresh replacement, withdrawn intent, conflicting footprint or
-        -- normal expiry takes precedence. This carries no bid or extra time.
-        for key,prior in pairs(snapshot.savedLayouts)do
-            local intent=siteKey(prior.city,prior.district,prior.plot)
-            if prior.phase==0 and not snapshot.nextLayouts[key] and snapshot.planState.plans[intent]
-                and snapshot.intentFootprints[prior.plot]==intent and not snapshot.intentFootprints[prior.partnerPlot]
-                and not protectedPlots[prior.plot] and not protectedPlots[prior.partnerPlot] then
-                snapshot.nextLayouts[key]=prior
-            end
-        end
+        retainPendingLayouts(snapshot,protectedPlots,evaluations)
         snapshot.planState.nextLayouts=snapshot.nextLayouts
     end
     return result,stats

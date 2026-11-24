@@ -95,6 +95,15 @@ and follows both provider tiles through 155. Compare the current-version
 bid, selected plot, purchase, foundation and working Base. The separate
 Gori replay covers customer land on the earlier map. [Case and regression evidence](../research/mods/city-lights-ai-placement-20261116.md#where-did-the-second-district-go).
 
+**Customer land between purchase and construction (1.5–1.6, 2.1).**
+When the intended city acquires a previously priced customer tile before
+either district is founded, the candidate can retain the pair across
+a missed forecast and a reload. It checks the current Quarter bid,
+customer eligibility, supporting deposits and competing site claims.
+The next foundation hands off to the other district. The original expiry
+still applies. The offline cases cover both build orders. The Gori replay
+must still connect the treasury debit, ownership and construction in play.
+
 ## Current work
 
 **24 November — Problems 1.2 and 2.1, protect both footprints of a strong

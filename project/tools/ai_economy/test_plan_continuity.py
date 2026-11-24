@@ -90,6 +90,101 @@ publish(pending)
 assert(not C.ReadLayouts(props.CSC_AI_PlannedLayoutsV1_1,3)['7:36'])
 ''')
 
+    def test_acquired_customer_keeps_the_pair_until_either_foundation(self):
+        for first in ('quarter', 'customer'):
+            with self.subTest(first=first):
+                vm=self.runtime()
+                vm.globals().firstDistrict=first
+                vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true; snapshot.districts={}
+snapshot.FutureDistrictTypes=function()return {[9]=true}end
+plots[1]=plot(1,-1)
+local pair=C.LayoutRecord({city=7,district=36,plot=2},
+    {city=7,district=9,plot=1,stage=2,purchaseGold=65},{base={{plot=9}},specialty={}},nil,nil,nil,1)
+local key='CSC_AI_PlannedLayoutsV1_1'
+props[key]=C.EncodeLayouts({pair})
+turn=2; plots[1]=plot(1,1)
+local rows=publish()
+assert(C.ReadLayouts(props[key],turn)['7:36'].fresh==1)
+for _,bid in ipairs(rows)do assert(not bid.customerPurchaseGold)end
+-- Recreate the production adapters. Only the serialized game property is
+-- available when the next foundation hands off to the missing district.
+''')
+                vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+                vm.execute('''
+turn=3;CSC_AI_EconomyAdapters.ProspectiveConnectionsEnabled=true
+if firstDistrict=='quarter' then
+    acquire(); plots[2].GetDistrictType=function()return 36 end
+    snapshot.districts[2]={city=7,type=36};hasQuarter=true
+else
+    plots[1].GetDistrictType=function()return 9 end
+    snapshot.districts[1]={city=7,type=9}
+end
+publish()
+local order=firstDistrict=='quarter' and 'quarterFirst:2' or 'customerFirst:1'
+local handoff=assert(snapshot.handoffs[order..':2:BAKERS'])
+assert(handoff.plot==(firstDistrict=='quarter' and 1 or 2))
+''')
+
+    def test_acquired_customer_releases_an_unusable_or_obsolete_pair(self):
+        for loss in ('foreign','district','type','supplier','dual_tag_only','expired','unbought'):
+            with self.subTest(loss=loss):
+                vm=self.runtime()
+                vm.globals().loss=loss
+                vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true; snapshot.districts={}
+snapshot.FutureDistrictTypes=function()return {[9]=loss~='type'}end
+local pair=C.LayoutRecord({city=7,district=36,plot=2},
+    {city=7,district=9,plot=1,stage=loss=='dual_tag_only' and 4 or 2,purchaseGold=65},
+    {base={{plot=9}},specialty={}},nil,nil,nil,1)
+local key='CSC_AI_PlannedLayoutsV1_1'
+props[key]=C.EncodeLayouts({pair});turn=loss=='expired' and 42 or 2
+if loss=='foreign' then plots[1]=plot(1,3)
+elseif loss=='unbought' then plots[1]=plot(1,-1)
+elseif loss=='district' then plots[1].GetDistrictType=function()return 20 end
+elseif loss=='dual_tag_only' then snapshot.Supply=function()return {base={{plot=9}},specialty={{plot=9}}}end
+elseif loss=='supplier' then snapshot.Supply=function()return {base={{plot=1}}}end end
+publish()
+assert(not C.ReadLayouts(props[key],turn)['7:36'])
+''')
+
+    def test_acquired_layouts_share_one_customer_or_respect_its_city_limit(self):
+        for same_tile,repeatable,reverse in ((False,False,False),(False,False,True),
+                                             (True,False,True),(False,True,False)):
+            with self.subTest(same_tile=same_tile,repeatable=repeatable,reverse=reverse):
+                vm=self.runtime()
+                vm.globals().sameTile=same_tile;vm.globals().repeatable=repeatable
+                vm.globals().reverse=reverse
+                vm.execute(r'''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true;snapshot.districts={}
+snapshot.FutureDistrictTypes=function()return {[9]=true}end
+GameInfo.Districts={[9]={OnePerCity=not repeatable}}
+local baker=placement.StageTwoProfiles()[1]
+placement.StageTwoProfiles=function()
+    return {baker,{key='TAILORS',district={Index=37,Hash=2,RequiresPopulation=true}}}
+end
+plots[4]=plot(4,1);plots[5]=plot(5,1)
+local function plan(district,qplot,partner,last)
+    return C.LayoutRecord({city=7,district=district,plot=qplot},
+        {city=7,district=9,plot=partner,stage=2,purchaseGold=65},
+        {base={{plot=9}},specialty={}},nil,nil,nil,last)
+end
+local a,b=plan(36,2,4,1),plan(37,3,sameTile and 4 or 5,2)
+local key='CSC_AI_PlannedLayoutsV1_1'
+-- Reverse the serialized rows themselves to exercise a different input order.
+if reverse then
+    props[key]=C.EncodeLayouts({a})..'\n'..C.EncodeLayouts({b}):sub(3)
+else
+    props[key]=C.EncodeLayouts({b})..'\n'..C.EncodeLayouts({a}):sub(3)
+end
+turn=3;publish()
+local kept=C.ReadLayouts(props[key],turn)
+assert(kept['7:37'] and (kept['7:36']~=nil)==(sameTile or repeatable))
+''')
+
     def test_purchase_to_owned_uses_one_policy_and_preserves_the_selected_unworked_baseline(self):
         vm=self.runtime()
         vm.execute('''
