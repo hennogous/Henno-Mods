@@ -621,6 +621,58 @@ def supplier_history(observations, players, through):
                 working_again_after_loss=counts(endpoint & interrupted))
 
 
+def endpoint_pair_supply(census, observations, players):
+    """Count completed adjacent pairs and their own functioning suppliers on the final map."""
+    quarter_hosts, materials = {}, defaultdict(set)
+    for kind, payload in census['rows']:
+        fields = payload.split('\t')
+        if kind == 'QUARTER' and int(fields[1]) in players and fields[4] == 'true':
+            quarter_hosts[int(fields[3])] = (fields[0], int(fields[1]), int(fields[2]), fields[5] == 'true')
+        elif kind == 'MATERIAL' and fields[4] == 'true':
+            materials[int(fields[0])].add(fields[2])
+
+    # The observer emits changes, including removals, keyed by the two tiles
+    # and the gameplay rule. Several building stages can share a physical pair.
+    active = {}
+    names = {}
+    for row in observations:
+        if row.get('turn', 0) > census['turn']:
+            continue
+        if row['kind'] == 'MAPPING':
+            names[row['district']] = row['districtType']
+        elif row['kind'] == 'RELATION_REMOVED':
+            active.pop(row['relation'], None)
+        elif row['kind'] == 'RELATION':
+            key = ':'.join(str(row.get(k, '')) for k in ('quarterPlot','neighbourPlot','role','stage','building'))
+            active[key] = row
+
+    pairs = {}
+    for row in active.values():
+        role = row['role']
+        qplot, target = row['quarterPlot'], row['neighbourPlot']
+        host = quarter_hosts.get(qplot)
+        if (not host or host[:3] != (row['quarter'], row['player'], row['city'])
+                or role not in ('customer','sales','goodsProvider') or not row.get('present')
+                or not row['quarterComplete'] or not row['neighbourComplete']
+                or row['neighbourDistrict'] == 0 or names.get(row['neighbourDistrict']) == 'DISTRICT_WONDER'):
+            continue
+        # Keep City Lights provider results separate. Customer and sales rows
+        # for the same district count once. A pillaged host cannot operate.
+        family = 'provider' if role == 'goodsProvider' else 'customer'
+        order = {'quarterFirst':'quarterFirst', 'neighbourFirst':'partnerFirst',
+                 'sameTurn':'sameTurn'}.get(row['foundationOrder'], 'unknown')
+        pairs[qplot,target,family] = (f'{host[0]}:{family}:{order}', materials[qplot],
+                                     not (host[3] or row['neighbourPillaged']))
+    counts = defaultdict(Counter)
+    for label, working, healthy in pairs.values():
+        counts[label]['completed'] += 1
+        if healthy and 'BASE' in working:
+            counts[label]['with_working_base'] += 1
+            if 'SPEC' in working:
+                counts[label]['with_working_base_and_spec'] += 1
+    return {label: dict(values) for label, values in sorted(counts.items())}
+
+
 def customer_land_purchases(log, observations, players, through, tree_rows):
     """Join a priced offer to the buyer, observed Gold change and later use."""
     offers = defaultdict(list)
@@ -642,7 +694,7 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
         # Current XP2 prints coordinates, the retained contract state and its
         # ID here. Repetition is a continuing request. Payment is joined from
         # the independent UI events further below.
-        request = re.search(r'Purchase (\d+) (\d+): (Submitted|Accepted|Building) on #(\d+)', fields[6])
+        request = re.search(r'Purchase (\d+) (\d+): (Submitted|Accepted|Building|Done) on #(\d+)', fields[6])
         if request:
             x,y,state,contract = request.groups()
             trees[int(fields[1]),int(x),int(y)].add((int(fields[0]),int(contract),state,fields[2].strip()))
@@ -659,6 +711,8 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
             pair = row['quarter'], row['quarterPlot']
             completed_links[key].setdefault(pair, row['turn'])
     purchases = []
+    ai_purchases = 0
+    district_uses = []
     completed_on_purchased_land = []
     purchase_events = list(re.finditer(r'CSC_CUSTOMER_PLOT_PURCHASE\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)', log))
     purchase_ordinals = {(int(m[2]),int(m[3])) for m in purchase_events}
@@ -667,8 +721,13 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
         key = player, city, plot
         if turn > through or player not in players:
             continue
+        ai_purchases += 1
         actual = min(((t,d) for t,d in founded[key] if turn-1 <= t <= through), default=None)
         if actual:
+            # Include every district founded by the paying city. This lets us
+            # see where the ordinary land path succeeds before a partner exists.
+            district_uses.append(dict(player=player, city=city, plot=plot, bought=turn,
+                                      founded=actual[0], district=actual[1]))
             # Count organic land purchases in either arm. The buyer city, tile
             # and founded district must all match the completed relationship.
             # Customer and sales roles sometimes describe the same two tiles.
@@ -687,13 +746,14 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                   if (player,i) in treasury and treasury[player,i][0] == turn
                   and (player,2*i-ordinal) not in purchase_ordinals]
         first_offer = min(o[1] for o in prior)
-        requests = sorted(r for r in trees[player,x,y] if first_offer-1 <= r[0] <= turn+1)
+        requests = sorted(r for r in trees[player,x,y] if first_offer-1 <= r[0] <= min(through,turn+1))
         accepted = [r[0] for r in requests if r[2]=='Accepted']
         purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
                               quotes=quotes, district_request_turn=max(accepted,default=None), request_history=requests,
                               matching_debit=sum(amount in {cost for _,cost in quotes} for amount in debits)==1,
                               foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
-    return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, offered_tiles=len(offers), purchases=purchases,
+    return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, ai_plot_purchases=ai_purchases,
+                districts_on_purchased_plots=district_uses, offered_tiles=len(offers), purchases=purchases,
                 completed_partners_on_purchased_land=completed_on_purchased_land)
 
 
@@ -788,6 +848,7 @@ def run_result(root):
     footprints = prospective_footprints(log, observations, players, through, competition)
     priced = prospective_footprints(log, observations, players, through, competition, priced=True)
     return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
+                endpoint_pair_supply=endpoint_pair_supply(census, observations, players),
                 common_layouts=common_layout_conversion(log, observations, players, through),
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
@@ -856,6 +917,7 @@ def paired_full_game_result(control, treatment):
                            priced_layouts=result['priced_pair_counts'],
                            completed_on_named_substitutes=result['completed_substitutes'],
                            completed_pairs=result['counts']['completed_physical_pairs'],
+                           endpoint_pair_supply=result['endpoint_pair_supply'],
                            common_owned_partner_sites=result['common_layouts'],
                            provider_pairs=result['counts']['completed_provider_pairs'],
                            eligible_provider_districts=result['counts']['provider_district_opportunities'],

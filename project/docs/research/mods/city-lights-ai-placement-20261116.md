@@ -671,3 +671,32 @@ on 118, after a purchase request on that tile and adjacent to Bakers
 3084 founded on 110. The newer observer records the plot purchase and
 Gold change directly. Its report also counts purchases that become
 completed partners under the default policy.
+
+### Which purchased sites and completed pairs had a working supply?
+
+On the separate turn-100–140 Continents replay control, the five AI players
+bought 17 tiles. Seven had a district founded by the purchasing city before
+the endpoint. Those were two Rural Communities, one Tailors, a Dam, a
+Diplomatic Quarter, an Encampment and an Industrial Zone. Faras shows the
+whole land sequence. Contract 1754 was accepted through turn 108 and marked
+done on 109. Faras paid 65 Gold for plot 2794 that turn and founded a +3
+Tailors on 114. On 115 the planner identified the owned neighbouring tile
+2795 for a Holy Site or Theater Square. This case establishes the ordinary
+Quarter purchase path. Customer land has its own offer and construction count.
+
+For the completed earlier turn-250 Continents game in
+`csc-ai-main-layout-scoring-20261123/continents`, the final map had 14 Bakers
+pairs with a non-City-Center customer district. Thirteen had both districts
+operational and a working adjacent Base supplier. All three customer-first
+pairs and 10 of the 11 Quarter-first pairs qualified. Four also had working
+Specialty. Tailors had one completed customer-first pair, with a working Base.
+All seven Bakers–provider pairs had working Base, three also had Specialty.
+The full-game comparison now makes this same join between each physical pair
+and its own Quarter's supply. An individual Quarter can serve multiple partners.
+
+In the corrected turn-100 replay the candidate proposed Tailors 2458 and
+Commercial Hub 2457 on turn 103. On 104 native readbacks for four rival
+districts on supplier 2459 each recorded a score write and an eligible cache
+read for its 16-utility deterrent. Tailors was founded on 105, and on 106 the
+planner repriced the original Hub site at 20,014 Q8 (78.2 utility). Tile 2385
+was an available substitute. The switch census matched across all 141 rows.

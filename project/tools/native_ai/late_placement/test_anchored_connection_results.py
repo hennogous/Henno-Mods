@@ -3,7 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from anchored_connection_results import (bid_competition, common_layout_conversion, completed_substitute_pairs,
-                                         connection_counts, customer_land_purchases, failed_district_requests,
+                                         connection_counts, customer_land_purchases, endpoint_pair_supply, failed_district_requests,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
 from paired_layout_replay_results import trace_arm
@@ -23,6 +23,27 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_completed_pairs_need_their_own_working_base_at_the_endpoint(self):
+        census = {'turn': 15, 'rows': [
+            ('QUARTER', 'TAILORS\t1\t7\t10\ttrue\tfalse'),
+            ('QUARTER', 'BAKERS\t1\t8\t38\ttrue\tfalse'),
+            ('MATERIAL', '10\t11\tBASE\tFLAX\ttrue'),
+            ('MATERIAL', '10\t12\tSPEC\tDYE\ttrue'),
+            ('MATERIAL', '38\t39\tBASE\tWHEAT\tfalse')]}
+        def host(q, city, plot, target, role, stage, **other):
+            return relation(1,q,plot,target,11,'neighbourFirst',city=city,role=role,stage=stage,
+                            **({'neighbourPillaged':'false'} | other))
+        log = '\n'.join([host('TAILORS',7,10,20,'customer',2,building='A'),
+            host('TAILORS',7,10,20,'sales',0), host('TAILORS',7,10,21,'goodsProvider',0),
+            host('TAILORS',7,10,22,'customer',3,building='B'),
+            record('RELATION_REMOVED',turn=14,relation='10:22:customer:3:B'),
+            host('TAILORS',7,10,23,'customer',3,neighbourPillaged='true'),
+            host('BAKERS',8,38,40,'customer',3), host('BAKERS',8,38,41,'sales',0,neighbourDistrict=0)])
+        counts = endpoint_pair_supply(census,parse(log,'CSC_PLANNING_'),{1})
+        self.assertEqual(counts,{'TAILORS:customer:partnerFirst':dict(completed=2,with_working_base=1,with_working_base_and_spec=1),
+            'TAILORS:provider:partnerFirst':dict(completed=1,with_working_base=1,with_working_base_and_spec=1),
+            'BAKERS:customer:partnerFirst':dict(completed=1)})
+
     def test_common_survey_needs_the_original_partner_city_to_complete(self):
         offer=('CSC_AI_SPATIAL_BID turn=3 player=1 city=7 district=43 plot=10 rank=1 adjacency=2.000 '
                'customerCity1=8 customerPlot1=20 customerType1=6 customerCity2=-1')
@@ -41,10 +62,15 @@ class ConnectionCounts(unittest.TestCase):
             'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
             'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
             record('FOUNDATION', turn=10, player=1, city=5, district=4, plot=23, foundationDateKnown='true')])
-        rows = [['8','1','City TEST','Build City District','RUNNING','Purchase Plot','Purchase 3 2: Accepted on #12']]
+        rows = [[str(turn),'1','City TEST','Build City District','RUNNING','Purchase Plot',f'Purchase 3 2: {state} on #12']
+                for turn,state in [(7,'Accepted'),(8,'Accepted'),(9,'Done')]]
         history = parse(log,'CSC_PLANNING_')
         purchase, = customer_land_purchases(log,history,{1},15,rows)['purchases']
         self.assertEqual((purchase['district_request_turn'],purchase['matching_debit'],purchase['foundation']), (8,True,(10,4)))
+        self.assertEqual(purchase['request_history'][-1], (9,12,'Done','City TEST'))
+        partial = customer_land_purchases(log,history,{1},8,rows)
+        self.assertEqual(partial['purchases'][0]['request_history'][-1][2], 'Accepted')
+        self.assertEqual(partial['districts_on_purchased_plots'], [])
         ambiguous = log + '\nCSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t6\t7\t25\t5\t2'
         self.assertFalse(customer_land_purchases(ambiguous,history,{1},15,rows)['purchases'][0]['matching_debit'])
 
@@ -56,6 +82,9 @@ class ConnectionCounts(unittest.TestCase):
               for city,role in ((6,'customer'),(5,'customer'),(5,'sales'))]])
         result = customer_land_purchases(log,parse(log,'CSC_PLANNING_'),{1},15,[])
         self.assertEqual((result['offered_tiles'], result['purchases']), (0, []))
+        self.assertEqual(result['ai_plot_purchases'], 1)
+        self.assertEqual(result['districts_on_purchased_plots'], [
+            dict(player=1,city=5,plot=23,bought=7,founded=9,district=4)])
         self.assertEqual(result['completed_partners_on_purchased_land'], [
             dict(player=1,city=5,plot=23,quarter='TAILORS',quarter_plot=10,district=4,bought=7,founded=9,linked=11)])
 
