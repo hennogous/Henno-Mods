@@ -85,6 +85,16 @@ Keep ranking and bounded work deterministic. Use the acting AI's shared map fact
 
 **Growth and the common comparison.** A city with one free slot can qualify a future pair when the next citizen opens an ordinary population slot by the scheduled start of the second district. Use the city's reported growth date and the loaded population rule. Unknown growth leaves the current-capacity check in place. A ready-to-build bid still needs native admission. For the turn-250 comparison, both arms identify the owning city on each of the two leading owned partner plots attached to a shortlisted +2-or-better Quarter. Follow those exact pairs through foundation, completion and elapsed turns. Candidate-only projected +1 and purchasable layouts have separate records.
 
+**Second-district follow-through.** Sodo founded the planned Bakers, then
+selected the right City Lights provider type on the next plot beyond the
+linked site. Its purchase request occupied ten turns. The follow-up build
+preserves the partner of a selected Quarter across missed price updates and
+reserves one existing forecast slot to reprice a ready partner after
+foundation. The matched Sodo replay starts at turn 100, switches on 102,
+and follows both provider tiles through 155. Compare the current-version
+bid, selected plot, purchase, foundation and working Base. The separate
+Gori replay covers customer land on the earlier map. [Case and regression evidence](../research/mods/city-lights-ai-placement-20261116.md#where-did-the-second-district-go).
+
 ## Current work
 
 **24 November — Problems 1.2 and 2.1, protect both footprints of a strong
