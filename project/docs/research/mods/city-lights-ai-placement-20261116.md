@@ -951,6 +951,15 @@ pairs, nine Quarter-first and four provider-first. Eleven had a working
 Base supplier. The completed Tailors had no adjacent completed mapped
 customer or provider.
 
+The median interval from the first foundation to the second was 34
+turns for Quarter-first provider pairs and 100.5 for provider-first.
+Ålesund was the quickest Quarter-first case. Bakers took plot 1976 on
+turn 135, then Rural Community A took adjacent 1902 on turn 139 with
++2 ordinary Gold adjacency. The pair completed on turn 141. Kaiapoi
+demonstrated the reverse order. Rural Community A took 2679 on turn
+131, then Bakers took 2753 on turn 148 and completed the pair on 152.
+The archived turn-100 save precedes both cases.
+
 Across 200 observed turns, 15 Bakers Stage 2 chains delivered 1,114
 active chain-turns and seven Stage 3 chains delivered 411. CSC guidance
 took 1.97 seconds per turn on average and 4.92 seconds at maximum.
