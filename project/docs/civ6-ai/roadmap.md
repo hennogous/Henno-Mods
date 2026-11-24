@@ -73,8 +73,13 @@ pairs use City Lights. Short replays also include cases without it.
 The first natural Quito replay verified writes on both sites without changing
 its builds. The updated policy can also support an admitted bid across
 plots from the same budget. In matched Panama runs it left the 634-utility
-Campus choice and construction intact. The next replay opens a Quito slot
-in both copies and measures its resulting untreated competition.
+Campus choice and construction intact. With one Quito slot open in both
+copies, the treatment narrowed the closest Tailors loss from 60 to 50
+utility. Neither side built the pair. The replay exposed an extra cost
+deduction where a prospective and an established link used the same Quarter
+tile. That accounting and the replacement test are now corrected. The
+no-City-Lights scout found two owned strong layouts in a city with a free
+slot, giving the next matched comparison a concrete target.
 
 **23 November — Revised Continents comparison, Problems 1.2 and 2.1.**
 Completed pairs rose from 7 to 10, including three Tailors connections.

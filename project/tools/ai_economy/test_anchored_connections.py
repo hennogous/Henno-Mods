@@ -91,8 +91,11 @@ assert(#plans==1 and plans[1].best.plot==20)
 snapshot.connectionQuarters={candidate}
 plans=E.ProspectiveConnectionPlans(snapshot,{})
 CE_AIDistrictScoresEarlyCost=function()end
-local rows=E.ApplyConnectionCosts(snapshot,{},plans,{[3]=true})
-for _,row in ipairs(rows)do
+local anchoredQuarter={player=1,city=7,district=3,plot=20,finalQ8=200*256,connectionPressureQ8=36*256}
+local rows=E.ApplyConnectionCosts(snapshot,{anchoredQuarter},plans,{[3]=true})
+assert(#rows>1 and rows[1]==anchoredQuarter)
+for i=2,#rows do
+    local row=rows[i]
     assert(row.earlyCostQ8==50*256 and row.connectionOrder=='prospective')
     assert(not (row.plot==20 and row.district==3) and not (row.plot==21 and row.district==1))
 end

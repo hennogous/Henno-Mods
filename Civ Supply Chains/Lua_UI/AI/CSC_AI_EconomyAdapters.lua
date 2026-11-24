@@ -1902,9 +1902,16 @@ function E.ApplyConnectionCosts(snapshot,entries,plans,managed)
     for _,entry in ipairs(entries)do byKey[siteKey(entry.city,entry.district,entry.plot)]=entry end
     for _,plan in ipairs(plans)do if plan.costQ8>0 then
         local option=plan.best.option
-        local completion=byKey[siteKey(option.city,option.district,option.plot)]
-        local pressure=completion and completion.connectionPressureQ8 or 0
-        local footprintCost=math.min(plan.costQ8,math.max(0,(plan.pressureBudgetQ8 or plan.costQ8)-pressure))
+        local footprintCost=plan.costQ8
+        if plan.order~='prospective'then
+            local completion=byKey[siteKey(option.city,option.district,option.plot)]
+            local pressure=completion and completion.connectionPressureQ8 or 0
+            footprintCost=math.min(footprintCost,math.max(0,(plan.pressureBudgetQ8 or footprintCost)-pressure))
+        end
+        -- A prospective plan arrives with its own credit already deducted.
+        -- Its marginal quote excludes the income from existing neighbours.
+        -- An anchored credit on the same district spends a different budget.
+        -- Contending rival costs still merge by largest loss on this tile.
         local plot=plan.best.plot
         local reserve=occupiedByPlan[plot]or{plan=plan,costQ8=0,completion={}}
         occupiedByPlan[plot]=reserve

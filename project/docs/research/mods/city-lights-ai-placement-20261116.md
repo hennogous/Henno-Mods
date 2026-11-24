@@ -497,6 +497,27 @@ uses the matched switch turn shared by both experiment types. The aborted
 run verified a clean exit and preference restoration. The retry uses the
 same hashed archived save and installed CSC pin.
 
+The corrected replay matched 202 prepared structural rows and both copies
+finished at turn 242. The treatment quoted the Tailors–Hub layout on 18 turns
+and sent positive bids for both legal targets. On the closest same-tile
+Tailors comparison, the Farming Town's lead moved from 60.03 to 50.06
+utility. On the Hub footprint the lead moved from 375.25 to 355.74. The
+same reservations and Hub contract appeared in both arms. Neither district
+was founded, and military units took 16 of the last 18 production turns in
+the control. Both maps recorded the same foundations by district type from
+the switch.
+
+The exact packet revealed another budgeting error on Tailors 2603. The
+turn-234 prospective offer assigned 2,552 Q8 to the Tailors and 2,552 to
+charging rivals on that tile. The merged native entry charged the Farming
+Town 1,252 Q8, the same amount as the control's existing customer plan.
+The writer had subtracted existing-customer pressure again from the
+prospective cost, even though the prospective quote prices the new Hub's
+contribution after existing transactions and already deducts its own
+credit. The corrected writer keeps the remaining prospective cost and
+continues to use the largest loss across claims on a tile. Anchored costs
+still share their own budget with their anchored credit.
+
 For each completed 250-turn pair, run `anchored_connection_results.py --paired`
 with the control and treatment archives. The report checks the opening policy
 receipt, loaded binaries, ordinary map and roster, pinned content, and both
@@ -527,3 +548,13 @@ no-City-Lights source recorded promising Tailors and Theater layouts at
 outside the city's ownership. Its scout follows practical owned layouts
 and checks the exact archived four-mod stack. Scouting leaves the policy on
 the revised baseline and reads the existing native journal.
+
+The no-City-Lights scout completed turn 95 with the original four optional
+mods. Player 5's city `196610` first offered an owned, capacity-ready
+Bakers on 1610 with Entertainment Complex 1684 on turn 67. It founded
+the Bakers on 1684 instead on turn 70. Its anchored plan later identified
+1610 as a viable customer site, with the Hub admitted on turn 92. At
+turn 94, player 4's city `458758` offered Bakers 2124 and Hub 2198 with
+two Base deposits, and Bakers 2273 and Entertainment Complex 2198 with
+Base and Specialty. The matched no-City-Lights replay scopes both cities
+before the first strong offer and follows their alternate layouts too.
