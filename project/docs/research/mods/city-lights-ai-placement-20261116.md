@@ -858,6 +858,25 @@ native score, exact wins increased from seven to 14. Campus beat a customer
 another 23 losses and Bakers for 17. A district comparison can recur
 before construction.
 
+In the candidate, 55 of 272 newly logged Quarter-first opportunities
+matched a customer plot recorded as unowned on the same turn. Fifty
+were in cities with all slots used. Those records mark changes in
+observed opportunities, so a site can stay eligible across other turns.
+Of 1,720
+Quarter-first plans, one matched an unowned best plot. It was the
+Commercial Hub on 603 at turn 105. Its city had used all three slots.
+The prospective planner also priced a Holy Site on unowned 2612 at turn
+50 with both slots used. That narrows the investigation to what happens
+between the unowned opportunity and the bid. The Gori replay can observe
+the actual buyer and invoice before the native purchase decision. An
+additional site that has yet to be priced can also prevent the planner
+from establishing that land has a material advantage over its backups.
+The strongest case to price directly is plot 1453 on turn 117, next to
+Bakers 1454. The city had a slot, but its two quotes went to owned sites
+1381 and 1529. At turn 189 a priced unowned site, 2947, finished below
+zero while the owned 2875 was positive. Purchasing that plot would have
+reduced the value of the connection.
+
 Quarter forecasts accounted for 408,958 of the 419,188 additional logical
 model evaluations. All 18,585 candidate Quarter quotes were distinct by
 turn, player, city, type and plot. The next performance check should count
