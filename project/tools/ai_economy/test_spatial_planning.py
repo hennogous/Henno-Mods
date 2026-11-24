@@ -300,9 +300,10 @@ PlayersVisibility={[1]={IsRevealed=function()return true end}}
 CSC_Adjacency={PlotsInBand=function()return{plots[1],plots[2],plots[3],plots[4],plots[5]}end}
 Game={GetCurrentGameTurn=function()return 100 end}
 CSC_AI_FutureDistrictTypes=function()return{[20]=true,[21]=true}end
-CSC_AI_SitingDistricts=function()return{buildable={
- {Index=20,DistrictType='DISTRICT_COMMERCIAL_HUB'},
- {Index=21,DistrictType='DISTRICT_HOLY_SITE'}}}end
+GameInfo.Districts={
+ [20]={Index=20,DistrictType='DISTRICT_COMMERCIAL_HUB'},
+ [21]={Index=21,DistrictType='DISTRICT_HOLY_SITE'}}
+CSC_AI_SitingDistricts=function()return{buildable={GameInfo.Districts[20],GameInfo.Districts[21]}}end
 local values={[1]=4,[2]=2,[3]=3,[4]=4,[5]=10}
 reads=0;lag=0
 ui={GetDistrictAdjacency=function(_,_,plot,district)
@@ -356,6 +357,10 @@ assert(entries[2].startingGoldPaybackTurns==nil)
         vm = self.facts()
         vm.execute('''
 local snapshot=CSC_AI_EconomyFacts.New(player,placement,ui)
+local rings,assignments=0,0
+local ring,buyer=Map.GetAdjacentPlots,Cities.GetPlotPurchaseCity
+Map.GetAdjacentPlots=function(...) rings=rings+1;return ring(...) end
+Cities.GetPlotPurchaseCity=function(p) assignments=assignments+1;return buyer(p) end
 local options=snapshot.CustomerOptions(city,plots[1],profile,{[3]=true})
 assert(#options==2)
 for _,o in ipairs(options)do
@@ -364,8 +369,11 @@ for _,o in ipairs(options)do
  if o.district==20 then assert(o.displacedAdjacency==4)end
 end
 local previous=reads
+assert(rings==1 and assignments==5,('rings=%d assignments=%d'):format(rings,assignments))
 snapshot.CustomerOptions(city,plots[1],profile,{[3]=true})
-assert(reads==previous and snapshot.SpatialStats().maps==2)
+assert(reads==previous and snapshot.SpatialStats().maps==2 and assignments==5)
+CSC_AI_EconomyFacts.New(player,placement,ui).CustomerOptions(city,plots[1],profile,{[3]=true})
+assert(assignments==10)
 ''')
 
     def test_customer_frontier_quote_is_required_and_shared_between_districts(self):

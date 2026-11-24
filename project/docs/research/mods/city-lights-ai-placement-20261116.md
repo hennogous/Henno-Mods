@@ -741,6 +741,17 @@ also cover the shared lead-in. Neither arm recorded an active Tailors
 Service on those observations. The immediate bottleneck is completing
 the second district at an acceptable turn cost.
 
+Across the 38 common turns, the planner examined 8,317 customer options
+in the control and 21,048 in the candidate. The joint economic model ran
+94,786 and 142,263 evaluations respectively. One avoidable cost was asking
+the engine for a plot's assigned city again for each customer district.
+The revised planner shares that read across both Quarters and their
+customer types for one player's current snapshot. In a five-tile test
+with two potential customer types, the same options, adjacency and
+displacement now need five city lookups and one neighbour scan, down from
+16 and two. The next snapshot reads the cities afresh. The timing figures
+in the table above precede this change.
+
 **Customer-land replay targets.** The archived turn-50 Continents save
 (`737c6582fd7e`, map seed 1457395586) passed the controller's source and
 package preflight. Three historical buying cities on this seed had a

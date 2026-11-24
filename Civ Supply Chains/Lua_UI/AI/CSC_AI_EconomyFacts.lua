@@ -1388,6 +1388,20 @@ function F.New(player,placement,ui,context)
         if value==nil then spatialStats.unavailable=spatialStats.unavailable+1 end
         customerAdjacency[key]=value or false;return value
     end
+    -- All customer types in this player's publication see the same owner
+    -- and purchasing city. Overlapping city rings revisit the same tiles.
+    -- Cache the engine lookup, including empty results, just for this
+    -- snapshot so the next publication sees purchases and captures.
+    local assignedCities={}
+    local function ownedCustomerCity(plot)
+        local index=plot:GetIndex()
+        local city=assignedCities[index]
+        if city==nil then
+            city=plot:GetOwner()==pid and Cities.GetPlotPurchaseCity(plot) or false
+            assignedCities[index]=city
+        end
+        return city
+    end
     local function customerMap(city,definition,protectedPlots)
         local key=city:GetID()..':'..definition.Index
         if customerMaps[key]then return customerMaps[key]end
@@ -1398,7 +1412,7 @@ function F.New(player,placement,ui,context)
         if not allowed or not allowed[definition.Index]then return result end
         local center=Map.GetPlot(city:GetX(),city:GetY())
         for _,p in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
-            local owner=p:GetOwner()==pid and Cities.GetPlotPurchaseCity(p)
+            local owner=ownedCustomerCity(p)
             if owner and owner:GetID()==cityID and p:GetDistrictType()==-1
                 and p:GetResourceType()==-1 and not protectedPlots[p:GetIndex()]
                 and PlayersVisibility[pid]:IsRevealed(p:GetX(),p:GetY())
@@ -1514,7 +1528,7 @@ function F.New(player,placement,ui,context)
             or not ui.GetPlotPurchaseQuote or not PlayersVisibility[pid]:IsRevealed(plot:GetX(),plot:GetY()) then return end
         local tried={}
         for _,border in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY())) do
-            local buyer=border:GetOwner()==pid and Cities.GetPlotPurchaseCity(border)
+            local buyer=ownedCustomerCity(border)
             if buyer and not tried[buyer:GetID()] and Map.GetPlotDistance(buyer:GetX(),buyer:GetY(),plot:GetX(),plot:GetY())<=3 then
                 tried[buyer:GetID()]=true
                 local cost=ui.GetPlotPurchaseQuote(pid,buyer:GetID(),index)
@@ -1529,13 +1543,16 @@ function F.New(player,placement,ui,context)
         local options={}
         if not CSC_AI_SitingDistricts then return options end
         local permitted=CSC_AI_SitingDistricts(profile)
+        local neighbours
         for _,definition in ipairs(permitted.buildable)do
             -- No City Center or Wonder forecasts: settlement and Wonder
             -- placement remain separate decisions. Existing customer districts
             -- are already represented by the transaction ledger.
             if definition.DistrictType~='DISTRICT_CITY_CENTER'and definition.DistrictType~='DISTRICT_WONDER'then
-                for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
-                    local buyer=near:GetOwner()==pid and Cities.GetPlotPurchaseCity(near)
+                neighbours=neighbours or Map.GetAdjacentPlots(plot:GetX(),plot:GetY())
+                local parent=F.DistrictFamily(definition.Index) or definition.DistrictType
+                for _,near in ipairs(neighbours)do
+                    local buyer=ownedCustomerCity(near)
                     local frontier
                     if not buyer and includePurchases and not protectedPlots[near:GetIndex()] then
                         frontier=frontierBuyer(near)
@@ -1559,10 +1576,6 @@ function F.New(player,placement,ui,context)
                             -- its separate displacement term remains below.
                             local best=map.free[1]
                             if best and best.index==plot:GetIndex()then best=map.free[2]end
-                            local parent=definition.DistrictType
-                            if GameInfo.DistrictReplaces then for row in GameInfo.DistrictReplaces()do
-                                if row.CivUniqueDistrictType==parent then parent=row.ReplacesDistrictType;break end
-                            end end
                             options[#options+1]={player=pid,city=buyer:GetID(),district=definition.Index,
                                 family=parent,plot=near:GetIndex(),adjacency=candidate.adjacency,
                                 purchaseGold=frontier and frontier.cost,
