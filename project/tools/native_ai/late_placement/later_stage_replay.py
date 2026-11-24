@@ -91,6 +91,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     plan = prepare(source, output, start, start, None, read_only=True, replay_ce=replay_ce,
                    paired_layout_csc=paired_layout_csc)
     switch_turn = paired_layout_switch_turn or connection_switch_turn
+    deferred_capacity = fixture in ('stirling_capacity', 'quito_capacity')
     if replay_ce is not None:
         require(package_identity(replay_ce)[0]==plan.protocol['ce'], 'Dev CE replay mod identity differs')
     if fixture=='connection':
@@ -249,7 +250,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 proof = compare_structure(expected_preparation['census'], prepared)
                 write_json(output / 'preparation-comparison.json', proof)
                 require(proof['verified'], 'The natural Sacristan preparation worlds diverged')
-        if fixture and fixture!='stirling_capacity':
+        if fixture and not deferred_capacity:
             if fixture == 'sacristan':
                 civic_start = sacristan_civic_state('before')
                 require(civic_start[0] == str(preparation_turn), 'Civic UI did not reach the preparation turn')
@@ -300,7 +301,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 proof = compare_structure(expected_preparation['census'], prepared)
                 write_json(output / 'connection-switch-comparison.json', proof)
                 require(proof['verified'], 'Connection switch pre-roll diverged')
-            if fixture=='stirling_capacity':
+            if deferred_capacity:
                 fixture_receipt('before', 'PlotInfo')
                 fixture_receipt('setup', 'CSC_AI_BakersGameplay')
                 fixture_receipt('legal', 'PlotInfo')
@@ -355,7 +356,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         return dict(census=prepared, civic_start=civic_start)
     if switch_turn is not None:
         result = dict(census=prepared)
-        if fixture=='stirling_capacity':
+        if deferred_capacity:
             result['capacity_census'] = capacity_census
         return result
 
@@ -396,6 +397,8 @@ if __name__ == '__main__':
                           help='Open one district slot in both copies of the scoped Continents turn-150 save')
     fixtures.add_argument('--stirling-capacity', action='store_true',
                           help='Open the same district slot in Stirling at the matched turn-127 boundary')
+    fixtures.add_argument('--quito-capacity', action='store_true',
+                          help='Open the same district slot in Quito at the matched turn-224 boundary')
     args = parser.parse_args()
     # The connection replay may need to cross a reservation change and still
     # leave time to complete the selected district. Native scouting is scoped
@@ -419,17 +422,21 @@ if __name__ == '__main__':
     fixture = next((name for enabled, name in ((args.market_rebuild, 'market'),
                     (args.storekeeper_preparation, 'storekeeper'), (args.entertainment_preparation, 'entertainment'),
                     (args.sacristan_preparation or args.sacristan_natural, 'sacristan'),
-                    (args.connection_capacity, 'connection'), (args.stirling_capacity, 'stirling_capacity'))
+                    (args.connection_capacity, 'connection'), (args.stirling_capacity, 'stirling_capacity'),
+                    (args.quito_capacity, 'quito_capacity'))
                     if enabled), None)
     arms=args.arm or ('control', 'treatment')
     paired_layout = args.paired_layout_csc.resolve(strict=True) if args.paired_layout_csc else None
     if paired_layout or args.paired_layout_switch_turn:
         require(paired_layout and args.paired_layout_switch_turn
-                and not (fixture or args.connection_prototype or args.matched_connection_switch
+                and fixture in (None, 'quito_capacity')
+                and not (args.connection_prototype or args.matched_connection_switch
                          or args.connection_switch_turn or args.replay_ce)
                 and arms == ('control', 'treatment')
                 and args.start < args.paired_layout_switch_turn < args.end,
                 'The paired-layout experiment uses both arms, one installed pin and one switch turn')
+    require(not args.quito_capacity or (paired_layout and args.start == 200 and args.paired_layout_switch_turn == 224),
+            'The Quito slot fixture needs the natural turn-200 replay and turn-224 preparation')
     require(args.connection_switch_turn is None or (args.matched_connection_switch and fixture in (None, 'stirling_capacity')
             and len(arms)==2 and set(arms)=={'control','treatment'} and args.start < args.connection_switch_turn < args.end),
             'An inactive connection switch requires both matched arms and an interior turn without a setup fixture')

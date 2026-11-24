@@ -431,3 +431,19 @@ An established pair and a prospective pair can submit competing claims to
 that consumer, which uses the largest applicable loss once. Short matched
 replays use the same installed package and switch prospective placement on
 at the matched boundary before the choice under study.
+
+In the natural replay from turn 200, the control selected the Tailors at
+2,653 utility in the comparison observed on 226. The Farming Town had 2,534
+on the same plot. This differs from the earlier uninterrupted game. The
+control reserved plot 2603 and submitted its Tailors contract on 229, then
+founded the district on 237. The linked Hub on plot 2529 was still absent on
+242. Each replay must establish its margin from its own native journal.
+
+The separate Quito capacity fixture opens one slot in both arms before
+the compared choice. It verifies the Quarter, Hub and Farming Town through
+the actual legal-target reader and measures the prepared control's score
+again. Native selection, the successful Reserve Plot node, the city-type
+contract and the physical foundation are tracked at their own clocks. A
+second district in the same city still needs its own capacity and build
+order. Stronger competition can be checked against the Panama Campus
+and customer-first follow-through against the Ayacuchu pair.
