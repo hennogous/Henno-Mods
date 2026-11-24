@@ -934,6 +934,28 @@ uses the existing 16-state results for every bid. Compare its counters from
 the turn-200 standalone save with the ordinary turn-250 evidence. Use
 measured turn times from an ordinary candidate for release qualification.
 
+### City Lights turn-250 control, 24 November
+
+Small Continents, Online speed, map seed 171124603, game seed 171124604.
+The current-default control reached turn 250 and saved a named, verified
+endpoint. It completed 25 Bakers and one Tailors. Its common survey
+recorded 187 eligible Bakers layouts and 140 Tailors layouts. Five
+Bakers layouts completed on both proposed tiles, with two Quarter-first
+and three customer-first. Tailors completed none of its surveyed layouts.
+
+At turn 250, excluding City Centers, Bakers had 17 completed adjacent
+customer or sales pairs. Fourteen involved a mapped buying district,
+and ten had both a working Base supplier and a functioning buyer
+building. Bakers also completed 13 separate City Lights goods-provider
+pairs, nine Quarter-first and four provider-first. Eleven had a working
+Base supplier. The completed Tailors had no adjacent completed mapped
+customer or provider.
+
+Across 200 observed turns, 15 Bakers Stage 2 chains delivered 1,114
+active chain-turns and seven Stage 3 chains delivered 411. CSC guidance
+took 1.97 seconds per turn on average and 4.92 seconds at maximum.
+The matched candidate uses the same pinned build, map and game seeds.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |

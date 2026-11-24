@@ -9,6 +9,12 @@ planner are still open. Mean/max guidance time rose from 1.65/3.55 seconds
 to 2.75/7.82. City Lights and the two targeted replays are next.
 [Full comparison and timing](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november).
 
+**City Lights control, 24 November.** Turn 250 verified. Bakers completed
+17 adjacent customer or sales pairs and 13 separate goods-provider pairs.
+The only completed Tailors had no mapped partner at the endpoint.
+Guidance averaged 1.97 seconds per turn and peaked at 4.92 seconds.
+[City Lights control and baseline](../research/mods/city-lights-ai-placement-20261116.md#city-lights-turn-250-control-24-november).
+
 **24 November — Problems 1.2 and 2.1, protect both footprints.**
 The latest candidate also compares owned and purchasable customer sites,
 remembers a priced layout across saves, and protects its last usable Base
