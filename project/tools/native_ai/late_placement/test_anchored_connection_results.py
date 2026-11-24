@@ -114,6 +114,12 @@ class ConnectionCounts(unittest.TestCase):
             record('PUBLICATION', accepted='true', pendingTurn=3, version=2),
             record('NATIVE_BEST', turn=4, version=2, player=1, city=7, district=33, plot=10),
             record('NATIVE_BEST', turn=5, version=3, player=1, city=8, district=6, plot=20),
+            record('NATIVE_BEST', turn=4, version=2, player=1, city=8, district=33, plot=20,
+                   generation=6, nativeOrdinal=20, result=60),
+            'CSC_CUSTOMER_WATCH_NATIVE observedTurn=4 generation=6 ordinal=12 record={"k":"cache",'
+            '"generation":6,"version":2,"player":1,"city":8,"district":6,"plot":20,"result":47,"eligible":1}',
+            'CSC_CUSTOMER_WATCH_NATIVE observedTurn=4 generation=6 ordinal=30 record={"k":"cache",'
+            '"generation":6,"version":2,"player":1,"city":8,"district":6,"plot":20,"result":59,"eligible":1}',
             record('FOUNDATION', turn=5, foundationTurn=5, foundationDateKnown='true',
                    player=1, city=7, district=43, plot=10),
             record('FOUNDATION', turn=10, foundationTurn=10, foundationDateKnown='true',
@@ -126,7 +132,9 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(row['quarter']['nearest_loss'], loss)
         self.assertEqual(row['observed_substitutes'], [dict(turn=3, versions=[2], quarter_plot=-1, customer_plot=21)])
         self.assertTrue(row['quarter']['first_occupation']['matched'])
-        self.assertEqual(row['customer']['native_same_plot_choices'], {})
+        self.assertEqual(row['customer']['native_same_plot_choices'], {'DISTRICT_RURALCOMMUNITYA': 1})
+        self.assertEqual(row['customer']['exact_same_plot_losses'], 0)
+        self.assertEqual(row['customer']['nearest_cached_loss']['gap_q8'], 13)
         self.assertFalse(row['customer']['first_occupation']['matched'])
         self.assertEqual(row['customer']['first_occupation']['player'], 2)
 

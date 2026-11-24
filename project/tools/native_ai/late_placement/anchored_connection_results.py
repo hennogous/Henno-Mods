@@ -269,6 +269,19 @@ def prospective_footprints(log, observations, players, through, competition):
     losses = defaultdict(list)
     for row in competition['footprint_losses']:
         losses[row['player'], row['city'], row['district'], row['plot']].append(row)
+    # Read the ordinary cache for the exact modeled sites, including customers
+    # that had no positive CSC delta. The separate bid audit still establishes
+    # which explicit offers reached the native consumer.
+    planned = {target for pair in layouts for target in pair}
+    cached = defaultdict(list)
+    if planned:
+        for match in CUSTOMER_RECEIPT.finditer(log):
+            row = json.loads(match[2])
+            if row['k'] != 'cache' or row['eligible'] != 1:
+                continue
+            target = tuple(row[key] for key in ('player', 'city', 'district', 'plot'))
+            if target in planned:
+                cached[row['generation'], row['version'], target].append((int(match[1]), row['result']))
     substitutes = defaultdict(list)
     for payload in PROSPECTIVE_SUBSTITUTE.findall(log):
         row = {key: int(value) for key, value in (field.split('=', 1) for field in payload.split())}
@@ -295,10 +308,22 @@ def prospective_footprints(log, observations, players, through, competition):
         choice_rows = [row for row in choices[player, city, plot] if row['version'] in active]
         scored_losses = [row for row in losses[player, city, name, plot] if row['version'] in active]
         nearest = min(scored_losses, key=lambda row: row['gap_q8'], default=None)
+        cache_losses = []
+        for winner in choice_rows:
+            cache = cached.get((winner.get('generation'), winner['version'], identity), ())
+            if not cache or winner['district'] < 0 or winner['district'] == district:
+                continue
+            read = max((cell for cell in cache if cell[0] < winner['nativeOrdinal']), default=None)
+            if read is not None and winner['result'] >= read[1]:
+                cache_losses.append(dict(turn=winner['turn'], version=winner['version'],
+                    winner=names.get(winner['district'], str(winner['district'])), winner_q8=winner['result'],
+                    target_q8=read[1], gap_q8=winner['result']-read[1]))
         return dict(player=player, city=city, district=name, plot=plot,
                     native_same_plot_choices=dict(Counter(names.get(row['district'], str(row['district']))
                                                           for row in choice_rows)),
                     exact_same_plot_losses=len(scored_losses), nearest_loss=nearest,
+                    cached_same_plot_losses=len(cache_losses),
+                    nearest_cached_loss=min(cache_losses, key=lambda row: row['gap_q8'], default=None),
                     matched_completion=completion,
                     first_occupation=None if not foundation else dict(
                         turn=foundation_turn,
@@ -337,7 +362,7 @@ def prospective_footprint_counts(layouts):
             elif occupation:
                 identity = (role, target['player'], target['city'], target['district'], target['plot'])
                 occupied[family].add(identity)
-                if target['exact_same_plot_losses']:
+                if target['exact_same_plot_losses'] or target['cached_same_plot_losses']:
                     scored_losses[family].add(identity)
         if all(target['matched_completion'] is not None for target in (quarter, customer)):
             count['pairs_completed'] += 1
@@ -619,7 +644,8 @@ def paired_full_game_result(control, treatment):
                            surveyed_services=operation['stock' if arm == 'control' else 'combined'],
                            guidance_wall=result['timing'], native_managed_wall=result['native_managed_timing'],
                            contested_layouts=[pair for pair in result['prospective_footprints'] if any(
-                               pair[side]['nearest_loss'] for side in ('quarter', 'customer'))])
+                               pair[side]['nearest_loss'] or pair[side]['nearest_cached_loss']
+                               for side in ('quarter', 'customer'))])
     data = protocols['control']
     return dict(map=data['map'], map_seed=data['map_seed'], game_seed=data['game_seed'],
                 shared_service_turns=len(operation['common_turns']), **report)

@@ -397,6 +397,11 @@ Bakers footprint and two Tailors footprints in the modeled strong pairs both
 lost a recorded comparison and were occupied by a different district. These
 are observation counts across native comparisons and distinct physical
 footprints respectively.
+The baseline's customer observer mainly followed candidates around existing
+Quarters. A planned customer on an empty pair could be missing from that scope
+even when the engine compared its tile. The updated observer follows both exact
+cells from the accepted packet and reuses the existing native journal. It
+reports the ordinary cached comparison independently of any explicit CSC bid.
 
 | Case | Quarter footprint | Customer footprint |
 |---|---|---|

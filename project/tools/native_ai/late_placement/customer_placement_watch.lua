@@ -10,6 +10,7 @@ local W={};CSC_CUSTOMER_PLACEMENT_WATCH=W
 local unpack=unpack or table.unpack
 local function pack(...)return{n=select('#',...),...}end
 local states,previous,wanted={},{},{}
+local plannedFootprints={}
 local faults,records,dropped=0,0,0
 local limit=100000
 local function emit(kind,payload)
@@ -81,6 +82,10 @@ function W.Record(record,ordinal,generation)
  for _,row in ipairs(CSC_CUSTOMER_WATCH_TARGETS or{})do
   if row[1]==p and row[2]==c then target=true end
  end
+ if not target and next(plannedFootprints)then
+  local plot=number(record,'plot')
+  target=plot and plannedFootprints[scope(p,c,d)..':'..plot]
+ end
  if not target then return end
  if generationSeen~=generation then generationSeen=generation;ordinalSeen={}end
  if ordinalSeen[ordinal]then return end
@@ -103,11 +108,25 @@ local function drain()
  end
 end
 local publish=B.Publish
-B.Publish=function(...)
+B.Publish=function(version,width,height,count,players,entries,...)
  -- A full-game quarter observer already reads these same pages and dispatches
  -- Record. Short customer replays own that passive read when it is absent.
  if not CSC_QUARTER_PLACEMENT_WATCH then safe(drain)end
- return publish(...)
+ local accepted,message=publish(version,width,height,count,players,entries,...)
+ if accepted then
+  -- Empty planned customer footprints can be absent from the live customer
+  -- groups. Keep their exact cells for the accepted packet's next drain, even
+  -- if no customer delta was published. This just filters existing receipts.
+  plannedFootprints={}
+  for _,entry in ipairs(entries or{})do
+   local layout=entry.strongLayout
+   if layout and not entry.carried and not layout.existing and layout.district then
+    plannedFootprints[scope(entry.player,entry.city,entry.district)..':'..entry.plot]=true
+    plannedFootprints[scope(entry.player,layout.city,layout.district)..':'..layout.plot]=true
+   end
+  end
+ end
+ return accepted,message
 end
 function W.Finish()
  if CSC_QUARTER_PLACEMENT_WATCH then CSC_QUARTER_PLACEMENT_WATCH.Drain()else safe(drain)end

@@ -77,5 +77,22 @@ CSC_CUSTOMER_PLACEMENT_WATCH.Finish()
 assert(table.concat(lines,'\n'):find('faults=2 dropped=0',1,true))
 ''')
 
+    def test_empty_pair_keeps_only_its_exact_cells_until_next_packet(self):
+        self.vm().execute(r'''
+local publish=CSC_AI_DistrictBridge.Publish
+local q={player=1,city=7,district=43,plot=30,
+  strongLayout={city=7,district=6,plot=20,existing=false}}
+assert(publish(123,60,60,44,{1},{q}))
+CE_AIDistrictScoresTraceRead=function()return [[{"offset":0,"total":2,"records":[
+{"k":"cache","player":1,"city":7,"district":6,"plot":20},
+{"k":"cache","player":1,"city":7,"district":6,"plot":21}]}]]end
+assert(publish(124,60,60,44,{1},{}))
+local observed=table.concat(lines,'\n')
+assert(observed:find('"plot":20',1,true) and not observed:find('"plot":21',1,true))
+CE_AIDistrictScoresStatus=function()return '{"generation":10,"trace_count":2}'end
+CSC_CUSTOMER_PLACEMENT_WATCH.Finish()
+assert(not table.concat(lines,'\n'):find('generation=10',1,true))
+''')
+
 
 if __name__=='__main__':unittest.main()
