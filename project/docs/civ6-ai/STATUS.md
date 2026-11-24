@@ -19,8 +19,8 @@ The separate turn-100 customer-land control reached 140 with 17 observed
 plot purchases. The first treatment protected a supplier at turn 103.
 The publisher then failed while collecting readbacks because its receipt
 counter had no entry for planned supply. The corrected publisher assigns
-four readbacks to each encountered cost type. The active replay repeats
-the same save and switch. The full-game candidate also fixes an accounting
+four readbacks to each encountered cost type. The repeat completed both
+arms through turn 140. The full-game candidate also fixes an accounting
 error on purchased customer sites. Part of the site's value can fund the
 purchase bid, with the remainder discouraging a competing district. The
 old code copied the original amount back into the deterrent after the
@@ -30,11 +30,14 @@ and eight publisher checks, including network-mode gating and tie resolution
 when two Quarters plan the same customer. Live purchase through customer construction and improved
 full-game pair conversion remain open.
 
-The corrected short replay recorded four native score writes protecting the
-supplier beside a new Tailors. The Quarter was founded on turn 105 and the
-planner repriced its intended Hub on 106. The corresponding control city
-founded an Encampment on 113. The [placement evidence](../research/mods/city-lights-ai-placement-20261116.md#which-purchased-sites-and-completed-pairs-had-a-working-supply)
-also counts completed pairs that have their own functioning Base supplier.
+From turns 103–140 the control founded one Bakers and one Tailors. The
+candidate founded two Bakers and four Tailors, all on sites it had priced.
+Of 41 distinct proposed layouts, none completed both planned districts or
+a named substitute. Addis Ababa founded the intended Tailors and its
+planned Hub tile subsequently went to Ruhr Valley. At turn 140 the control
+had 15 non-City-Center customer pairs with working Base and the candidate
+had 13. The candidate added 0.907 seconds per turn on average across the
+five AI players. [Matched results and timing](../research/mods/city-lights-ai-placement-20261116.md#where-did-the-second-district-go).
 
 A follow-up to the pinned comparison corrects how an empty customer
 footprint is released. Previously an alternate with equal map adjacency

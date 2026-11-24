@@ -27,7 +27,7 @@ PRICED_PAIR = re.compile(r'CSC_AI_PROSPECTIVE_CONNECTION turn=(\d+) player=(\d+)
 QUARTER_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\tDISTRICT_CSC_([A-Z_]+)_QUARTER\t')
 QUARTER_RECEIPT = re.compile(r'CSC_QUARTER_WATCH_(WRITE|BEST)\t([^\r\n]+)')
 DISTRICT_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t([^\t\r\n]+)')
-CUSTOMER_BID = re.compile(r'CSC_AI_CUSTOMER_(?:FUTURE|ECONOMIC|PROSPECTIVE)_BID ([^\r\n]+)')
+CUSTOMER_BID = re.compile(r'CSC_AI_(?:CUSTOMER_(?:FUTURE|ECONOMIC|PROSPECTIVE)_BID|CONNECTION_COMPLETION) ([^\r\n]+)')
 CUSTOMER_RECEIPT = re.compile(r'CSC_CUSTOMER_WATCH_NATIVE [^\r\n]*? ordinal=(\d+) record=(\{[^\r\n]+\})')
 
 
@@ -51,7 +51,13 @@ def bid_competition(log, observations, players, through):
     for match in CUSTOMER_BID.finditer(log):
         row = dict(field.split('=', 1) for field in match[1].split() if '=' in field)
         published = versions.get(int(row['turn']), ())
-        if len(published) == 1 and int(row['deltaQ8']) > 0 and int(row['player']) in players:
+        # A linked reference publishes its completion credit without an
+        # ECONOMIC_BID line. Customer-first completion credits belong to the
+        # Quarter's final score, which has its own native write receipt.
+        if row.get('order') == 'customerFirst':
+            continue
+        credit = int(row['deltaQ8'] if 'deltaQ8' in row else row['creditQ8'])
+        if len(published) == 1 and credit > 0 and int(row['player']) in players:
             version = next(iter(published))
             customers.add((version, *(int(row[k]) for k in ('player', 'city', 'district', 'plot'))))
 

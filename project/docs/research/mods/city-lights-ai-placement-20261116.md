@@ -696,7 +696,9 @@ and its own Quarter's supply. An individual Quarter can serve multiple partners.
 
 In that historical game, 810 Quarter comparisons had a recorded higher
 district score. Rural Community A won 477 and Rural Community B won 58.
-For customer bids the count was 759, with 462 going to Rural Community A.
+For customer bids the count was 830, with 493 going to Rural Community A.
+This includes completion credit on the reference site when a Quarter
+already exists. The earlier count of 759 missed that publication path.
 These counts include repeated decisions in the same city. The paired report
 now gives the winning type, plots and score gap for comparisons across the
 city, including when the two districts wanted different plots.
@@ -707,6 +709,37 @@ districts on supplier 2459 each recorded a score write and an eligible cache
 read for its 16-utility deterrent. Tailors was founded on 105, and on 106 the
 planner repriced the original Hub site at 20,014 Q8 (78.2 utility). Tile 2385
 was an available substitute. The switch census matched across all 141 rows.
+
+### Where did the second district go?
+
+Both arms of the corrected customer-land replay reached turn 140. Over
+turns 103–140, the control founded one Bakers and one Tailors. The candidate
+founded two Bakers and four Tailors, each on a plot it had priced. It priced
+17 distinct Bakers layouts and 24 Tailors layouts. Several shared a Quarter
+site. None of the 41 completed its designated pair or a named substitute by
+140. Both arms recorded 17 ordinary tile purchases and zero CSC customer-land
+offers.
+
+In Addis Ababa the new Tailors stood on 2458 from turn 105. The planned Hub
+on 2457 received a relative bid on 106 and ten subsequent reference-site
+completion credits. On turn 135 the city selected Ruhr Valley for that plot.
+The planner identified 2532 as an alternative by 136. This gives a concrete
+reason a funded bid for the second district can outlive its proposed site.
+
+| Turn-140 outcome across five AI players | Control | Candidate |
+| --- | ---: | ---: |
+| Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
+| Of those pairs, both districts operational and working Base | 14 | 11 |
+| Tailors customer pairs, all with working Base | 1 | 2 |
+| Bakers–goods-provider pairs, all with working Base | 2 | 3 |
+| Bakers Stage 2 active chain-turns on 31 common observations | 190 | 212 |
+| Distinct active Bakers Stage 2 chains on those observations | 8 | 8 |
+| All guidance per turn, five players combined, mean / max | 1.807 / 2.295 s | 2.714 / 3.712 s |
+
+The timing uses all 38 common post-switch turns. The chain observations
+also cover the shared lead-in. Neither arm recorded an active Tailors
+Service on those observations. The immediate bottleneck is completing
+the second district at an acceptable turn cost.
 
 **Customer-land replay targets.** The archived turn-50 Continents save
 (`737c6582fd7e`, map seed 1457395586) passed the controller's source and

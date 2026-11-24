@@ -126,6 +126,11 @@ class ConnectionCounts(unittest.TestCase):
                                                  for kind in ('quarter', 'customer')})
         self.assertEqual({loss['kind']: loss['gap_q8'] for loss in competition['losses']},
                          {'quarter': 40, 'customer': 69})
+        reference = log.replace('CSC_AI_CUSTOMER_FUTURE_BID', 'CSC_AI_CONNECTION_COMPLETION').replace(
+            'deltaQ8=16', 'order=quarterFirst creditQ8=16')
+        self.assertEqual(bid_competition(reference,parse(reference,'CSC_PLANNING_'),{1},250),competition)
+        quarter_credit = reference.replace('order=quarterFirst','order=customerFirst')
+        self.assertNotIn('customer',bid_competition(quarter_credit,parse(quarter_credit,'CSC_PLANNING_'),{1},250)['lost_to'])
 
     def test_expired_request_lists_actual_production_in_the_right_owner_window(self):
         district = 'DISTRICT_CSC_TAILORS_QUARTER'
