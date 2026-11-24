@@ -726,6 +726,17 @@ completion credits. On turn 135 the city selected Ruhr Valley for that plot.
 The planner identified 2532 as an alternative by 136. This gives a concrete
 reason a funded bid for the second district can outlive its proposed site.
 
+The six new Quarters belonged to eight distinct proposed pairs. Seven of
+those eight partner tiles had no subsequent district foundation by turn
+140. Only Addis Ababa lost its partner tile to another build. Seven pairs
+had at least one later plan marked ready. For example, the planner renewed
+the Rural Community on 2611 beside Bakers 2685 on seven turns between 120
+and 139. Faras's Theater Square plan was ready on four turns and later
+waited on capacity. Delhi's Harbor was waiting on all three turns after
+Tailors was founded. Across all 41 proposals, 25 saw neither tile taken.
+These counts put the emphasis on getting a ready second district selected
+in time. Increasing tile protection alone has limited reach here.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
