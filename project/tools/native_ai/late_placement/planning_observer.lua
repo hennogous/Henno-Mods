@@ -416,9 +416,16 @@ B.Publish=function(version,width,height,count,players,entries,...)
     local s=summaries[scope]or{player=r.player,city=r.city,district=r.district,seen=0,qualified=0,offered=0,best=-1,turn=batch.turn}
     summaries[scope]=s;s.seen=s.seen+1;s.best=math.max(s.best,r.upper)
     if r.qualified then s.qualified=s.qualified+1 end
-    if accepted[id]then s.offered=s.offered+1 end
+    local offer=accepted[id]
+    if offer then s.offered=s.offered+1 end
     local row={};for k,v in pairs(r)do row[k]=v end
-    row.version=version;row.offered=accepted[id]~=nil;row.bidQ8=accepted[id]and accepted[id].finalQ8
+    row.version=version;row.offered=offer~=nil;row.bidQ8=offer and offer.finalQ8
+    if offer then
+     -- Capacity belongs to this publication. Keep it for losing cells too so
+     -- a later replay can pick a city with room for both districts.
+     row.bidCapacityState=offer.capacityState
+     row.bidCapacityUsed=offer.capacityUsed;row.bidCapacityAllowed=offer.capacityAllowed
+    end
     row.geometryOnly=true;row.nativeEligibility='notMeasured';row.futureCustomersCounted=false
     emit('OPPORTUNITY',row)
    end end

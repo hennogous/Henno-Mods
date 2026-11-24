@@ -83,7 +83,8 @@ snapshot={id=0,player=Players[0],Geometry=function(c,p,profile)geometryCalls=geo
  Site=function()siteCalls=siteCalls+1;error('observer must not call Site')end}
 CSC_AI_EconomyAdapters={QuarterBids=function(s,p,protected,early)
  s.Geometry(city,plots[2],profile)
- local result={};if offerEnabled then result[1]={player=0,city=10,district=1,plot=2,finalQ8=12345,adjacency=4}end
+ local result={};if offerEnabled then result[1]={player=0,city=10,district=1,plot=2,finalQ8=12345,adjacency=4,
+  capacityState='ready',capacityUsed=1,capacityAllowed=3}end
  return result,{evaluated=1},'thirdReturn'
 end}
 publishAccepted=true;publishCalls=0
@@ -151,6 +152,8 @@ poll();Game.t=2;poll();Game.t=3;poll()
         self.assertEqual(row["qualified"], "true")
         self.assertEqual(row["minimumAdjacency"], "2")
         self.assertEqual(row["bidQ8"], "12345")
+        self.assertEqual([row[key] for key in ("bidCapacityState", "bidCapacityUsed", "bidCapacityAllowed")],
+                         ["ready", "1", "3"])
         self.assertEqual(self.rows("OPPORTUNITY_SUMMARY")[0]["qualified"], "1")
         self.assertEqual(self.lua.eval("geometryCalls"), 1)
         self.assertEqual(self.lua.eval("siteCalls"), 0)
