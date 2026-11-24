@@ -2,6 +2,7 @@
 
 import argparse
 from collections import Counter, defaultdict
+from decimal import Decimal
 import csv
 import json
 from pathlib import Path
@@ -835,34 +836,55 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                              r'district=(\d+) plot=(\d+) invoice=(\d+)(?: bidQ8=(-?\d+)(?: version=(\d+))?)?', log):
         turn, player, city, district, plot, price = map(int, match.groups()[:6])
         if player in players and turn <= through:
-            offers[player, city, plot].append((match.start(), turn, district, price))
             # New logs come after a successful commit and carry the exact
             # version. Legacy proposal logs may precede a failed publication
             # or a trimmed entry. Only a native receipt verifies that cell.
             current = versions.get(turn, ())
             committed = int(match[8]) if match[8] else (next(iter(current)) if len(current) == 1 else None)
             receipt = receipts.get((committed, player, city, district, plot))
-            native_offers.append(dict(turn=turn, player=player, city=city, district=district, plot=plot,
-                                      invoice=price, delta_q8=int(match[7]) if match[7] else None,
-                                      version=committed, logged_after_commit=match[8] is not None,
-                                      receipt=receipt))
+            offer = dict(turn=turn, player=player, city=city, district=district, plot=plot,
+                         invoice=price, delta_q8=int(match[7]) if match[7] else None,
+                         version=committed, logged_after_commit=match[8] is not None, receipt=receipt)
+            native_offers.append(offer)
+            offers[player, city, plot].append((match.start(), offer))
     treasury = {}
     for turn, player, ordinal, before, after in re.findall(
             r'CSC_CUSTOMER_TREASURY\t(\d+)\t(\d+)\t(\d+)\t([-\d.]+)\t([-\d.]+)', log):
-        treasury[int(player), int(ordinal)] = int(turn), float(before) - float(after)
+        # Subtract the logged decimal balances before converting for JSON.
+        # Binary-float subtraction can turn an exact 40 Gold debit into 39.999….
+        treasury[int(player), int(ordinal)] = int(turn), float(Decimal(before) - Decimal(after))
     trees = defaultdict(set)
+    request_districts = defaultdict(set)
+    tree_context, requested_district = None, None
     for fields in tree_rows:
-        if len(fields) < 7 or not fields[0].strip().isdigit() or not fields[1].strip().isdigit():
+        if (len(fields) < 7 or not fields[0].strip().isdigit() or not fields[1].strip().isdigit()
+                or fields[3].strip() != 'Build City District'):
+            tree_context, requested_district = None, None
             continue
-        if fields[3].strip() != 'Build City District' or fields[5].strip() != 'Purchase Plot':
+        context = int(fields[0]), int(fields[1]), fields[2].strip()
+        if context != tree_context:
+            tree_context, requested_district = context, None
+        node = fields[5].strip()
+        if node == 'Decode Trigger':
+            trigger = re.match(r'District: (DISTRICT_[A-Z0-9_]+);', fields[6].strip())
+            requested_district = trigger[1] if trigger else None
+        if node != 'Purchase Plot':
             continue
         # Current XP2 prints coordinates, the retained contract state and its
         # ID here. Repetition is a continuing request. Payment is joined from
         # the independent UI events further below.
         request = re.search(r'Purchase (\d+) (\d+): (Submitted|Accepted|Building|Done) on #(\d+)', fields[6])
         if request:
-            x,y,state,contract = request.groups()
-            trees[int(fields[1]),int(x),int(y)].add((int(fields[0]),int(contract),state,fields[2].strip()))
+            x, y, state, contract = request.groups()
+            turn, player, city = context
+            plot_key = player, int(x), int(y)
+            row = turn, int(contract), state, city
+            trees[plot_key].add(row)
+            if requested_district:
+                request_districts[plot_key].add((*row, requested_district))
+        # A later request requires its own decoded district. Keep the raw
+        # contract state when its tree context cannot identify the type.
+        requested_district = None
     founded = defaultdict(list)
     completed_links = defaultdict(dict)
     for row in observations:
@@ -893,11 +915,13 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                   if (player,i) in treasury and treasury[player,i][0] == turn
                   and (player,2*i-ordinal) not in purchase_ordinals]
         requests = sorted(r for r in trees[player,x,y] if r[0] <= min(through,turn+1))
+        districts = sorted(r for r in request_districts[player,x,y] if r[0] <= min(through,turn+1))
         # Preserve physical acquisition in both arms even if CSC never bid.
         # Treasury changes and request history are observations, with exact
         # expected-invoice and policy-packet checks retained below.
         observed_purchases.append(dict(turn=turn, player=player, city=city, plot=plot,
-                                       treasury_changes=debits, request_history=requests, foundation=actual))
+                                       treasury_changes=debits, request_history=requests,
+                                       request_districts=districts, foundation=actual))
         if actual:
             # Include every district founded by the paying city. This lets us
             # see where the ordinary land path succeeds before a partner exists.
@@ -912,16 +936,18 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                         quarter_plot=qplot, district=actual[1], bought=turn, founded=actual[0], linked=linked))
         # The latest native packet can predate execution of a retained request.
         # Report quote age and every offered type if several wanted the tile.
-        prior = [o for o in offers.get(key, ()) if o[0] < match.start() and o[1] <= turn + 1]
+        prior = [offer for offset, offer in offers.get(key, ())
+                 if offset < match.start() and offer['turn'] <= turn + 1]
         if not prior:
             continue
-        last_turn = max(o[1] for o in prior)
-        quotes = sorted({(o[2], o[3]) for o in prior if o[1] == last_turn})
+        last_turn = max(offer['turn'] for offer in prior)
+        quotes = sorted({(offer['district'], offer['invoice']) for offer in prior if offer['turn'] == last_turn})
         # Keep the full observed request history. A contract already accepted
         # before the first offer can stay accepted until its treasury pays.
         accepted = [r[0] for r in requests if r[2]=='Accepted']
         purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
                               quotes=quotes, district_request_turn=max(accepted,default=None), request_history=requests,
+                              request_districts=districts, earlier_offers=prior, treasury_changes=debits,
                               matching_debit=sum(amount in {cost for _,cost in quotes} for amount in debits)==1,
                               foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
     return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, ai_plot_purchases=ai_purchases,

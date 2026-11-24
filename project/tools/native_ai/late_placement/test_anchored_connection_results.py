@@ -124,7 +124,7 @@ class ConnectionCounts(unittest.TestCase):
             'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40 bidQ8=200 version=3',
             'CSC_AI_CUSTOMER_RECEIPT turn=8 version=3 player=1 city=5 district=4 plot=23 result={"writes":1}',
             'CSC_AI_CUSTOMER_RECEIPT turn=8 version=3 player=1 city=5 district=4 plot=24 result={"writes":0}',
-            'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
+            'CSC_CUSTOMER_TREASURY\t8\t1\t7\t64.10\t24.10',
             'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
             record('FOUNDATION', turn=10, player=1, city=5, district=4, plot=23, foundationDateKnown='true')])
         rows = [[str(turn),'1','City TEST','Build City District','RUNNING','Purchase Plot',f'Purchase 3 2: {state} on #12']
@@ -195,8 +195,8 @@ class ConnectionCounts(unittest.TestCase):
                 'CSC_AI_CUSTOMER_LAND_APPRAISED turn=8 player=1 city=5 district=4 plot=23 invoice=40 ownedMarginQ8=800 scarcityQ8=-100 creditQ8=200',
                 'CSC_AI_CUSTOMER_LAND_APPRAISED turn=8 player=1 city=5 district=5 plot=23 invoice=40 ownedMarginQ8=800 scarcityQ8=-100 creditQ8=200',
                 'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',
-                'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
-                'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
+                'CSC_CUSTOMER_TREASURY\t10\t1\t7\t100.50\t60.50',
+                'CSC_CUSTOMER_PLOT_PURCHASE\t10\t1\t8\t5\t23\t3\t2',
                 'CSC_AI_PROVIDER_DECLINE_PROPOSED turn=8 version=4 player=1 city=5 district=5 alternative=4 alternativePlot=23 sites=2',
                 'CSC_AI_PROVIDER_DECLINE_PROPOSED turn=8 version=5 player=1 city=5 district=5 alternative=4 alternativePlot=23 sites=2',
                 provider_mask(4),
@@ -225,16 +225,36 @@ class ConnectionCounts(unittest.TestCase):
                 'turn=8 player=1 city=5 district=4 plot=23 invoice=40 bidQ8=200 version=4'
             ) + '\nCSC_AI_CUSTOMER_RECEIPT turn=9 version=4 player=1 city=5 district=4 plot=23 result={"writes":1}',
                 encoding='utf-8')
-            request = '9,1,City BUYER,Build City District,RUNNING,Purchase Plot,Purchase 3 2: Accepted on #12\n'
+            trigger = '9,1,City BUYER,Build City District,SUCCESS,Decode Trigger,District: DISTRICT_HARBOR; Value: 200\n'
+            request = trigger + '9,1,City BUYER,Build City District,RUNNING,Purchase Plot,Purchase 3 2: Accepted on #12\n'
             path = folder / 'AI_Behavior_Trees.csv'
             path.write_text(request, encoding='utf-8')
             fresh, = trace()['exact_customer_land']['spending']
             choice, = fresh['switched_native_choices_at_first_acceptance']
-            self.assertEqual((fresh['first_observed_buying_city_acceptance'], choice['version']), (9,4))
-            path.write_text(request.replace('9,1,','4,1,',1) + request, encoding='utf-8')
+            self.assertEqual((fresh['first_observed_buying_city_acceptance'], choice['version'], choice['invoice']), (9,4,40))
+            self.assertEqual(fresh['first_observed_request_district'], 'DISTRICT_HARBOR')
+            proof_log = (folder/'Lua.log').read_text(encoding='utf-8')
+            (folder/'Lua.log').write_text(proof_log.replace('CSC_CUSTOMER_TREASURY',
+                'CSC_AI_CUSTOMER_LAND_OFFER turn=9 player=1 city=5 district=7 plot=23 invoice=60 bidQ8=100 version=5\n'
+                'CSC_CUSTOMER_TREASURY'), encoding='utf-8')
+            qualified, = trace()['exact_customer_land']['spending']
+            self.assertEqual(qualified['quotes'], [(7,60)])
+            self.assertEqual([c['version'] for c in qualified['switched_native_choices_at_first_acceptance']], [4])
+            (folder/'Lua.log').write_text(proof_log, encoding='utf-8')
+            path.write_text(request.replace('DISTRICT_HARBOR', 'DISTRICT_MBANZA'), encoding='utf-8')
+            competing, = trace()['exact_customer_land']['spending']
+            self.assertEqual(competing['first_observed_request_district'], 'DISTRICT_MBANZA')
+            self.assertEqual(competing['switched_native_choices_at_first_acceptance'], [])
+            path.write_text(request.replace('9,1,','4,1,').replace('Accepted', 'Submitted') + request, encoding='utf-8')
             retained, = trace()['exact_customer_land']['spending']
-            self.assertEqual(retained['first_observed_buying_city_acceptance'], 4)
+            self.assertEqual((retained['first_observed_buying_city_request'],
+                              retained['first_observed_buying_city_acceptance']), (4,9))
             self.assertEqual(retained['switched_native_choices_at_first_acceptance'], [])
+            unrelated_city = trigger.replace('City BUYER', 'City OTHER')
+            path.write_text(request.replace(trigger, unrelated_city), encoding='utf-8')
+            unknown, = trace()['exact_customer_land']['spending']
+            self.assertIsNone(unknown['first_observed_request_district'])
+            self.assertEqual(unknown['switched_native_choices_at_first_acceptance'], [])
         self.assertEqual(rows['exact_pair_build_order'], 'quarterFirst')
         self.assertEqual(rows['exact_pair_first_completed_link']['turn'], 12)
         self.assertTrue(rows['exact_pair_first_completed_after_switch'])

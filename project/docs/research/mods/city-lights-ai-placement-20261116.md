@@ -952,7 +952,11 @@ The replay report joins CE's version to the turn when that packet was
 accepted. The turn when the controller reads the result can be later.
 For example, Sodo's district choice observed on turn 129 used the packet
 published on 128. The spending trace also reports when the latest offer
-was made and requires the intended city's name to confirm its own request.
+was made. To connect a score write with spending, it requires the native
+tree's decoded district type and the intended city's earliest request on
+that contract. An earlier submission, a different district on the same
+plot, or a later unrelated offer cannot count as the guided purchase.
+The Gold debit must match the invoice in the packet that won.
 
 #### Forecast performance follow-up
 
@@ -1241,15 +1245,13 @@ loaded turn-100 boundary. The replay now checks the original AI seats'
 treasuries as well as the structural census before switching.
 
 **Bakavu purchase replay.** In the completed City Lights control,
-player 2 founded Bakers 2532 on turn 140. Bakavu's first observed
-acceptance for Commercial Hub plot 2606 was on turn 151, the turn after
-the archived checkpoint. The same contract, 2945, was reported as
-accepted for eleven turns. The city bought the tile on turn 161,
-founded the Hub on 166, and both districts were complete by 178. Use
-this case to observe the purchase with and without the new policy
-from turn 150. The matched report keeps every observed acceptance,
-including those before a planner offer, and joins the initial acceptance
-to exact native selections using the committed offer's packet version.
+player 2 founded Bakers 2532 on turn 140. Bakavu's tree decoded a Mbanza
+on plot 2606 and first reported its purchase contract, 2945, accepted on
+turn 151. The city bought the tile for 80 Gold on turn 161. The Hub's
+production request appeared on 163, after the purchase. It founded on
+166, and both districts were complete by 178. The Hub reused land bought
+for another district. The replay uses the turn-150 checkpoint to compare
+that paid option with the owned alternative under both policies.
 
 Both matched arms reached turn 184. Each had an accepted Mbanza request
 on 2606 under contract 2944 from turn 151. The candidate priced the paid
@@ -1262,7 +1264,8 @@ alternative delivers the same link at a lower land cost.
 The original standalone game offers a second replay case. Atzcapotzalco
 founded Bakers on 1125 at turn 51, completed it on 59, then bought 1051
 for 45 Gold at turn 67. Its Hub foundation was on 83 and the pair was
-complete by 89. The original record has no CSC purchase offer. The
+complete by 89. The native tree named the Hub when it accepted contract
+809 on turn 60. The original record has no CSC purchase offer. The
 hash-verified candidate with the new appraisal is queued for a matched
 replay from the turn-50 checkpoint through 95.
 
@@ -1431,5 +1434,5 @@ Rural plot. The game reserved it and accepted district contract
 The completed pair came nine turns later than in control. Both
 purchases came through ordinary play. The candidate's first exact
 pair quote came after acquisition, so this case verifies the
-Quarter-to-provider handoff on bought land. Direct purchase guidance
-is the separate Bakavu test.
+Quarter-to-provider handoff on bought land. Atzcapotzalco is the direct
+customer purchase test, with a Hub request in the original game.
