@@ -143,6 +143,27 @@ all six input orders through CE's simulated publication interface. Nine
 publisher checks and the 32 simulated gameplay checks passed. The running
 single-player full-game comparison uses its earlier pinned build.
 
+### AI policy when joining a multiplayer game
+
+A player can finish a tuned single-player game and join a multiplayer lobby
+without restarting Civ. Dev CE's `DllDestroyGameContext` and
+`DllCreateGameContext` both call `AI::DistrictScores::Reset` in `Main.cpp`.
+In `AIDistrictScores.cpp`, `reset_policy` disables publication, drops staged
+and committed bids, and advances the generation checked by returning callbacks.
+The CSC Lua publisher also calls the disable API if the UI cannot positively
+identify single-player. Saved game state can still include a production order
+or district reservation the engine already accepted.
+
+For a two-client check of the current release, start the host in a tuned
+single-player game and the guest from a clean launch. Join the same network
+game with matching mods and settings. Verify on both clients that CE reports
+the district policy disabled and that no CSC bid is published through the
+first AI turn, save/rejoin and host migration. Compare the AI city's
+production, district foundations, working suppliers and Service state at the
+same turn boundaries. Different camera positions or opening a city panel on
+only one client should leave those results identical. Record the first turn
+and city where peers diverge if the check fails.
+
 Native multiplayer remains pending: fresh game, simultaneous turns, save/reload,
 late join/reconnect, host migration, capture/pillage and route creation/termination
 while supply changes. Check AI and other-human target updates through a host's
