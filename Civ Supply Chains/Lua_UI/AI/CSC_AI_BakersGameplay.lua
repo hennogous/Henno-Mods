@@ -123,8 +123,13 @@ local function reportReceipts(turn, version, status)
         print(string.format('CSC_AI_FRONTIER_RECEIPTS_OMITTED turn=%d version=%d count=%d',
             turn, version, #previous.frontier-frontierReceiptLimit))
     end
-    for i = 1, math.min(#previous.customers, customerReceiptLimit) do
-        local site = previous.customers[i]
+    -- Check scarce paid sites first within the existing receipt budget.
+    -- Ordinary customer entries can otherwise fill the limit before the
+    -- exact plot whose early score has to reach the purchase decision.
+    local land = previous.customerLand or {}
+    local customerCount = #land + #previous.customers
+    for i = 1, math.min(customerCount, customerReceiptLimit) do
+        local site = land[i] or previous.customers[i - #land]
         local result = readReceipt(CE_AIDistrictScoresReceipt, version, site.player, site.city, site.district, site.plot)
         print(string.format('CSC_AI_CUSTOMER_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d result=%s',
             turn, version, site.player, site.city, site.district, site.plot, result))
@@ -142,9 +147,9 @@ local function reportReceipts(turn, version, status)
         print(string.format('CSC_AI_BUILDING_RECEIPT turn=%d version=%d player=%d city=%d building=%d result=%s',
             turn, version, bid.player, bid.city, bid.building, result))
     end
-    if #previous.customers > customerReceiptLimit or #previous.buildings > buildingReceiptLimit then
+    if customerCount > customerReceiptLimit or #previous.buildings > buildingReceiptLimit then
         print(string.format('CSC_AI_RECEIPTS_OMITTED turn=%d version=%d customer=%d buildings=%d', turn, version,
-            math.max(0, #previous.customers - customerReceiptLimit),
+            math.max(0, customerCount - customerReceiptLimit),
             math.max(0, #previous.buildings - buildingReceiptLimit)))
     end
 end
@@ -436,8 +441,6 @@ local function refresh(turn)
                     for _,bid in ipairs(replacement) do
                         if bid.customerPurchaseGold then
                             include(bid.city,bid.district)
-                            print(string.format('CSC_AI_CUSTOMER_LAND_OFFER turn=%d player=%d city=%d district=%d plot=%d invoice=%d bidQ8=%d',
-                                turn,id,bid.city,bid.district,bid.plot,bid.customerPurchaseGold,bid.delta))
                         end
                     end
                     for _,layout in pairs(economy.nextLayouts or {}) do
@@ -650,7 +653,7 @@ local function refresh(turn)
     local siteBids, weakSites, customerSites = 0, 0, 0
     -- Save the exact published identities for readback on the next boundary.
     -- Receipt caps limit logging work. They do not limit what CE receives.
-    local tracked = {turn=turn,version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes,
+    local tracked = {turn=turn,version=version + 1, customers={}, customerLand={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes,
         connections={}}
     -- Each kind of connection cost gets four readbacks. The adapter also
     -- emits plannedSupply when a deposit needs protection. Start each kind
@@ -668,8 +671,15 @@ local function refresh(turn)
             weakSites = weakSites + 1
         elseif entry.customer then
             customerSites = customerSites + 1
+            -- Report only paid-site offers retained in the committed packet.
+            -- A staged offer still needs a native write and a later purchase.
+            if entry.customerPurchaseGold then
+                print(string.format('CSC_AI_CUSTOMER_LAND_OFFER turn=%d player=%d city=%d district=%d plot=%d invoice=%d bidQ8=%d version=%d',
+                    turn,entry.player,entry.city,entry.district,entry.plot,entry.customerPurchaseGold,entry.delta,version+1))
+            end
             if type(CE_AIDistrictScoresReceipt) == 'function' then
-                tracked.customers[#tracked.customers + 1] = entry
+                local receiptGroup = entry.customerPurchaseGold and tracked.customerLand or tracked.customers
+                receiptGroup[#receiptGroup + 1] = entry
             end
         -- Complete Quarter values deliberately carry delta=0: CE replaces
         -- the native operand with finalQ8. Count/track that published value,

@@ -197,6 +197,48 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
 ''')
         self.assertTrue(any('CSC_AI_ECONOMY_CAPACITY_TRIM' in message for message in messages))
 
+    def test_paid_customer_site_is_logged_after_commit_and_read_within_receipt_limit(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        messages = []
+        lua.globals().print = messages.append
+
+        def include(name):
+            if name != 'CSC_AdjacencyCore':
+                lua.execute(gameplay_source(name))
+
+        lua.globals().include = include
+        include('CSC_AI_BakersGameplay')
+        lua.execute('''
+ExposedMembers.CSC_Adjacency={IsSinglePlayer=function()return true end}
+CSC_AI_QuarterPlacement.MaterialDeductions=function()return{},{},{},{},{},{}end
+CSC_AI_QuarterSiteForecasts=function()return{}end
+CSC_AI_EconomyAdapters.Snapshot=function(_,_,ui)
+    return{ui=ui,chains={},QuoteCount=function()return 0 end}
+end
+CE_AIDistrictPurchaseCompletionStage=function()return 1 end
+CE_AIDistrictPurchaseCompletionStatus=function()return '{"ready":1,"faults":0,"capacity":4096}' end
+CE_AIDistrictPurchaseCompletionReceipt=function()return '{}' end
+city:GetDistricts().HasDistrict=function(_,district)return district==3 end
+CE_AIDistrictScoresReceipt=function()return '{"staged":1,"writes":0}' end
+CSC_AI_EconomyAdapters.QuarterBids=function(snapshot)
+    snapshot.planCustomerPurchases=true
+    local count=turn==1 and 17 or 4096
+    local entries={}
+    for i=1,count do entries[i]={player=3,city=i,district=2,plot=100,delta=64,customer=true} end
+    entries[#entries+1]={player=3,city=42,district=1,plot=101,delta=122,customer=true,customerPurchaseGold=35}
+    return entries,{evaluated=0,final=0,unknown=0,streams=0,omissions=0}
+end
+boundary(); turn=2; boundary()
+assert(packet and #packet==4096 and version==2)
+''')
+        offers = [line for line in messages if 'CSC_AI_CUSTOMER_LAND_OFFER' in line]
+        self.assertEqual(len(offers), 1)
+        self.assertIn('plot=101 invoice=35 bidQ8=122 version=1', offers[0])
+        receipts = [line for line in messages if 'CSC_AI_CUSTOMER_RECEIPT' in line]
+        self.assertEqual(len(receipts), 16)
+        self.assertIn('version=1 player=3 city=42 district=1 plot=101', receipts[0])
+
     def test_balanced_two_stage_bid_keeps_publication_order_across_input_permutations(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)

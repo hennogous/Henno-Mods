@@ -118,14 +118,20 @@ class ConnectionCounts(unittest.TestCase):
 
     def test_purchased_customer_tile_joins_the_district_request_and_debit(self):
         log = '\n'.join(['CSC_CUSTOMER_LAND_WATCH_INSTALLED',
-            'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',
+            'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40 bidQ8=200 version=3',
+            'CSC_AI_CUSTOMER_RECEIPT turn=8 version=3 player=1 city=5 district=4 plot=23 result={"writes":1}',
+            'CSC_AI_CUSTOMER_RECEIPT turn=8 version=3 player=1 city=5 district=4 plot=24 result={"writes":0}',
             'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
             'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
             record('FOUNDATION', turn=10, player=1, city=5, district=4, plot=23, foundationDateKnown='true')])
         rows = [[str(turn),'1','City TEST','Build City District','RUNNING','Purchase Plot',f'Purchase 3 2: {state} on #12']
                 for turn,state in [(7,'Accepted'),(8,'Accepted'),(9,'Done')]]
         history = parse(log,'CSC_PLANNING_')
-        purchase, = customer_land_purchases(log,history,{1},15,rows)['purchases']
+        result = customer_land_purchases(log,history,{1},15,rows)
+        purchase, = result['purchases']
+        offer, = result['offers']
+        self.assertEqual((offer['version'], offer['delta_q8'], offer['receipt'], offer['logged_after_commit']),
+                         (3, 200, {"writes":1}, True))
         self.assertEqual((purchase['district_request_turn'],purchase['matching_debit'],purchase['foundation']), (8,True,(10,4)))
         self.assertEqual(purchase['request_history'][-1], (9,12,'Done','City TEST'))
         partial = customer_land_purchases(log,history,{1},8,rows)

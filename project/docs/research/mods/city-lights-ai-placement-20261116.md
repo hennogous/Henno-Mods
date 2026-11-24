@@ -1003,6 +1003,12 @@ turn 52. The purchase watcher recorded no plot-purchase event for 973
 through the turn-175 census. The control also completed that same
 provider on turn 52. This demonstrates bid publication and successful
 use of the site. Verification of spending still needs a different case.
+The publisher now records the paid-site offer with the version of the
+committed packet and prioritizes its exact readback inside the existing
+16-receipt limit. The comparison joins those receipts to the offer.
+Older runs can lack a readback for the paid site. The receipt confirms
+whether CE actually wrote a score update. Ownership and spending remain
+separate events.
 
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |

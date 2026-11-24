@@ -805,11 +805,34 @@ def endpoint_pair_supply(census, observations, players):
 def customer_land_purchases(log, observations, players, through, tree_rows):
     """Join a priced offer to the buyer, observed Gold change and later use."""
     offers = defaultdict(list)
+    native_offers = []
+    versions = defaultdict(set)
+    for row in observations:
+        if row['kind'] == 'PUBLICATION' and row['accepted']:
+            versions[row['pendingTurn']].add(row['version'])
+    receipts = {}
+    for match in re.finditer(r'CSC_AI_CUSTOMER_RECEIPT turn=\d+ version=(\d+) player=(\d+) city=(\d+) '
+                             r'district=(\d+) plot=(\d+) result=(\{[^\r\n]*\})', log):
+        try:
+            receipt = json.loads(match[6])
+        except json.JSONDecodeError:
+            continue
+        receipts[tuple(map(int, match.groups()[:5]))] = receipt
     for match in re.finditer(r'CSC_AI_CUSTOMER_LAND_OFFER turn=(\d+) player=(\d+) city=(\d+) '
-                             r'district=(\d+) plot=(\d+) invoice=(\d+)', log):
-        turn, player, city, district, plot, price = map(int, match.groups())
+                             r'district=(\d+) plot=(\d+) invoice=(\d+)(?: bidQ8=(-?\d+)(?: version=(\d+))?)?', log):
+        turn, player, city, district, plot, price = map(int, match.groups()[:6])
         if player in players and turn <= through:
             offers[player, city, plot].append((match.start(), turn, district, price))
+            # New logs come after a successful commit and carry the exact
+            # version. Legacy proposal logs may precede a failed publication
+            # or a trimmed entry. Only a native receipt verifies that cell.
+            current = versions.get(turn, ())
+            committed = int(match[8]) if match[8] else (next(iter(current)) if len(current) == 1 else None)
+            receipt = receipts.get((committed, player, city, district, plot))
+            native_offers.append(dict(turn=turn, player=player, city=city, district=district, plot=plot,
+                                      invoice=price, delta_q8=int(match[7]) if match[7] else None,
+                                      version=committed, logged_after_commit=match[8] is not None,
+                                      receipt=receipt))
     treasury = {}
     for turn, player, ordinal, before, after in re.findall(
             r'CSC_CUSTOMER_TREASURY\t(\d+)\t(\d+)\t(\d+)\t([-\d.]+)\t([-\d.]+)', log):
@@ -882,7 +905,7 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                               matching_debit=sum(amount in {cost for _,cost in quotes} for amount in debits)==1,
                               foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
     return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, ai_plot_purchases=ai_purchases,
-                districts_on_purchased_plots=district_uses, offered_tiles=len(offers), purchases=purchases,
+                districts_on_purchased_plots=district_uses, offered_tiles=len(offers), offers=native_offers, purchases=purchases,
                 completed_partners_on_purchased_land=completed_on_purchased_land)
 
 

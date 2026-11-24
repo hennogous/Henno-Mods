@@ -169,6 +169,7 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                                      offer_during_post_switch_publication=offered_after_switch,
                                      purchase_after_switch=after_switch(row['turn'])))
             land = dict(
+                offers=[row for row in audit['offers'] if (row['city'], row['district'], row['plot']) == targets[1]],
                 spending=spending,
                 completed_on_purchased_plot=[row for row in audit['completed_partners_on_purchased_land']
                                              if (row['city'], row['district'], row['plot']) == targets[1]
