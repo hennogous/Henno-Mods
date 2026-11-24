@@ -146,6 +146,40 @@ snapshot.ProspectiveCustomerReady=function()return 50 end
 assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
 ''')
 
+    def test_two_saved_quarters_choose_a_stable_customer_hint(self):
+        vm = self.vm()
+        vm.execute((AI/'CSC_AI_PlanContinuity.lua').read_text(encoding='utf-8'))
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true
+local supply={base={{plot=37}},specialty={}}
+local function record(city,fresh)
+    return C.LayoutRecord({city=city,district=3,plot=10+city},
+        {city=5,district=1,plot=20+city,stage=2},supply,nil,nil,nil,fresh)
+end
+PlayersVisibility={}
+Cities={GetPlotPurchaseCity=function(plot)return {GetID=function()return plot.city end}end}
+Map.GetPlotByIndex=function(index)
+    local founded=index<20
+    return {city=founded and index-10 or 5,GetOwner=function()return 1 end,
+        GetDistrictType=function()return founded and 3 or -1 end}
+end
+local placement={StageTwoProfiles=function()return {{key='TEST',district={Index=3}}}end}
+local function loadPlans(a,b)
+    turn=turn+1
+    local encoded=C.EncodeLayouts({a,b})
+    Game.GetProperty=function(_,k)if k=='CSC_AI_PlannedLayoutsV1_1' then return encoded end end
+    local s={id=1,cities={[5]={},[6]={},[7]={}},districts={[16]={city=6,type=3},[17]={city=7,type=3}},
+        Supply=function()return supply end,player={GetCities=function()return {Members=function()return ipairs({})end}end}}
+    E.QuarterBids(s,placement,{},{})
+    return s.partnerHints['5:1']
+end
+assert(loadPlans(record(6,19),record(7,20))==27)
+assert(loadPlans(record(7,20),record(6,20))==26)
+assert(loadPlans(record(6,20),record(7,20))==26)
+''')
+
     def test_provider_foundation_hands_off_both_directions_without_a_buyer(self):
         vm=self.vm()
         vm.execute((AI/'CSC_AI_PlanContinuity.lua').read_text(encoding='utf-8'))

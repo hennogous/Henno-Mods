@@ -646,12 +646,16 @@ local function refresh(turn)
     -- Receipt caps limit logging work. They do not limit what CE receives.
     local tracked = {turn=turn,version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes,
         connections={}}
-    local connectionReads={quarterFirst=0,customerFirst=0,prospective=0}
+    -- Each kind of connection cost gets four readbacks. The adapter also
+    -- emits plannedSupply when a deposit needs protection. Start each kind
+    -- at zero on first sight so a new policy can share this receipt path.
+    local connectionReads={}
     for _, entry in ipairs(entries) do
         local connectionOrder=entry.connectionOrder
-        if connectionOrder and connectionReads[connectionOrder]<4 and type(CE_AIDistrictScoresReceipt)=='function'then
+        local reads=connectionReads[connectionOrder] or 0
+        if connectionOrder and reads<4 and type(CE_AIDistrictScoresReceipt)=='function'then
             tracked.connections[#tracked.connections+1]=entry
-            connectionReads[connectionOrder]=connectionReads[connectionOrder]+1
+            connectionReads[connectionOrder]=reads+1
         end
         if entry.finalQ8~=nil then tracked.economy[#tracked.economy+1]=entry end
         if entry.weak then

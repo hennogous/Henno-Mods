@@ -106,6 +106,34 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_network_games_and_unknown_modes_never_publish_on_load_or_turn(self):
+        ui = SOURCE.parent / 'Adjacencies/CSC_AdjacencyUI.lua'
+        for mode in ('network', 'hotseat', 'missing-query', 'unknown-result'):
+            with self.subTest(mode=mode):
+                lua = LuaRuntime()
+                lua.execute(FIXTURE)
+                lua.globals().print = lambda *args: None
+                lua.globals().include = lambda name: lua.execute(gameplay_source(name)) if name != 'CSC_AdjacencyCore' else None
+                lua.globals().mode = mode
+                lua.execute('''
+                    GameConfiguration.IsAnyMultiplayer=function()
+                        if mode=='unknown-result' then return nil end
+                        return mode=='network'
+                    end
+                    GameConfiguration.IsHotseat=function()return mode=='hotseat' end
+                    if mode=='missing-query' then GameConfiguration.IsAnyMultiplayer=nil end
+                    Events.LoadScreenClose={Add=function(fn) loadClosed=fn end}
+                    writes,disables,reads=0,0,0
+                    Game.SetProperty=function() writes=writes+1 end
+                    CE_AIDistrictScoresDisable=function() disables=disables+1;packet=nil;return 1 end
+                    CE_AIDistrictScoresStatus=function() reads=reads+1;return '{"ready":1,"faults":0,"version":0}' end
+                    packet={'previous session'}
+                ''')
+                lua.execute(ui.read_text(encoding='utf-8'))
+                lua.execute(gameplay_source('CSC_AI_BakersGameplay'))
+                lua.execute('loadClosed(); turn=2; boundary()')
+                self.assertTrue(lua.eval('packet==nil and version==0 and writes==0 and reads==0 and disables>=1'))
+
     def test_publisher_enables_only_the_finishing_consumer_by_default(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)
@@ -154,7 +182,7 @@ class BakersGameplayTest(unittest.TestCase):
 ExposedMembers.CSC_Adjacency={IsSinglePlayer=function()return true end}
 CSC_AI_QuarterPlacement.MaterialDeductions=function()return{},{},{},{},{},{}end
 CSC_AI_QuarterSiteForecasts=function()return{{player=3,city=42,district=1,plot=100,delta=256}}end
-CSC_AI_EconomyAdapters.Snapshot=function(_,_,ui)return{ui=ui,QuoteCount=function()return 0 end}end
+CSC_AI_EconomyAdapters.Snapshot=function(_,_,ui)return{ui=ui,chains={},QuoteCount=function()return 0 end}end
 CSC_AI_EconomyAdapters.DeferredQuarterQ8=-262144
 CE_AIDistrictScoresManagedType=function(player,district,default)assert(player==3 and district==3 and default==-262144);managed=true;return 1 end
 CE_AIDistrictScoresFinalEntry=function(...)packet[#packet+1]={...};return 1 end
@@ -211,7 +239,8 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
                 return {},{},{{player=3,city=42,building=8,delta=256}},{},{},{}
             end
             CSC_AI_QuarterSiteForecasts=function()
-                return {{player=3,city=42,district=2,plot=100,delta=256,customer=true}}
+                return {{player=3,city=42,district=2,plot=100,delta=256,customer=true,
+                         connectionOrder='plannedSupply',connectionCostQ8=4096}}
             end
             CE_AIBuildingNominationStatus=function()
                 return '{"ready":1,"faults":0,"maxBidQ8":1024}'
@@ -228,6 +257,8 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
             boundary()
             turn=2; boundary()
         """)
+        self.assertTrue(any('CSC_AI_CONNECTION_RECEIPT turn=2 version=1' in line
+                            and 'order=plannedSupply costQ8=4096' in line for line in messages))
         self.assertIn('CSC_AI_CUSTOMER_RECEIPT turn=2 version=1 player=3 city=42 district=2 plot=100 '
                       'result={"staged":1,"scoreAttempts":0}', messages)
         self.assertIn('CSC_AI_BUILDING_RECEIPT turn=2 version=1 player=3 city=42 building=8 '
@@ -583,6 +614,8 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
                     assert(chain.profile.key=='BAKERS' and buyer:GetID()==77 and plot==99)
                     if building.Index==11 then return 9000 end
                 end,
+                LaterStageInvestments=function() end,
+                ServiceResearch=function() end,
             }
             CityManager = {GetCity=function(player, id)
                 assert(player==3 and id==77)

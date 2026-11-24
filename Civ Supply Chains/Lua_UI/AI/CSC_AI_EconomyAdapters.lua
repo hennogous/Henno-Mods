@@ -1901,6 +1901,7 @@ local function restoreLayouts(snapshot,profiles)
     local saved=C.ReadLayouts(snapshot.planState.savedLayouts,turn)
     snapshot.savedLayouts={};snapshot.nextLayouts={}
     snapshot.handoffs={};snapshot.partnerHints={}
+    local hintPlans={}
     local byDistrict={}
     for _,profile in ipairs(profiles) do byDistrict[profile.district.Index]=profile end
     local function footprint(index,city,district)
@@ -1930,8 +1931,20 @@ local function restoreLayouts(snapshot,profiles)
                     local anchor=q=='founded' and p.plot or p.partnerPlot
                     local missing=q=='founded' and p.partnerPlot or p.plot
                     local group=table.concat({order,anchor,p.stage,profile.key},':')
-                    snapshot.handoffs[group]={record=p,plot=missing,phase=q=='founded' and 1 or 2}
-                    if q=='founded' then snapshot.partnerHints[p.partnerCity..':'..p.partnerDistrict]=missing end
+                    local previous=snapshot.handoffs[group]
+                    if C.PreferLayout(p,previous and previous.record) then
+                        snapshot.handoffs[group]={record=p,plot=missing,phase=q=='founded' and 1 or 2}
+                    end
+                    if q=='founded' then
+                        -- The customer scan can carry one preferred plot per
+                        -- city and type. Competing plans use the save order's
+                        -- stable tie-break before the consumer reads this hint.
+                        local target=p.partnerCity..':'..p.partnerDistrict
+                        if C.PreferLayout(p,hintPlans[target]) then
+                            hintPlans[target]=p
+                            snapshot.partnerHints[target]=missing
+                        end
+                    end
                     -- Keep the anchor while growth or an unlock delays the
                     -- missing district. Only a fresh useful quote renews it.
                     snapshot.nextLayouts[key]=p

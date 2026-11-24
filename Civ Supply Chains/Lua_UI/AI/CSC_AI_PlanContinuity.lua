@@ -180,14 +180,18 @@ end
 local layoutFields={'city','district','plot','partnerCity','partnerDistrict','partnerPlot',
     'stage','alternateQuarter','alternatePartner','first','fresh','phase','invoice'}
 local function layoutKey(p)return p.city..':'..p.district end
+-- Two Quarters can want the same customer. Saving and restoring must give
+-- precedence to the same plan even when Lua visits table keys differently.
+function C.PreferLayout(a,b)
+    if not b then return true end
+    if a.fresh~=b.fresh then return a.fresh>b.fresh end
+    if a.city~=b.city then return a.city<b.city end
+    return a.district<b.district
+end
 function C.EncodeLayouts(layouts)
     local rows={}
     for _,p in pairs(layouts) do rows[#rows+1]=p end
-    table.sort(rows,function(a,b)
-        if a.fresh~=b.fresh then return a.fresh>b.fresh end
-        if a.city~=b.city then return a.city<b.city end
-        return a.district<b.district
-    end)
+    table.sort(rows,C.PreferLayout)
     local lines={'1'}
     for i=1,math.min(#rows,C.MaxPlans) do
         local p,fields=rows[i],{}

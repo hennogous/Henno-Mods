@@ -34,6 +34,14 @@ action and a realised Service. Label diagnostic-only code so it cannot be
 mistaken for live policy. Keep comments next to the relevant code and update
 them in the same change. Review their accuracy and usefulness before committing.
 
+For AI changes, review multiplayer determinism alongside performance. CSC's
+Lua/CE publisher currently runs only in confirmed single-player sessions.
+Keep gameplay choices independent of local UI timing, wall clocks and
+unsynchronised random draws. Resolve competing plans and limited bid slots
+by stable gameplay identities. Check save/reload and callback order whenever
+a new cache, tie-break or writer can affect a decision. The roadmap records
+the separate two-client checks needed before enabling native guidance online.
+
 ## Native code and Community Extension contributions
 
 Use [cru121/civ6-dev-ce `dev`](https://github.com/cru121/civ6-dev-ce/tree/dev)

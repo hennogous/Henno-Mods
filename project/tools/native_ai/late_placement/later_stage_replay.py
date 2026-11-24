@@ -251,6 +251,18 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=source_gate)
         ce = next(item for item in installed if item['role'] == 'ce')
         verify_modules(session, (ce['install'] / 'Binaries/Win64' / DLL).resolve(), output, STEAM_26595377_CORE_SHA)
+        if paired_layout_csc:
+            # Short replays isolate the prospective extension on top of the
+            # anchored planner in both arms. Set that common starting state
+            # at the loaded boundary so they can use the exact full-game pin.
+            # The qualification control reads the packaged defaults separately.
+            code = (f'assert(Game.GetCurrentGameTurn()=={start});local A=assert(CSC_AI_EconomyAdapters);'
+                    'assert(A.ProspectiveConnectionsEnabled==false);'
+                    'A.AnchoredConnectionsEnabled=true;A.AnchoredConnectionAuditEnabled=true;'
+                    'print("CSC_REPLAY_ANCHORED",tostring(A.AnchoredConnectionsEnabled),'
+                    'tostring(A.AnchoredConnectionAuditEnabled))')
+            raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'paired-layout-common-opening')
+            require(re.search(r'CSC_REPLAY_ANCHORED\s+true\s+true',raw), 'Missing common replay policy')
         if natural_sacristan is not None:
             # Both arms use the same integrated package throughout pre-roll.
             # Only the target civic's Service credit is toggled after setup.

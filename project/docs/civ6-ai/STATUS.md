@@ -15,13 +15,19 @@ Harbor was still locked at turn 100. Both arms built those same first
 districts. The control reached 125. Civ reported an in-page exception at
 turn 100 in the treatment, so the comparison covers turns 91–100.
 
-The next short replay starts from a separate turn-100 save and tracks
-customer land offers. The full-game candidate also fixes an accounting
+The separate turn-100 customer-land control reached 140 with 17 observed
+plot purchases. The first treatment protected a supplier at turn 103.
+The publisher then failed while collecting readbacks because its receipt
+counter had no entry for planned supply. The corrected publisher assigns
+four readbacks to each encountered cost type. The active replay repeats
+the same save and switch. The full-game candidate also fixes an accounting
 error on purchased customer sites. Part of the site's value can fund the
 purchase bid, with the remainder discouraging a competing district. The
 old code copied the original amount back into the deterrent after the
 split. A regression now exercises both bids together. All 223 economy
-checks pass. Live purchase through customer construction and improved
+checks passed at that revision. The current suite passes 224 economy checks
+and eight publisher checks, including network-mode gating and tie resolution
+when two Quarters plan the same customer. Live purchase through customer construction and improved
 full-game pair conversion remain open.
 
 The revised-cap baseline modeled 20 strong Quarter–customer pairs. One
