@@ -50,3 +50,23 @@ that forecast ends. Revisited plans still count against the same logical
 budget. The Pangaea turn-200 comparison confirmed equality for all bids,
 plans, and detailed forecasts in two tested player passes.
 [Optimization and measurements](../research/mods/csc-ai-joint-guidance-performance-20261118.md).
+
+## Quarter-layout campaign, 24 November
+
+Timing over the full 250 turns averaged 1.65 → 2.75 seconds with CSC alone
+and 1.97 → 3.93 with City Lights. The rise was largest in mature empires.
+Each cell below is the mean and maximum whole-publisher time in seconds.
+
+| Turns | CSC default | CSC candidate | City Lights default | City Lights candidate |
+| --- | ---: | ---: | ---: | ---: |
+| 1–100 | 0.56 / 1.63 | 1.17 / 3.07 | 0.64 / 1.49 | 0.97 / 2.58 |
+| 101–200 | 2.23 / 3.34 | 3.55 / 7.82 | 2.99 / 4.92 | 5.40 / 7.88 |
+| 201–250 | 2.67 / 3.55 | 4.29 / 5.77 | 2.61 / 3.36 | 6.93 / 8.96 |
+
+The mature City Lights candidate spent 2.59 seconds per turn on average in
+player 5's span, versus 0.16 in the default. The recorded joint forecast
+work for that seat rose from 223 to 1,049 logical evaluations per turn.
+The same-save checks separate the cost of the economic model from
+differences in what the two empires built during the full games.
+[Standalone layout results](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november)
+and [City Lights results](../research/mods/city-lights-ai-placement-20261116.md#matched-city-lights-result-at-turn-250).

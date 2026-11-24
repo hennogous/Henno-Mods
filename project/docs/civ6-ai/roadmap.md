@@ -106,6 +106,12 @@ and follows both provider tiles through 155. Compare the current-version
 bid, selected plot, purchase, foundation and working Base. The separate
 Gori replay covers customer land on the earlier map. [Case and regression evidence](../research/mods/city-lights-ai-placement-20261116.md#where-did-the-second-district-go).
 
+The matched standalone turn-150 replay then showed the other build order.
+Both arms founded the same Commercial Hub. The candidate completed
+adjacent Tailors with a working Base. The control selected Tailors later
+and had yet to start it at the turn-168 endpoint.
+[Tenochtitlan customer-first replay](../research/mods/city-lights-ai-placement-20261116.md#tenochtitlan-completed-a-customer-first-tailors-layout).
+
 **Customer land between purchase and construction (1.5–1.6, 2.1).**
 When the intended city acquires a previously priced customer tile before
 either district is founded, the candidate can retain the pair across

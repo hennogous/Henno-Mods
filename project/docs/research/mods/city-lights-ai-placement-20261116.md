@@ -1228,6 +1228,40 @@ from turn 150. The matched report keeps every observed acceptance,
 including those before a planner offer, and joins the initial acceptance
 to exact native selections using the committed offer's packet version.
 
+Both matched arms reached turn 184. Each had an accepted Mbanza request
+on 2606 under contract 2944 from turn 151. The candidate priced the paid
+Hub at −56.8 link utility after the 80 Gold cost on turn 156, against
++20.9 for the owned 2533. Neither arm bought 2606. Both founded a Hub
+next to Bakers on 2533 at turn 166. It completed on 177 in the control
+and 178 in the candidate. This is a case where the existing owned
+alternative delivers the same link at a lower land cost.
+
+The original standalone game offers a second replay case. Atzcapotzalco
+founded Bakers on 1125 at turn 51, completed it on 59, then bought 1051
+for 45 Gold at turn 67. Its Hub foundation was on 83 and the pair was
+complete by 89. The original record has no CSC purchase offer. The
+hash-verified candidate with the new appraisal is queued for a matched
+replay from the turn-50 checkpoint through 95.
+
+### Tenochtitlan completed a customer-first Tailors layout
+
+Both standalone copies loaded the same turn-150 save and founded the
+Commercial Hub on 603 at turn 154. In the candidate, the paired plan
+proposed Tailors on adjacent 602 from turn 151. The native city build
+tree reserved 602 and submitted Tailors contract 3720 on turn 162 at
+3,138 utility. Tenochtitlan began Tailors on 163 and completed it on 164,
+nine turns after the first foundation. The pair had a working Base
+supplier at turn 168. The districts had the mapped sales adjacency.
+The Commercial Hub's mapped building was absent when both districts
+were complete, so its building transaction was still pending.
+
+The control started a Water Park in Tenochtitlan on turn 161. Its later
+district comparison also selected Tailors 602. The tree reserved 602
+and reported it clear on 163. The district-build node reported
+`Not Building`, and no Tailors foundation followed by turn 168.
+The candidate started a Water Park in Texcoco on 161. The observed
+difference reaches the production request and actual construction.
+
 #### What happened after a priced City Lights layout began
 
 The candidate priced 168 distinct exact layouts. Fifty saw at least one
