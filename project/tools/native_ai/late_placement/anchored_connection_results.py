@@ -262,6 +262,7 @@ def prospective_footprints(log, observations, players, through, competition, *, 
     names = {int(index): title for index, title in DISTRICT_TITLE.findall(log)}
     versions = defaultdict(set)
     foundations, completions, choices = defaultdict(list), defaultdict(list), defaultdict(list)
+    city_winners = defaultdict(set)
     offered = defaultdict(set)
     for row in observations:
         kind = row['kind']
@@ -275,6 +276,8 @@ def prospective_footprints(log, observations, players, through, competition, *, 
                 completions[identity].append(row.get('completionTurn', row['turn']))
             if kind == 'NATIVE_BEST' and row.get('player') in players:
                 choices[row['player'], row['city'], row['plot']].append(row)
+                if row['district'] >= 0 and row['plot'] >= 0:
+                    city_winners[row['player'], row['city']].add((row['turn'], row['district'], row['plot']))
             if kind == 'OPPORTUNITY' and row.get('offered') and row.get('player') in players:
                 identity = tuple(row[k] for k in ('player', 'city', 'district', 'plot'))
                 offered[identity].add(row['version'])
@@ -289,6 +292,10 @@ def prospective_footprints(log, observations, players, through, competition, *, 
     if planned:
         for match in CUSTOMER_RECEIPT.finditer(log):
             row = json.loads(match[2])
+            if row['k'] == 'best' and row['eligible'] == 1 and row['player'] in players:
+                observed = re.search(r'observedTurn=(\d+)', match[0])
+                if observed and row['district'] >= 0 and row['plot'] >= 0:
+                    city_winners[row['player'], row['city']].add((int(observed[1]), row['district'], row['plot']))
             if row['k'] != 'cache' or row['eligible'] != 1:
                 continue
             target = tuple(row[key] for key in ('player', 'city', 'district', 'plot'))
@@ -346,11 +353,29 @@ def prospective_footprints(log, observations, players, through, competition, *, 
     result = []
     for (quarter, customer), turns in sorted(layouts.items(), key=lambda item: (min(item[1]), item[0])):
         active = set().union(*(versions[turn] for turn in turns))
+        qsite, csite = footprint(quarter, turns, active), footprint(customer, turns, active)
+        follow_through = {}
+        for role, anchor, target, identity in (('customer', qsite, csite, customer), ('quarter', csite, qsite, quarter)):
+            first, second = anchor['first_occupation'], target['first_occupation']
+            if not first or not first['matched']:
+                continue
+            end = second['turn'] if second else through
+            player, city, district, plot = identity
+            # A short scout and the full-game observer may record the same
+            # choice. Count distinct turn/type/plot sightings after foundation.
+            # An open plot can lose the district to a different tile even on
+            # turns without a fresh CSC bid. The winning choice is observable
+            # there, while its margin requires a same-packet losing-cell read.
+            observed = sorted(x for x in city_winners[player, city] if first['turn'] < x[0] <= end)
+            if end > first['turn']:
+                follow_through[role] = dict(observed_choices=len(observed),
+                    exact_target=sum(d == district and p == plot for _, d, p in observed),
+                    same_type_elsewhere=[dict(observed_turn=t, plot=p) for t, d, p in observed if d == district and p != plot],
+                    other_districts=dict(Counter(names.get(d, str(d)) for _, d, _ in observed if d != district)))
         result.append(dict(first_offer=min(turns), last_offer=max(turns), modeled_turns=len(turns),
                            quarter_published=bool(active & offered[quarter]),
                            observed_substitutes=substitutes[quarter, customer],
-                           quarter=footprint(quarter, turns, active),
-                           customer=footprint(customer, turns, active)))
+                           post_foundation_choices=follow_through, quarter=qsite, customer=csite))
     return result
 
 
@@ -363,6 +388,10 @@ def prospective_footprint_counts(layouts):
         count = counts[family]
         count['modeled_pairs'] += 1
         count['pairs_with_quarter_offer'] += pair['quarter_published']
+        for role, follow in pair.get('post_foundation_choices', {}).items():
+            count[role + '_pending_after_partner_founded'] += 1
+            count[role + '_with_later_city_choice'] += follow['observed_choices'] > 0
+            count[role + '_selected_elsewhere_after_partner_founded'] += bool(follow['same_type_elsewhere'])
         built = []
         for role, target in (('quarter', quarter), ('customer', customer)):
             if target['native_same_plot_choices'].get(target['district']):
@@ -942,6 +971,11 @@ def paired_full_game_result(control, treatment):
                                                  for k in ('outcomes','lost_to','losses')},
                            surveyed_services=operation['stock' if arm == 'control' else 'combined'],
                            guidance_wall=result['timing'], native_managed_wall=result['native_managed_timing'],
+                           partner_choices=[dict(quarter_plot=p['quarter']['plot'], quarter=p['quarter']['district'],
+                                customer_plot=p['customer']['plot'], customer=p['customer']['district'],
+                                player=p['quarter']['player'], choices=p['post_foundation_choices'])
+                               for p in (result['priced_footprints'] or result['prospective_footprints'])
+                               if any(leg['observed_choices'] for leg in p['post_foundation_choices'].values())],
                            contested_layouts=[pair for pair in (result['priced_footprints'] or result['prospective_footprints']) if any(
                                pair[side]['nearest_loss'] or pair[side]['nearest_cached_loss']
                                for side in ('quarter', 'customer'))])

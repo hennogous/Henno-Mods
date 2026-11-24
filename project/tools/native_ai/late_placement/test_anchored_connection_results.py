@@ -228,6 +228,12 @@ class ConnectionCounts(unittest.TestCase):
             '"generation":6,"version":2,"player":1,"city":8,"district":6,"plot":20,"result":59,"eligible":1}',
             record('FOUNDATION', turn=5, foundationTurn=5, foundationDateKnown='true',
                    player=1, city=7, district=43, plot=10),
+            record('NATIVE_BEST', turn=8, version=7, player=1, city=8, district=6, plot=23,
+                   generation=9, nativeOrdinal=15, result=42),
+            'CSC_CUSTOMER_WATCH_NATIVE observedTurn=8 generation=9 ordinal=15 record={"k":"best",'
+            '"generation":9,"version":7,"player":1,"city":8,"district":6,"plot":23,"result":42,"eligible":1}',
+            record('NATIVE_BEST', turn=11, version=10, player=1, city=8, district=6, plot=24,
+                   generation=10, nativeOrdinal=16, result=50),
             record('FOUNDATION', turn=10, foundationTurn=10, foundationDateKnown='true',
                    player=2, city=9, district=33, plot=20),
         ])
@@ -243,6 +249,8 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(row['customer']['nearest_cached_loss']['gap_q8'], 13)
         self.assertFalse(row['customer']['first_occupation']['matched'])
         self.assertEqual(row['customer']['first_occupation']['player'], 2)
+        self.assertEqual(row['post_foundation_choices'], {'customer': dict(observed_choices=1,
+                         exact_target=0, same_type_elsewhere=[dict(observed_turn=8,plot=23)], other_districts={})})
 
     def test_strong_pair_counts_each_physical_customer_once_across_stages(self):
         offer = ('CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
