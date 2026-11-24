@@ -26,11 +26,20 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
     stages = defaultdict(list)
     for name, pattern in (('proposals', PLAN), ('observed_substitutes', PROSPECTIVE_SUBSTITUTE)):
         stages[name] = []
+        related = 'related_' + name
+        stages[related] = []
         for payload in pattern.findall(log):
             row = {key: int(value) for key, value in (word.split('=', 1) for word in payload.split())}
-            if row['player'] == player and ((row['quarterCity'], row['quarterPlot']) in wanted
-                                          or (row['customerCity'], row['customerPlot']) in wanted):
+            if row['player'] != player:
+                continue
+            quarter = row['quarterCity'], row['quarter'], row['quarterPlot']
+            customer = row['customerCity'], row['customer'], row['customerPlot']
+            if quarter == targets[0] and customer == targets[1]:
                 stages[name].append(row)
+            elif (quarter[0], quarter[2]) in wanted or (customer[0], customer[2]) in wanted:
+                # A different district or an alternate on either footprint
+                # is useful for diagnosis, but does not count as this offer.
+                stages[related].append(row)
     # The native scout records both fresh net and final-cache reads. Use an
     # eligible cache value preceding the winner to calculate a score gap.
     # An unpriced cell or a later read supplies no counterfactual result.

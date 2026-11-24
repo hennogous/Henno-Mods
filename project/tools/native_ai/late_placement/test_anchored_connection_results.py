@@ -1,8 +1,11 @@
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from anchored_connection_results import (bid_competition, connection_counts, failed_district_requests,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
+from paired_layout_replay_results import trace_arm
 from planning_results import parse
 
 
@@ -19,6 +22,19 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_short_replay_does_not_count_a_different_customer_on_the_same_tile(self):
+        with TemporaryDirectory() as directory:
+            folder = Path(directory)
+            for name in ('complete.json', 'session-closed.json'):
+                (folder / name).write_text('{"verified":true}', encoding='utf-8')
+            (folder / 'observed-services.json').write_text('{"chains":[]}', encoding='utf-8')
+            (folder / 'Lua.log').write_text('\n'.join(
+                'CSC_AI_PROSPECTIVE_CONNECTION turn=3 player=1 quarterCity=7 quarter=43 quarterPlot=10 '
+                f'customerCity=8 customer={district} customerPlot=20' for district in (6, 7)), encoding='utf-8')
+            rows = trace_arm(folder, ((7, 43, 10), (8, 6, 20)), 1, {})
+        self.assertEqual([row['customer'] for row in rows['proposals']], [6])
+        self.assertEqual([row['customer'] for row in rows['related_proposals']], [7])
+
     def test_failed_bids_use_scores_seen_before_the_exact_native_winner(self):
         def n(kind, ordinal, plot, base, result):
             return ('CSC_CUSTOMER_WATCH_NATIVE observedTurn=5 generation=6 '
