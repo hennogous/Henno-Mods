@@ -1123,6 +1123,25 @@ the actual two footprints and native opportunity. The aggregate loss of
 Bakers links includes relocation and capture as well as a later district
 winning a contested plot.
 
+#### Future adjacency reached a native score
+
+The qualification log identified 28 standalone and 39 City Lights
+layouts below +2 with the Mill alone that reached +2 or more with the
+proposed partner. These covered 23 and 31 distinct Quarter footprints.
+CE wrote a positive final score in a matching qualification packet
+for 21 and 26 of those footprints, respectively. Neither match founded
+one of those exact Quarter footprints after its recorded qualification.
+
+For example, City Lights Tailors 972 had +1 before its proposed
+Rural Community and +2 with it. The provider itself had +2 ordinary
+adjacency, and the schedule expected the pair in eight turns. The
+Quarter earned 15,360 Q8 of siting credit for that qualification.
+CE wrote a positive total of 18,083 Q8 in packet 23. In another
+qualified City Lights layout, Bakers 2574 scored 52,184 Q8 and
+lost to a Theater Square at 91,492 in packet 72. The qualification
+has therefore reached scoring, while its exact follow-through
+still needs a live example.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
