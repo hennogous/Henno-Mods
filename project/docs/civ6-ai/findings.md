@@ -1,5 +1,18 @@
 # CSC findings and evidence
 
+## AI-C229 — A viable substitute lets a different investment use the original customer tile
+
+24 November 2026, roadmap 1.6 and 2.1. In the matched City Lights
+Continents game, the candidate left Oslo's original Hub footprint 1676
+without a scarcity charge on turns 66–67 because 1677 could replace it.
+Norway built Chichen Itza on 1676 and completed its Bakers–Hub pair on
+1602 and 1677. The new Hub had a working Market on turn 173. The control
+used the same Bakers tile, with its Hub on 1676 and a Rural Community
+on 1677. The short Rustavi replay separately recorded the zero-charge
+decision with a comparable substitute. The observed examples use the
+24 November pinned CSC packages and GameCore `4de40abf…`.
+[Short and full-game evidence](../research/mods/city-lights-ai-placement-20261116.md#oslo-completed-the-layout-on-a-released-hubs-substitute).
+
 ## AI-C228 — Both anchored placement orders can price competing use of a footprint
 
 22 November 2026, roadmap 1.2 and 2.1. The optional prototype reuses the
@@ -4462,16 +4475,3 @@ production into the Café on turn 158 and the Theater Square project on turn
 four turns later. The Café was complete only in treatment at the turn-165
 census, with working Flax and Berries adjacent to the Bakers Quarter.
 [Matched logs and supplier state](../research/mods/csc-ai-stage-investments-20261121.md#fractal-checkpoint-from-turn-150-to-165).
-
-## AI-C209 — A viable substitute lets a different investment use the original customer tile
-
-24 November 2026, roadmap 1.6 and 2.1. In the matched City Lights
-Continents game, the candidate left Oslo's original Hub footprint 1676
-without a scarcity charge on turns 66–67 because 1677 could replace it.
-Norway built Chichen Itza on 1676 and completed its Bakers–Hub pair on
-1602 and 1677. The new Hub had a working Market on turn 173. The control
-used the same Bakers tile, with its Hub on 1676 and a Rural Community
-on 1677. The short Rustavi replay separately recorded the zero-charge
-decision with a comparable substitute. The observed examples use the
-24 November pinned CSC packages and GameCore `4de40abf…`.
-[Short and full-game evidence](../research/mods/city-lights-ai-placement-20261116.md#oslo-completed-the-layout-on-a-released-hubs-substitute).
