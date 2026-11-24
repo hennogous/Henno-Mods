@@ -283,3 +283,31 @@ At the endpoint, Score Victory was enabled with a 250-turn limit. The world
 entered the Future Era on turn 241. Bolívar, Pachacuti and Tamar reached the
 Future Era. Shaka, Gilgamesh and Lautaro reached the Information Era. See
 `era-check-ui/era-and-victory.txt` for the saved game's own readings.
+
+#### Why the run produced four fewer Quarters
+
+| Original AI seats | Earlier run | Installed CSC |
+|---|---:|---:|
+| Distinct Quarter sites with a positive offer | 127 | 114 |
+| Recorded comparisons of positive Quarter bids | 1,105 | 891 |
+| Quarter bids outscored | 975 | 810 |
+| Exact Quarter bid selected | 129 (11.7%) | 80 (9.0%) |
+| Distinct Quarter sites with an exact bid selected | 27 | 20 |
+| Quarter construction requests recorded | 23 | 19 |
+| Requests completed / failed or cancelled / still submitted | 19 / 2 / 2 | 15 / 2 / 2 |
+
+Comparison counts include repeats. Site counts use player, city, district and
+plot. All 20 earlier foundations and all 16 new foundations joined to an
+exact recorded bid selection at their site. The city production logs show an
+unchanged count of failed, cancelled and outstanding construction requests.
+The four fewer completed Quarters track four fewer requests.
+
+Twelve foundations matched between the runs. Six earlier Bakers footprints
+and two earlier Tailors footprints dropped out, while three Bakers and one
+Tailors appeared elsewhere. Five of the six earlier Bakers tiles had no
+recorded positive offer in the new run. The sixth, plot 2578, fell from +3 to
++2 direct adjacency in the last offers. The new city evaluating it founded a
+Bakers at plot 2502. Both former Tailors tiles still received offers. Plot
+3087 lost observed comparisons and remained unbuilt. Plot 3009 received a
+wonder foundation on turn 209. These joins use the two runs' `Lua.log`,
+`audited-connection-result.json` and `AI_CityBuild.csv`.
