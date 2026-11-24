@@ -121,6 +121,16 @@ The existing isolated `lupa` dependency is at
 `C:/Users/Shadow/Desktop/Codex/csc-adjacencies/mab-DebugGameplay.sqlite` for the
 QA regression fixture, so its M&C setup starts from the expected baseline.
 
+On 24 November the simulated-peer tests started reading Wonder Service hosts
+from the Quarter gameplay SQL. Before that change, the missing host rows made
+two assertions fail because the fixture had no grant to exercise. In both city
+iteration orders, one shared turn event granted the Tailors' mapped Service
+on Broadway's actual plot. Both peers also produced the same property changes
+after the customer lost its buildings. The multiplayer and Fashion House
+suites passed all 32 checks. The eight AI publisher checks passed separately.
+The [AI roadmap](../civ6-ai/roadmap.md#qualify-and-complete-quarter-layouts)
+records how the single-player gate and saved-plan tie-break work.
+
 Native multiplayer remains pending: fresh game, simultaneous turns, save/reload,
 late join/reconnect, host migration, capture/pillage and route creation/termination
 while supply changes. Check AI and other-human target updates through a host's

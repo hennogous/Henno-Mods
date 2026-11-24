@@ -176,6 +176,17 @@ def legacy_reference_graph(db,scope='population'):
     return result
 
 
+def bind_wonder_hosts(vm):
+    """Expose the same Wonder host and Service pairs as the loaded Quarter SQL."""
+    db = compile_catalogue()
+    try:
+        rows = [dict(row) for row in db.execute('SELECT * FROM CSC_QuarterWonderServices')]
+    finally:
+        db.close()
+    vm.globals().GameInfo.CSC_QuarterWonderServices = vm.globals().fixtureInfo(
+        vm.table_from(rows, recursive=True))
+
+
 def bind_population(vm):
     """Supply the real catalogue to older game-object-only lifecycle fixtures."""
     db=compile_catalogue()

@@ -18,6 +18,10 @@ def load(lua, name):
         sys.path.insert(0,str(ROOT/'project/tools/transactions'))
         from population_catalogue_fixture import bind_population
         bind_population(lua)
+    if name=='WonderServices/CSC_WonderServicePlacement.lua':
+        sys.path.insert(0,str(ROOT/'project/tools/transactions'))
+        from population_catalogue_fixture import bind_wonder_hosts
+        bind_wonder_hosts(lua)
     if name.startswith('TradeRoutes/')and lua.eval('CSC_TradeRouteCore == nil'):
         sys.path.insert(0,str(ROOT/'project/tools/transactions'))
         from route_fixture import bind
@@ -154,6 +158,13 @@ class MultiplayerHardeningTests(unittest.TestCase):
                 ''')
                 load(lua, name)
                 lua.execute('GameEvents.PlayerTurnStarted.Fire(0)')
+                if name.startswith('WonderServices/'):
+                    # Each simulated peer must grant precisely the mapped Service
+                    # on Broadway's tile, even when city iteration is reversed.
+                    self.assertTrue(lua.eval('''#placementCalls == 1
+                        and placementCalls[1].city == customer:GetID()
+                        and placementCalls[1].building == GameInfo.Buildings.BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY.Index
+                        and placementCalls[1].plot == customer:GetBuildings():GetBuildingLocation(GameInfo.Buildings.BUILDING_BROADWAY.Index)'''))
                 # Exercise cleanup as well as normal writes.
                 lua.execute('customer.buildings={};GameEvents.PlayerTurnStarted.Fire(0)')
                 traces.append(lua.eval('writes()'))
