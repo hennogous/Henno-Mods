@@ -64,6 +64,7 @@ candidate.site.city=7;candidate.site.key='Q';candidate.site.quarterReady=6
 candidate.entry.strongLayout={plot=21,city=7,district=1,stage=3,adjacency=2}
 snapshot.connectionQuarters={candidate};snapshot.cities={[7]={object={}}}
 snapshot.ProspectiveCustomerReady=function()return 3 end
+snapshot.CustomerNetValue=function()return -1 end
 snapshot.ProjectedConnectionYields=function()return {YIELD_GOLD=1}end
 CSC_AI_EconomyModel.CustomerBuildingForecast=function(_,venues,_,ready)
     assert(#venues==1 and ready==3)
@@ -87,6 +88,18 @@ candidate.site.prospectiveCustomers={{plot=22,city=7,district=1,adjacency=2,
 plans=E.ProspectiveConnectionPlans(snapshot,{})
 assert(#plans==1 and plans[1].best.plot==20 and plans[1].costQ8==64*256)
 assert(#E.ProspectiveConnectionPlans(snapshot,{[21]=true})==0)
+candidate.site.prospectiveCustomers={}
+candidate.entry.capacityState='ready'
+snapshot.CustomerNetValue=function()return 256 end
+local credits
+plans,credits=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#plans==2 and #credits==2)
+assert(plans[1].costQ8==25*256 and credits[1].valueQ8==25*256 and credits[1].quarter==true)
+assert(plans[2].costQ8==25*256 and credits[2].valueQ8==25*256 and credits[2].quarter==false)
+candidate.entry.economy=true;candidate.entry.player=1
+local adjusted=E.ApplyProspectiveConnectionCredit(snapshot,{candidate.entry,
+    {player=1,city=7,district=1,plot=21,delta=10*256,customer=true}},credits)
+assert(adjusted[1].finalQ8==225*256 and adjusted[2].delta==35*256)
 snapshot.ProspectiveCustomerReady=function()return 50 end
 assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
 ''')

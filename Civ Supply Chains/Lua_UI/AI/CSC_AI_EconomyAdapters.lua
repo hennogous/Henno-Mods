@@ -1465,7 +1465,7 @@ end
 
 function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
     if not(E.ProspectiveConnectionsEnabled and snapshot.ProspectiveCustomerReady
-        and snapshot.ProjectedCustomers and snapshot.ProjectedConnectionYields)then return {}end
+        and snapshot.ProjectedCustomers and snapshot.ProjectedConnectionYields)then return {},{}end
     local groups,ranked={},{}
     local function available(plot,entry)
         local intent=snapshot.intentFootprints and snapshot.intentFootprints[plot]
@@ -1488,7 +1488,25 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
         if x.city~=y.city then return x.city<y.city end
         return x.district<y.district
     end)
-    local plans,claimed={},{}
+    local plans,credits,claimed,admitted={},{},{},{}
+    local function canBid(option,isQuarter)
+        if isQuarter and option.capacityState~='ready'then return false end
+        if not(snapshot.ui and snapshot.ui.GetLegalDistrictTargets)then return false end
+        local key=option.city..':'..option.district
+        local targets=admitted[key]
+        if not targets then
+            targets={};admitted[key]=targets
+            local definition=GameInfo.Districts[option.district]
+            if not definition then return false end
+            local ok,indices=pcall(snapshot.ui.GetLegalDistrictTargets,snapshot.id,option.city,definition.Hash)
+            if ok and type(indices)=='table'then for _,index in ipairs(indices)do targets[index]=true end end
+        end
+        if not targets[option.plot]then return false end
+        if isQuarter then return true end
+        local ready=snapshot.ProspectiveCustomerReady(option.city,option.district)
+        local net=ready and snapshot.CustomerNetValue and snapshot.CustomerNetValue(option.city,option.district,option.plot,ready)
+        return net and net>0
+    end
     local priced=0
     for _,group in ipairs(ranked)do
         local best=group.best
@@ -1527,27 +1545,62 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 if value and value>0 then
                     -- Spend up to half the projected link once across the
                     -- scarce footprints. Each side stays below the existing
-                    -- native64-utility early-cost ceiling. This affects only
-                    -- actual same-tile competitors. An ordinary district on
-                    -- its own site keeps its full bid and queue competition.
+                    -- native64-utility early-cost ceiling. A legally admitted
+                    -- leg splits its allowance between advancing its own bid
+                    -- across plots and charging a rival on the same plot.
+                    -- A waiting leg can only retain space. It submits no
+                    -- positive offer before the native placement gate admits it.
                     local perLeg=math.min(CONNECTION_COST_CAP_Q8,math.floor(value/(2*legs)))
                     if perLeg>0 then
-                        local function retain(option,backup)
+                        local function retain(option,backup,isQuarter)
+                            local credit=canBid(option,isQuarter)and math.floor(perLeg/2)or 0
+                            local cost=perLeg-credit
                             local row={plot=option.plot,option=option,options={option}}
-                            plans[#plans+1]={order='prospective',anchor=backup,stage=layout.stage,best=row,costQ8=perLeg}
+                            plans[#plans+1]={order='prospective',anchor=backup,stage=layout.stage,best=row,costQ8=cost}
+                            if credit>0 then
+                                credits[#credits+1]={city=option.city,district=option.district,plot=option.plot,
+                                    quarter=isQuarter,valueQ8=credit}
+                            end
+                            return cost,credit
                         end
-                        if not movableQuarter then retain(quarter,layout.plot)end
-                        if not movableCustomer then retain(layout,quarter.plot)end
+                        local qCost,qCredit,cCost,cCredit=0,0,0,0
+                        if not movableQuarter then qCost,qCredit=retain(quarter,layout.plot,true)end
+                        if not movableCustomer then cCost,cCredit=retain(layout,quarter.plot,false)end
                         claimed[quarter.plot]=true;claimed[layout.plot]=true
-                        print(string.format('CSC_AI_PROSPECTIVE_CONNECTION turn=%d player=%d quarterCity=%d quarter=%d quarterPlot=%d customerCity=%d customer=%d customerPlot=%d valueQ8=%d quarterCostQ8=%d customerCostQ8=%d',
+                        print(string.format('CSC_AI_PROSPECTIVE_CONNECTION turn=%d player=%d quarterCity=%d quarter=%d quarterPlot=%d customerCity=%d customer=%d customerPlot=%d valueQ8=%d quarterCostQ8=%d customerCostQ8=%d quarterCreditQ8=%d customerCreditQ8=%d',
                             Game.GetCurrentGameTurn(),snapshot.id,quarter.city,quarter.district,quarter.plot,
-                            layout.city,layout.district,layout.plot,value,movableQuarter and 0 or perLeg,movableCustomer and 0 or perLeg))
+                            layout.city,layout.district,layout.plot,value,qCost,cCost,qCredit,cCredit))
                     end
                 end
             end
         end
     end
-    return plans
+    return plans,credits
+end
+
+function E.ApplyProspectiveConnectionCredit(snapshot,entries,credits)
+    if #credits==0 then return entries end
+    local bySite,offers={},{}
+    for _,row in ipairs(entries)do
+        if row.economy and not row.carried then bySite[siteKey(row.city,row.district,row.plot)]=row end
+    end
+    for _,credit in ipairs(credits)do
+        local key=siteKey(credit.city,credit.district,credit.plot)
+        if credit.quarter then
+            local row=bySite[key]
+            if row and row.finalQ8>0 then row.finalQ8=math.min(4096*256,row.finalQ8+credit.valueQ8)end
+        else
+            -- The ordinary customer delta can already contain spatial or
+            -- anchored income. This empty-pair allowance uses only its
+            -- shared loss budget, and falls away after a real foundation.
+            offers[#offers+1]={player=snapshot.id,city=credit.city,district=credit.district,plot=credit.plot,
+                customer=true,delta=credit.valueQ8}
+            print(string.format('CSC_AI_CUSTOMER_PROSPECTIVE_BID turn=%d player=%d city=%d district=%d plot=%d deltaQ8=%d',
+                Game.GetCurrentGameTurn(),snapshot.id,credit.city,credit.district,credit.plot,credit.valueQ8))
+        end
+    end
+    if #offers==0 then return entries end
+    return E.MergeCustomerOffers(entries,offers)
 end
 
 function E.AnchoredConnectionPlans(snapshot,protectedPlots)
@@ -2180,7 +2233,8 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         -- Combine before forming packet entries. The footprint allocator
         -- takes the largest loss per tile, even if an established chain and
         -- a new layout both have a claim on the same resource-free land.
-        local costs=E.ProspectiveConnectionPlans(snapshot,protectedPlots)
+        local costs,credits=E.ProspectiveConnectionPlans(snapshot,protectedPlots)
+        result=E.ApplyProspectiveConnectionCredit(snapshot,result,credits)
         for _,plan in ipairs(plans)do costs[#costs+1]=plan end
         result=E.ApplyConnectionCosts(snapshot,result,costs,managed)
         -- Proposed opportunities and costs. Actual consumption is visible in

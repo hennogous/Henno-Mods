@@ -435,9 +435,26 @@ at the matched boundary before the choice under study.
 In the natural replay from turn 200, the control selected the Tailors at
 2,653 utility in the comparison observed on 226. The Farming Town had 2,534
 on the same plot. This differs from the earlier uninterrupted game. The
-control reserved plot 2603 and submitted its Tailors contract on 229, then
+control first reserved plot 2603 on 215 and submitted its Tailors contract
+on 229, then
 founded the district on 237. The linked Hub on plot 2529 was still absent on
 242. Each replay must establish its margin from its own native journal.
+
+Both natural replay copies finished at 242 with the same 94 district
+foundations. The treatment modeled the Quito pair on 21 turns. It assigned
+3.4 to 18.7 utility per footprint, and the journal recorded a Farming Town
+deduction on both plots. The same Tailors reservation and contract sequence
+followed in both arms. Several Hub net quotes were already negative. The
+pressure verified the two writes and left both native decisions unchanged.
+The matched inputs, stock reservation/contract trace and exact score timeline
+are in `Desktop/Codex/csc-ai-paired-footprints-20261124/quito-prospective-replay`.
+
+The next prototype uses the same total allowance for each scarce leg. A
+currently legal positive bid splits its allowance between a credit on the
+planned district and a cost on rival uses of its tile. This permits a
+limited change when the competing district is on another plot. A waiting
+leg receives only the footprint cost. The native legal-target read and a
+positive customer net quote guard the additional bid.
 
 The separate Quito capacity fixture opens one slot in both arms before
 the compared choice. It verifies the Quarter, Hub and Farming Town through

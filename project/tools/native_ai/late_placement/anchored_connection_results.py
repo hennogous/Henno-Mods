@@ -24,7 +24,7 @@ STRONG_LAYOUT = re.compile(
 QUARTER_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\tDISTRICT_CSC_([A-Z_]+)_QUARTER\t')
 QUARTER_RECEIPT = re.compile(r'CSC_QUARTER_WATCH_(WRITE|BEST)\t([^\r\n]+)')
 DISTRICT_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t([^\t\r\n]+)')
-CUSTOMER_BID = re.compile(r'CSC_AI_CUSTOMER_(?:FUTURE|ECONOMIC)_BID ([^\r\n]+)')
+CUSTOMER_BID = re.compile(r'CSC_AI_CUSTOMER_(?:FUTURE|ECONOMIC|PROSPECTIVE)_BID ([^\r\n]+)')
 CUSTOMER_RECEIPT = re.compile(r'CSC_CUSTOMER_WATCH_NATIVE [^\r\n]*? ordinal=(\d+) record=(\{[^\r\n]+\})')
 
 
