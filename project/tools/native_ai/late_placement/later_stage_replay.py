@@ -77,7 +77,7 @@ def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES
 
 def require_clean_replay_log(log):
     for marker in ('CSC_AI_BAKERS_DISTRICTS_FAILED', 'CSC_MILESTONE_SERVICE_FAULT',
-                   'CSC_AI_ECONOMY_FAILED', 'CSC_AI_PLAN_MEMORY_UNAVAILABLE'):
+                   'CSC_AI_ECONOMY_FAILED', 'CSC_AI_PLAN_MEMORY_UNAVAILABLE', 'CSC_CUSTOMER_LAND_TARGET_FAULT'):
         require(marker not in log, 'Replay log contains ' + marker)
 
 
@@ -85,7 +85,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
             connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None,
-            recover_preferences_from=None):
+            recover_preferences_from=None, land_targets=()):
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
@@ -104,6 +104,9 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 'Stirling capacity fixture expects the qualified turn-100 save')
     require(len(connection_scout)<=4 and all(pid in plan.identity['original_ai'] and 0<city<2**31
             for pid,city in connection_scout), 'Connection scout requires up to four original AI city scopes')
+    scout_cities = {tuple(scope) for scope in connection_scout}
+    require(len(land_targets)<=4 and all((pid,city) in scout_cities and district>=0 and plot>=0
+            for pid,city,district,plot in land_targets), 'Land targets require a named connection scout city')
     require(connection_timing_player is None or connection_timing_player in plan.identity['original_ai'],
             'Connection timing requires an original AI player')
     require(not native_inventory(), 'Another session owns Civ or FireTuner')
@@ -225,6 +228,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                    checkpoint=plan.checkpoint['sha256'], fixture=fixture,
                    natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
                    connection_scout=connection_scout, connection_enabled=connection_enabled,
+                   land_targets=land_targets,
                    connection_switch_turn=connection_switch_turn,
                    paired_layout_switch_turn=paired_layout_switch_turn,
                    paired_layout_csc=str(paired_layout_csc) if paired_layout_csc else None,
@@ -298,7 +302,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         service_observation('service-observer', every_turn=True)
         native_status('native-before')
         if connection_scout:
-            raw=controller.cmd(read(HERE/'customer_land_watch.lua'), 'PlotInfo', 'customer-land-history')
+            targets='local landTargets='+lua([list(row) for row in land_targets])+'\n'
+            raw=controller.cmd(targets+read(HERE/'customer_land_watch.lua'), 'PlotInfo', 'customer-land-history')
             require('CSC_CUSTOMER_LAND_WATCH_INSTALLED' in raw, 'Land purchase observer did not install')
             # Read the existing CE journal before each publication replaces it.
             # This attaches neither a second native observer nor policy writer.
@@ -412,6 +417,9 @@ if __name__ == '__main__':
                         help='Change only the prospective-placement policy after the same inactive pre-roll')
     parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
                         help='Read the existing native score and choice journal for this AI city')
+    parser.add_argument('--land-target', nargs=4, action='append', type=int, default=[],
+                        metavar=('PLAYER','CITY','DISTRICT','PLOT'),
+                        help='Observe price, buyer and terrain legality for a customer site in a scout city')
     parser.add_argument('--connection-timing-player', type=int,
                         help='Time the existing connection planner and site quotes for one AI seat')
     fixtures = parser.add_mutually_exclusive_group()
@@ -493,7 +501,8 @@ if __name__ == '__main__':
                          connection_switch_turn=args.connection_switch_turn,
                          connection_timing_player=args.connection_timing_player, paired_layout_csc=paired_layout,
                          paired_layout_switch_turn=args.paired_layout_switch_turn,
-                         recover_preferences_from=args.recover_preferences_from if arm == arms[0] else None)
+                         recover_preferences_from=args.recover_preferences_from if arm == arms[0] else None,
+                         land_targets=args.land_target)
         if result is not None:
             preparation = result
     if (args.matched_connection_switch or paired_layout) and set(arms)=={'control','treatment'}:

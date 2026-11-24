@@ -33,4 +33,46 @@ Events.CityMadePurchase.Add(function(id,city,x,y,kind)
         print('CSC_CUSTOMER_PLOT_PURCHASE',turn,player,ordinal,city,plot:GetIndex(),x,y)
     end
 end)
+-- Short replays can nominate particular plots seen in a historical purchase
+-- request. Sample those plots even before the planner offers to buy them. The
+-- raw price and the unique-buyer price distinguish a costly site from one a
+-- different city could buy. CanHaveDistrict checks fit on the map. The native
+-- selection journal and purchase event establish the later decisions.
+if landTargets and #landTargets>0 then
+    local ui=assert(ExposedMembers.CSC_Adjacency)
+    local function sample()
+        local turn=Game.GetCurrentGameTurn()
+        for _,target in ipairs(landTargets) do
+            local pid,cityID,district,index=target[1],target[2],target[3],target[4]
+            local plot=assert(Map.GetPlotByIndex(index))
+            local city=CityManager.GetCity(pid,cityID)
+            local known=PlayersVisibility[pid]:IsRevealed(plot:GetX(),plot:GetY())
+            if city and known then
+                local owner=plot:GetOwner()
+                local buyer=owner==pid and Cities.GetPlotPurchaseCity(plot)
+                local raw,unique
+                if owner==-1 then
+                    raw=ui.GetRawPlotPurchaseQuote(pid,cityID,index)
+                    unique=ui.GetPlotPurchaseQuote(pid,cityID,index)
+                end
+                print('CSC_CUSTOMER_LAND_TARGET',turn,pid,cityID,district,index,owner,
+                    buyer and buyer:GetID() or -1,plot:GetDistrictType(),tostring(raw),tostring(unique),
+                    tostring(plot:CanHaveDistrict(district,pid,cityID)),Players[pid]:GetTreasury():GetGoldBalance())
+            else
+                print('CSC_CUSTOMER_LAND_TARGET_UNAVAILABLE',turn,pid,cityID,district,index,
+                    tostring(city~=nil),tostring(known))
+            end
+        end
+    end
+    local lastTurn
+    local function observe()
+        local turn=Game.GetCurrentGameTurn()
+        if turn==lastTurn then return end
+        lastTurn=turn
+        local ok,reason=pcall(sample)
+        if not ok then print('CSC_CUSTOMER_LAND_TARGET_FAULT',turn,reason) end
+    end
+    observe()
+    Events.TurnBegin.Add(observe)
+end
 print('CSC_CUSTOMER_LAND_WATCH_INSTALLED',Game.GetCurrentGameTurn())

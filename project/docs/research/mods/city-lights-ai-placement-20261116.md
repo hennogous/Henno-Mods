@@ -707,3 +707,16 @@ districts on supplier 2459 each recorded a score write and an eligible cache
 read for its 16-utility deterrent. Tailors was founded on 105, and on 106 the
 planner repriced the original Hub site at 20,014 Q8 (78.2 utility). Tile 2385
 was an available substitute. The switch census matched across all 141 rows.
+
+**Customer-land replay targets.** The archived turn-50 Continents save
+(`737c6582fd7e`, map seed 1457395586) passed the controller's source and
+package preflight. Three historical buying cities on this seed had a
+district purchase request followed by an actual adjacent pair. Gori's
+Entertainment Complex 2419 was founded on 111 beside Bakers 2492. Caracas
+founded Rural Community 2826 on 117 beside Bakers 2751. Batumi founded
+Rural Community 3011 on 118 beside Bakers 3084, and a second Bakers
+Quarter on 3012 later linked back to it. Use those three sites in both
+arms, switch on 87 and follow through 140. The short-replay land observer
+can now record the raw price, whether that city is the unique buyer, its
+treasury and the native terrain check on each chosen plot, starting before
+CSC submits an offer. This diagnostic adds no work to ordinary games.
