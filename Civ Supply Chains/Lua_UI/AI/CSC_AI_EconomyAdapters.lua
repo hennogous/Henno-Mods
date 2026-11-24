@@ -2005,6 +2005,20 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
     return plans,credits
 end
 
+local function layoutSupplyCanOperate(supply,quarterPlot,partnerPlot,stage,reserved)
+    local function usable(rows,other)
+        for _,source in ipairs(rows or{}) do
+            if source.plot~=quarterPlot and source.plot~=partnerPlot and source.plot~=other
+                and not reserved[source.plot] then return source.plot end
+        end
+    end
+    local base=supply and usable(supply.base)
+    -- Stage 4 needs two distinct deposits. A dual-tagged deposit can
+    -- supply either role if another unclaimed plot covers the other one.
+    return base and (stage~=4 or usable(supply.specialty,base)
+        or usable(supply.specialty) and usable(supply.base,base))
+end
+
 local function restoreLayouts(snapshot,profiles)
     if not (C and E.ProspectiveConnectionsEnabled and snapshot.planState and snapshot.districts) then return end
     local turn=Game.GetCurrentGameTurn()
@@ -2042,19 +2056,7 @@ local function restoreLayouts(snapshot,profiles)
         local profile=byDistrict[p.district]
         if q and partner and profile and not(q=='founded' and partner=='founded') then
             local supply=snapshot.Supply(Map.GetPlotByIndex(p.plot),profile)
-            local reserved=snapshot.intentFootprints or {}
-            local function usable(rows,other)
-                for _,source in ipairs(rows or {}) do
-                    if source.plot~=p.plot and source.plot~=p.partnerPlot and source.plot~=other
-                        and not reserved[source.plot] then return source.plot end
-                end
-            end
-            local base=supply and usable(supply.base)
-            -- A dual-tagged deposit can play either role in Stage 4 if
-            -- there is another plot available for the other role.
-            local distinct=base and (p.stage~=4 or usable(supply.specialty,base)
-                or usable(supply.specialty) and usable(supply.base,base))
-            if distinct then
+            if layoutSupplyCanOperate(supply,p.plot,p.partnerPlot,p.stage,snapshot.intentFootprints or{}) then
                 snapshot.savedLayouts[key]=p
                 local order=q=='founded' and 'quarterFirst' or partner=='founded' and 'customerFirst'
                 if order then
@@ -2414,7 +2416,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         local disadvantage=best and math.max(0,best-backup)or 0
         return math.max(0,second.valueQ8-disadvantage)
     end
-    local purchaseAppraised=false
+    local purchaseLayout,purchaseLayoutKey
     for _,order in ipairs({'quarterFirst','customerFirst'})do
         local candidates={}
         for _,group in pairs(groups[order])do
@@ -2458,6 +2460,20 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             local g=candidates[(turn+pid+step)%#candidates+1]
             if g~=visits[1] then visits[#visits+1]=g end
         end
+        local purchaseChoice,purchaseGroup
+        if order=='quarterFirst' and snapshot.planCustomerPurchases and #visits>0 then
+            -- A recurring handoff owns the first ordinary quote. Alternate
+            -- appraisal priority by a full group rotation so that handoff
+            -- cannot spend the only purchase appraisal every turn.
+            local firstVisit=1
+            if #visits==2 and math.floor((turn+pid)/#candidates)%2==1 then firstVisit=2 end
+            for step=0,#visits-1 do
+                local group=visits[(firstVisit+step-1)%#visits+1]
+                local attempted
+                purchaseChoice,attempted=customerPurchaseChoice(group)
+                if attempted then purchaseGroup=group;break end
+            end
+        end
         for _,group in ipairs(visits) do
             local handoff=snapshot.handoffs and snapshot.handoffs[group.key]
             local preferred=handoff and handoff.plot or before[group.key]
@@ -2478,10 +2494,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 if (a.plot==preferred)~=(b.plot==preferred)then return a.plot==preferred end
                 return a.plot<b.plot
             end)
-            local purchase
-            if frontier and snapshot.planCustomerPurchases and not purchaseAppraised then
-                purchase,purchaseAppraised=customerPurchaseChoice(group)
-            end
+            local purchase=group==purchaseGroup and purchaseChoice or nil
             local first,second=plots[1],plots[2]
             if purchase then first,second=purchase.row,purchase.backup
             else
@@ -2512,9 +2525,10 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     end
                     local profile=option.profile or option.chain.profile
                     local supply=snapshot.Supply(Map.GetPlotByIndex(qPlot),profile)
-                    if supply and #supply.base>0 then
+                    if layoutSupplyCanOperate(supply,qPlot,pPlot,group.stage,snapshot.intentFootprints or{}) then
                         local q={city=qCity,district=qDistrict,plot=qPlot}
-                        local p={city=pCity,district=pDistrict,plot=pPlot,stage=group.stage}
+                        local p={city=pCity,district=pDistrict,plot=pPlot,stage=group.stage,
+                            purchaseGold=order=='quarterFirst' and option.purchaseGold or nil}
                         local backup=second and second.plot
                         local nextPlan=C.LayoutRecord(q,p,supply,order=='customerFirst' and backup,
                             order=='quarterFirst' and backup,old,turn)
@@ -2554,11 +2568,11 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                             stage=group.stage,purchaseGold=target.purchaseGold}
                         local key=quarter.city..':'..quarter.district
                         local supply=snapshot.Supply(chain.plot,chain.profile)
-                        if supply and #supply.base>0 then
+                        if layoutSupplyCanOperate(supply,quarter.plot,partner.plot,partner.stage,snapshot.intentFootprints or{}) then
                             local saved=C.LayoutRecord(quarter,partner,supply,nil,second and second.plot,
                                 (snapshot.savedLayouts or{})[key],turn)
                             saved.phase=1
-                            snapshot.nextLayouts[key]=saved
+                            purchaseLayout,purchaseLayoutKey=saved,key
                         end
                     end
                 end
@@ -2581,6 +2595,12 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 plans[#plans+1]=group
             else nextMemory[group.key]=nil end
         end
+    end
+    -- A new purchase bid can compete this turn. Give the saved identity to
+    -- a live handoff first, so its next publication stays tied to the actual
+    -- first foundation until that handoff completes or becomes invalid.
+    if purchaseLayout and not snapshot.nextLayouts[purchaseLayoutKey] then
+        snapshot.nextLayouts[purchaseLayoutKey]=purchaseLayout
     end
     connectionMemory[pid]=nextMemory
     return plans

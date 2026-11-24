@@ -919,6 +919,12 @@ eligible. The regression covers the third plot, an ordinary owned site
 outside the link, a better paid alternative and a full district cap.
 `CSC_AI_CUSTOMER_LAND_APPRAISED` identifies the invoice, owned margin and
 credit to join to the native bid and spending request in a live replay.
+The appraisal rotates between visited groups independently of the saved
+handoff's ordinary quote. One negative paid appraisal can no longer
+consume the slot each turn. A new purchase bid can still compete while a
+valid handoff keeps its saved identity. To remember a new Stage 4 paid
+site, the same distinct Base and Specialty check runs at planning and
+reload. A Base-only site can still bid for its adjacency benefit.
 
 Quarter forecasts accounted for 408,958 of the 419,188 additional logical
 model evaluations. All 18,585 candidate Quarter quotes were distinct by

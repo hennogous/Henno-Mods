@@ -538,6 +538,80 @@ chosen=plan()
 assert(chosen.best.plot==23 and chosen.backup.plot==22 and chosen.purchaseCreditQ8==5*256 and chosen.costQ8==0)
 ''')
 
+    def test_paid_proposal_cannot_displace_a_live_handoff_in_saved_layouts(self):
+        vm=self.vm()
+        vm.execute((AI/'CSC_AI_PlanContinuity.lua').read_text(encoding='utf-8'))
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+local quarter={city=7,district=3,plot=10}
+local supply={base={{plot=37}},specialty={}}
+local old=C.LayoutRecord(quarter,{city=7,district=1,plot=20,stage=2},supply,nil,nil,nil,19)
+old.phase=1
+chain.city={GetID=function()return 7 end};chain.profile.district={Index=3}
+local owned={city=7,district=1,candidates={main}}
+local paid={city=7,district=2,candidates={{plot=22,chains={chain},adjacency=2,purchaseGold=20}}}
+snapshot.connectionGroups={owned,paid};snapshot.planCustomerPurchases=true
+snapshot.cities={[7]={object={}}}
+GameInfo.Districts[2].RequiresPopulation=false
+snapshot.ProjectedCustomers=function(_,_,district,plot)
+    local row=venue(plot);row.stage=district==1 and 2 or 4;return {row}
+end
+snapshot.ProjectedConnectionYields=function(_,_,plot)return {YIELD_GOLD=plot==22 and 60 or 0}end
+snapshot.Price=function(flow)return flow.amount*256 end
+snapshot.Supply=function()return supply end
+snapshot.handoffs={['quarterFirst:10:2:TEST']={record=old,plot=20,phase=1}}
+local function publish()
+    snapshot.nextLayouts={}
+    local plans=E.AnchoredConnectionPlans(snapshot,{})
+    local paidCredit
+    for _,plan in ipairs(plans)do if plan.stage==4 then paidCredit=plan.purchaseCreditQ8 end end
+    assert(paidCredit==10*256)
+    return C.ReadLayouts(C.EncodeLayouts(snapshot.nextLayouts),turn+1)['7:3']
+end
+local held=publish()
+assert(held.stage==2 and held.partnerPlot==20 and held.first==19)
+supply.specialty={{plot=38}}
+snapshot.connectionGroups={paid,owned};turn=turn+1
+held=publish()
+assert(held.stage==2 and held.partnerPlot==20 and held.first==19)
+snapshot.handoffs={};turn=turn+1
+local acquired=publish()
+assert(acquired.stage==4 and acquired.partnerPlot==22 and acquired.invoice==20)
+supply.specialty={{plot=37},{plot=22}};turn=turn+1
+assert(not publish(),'a dual-tag without a second unclaimed deposit cannot back Stage 4 memory')
+''')
+
+    def test_ready_handoff_does_not_monopolise_customer_land_appraisal(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local nextChain={ready=true,economy=economy,profile=chain.profile,plot={GetIndex=function()return 11 end}}
+local paidA={plot=22,adjacency=1,chains={chain},purchaseGold=20}
+local paidB={plot=24,adjacency=1,chains={nextChain},purchaseGold=20}
+local ownedB={plot=23,adjacency=2,chains={nextChain}}
+snapshot.connectionGroups={{city=7,district=1,candidates={main,paidA,ownedB,paidB}}}
+snapshot.planCustomerPurchases=true;snapshot.cities={[7]={object={}}}
+GameInfo.Districts[1].RequiresPopulation=false
+snapshot.Price=function(flow)return flow.amount*256 end
+values[20],values[22],values[23],values[24]=30*256,10*256,5*256,50*256
+local quoted={}
+snapshot.CustomerNetValue=function(_,_,plot)quoted[plot]=true;return 120*256 end
+snapshot.handoffs={['quarterFirst:10:3:TEST']={record={phase=1},plot=20,phase=1}}
+snapshot.Supply=function()return nil end
+local otherVisits=0
+for t=20,23 do
+    turn=t;quoted={}
+    local plans=E.AnchoredConnectionPlans(snapshot,{})
+    assert(#plans==2 and plans[1].anchor==10 and plans[1].best.plot==20)
+    assert(not (quoted[22] and quoted[24]))
+    if quoted[24] then
+        assert(plans[2].best.plot==24 and plans[2].purchaseCreditQ8>0)
+        otherVisits=otherVisits+1
+    end
+end
+assert(otherVisits==2)
+''')
+
     def test_customer_first_prefers_the_stronger_complete_bid_over_an_older_equal_link(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
