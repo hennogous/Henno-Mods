@@ -965,6 +965,16 @@ active chain-turns and seven Stage 3 chains delivered 411. CSC guidance
 took 1.97 seconds per turn on average and 4.92 seconds at maximum.
 The matched candidate uses the same pinned build, map and game seeds.
 
+At the verified turn-125 census, both arms had 13 completed Bakers.
+The candidate had eight completed Tailors, up from zero in the control.
+It had seven completed Tailors customer or sales pairs, five with a
+mapped buying district. Three had an operating buyer and a working Base
+supplier. It also had one supplied Tailors goods-provider pair. The
+control led on Bakers provider pairs (seven against four) and on Bakers
+customer or sales pairs (three against zero). Guidance over turns 1–124
+averaged 0.86 seconds for the control and 1.44 for the candidate, with
+maximums of 2.96 and 4.77 seconds. These are midpoint observations.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
