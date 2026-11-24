@@ -565,6 +565,18 @@ def run(args):
         # change package hashes. Enforce actual initial map/AI/unit parity below,
         # without pretending this is the strict identical-package untuned arm.
         protocol['regression_reference']=str(other_source)
+    legacy_quarter_cap = getattr(args, 'legacy_quarter_cap', False)
+    if legacy_quarter_cap:
+        require(main_csc and not snapshot_main and other_source and args.harmonised_observation
+                and args.planning_observation and args.service_observation and not args.untuned,
+                'Legacy cap control requires the shared pinned main CSC and the completed observed treatment')
+        reference_protocol = load(other_source.parent / 'protocol.json')
+        comparable = lambda record: {key: value for key, value in record.items() if key != 'regression_reference'}
+        require(comparable(protocol) == comparable(reference_protocol)
+                and load(other_source.parent / 'result.json')['reached'] == args.through
+                and load(other_source.parent / 'full-game-observation-complete.json')['verified'],
+                'Legacy cap control requires the same build, setup, observations and endpoint')
+        protocol.update(external_policy=True, quarter_cap_control='legacy_combined_including_footprint')
     if args.matched_source:
         other_source = args.matched_source.resolve(strict=True)
         previous = load(other_source.parent / 'protocol.json')
@@ -789,6 +801,9 @@ Modding.EnableMod(chosen.Handle,true)
             session.issue_once('host-normal-start', host(args.map_seed, args.game_seed, args.map, args.map_size), 'MainMenu')
             session.ready_after_issue(1, contexts, eligibility=source_gate)
         verify_modules(session, local[ce] / ce_dll, out, core_sha)
+        if legacy_quarter_cap:
+            from quarter_cap_control import install as install_quarter_cap_control
+            install_quarter_cap_control(controller, out, csc)
         if args.mill_opening_components:
             # A controlled opening fixture: preserve the Rice and Granary
             # while removing only the Farm. The native probe writes no scores.
@@ -1155,6 +1170,8 @@ if __name__ == '__main__':
                         help='Allow optional CE gating on older diagnostic CSC snapshots. The main CSC identity uses its installed package automatically.')
     parser.add_argument('--reference-source',type=Path,
                         help='Require initial world/AI/unit parity for a fresh tuned source-regression game')
+    parser.add_argument('--legacy-quarter-cap', action='store_true',
+                        help='Replay the former cap with the same pinned CSC and completed observed treatment')
     parser.add_argument('--government-screen-check',action='store_true',
                         help='Open/close Government and Policies at an inactive observer boundary; no game orders')
     for name in ('output', 'mods', 'user-root', 'binary', 'ce'):

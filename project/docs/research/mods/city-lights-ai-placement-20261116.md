@@ -246,9 +246,11 @@ guard and the final native score ceiling still apply.
 
 The controller verified the same Continents opening and used the same pinned
 Dev CE DLL. It ran the installed CSC package with anchored connection guidance
-and its diagnostics enabled. The installed package also contains newer gameplay
-and presentation files, so the earlier run is a same-seed benchmark for the
-whole package.
+and its diagnostics enabled. A later package diff found that the Bakers SQL
+changed only in whitespace. The three AI Lua modules contained the substantive
+gameplay-code changes, alongside a different mod identity, packaging and
+presentation files. The comparison still covers all five AI corrections
+together.
 
 | AI outcome through turn 250 | Earlier run | Installed CSC |
 |---|---:|---:|
@@ -311,3 +313,11 @@ Bakers at plot 2502. Both former Tailors tiles still received offers. Plot
 3087 lost observed comparisons and remained unbuilt. Plot 3009 received a
 wonder foundation on turn 209. These joins use the two runs' `Lua.log`,
 `audited-connection-result.json` and `AI_CityBuild.csv`.
+
+The first recorded change in the winning district and tile was Quito's
+turn-100 packet. Its two-Base Bakers bid on plot 2528 rose from 680 to
+783 utility with the same recorded economic quote, forecast adjustment,
+site cost and linked customer. The earlier run selected a 728-utility
+Mining Colony on plot 2232. The revised run selected the Bakers. It
+still had to wait for city capacity and was founded on turn 124. The first
+physical district divergence followed on turn 105.

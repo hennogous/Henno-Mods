@@ -37,6 +37,15 @@ snapshot can reuse the main install when their bytes match. Frozen
 development identities remain available for historical and dormant-control
 comparisons.
 
+For a matched experiment on one build, snapshot the first arm and give the
+other arms that same external path with `--csc`. Their package receipts then
+refer to one copy. Retain that snapshot while a saved test depends on it.
+For the Quarter cap experiment, `--legacy-quarter-cap` also checks the
+completed treatment's setup, package digests and opening. It installs the
+old arithmetic in the test session after the empty turn-one packet and
+records the Lua alongside the save. The installed files stay pinned, and
+ordinary reloading uses the installed scoring policy.
+
 The save refers to its original mod identities. Keep the matching Dev CE
 and gameplay dependencies installed for later inspection. A rebuild can
 change the mechanics of a reloaded save even when the identities still
