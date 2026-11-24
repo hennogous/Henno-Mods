@@ -833,7 +833,9 @@ def run_result(root):
     build_log, queue_log = root / 'AI_CityBuild.csv', root / 'City_BuildQueue.csv'
     failed_requests = None
     if build_log.is_file() and queue_log.is_file():
-        types = {r['districtType'] for r in observations if r['kind'] == 'MAPPING' and r['role'] == 'customer'}
+        types = {r['districtType'] for r in observations if r['kind'] == 'MAPPING'
+                 and r['role'] in ('customer','sales','goodsProvider')
+                 and r['districtType'] not in ('DISTRICT_CITY_CENTER','DISTRICT_WONDER')}
         types.update(f'DISTRICT_CSC_{title}_QUARTER' for _, title in QUARTER_TITLE.findall(log))
         with build_log.open(encoding='utf-8-sig', newline='') as builds, queue_log.open(encoding='utf-8-sig', newline='') as queue:
             failed_requests = failed_district_requests(csv.reader(builds, skipinitialspace=True),
@@ -927,6 +929,11 @@ def paired_full_game_result(control, treatment):
                            completed_missing_partner=result['counts']['completed_district_opportunities'],
                            endpoint_suppliers=result['endpoint_suppliers'], supplier_history=result['supplier_history'],
                            failed_district_requests=result['failed_district_requests'],
+                           # A city can pass over a Quarter for a district on
+                           # another tile. Preserve that auction as well as the
+                           # narrower same-tile contests in contested_layouts.
+                           district_competition={k: result['bid_competition'][k]
+                                                 for k in ('outcomes','lost_to','losses')},
                            surveyed_services=operation['stock' if arm == 'control' else 'combined'],
                            guidance_wall=result['timing'], native_managed_wall=result['native_managed_timing'],
                            contested_layouts=[pair for pair in (result['priced_footprints'] or result['prospective_footprints']) if any(

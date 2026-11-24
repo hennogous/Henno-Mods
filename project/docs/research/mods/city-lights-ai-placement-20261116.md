@@ -694,6 +694,13 @@ All seven Bakers–provider pairs had working Base, three also had Specialty.
 The full-game comparison now makes this same join between each physical pair
 and its own Quarter's supply. An individual Quarter can serve multiple partners.
 
+In that historical game, 810 Quarter comparisons had a recorded higher
+district score. Rural Community A won 477 and Rural Community B won 58.
+For customer bids the count was 759, with 462 going to Rural Community A.
+These counts include repeated decisions in the same city. The paired report
+now gives the winning type, plots and score gap for comparisons across the
+city, including when the two districts wanted different plots.
+
 In the corrected turn-100 replay the candidate proposed Tailors 2458 and
 Commercial Hub 2457 on turn 103. On 104 native readbacks for four rival
 districts on supplier 2459 each recorded a score write and an eligible cache
