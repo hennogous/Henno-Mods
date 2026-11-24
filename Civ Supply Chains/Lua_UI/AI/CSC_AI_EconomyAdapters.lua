@@ -1662,6 +1662,18 @@ local function projectedLinkValue(snapshot,candidate,layout)
     return value
 end
 
+-- Native BUILD targets list owned plots. The wider Quarter scan confirms
+-- the buyer and prices the land, including some sites native zoning can
+-- reject. Check terrain before treating the unowned Quarter as ready.
+-- The AI's treasury still decides whether and when to buy it.
+local function pricedFrontierQuarterReady(player,entry,site)
+    if not entry.frontier or (entry.purchaseGold or 0)<=0
+        or (entry.capacityState~='ready' and entry.capacityState~='exempt')
+        or not site.quarterWork or site.quarterWork.unlock~=0 then return false end
+    local plot=Map.GetPlotByIndex(entry.plot)
+    return plot and plot:CanHaveDistrict(entry.district,player,entry.city)
+end
+
 function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
     if not(E.ProspectiveConnectionsEnabled and snapshot.ProspectiveCustomerReady
         and snapshot.ProjectedCustomers and snapshot.ProjectedConnectionYields)then return {},{}end
@@ -1725,7 +1737,7 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
             -- An owned legal target has passed the native prerequisite check.
             -- A frontier invoice establishes a buyer, so check the Quarter's
             -- research separately until native zoning admits the owned plot.
-            return targets[option.plot] or site.quarterWork and site.quarterWork.unlock==0
+            return targets[option.plot] or pricedFrontierQuarterReady(snapshot.id,option,site)
         end
         local ready,unlock=snapshot.ProspectiveCustomerReady(option.city,option.district)
         if option.purchaseGold then
@@ -2100,7 +2112,13 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                             for _,index in ipairs(targets)do admitted[key][index]=true end
                         end
                     end
-                    local ready=admitted[key][entry.plot]
+                    -- After the customer is founded, a still-unowned Quarter
+                    -- site keeps the purchase eligibility it had in the pair.
+                    -- Its complete bid already includes the invoice. The
+                    -- separate customer-land offer below is for the other
+                    -- build order and has a different native consumer.
+                    local ready=admitted[key][entry.plot] or
+                        (E.ProspectiveConnectionsEnabled and pricedFrontierQuarterReady(pid,entry,site))
                     -- QuarterBids intentionally builds a fresh, owned map
                     -- forecast even at full capacity. Keep an otherwise
                     -- suitable footprint while waiting for growth because a

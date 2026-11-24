@@ -48,6 +48,15 @@ first site's rank. The higher-ranked substitute takes precedence, with plot
 ID breaking ties. All 225 economy checks pass. This change is outside the
 v12 replay and v13 full-game pins and needs its own live comparison.
 
+The customer-first handoff also lost an eligible Quarter when that city
+still had to buy its plot. The first planner could bid for the unowned
+site, then the second planner looked only at the city's owned BUILD
+targets once the customer stood. Both now use the same priced frontier
+eligibility, including research, an available slot and a confirmed buyer.
+A regression follows one plot from customer foundation through purchase
+eligibility and owned-site admission. The Quarter bid carries the invoice
+once. In-game purchase and construction on this path still need observation.
+
 The revised-cap baseline modeled 20 strong Quarter–customer pairs. One
 completed both planned districts. Short replays verified the provisional
 cost on both Quito tiles and preserved Panama's higher-scoring Campus.

@@ -92,10 +92,10 @@ layout.** The revised cap is the baseline. Compare the planned Quarter and
 customer cells separately before either foundation, then follow the surviving
 plan through the existing anchored guidance. Use same-tile competition, viable
 substitutes and the value of the shared link to decide where extra support would
-matter. The full-game comparison uses the known Continents seeds
-`1457395586 / 276090738` and preselected fresh Continents seeds
-`1250106515 / 1113960761`, on Small and Online through turn 250. Both full
-pairs use City Lights. Short replays also include cases without it.
+matter. The earlier City Lights studies used Continents seeds
+`1457395586 / 276090738` and `1250106515 / 1113960761`. The current
+turn-250 comparison uses the two preselected CSC-alone and City Lights
+starts listed above.
 [Baseline cases](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation).
 
 The first natural Quito replay verified writes on both sites without changing

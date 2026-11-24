@@ -383,6 +383,36 @@ snapshot.districts[9].working=false;turn=22
 assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
 ''')
 
+    def test_founded_customer_keeps_its_buyable_quarter_until_ordinary_build_admission(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local candidate=quarterAt(20)
+local entry=candidate.entry
+snapshot.connectionGroups={};snapshot.connectionQuarters={candidate}
+entry.frontier=true;entry.purchaseGold=65;entry.capacityState='ready';entry.economy=true
+entry.qualityCapQ8=200*256;entry.qualityCapAdjustmentQ8=-20*256
+candidate.site.quarterWork={unlock=0};legal={}
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+E.ProspectiveConnectionsEnabled=true
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].order=='customerFirst' and plans[1].best.plot==20)
+assert(not plans[1].purchaseCreditQ8)
+E.ApplyQuarterConnectionCredit(snapshot,{entry},plans)
+assert(entry.finalQ8==220*256)
+candidate.site.quarterWork.unlock=3
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+candidate.site.quarterWork.unlock=0;entry.capacityState='stale'
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+entry.capacityState='ready';entry.purchaseGold=nil
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+entry.purchaseGold=65;entry.plot=22
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+entry.plot=20
+entry.frontier=false;legal={20}
+assert(E.AnchoredConnectionPlans(snapshot,{})[1].best.plot==20)
+assert(#E.AnchoredConnectionPlans(snapshot,{[20]=true})==0)
+''')
+
     def test_only_the_marginal_cost_over_a_weaker_backup_is_charged(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
