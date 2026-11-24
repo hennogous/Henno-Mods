@@ -1143,6 +1143,22 @@ the actual two footprints and native opportunity. The aggregate loss of
 Bakers links includes relocation and capture as well as a later district
 winning a contested plot.
 
+#### Oslo completed the layout on a released Hub's substitute
+
+On turns 66–67 the candidate kept Bakers 1602 and proposed Commercial
+Hub 1676. It charged zero scarcity cost for 1676 because 1677 was a
+viable Hub substitute. Oslo began Bakers on 67. Chichen Itza took 1676
+on 92. Oslo then founded the Hub on the named substitute at 166,
+completed it on 171, and had a working Market there on 173. One
+adjacent Base supplier was still working at turn 250.
+
+The matched control completed Bakers on the same tile and eventually
+used 1676 for its Hub. Its 1677 became a Rural Community. The short
+Rustavi replay separately verified a zero customer-site charge with a
+comparable substitute. Oslo supplies the full-game example where a
+released tile was used by a competing investment and the replacement
+completed the intended link.
+
 #### Future adjacency reached a native score
 
 The qualification log identified 28 standalone and 39 City Lights
