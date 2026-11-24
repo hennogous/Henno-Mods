@@ -414,6 +414,30 @@ local function refresh(turn)
                 previousOffers and previousOffers.economy or{})
             if ok then
                 playerEntries=replacement
+                if ownershipLimit>0 and economy.planCustomerPurchases then
+                    -- A purchased plot can become owned between publications.
+                    -- Keep its city's district tree eligible to acknowledge
+                    -- ownership until construction, replan or expiry. CE
+                    -- verifies the actual retained target and purchasing city.
+                    local scopes={}
+                    local function include(city,district)
+                        local key=city..':'..district
+                        if not scopes[key] then
+                            scopes[key]=true
+                            ownershipScopes[#ownershipScopes+1]={player=id,city=city,district=district}
+                        end
+                    end
+                    for _,bid in ipairs(replacement) do
+                        if bid.customerPurchaseGold then
+                            include(bid.city,bid.district)
+                            print(string.format('CSC_AI_CUSTOMER_LAND_OFFER turn=%d player=%d city=%d district=%d plot=%d invoice=%d bidQ8=%d',
+                                turn,id,bid.city,bid.district,bid.plot,bid.customerPurchaseGold,bid.delta))
+                        end
+                    end
+                    for _,layout in pairs(economy.nextLayouts or {}) do
+                        if layout.invoice>0 then include(layout.partnerCity,layout.partnerDistrict) end
+                    end
+                end
                 if counts.managed then for _,profile in ipairs(placement.StageTwoProfiles())do
                     managedTypes[#managedTypes+1]={player=id,district=profile.district.Index,
                         fallbackQ8=CSC_AI_EconomyAdapters.DeferredQuarterQ8}

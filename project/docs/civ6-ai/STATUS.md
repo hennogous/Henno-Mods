@@ -1,6 +1,15 @@
 # Current CSC AI status
 
 **24 November — Problems 1.2 and 2.1, protect both footprints.**
+The latest candidate also compares owned and purchasable customer sites,
+remembers a priced layout across saves, and protects its last usable Base
+from a rival district. A Stage 4 buyer extends that protection to its last
+Specialty. The supplier protection shares the plan's existing deterrent and
+keeps its positive district bids intact. A fixture verified that a second
+usable Base releases the first tile. The economy suite passes 222 checks.
+The pinned v8 replay covers continuity and the provider handoff. The v9
+package carries the land and supplier changes for the next matched replay.
+
 The revised-cap baseline modeled 20 strong Quarter–customer pairs. One
 completed both planned districts. Short replays verified the provisional
 cost on both Quito tiles and preserved Panama's higher-scoring Campus.

@@ -1431,7 +1431,92 @@ function F.New(player,placement,ui,context)
         customerStages[key]=stages
         return stages
     end
-    function snapshot.CustomerOptions(city,plot,profile,protectedPlots,readTransactionStages)
+    local providerRoles={}
+    function snapshot.IsGoodsProvider(profile,district)
+        local key=profile.key..':'..district
+        if providerRoles[key]==nil then
+            local definition=GameInfo.Districts[district]
+            local tag='CLASS_CSC_'..profile.key..'_GOODS_PROVIDER'
+            providerRoles[key]=definition and (CSC_Adjacency.HasTag(tag,definition.DistrictType)
+                or CSC_Adjacency.HasTag(tag,F.DistrictFamily(district))) or false
+        end
+        return providerRoles[key]
+    end
+    local connectionRules={}
+    local ordinaryYields={YIELD_FOOD=true,YIELD_PRODUCTION=true,YIELD_GOLD=true,
+        YIELD_SCIENCE=true,YIELD_CULTURE=true,YIELD_FAITH=true}
+    function snapshot.CustomerAdjacencyChange(profile,district,customerPlot,quarterPlot)
+        -- The UI gives the customer's native adjacency on today's map.
+        -- Project only the change to ordinary database adjacency from putting
+        -- this Quarter beside it. Firaxis minor district adjacency often pays
+        -- one yield for a pair of neighbours. The second neighbour can thus
+        -- be worth a whole point. A Rural Community can also lose adjacency
+        -- from an improvement the Quarter would replace. Trait modifiers stay
+        -- in the native starting quote. Private placement yield never enters.
+        if not connectionRules[district] then
+            local rules={}
+            local kind=GameInfo.Districts[district].DistrictType
+            for mapping in GameInfo.District_Adjacencies() do if mapping.DistrictType==kind then
+                local rule=GameInfo.Adjacency_YieldChanges[mapping.YieldChangeId]
+                if rule and ordinaryYields[rule.YieldType] and (flag(rule.OtherDistrictAdjacent)
+                    or rule.AdjacentDistrict or rule.AdjacentImprovement) and rule.TilesRequired>0
+                    and research('tech',rule.PrereqTech)==0 and research('civic',rule.PrereqCivic)==0
+                    and (not rule.ObsoleteTech or research('tech',rule.ObsoleteTech)>0)
+                    and (not rule.ObsoleteCivic or research('civic',rule.ObsoleteCivic)>0) then
+                    rules[#rules+1]=rule
+                end
+            end end
+            connectionRules[district]=rules
+        end
+        local changes={}
+        if #connectionRules[district]==0 then return changes end
+        local center=Map.GetPlotByIndex(customerPlot)
+        local neighbors=Map.GetAdjacentPlots(center:GetX(),center:GetY())
+        for _,rule in ipairs(connectionRules[district]) do
+            local before,after=0,0
+            for _,near in ipairs(neighbors) do
+                local current=near:GetDistrictType()
+                local definition=GameInfo.Districts[current]
+                local improvement=rule.AdjacentImprovement and GameInfo.Improvements[near:GetImprovementType()]
+                local matches=flag(rule.OtherDistrictAdjacent) and current>=0
+                    or definition and definition.DistrictType==rule.AdjacentDistrict
+                    or improvement and improvement.ImprovementType==rule.AdjacentImprovement
+                if matches then before=before+1 end
+                if near:GetIndex()==quarterPlot then
+                    matches=flag(rule.OtherDistrictAdjacent) or rule.AdjacentDistrict==profile.district.DistrictType
+                end
+                if matches then after=after+1 end
+            end
+            local gain=(math.floor(after/rule.TilesRequired)-math.floor(before/rule.TilesRequired))*rule.YieldChange
+            if gain~=0 then changes[rule.YieldType]=(changes[rule.YieldType] or 0)+gain end
+        end
+        return changes
+    end
+    -- The native district tree can request an unowned site. Only consider
+    -- revealed, bare-of-resources frontier tiles with a positive invoice and
+    -- one identifiable buying city. Share price reads across both Quarters
+    -- and every candidate district in this publication.
+    local frontierBuyers={}
+    local function frontierBuyer(plot)
+        local index=plot:GetIndex()
+        if frontierBuyers[index]~=nil then return frontierBuyers[index] or nil end
+        frontierBuyers[index]=false
+        if plot:GetOwner()~=-1 or plot:GetResourceType()~=-1 or plot:GetDistrictType()~=-1
+            or not ui.GetPlotPurchaseQuote or not PlayersVisibility[pid]:IsRevealed(plot:GetX(),plot:GetY()) then return end
+        local tried={}
+        for _,border in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY())) do
+            local buyer=border:GetOwner()==pid and Cities.GetPlotPurchaseCity(border)
+            if buyer and not tried[buyer:GetID()] and Map.GetPlotDistance(buyer:GetX(),buyer:GetY(),plot:GetX(),plot:GetY())<=3 then
+                tried[buyer:GetID()]=true
+                local cost=ui.GetPlotPurchaseQuote(pid,buyer:GetID(),index)
+                if cost and cost>0 then
+                    frontierBuyers[index]={city=buyer,cost=cost}
+                    return frontierBuyers[index]
+                end
+            end
+        end
+    end
+    function snapshot.CustomerOptions(city,plot,profile,protectedPlots,readTransactionStages,includePurchases)
         local options={}
         if not CSC_AI_SitingDistricts then return options end
         local permitted=CSC_AI_SitingDistricts(profile)
@@ -1442,9 +1527,20 @@ function F.New(player,placement,ui,context)
             if definition.DistrictType~='DISTRICT_CITY_CENTER'and definition.DistrictType~='DISTRICT_WONDER'then
                 for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
                     local buyer=near:GetOwner()==pid and Cities.GetPlotPurchaseCity(near)
+                    local frontier
+                    if not buyer and includePurchases and not protectedPlots[near:GetIndex()] then
+                        frontier=frontierBuyer(near)
+                        buyer=frontier and frontier.city
+                    end
                     if buyer then
                         local map=customerMap(buyer,definition,protectedPlots)
                         local candidate=map.plots[near:GetIndex()]
+                        if frontier then
+                            local types=snapshot.FutureDistrictTypes(buyer)
+                            if types and types[definition.Index] and near:CanHaveDistrict(definition.Index,pid,buyer:GetID()) then
+                                candidate={adjacency=customerYield(buyer,near,definition)}
+                            end
+                        end
                         if candidate and candidate.adjacency~=nil
                             and not (snapshot.intentFootprints and snapshot.intentFootprints[near:GetIndex()])then
                             -- A different native best site does not cancel an
@@ -1460,10 +1556,9 @@ function F.New(player,placement,ui,context)
                             end end
                             options[#options+1]={player=pid,city=buyer:GetID(),district=definition.Index,
                                 family=parent,plot=near:GetIndex(),adjacency=candidate.adjacency,
+                                purchaseGold=frontier and frontier.cost,
                                 stages=readTransactionStages and mappedCustomerStages(profile,definition.Index)or nil,
-                                goodsProvider=readTransactionStages and
-                                    (CSC_Adjacency.HasTag('CLASS_CSC_'..profile.key..'_GOODS_PROVIDER',parent)
-                                    or CSC_Adjacency.HasTag('CLASS_CSC_'..profile.key..'_GOODS_PROVIDER',definition.DistrictType)),
+                                goodsProvider=readTransactionStages and snapshot.IsGoodsProvider(profile,definition.Index),
                                 bestAdjacency=best and best.adjacency or 0,
                                 -- A Quarter can consume the city's best native
                                 -- customer tile. Expose that opportunity cost;
@@ -2021,6 +2116,11 @@ function F.New(player,placement,ui,context)
                 for _,q in ipairs(mapping.quarters)do if q.key==chain.profile.key then mapped=true;break end end
                 if mapped then for _,plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(),chain.plot:GetY()))do
                     local owner=plot:GetOwner()==pid and Cities.GetPlotPurchaseCity(plot)
+                    local frontier
+                    if not owner and snapshot.planCustomerPurchases and not protectedPlots[plot:GetIndex()] then
+                        frontier=frontierBuyer(plot)
+                        owner=frontier and frontier.city
+                    end
                     if owner and not protectedPlots[plot:GetIndex()]and plot:GetDistrictType()==-1 then
                         local key=owner:GetID()..':'..district
                         local group=groups[key]
@@ -2030,6 +2130,7 @@ function F.New(player,placement,ui,context)
                         end
                         local related=group.related[plot:GetIndex()]or{index=plot:GetIndex(),links=0}
                         related.links=related.links+1;group.related[plot:GetIndex()]=related
+                        related.purchaseGold=frontier and frontier.cost
                         if snapshot.captureConnections then
                             related.chains=related.chains or{}
                             related.chains[#related.chains+1]=chain
@@ -2045,6 +2146,25 @@ function F.New(player,placement,ui,context)
             if auditTurn then group.auditUnlocked=unlocked end
             if unlocked then
                 local map=customerMap(city,group.definition,protectedPlots)
+                if snapshot.planCustomerPurchases then
+                    local frontier={}
+                    local types=snapshot.FutureDistrictTypes(city)
+                    for index,link in pairs(group.related) do
+                        local plot=Map.GetPlotByIndex(index)
+                        if link.purchaseGold and types and types[group.district]
+                            and not (snapshot.intentFootprints or {})[index]
+                            and plot:CanHaveDistrict(group.district,pid,group.city) then
+                            local adjacency=customerYield(city,plot,group.definition)
+                            if adjacency~=nil then
+                                frontier[#frontier+1]={plot=index,adjacency=adjacency,links=link.links,
+                                    chains=link.chains,purchaseGold=link.purchaseGold,bestOwnedAdjacency=map.best}
+                            end
+                        end
+                    end
+                    if #frontier>0 then
+                        waiting[#waiting+1]={city=group.city,district=group.district,candidates=frontier}
+                    end
+                end
                 local ok,targets=pcall(query.GetLegalDistrictTargets,pid,group.city,group.definition.Hash)
                 if auditTurn then group.auditMap=map;group.auditTargetsAvailable=ok and type(targets)=='table' end
                 if ok and type(targets)=='table'then
@@ -2196,14 +2316,17 @@ function F.New(player,placement,ui,context)
         if not world.trade then return nil,problem end
         currentWorld=world;return world
     end
-    local function projectDistrict(plot,districtIndex)
+    local function projectDistrict(plot,districtIndex,purchaseGold)
         -- PreCreateDistrict rechecks zoning with/without resource removal.
         -- A visible deposit must be removed for an admitted fresh foundation.
         -- Hidden deposits may remain and CSC's visible-resource rules ignore
-        -- them. Keep the actual terrain, rivers, ownership and plot identity.
+        -- them. A quoted frontier purchase precedes the projected foundation,
+        -- so MustOwn adjacency sees its buyer on that tile. No live ownership
+        -- changes here. Unquoted projections retain the actual plot owner.
         local plotIndex,resource=plot:GetIndex(),plot:GetResourceType()
         local resourceAfter=resource>=0 and CSC_Adjacency.ResourceVisible(pid,resource)and -1 or resource
         local projected=setmetatable({GetDistrictType=function()return districtIndex end,
+            GetOwner=purchaseGold and function()return pid end or nil,
             GetImprovementType=function()return -1 end,IsImprovementPillaged=function()return false end,
             GetResourceType=function()return resourceAfter end},{__index=function(_,name)
                 local value=plot[name]
@@ -2233,12 +2356,12 @@ function F.New(player,placement,ui,context)
         for yield,amount in pairs(new)do delta[yield]=(delta[yield]or 0)+amount end
         return delta
     end
-    function snapshot.ProjectedConnectionYields(chain,districtIndex,plotIndex)
+    function snapshot.ProjectedConnectionYields(chain,districtIndex,plotIndex,purchaseGold)
         -- This is the Quarter's incremental gameplay yield from a mapped
         -- customer's foundation. Reuse the same projection as the full world
         -- quote without rebuilding every empire-wide trade or building ledger.
         local target=Map.GetPlotByIndex(plotIndex)
-        if target then return quarterAdjacencyChange(chain,projectDistrict(target,districtIndex))end
+        if target then return quarterAdjacencyChange(chain,projectDistrict(target,districtIndex,purchaseGold))end
     end
     function snapshot.ExistingConnectionYields(site,profile,partnerPlot)
         -- Compare the same prospective Quarter with and without the partner's

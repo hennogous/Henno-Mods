@@ -368,6 +368,53 @@ snapshot.CustomerOptions(city,plots[1],profile,{[3]=true})
 assert(reads==previous and snapshot.SpatialStats().maps==2)
 ''')
 
+    def test_customer_frontier_quote_is_required_and_shared_between_districts(self):
+        vm=self.facts()
+        vm.execute('''
+plots[2].GetOwner=function()return -1 end
+Map.GetPlotDistance=function()return 2 end
+local invoice,calls=40,0
+ui.GetPlotPurchaseQuote=function(player,city,index)
+    assert(player==1 and city==7 and index==2);calls=calls+1;return invoice
+end
+local function check(enabled,expected)
+    local snapshot=CSC_AI_EconomyFacts.New(player,placement,ui)
+    local found=0
+    for _,o in ipairs(snapshot.CustomerOptions(city,plots[1],profile,{},false,enabled)) do
+        if o.plot==2 then assert(o.purchaseGold==40);found=found+1 end
+    end
+    assert(found==expected)
+end
+check(false,0);assert(calls==0)
+check(true,2);assert(calls==1)
+invoice=nil
+check(true,0);assert(calls==2)
+''')
+
+    def test_customer_projection_uses_native_district_pairs_and_displaced_improvements(self):
+        vm=self.facts()
+        vm.execute('''
+GameInfo.Districts={[20]={DistrictType='HUB'},[5]={DistrictType='CENTER'}}
+GameInfo.Improvements={[1]={ImprovementType='FARM'}}
+GameInfo.District_Adjacencies=function()return ipairsRules()end
+local rules={{DistrictType='HUB',YieldChangeId='districts'},{DistrictType='HUB',YieldChangeId='farms'},
+    {DistrictType='HUB',YieldChangeId='private'}}
+function ipairsRules() local i=0;return function()i=i+1;return rules[i] end end
+GameInfo.Adjacency_YieldChanges={
+ districts={OtherDistrictAdjacent=true,TilesRequired=2,YieldType='YIELD_GOLD',YieldChange=1},
+ farms={AdjacentImprovement='FARM',TilesRequired=1,YieldType='YIELD_PRODUCTION',YieldChange=1},
+ private={AdjacentDistrict='QUARTER',TilesRequired=1,YieldType='YIELD_CSC_AI_PLACEMENT',YieldChange=1}}
+profile.district={DistrictType='QUARTER'}
+Map.GetPlotByIndex=function(i)return plots[i]end
+for i,plot in ipairs(plots)do plot.GetImprovementType=function()return i==2 and 1 or -1 end end
+plots[3].GetDistrictType=function()return 5 end
+local snapshot=CSC_AI_EconomyFacts.New(player,placement,ui)
+local gains=snapshot.CustomerAdjacencyChange(profile,20,1,2)
+assert(gains.YIELD_GOLD==1 and gains.YIELD_PRODUCTION==-1 and gains.YIELD_CSC_AI_PLACEMENT==nil)
+plots[3].GetDistrictType=function()return -1 end
+assert(snapshot.CustomerAdjacencyChange(profile,20,1,2).YIELD_GOLD==nil)
+''')
+
     def test_known_core_ui_phase_lag_is_accepted_and_counted(self):
         vm = self.facts()
         vm.execute('''

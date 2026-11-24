@@ -146,6 +146,121 @@ snapshot.ProspectiveCustomerReady=function()return 50 end
 assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
 ''')
 
+    def test_provider_foundation_hands_off_both_directions_without_a_buyer(self):
+        vm=self.vm()
+        vm.execute((AI/'CSC_AI_PlanContinuity.lua').read_text(encoding='utf-8'))
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true
+local p=C.LayoutRecord({city=7,district=3,plot=10},{city=7,district=1,plot=20,stage=0},
+    {base={{plot=37},{plot=35}},specialty={{plot=36}}},12,21,nil,19)
+local encoded=C.EncodeLayouts({['7:3']=p})
+local saved=C.ReadLayouts(encoded,20)['7:3']
+assert(saved.first==19 and saved.base[1]==35 and saved.specialty[1]==36 and saved.alternatePartner==21)
+assert(next(C.ReadLayouts(encoded,60))==nil)
+snapshot.IsGoodsProvider=function(_,district)return district==1 end
+snapshot.ProjectedCustomers=function()return {}end
+snapshot.ProjectedConnectionYields=function()return {YIELD_GOLD=1}end
+snapshot.ExistingConnectionYields=function()return {YIELD_GOLD=1}end
+snapshot.Price=function()return 30*256 end
+snapshot.Supply=function()return {base={{plot=37}},specialty={}}end
+snapshot.handoffs={['quarterFirst:10:0:TEST']={record=saved,plot=20,phase=1}}
+snapshot.nextLayouts={}
+local plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.plot==20 and plans[1].best.valueQ8==30*256)
+local retained=C.ReadLayouts(C.EncodeLayouts(snapshot.nextLayouts),21)['7:3']
+assert(retained.phase==1 and retained.first==19 and retained.base[1]==37 and #retained.specialty==0)
+local provider={GetIndex=function()return 20 end}
+Map.GetAdjacentPlots=function()return {provider}end
+Map.GetPlotByIndex=function(i)return {GetX=function()return i end,GetY=function()return 0 end}end
+local candidate=quarterAt(10);candidate.profile=chain.profile;candidate.site.customers={}
+snapshot.connectionGroups={};snapshot.connectionQuarters={candidate}
+snapshot.districts={[20]={working=true,complete=true,city=7,type=1}}
+legal={10}
+snapshot.handoffs={['customerFirst:20:0:TEST']={record=saved,plot=10,phase=2}}
+plans=E.AnchoredConnectionPlans(snapshot,{})
+assert(#plans==1 and plans[1].best.plot==10 and plans[1].best.valueQ8==30*256)
+assert(snapshot.nextLayouts['7:3'].phase==2)
+snapshot.IsGoodsProvider=function()return false end
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+''')
+
+    def test_frontier_customer_competes_after_one_invoice_and_both_yield_gains(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+E.ProspectiveConnectionsEnabled=true
+local candidate=quarterAt(20)
+candidate.entry.capacityState='ready';candidate.site.city=7;candidate.site.key='Q';candidate.site.quarterReady=3
+candidate.entry.player=snapshot.id;candidate.entry.economy=true
+local partner={plot=21,city=7,district=1,stage=3,adjacency=2,purchaseGold=40,customerYields={YIELD_FAITH=1}}
+candidate.entry.prospectiveLayout=partner
+snapshot.connectionQuarters={candidate};snapshot.cities={[7]={object={}}}
+GameInfo.Districts[1].RequiresPopulation=true;GameInfo.Districts[3].RequiresPopulation=true
+snapshot.DistrictCapacity=function()return{known=true,used=0,allowed=2}end
+legal={20} -- the customer tile cannot appear in the owned BUILD list
+snapshot.ProspectiveCustomerReady=function()return 5,0,5 end
+snapshot.ProjectedConnectionYields=function()return {YIELD_GOLD=1}end
+CSC_AI_EconomyModel.CustomerBuildingForecast=function()return{valueQ8=40*256,with={quarterReadyByChain={Q=3}}}end
+snapshot.Price=function(flow)
+    if flow.fixed then return flow.amount*256 end
+    assert(flow.ready==5 and flow.amount==1)
+    return 20*256
+end
+local costs,credits=E.ProspectiveConnectionPlans(snapshot,{})
+assert(#credits==2)
+-- 40 transaction +20 Quarter +20 customer -40 land =40. Two sites
+-- split that budget and each assigns half to its own positive offer.
+for _,credit in ipairs(credits)do assert(credit.valueQ8==10*256)end
+local rows=E.ApplyProspectiveConnectionCredit(snapshot,{candidate.entry},credits)
+assert(rows[2].plot==21 and rows[2].customerPurchaseGold==40 and rows[2].delta==10*256)
+partner.purchaseGold=81
+assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
+''')
+
+    def test_supplier_protection_preserves_bids_shares_cost_and_releases(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+E.ProspectiveConnectionsEnabled=true
+local candidate=quarterAt(20)
+candidate.entry.capacityState='ready'
+candidate.site.city=7;candidate.site.key='Q';candidate.site.quarterReady=3
+local partner={plot=21,city=7,district=1,stage=2,adjacency=2,hasSpec=true}
+candidate.entry.prospectiveLayout=partner
+local supply={{plot=30,kind='base',ready=0},{plot=31,kind='specialty',ready=5}}
+candidate.site.suppliers=supply
+snapshot.connectionQuarters={candidate};snapshot.cities={[7]={object={}},[8]={object={}}}
+GameInfo.Districts[1].RequiresPopulation=true;GameInfo.Districts[3].RequiresPopulation=true
+snapshot.DistrictCapacity=function()return{known=true,used=0,allowed=2}end
+snapshot.ProspectiveCustomerReady=function()return 5,0,5 end
+snapshot.ProjectedConnectionYields=function()return {}end
+CSC_AI_EconomyModel.CustomerBuildingForecast=function()return{valueQ8=96*256,with={quarterReadyByChain={Q=3}}}end
+Map.GetPlotByIndex=function(i)return {GetOwner=function()return 1 end,GetDistrictType=function()return -1 end,
+    CanHaveDistrict=function()return true end}end
+Cities={GetPlotPurchaseCity=function()return {GetOwner=function()return 1 end,GetID=function()return 8 end}end}
+local function costs()
+    local plans,credits=E.ProspectiveConnectionPlans(snapshot,{})
+    local cost,total={},0
+    for _,p in ipairs(plans) do cost[p.best.plot]=p.costQ8;total=total+p.costQ8 end
+    for _,offer in ipairs(credits) do assert(offer.valueQ8==24*256);total=total+offer.valueQ8 end
+    assert(total==96*256)
+    return cost,plans
+end
+local cost,plans=costs()
+assert(cost[30]==16*256 and not cost[31])
+CE_AIDistrictScoresEarlyCost=function()end
+local rows=E.ApplyConnectionCosts(snapshot,{},plans,{[3]=true})
+for _,row in ipairs(rows) do
+    if row.plot==30 then assert(row.city==8 and row.connectionOrder=='plannedSupply') end
+end
+stage=4;partner.stage=4
+cost=costs();assert(cost[30]==12*256 and cost[31]==12*256)
+supply[3]={plot=32,kind='base',ready=1}
+cost=costs();assert(not cost[30] and not cost[32] and cost[31]==16*256)
+stage=2;partner.stage=2
+cost=costs();assert(not cost[31] and cost[20]==24*256 and cost[21]==24*256)
+''')
+
     def test_quarter_first_changes_a_near_tie_and_preserves_strong_competition(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
