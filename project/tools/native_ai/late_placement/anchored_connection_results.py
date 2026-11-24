@@ -994,6 +994,50 @@ def run_result(root):
                 wonder_connections=wonder_connections(log, observations, players, through))
 
 
+def loadable_layout_endpoint(root, seed, arm):
+    """Verify the run's archive and leave a named turn-250 save in Load Game.
+
+    Civ can withhold manual saving on an inactive player turn. The controller
+    then archives the held game's autosave before releasing the session. The
+    original autosave slot can rotate, so copy from the verified archive and
+    keep the player's inspectable copy independent of the research archive.
+    """
+    from driver import load, sha
+    import shutil
+    if (root / 'checkpoint.json').exists():
+        receipt = load(root / 'checkpoint.json')
+        archive, native = (Path(receipt[key]) for key in ('archive', 'native_save'))
+        if (receipt['turn'] != 250 or not receipt['verified'] or archive.parent.resolve() != root.resolve()
+                or not native.is_file() or sha(archive) != receipt['sha256'] or sha(native) != receipt['sha256']):
+            raise ValueError(f'Missing matching archived and Load Game endpoint for {arm}')
+        return str(native)
+
+    receipt = load(root / 'completed-via-autosave.json')
+    archive, source = Path(receipt['archive']), Path(receipt['source'])
+    digest = receipt['sha256']
+    if (receipt['status'] != 'archived' or receipt['turn'] != 250 or receipt['verified_turn'] != 250
+            or not receipt['native_closed_verified'] or archive.resolve() != (root/'endpoint-autosave/source-250.Civ6Save').resolve()
+            or source.parent.name.lower() != 'auto' or not source.parent.parent.is_dir()
+            or archive.stat().st_size != receipt['size'] or sha(archive) != digest):
+        raise ValueError(f'Unverified turn-250 autosave for {arm}')
+    label = 'BASELINE' if arm == 'control' else 'TREATMENT'
+    native = source.parent.parent / f'CSC_LAYOUT_{seed}_{label}_T250_{digest[:12]}.Civ6Save'
+    try:
+        output = native.open('xb')
+    except FileExistsError:
+        pass
+    else:
+        try:
+            with output, archive.open('rb') as saved:
+                shutil.copyfileobj(saved, output)
+        except Exception:
+            native.unlink()
+            raise
+    if sha(native) != digest:
+        raise ValueError(f'Load Game copy differs from the verified autosave: {native}')
+    return str(native)
+
+
 def paired_full_game_result(control, treatment):
     """Compare matched turn-250 games using their final receipts and archives."""
     from driver import load, sha
@@ -1028,12 +1072,7 @@ def paired_full_game_result(control, treatment):
         openings[arm] = {key: source[key] for key in ('original_ai', 'map_signature', 'starts', 'units')}
         modules[arm] = {name: row['sha256'] for name, row in load(root / 'loaded-modules.json').items()}
         protocols[arm] = protocol
-        receipt = load(root / 'checkpoint.json')
-        archive, native = (Path(receipt[key]) for key in ('archive', 'native_save'))
-        if (receipt['turn'] != 250 or not receipt['verified'] or archive.parent.resolve() != root.resolve()
-                or not native.is_file() or sha(archive) != receipt['sha256'] or sha(native) != receipt['sha256']):
-            raise ValueError(f'Missing matching archived and Load Game endpoint for {arm}')
-        saves[arm] = str(native)
+        saves[arm] = loadable_layout_endpoint(root, protocol['map_seed'], arm)
         services[arm] = load(root / 'observed-services.json')
     if (protocols['control'] != protocols['treatment'] or openings['control'] != openings['treatment']
             or modules['control'] != modules['treatment'] or saves['control'] == saves['treatment']):

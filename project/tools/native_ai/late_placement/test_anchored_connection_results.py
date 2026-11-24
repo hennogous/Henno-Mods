@@ -1,9 +1,11 @@
+import hashlib
+import json
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from anchored_connection_results import (anchored_target_results, bid_competition, common_layout_conversion, completed_substitute_pairs,
-                                         connection_counts, customer_land_purchases, endpoint_pair_supply, failed_district_requests,
+                                         connection_counts, customer_land_purchases, endpoint_pair_supply, failed_district_requests, loadable_layout_endpoint,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
 from paired_layout_replay_results import trace_arm
@@ -23,6 +25,29 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_named_autosave_survives_slot_rotation_and_preserves_player_edits(self):
+        with TemporaryDirectory() as temp:
+            root=Path(temp)/'arm'
+            archive=root/'endpoint-autosave/source-250.Civ6Save'
+            archive.parent.mkdir(parents=True)
+            source=Path(temp)/'Single/auto/AutoSave_0250.Civ6Save'
+            source.parent.mkdir(parents=True)
+            archive.write_bytes(b'first game at turn 250')
+            source.write_bytes(b'rotated slot')
+            digest=hashlib.sha256(archive.read_bytes()).hexdigest()
+            receipt=dict(archive=str(archive),source=str(source),status='archived',turn=250,verified_turn=250,
+                         native_closed_verified=True,size=archive.stat().st_size,sha256=digest)
+            (root/'completed-via-autosave.json').write_text(json.dumps(receipt),encoding='utf-8')
+            native=Path(loadable_layout_endpoint(root,42,'treatment'))
+            self.assertEqual(native.parent,source.parent.parent)
+            self.assertEqual(native.read_bytes(),archive.read_bytes())
+            self.assertEqual(loadable_layout_endpoint(root,42,'treatment'),str(native))
+            native.write_bytes(b'player edits')
+            with self.assertRaisesRegex(ValueError,'differs'):
+                loadable_layout_endpoint(root,42,'treatment')
+            self.assertEqual(native.read_bytes(),b'player edits')
+            self.assertEqual(archive.read_bytes(),b'first game at turn 250')
+
     def test_sales_pairs_and_checkpoint_build_order_agree_with_the_endpoint(self):
         census={'turn':20, 'rows':[('QUARTER','BAKERS\t1\t7\t10\ttrue\tfalse')]}
         row=dict(kind='RELATION',turn=13,player=1,city=7,quarter='BAKERS',quarterPlot=10,

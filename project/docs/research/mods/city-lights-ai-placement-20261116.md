@@ -818,6 +818,61 @@ Source on Shadow: `csc-ai-paired-footprints-20261124/full-v13-standalone-control
 under Desktop/Codex. The paired report's `anchored_target_followthrough`
 field groups the targets and records the order of each distinct completed pair.
 
+### Matched standalone result, 24 November
+
+Small Continents, Online speed, map seed 171124601, game seed 171124602.
+The two turn-250 arms used the same five AI players, opening map and v13
+build. The control ran the current default CSC tuning. The candidate
+enabled prospective and anchored pair guidance. Pairs in the table exclude
+City Centers. One Quarter can support more than one adjacent customer.
+
+| Measure | Current default | Candidate |
+| --- | ---: | ---: |
+| Completed Bakers / Tailors Quarters | 23 / 3 | 25 / 6 |
+| Completed Bakers–customer pairs, Quarter-first / customer-first | 8 / 4 | 14 / 4 |
+| Completed Tailors–customer pairs, Quarter-first / customer-first | 4 / 1 | 4 / 4 |
+| Pairs with a working Base supplier, Bakers / Tailors | 11 / 4 | 16 / 7 |
+| Pairs also having a functioning mapped buyer, Bakers / Tailors | 9 / 4 | 10 / 7 |
+| Exact pairs completed / eligible owned layouts in the common survey | 4 / 238 | 12 / 232 |
+| Exact pairs completed / layouts where a proposed tile got its district | 4 / 38 | 12 / 58 |
+| Working adjacent Base deposits at 250, Bakers / Tailors | 27 / 2 | 29 / 6 |
+| Working adjacent Specialty deposits at 250, Bakers / Tailors | 3 / 0 | 2 / 0 |
+| Bakers Stage 2 active chains / chain-turns over 199 shared observations | 17 / 1,368 | 17 / 1,488 |
+| Bakers Stage 3 active chains / chain-turns | 5 / 248 | 5 / 192 |
+| Tailors Stage 3 active chains / chain-turns | 1 / 58 | 2 / 72 |
+| Guidance seconds per turn, mean / maximum | 1.65 / 3.55 | 2.75 / 7.82 |
+
+For the exact common-survey pairs, the mean interval between foundations
+went from 12 to 93.5 turns for Quarter-first Bakers and from 28 to 53.3
+for customer-first Bakers. Quarter-first Tailors went from 82 to 87.5.
+One customer-first Tailors pair took nine turns in the candidate. The
+larger sample includes some long waits. The candidate's additional
+scarcity pricing covered 54 Bakers and 58 Tailors layouts, of which four
+and one completed on the priced tiles. These tracked sets overlap.
+
+Two customer sites on land acquired in ordinary play completed a pair in
+each arm. There were zero explicit CSC offers to buy customer land. No
+Tailors Stage 2 Service was observed. For customer bids with a matched
+native score, exact wins increased from seven to 14. Campus beat a customer
+31 times in each arm. In the candidate, Theater Square accounted for
+another 23 losses and Bakers for 17. A district comparison can recur
+before construction.
+
+Quarter forecasts accounted for 408,958 of the 419,188 additional logical
+model evaluations. All 18,585 candidate Quarter quotes were distinct by
+turn, player, city, type and plot. The next performance check should count
+actual ledger builds and the time spent pricing them. A logical evaluation
+can reuse a result. The newer customer-ownership and saved-partner changes
+were developed after this build was pinned.
+
+Two short replays on the reviewed build will revisit actual completions
+from this seed. The turn-150 save precedes the Commercial Hub foundation
+on 603 (154) and Tailors on 602 (163). The native AI had already selected
+the Quarter site before this save. Switch at 151 and follow both cities
+through 168. The turn-200 save has Bakers on 1162. Switch at 211, before
+the Hub selection recorded in packet 216, and follow 1163 through 235.
+These same-state tests isolate follow-through in each build order.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |

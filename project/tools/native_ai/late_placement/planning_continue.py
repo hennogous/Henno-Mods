@@ -269,12 +269,15 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
     ui_pair = {'6f2888d4-79dc-415f-a8ff-f9d81d7afb53', '382a187f-c8ba-4094-a6a7-0d5315661f33'}
     extra_count_ok = (len(extras) == 3 or paired_layout_csc is not None
                       or (no_savings and len(extras) == 5 and ui_pair <= set(extras)))
-    require(extra_count_ok and set(extras) == set(protocol['extra_mods']), 'Expected exact original optional packages')
+    # The fresh-game writer omits this protocol field for standalone CSC.
+    # The separately archived package inventory must also be empty in that case.
+    expected_extras = protocol.get('extra_mods', {})
+    require(extra_count_ok and set(extras) == set(expected_extras), 'Expected exact original optional packages')
     for mod_id, item in extras.items():
         package = Path(item['path']).resolve(strict=True)
         require(package_identity(package)[0] == mod_id and manifest(package) == item['files'] and
-                digest(item['files']) == protocol['extra_mods'][mod_id]['digest'] and
-                package == Path(protocol['extra_mods'][mod_id]['path']).resolve(), 'Optional package changed: '+mod_id)
+                digest(item['files']) == expected_extras[mod_id]['digest'] and
+                package == Path(expected_extras[mod_id]['path']).resolve(), 'Optional package changed: '+mod_id)
     binary = Path(load(source/'launch-bootstrap.json')['binary']).resolve(strict=True)
     executable_sha, core_sha = native_profile(binary)
     loaded = load(source/'loaded-modules.json')

@@ -1,5 +1,14 @@
 # Current CSC AI status
 
+**Standalone turn-250 result, 24 November.** The experimental layout planner
+raised completed Bakers–customer pairs from 12 to 18 and Tailors–customer
+pairs from five to eight. Pairs with both a working Base and buying building
+rose from 13 to 17. Exact completions among surveyed layouts that got
+started rose from 4/38 to 12/58. Customer-land purchases driven by the
+planner are still open. Mean/max guidance time rose from 1.65/3.55 seconds
+to 2.75/7.82. City Lights and the two targeted replays are next.
+[Full comparison and timing](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november).
+
 **24 November — Problems 1.2 and 2.1, protect both footprints.**
 The latest candidate also compares owned and purchasable customer sites,
 remembers a priced layout across saves, and protects its last usable Base
