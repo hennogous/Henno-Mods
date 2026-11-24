@@ -1,8 +1,8 @@
 import unittest
 
 from anchored_connection_results import (bid_competition, connection_counts, failed_district_requests,
-                                         prospective_footprints, prospective_layouts, supplier_history,
-                                         wonder_connections)
+                                         prospective_footprint_counts, prospective_footprints, prospective_layouts,
+                                         supplier_history, wonder_connections)
 from planning_results import parse
 
 
@@ -100,6 +100,26 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(row['customer']['native_same_plot_choices'], {})
         self.assertFalse(row['customer']['first_occupation']['matched'])
         self.assertEqual(row['customer']['first_occupation']['player'], 2)
+
+    def test_strong_pair_counts_each_physical_customer_once_across_stages(self):
+        offer = ('CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
+                 'customerCity=8 customerDistrict=6 customerPlot=20 stage={} '
+                 'existing=false extraBase=true specialty=false')
+        log = '\n'.join([
+            'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
+            'CSC_DISTRICT_CATALOGUE\t6\tDISTRICT_HARBOR\ttrue',
+            offer.format(2), offer.format(3),
+            record('PUBLICATION', accepted='true', pendingTurn=3, version=2),
+            record('OPPORTUNITY', turn=3, version=2, player=1, city=7, district=43, plot=10, offered='true'),
+            record('FOUNDATION', turn=5, foundationDateKnown='true', player=1, city=8, district=6, plot=20),
+            record('FOUNDATION', turn=6, foundationDateKnown='true', player=1, city=7, district=43, plot=10),
+            record('COMPLETION', turn=7, player=1, city=7, district=43, plot=10),
+            record('COMPLETION', turn=8, player=1, city=8, district=6, plot=20),
+        ])
+        rows = prospective_footprints(log, parse(log, 'CSC_PLANNING_'), {1}, 25, {'losses': []})
+        counts = prospective_footprint_counts(rows)['DISTRICT_CSC_TAILORS_QUARTER']
+        self.assertEqual((counts['modeled_pairs'], counts['pairs_with_quarter_offer'],
+                          counts['pairs_completed'], counts['completed_customer_first']), (1, 1, 1, 1))
 
     def test_folds_stage_duplicates_and_joins_both_orders(self):
         log = '\n'.join([

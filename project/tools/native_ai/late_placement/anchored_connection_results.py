@@ -237,7 +237,8 @@ def prospective_footprints(log, observations, players, through, competition):
 
     names = {int(index): title for index, title in DISTRICT_TITLE.findall(log)}
     versions = defaultdict(set)
-    foundations, choices = defaultdict(list), defaultdict(list)
+    foundations, completions, choices = defaultdict(list), defaultdict(list), defaultdict(list)
+    offered = defaultdict(set)
     for row in observations:
         kind = row['kind']
         if kind == 'PUBLICATION' and row['accepted']:
@@ -245,8 +246,14 @@ def prospective_footprints(log, observations, players, through, competition):
         elif row.get('turn', through + 1) <= through:
             if kind == 'FOUNDATION' and row.get('foundationDateKnown'):
                 foundations[row['plot']].append(row)
+            if kind == 'COMPLETION' or (kind == 'FOUNDATION' and row.get('complete')):
+                identity = tuple(row[k] for k in ('player', 'city', 'district', 'plot'))
+                completions[identity].append(row.get('completionTurn', row['turn']))
             if kind == 'NATIVE_BEST' and row.get('player') in players:
                 choices[row['player'], row['city'], row['plot']].append(row)
+            if kind == 'OPPORTUNITY' and row.get('offered') and row.get('player') in players:
+                identity = tuple(row[k] for k in ('player', 'city', 'district', 'plot'))
+                offered[identity].add(row['version'])
     losses = defaultdict(list)
     for row in competition['losses']:
         if row['plot'] == row['winner_plot']:
@@ -260,6 +267,11 @@ def prospective_footprints(log, observations, players, through, competition):
                         if first <= row.get('foundationTurn', row['turn']) <= through),
                        key=lambda row: row.get('foundationTurn', row['turn']))
         foundation = next(iter(built), None)
+        foundation_turn = foundation.get('foundationTurn', foundation['turn']) if foundation else None
+        matched = bool(foundation and identity == (foundation['player'], foundation['city'],
+                                                   foundation['district'], plot))
+        completion = min((turn for turn in completions[identity] if matched and foundation_turn <= turn),
+                         default=None)
         choice_rows = [row for row in choices[player, city, plot] if row['version'] in active]
         scored_losses = [row for row in losses[player, city, name, plot] if row['version'] in active]
         nearest = min(scored_losses, key=lambda row: row['gap_q8'], default=None)
@@ -267,19 +279,55 @@ def prospective_footprints(log, observations, players, through, competition):
                     native_same_plot_choices=dict(Counter(names.get(row['district'], str(row['district']))
                                                           for row in choice_rows)),
                     exact_same_plot_losses=len(scored_losses), nearest_loss=nearest,
+                    matched_completion=completion,
                     first_occupation=None if not foundation else dict(
-                        turn=foundation.get('foundationTurn', foundation['turn']),
+                        turn=foundation_turn,
                         player=foundation['player'], city=foundation['city'],
                         district=names.get(foundation['district'], str(foundation['district'])),
-                        matched=identity == (foundation['player'], foundation['city'], foundation['district'], plot)))
+                        matched=matched))
 
     result = []
     for (quarter, customer), turns in sorted(layouts.items(), key=lambda item: (min(item[1]), item[0])):
         active = set().union(*(versions[turn] for turn in turns))
         result.append(dict(first_offer=min(turns), last_offer=max(turns), modeled_turns=len(turns),
+                           quarter_published=bool(active & offered[quarter]),
                            quarter=footprint(quarter, turns, active),
                            customer=footprint(customer, turns, active)))
     return result
+
+
+def prospective_footprint_counts(layouts):
+    """Summarize distinct physical pairs even when several stages share them."""
+    counts, occupied, scored_losses = defaultdict(Counter), defaultdict(set), defaultdict(set)
+    for pair in layouts:
+        quarter, customer = pair['quarter'], pair['customer']
+        family = quarter['district']
+        count = counts[family]
+        count['modeled_pairs'] += 1
+        count['pairs_with_quarter_offer'] += pair['quarter_published']
+        built = []
+        for role, target in (('quarter', quarter), ('customer', customer)):
+            if target['native_same_plot_choices'].get(target['district']):
+                count[role + '_selected'] += 1
+            occupation = target['first_occupation']
+            if occupation and occupation['matched']:
+                count[role + '_founded'] += 1
+                built.append(occupation['turn'])
+            elif occupation:
+                identity = (role, target['player'], target['city'], target['district'], target['plot'])
+                occupied[family].add(identity)
+                if target['exact_same_plot_losses']:
+                    scored_losses[family].add(identity)
+        if all(target['matched_completion'] is not None for target in (quarter, customer)):
+            count['pairs_completed'] += 1
+            order = 'same_turn'
+            if built[0] != built[1]:
+                order = 'quarter_first' if built[0] < built[1] else 'customer_first'
+            count['completed_' + order] += 1
+    for family, count in counts.items():
+        count['distinct_footprints_occupied_by_other'] = len(occupied[family])
+        count['distinct_footprints_lost_after_scored_contest'] = len(scored_losses[family])
+    return {family: dict(values) for family, values in counts.items()}
 
 
 def connection_counts(log, original_ai, through, *, observations=None):
@@ -486,12 +534,13 @@ def run_result(root):
             failed_requests = failed_district_requests(csv.reader(builds, skipinitialspace=True),
                 csv.reader(queue, skipinitialspace=True), players, types, through)
     competition = bid_competition(log, observations, players, through)
+    footprints = prospective_footprints(log, observations, players, through, competition)
     return dict(counts=counts, timing=timing['publisher_wall'],
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
                 supplier_history=supplier_history(observations, players, through),
                 prospective_layouts=prospective_layouts(log, observations, players, through),
-                prospective_footprints=prospective_footprints(log, observations, players, through, competition),
+                prospective_footprints=footprints, prospective_pair_counts=prospective_footprint_counts(footprints),
                 bid_competition=competition,
                 failed_district_requests=failed_requests,
                 wonder_connections=wonder_connections(log, observations, players, through))

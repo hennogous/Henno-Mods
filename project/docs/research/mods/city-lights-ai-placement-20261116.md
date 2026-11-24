@@ -383,6 +383,11 @@ deduplicating their stages and repeated turns. A two-footprint audit joins
 same-tile native choices to accepted packet versions while each layout was
 being modeled. It separately follows later occupation and only assigns a
 score gap when the same native comparison supplies both values.
+The revised-cap baseline offered 14 physical Bakers pairs and six physical
+Tailors pairs. One strong pair completed both districts, a customer-first
+Bakers layout. Two Tailors footprints had both a recorded same-tile loss
+and subsequent occupation by a different district. Other footprints were
+occupied without an exact scored loss in the available journal.
 
 | Case | Quarter footprint | Customer footprint |
 |---|---|---|
@@ -406,7 +411,10 @@ turn 57, the Campus on 1935 scored 634 utility and the reciprocal Tailors
 candidate on 1935 scored 338. The Theater Square's observed candidate was
 1934, at 436, so there was no observed direct Theater bid at 1935. This is a
 stronger-native-placement control. Quito's 38-utility gap provides a separate
-near tie against a Rural Community. The scout finished on turn 62 with zero
+near tie against a Rural Community. The city was at its population district
+limit during that decision. The native comparison can test the score effect,
+and construction requires a separate capacity-ready comparison or follow-through.
+The scout finished on turn 62 with zero
 observer faults or dropped records. The run and its native journal are under
 `Desktop/Codex/csc-ai-paired-footprints-20261124/panama-scout/control`.
 The temporary native copy of the archived checkpoint was removed after close.
