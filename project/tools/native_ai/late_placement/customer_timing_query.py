@@ -18,8 +18,10 @@ ROOT=HERE.parents[3]
 
 
 def build(control,candidate,prototype=None,players=(5,),service_comparison=False,*,
-          facts_equivalence=False,layout_policy=False):
+          facts_equivalence=False,layout_policy=False,bid_equivalence=False):
     assert 1<=len(players)<=2 and len(set(players))==len(players) and all(type(p)is int and 1<=p<=5 for p in players)
+    if bid_equivalence:
+        assert layout_policy and not (prototype or service_comparison or facts_equivalence)
     control,candidate=Path(control)/'Lua_UI/AI',Path(candidate)/'Lua_UI/AI'
     facts='CSC_AI_EconomyFacts.lua';model='CSC_AI_EconomyModel.lua';adapter='CSC_AI_EconomyAdapters.lua'
     if facts_equivalence:
@@ -27,7 +29,8 @@ def build(control,candidate,prototype=None,players=(5,),service_comparison=False
         assert (control/adapter).read_bytes()==(candidate/adapter).read_bytes()
     else:
         assert (control/facts).read_bytes()==(candidate/facts).read_bytes()
-    assert (control/model).read_bytes()==(candidate/model).read_bytes()
+    if not bid_equivalence:
+        assert (control/model).read_bytes()==(candidate/model).read_bytes()
     arms={'A':[control/facts,control/model,control/adapter],
           'B':[candidate/facts,candidate/model,candidate/adapter]}
     names={'A':'control_adapter','B':'candidate_adapter'}
@@ -106,6 +109,7 @@ local prior,priorObjects,common,proofs={},{},{},{}
 local order={'B','A','A','B'}
 local players='''+'{'+','.join(map(str,players))+'}'+'''
 local modelEquality='''+('true'if prototype or facts_equivalence else'false')+'''
+local bidEquality='''+('true'if bid_equivalence else'false')+'''
 local layoutPolicy='''+('true'if facts_equivalence or layout_policy else'false')+'''
 local serviceComparison='''+('true'if service_comparison else'false')+'''
 if serviceComparison then
@@ -233,11 +237,23 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
  if modelEquality then
   if proofs[pid]then assert(proofs[pid]==semantics,'Model optimization changes bids, plans or economic outcomes')else proofs[pid]=semantics end
  end
+ local bidFingerprint
+ if bidEquality then
+  -- Pruning worlds proven below the policy floor can change diagnostic
+  -- counts. Compare every emitted candidate, native stage and saved plan.
+  local policy={entries=semanticObject.entries,layouts=snapshot.planState and snapshot.planState.nextLayouts,
+   fallback=status.fallback,final=status.final,managed=status.managed}
+  local encodedPolicy=encode(policy)
+  if proofs[pid] then assert(proofs[pid]==encodedPolicy,'Forecast screening changes bids or saved plans')
+  else proofs[pid]=encodedPolicy end
+  bidFingerprint=digest(encodedPolicy)
+ end
  emit('CSC_CUSTOMER_TIMING='..encode({turn=turn,pass=pass,arm=arm,player=pid,
   totalSeconds=finished-started,preparationSeconds=centralStarted-started,
   centralSeconds=finished-centralStarted,customerSeconds=customerSeconds,worldSeconds=worldSeconds,
   customer=customerStats,work=work,nativeQuotes=snapshot.QuoteCount(),
-  chains=#snapshot.chains,entries=#entries,semanticFingerprint=digest(semantics),
+  chains=#snapshot.chains,entries=#entries,semanticFingerprint=digest(semantics),bidFingerprint=bidFingerprint,
+  rejectedByAdjacencyBound=status.qualityBoundDeferred or 0,
   serviceWorlds=(function()local n=0;for _,w in ipairs(worlds)do if w.result and not w.result.servicesExcluded then n=n+1 end end;return n end)(),
   serviceStreams=(function()local n=0;for _,w in ipairs(worlds)do if w.result then n=n+(w.result.serviceStreams or 0)end end;return n end)(),
   semanticBytes=#semantics,earlyFingerprint=digest(earlyText),coldHistory=true}))
@@ -247,13 +263,13 @@ local current={activeTables()}
 assert(current[1]==active[1]and current[2]==active[2]and current[3]==active[3],'Active module replaced')
 assert(Game.GetCurrentGameTurn()==turn,'Timing world advanced')
 emit('CSC_CUSTOMER_TIMING_COMPLETE='..encode({turn=turn,verified=true,passes=4,players=#players,
- noPublishedPackets=true,coldHistory=true,modelEquality=modelEquality}))
+ noPublishedPackets=true,coldHistory=true,modelEquality=modelEquality,bidEquality=bidEquality}))
 emit('CSC_COAST_END\\t'..turn)
 '''
     return code,dict(scope='Cold-history integrated economic pass; no Builder nominations/repairs/publication',
                      arms=names,order=['B','A','A','B'],players=list(players),sources=pins,
                      service_comparison=service_comparison,facts_equivalence=facts_equivalence,
-                     layout_policy=bool(facts_equivalence or layout_policy))
+                     layout_policy=bool(facts_equivalence or layout_policy),bid_equivalence=bid_equivalence)
 
 
 if __name__=='__main__':
@@ -264,9 +280,10 @@ if __name__=='__main__':
     p.add_argument('--service-comparison',action='store_true')
     p.add_argument('--facts-equivalence',action='store_true')
     p.add_argument('--layout-policy',action='store_true',help='Measure with the candidate layout policy enabled in both arms')
+    p.add_argument('--bid-equivalence',action='store_true',help='Compare the complete offers and layouts, allowing quote diagnostics to differ')
     args=p.parse_args();code,meta=build(args.control,args.candidate,args.prototype_model,args.players,
                                        args.service_comparison,facts_equivalence=args.facts_equivalence,
-                                       layout_policy=args.layout_policy)
+                                       layout_policy=args.layout_policy,bid_equivalence=args.bid_equivalence)
     args.output.write_text(code,encoding='utf-8')
     args.output.with_suffix('.inputs.json').write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(output=str(args.output),bytes=len(code.encode()),**meta),indent=2))

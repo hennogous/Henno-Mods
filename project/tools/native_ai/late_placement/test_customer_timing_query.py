@@ -8,6 +8,15 @@ MOD=Path(__file__).resolve().parents[4]/'Civ Supply Chains'
 
 
 class TimingProof(unittest.TestCase):
+    def test_bid_equivalence_compiles_with_layout_policy_enabled(self):
+        code,provenance=build(MOD,MOD,layout_policy=True,bid_equivalence=True)
+        LuaRuntime().eval('function(s)assert(loadstring(s))end')(code)
+        self.assertTrue(provenance['bid_equivalence'] and provenance['layout_policy'])
+        self.assertIn('local bidEquality=true',code)
+        self.assertIn('local layoutPolicy=true',code)
+        with self.assertRaises(AssertionError):
+            build(MOD,MOD,bid_equivalence=True)
+
     def vm(self):
         code,_=build(MOD,MOD)
         vm=LuaRuntime()

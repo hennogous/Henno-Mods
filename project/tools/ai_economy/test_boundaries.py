@@ -215,7 +215,7 @@ local slots,ready,gold,growth=2,5,1,nil
 snapshot.DistrictCapacity=function()return{known=true,used=0,allowed=slots,population=6,reason='ready',nextSlotTurns=growth}end
 snapshot.Geometry=function()return{upper=1}end
 snapshot.Supply=function()return{base={{plot=16}}}end
-snapshot.Site=function(_,p)return{city=7,value=1000,plot=p:GetIndex(),baseCount=1,
+snapshot.Site=function(_,p)return{city=7,value=1000,plot=p:GetIndex(),baseCount=1,adjacency=1,
     suppliers={{kind='base',plot=16,ready=2}},horizon=50,quarterReady=4,
     quarterWork={unlock=0,turns=4}}end
 snapshot.CustomerOptions=function()return{{city=7,district=8,family='HARBOR',plot=20,adjacency=2,
@@ -225,7 +225,11 @@ snapshot.ProjectedConnectionYields=function(_,district,plot)
     assert(district==8 and plot==20)
     return{YIELD_GOLD=gold}
 end
-CSC_AI_EconomyModel.Forecast=function(site)return{valueQ8=site.value,adjacency=1,streams={},omissions={}}end
+local forecasts=0
+CSC_AI_EconomyModel.Forecast=function(site)
+    forecasts=forecasts+1
+    return{valueQ8=site.value,adjacency=1,streams={},omissions={}}
+end
 local function offers()return E.QuarterBids(snapshot,placement,{},{})end
 local entries=offers()
 assert(#entries==3)
@@ -237,7 +241,10 @@ end
 gold=2
 assert(offers()[1].adjacencyPreferenceQ8==144*256)
 slots=1
-assert(#offers()==0)
+local before=forecasts
+local deferred,stats=offers()
+assert(#deferred==0 and forecasts==before and stats.qualityDeferred==3
+    and stats.qualityBoundDeferred==3 and stats.unknown==0)
 growth=5 -- Customer first for five turns, Quarter can start as the slot opens.
 assert(#offers()==3)
 growth=6

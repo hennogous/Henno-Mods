@@ -984,6 +984,24 @@ function E.QuarterForecast(snapshot,city,plot,profile,site,protectionQ8,covers)
     return quote
 end
 
+local function finiteAdjacency(value)
+    local kind=type(value)
+    return (kind=='number' or kind=='integer') and value==value and math.abs(value)<math.huge
+end
+
+local function upperPlacementAdjacency(site)
+    local adjacency,pair=site.adjacency,site.pairAdjacencyGain or 0
+    if not finiteAdjacency(adjacency) or not finiteAdjacency(pair) then return nil end
+    local bestTerrain=0
+    for _,second in ipairs(site.seconds or{}) do
+        local terrain=second.terrain or 0
+        if not finiteAdjacency(terrain) then return nil end
+        bestTerrain=math.max(bestTerrain,terrain)
+    end
+    local upper=adjacency+bestTerrain+pair
+    if finiteAdjacency(upper) then return upper end
+end
+
 function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,protectionQ8,ignoredLegacy,covers,protected,screenedOptions)
     local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
     local state=snapshot.planState
@@ -1010,6 +1028,23 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
                 -- raw geometry only for the compatibility path without ranks.
                 if not site.prospectiveLayout.rank then site.prospectiveCustomers=options end
                 forecastPairedAdjacency(snapshot,site,city,plot,profile,site.prospectiveLayout)
+            end
+        end
+        if E.ProspectiveConnectionsEnabled and not plan then
+            local plotIndex=plot:GetIndex()
+            local key=city:GetID()..':'..profile.district.Index
+            local saved=snapshot.savedLayouts and snapshot.savedLayouts[key]
+            local reserved=snapshot.intentFootprints and snapshot.intentFootprints[plotIndex]
+            if not reserved and not (saved and saved.plot==plotIndex) then
+                -- Both ledgers choose at most one Stage 2 terrain adjustment.
+                -- Even the largest of them, with this candidate's admitted
+                -- partner gain, cannot clear the same floor as the final bid.
+                -- Saved or reserved sites keep the normal continuity quote.
+                local upper=upperPlacementAdjacency(site)
+                if upper and upper+1e-6<E.PlacementMinimumAdjacency(site) then
+                    details.reason='quality_bound';details.detail=string.format('upper adjacency %.3f',upper)
+                    return {details=details,qualityBoundDeferred=true}
+                end
             end
         end
         -- The legacy single-chain Stage2 estimate must not stack with the new
@@ -2824,7 +2859,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         else ignoredLegacy[id]=math.max(ignoredLegacy[id]or 0,-(entry.delta or 0))end
     end
     local stats={evaluated=0,final=0,unknown=0,buyerBlocked=0,streams=0,omissions=0,
-        qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,materialDeferred=0,carried=0,managed=true,
+        qualityDeferred=0,qualityBoundDeferred=0,economicDeferred=0,invoiceDeferred=0,materialDeferred=0,carried=0,managed=true,
         capacityReady=0,capacityFull=0,capacityUnknown=0}
     local player,pid=snapshot.player,snapshot.id
     if (E.AnchoredConnectionsEnabled or E.AnchoredConnectionAuditEnabled) and snapshot.ConnectionDistrictTurns then
@@ -2930,7 +2965,10 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                 evaluations[id]=evaluation.details
                                 local quote,site,parts=evaluation.quote,evaluation.site,evaluation.parts
                                 if evaluation.carried then stats.carried=stats.carried+1 end
-                                if not quote and not evaluation.carried then
+                                if evaluation.qualityBoundDeferred then
+                                    stats.qualityDeferred=stats.qualityDeferred+1
+                                    stats.qualityBoundDeferred=stats.qualityBoundDeferred+1
+                                elseif not quote and not evaluation.carried then
                                     stats.unknown=stats.unknown+1
                                     if stats.unknown<=3 then print(string.format('CSC_AI_ECONOMY_QUOTE_UNAVAILABLE turn=%d player=%d city=%d plot=%d reason=%s',
                                         Game.GetCurrentGameTurn(),pid,city:GetID(),plot:GetIndex(),tostring(evaluation.details.detail)))end

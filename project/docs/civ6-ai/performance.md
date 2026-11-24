@@ -79,3 +79,14 @@ ledgers, plans and errors across 226 forecasts, including 23 route cases.
 The 203 joint cases made 148,484 price calls instead of 163,989. A same-save
 City Lights test with forced identical inputs will measure the effect on
 actual processing time before interpreting that reduction as a speedup.
+
+At the five sampled turns from 150 to 250, the full prospective forecasts
+rejected 195 of 381 standalone quotes and 116 of 346 City Lights quotes on
+placement quality. The planner now avoids a full forecast on an unreserved,
+unsaved plot when the current adjacency, the best possible Stage 2 terrain
+gain and its admitted partner's gain still fall below the placement floor.
+Saved plans, reserved plots and unknown values keep their normal quote.
+The same-save comparison records the number screened out and must return
+identical offers and saved layouts. The old rejection counts are the upper
+limit on what this check can save, because some sites excluded by the full
+forecast can still pass its conservative upper bound.

@@ -205,6 +205,41 @@ for _,f in ipairs(r.quote.streams)do total=total+f.valueQ8 end
 assert(total==r.quote.valueQ8)
 ''')
 
+    def test_quality_bound_keeps_the_best_terrain_and_preserves_saved_sites(self):
+        self.vm().execute('''
+local s=site();s.adjacency=1
+snapshot.Site=function()return s end
+local city={GetID=function()return 10 end}
+local plot={GetIndex=function()return 1 end,GetOwner=function()return 1 end}
+local profile={district={Index=42}}
+local forecasts=0
+E.QuarterForecast=function()forecasts=forecasts+1;return nil,'test quote' end
+E.ProspectiveConnectionsEnabled=true
+local function evaluate()
+    return E.QuotePlacement(snapshot,city,plot,profile,{upper=1},false,0,0,0,false,{})
+end
+assert(evaluate().qualityBoundDeferred and forecasts==0)
+s.seconds[2]={type='Second',terrain=.9999995}
+assert(not evaluate().qualityBoundDeferred and forecasts==1) -- Within the bid floor's tolerance.
+s.seconds[2].terrain=.9
+assert(evaluate().qualityBoundDeferred and forecasts==1)
+s.pairAdjacencyGain=.1
+assert(not evaluate().qualityBoundDeferred and forecasts==2)
+s.pairAdjacencyGain=nil;s.seconds[2].terrain=nil
+s.quarterKey='TAILORS';s.completedHarborPlot=21
+assert(not evaluate().qualityBoundDeferred and forecasts==3)
+s.completedHarborPlot=nil
+snapshot.savedLayouts={['10:42']={plot=1}}
+assert(not evaluate().qualityBoundDeferred and forecasts==4)
+snapshot.savedLayouts['10:42'].plot=2
+snapshot.intentFootprints={[1]='10:42:1'}
+assert(not evaluate().qualityBoundDeferred and forecasts==5)
+snapshot.intentFootprints=nil;s.seconds[2].terrain=math.huge
+assert(not evaluate().qualityBoundDeferred and forecasts==6)
+E.ProspectiveConnectionsEnabled=false;s.seconds[2].terrain=nil
+assert(not evaluate().qualityBoundDeferred and forecasts==7)
+''')
+
     def test_missing_readiness_price_cannot_leave_a_partially_valid_site_cache(self):
         self.vm().execute('''
 local facts=site()
