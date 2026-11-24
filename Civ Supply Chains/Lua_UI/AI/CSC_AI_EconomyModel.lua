@@ -1183,6 +1183,10 @@ function M.JointForecast(world,price)
     local function better(a,b)
         return a.selectionQ8>b.selectionQ8 or a.selectionQ8==b.selectionQ8 and a.valueQ8>b.valueQ8
     end
+    local visitsPerSweep=#nodes
+    for _,choices in ipairs(alternatives)do
+        if #choices>1 then visitsPerSweep=visitsPerSweep+#choices end
+    end
     for seed=1,variable and 2 or 1 do
         local selected,disabled={},{}
         if baseline then for key,value in pairs(baseline.disabledBuildings)do disabled[key]=value end end
@@ -1190,6 +1194,7 @@ function M.JointForecast(world,price)
         for i,choices in ipairs(alternatives)do selected[i]=choices[seed==1 and 1 or #choices]end
         local current,message=evaluate(selected,disabled);if not current then return nil,message end
         for sweep=1,variable and 2 or 0 do
+            local changed=false
             for i=1,#sites do
                 local chosen=selected[i]
                 local startingChoice,startingResult=chosen,current
@@ -1200,6 +1205,7 @@ function M.JointForecast(world,price)
                     if better(result,current)then current,chosen=result,candidate end
                 end end
                 selected[i]=chosen
+                changed=changed or chosen~=startingChoice
             end
             -- Choose unique physical customer investments globally. A venue
             -- built for one Quarter automatically serves every eligible adjacent
@@ -1210,7 +1216,17 @@ function M.JointForecast(world,price)
                 local result,error=evaluate(selected,disabled);if not result then return nil,error end
                 if better(result,current)or result.selectionQ8==current.selectionQ8 and result.valueQ8==current.valueQ8 and disabled[key]then
                     current=result
+                    changed=true
                 else disabled[key]=previous end
+            end
+            -- With no accepted producer or venue change, the next sweep
+            -- would revisit exactly the same states in this immutable
+            -- world. Keep the old logical budget and failure boundary even
+            -- though no ledger or pricing work needs to be repeated.
+            if sweep==1 and not changed then
+                evaluations=evaluations+visitsPerSweep
+                if evaluations>limit then return nil,'Joint evaluation budget exceeded'end
+                break
             end
         end
         if not best or better(current,best)then best=current end

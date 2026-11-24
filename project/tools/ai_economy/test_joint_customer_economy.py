@@ -124,6 +124,18 @@ r,why=M.JointForecast(world({a,a}),price);assert(r==nil and why=='Missing or dup
 r,why=M.JointForecast(world({a}),function()return nil end);assert(r==nil and why)
 ''')
 
+    def test_unchanged_sweep_still_charges_the_full_logical_budget(self):
+        self.vm().execute('''
+local a=chain('A',1)
+a.customers={venue(100,3)};a.customers[1].maintenance=1000
+local w=world({a});w.maxEvaluations=6
+local q=assert(M.JointForecast(w,price))
+assert(q.evaluations==6 and q.disabledBuildings['1:3:MARKET'])
+w.maxEvaluations=5
+local r,reason=M.JointForecast(w,price)
+assert(r==nil and reason=='Joint evaluation budget exceeded')
+''')
+
     def test_frozen_identity_world_reproduces_baseline_in_one_evaluation(self):
         self.vm().execute('''
 local a,b=chain('A',1),chain('B',2)

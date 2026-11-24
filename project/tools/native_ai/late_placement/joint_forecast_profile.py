@@ -19,7 +19,7 @@ def instrument(model):
     replace('local pricedStates,pricedCount={},0', '''local pricedStates,pricedCount={},0
     -- The generated replay overlay profiles Quarter objectives only.
     local probe=world.objective and variable and type(CE_AIMonotonicSeconds)=='function' and {
-        overflow={},overflowCount=0,builds=0,priced=0,hits=0,reused=0,shadowHits=0,
+        overflow={},overflowCount=0,builds=0,priced=0,hits=0,reused=0,shadowHits=0,unchangedVisits=0,
         buildTime=0,priceTime=0,shadowTime=0
     }
     local clock=CE_AIMonotonicSeconds''')
@@ -61,11 +61,14 @@ def instrument(model):
                 probe.overflowCount=probe.overflowCount+1
             end
         end''')
+    unchanged = 'evaluations=evaluations+visitsPerSweep'
+    if unchanged in model:
+        replace(unchanged, unchanged + '\n                if probe then probe.unchangedVisits=probe.unchangedVisits+visitsPerSweep end')
     replace('''    best.evaluations=evaluations;best.affectedChains=#sites''', '''    if probe then
         local function micros(seconds)return math.floor(seconds*1000000+.5)end
-        print(string.format('CSC_DIAGNOSTIC_JOINT_SEARCH turn=%d chains=%d logical=%d reused=%d hits=%d builds=%d priced=%d shadowHits=%d buildMicros=%d priceMicros=%d shadowMicros=%d',
+        print(string.format('CSC_DIAGNOSTIC_JOINT_SEARCH turn=%d chains=%d logical=%d reused=%d hits=%d builds=%d priced=%d shadowHits=%d buildMicros=%d priceMicros=%d shadowMicros=%d unchangedVisits=%d',
             Game.GetCurrentGameTurn(),#sites,evaluations,probe.reused,probe.hits,probe.builds,
-            probe.priced,probe.shadowHits,micros(probe.buildTime),micros(probe.priceTime),micros(probe.shadowTime)))
+            probe.priced,probe.shadowHits,micros(probe.buildTime),micros(probe.priceTime),micros(probe.shadowTime),probe.unchangedVisits))
     end
     best.evaluations=evaluations;best.affectedChains=#sites''')
     return model

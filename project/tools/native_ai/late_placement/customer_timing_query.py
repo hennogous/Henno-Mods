@@ -17,7 +17,8 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parents[3]
 
 
-def build(control,candidate,prototype=None,players=(5,),service_comparison=False,*,facts_equivalence=False):
+def build(control,candidate,prototype=None,players=(5,),service_comparison=False,*,
+          facts_equivalence=False,layout_policy=False):
     assert 1<=len(players)<=2 and len(set(players))==len(players) and all(type(p)is int and 1<=p<=5 for p in players)
     control,candidate=Path(control)/'Lua_UI/AI',Path(candidate)/'Lua_UI/AI'
     facts='CSC_AI_EconomyFacts.lua';model='CSC_AI_EconomyModel.lua';adapter='CSC_AI_EconomyAdapters.lua'
@@ -38,7 +39,7 @@ def build(control,candidate,prototype=None,players=(5,),service_comparison=False
     if prototype:
         arms={'A':[candidate/facts,candidate/model,candidate/adapter],
               'B':[candidate/facts,Path(prototype),candidate/adapter]}
-        names={'A':'current_model','B':'starting_world_reuse'}
+        names={'A':'current_model','B':'candidate_model'}
     encoder=(HERE/'economy_component_probe.lua').read_text(encoding='utf-8')
     code='-- DIAGNOSTIC ONLY: no bids, orders, properties or turn changes.\n'
     proof_encoder=encoder[encoder.index('local function encode'):encoder.index('for _,target in ipairs(CSC_COMPONENT_TARGETS)do')]
@@ -105,7 +106,7 @@ local prior,priorObjects,common,proofs={},{},{},{}
 local order={'B','A','A','B'}
 local players='''+'{'+','.join(map(str,players))+'}'+'''
 local modelEquality='''+('true'if prototype or facts_equivalence else'false')+'''
-local layoutPolicy='''+('true'if facts_equivalence else'false')+'''
+local layoutPolicy='''+('true'if facts_equivalence or layout_policy else'false')+'''
 local serviceComparison='''+('true'if service_comparison else'false')+'''
 if serviceComparison then
  assert(CE_AIEconomyStatus():find('"servicePricingReady":1',1,true),'Native Service quotes unavailable')
@@ -251,7 +252,8 @@ emit('CSC_COAST_END\\t'..turn)
 '''
     return code,dict(scope='Cold-history integrated economic pass; no Builder nominations/repairs/publication',
                      arms=names,order=['B','A','A','B'],players=list(players),sources=pins,
-                     service_comparison=service_comparison,facts_equivalence=facts_equivalence)
+                     service_comparison=service_comparison,facts_equivalence=facts_equivalence,
+                     layout_policy=bool(facts_equivalence or layout_policy))
 
 
 if __name__=='__main__':
@@ -261,8 +263,10 @@ if __name__=='__main__':
     p.add_argument('--players',type=int,nargs='+',default=[5])
     p.add_argument('--service-comparison',action='store_true')
     p.add_argument('--facts-equivalence',action='store_true')
+    p.add_argument('--layout-policy',action='store_true',help='Measure with the candidate layout policy enabled in both arms')
     args=p.parse_args();code,meta=build(args.control,args.candidate,args.prototype_model,args.players,
-                                       args.service_comparison,facts_equivalence=args.facts_equivalence)
+                                       args.service_comparison,facts_equivalence=args.facts_equivalence,
+                                       layout_policy=args.layout_policy)
     args.output.write_text(code,encoding='utf-8')
     args.output.with_suffix('.inputs.json').write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(output=str(args.output),bytes=len(code.encode()),**meta),indent=2))

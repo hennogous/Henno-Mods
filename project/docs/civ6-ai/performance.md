@@ -70,3 +70,12 @@ The same-save checks separate the cost of the economic model from
 differences in what the two empires built during the full games.
 [Standalone layout results](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november)
 and [City Lights results](../research/mods/city-lights-ai-placement-20261116.md#matched-city-lights-result-at-turn-250).
+
+The joint model now skips the second sweep when the first accepts no
+producer or customer investment change. Those states would repeat in the
+same world. The old logical visit count still applies to the work budget
+and the failure boundary. The offline comparison returned identical bids,
+ledgers, plans and errors across 226 forecasts, including 23 route cases.
+The 203 joint cases made 148,484 price calls instead of 163,989. A same-save
+City Lights test with forced identical inputs will measure the effect on
+actual processing time before interpreting that reduction as a speedup.
