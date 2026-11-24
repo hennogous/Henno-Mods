@@ -321,3 +321,57 @@ site cost and linked customer. The earlier run selected a 728-utility
 Mining Colony on plot 2232. The revised run selected the Bakers. It
 still had to wait for city capacity and was founded on turn 124. The first
 physical district divergence followed on turn 105.
+
+#### Matched test with one pinned CSC build
+
+The controller replayed Continents to turn 250 using the identical archived
+CSC package, Dev CE and optional mod hashes. The control restored the former
+combined cap arithmetic in memory after the empty turn-one packet. The
+other four AI corrections remained active. An offline parity check returned
+the original scorer's values and eligibility reasons on 2,500 generated
+cases. The control reproduced every historical Quarter foundation identity
+and turn, and its entire recorded Service history. The cap ordering alone
+was sufficient to reproduce the observed count change on this seed.
+
+| Result | Legacy cap | Revised cap |
+|---|---:|---:|
+| Distinct Quarter sites offered | 127 | 114 |
+| Native Quarter bids selected | 129 | 80 |
+| Completed Bakers / Tailors | 17 / 2 | 14 / 1 |
+| Strong-layout sites with a Quarter foundation | 0 | 3 |
+| Completed tracked Quarter/customer pairs | 10 | 13 |
+| Realised Service link-turns across 200 common observed turns | 891 | 996 |
+
+The control also scored the same live quotes with the revised order for
+diagnosis. Among changed quotes, the revised cap raised all 81 strong-layout
+quotes across six sites, by a median 168 utility. It lowered 807 ordinary
+quotes across 29 sites by a median 122 utility, and raised another 224
+ordinary quotes across eight sites by a median 10. Keeping the signed land
+value outside the cap preserves costs or benefits the old total could clip.
+The ordinary placements retain their spatial cap. Quito's strong case
+changed from 680 to 783 with zero land cost and reproduced the first native
+winner change described above.
+
+The two arms shared 12 Quarter foundations. The revised arm added four
+other sites and lost eight earlier ones. Six earlier Bakers no longer
+received a positive offer for the same city and plot. Of those six tiles,
+one received a lower offer for a different city. Both older Tailors sites
+still received offers. A Wonder consumed one site and the other stayed
+empty. The changed district choice altered the later city layouts and
+opportunities alongside the direct effect on individual scores.
+
+Both arms reference the same 391 MiB CSC snapshot. The legacy arm's save
+contains its turn-250 map and reopens under the installed scoring policy.
+An exact legacy replay uses the archived test switch through the controller.
+Evidence is in `Desktop/Codex/csc-ai-main-layout-scoring-20261123/continents-legacy-cap-250`,
+including `quarter-cap-comparison.json`, `quarter-cap-control.lua` and the
+native receipts.
+
+For the next comparison, follow both footprints in a strong layout through
+their own district choices and construction. Increase the offer on a
+contested side when it currently loses and its best viable alternative
+would materially weaken or break the connection. Two contested sides can
+both need support. If an equivalent footprint exists, use the smaller
+value of preserving the edge and leave genuinely stronger district sites
+competitive. Check for a single priced shared benefit before changing
+either bid or charging a conflicting placement.
