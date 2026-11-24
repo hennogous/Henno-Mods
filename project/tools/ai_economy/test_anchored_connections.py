@@ -133,6 +133,15 @@ candidate.entry.prospectiveLayout.city=8
 plans,credits=E.ProspectiveConnectionPlans(snapshot,{})
 assert(#plans==2 and #credits==2 and credits[2].city==8)
 for i=1,2 do assert(plans[i].costQ8==32*256 and credits[i].valueQ8==32*256)end
+candidate.entry.prospectiveLayout.city=7
+candidate.site.quarterWork={unlock=0,turns=6}
+snapshot.ProspectiveCustomerReady=function()return 14,10,4 end
+CSC_AI_EconomyModel.CustomerBuildingForecast=function(_,_,_,ready,_,first)
+    assert(first==6 and ready==14) -- build the Quarter while waiting for research
+    return {valueQ8=180*256,with={quarterReadyByChain={Q=first}}}
+end
+snapshot.Price=function(stream)assert(stream.ready==14);return 20*256 end
+assert(#E.ProspectiveConnectionPlans(snapshot,{})==2)
 snapshot.ProspectiveCustomerReady=function()return 50 end
 assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
 ''')

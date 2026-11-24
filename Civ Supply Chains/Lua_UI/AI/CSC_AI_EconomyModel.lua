@@ -159,7 +159,7 @@ local function ledger(site, second, shared)
     for city,ready in pairs(site.queueReady or{})do
         if present(ready)then clocks[cityKey(city)]=maximum(clocks[cityKey(city)]or 0,ready)end
     end
-    local quarterStart=0
+    local quarterStart=site.scheduledQuarterStart or 0
     if site.quarterWork then
         -- Unfinished/repairing Quarters also consume the city's ONE queue.
         -- Absolute standalone ETAs cannot be combined with a customer-first
@@ -1408,7 +1408,7 @@ function M.ExistingCustomerConnectionValue(site, customer, price)
     return linked and linked.valueQ8-baseline.valueQ8
 end
 
-function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,price)
+function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,price,quarterFirstReady)
     -- Building-transaction-only diagnostic, not a complete customer district
     -- value or a new customer policy. District adjacency/provider externalities
     -- and joint multi-Quarter aggregation need the decision-level ledger too.
@@ -1423,6 +1423,14 @@ function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,pr
         copy.service=nil;copy.customers={};copy.queueReady={}
         for k,v in pairs(site.queueReady or{})do copy.queueReady[k]=v end
         copy.queueReady[customerCity]=maximum(copy.queueReady[customerCity]or 0,districtReady)
+        if quarterFirstReady then
+            -- The paired planner already scheduled this Quarter before the
+            -- customer's district in the same city. Fix that completion in
+            -- both arms and leave the queue busy until the second district is
+            -- done. Rescheduling quarterWork here would count it twice.
+            copy.scheduledQuarterStart=quarterFirstReady-site.quarterWork.turns
+            copy.quarterReady=quarterFirstReady;copy.quarterWork=nil
+        end
         for _,v in ipairs(site.customers or{})do copy.customers[#copy.customers+1]=v end
         return copy
     end

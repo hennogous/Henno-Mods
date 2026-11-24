@@ -116,6 +116,24 @@ for _,s in ipairs(separate.with.streams)do if s.id:find(':buyer:',1,true) then a
 assert(separate.valueQ8>same.valueQ8)
 ''')
 
+    def test_quarter_first_quotes_share_the_queue_after_both_districts(self):
+        self.model().execute('''
+site.key='Q';site.quarterWork={unlock=2,turns=4};site.quarterReady=6
+site.third={type='BAKERY',working=false,unlock=0,turns=4}
+local customerFirst=M.CustomerBuildingForecast(site,{venue},1,10,price)
+local quarterFirst=M.CustomerBuildingForecast(site,{venue},1,10,price,6)
+assert(customerFirst.with.quarterReadyByChain.Q==14)
+assert(quarterFirst.with.quarterReadyByChain.Q==6)
+assert(quarterFirst.with.quarterStartByChain.Q==2)
+local customerTurns=0
+for _,stream in ipairs(quarterFirst.with.streams)do
+    if stream.id:find(':buyer:',1,true)then assert(stream.ready==16);customerTurns=customerTurns+1 end
+end
+assert(customerTurns>0)
+assert(quarterFirst.without.quarterReadyByChain.Q==6)
+assert(site.quarterWork.turns==4)
+''')
+
     def test_recursive_customer_prerequisites_keep_time_without_duplicate_upkeep(self):
         vm=self.model()
         vm.execute('''

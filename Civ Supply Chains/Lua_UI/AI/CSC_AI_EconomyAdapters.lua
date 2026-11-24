@@ -1432,8 +1432,23 @@ end
 
 local function projectedLinkValue(snapshot,candidate,layout)
     local site,profile=candidate.site,candidate.profile
-    local ready=snapshot.ProspectiveCustomerReady(layout.city,layout.district)
-    if not ready or ready>=site.horizon or site.quarterReady>=site.horizon then return nil end
+    local ready,unlock,turns=snapshot.ProspectiveCustomerReady(layout.city,layout.district)
+    if not ready or site.quarterReady>=site.horizon then return nil end
+    local quarterFirstReady
+    local work=site.quarterWork
+    if layout.city==site.city and work and unlock and turns then
+        -- Both districts share one production queue. Building the ready
+        -- Quarter during research for the customer can bring the connection
+        -- forward. Compare just the two district orders before calling the
+        -- heavier transaction forecast. Separate cities already run in parallel.
+        local queue=site.queueReady and site.queueReady[site.city]or 0
+        local firstQuarter=math.max(queue,work.unlock)+work.turns
+        local lastCustomer=math.max(firstQuarter,unlock)+turns
+        ready=math.max(queue,unlock)+turns
+        local lastQuarter=math.max(ready,work.unlock)+work.turns
+        if lastCustomer<lastQuarter then ready=lastCustomer;quarterFirstReady=firstQuarter end
+    end
+    if ready>=site.horizon then return nil end
     local venues={}
     for _,venue in ipairs(snapshot.ProjectedCustomers(profile,layout.city,layout.district,layout.plot,ready))do
         if venue.stage<4 or layout.hasSpec then venues[#venues+1]=venue end
@@ -1443,7 +1458,7 @@ local function projectedLinkValue(snapshot,candidate,layout)
     -- schedules the shared city queue and carries the actual buyer timings.
     -- The customer's private native adjacency and Services stay outside
     -- this incremental link quote and retain their ordinary consumers.
-    local forecast=M.CustomerBuildingForecast(site,venues,layout.city,ready,snapshot.Price)
+    local forecast=M.CustomerBuildingForecast(site,venues,layout.city,ready,snapshot.Price,quarterFirstReady)
     if not forecast then return nil end
     local city=snapshot.cities[site.city]
     local quarterPlot=Map.GetPlotByIndex(site.plot)

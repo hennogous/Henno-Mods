@@ -594,3 +594,13 @@ between its own bid and the rival's same-tile cost. The native tests need a
 loss within that realizable swing. For example, Quito's 79.76-utility quote
 would move either of two equally scarce sites by at most 39.88 before the
 existing anchored adjustment, short of the observed 60.03 lead.
+
+When both footprints belong to one city, the prospective quote now checks
+which district order can finish the pair sooner. For example, a Quarter
+that takes six turns can be built while the city researches a customer
+that unlocks in ten turns and takes four to build. The first order finishes
+both districts in 14 turns. Building the customer first takes 20. Both
+economic comparisons keep the same production schedule, so the result
+isolates the new connection. The native engine still chooses the actual
+order, and both sides of the quote still apply the customer's research and
+the actual supplier and building prerequisites.

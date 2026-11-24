@@ -923,7 +923,7 @@ function F.New(player,placement,ui,context)
         local duration=definition and snapshot.ConnectionDistrictTurns(cityID,district)
         if not duration then return nil end
         local unlock=math.max(research('tech',definition.PrereqTech),research('civic',definition.PrereqCivic))
-        if finite(unlock)then return unlock+duration end
+        if finite(unlock)then return unlock+duration,unlock,duration end
     end
     function snapshot.Supply(plot,profile)
         local key=profile.key..':'..plot:GetIndex()
