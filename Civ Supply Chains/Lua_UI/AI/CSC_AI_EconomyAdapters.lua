@@ -1949,7 +1949,8 @@ local function restoreLayouts(snapshot,profiles)
     local byDistrict={}
     for _,profile in ipairs(profiles) do byDistrict[profile.district.Index]=profile end
     local function footprint(index,city,district)
-        if not snapshot.cities[city] then return nil end
+        local targetCity=snapshot.cities[city]
+        if not targetCity then return nil end
         local plot=Map.GetPlotByIndex(index)
         if not plot then return nil end
         local owner=plot:GetOwner()
@@ -1958,7 +1959,14 @@ local function restoreLayouts(snapshot,profiles)
             local assigned=Cities.GetPlotPurchaseCity(plot)
             if not assigned or assigned:GetID()~=city then return nil end
         end
-        if plot:GetDistrictType()==-1 then return 'empty' end
+        if plot:GetDistrictType()==-1 then
+            -- An empty tile can remain after the city founds its once-per-city
+            -- district elsewhere. The future type mask accounts for unique
+            -- replacements and exclusions without requiring a free slot today.
+            local types=snapshot.FutureDistrictTypes and snapshot.FutureDistrictTypes(targetCity.object)
+            if types and not types[district] then return nil end
+            return 'empty'
+        end
         local host=snapshot.districts[index]
         if host and host.city==city and host.type==district then return 'founded' end
     end

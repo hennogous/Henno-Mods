@@ -103,6 +103,9 @@ customer eligibility, supporting deposits and competing site claims.
 The next foundation hands off to the other district. The original expiry
 still applies. The offline cases cover both build orders. The Gori replay
 must still connect the treasury debit, ownership and construction in play.
+If a city founds its once-per-city district on a different tile, the live
+district type list retires the old plan even when the planned site stays
+empty. Growth and research can still make an otherwise viable plan ready.
 
 ## Current work
 

@@ -98,7 +98,7 @@ assert(not C.ReadLayouts(props.CSC_AI_PlannedLayoutsV1_1,3)['7:36'])
                 vm.execute('''
 local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
 E.ProspectiveConnectionsEnabled=true; snapshot.districts={}
-snapshot.FutureDistrictTypes=function()return {[9]=true}end
+snapshot.FutureDistrictTypes=function()return {[9]=true,[36]=true}end
 plots[1]=plot(1,-1)
 local pair=C.LayoutRecord({city=7,district=36,plot=2},
     {city=7,district=9,plot=1,stage=2,purchaseGold=65},{base={{plot=9}},specialty={}},nil,nil,nil,1)
@@ -135,7 +135,7 @@ assert(handoff.plot==(firstDistrict=='quarter' and 1 or 2))
                 vm.execute('''
 local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
 E.ProspectiveConnectionsEnabled=true; snapshot.districts={}
-snapshot.FutureDistrictTypes=function()return {[9]=loss~='type'}end
+snapshot.FutureDistrictTypes=function()return {[9]=loss~='type',[36]=true}end
 local pair=C.LayoutRecord({city=7,district=36,plot=2},
     {city=7,district=9,plot=1,stage=loss=='dual_tag_only' and 4 or 2,purchaseGold=65},
     {base={{plot=9}},specialty={}},nil,nil,nil,1)
@@ -150,6 +150,38 @@ publish()
 assert(not C.ReadLayouts(props[key],turn)['7:36'])
 ''')
 
+    def test_remote_foundation_releases_the_unbuilt_leg_after_either_build_order(self):
+        for first in ('quarter', 'customer'):
+            with self.subTest(first=first):
+                vm=self.runtime()
+                vm.globals().firstDistrict=first
+                vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+E.ProspectiveConnectionsEnabled=true;snapshot.districts={}
+local quarterFirst=firstDistrict=='quarter'
+local q={city=7,district=36,plot=2}
+local customer={city=7,district=9,plot=1,stage=2,purchaseGold=65}
+local first,waiting=q,customer
+if not quarterFirst then first,waiting=customer,q end
+local pair=C.LayoutRecord(q,customer,{base={{plot=9}},specialty={}},nil,nil,nil,1)
+local key='CSC_AI_PlannedLayoutsV1_1'
+props[key]=C.EncodeLayouts({pair});turn=2
+plots[2]=plot(2,1)
+plots[first.plot].GetDistrictType=function()return first.district end
+snapshot.districts[first.plot]={city=7,type=first.district}
+hasQuarter=quarterFirst
+snapshot.FutureDistrictTypes=function()return {[waiting.district]=true}end
+publish()
+assert(next(C.ReadLayouts(props[key],turn)) and next(snapshot.handoffs))
+-- The other district is founded elsewhere, leaving the planned tile empty.
+turn=3;plots[3]=plot(3,1);plots[3].GetDistrictType=function()return waiting.district end
+snapshot.districts[3]={city=7,type=waiting.district}
+snapshot.FutureDistrictTypes=function()return {}end
+publish()
+assert(plots[waiting.plot]:GetDistrictType()==-1)
+assert(not next(C.ReadLayouts(props[key],turn)) and not next(snapshot.handoffs))
+''')
+
     def test_acquired_layouts_share_one_customer_or_respect_its_city_limit(self):
         for same_tile,repeatable,reverse in ((False,False,False),(False,False,True),
                                              (True,False,True),(False,True,False)):
@@ -160,7 +192,7 @@ assert(not C.ReadLayouts(props[key],turn)['7:36'])
                 vm.execute(r'''
 local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
 E.ProspectiveConnectionsEnabled=true;snapshot.districts={}
-snapshot.FutureDistrictTypes=function()return {[9]=true}end
+snapshot.FutureDistrictTypes=function()return {[9]=true,[36]=true,[37]=true}end
 GameInfo.Districts={[9]={OnePerCity=not repeatable}}
 local baker=placement.StageTwoProfiles()[1]
 placement.StageTwoProfiles=function()
