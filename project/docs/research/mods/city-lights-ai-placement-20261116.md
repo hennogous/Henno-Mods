@@ -637,12 +637,25 @@ of the native exception is undetermined.
 | Delhi | Founded Tailors 940 on turn 96 and completed it on 97. | The planner named Harbor 865 on turns 91–96. Its construction required a later unlock. |
 
 The candidate logged 80 prospective layout evaluations representing 14
-distinct site pairs. Four distinct prospective pairs qualified with a City
-Lights goods provider. No exact proposed pair founded both districts
+distinct site pairs (four Bakers, ten Tailors). Only four appeared on the
+older strong-site shortlist in that same window. The full-game report now
+follows the ten additional priced layouts (three Bakers, seven Tailors)
+as well. Four distinct prospective pairs qualified with a City Lights
+goods provider. No exact proposed pair founded both districts
 inside the common window. The interrupted treatment logs are in
 `continents-layout-continuity-v8/treatment/exception-turn100` under the
 24 November paired-footprints study. The customer-land replay starts from
 the separate archived turn-100 source.
+
+After one side was built, the candidate recorded eight opportunities for
+a missing district across both Quarters involving a provider. These count
+each eligible district type once per anchor and target city. For example,
+two different Rural Community types were eligible on plot 1726 beside
+Tailors 1725. No such eligible pair completed before turn 100. In the
+control, an Upapitha took plot 1310 on turn 92 beside Bakers 1236, a
+Wonder took 1235 on turn 119, and 1309 remained a possible alternative
+at the earlier survey. Named substitutes that complete are now reported
+by their actual plots and build dates.
 
 Across those ten common turns, all five AI players' Lua guidance combined
 averaged 2.014 seconds per turn in the control (maximum 2.526) and 2.429

@@ -13,7 +13,7 @@ from processing_time_summary import summarise
 
 OPPORTUNITY = re.compile(
     r'CSC_AI_CONNECTION_OPPORTUNITY turn=(\d+) player=(\d+) identity='
-    r'(quarterFirst|customerFirst):(\d+):([234]):([A-Z_]+):(\d+):(\d+):(\d+)')
+    r'(quarterFirst|customerFirst):(\d+):([0234]):([A-Z_]+):(\d+):(\d+):(\d+)')
 WONDER_OPPORTUNITY = re.compile(
     r'CSC_AI_WONDER_CONNECTION_OPPORTUNITY turn=(\d+) player=(\d+) order=(quarterFirst|customerFirst) '
     r'quarter=([A-Z_]+) anchor=(\d+) building=(BUILDING_[A-Z0-9_]+) city=\d+ plot=(\d+)')
@@ -22,6 +22,8 @@ STRONG_LAYOUT = re.compile(
     r'customerCity=(\d+) customerDistrict=(-?\d+) customerPlot=(\d+) stage=([0234]) '
     r'existing=(true|false) extraBase=(true|false) specialty=(true|false)')
 PROSPECTIVE_SUBSTITUTE = re.compile(r'CSC_AI_PROSPECTIVE_SUBSTITUTE ([^\r\n]+)')
+PRICED_PAIR = re.compile(r'CSC_AI_PROSPECTIVE_CONNECTION turn=(\d+) player=(\d+) quarterCity=(\d+) '
+                         r'quarter=(\d+) quarterPlot=(\d+) customerCity=(\d+) customer=(\d+) customerPlot=(\d+)')
 QUARTER_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\tDISTRICT_CSC_([A-Z_]+)_QUARTER\t')
 QUARTER_RECEIPT = re.compile(r'CSC_QUARTER_WATCH_(WRITE|BEST)\t([^\r\n]+)')
 DISTRICT_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t([^\t\r\n]+)')
@@ -240,13 +242,16 @@ def prospective_layouts(log, observations, players, through):
     return {key: dict(counts) for key, counts in result.items()}
 
 
-def prospective_footprints(log, observations, players, through, competition):
-    """Track each physical target of a strong proposal through the observed game."""
+def prospective_footprints(log, observations, players, through, competition, *, priced=False):
+    """Follow either the spatial shortlist or the pairs actually priced by the candidate."""
     layouts = defaultdict(set)
-    for match in STRONG_LAYOUT.finditer(log):
-        turn, player, city, district, plot, buyer, customer, target, _ = map(int, match.groups()[:9])
-        if player in players and turn <= through and match[10] == 'false' and customer >= 0:
+    pattern = PRICED_PAIR if priced else STRONG_LAYOUT
+    for match in pattern.finditer(log):
+        turn, player, city, district, plot, buyer, customer, target = map(int, match.groups()[:8])
+        if player in players and turn <= through and (priced or match[10] == 'false') and customer >= 0:
             layouts[((player, city, district, plot), (player, buyer, customer, target))].add(turn)
+    if not layouts:
+        return []
 
     names = {int(index): title for index, title in DISTRICT_TITLE.findall(log)}
     versions = defaultdict(set)
@@ -436,6 +441,52 @@ def common_layout_conversion(log, observations, players, through):
     return {key:dict(value) for key,value in sorted(counts.items())}
 
 
+def completed_substitute_pairs(priced, observations, through):
+    """Join an advertised alternate to a completed pair retaining the other planned district.
+
+    Each backup log carries two independent plot hints. Combining them into a
+    single new pair could invent a layout that nobody evaluated. Require one
+    unchanged leg, the original cities and types, and a live completed relation.
+    """
+    expected = defaultdict(dict)
+    for layout in priced:
+        quarter, partner = layout['quarter'], layout['customer']
+        for alternate in layout['observed_substitutes']:
+            variants = ((alternate['quarter_plot'], partner['plot'], 'partner'),
+                        (quarter['plot'], alternate['customer_plot'], 'quarter'))
+            for x, y, retained in variants:
+                if min(x, y) < 0 or (x, y) == (quarter['plot'], partner['plot']):
+                    continue
+                key = (quarter['player'], quarter['city'], quarter['district'], x,
+                       partner['city'], partner['district'], y)
+                seen = expected[key]
+                seen[retained] = min(seen.get(retained, alternate['turn']), alternate['turn'])
+    if not expected:
+        return []
+    names = {r['district']: r['districtType'] for r in observations if r['kind'] == 'MAPPING'}
+    completed = {}
+    for row in observations:
+        if (row['kind'] != 'RELATION' or row['turn'] > through or not row.get('present')
+                or not row.get('quarterComplete') or not row.get('neighbourComplete')
+                or row.get('role') not in ('customer', 'sales', 'goodsProvider')):
+            continue
+        key = (row['player'], row.get('city'), f"DISTRICT_CSC_{row['quarter']}_QUARTER", row['quarterPlot'],
+               row.get('neighbourCity'), names.get(row['neighbourDistrict']), row['neighbourPlot'])
+        turns = {'quarter': row.get('quarterFoundationTurn'), 'partner': row.get('neighbourFoundationTurn')}
+        if any(t is None or t < 0 or t > row['turn'] for t in turns.values()):
+            continue
+        # The reused footprint was empty at the proposal. An existing mapped
+        # district can serve as the alternate on the other side of the pair.
+        offers = [t for retained, t in expected.get(key, {}).items() if t <= turns[retained]]
+        if not offers:
+            continue
+        if key not in completed or row['turn'] < completed[key]['both_complete_by']:
+            completed[key] = dict(player=key[0], quarter_city=key[1], quarter=row['quarter'], quarter_plot=key[3],
+                partner_city=key[4], partner=key[5], partner_plot=key[6], alternate_seen=min(offers),
+                quarter_founded=turns['quarter'], partner_founded=turns['partner'], both_complete_by=row['turn'])
+    return [completed[key] for key in sorted(completed)]
+
+
 def connection_counts(log, original_ai, through, *, observations=None):
     """Join observed legal options to real foundations and completed links.
 
@@ -446,15 +497,16 @@ def connection_counts(log, original_ai, through, *, observations=None):
     """
     options = defaultdict(dict)
     opportunities_by_district = set()
-    for turn, pid, order, anchor, _, quarter, city, district, target in OPPORTUNITY.findall(log):
+    for turn, pid, order, anchor, stage, quarter, city, district, target in OPPORTUNITY.findall(log):
         turn, pid, anchor, city, district, target = map(int, (turn, pid, anchor, city, district, target))
         if pid not in original_ai or turn > through:
             continue
         quarter_plot, customer_plot = (anchor, target) if order == 'quarterFirst' else (target, anchor)
-        identity = (pid, order, quarter, quarter_plot, customer_plot)
+        role = 'goodsProvider' if stage == '0' else 'customer'
+        identity = (pid, order, quarter, quarter_plot, customer_plot, role)
         # Several legal plots in the same eligible city/type are fallback
         # footprints for one missing partner district, not independent builds.
-        group = (pid, order, quarter, anchor, city, district)
+        group = (pid, order, quarter, anchor, role, city, district)
         opportunities_by_district.add(group)
         options[identity].setdefault(group, turn)
     if observations is None:
@@ -485,11 +537,11 @@ def connection_counts(log, original_ai, through, *, observations=None):
         if row['role'] == 'goodsProvider':
             if key not in providers or providers[key] == 'unknown':
                 providers[key] = 'providerFirst' if order == 'customerFirst' else order
-            continue
-        previous = completed.get(key)
-        if previous is None or (previous == 'unknown' and order != 'unknown'):
-            completed[key] = order
-        identity = (row['player'], order, quarter, qplot, cplot)
+        else:
+            previous = completed.get(key)
+            if previous is None or (previous == 'unknown' and order != 'unknown'):
+                completed[key] = order
+        identity = (row['player'], order, quarter, qplot, cplot, row['role'])
         if identity in options:
             target_type = row['neighbourDistrict'] if order == 'quarterFirst' else row.get('quarterDistrict')
             # The customer-first option itself names the exact Quarter type.
@@ -507,7 +559,7 @@ def connection_counts(log, original_ai, through, *, observations=None):
                 realized_by_district.update(matched)
     lost, lost_to_foreign_build = set(), set()
     for identity, groups in options.items():
-        pid, order, _, qplot, cplot = identity
+        pid, order, _, qplot, cplot, _ = identity
         plot = cplot if order == 'quarterFirst' else qplot
         if identity in realized:
             continue
@@ -528,6 +580,8 @@ def connection_counts(log, original_ai, through, *, observations=None):
     counts = dict(opportunities=by_order_and_quarter(options), completed_opportunities=by_order_and_quarter(realized),
                   district_opportunities=by_order_and_quarter(opportunities_by_district),
                   completed_district_opportunities=by_order_and_quarter(realized_by_district),
+                  provider_district_opportunities=by_order_and_quarter(g for g in opportunities_by_district if g[4]=='goodsProvider'),
+                  completed_provider_opportunities=by_order_and_quarter(g for g in realized_by_district if g[4]=='goodsProvider'),
                   lost_to_other_foundations=by_order_and_quarter(lost),
                   lost_to_foreign_foundations=by_order_and_quarter(lost_to_foreign_build),
                   completed_physical_pairs=dict(Counter(f'{order}:{key[0]}' for key, order in completed.items())),
@@ -732,6 +786,7 @@ def run_result(root):
     else:
         land = customer_land_purchases(log, observations, players, through, ())
     footprints = prospective_footprints(log, observations, players, through, competition)
+    priced = prospective_footprints(log, observations, players, through, competition, priced=True)
     return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
                 common_layouts=common_layout_conversion(log, observations, players, through),
                 native_managed_timing=timing['native_managed_cell_wall'],
@@ -739,6 +794,8 @@ def run_result(root):
                 supplier_history=supplier_history(observations, players, through),
                 prospective_layouts=prospective_layouts(log, observations, players, through),
                 prospective_footprints=footprints, prospective_pair_counts=prospective_footprint_counts(footprints),
+                priced_footprints=priced, priced_pair_counts=prospective_footprint_counts(priced),
+                completed_substitutes=completed_substitute_pairs(priced, observations, through),
                 bid_competition=competition,
                 failed_district_requests=failed_requests,
                 wonder_connections=wonder_connections(log, observations, players, through))
@@ -796,9 +853,13 @@ def paired_full_game_result(control, treatment):
     for arm, root in arms.items():
         result = run_result(root)
         report[arm] = dict(load_game=saves[arm], strong_layouts=result['prospective_pair_counts'],
+                           priced_layouts=result['priced_pair_counts'],
+                           completed_on_named_substitutes=result['completed_substitutes'],
                            completed_pairs=result['counts']['completed_physical_pairs'],
                            common_owned_partner_sites=result['common_layouts'],
                            provider_pairs=result['counts']['completed_provider_pairs'],
+                           eligible_provider_districts=result['counts']['provider_district_opportunities'],
+                           completed_provider_districts=result['counts']['completed_provider_opportunities'],
                            customer_land=result['customer_land'],
                            eligible_missing_partner=result['counts']['district_opportunities'],
                            completed_missing_partner=result['counts']['completed_district_opportunities'],
@@ -806,7 +867,7 @@ def paired_full_game_result(control, treatment):
                            failed_district_requests=result['failed_district_requests'],
                            surveyed_services=operation['stock' if arm == 'control' else 'combined'],
                            guidance_wall=result['timing'], native_managed_wall=result['native_managed_timing'],
-                           contested_layouts=[pair for pair in result['prospective_footprints'] if any(
+                           contested_layouts=[pair for pair in (result['priced_footprints'] or result['prospective_footprints']) if any(
                                pair[side]['nearest_loss'] or pair[side]['nearest_cached_loss']
                                for side in ('quarter', 'customer'))])
     data = protocols['control']

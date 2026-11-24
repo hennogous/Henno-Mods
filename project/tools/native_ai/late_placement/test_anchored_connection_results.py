@@ -2,7 +2,8 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from anchored_connection_results import (bid_competition, common_layout_conversion, connection_counts, customer_land_purchases, failed_district_requests,
+from anchored_connection_results import (bid_competition, common_layout_conversion, completed_substitute_pairs,
+                                         connection_counts, customer_land_purchases, failed_district_requests,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
 from paired_layout_replay_results import trace_arm
@@ -154,6 +155,25 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(groups, {'TAILORS:TWO_BASE': dict(layouts=2, published=2, native_score_write=2,
                                                           native_best=0, quarter_founded=2, completed_pair=1)})
 
+    def test_priced_pair_can_complete_on_one_named_substitute(self):
+        log = '\n'.join([
+            'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
+            'CSC_DISTRICT_CATALOGUE\t4\tDISTRICT_HARBOR\ttrue',
+            'CSC_AI_PROSPECTIVE_CONNECTION turn=5 player=1 quarterCity=7 quarter=43 quarterPlot=10 '
+            'customerCity=8 customer=4 customerPlot=20 valueQ8=512',
+            'CSC_AI_PROSPECTIVE_SUBSTITUTE turn=5 player=1 quarterCity=7 quarter=43 quarterPlot=10 '
+            'customerCity=8 customer=4 customerPlot=20 alternateQuarterPlot=11 alternateCustomerPlot=21',
+            record('MAPPING',district=4,districtType='DISTRICT_HARBOR'),
+            *[relation(1,'TAILORS',q,p,12,'quarterFirst',city=7,neighbourCity=city,neighbourDistrict=4,
+                       quarterFoundationTurn=qt,neighbourFoundationTurn=pt)
+              for q,p,city,qt,pt in ((11,21,8,5,6),(10,21,9,5,6),(11,20,8,6,3),(10,21,8,5,7),(10,21,8,5,7))]])
+        observations = parse(log,'CSC_PLANNING_')
+        rows = prospective_footprints(log,observations,{1},15,{'footprint_losses':[]},priced=True)
+        self.assertEqual(len(rows),1)
+        result, = completed_substitute_pairs(rows,observations,15)
+        self.assertEqual((result['quarter_plot'],result['partner_plot'],result['alternate_seen']), (10,21,5))
+        self.assertEqual((result['partner_founded'],result['both_complete_by']), (7,12))
+
     def test_prospective_footprints_separate_native_choices_from_later_occupation(self):
         log = '\n'.join([
             'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
@@ -217,12 +237,15 @@ class ConnectionCounts(unittest.TestCase):
             'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
             'CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
             'customerCity=8 customerDistrict=6 customerPlot=20 stage=0 existing=false extraBase=false specialty=false',
+            'CSC_AI_CONNECTION_OPPORTUNITY turn=5 player=1 identity=customerFirst:20:0:TAILORS:7:43:10',
             relation(1,'TAILORS',10,20,12,'neighbourFirst',role='goodsProvider',city=7,neighbourCity=8),
         ])
         observations = parse(log, 'CSC_PLANNING_')
         self.assertEqual(prospective_layouts(log, observations, {1}, 25)['TAILORS:ONE_BASE']['completed_pair'], 1)
         counts = connection_counts(log, {1}, 25, observations=observations)
         self.assertEqual(counts['completed_provider_pairs'], {'providerFirst:TAILORS': 1})
+        self.assertEqual(counts['provider_district_opportunities'], {'customerFirst:TAILORS': 1})
+        self.assertEqual(counts['completed_provider_opportunities'], {'customerFirst:TAILORS': 1})
         self.assertEqual(counts['completed_physical_pairs'], {})
 
     def test_folds_stage_duplicates_and_joins_both_orders(self):
