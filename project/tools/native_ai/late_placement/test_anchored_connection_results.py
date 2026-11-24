@@ -181,7 +181,7 @@ class ConnectionCounts(unittest.TestCase):
                            version=version, generation=version, result=200)
                 return f'CSC_CUSTOMER_WATCH_NATIVE observedTurn=9 generation={version} ordinal=4 record=' + json.dumps(row)
 
-            (folder / 'Lua.log').write_text('\n'.join([
+            replay_log = '\n'.join([
                 'CSC_CUSTOMER_LAND_WATCH_INSTALLED',
                 record('PUBLICATION',turn=7,version=3,pendingTurn=7,accepted='true'),
                 record('PUBLICATION',turn=8,version=4,pendingTurn=8,accepted='true'),
@@ -195,13 +195,33 @@ class ConnectionCounts(unittest.TestCase):
                 relation(1,'TAILORS',10,23,12,'quarterFirst',city=7,neighbourCity=5,neighbourDistrict=4),
                 record('MATERIAL_STATE',turn=13,player=1,quarter='TAILORS',quarterPlot=10,materialPlot=9,
                        owner=1,working='true',base='true',spec='false'),
-            ]), encoding='utf-8')
+            ])
+            (folder / 'Lua.log').write_text(replay_log, encoding='utf-8')
             with (folder/'AI_Behavior_Trees.csv').open('w', encoding='utf-8') as out:
                 out.write('7,1,City BUYER,Build City District,RUNNING,Purchase Plot,Purchase 3 2: Accepted on #12\n')
                 out.write('8,1,City OTHER,Build City District,RUNNING,Purchase Plot,Purchase 3 2: Accepted on #13\n')
             (folder/'AI_CityBuild.csv').touch()
-            rows = trace_arm(folder, ((7,43,10),(5,4,23)), 1,
-                             {43:'DISTRICT_CSC_TAILORS_QUARTER',4:'DISTRICT_HARBOR'}, 10, {5:'BUYER'}, switch_turn=7)
+            def trace():
+                return trace_arm(folder, ((7,43,10),(5,4,23)), 1,
+                                 {43:'DISTRICT_CSC_TAILORS_QUARTER',4:'DISTRICT_HARBOR'}, 10,
+                                 {5:'BUYER'}, switch_turn=7)
+
+            rows = trace()
+            (folder / 'Lua.log').write_text(replay_log.replace(
+                'turn=7 player=1 city=5 district=4 plot=23 invoice=40',
+                'turn=8 player=1 city=5 district=4 plot=23 invoice=40 bidQ8=200 version=4'
+            ) + '\nCSC_AI_CUSTOMER_RECEIPT turn=9 version=4 player=1 city=5 district=4 plot=23 result={"writes":1}',
+                encoding='utf-8')
+            request = '9,1,City BUYER,Build City District,RUNNING,Purchase Plot,Purchase 3 2: Accepted on #12\n'
+            path = folder / 'AI_Behavior_Trees.csv'
+            path.write_text(request, encoding='utf-8')
+            fresh, = trace()['exact_customer_land']['spending']
+            choice, = fresh['switched_native_choices_at_first_acceptance']
+            self.assertEqual((fresh['first_observed_buying_city_acceptance'], choice['version']), (9,4))
+            path.write_text(request.replace('9,1,','4,1,',1) + request, encoding='utf-8')
+            retained, = trace()['exact_customer_land']['spending']
+            self.assertEqual(retained['first_observed_buying_city_acceptance'], 4)
+            self.assertEqual(retained['switched_native_choices_at_first_acceptance'], [])
         self.assertEqual(rows['exact_pair_build_order'], 'quarterFirst')
         self.assertEqual(rows['exact_pair_first_completed_link']['turn'], 12)
         self.assertTrue(rows['exact_pair_first_completed_after_switch'])

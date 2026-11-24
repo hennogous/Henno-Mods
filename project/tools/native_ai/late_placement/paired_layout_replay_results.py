@@ -85,7 +85,8 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                 score = last_cache.get((row['generation'], row['version'], city, target_type, target_plot))
                 target_score = score[1] if score and score[0] < ordinal else None
                 stages['comparisons'].append(dict(observed_turn=observed, version=row['version'],
-                    publication_turn=publication, post_switch_packet=after_switch(publication),
+                    publication_turn=publication, post_switch_packet=after_switch(publication), city=city,
+                    target_district_index=target_type,
                     target_district=names.get(target_type, str(target_type)), target_plot=target_plot,
                     target_q8=target_score, winner=names.get(district, str(district)), winner_plot=plot,
                     winner_q8=row['result'], reported_reservation_id=row['reservationId'],
@@ -154,6 +155,7 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                                                csv.reader(stream, skipinitialspace=True))
             spending = []
             buying_city = (city_labels or {}).get(customer_city)
+            offers = [row for row in audit['offers'] if (row['city'], row['district'], row['plot']) == targets[1]]
             for row in audit['purchases']:
                 if (row['city'], row['plot']) != (customer_city, customer_plot):
                     continue
@@ -161,15 +163,35 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                     continue
                 # The base audit matches tile coordinates and player. The
                 # named city resolves competing requests for the same plot.
-                confirmed = [turn for turn, _, status, city in row['request_history']
+                confirmed = [(turn, contract) for turn, contract, status, city in row['request_history']
                              if buying_city and city == 'City ' + buying_city and status == 'Accepted']
+                latest_acceptance = max((turn for turn, _ in confirmed), default=None)
+                first_acceptance = min((turn for turn, _ in confirmed), default=None)
+                first_contracts = {contract for turn, contract in confirmed if turn == first_acceptance}
+                # The first acceptance for the plot matters even if it later
+                # changes contracts. Repeated receipts can describe a savings
+                # request that existed before our offer. The scout may drain a
+                # native choice one turn late, so show the clocks explicitly.
+                matching_choices = []
+                if len(first_contracts) == 1:
+                    priced_packets = {offer['version'] for offer in offers
+                                      if (customer_type, offer['invoice']) in row['quotes']
+                                      and offer['logged_after_commit'] and (offer['receipt'] or {}).get('writes', 0) > 0}
+                    matching_choices = [choice for choice in stages['comparisons']
+                                        if (choice['city'], choice['target_district_index'],
+                                            choice['target_plot']) == targets[1]
+                                        and choice['version'] in priced_packets and choice['target_selected']
+                                        and choice['post_switch_packet'] and choice['publication_turn'] <= first_acceptance
+                                        and choice['observed_turn'] <= first_acceptance + 1]
                 offered_after_switch = (after_switch(row['quote_turn'])
                                         if row['quote_turn'] in accepted_turns else None)
-                spending.append(dict(row, buying_city_request_turn=max(confirmed, default=None),
+                spending.append(dict(row, buying_city_request_turn=latest_acceptance,
+                                     first_observed_buying_city_acceptance=first_acceptance,
+                                     switched_native_choices_at_first_acceptance=matching_choices,
                                      offer_during_post_switch_publication=offered_after_switch,
                                      purchase_after_switch=after_switch(row['turn'])))
             land = dict(
-                offers=[row for row in audit['offers'] if (row['city'], row['district'], row['plot']) == targets[1]],
+                offers=offers,
                 spending=spending,
                 completed_on_purchased_plot=[row for row in audit['completed_partners_on_purchased_land']
                                              if (row['city'], row['district'], row['plot']) == targets[1]

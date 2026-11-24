@@ -1202,3 +1202,14 @@ Rural Community 3011 from a different city on turn 128. Keep these runs as
 separate observations. For the Sodo follow-up, both arms switch at the
 loaded turn-100 boundary. The replay now checks the original AI seats'
 treasuries as well as the structural census before switching.
+
+**Bakavu purchase replay.** In the completed City Lights control,
+player 2 founded Bakers 2532 on turn 140. Bakavu's first observed
+acceptance for Commercial Hub plot 2606 was on turn 151, the turn after
+the archived checkpoint. The same contract, 2945, was reported as
+accepted for eleven turns. The city bought the tile on turn 161,
+founded the Hub on 166, and both districts were complete by 178. Use
+this case to observe the purchase with and without the new policy
+from turn 150. The matched report keeps every observed acceptance,
+including those before a planner offer, and joins the initial acceptance
+to exact native selections using the committed offer's packet version.

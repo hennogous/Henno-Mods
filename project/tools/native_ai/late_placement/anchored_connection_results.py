@@ -910,8 +910,9 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
         debits = [treasury[player, i][1] for i in (ordinal-1, ordinal+1)
                   if (player,i) in treasury and treasury[player,i][0] == turn
                   and (player,2*i-ordinal) not in purchase_ordinals]
-        first_offer = min(o[1] for o in prior)
-        requests = sorted(r for r in trees[player,x,y] if first_offer-1 <= r[0] <= min(through,turn+1))
+        # Keep the full observed request history. A contract already accepted
+        # before the first offer can stay accepted until its treasury pays.
+        requests = sorted(r for r in trees[player,x,y] if r[0] <= min(through,turn+1))
         accepted = [r[0] for r in requests if r[2]=='Accepted']
         purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
                               quotes=quotes, district_request_turn=max(accepted,default=None), request_history=requests,
