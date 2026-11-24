@@ -987,6 +987,23 @@ customer or sales pairs (three against zero). Guidance over turns 1–124
 averaged 0.86 seconds for the control and 1.44 for the candidate, with
 maximums of 2.96 and 4.77 seconds. These are midpoint observations.
 
+At turn 175 the candidate had 20 Bakers and 10 Tailors, up from 19
+Bakers and zero Tailors in the control. It had 19 customer or sales
+pairs (eight Bakers and 11 Tailors) against ten Bakers pairs in the
+control. Ten candidate pairs and six control pairs had both a working
+Base supplier and a functioning buyer. The control still led on
+provider pairs, ten against seven. Guidance over turns 1–174 averaged
+1.58 seconds for the control and 2.65 for the candidate, with peaks of
+4.92 and 7.43.
+
+The candidate offered 122 Q8 of purchase guidance for Rural Community A
+on 973 at turns 39 and 40. The quoted land cost was 35 Gold. The city
+selected that plot in packet 43 and completed the linked district on
+turn 52. The purchase watcher recorded no plot-purchase event for 973
+through the turn-175 census. The control also completed that same
+provider on turn 52. This demonstrates bid publication and successful
+use of the site. Verification of spending still needs a different case.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
