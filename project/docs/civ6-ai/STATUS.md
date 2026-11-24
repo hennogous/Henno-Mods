@@ -1,5 +1,11 @@
 # Current CSC AI status
 
+**Skedsmo Quarter-first replay, Problems 1.6 and 2.1.** Both copies
+finished the Hub beside the existing Bakers with a working Base supplier.
+The candidate completed it on turn 229, one turn earlier. The separate
+customer-land report now matches the typed purchase request to the
+native score packet and Gold debit. [Replay and purchase evidence](../research/mods/city-lights-ai-placement-20261116.md#skedsmo-completed-the-same-quarter-first-layout-in-both-arms).
+
 **Tenochtitlan customer-first replay, Problems 1.2, 1.6 and 2.1.** Both
 standalone arms founded the Commercial Hub on turn 154. The candidate
 started adjacent Tailors on 163 and completed it on 164, with a working
@@ -12,10 +18,11 @@ the Rural plot on turn 102 and completed the same supplied
 Bakers–Rural pair. The candidate placed Bakers seven turns earlier,
 handed off to the planned Rural site on the next pass, and completed
 both districts on turn 137 versus turn 128 in control. The candidate's
-first exact pair quote came after the purchase. The Bakavu replay found
-that both copies preferred an owned Commercial Hub site beside Bakers
-to an 80 Gold alternative. The next matched customer-land replay uses
-the Atzcapotzalco case and the new appraisal.
+first exact pair quote came after the purchase. In the original Bakavu
+game a Hub reused a tile bought for a Mbanza. Both replay copies used an
+owned Hub site beside Bakers. The next matched customer-land replay uses
+Atzcapotzalco, where the original request directly named the Hub.
+[Paid customer cases](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
 [Sodo replay and exact outcomes](../research/mods/city-lights-ai-placement-20261116.md#sodo-completed-the-same-supplied-provider-pair-in-opposite-orders).
 
 **Standalone turn-250 result, 24 November.** The experimental layout planner

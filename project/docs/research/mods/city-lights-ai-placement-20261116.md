@@ -1244,6 +1244,8 @@ separate observations. For the Sodo follow-up, both arms switch at the
 loaded turn-100 boundary. The replay now checks the original AI seats'
 treasuries as well as the structural census before switching.
 
+#### Purchase requests in Bakavu and Atzcapotzalco
+
 **Bakavu purchase replay.** In the completed City Lights control,
 player 2 founded Bakers 2532 on turn 140. Bakavu's tree decoded a Mbanza
 on plot 2606 and first reported its purchase contract, 2945, accepted on
