@@ -933,12 +933,13 @@ actual ledger builds and the time spent pricing them. A logical evaluation
 can reuse a result. The newer customer-ownership and saved-partner changes
 were developed after this build was pinned.
 
-Two short replays on the reviewed build will revisit actual completions
+Two short replays on the reviewed build revisit actual completions
 from this seed. The turn-150 save precedes the Commercial Hub foundation
 on 603 (154) and Tailors on 602 (163). The native AI had already selected
-the Quarter site before this save. Switch at 151 and follow both cities
-through 168. The turn-200 save has Bakers on 1162. Switch at 211, before
-the Hub selection recorded in packet 216, and follow 1163 through 235.
+the Quarter site before this save. Switch at the loaded turn-150 boundary
+and follow both cities through 168. The turn-200 save has Bakers on
+1162. Switch at the loaded turn-200 boundary, before the known later Hub
+request, and follow 1163 through 235.
 Both arms inherit the same existing districts, native requests and saved
 layout properties from the candidate checkpoint. The short-replay
 control keeps anchored guidance on and the switch changes prospective
