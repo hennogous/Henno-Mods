@@ -7,7 +7,10 @@ import json
 from pathlib import Path
 import re
 
-from anchored_connection_results import CUSTOMER_RECEIPT, DISTRICT_TITLE, PROSPECTIVE_SUBSTITUTE
+from anchored_connection_results import (
+    CUSTOMER_RECEIPT, DISTRICT_TITLE, PROSPECTIVE_SUBSTITUTE,
+    customer_land_purchases, foundation_order, supplier_history,
+)
 from planning_results import parse
 
 
@@ -19,7 +22,8 @@ def read_json(path):
 
 
 def trace_arm(folder, targets, player, names, width=None, city_labels=None):
-    if not all(read_json(folder / name)['verified'] for name in ('complete.json', 'session-closed.json')):
+    completion = read_json(folder / 'complete.json')
+    if not (completion['verified'] and read_json(folder / 'session-closed.json')['verified']):
         raise ValueError(f'Incomplete replay arm {folder}')
     log = (folder / 'Lua.log').read_text(encoding='utf-8-sig')
     wanted = set((city, plot) for city, _, plot in targets)
@@ -70,8 +74,9 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
                     winner_q8=row['result'], reported_reservation_id=row['reservationId'],
                     target_selected=(district, plot) == (target_type, target_plot),
                     recorded_gap_q8=row['result']-target_score if target_score is not None else None))
+    observations = parse(log, 'CSC_PLANNING_')
     native_ids = defaultdict(set)
-    for row in parse(log, 'CSC_PLANNING_'):
+    for row in observations:
         if row['kind'] not in ('FOUNDATION', 'COMPLETION', 'FIRST_OBSERVED') or row.get('player') != player:
             continue
         if (row['city'], row['plot']) in wanted and row['kind'] in ('FOUNDATION', 'COMPLETION'):
@@ -105,7 +110,53 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
     # owner and both native IDs to the physical ledger before crediting a pair.
     pair_services = [link for link in services['chains'] if link['player'] == player
                      and link['source'] in quarter_ids and link['customer'] in customer_ids]
-    return dict(stages, services=services, exact_pair_services=pair_services)
+
+    quarter_city, quarter_type, quarter_plot = targets[0]
+    customer_city, customer_type, customer_plot = targets[1]
+    quarter = names.get(quarter_type, '').removeprefix('DISTRICT_CSC_').removesuffix('_QUARTER')
+    relations = [row for row in observations if row['kind'] == 'RELATION'
+                 and row['player'] == player and row['city'] == quarter_city
+                 and row['quarter'] == quarter and row['quarterPlot'] == quarter_plot
+                 and (row['neighbourCity'], row['neighbourDistrict'], row['neighbourPlot']) == targets[1]
+                 and row.get('present') and row.get('quarterComplete') and row.get('neighbourComplete')
+                 and row.get('role') in ('customer', 'sales', 'goodsProvider')]
+    first_link = min(relations, key=lambda row: row['turn'], default=None)
+    final_turn = completion.get('turn')
+    supplies = None
+    land = None
+    if final_turn is not None:
+        material_rows = [row for row in observations if
+                         (row['kind'] == 'MATERIAL_STATE' and row['quarterPlot'] == quarter_plot
+                          and row['quarter'] == quarter)
+                         or (row['kind'] == 'MATERIAL_WATCH_ENDED'
+                             and row['identity'].startswith(f'{quarter_plot}:'))]
+        if material_rows:
+            supplies = supplier_history(material_rows, {player}, final_turn)
+        if 'CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log:
+            with (folder / 'AI_Behavior_Trees.csv').open(encoding='utf-8-sig', newline='') as stream:
+                audit = customer_land_purchases(log, observations, {player}, final_turn,
+                                               csv.reader(stream, skipinitialspace=True))
+            spending = []
+            buying_city = (city_labels or {}).get(customer_city)
+            for row in audit['purchases']:
+                if (row['city'], row['plot']) != (customer_city, customer_plot):
+                    continue
+                if not any(kind == customer_type for kind, _ in row['quotes']):
+                    continue
+                # The base audit matches tile coordinates and player. The
+                # named city resolves competing requests for the same plot.
+                confirmed = [turn for turn, _, status, city in row['request_history']
+                             if buying_city and city == 'City ' + buying_city and status == 'Accepted']
+                spending.append(dict(row, buying_city_request_turn=max(confirmed, default=None)))
+            land = dict(
+                spending=spending,
+                completed_on_purchased_plot=[row for row in audit['completed_partners_on_purchased_land']
+                                             if (row['city'], row['district'], row['plot']) == targets[1]
+                                             and (row['quarter'], row['quarter_plot']) == (quarter, quarter_plot)],
+            )
+    return dict(stages, services=services, exact_pair_services=pair_services, exact_pair_first_completed_link=first_link,
+                exact_pair_build_order=foundation_order(first_link) if first_link is not None else None,
+                quarter_materials=supplies, exact_customer_land=land)
 
 
 def report(root, player, quarter, customer, city_labels=None):
