@@ -498,3 +498,7 @@ receipt, loaded binaries, ordinary map and roster, pinned content, and both
 Load Game saves against their archives. It reports physical pairs separately
 from realised Services, whose duration uses verified turns available in both
 arms. Guidance timing covers the full observed turn window.
+The treatment also records any comparable substitute that released a planned
+footprint, with the exact alternate plot and publication turn. This lets the
+report distinguish a contested tile that could be replaced from one that was
+protected because the shared planner found no comparable substitute.

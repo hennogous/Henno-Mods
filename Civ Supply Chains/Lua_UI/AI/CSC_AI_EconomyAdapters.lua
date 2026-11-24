@@ -1514,7 +1514,7 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
         if layout and not layout.existing and layout.plot~=quarter.plot
             and available(quarter.plot,quarter)and available(layout.plot)
             and not claimed[quarter.plot]and not claimed[layout.plot]then
-            local movableQuarter,movableCustomer=false,false
+            local alternateQuarter,alternateCustomer
             for _,alternative in ipairs(group)do
                 local other=alternative.entry
                 local partner=other.strongLayout
@@ -1525,19 +1525,27 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 if other.plot~=quarter.plot and other.finalQ8>=quarter.finalQ8*.90 and partner
                     and partner.stage>=layout.stage and available(other.plot,other)
                     and (partner.existing or available(partner.plot))then
-                    movableQuarter=true
-                    movableCustomer=movableCustomer or partner.plot~=layout.plot
+                    alternateQuarter=alternateQuarter or other.plot
+                    if partner.plot~=layout.plot then alternateCustomer=alternateCustomer or partner.plot end
                 end
             end
             for _,other in ipairs(best.site.prospectiveCustomers or{})do
                 if other.plot~=layout.plot and available(other.plot)and other.stages and other.stages[layout.stage]
                     and other.adjacency>=math.max(other.bestAdjacency,other.displacedAdjacency,layout.adjacency)
                 then
-                    movableCustomer=true
+                    alternateCustomer=other.plot
                     break
                 end
             end
-            local legs=(movableQuarter and 0 or 1)+(movableCustomer and 0 or 1)
+            if snapshot.auditConnections and (alternateQuarter or alternateCustomer)then
+                -- Diagnostic only. A substitute is a live layout that met
+                -- today's supply, geometry and adjacency checks. It explains
+                -- why the corresponding footprint receives no scarcity cost.
+                print(string.format('CSC_AI_PROSPECTIVE_SUBSTITUTE turn=%d player=%d quarterCity=%d quarter=%d quarterPlot=%d customerCity=%d customer=%d customerPlot=%d alternateQuarterPlot=%d alternateCustomerPlot=%d',
+                    Game.GetCurrentGameTurn(),snapshot.id,quarter.city,quarter.district,quarter.plot,
+                    layout.city,layout.district,layout.plot,alternateQuarter or -1,alternateCustomer or -1))
+            end
+            local legs=(alternateQuarter and 0 or 1)+(alternateCustomer and 0 or 1)
             if legs>0 then
                 if priced>=4 then break end
                 priced=priced+1
@@ -1564,8 +1572,8 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                             return cost,credit
                         end
                         local qCost,qCredit,cCost,cCredit=0,0,0,0
-                        if not movableQuarter then qCost,qCredit=retain(quarter,layout.plot,true)end
-                        if not movableCustomer then cCost,cCredit=retain(layout,quarter.plot,false)end
+                        if not alternateQuarter then qCost,qCredit=retain(quarter,layout.plot,true)end
+                        if not alternateCustomer then cCost,cCredit=retain(layout,quarter.plot,false)end
                         claimed[quarter.plot]=true;claimed[layout.plot]=true
                         print(string.format('CSC_AI_PROSPECTIVE_CONNECTION turn=%d player=%d quarterCity=%d quarter=%d quarterPlot=%d customerCity=%d customer=%d customerPlot=%d valueQ8=%d quarterCostQ8=%d customerCostQ8=%d quarterCreditQ8=%d customerCreditQ8=%d',
                             Game.GetCurrentGameTurn(),snapshot.id,quarter.city,quarter.district,quarter.plot,

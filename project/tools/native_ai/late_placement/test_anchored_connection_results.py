@@ -109,6 +109,8 @@ class ConnectionCounts(unittest.TestCase):
             'CSC_DISTRICT_CATALOGUE\t33\tDISTRICT_RURALCOMMUNITYA\tfalse',
             'CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
             'customerCity=8 customerDistrict=6 customerPlot=20 stage=2 existing=false extraBase=true specialty=false',
+            'CSC_AI_PROSPECTIVE_SUBSTITUTE turn=3 player=1 quarterCity=7 quarter=43 quarterPlot=10 '
+            'customerCity=8 customer=6 customerPlot=20 alternateQuarterPlot=-1 alternateCustomerPlot=21',
             record('PUBLICATION', accepted='true', pendingTurn=3, version=2),
             record('NATIVE_BEST', turn=4, version=2, player=1, city=7, district=33, plot=10),
             record('NATIVE_BEST', turn=5, version=3, player=1, city=8, district=6, plot=20),
@@ -122,6 +124,7 @@ class ConnectionCounts(unittest.TestCase):
         row, = prospective_footprints(log, parse(log, 'CSC_PLANNING_'), {1}, 25, {'footprint_losses': [loss]})
         self.assertEqual(row['quarter']['native_same_plot_choices'], {'DISTRICT_RURALCOMMUNITYA': 1})
         self.assertEqual(row['quarter']['nearest_loss'], loss)
+        self.assertEqual(row['observed_substitutes'], [dict(turn=3, versions=[2], quarter_plot=-1, customer_plot=21)])
         self.assertTrue(row['quarter']['first_occupation']['matched'])
         self.assertEqual(row['customer']['native_same_plot_choices'], {})
         self.assertFalse(row['customer']['first_occupation']['matched'])

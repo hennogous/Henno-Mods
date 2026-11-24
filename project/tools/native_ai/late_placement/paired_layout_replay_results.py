@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import re
 
-from anchored_connection_results import CUSTOMER_RECEIPT, DISTRICT_TITLE
+from anchored_connection_results import CUSTOMER_RECEIPT, DISTRICT_TITLE, PROSPECTIVE_SUBSTITUTE
 from planning_results import parse
 
 
@@ -24,12 +24,13 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
     log = (folder / 'Lua.log').read_text(encoding='utf-8-sig')
     wanted = set((city, plot) for city, _, plot in targets)
     stages = defaultdict(list)
-    proposals = []
-    for payload in PLAN.findall(log):
-        row = {key: int(value) for key, value in (word.split('=', 1) for word in payload.split())}
-        if row['player'] == player and ((row['quarterCity'], row['quarterPlot']) in wanted
-                                      or (row['customerCity'], row['customerPlot']) in wanted):
-            proposals.append(row)
+    for name, pattern in (('proposals', PLAN), ('observed_substitutes', PROSPECTIVE_SUBSTITUTE)):
+        stages[name] = []
+        for payload in pattern.findall(log):
+            row = {key: int(value) for key, value in (word.split('=', 1) for word in payload.split())}
+            if row['player'] == player and ((row['quarterCity'], row['quarterPlot']) in wanted
+                                          or (row['customerCity'], row['customerPlot']) in wanted):
+                stages[name].append(row)
     # The native scout records both fresh net and final-cache reads. Use an
     # eligible cache value preceding the winner to calculate a score gap.
     # An unpriced cell or a later read supplies no counterfactual result.
@@ -95,7 +96,7 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
     # owner and both native IDs to the physical ledger before crediting a pair.
     pair_services = [link for link in services['chains'] if link['player'] == player
                      and link['source'] in quarter_ids and link['customer'] in customer_ids]
-    return dict(proposals=proposals, **stages, services=services, exact_pair_services=pair_services)
+    return dict(stages, services=services, exact_pair_services=pair_services)
 
 
 def report(root, player, quarter, customer, city_labels=None):

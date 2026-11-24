@@ -21,6 +21,7 @@ STRONG_LAYOUT = re.compile(
     r'CSC_AI_STRONG_QUARTER_LAYOUT turn=(\d+) player=(\d+) city=(\d+) district=(\d+) plot=(\d+) '
     r'customerCity=(\d+) customerDistrict=(-?\d+) customerPlot=(\d+) stage=([234]) '
     r'existing=(true|false) extraBase=(true|false) specialty=(true|false)')
+PROSPECTIVE_SUBSTITUTE = re.compile(r'CSC_AI_PROSPECTIVE_SUBSTITUTE ([^\r\n]+)')
 QUARTER_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\tDISTRICT_CSC_([A-Z_]+)_QUARTER\t')
 QUARTER_RECEIPT = re.compile(r'CSC_QUARTER_WATCH_(WRITE|BEST)\t([^\r\n]+)')
 DISTRICT_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t([^\t\r\n]+)')
@@ -268,6 +269,15 @@ def prospective_footprints(log, observations, players, through, competition):
     losses = defaultdict(list)
     for row in competition['footprint_losses']:
         losses[row['player'], row['city'], row['district'], row['plot']].append(row)
+    substitutes = defaultdict(list)
+    for payload in PROSPECTIVE_SUBSTITUTE.findall(log):
+        row = {key: int(value) for key, value in (field.split('=', 1) for field in payload.split())}
+        turn, player = row['turn'], row['player']
+        if turn <= through and player in players:
+            quarter = player, row['quarterCity'], row['quarter'], row['quarterPlot']
+            customer = player, row['customerCity'], row['customer'], row['customerPlot']
+            substitutes[quarter, customer].append(dict(turn=turn, versions=sorted(versions[turn]),
+                quarter_plot=row['alternateQuarterPlot'], customer_plot=row['alternateCustomerPlot']))
 
     def footprint(identity, turns, active):
         player, city, district, plot = identity
@@ -301,6 +311,7 @@ def prospective_footprints(log, observations, players, through, competition):
         active = set().union(*(versions[turn] for turn in turns))
         result.append(dict(first_offer=min(turns), last_offer=max(turns), modeled_turns=len(turns),
                            quarter_published=bool(active & offered[quarter]),
+                           observed_substitutes=substitutes[quarter, customer],
                            quarter=footprint(quarter, turns, active),
                            customer=footprint(customer, turns, active)))
     return result
