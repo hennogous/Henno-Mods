@@ -522,6 +522,20 @@ def completed_substitute_pairs(priced, observations, through):
     return [completed[key] for key in sorted(completed)]
 
 
+def foundation_order(row):
+    """Recover build order when a checkpoint already contained one district."""
+    order = row.get('foundationOrder')
+    if order in ('quarterFirst', 'neighbourFirst', 'sameTurn'):
+        return order
+    # An earlier sighting proves this side already existed by that turn. An
+    # initial census seeing both districts on the same turn cannot order them.
+    for seen, founded, earlier in (('quarterFirstSeen','neighbourFoundationTurn','quarterFirst'),
+                                   ('neighbourFirstSeen','quarterFoundationTurn','neighbourFirst')):
+        if row.get(seen) is not None and row.get(founded) is not None and 0 <= row[seen] < row[founded]:
+            return earlier
+    return 'unknown'
+
+
 def connection_counts(log, original_ai, through, *, observations=None):
     """Join observed legal options to real foundations and completed links.
 
@@ -559,14 +573,15 @@ def connection_counts(log, original_ai, through, *, observations=None):
             foundations[row['plot']].append((row['turn'], row['player'], row.get('city'), row['district']))
         if row.get('player') not in original_ai:
             continue
-        if row['kind'] != 'RELATION' or row.get('role') not in ('customer','goodsProvider') or not row.get('present'):
+        if row['kind'] != 'RELATION' or row.get('role') not in ('customer','sales','goodsProvider') or not row.get('present'):
             continue
         if row.get('neighbourDistrict') == 0 or definitions.get(row.get('neighbourDistrict')) == 'DISTRICT_WONDER':
             continue
         if not (row.get('quarterComplete') and row.get('neighbourComplete')):
             continue
-        order = {'quarterFirst': 'quarterFirst', 'neighbourFirst': 'customerFirst'}.get(
-            row.get('foundationOrder'), 'unknown')
+        order = foundation_order(row)
+        if order == 'neighbourFirst':
+            order = 'customerFirst'
         quarter, qplot, cplot = (row[key] for key in ('quarter', 'quarterPlot', 'neighbourPlot'))
         key = (quarter, qplot, cplot, row['neighbourDistrict'])
         if row['role'] == 'goodsProvider':
@@ -576,7 +591,8 @@ def connection_counts(log, original_ai, through, *, observations=None):
             previous = completed.get(key)
             if previous is None or (previous == 'unknown' and order != 'unknown'):
                 completed[key] = order
-        identity = (row['player'], order, quarter, qplot, cplot, row['role'])
+        role = 'goodsProvider' if row['role'] == 'goodsProvider' else 'customer'
+        identity = (row['player'], order, quarter, qplot, cplot, role)
         if identity in options:
             target_type = row['neighbourDistrict'] if order == 'quarterFirst' else row.get('quarterDistrict')
             # The customer-first option itself names the exact Quarter type.
@@ -681,7 +697,7 @@ def endpoint_pair_supply(census, observations, players):
             key = ':'.join(str(row.get(k, '')) for k in ('quarterPlot','neighbourPlot','role','stage','building'))
             active[key] = row
 
-    pairs = {}
+    pairs, buyer_districts, working_buyers = {}, set(), set()
     for row in active.values():
         role = row['role']
         qplot, target = row['quarterPlot'], row['neighbourPlot']
@@ -694,15 +710,25 @@ def endpoint_pair_supply(census, observations, players):
         # Keep City Lights provider results separate. Customer and sales rows
         # for the same district count once. A pillaged host cannot operate.
         family = 'provider' if role == 'goodsProvider' else 'customer'
-        order = {'quarterFirst':'quarterFirst', 'neighbourFirst':'partnerFirst',
-                 'sameTurn':'sameTurn'}.get(row['foundationOrder'], 'unknown')
-        pairs[qplot,target,family] = (f'{host[0]}:{family}:{order}', materials[qplot],
-                                     not (host[3] or row['neighbourPillaged']))
+        order = foundation_order(row)
+        if order == 'neighbourFirst':
+            order = 'partnerFirst'
+        pair = qplot,target,family
+        pairs[pair] = (f'{host[0]}:{family}:{order}', materials[qplot],
+                       not (host[3] or row['neighbourPillaged']))
+        if role == 'customer':
+            buyer_districts.add(pair)
+            if row.get('buildingStatus') == 2:
+                working_buyers.add(pair)
     counts = defaultdict(Counter)
-    for label, working, healthy in pairs.values():
+    for pair, (label, working, healthy) in pairs.items():
         counts[label]['completed'] += 1
+        if pair[-1] == 'customer':
+            counts[label]['mapped_buyer_district' if pair in buyer_districts else 'sales_only_district'] += 1
         if healthy and 'BASE' in working:
             counts[label]['with_working_base'] += 1
+            if pair in working_buyers:
+                counts[label]['with_working_base_and_customer_building'] += 1
             if 'SPEC' in working:
                 counts[label]['with_working_base_and_spec'] += 1
     return {label: dict(values) for label, values in sorted(counts.items())}

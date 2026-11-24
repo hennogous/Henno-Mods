@@ -23,6 +23,22 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_sales_pairs_and_checkpoint_build_order_agree_with_the_endpoint(self):
+        census={'turn':20, 'rows':[('QUARTER','BAKERS\t1\t7\t10\ttrue\tfalse')]}
+        row=dict(kind='RELATION',turn=13,player=1,city=7,quarter='BAKERS',quarterPlot=10,
+                 neighbourDistrict=6,neighbourCity=7,role='sales',present=True,quarterComplete=True,
+                 neighbourComplete=True,neighbourPillaged=False,quarterFirstSeen=10,neighbourFirstSeen=13)
+        earlier=row | dict(neighbourPlot=20,neighbourFoundationTurn=13,foundationOrder='quarterPreexistingDateUnknown')
+        uncertain=row | dict(neighbourPlot=21,quarterFoundationTurn=13,foundationOrder='neighbourPreexistingDateUnknown')
+        simultaneous=row | dict(neighbourPlot=22,foundationOrder='sameTurn')
+        observed=[earlier,earlier | dict(role='customer'),uncertain,simultaneous]
+        counts=connection_counts('',{1},20,observations=observed)
+        self.assertEqual(counts['completed_physical_pairs'],{'quarterFirst:BAKERS':1,'unknown:BAKERS':1,'sameTurn:BAKERS':1})
+        self.assertEqual(endpoint_pair_supply(census,observed,{1}),{
+            'BAKERS:customer:quarterFirst':dict(completed=1,mapped_buyer_district=1),
+            'BAKERS:customer:unknown':dict(completed=1,sales_only_district=1),
+            'BAKERS:customer:sameTurn':dict(completed=1,sales_only_district=1)})
+
     def test_completed_pairs_need_their_own_working_base_at_the_endpoint(self):
         census = {'turn': 15, 'rows': [
             ('QUARTER', 'TAILORS\t1\t7\t10\ttrue\tfalse'),
@@ -33,16 +49,17 @@ class ConnectionCounts(unittest.TestCase):
         def host(q, city, plot, target, role, stage, **other):
             return relation(1,q,plot,target,11,'neighbourFirst',city=city,role=role,stage=stage,
                             **({'neighbourPillaged':'false'} | other))
-        log = '\n'.join([host('TAILORS',7,10,20,'customer',2,building='A'),
+        log = '\n'.join([host('TAILORS',7,10,20,'customer',2,building='A',buildingStatus=2),
             host('TAILORS',7,10,20,'sales',0), host('TAILORS',7,10,21,'goodsProvider',0),
             host('TAILORS',7,10,22,'customer',3,building='B'),
             record('RELATION_REMOVED',turn=14,relation='10:22:customer:3:B'),
             host('TAILORS',7,10,23,'customer',3,neighbourPillaged='true'),
             host('BAKERS',8,38,40,'customer',3), host('BAKERS',8,38,41,'sales',0,neighbourDistrict=0)])
         counts = endpoint_pair_supply(census,parse(log,'CSC_PLANNING_'),{1})
-        self.assertEqual(counts,{'TAILORS:customer:partnerFirst':dict(completed=2,with_working_base=1,with_working_base_and_spec=1),
+        self.assertEqual(counts,{'TAILORS:customer:partnerFirst':dict(completed=2,mapped_buyer_district=2,
+            with_working_base=1,with_working_base_and_spec=1,with_working_base_and_customer_building=1),
             'TAILORS:provider:partnerFirst':dict(completed=1,with_working_base=1,with_working_base_and_spec=1),
-            'BAKERS:customer:partnerFirst':dict(completed=1)})
+            'BAKERS:customer:partnerFirst':dict(completed=1,mapped_buyer_district=1)})
 
     def test_common_survey_needs_the_original_partner_city_to_complete(self):
         offer=('CSC_AI_SPATIAL_BID turn=3 player=1 city=7 district=43 plot=10 rank=1 adjacency=2.000 '

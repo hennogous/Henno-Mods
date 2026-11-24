@@ -773,6 +773,9 @@ Live conversion of the Sodo pair remains an open test.
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
 | Of those pairs, both districts operational and working Base | 14 | 11 |
 | Tailors customer pairs, all with working Base | 1 | 2 |
+| Bakers pairs whose adjacent district can host a mapped buying building | 10 | 7 |
+| Bakers pairs with a working Base and a working mapped customer building | 4 | 2 |
+| Tailors pairs with a working Base and a working mapped customer building | 1 | 1 |
 | Bakers–goods-provider pairs, all with working Base | 2 | 3 |
 | Bakers Stage 2 active chain-turns on 31 common observations | 190 | 212 |
 | Distinct active Bakers Stage 2 chains on those observations | 8 | 8 |
@@ -782,6 +785,16 @@ The timing uses all 38 common post-switch turns. The chain observations
 also cover the shared lead-in. Neither arm recorded an active Tailors
 Service on those observations. The immediate bottleneck is completing
 the second district at an acceptable turn cost.
+
+The additional Tailors partner in the treatment was a City Lights
+Upapitha. Its sales tag grants an adjacency benefit. The other Tailors
+pair in each arm had a mapped buying building and a functioning Base.
+The distinction also matters for Bakers. Five control partners and six
+treatment partners at turn 140 were sales-only districts. The comparison
+now counts both kinds of customer in its total and reports how many had
+a working mapped buyer. A district with both roles counts once per Quarter.
+The earlier turn-250 map had 12 buyer-capable and two sales-only Bakers
+pairs at the endpoint. Eight had both a working Base and customer building.
 
 Across the 38 common turns, the planner examined 8,317 customer options
 in the control and 21,048 in the candidate. The joint economic model ran

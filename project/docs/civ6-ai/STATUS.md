@@ -37,7 +37,9 @@ a named substitute. Addis Ababa founded the intended Tailors and its
 planned Hub tile subsequently went to Ruhr Valley. At turn 140 the control
 had 15 non-City-Center customer pairs with working Base and the candidate
 had 13. The candidate added 0.907 seconds per turn on average across the
-five AI players. [Matched results and timing](../research/mods/city-lights-ai-placement-20261116.md#where-did-the-second-district-go).
+five AI players. Its extra Tailors pair was a sales-only Upapitha. Each
+arm had one Tailors pair with a working Base and buying building. Bakers
+had four such pairs in the control and two in the candidate. [Matched results and timing](../research/mods/city-lights-ai-placement-20261116.md#where-did-the-second-district-go).
 
 A follow-up to the pinned comparison corrects how an empty customer
 footprint is released. Previously an alternate with equal map adjacency
