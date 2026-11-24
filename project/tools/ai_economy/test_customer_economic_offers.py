@@ -16,7 +16,7 @@ class CustomerEconomicOffers(unittest.TestCase):
 print=function()end;local E=CSC_AI_EconomyAdapters
 local profile={key='BAKERS'}
 local site={horizon=10,suppliers={{kind='base',plot=99,ready=2}}}
-local chain={profile=profile,economy=site}
+local chain={profile=profile,economy=site,ready=true,complete=true}
 for _,candidate in ipairs(groups[1].candidates)do candidate.chains={chain} end
 snapshot.IsGoodsProvider=function(p,d)return p==profile and d==6 end
 snapshot.providerDeclineLimit=72
@@ -33,7 +33,13 @@ assert(rows[1].readyProvider==profile and rows[1].delta==4020)
 site.suppliers[1].plot=20;assert(not offers()[20].readyProvider)
 site.suppliers[1].plot=99;site.suppliers[1].ready=10
 assert(not offers()[20].readyProvider)
-site.suppliers[1].ready=2;snapshot.providerDeclineLimit=nil
+site.suppliers[1].ready=2;chain.ready=false
+assert(not offers()[20].readyProvider)
+chain.complete=false;site.quarterReady=10
+assert(not offers()[20].readyProvider)
+site.quarterReady=3
+assert(offers()[20].readyProvider==profile)
+snapshot.providerDeclineLimit=nil
 assert(not offers()[20].readyProvider)
 ''')
 

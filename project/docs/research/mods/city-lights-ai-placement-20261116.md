@@ -1308,7 +1308,8 @@ planner abstains when no alternate provider is ready.
 The experimental planner uses the existing typed-decline capability
 for that comparison. A mapped provider must already have a fresh
 positive economic offer for a native-admitted owned site beside a
-Quarter with credible Base supply. Once that offer is retained in the
+Quarter with credible Base supply. The Quarter must be working or
+forecast to finish within the model's horizon. Once the offer is retained in the
 packet, the planner can withhold the already-fulfilled exact provider
 type on the receiving city's empty owned sites. It keeps each
 city/type scope whole when space is tight and gives ordinary Quarter

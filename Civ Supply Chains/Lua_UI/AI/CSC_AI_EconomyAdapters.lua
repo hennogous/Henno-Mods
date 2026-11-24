@@ -1186,6 +1186,11 @@ local function connectionHasSupply(site,stage,consumedPlot)
     return base and(stage<4 or specialty)
 end
 
+local function connectionQuarterReady(chain)
+    return chain.economy and (chain.ready or
+        chain.complete==false and (chain.economy.quarterReady or math.huge)<chain.economy.horizon)
+end
+
 function E.CustomerEconomicOffers(snapshot,protectedPlots)
     -- Native building forecasts are common to a city/type. Compare two full
     -- CSC worlds for that SAME investment, retaining signed site differences
@@ -1222,7 +1227,7 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
         -- Source groups contain owned native BUILD targets. Attach evidence
         -- only to a real positive offer beside an existing viable Quarter.
         for _,chain in ipairs(candidate.chains or{})do
-            if chain.economy and snapshot.IsGoodsProvider(chain.profile,group.district)
+            if connectionQuarterReady(chain) and snapshot.IsGoodsProvider(chain.profile,group.district)
                 and connectionHasSupply(chain.economy,2,candidate.plot)then return chain.profile end
         end
     end
@@ -2121,8 +2126,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         -- Reuse the owned, unprotected candidate sets. Waiting candidates
         -- retain the same map fit without immediate native build admission.
         for _,candidate in ipairs(group.candidates)do if free(candidate.plot)then
-            for _,chain in ipairs(candidate.chains or{})do if chain.economy and (chain.ready or
-                chain.complete==false and (chain.economy.quarterReady or math.huge)<chain.economy.horizon)then
+            for _,chain in ipairs(candidate.chains or{})do if connectionQuarterReady(chain)then
                 -- A provider has a real adjacency effect without a buyer
                 -- building. Once the Quarter exists, quote the same effect
                 -- with fresh geometry in the ordinary customer-site auction.
