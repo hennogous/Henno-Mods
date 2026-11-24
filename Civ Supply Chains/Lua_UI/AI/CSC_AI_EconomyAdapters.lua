@@ -505,6 +505,7 @@ function E.StrongQuarterLayout(site,options,reserved,pairedPlanning,partnerRank)
     if not strongSupply and not pairedPlanning then return nil end
 
     local bestByState={}
+    local rankedPartners=pairedPlanning and partnerRank and {} or nil
     local function consider(option,stage,existing)
         -- Rank established and unbuilt customers separately. The site bid
         -- still prefers an established link. The prospective quote can then
@@ -516,6 +517,7 @@ function E.StrongQuarterLayout(site,options,reserved,pairedPlanning,partnerRank)
         if pairedPlanning and not existing and partnerRank then
             candidate.rank,candidate.gain,candidate.customerYields,candidate.customerGain=partnerRank(option,stage)
             if not candidate.rank then return end
+            rankedPartners[#rankedPartners+1]=candidate
         end
         if stage==0 then candidate.role='provider' end
         local best=bestByState[existing]
@@ -557,7 +559,22 @@ function E.StrongQuarterLayout(site,options,reserved,pairedPlanning,partnerRank)
             end end
         end
     end
-    return strongSupply and (bestByState[true]or bestByState[false]) or nil,bestByState[false]
+    local planned=bestByState[false]
+    if planned and rankedPartners then
+        -- A second site only releases the winning footprint if it can deliver
+        -- a comparable layout for the same seller stage. These ranks already
+        -- include unlocks, construction, native adjacency and the land price.
+        -- Reuse the evaluated rows and retain just one alternate plot.
+        local backup
+        for _,other in ipairs(rankedPartners) do
+            if other.stage==planned.stage and other.plot~=planned.plot and other.rank>=planned.rank*.90
+                and (not backup or other.rank>backup.rank or other.rank==backup.rank and other.plot<backup.plot) then
+                backup=other
+            end
+        end
+        planned.alternatePartnerPlot=backup and backup.plot
+    end
+    return strongSupply and (bestByState[true]or planned) or nil,planned
 end
 
 -- Both the siting preference and the economic quote use the same two-district
@@ -981,7 +998,9 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
             local rank=E.ProspectiveConnectionsEnabled and rankPartners(snapshot,site,city,plot,profile)
             site.strongLayout,site.prospectiveLayout=E.StrongQuarterLayout(site,options,snapshot.intentFootprints or{},E.ProspectiveConnectionsEnabled,rank)
             if E.ProspectiveConnectionsEnabled and site.prospectiveLayout then
-                site.prospectiveCustomers=options
+                -- Ranked layouts carry their already priced substitute. Keep
+                -- raw geometry only for the compatibility path without ranks.
+                if not site.prospectiveLayout.rank then site.prospectiveCustomers=options end
                 forecastPairedAdjacency(snapshot,site,city,plot,profile,site.prospectiveLayout)
             end
         end
@@ -1764,7 +1783,10 @@ function E.ProspectiveConnectionPlans(snapshot,protectedPlots)
                 considerBackup(other,other.strongLayout)
                 if other.prospectiveLayout~=other.strongLayout then considerBackup(other,other.prospectiveLayout)end
             end
-            for _,other in ipairs(best.site.prospectiveCustomers or{})do
+            if layout.alternatePartnerPlot and available(layout.alternatePartnerPlot) then
+                alternateCustomer=layout.alternatePartnerPlot
+            end
+            for _,other in ipairs(not layout.rank and best.site.prospectiveCustomers or{})do
                 if other.plot~=layout.plot and available(other.plot) and
                     (layout.role=='provider' and other.goodsProvider or other.stages and other.stages[layout.stage])
                     and other.adjacency>=math.max(other.bestAdjacency,other.displacedAdjacency,layout.adjacency)

@@ -30,6 +30,21 @@ and eight publisher checks, including network-mode gating and tie resolution
 when two Quarters plan the same customer. Live purchase through customer construction and improved
 full-game pair conversion remain open.
 
+The corrected short replay recorded four native score writes protecting the
+supplier beside a new Tailors. The Quarter was founded on turn 105 and the
+planner repriced its intended Hub on 106. The corresponding control city
+founded an Encampment on 113. The [placement evidence](../research/mods/city-lights-ai-placement-20261116.md#which-purchased-sites-and-completed-pairs-had-a-working-supply)
+also counts completed pairs that have their own functioning Base supplier.
+
+A follow-up to the pinned comparison corrects how an empty customer
+footprint is released. Previously an alternate with equal map adjacency
+could cancel a bid even when its purchase price or its later unlock made
+it a poor substitute. The candidate now reuses the partner ranks it already
+calculated. An alternative for the same seller stage must reach 90% of the
+first site's rank. The higher-ranked substitute takes precedence, with plot
+ID breaking ties. All 225 economy checks pass. This change is outside the
+v12 replay and v13 full-game pins and needs its own live comparison.
+
 The revised-cap baseline modeled 20 strong Quarter–customer pairs. One
 completed both planned districts. Short replays verified the provisional
 cost on both Quito tiles and preserved Panama's higher-scoring Campus.

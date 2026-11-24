@@ -252,6 +252,44 @@ partner.purchaseGold=81
 assert(#E.ProspectiveConnectionPlans(snapshot,{})==0)
 ''')
 
+    def test_customer_substitute_requires_a_comparable_rank_after_price_and_delay(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+E.ProspectiveConnectionsEnabled=true
+local candidate=quarterAt(20)
+local site=candidate.site
+site.city=7;site.key='Q';site.quarterReady=4
+site.suppliers={{kind='base',plot=30,ready=0},{kind='base',plot=31,ready=0}}
+site.customers={}
+snapshot.connectionQuarters={candidate}
+snapshot.cities={[7]={object={}}}
+snapshot.ProspectiveCustomerReady=function()return 3 end
+snapshot.ProjectedConnectionYields=function()return {}end
+CSC_AI_EconomyModel.CustomerBuildingForecast=function()return {valueQ8=80*256,with={quarterReadyByChain={Q=4}}}end
+local options={}
+for _,index in ipairs({21,22,23}) do
+    options[#options+1]={city=7,district=1,plot=index,adjacency=2,bestAdjacency=2,
+        displacedAdjacency=0,stages={[3]=true}}
+end
+-- All three have identical ordinary adjacency. The shortlist has already
+-- priced their different invoices and completion dates. Only its strongest
+-- feasible alternative should release our bid on plot 21.
+local ranks={[21]=100,[22]=20}
+local function check(costExpected,alternate)
+    local _,layout=E.StrongQuarterLayout(site,options,{},true,function(option)return ranks[option.plot],1 end)
+    assert(layout.plot==21 and layout.alternatePartnerPlot==alternate)
+    candidate.entry.prospectiveLayout=layout
+    local plans=E.ProspectiveConnectionPlans(snapshot,{})
+    local found=false
+    for _,p in ipairs(plans)do if p.best.plot==21 and p.costQ8>0 then found=true end end
+    assert(found==costExpected)
+end
+check(true,nil)
+ranks[23]=92;check(false,23)
+ranks[22]=92;check(false,22)
+options[2],options[3]=options[3],options[2];check(false,22)
+''')
+
     def test_supplier_protection_preserves_bids_shares_cost_and_releases(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
