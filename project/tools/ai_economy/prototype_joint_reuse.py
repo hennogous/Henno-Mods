@@ -87,7 +87,11 @@ def run_routes(path):
     vms=[]
     def vm(self):
         value=route_vm(self)
-        value.execute(path.read_text(encoding='utf-8')+'\nM=CSC_AI_EconomyModel')
+        value.execute('previousModel=M')
+        value.execute(path.read_text(encoding='utf-8'))
+        # The model chunk has its own local M. Rebind the fixture's global
+        # alias in a separate chunk so capture sees the requested revision.
+        value.execute('M=CSC_AI_EconomyModel;assert(M~=previousModel);previousModel=nil')
         value.execute(capture);vms.append(value);return value
     routes.JointRoutes.vm=vm
     result=unittest.TestResult()
