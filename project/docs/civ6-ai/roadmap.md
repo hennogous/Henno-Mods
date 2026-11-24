@@ -1,5 +1,7 @@
 # CSC AI roadmap
 
+**Immediate focus for Problems 1 and 2.** [Qualify and complete Quarter layouts in either build order](#qualify-and-complete-quarter-layouts).
+
 ## Problems at a glance
 
 | Topic | Description | Status |
@@ -9,7 +11,7 @@
 | 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | Matched customer-first replay completed the Quarter beside its customers. The revised treatment gives stronger early bids to sites with robust supply and a competitive mapped customer. |
 | 1.3 Rivers | Price the river and Mill geometry the site can use. | River/Mill geometry changed the chosen Bakers site. |
 | 1.4 Adjacency | Prefer +3 with +2 as the ordinary minimum and a narrow Tailors exception. | Stronger siting verified in a replay and observed in full games. |
-| 1.5 Tile purchase | Secure worthwhile Quarter footprints and material deposits. | Paid footprint and supplier acquisition verified. Wider reliability remains open. |
+| 1.5 Tile purchase | Secure worthwhile Quarter, customer and supplier tiles. | Paid Quarter and supplier acquisition verified. Saving for a customer tile and following through on its purchase are open. |
 | 1.6 Construction readiness and follow-through | Carry legal, affordable plans through capacity checks, foundation, and completion. | Integrated follow-through verified in a representative paid-footprint case. |
 | 1.7 Place or defer | Defer weak city plans and reconsider when viable supply appears. | Deferral and reconsideration verified in separate representative cases. |
 | 1.8 Discourage poor placements | Reduce the value of individual weak or destructive sites. | Weak-site suppression verified. Wider siting calibration remains open. |
@@ -56,6 +58,20 @@
 | [15. Quarter investment and trade](#15-quarter-investment-and-trade) | Compare local production with imports and value trade routes to supplied Quarters. | Deferred until Bakers Stage 2 qualification. |
 | 15.1 Price lost import benefits before building | Include the import value a same-family local Quarter could remove. | Deferred. |
 | 15.2 Value supplied Quarter destinations | Price eligible CSC returns in the native route comparison. | Deferred. |
+
+## Qualify and complete Quarter layouts
+
+The immediate focus is the city planning capability shared by Problems 1 and 2. A good plan identifies a Quarter tile, the deposits that can supply it, and concrete sites for its mapped partners. Either district may be the city's best first investment. In the revised-cap baseline, the planner identified 20 strong pairs and one completed both planned districts. The main opportunity is converting more of the good layouts we already see. [Matched placement evidence](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation)
+
+| Roadmap | Current implementation | Gap to close |
+| --- | --- | --- |
+| 1.1–1.4, 1.7–1.8 · Qualify the pair | A Quarter needs viable Base supply and ordinarily +2 adjacency, with +3 preferred. Tailors can qualify at +1 beside a completed Harbor. Possible customer tiles earn a spatial preference. The experimental selector also screens on the customer's ordinary adjacency. | Record each district's adjacency today and after its partner is built. Let a credible pair qualify on the forecast for both sites. Price the gain once, accounting for materials, terrain, usable Mill, partner timing and the district's best alternative. A riverside Hub or coastal Harbor should keep the value it would earn in its own right. |
+| 1.5–1.6 · Secure the land | The detailed customer search uses owned tiles. Quarter and supplier purchases already have live evidence. | Search legal, purchasable customer tiles in city range. Compare saving and buying against the best owned layout, including the cost of acquiring all missing land. Follow the treasury plan through debit, ownership and construction. Release the savings claim if the plan loses its value. |
+| 1.6, 2.1–2.2 · Remember and protect the layout | Durable memory starts at native Quarter selection. The opt-in extension prices scarce plots before either district exists and supports the missing partner once a foundation exists. It reconstructs prospective pairs from fresh facts. | Retain a bounded set of credible city plans with supporting deposits, exact partner sites and substitutes. When either district is founded, immediately reassess and support the other at its next legal decision. Protect critical supply and scarce footprints while the plan is worthwhile. Reassign or release them after a better alternative, permanent loss or completion. |
+| 1.2, 2.1 · Choose the next customer | The strong-pair selector prefers the highest compatible seller stage. | Usually pursue customers in seller-building order. Allow a later customer to go first when its district and exchange offer greater value sooner. Re-evaluate the remaining customers after each foundation, accounting for unlocks, slots and actual production time. |
+| 1.2, 2.1–2.2 · Plan with City Lights | Conditional SQL tags Rural Communities as goods providers. They receive spatial guidance, but a provider alone has no seller stage to qualify it for the stronger pair planner. | Have the shared Lua planner read the provider role from gameplay data. Consider an adjacent Rural Community and its own improvement adjacency in either build order. Preserve room for materials and customers. Compare that layout with allowing the town to use the contested tile. |
+
+**When to make it default.** Use short matched replays to verify both build orders, an actual customer-tile savings and purchase decision, a provider layout with City Lights, and release of a claim when the alternative is better. Then compare the current default with the candidate in matched, preselected Online turn-250 games covering CSC alone and CSC with City Lights. Use the game controller, a shared pinned build and loadable saves. Report eligible opportunities, completed pairs and conversion by Quarter and build order, elapsed turns to the second district, working supply and Services, displaced alternatives, and mean/max guidance time. Promote the proven policy when the full games show better conversion with sensible competing choices and acceptable turn time.
 
 ## Current work
 
@@ -1137,19 +1153,20 @@ until the active check closes or an explicit dependency needs attention.
   but has no coastal objective. First consider a coastal allocation within its
   existing budget rather than a blanket density/Harbor-bid increase.
   [Survey scope](../research/mods/csc-dockmaster-opportunity-survey-20261117.md).
-- **1.2 Neighbors.** Value mapped customer districts and City Lights goods
-  providers. Keep a specific feasible future footprint as preparation evidence,
-  without crediting its adjacency or transactions before the district is complete.
-  Forecast future eligible buildings only in already completed customer districts.
+- **1.2 Neighbors.** Value mapped customers and goods providers. Record realised
+  adjacency separately from the expected gain on each named future footprint.
+  Use the discounted forecast to qualify and bid for a credible pair in either
+  order. See the [immediate planning focus](#qualify-and-complete-quarter-layouts).
 - **1.3 Rivers.** Value the river effects the Quarter can actually realise,
   including the local Mill geometry where applicable.
-- **1.4 Adjacency.** Combine the actual sources: +2 minimum, +3 preferred.
+- **1.4 Adjacency.** Ordinary Quarter bids use +2 minimum, +3 preferred.
+  A credible paired forecast is the planned additional qualification path.
   Narrow Dockmaster exception: Tailors +1 beside a completed owned Harbor,
   still requiring Base/positive economics and the weak-site cap. Stronger sites
   use the existing incremental scale. Calibrate
   against competing native investments and weaker viable sites.
-- **1.5 Tile purchase.** Price an affordable unowned Quarter footprint or
-  a supplier needed by a viable plan. These can require different native
+- **1.5 Tile purchase.** Price an affordable unowned Quarter footprint,
+  customer footprint or supplier needed by a viable plan. These can require different native
   decisions. First trace an exact district purchase request through its
   debit and acquiring city, and a separate supplier acquisition through
   its improvement. The routine resource pass consumes one cached
