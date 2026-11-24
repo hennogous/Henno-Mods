@@ -17,6 +17,9 @@ GameInfo={Districts=info({
  {Index=7,DistrictType='FUN',OnePerCity=true,MutuallyExclusiveDistrict='WATER'},
  {Index=17,DistrictType='LAVRA',OnePerCity=true,TraitType='TRAIT_LAVRA'},
  {Index=19,DistrictType='CARNIVAL',OnePerCity=true,TraitType='TRAIT_CARNIVAL'},
+ {Index=20,DistrictType='URBAN',OnePerCity=true},
+ {Index=21,DistrictType='RURAL_A',OnePerCity=true},
+ {Index=22,DistrictType='RURAL_B',OnePerCity=true},
  {Index=24,DistrictType='WATER',OnePerCity=true},
  {Index=29,DistrictType='SUGUBA',OnePerCity=true,TraitType='TRAIT_SUGUBA'}},'DistrictType'),
  CivilizationTraits=info({{CivilizationType='RUSSIA',TraitType='TRAIT_LAVRA'}},'TraitType'),
@@ -24,6 +27,12 @@ GameInfo={Districts=info({
  LeaderTraits=info({{LeaderType='PARENT',TraitType='TRAIT_SUGUBA'},
  {LeaderType='DISABLE',TraitType='TRAIT_DISABLE_LAVRA'}},'TraitType'),
  ExcludedDistricts=info({{TraitType='TRAIT_DISABLE_LAVRA',DistrictType='LAVRA'}},'DistrictType'),
+ MutuallyExclusiveDistricts=info({
+ {District='URBAN',MutuallyExclusiveDistrict='RURAL_A'},
+ {District='URBAN',MutuallyExclusiveDistrict='RURAL_B'},
+ {District='RURAL_A',MutuallyExclusiveDistrict='URBAN'},
+ {District='RURAL_B',MutuallyExclusiveDistrict='URBAN'},
+ {District='MARKET',MutuallyExclusiveDistrict='FUN'}},'District'),
  DistrictReplaces=info({{CivUniqueDistrictType='LAVRA',ReplacesDistrictType='HOLY'},
  {CivUniqueDistrictType='SUGUBA',ReplacesDistrictType='MARKET'},
  {CivUniqueDistrictType='CARNIVAL',ReplacesDistrictType='FUN'}},'CivUniqueDistrictType')}
@@ -78,7 +87,8 @@ class FutureTypes(unittest.TestCase):
         self.assertIsNone(self.allowed('PlayerConfigurations[2]=nil'))
 
     def test_missing_metadata_and_empty_identity_stay_unknown(self):
-        for name in ('Leaders','CivilizationTraits','LeaderTraits','DistrictReplaces','ExcludedDistricts'):
+        for name in ('Leaders','CivilizationTraits','LeaderTraits','DistrictReplaces','ExcludedDistricts',
+                     'MutuallyExclusiveDistricts'):
             with self.subTest(name=name):
                 self.setUp()
                 self.assertIsNone(self.allowed('GameInfo.'+name+'=nil'))
@@ -87,8 +97,26 @@ class FutureTypes(unittest.TestCase):
 
     def test_repeatable_district_and_captured_unique_mutual_exclusion(self):
         result=self.allowed("GameInfo.Districts.MARKET.OnePerCity=false;placed={6,19}")
-        self.assertTrue(result[6])
         self.assertFalse(result[7] or result[24])
+        result=self.allowed('placed={6}')
+        self.assertTrue(result[6])
+
+    def test_citywide_conflict_retires_all_rural_options_at_foundation(self):
+        result=self.allowed()
+        self.assertTrue(result[20] and result[21] and result[22])
+        result=self.allowed('placed={20}')
+        self.assertFalse(result[20] or result[21] or result[22])
+        self.assertTrue(result[24])
+        result=self.allowed('placed={22}')
+        self.assertFalse(result[20] or result[22])
+        self.assertTrue(result[21])
+
+    def test_exclusion_inherits_base_rule_and_counts_a_placed_replacement(self):
+        result=self.allowed("config.leader='CHILD';placed={19}")
+        self.assertFalse(result[29])
+        self.assertIsNone(result[24])
+        result=self.allowed('placed={29}')
+        self.assertTrue(result[7])
 
 
 if __name__=='__main__':unittest.main()

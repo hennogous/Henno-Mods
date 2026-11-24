@@ -79,6 +79,11 @@ The immediate focus is the city planning capability shared by Problems 1 and 2. 
 
 **City Lights loading.** The existing `ModSupport_CL` game criterion loads the SQL that maps Rural Communities to each Quarter's goods-provider tag. The same Lua planner reads the active mappings in both configurations. Keep those district lists in gameplay data so the planner picks up new providers as the design grows.
 
+The planner also reads the active `MutuallyExclusiveDistricts` rows. An
+Urban Borough foundation can rule out every Rural Community site in its
+city, including unoccupied backups. Release those plans and recalculate
+the remaining options when that happens. [Observed off-site exclusion](../research/mods/city-lights-ai-placement-20261116.md#what-happened-after-a-priced-city-lights-layout-began)
+
 **Multiplayer determinism.** The Lua publisher requires a positive single-player check before reading the AI state, writing plan properties or submitting CE bids. Network multiplayer, hotseat and an unavailable mode query take the disable path at startup, load-screen close and turn start. The SQL customer adjacency and Builder rules load under the CE mod criterion and use the active gameplay database. All peers need the same game, mods, versions and settings for those rules to agree. Online *speed* in our controller runs is still single-player.
 
 Keep ranking and bounded work deterministic. Use the acting AI's shared map facts, stable tie-breaks and fixed work limits. Elapsed time belongs in diagnostics. A specific audit found that two saved Quarters could each supply a preferred plot for the same customer district, and Lua table traversal picked the last one. The revised rule gives priority to the freshest plan, then lowest city and district IDs. Before enabling the publisher in network games, verify CE's authority for recording and consuming bids, then compare per-turn plans, ordered bids and actual choices on two clients with identical content, including save/rejoin and different UI load timing.

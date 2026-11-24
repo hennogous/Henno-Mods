@@ -161,7 +161,7 @@ local function futureTypeRules(pid)
     local civ, leader = config:GetCivilizationTypeName(), config:GetLeaderTypeName()
     if not civ or civ == '' or not leader or leader == '' then return nil end
     for _, name in ipairs({'Districts', 'Leaders', 'CivilizationTraits', 'LeaderTraits',
-        'DistrictReplaces', 'ExcludedDistricts'}) do
+        'DistrictReplaces', 'ExcludedDistricts', 'MutuallyExclusiveDistricts'}) do
         -- Missing metadata is not an empty set of traits/replacements. Never
         -- turn an unavailable catalogue into evidence for a no-host penalty.
         if not GameInfo[name] then return nil end
@@ -205,7 +205,22 @@ local function futureTypeRules(pid)
         -- Do not invent transitive inheritance for modded replacement chains.
         return parents[kind] or kind
     end
-    cached = {signature=signature, allowed=allowed, definitions=definitions, family=family}
+    -- The game loads multiple exclusions through a table keyed by candidate
+    -- district. City Lights uses reciprocal rows between Urban and Rural
+    -- districts. Read authored rows in their declared direction and inherit
+    -- base-type rules for replacements; a guess from plot geometry misses
+    -- a rival on a different tile in the same city.
+    local conflicts = {}
+    for row in GameInfo.MutuallyExclusiveDistricts() do
+        local kind, other = row.District, row.MutuallyExclusiveDistrict
+        if definitions[kind] and definitions[other] then
+            local targets = conflicts[kind] or {}
+            targets[other] = true
+            conflicts[kind] = targets
+        end
+    end
+    cached = {signature=signature, allowed=allowed, definitions=definitions, family=family,
+        conflicts=conflicts}
     futureTypeCache[pid] = cached
     return cached
 end
@@ -217,7 +232,8 @@ function CSC_AI_FutureDistrictTypes(pid, city)
     local function observe(definition)
         if definition then
             local family = rules.family(definition.DistrictType)
-            if family then present[family] = true end
+            present[definition.DistrictType] = true
+            present[family] = true
             presentDefinitions[#presentDefinitions+1] = definition
         end
     end
@@ -243,6 +259,15 @@ function CSC_AI_FutureDistrictTypes(pid, city)
         local base = rules.definitions[rules.family(definition.DistrictType)]
         if base then block(base.MutuallyExclusiveDistrict) end
     end
+    local function conflictsWithPlaced(kind)
+        local targets = rules.conflicts[kind]
+        if targets then
+            for other in pairs(targets) do
+                if present[other] then return true end
+            end
+        end
+        return false
+    end
     local result = {}
     for kind in pairs(rules.allowed) do
         local definition, family = rules.definitions[kind], rules.family(kind)
@@ -251,7 +276,10 @@ function CSC_AI_FutureDistrictTypes(pid, city)
         local exclusiveFamily = exclusive and rules.family(exclusive)
         local onePerCity = definition.OnePerCity ~= false and definition.OnePerCity ~= 0
         if family and not blocked[family] and not (onePerCity and present[family])
-            and not (exclusiveFamily and present[exclusiveFamily]) then result[definition.Index] = true end
+            and not (exclusiveFamily and present[exclusiveFamily])
+            and not conflictsWithPlaced(kind) and (kind == family or not conflictsWithPlaced(family)) then
+            result[definition.Index] = true
+        end
     end
     return result
 end

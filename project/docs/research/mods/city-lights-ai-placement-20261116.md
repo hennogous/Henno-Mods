@@ -1213,3 +1213,35 @@ this case to observe the purchase with and without the new policy
 from turn 150. The matched report keeps every observed acceptance,
 including those before a planner offer, and joins the initial acceptance
 to exact native selections using the committed offer's packet version.
+
+#### What happened after a priced City Lights layout began
+
+The candidate priced 168 distinct exact layouts. Fifty saw at least one
+of their two intended districts founded. Of those 50, six completed both
+districts on those plots. A different district occupied the second plot in
+23, four saw the intended second type selected elsewhere, and 12 saw other
+districts selected in the receiving city. In five, the selector did choose
+the missing district on its intended plot, but no matching foundation
+followed by turn 250. Several layouts can share the district that started.
+
+Bakers 1724 founded on turn 53, and the planner handed off to Rural
+Community A 1798 on 54. In packet 66 the planner offered +12,448 Q8 on
+1798. The native selector read the invalid-site sentinel on that plot
+immediately before choosing Urban Borough A 2019 at 166,332 Q8. Urban A
+founded on turn 78. City Lights uses the game's
+`MutuallyExclusiveDistricts` table to make Urban and Rural districts
+incompatible in the same city. That foundation removed both the planned
+Rural site and backup 1799 from the city's future options. The revised
+planner reads the loaded exclusion rows when checking the missing
+district in each city. A fixture verifies that both sites' district types
+drop from the mask after the competing district appears. The earlier
+native sentinel still needs a separate explanation.
+
+At Te Hokianga-nui-a-Kupe, Tailors 1046 founded on turn 119. The next
+planner pass handed off to Rural Community A 972. The city later picked
+that exact Rural site 27 times. It repeatedly reserved the plot, which
+had a Mine and no visible resource, and logged `Build Production` as
+`READY` with `Using builder charge at 10 13`. No Rural A construction
+contract was submitted after the Tailors foundation. This case has
+passed the site comparison and needs follow-through investigation at
+the construction tree.
