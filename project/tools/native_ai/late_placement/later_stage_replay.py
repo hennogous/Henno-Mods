@@ -305,7 +305,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 fixture_receipt('before', 'PlotInfo')
                 fixture_receipt('setup', 'CSC_AI_BakersGameplay')
                 fixture_receipt('legal', 'PlotInfo')
-                capacity_census = census(connection_switch_turn, 'connection-capacity-census')
+                capacity_census = census(switch_turn, 'connection-capacity-census')
                 if expected_preparation is not None:
                     proof = compare_structure(expected_preparation['capacity_census'], capacity_census)
                     write_json(output / 'connection-capacity-comparison.json', proof)

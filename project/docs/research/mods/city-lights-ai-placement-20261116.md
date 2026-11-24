@@ -483,6 +483,15 @@ second district in the same city still needs its own capacity and build
 order. Stronger competition can be checked against the Panama Campus
 and customer-first follow-through against the Ayacuchu pair.
 
+The setup passed on the first capacity attempt. Quito grew from 15 to 16
+population and the UI reported one free slot. The exact Tailors and Hub
+plots, and the Farming Town on the Tailors plot, all passed the legal-target
+check. The controller stopped before switching policy because its
+post-growth census used the anchored switch argument. The corrected census
+uses the matched switch turn shared by both experiment types. The aborted
+run verified a clean exit and preference restoration. The retry uses the
+same hashed archived save and installed CSC pin.
+
 For each completed 250-turn pair, run `anchored_connection_results.py --paired`
 with the control and treatment archives. The report checks the opening policy
 receipt, loaded binaries, ordinary map and roster, pinned content, and both

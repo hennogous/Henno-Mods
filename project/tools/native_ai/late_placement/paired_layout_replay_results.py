@@ -60,10 +60,15 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
                     winner_q8=row['result'], reported_reservation_id=row['reservationId'],
                     target_selected=(district, plot) == (target_type, target_plot),
                     recorded_gap_q8=row['result']-target_score if target_score is not None else None))
+    native_ids = defaultdict(set)
     for row in parse(log, 'CSC_PLANNING_'):
-        if row['kind'] in ('FOUNDATION', 'COMPLETION') and row.get('player') == player:
-            if (row['city'], row['plot']) in wanted:
-                stages['construction'].append(row)
+        if row['kind'] not in ('FOUNDATION', 'COMPLETION', 'FIRST_OBSERVED') or row.get('player') != player:
+            continue
+        if (row['city'], row['plot']) in wanted and row['kind'] in ('FOUNDATION', 'COMPLETION'):
+            stages['construction'].append(row)
+        target = row['city'], row['district'], row['plot']
+        if target in targets and row.get('districtID') is not None:
+            native_ids[target].add(row['districtID'])
     if city_labels:
         traces = {'City '+label: city for city, label in city_labels.items()}
         orders = {(city_labels[city], names[district]) for city, district, _ in targets if city in city_labels}
@@ -84,7 +89,13 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None):
                         and row[4].startswith('CONTRACT ')):
                     stages['city_type_contracts'].append(dict(turn=int(row[0]), city=row[2],
                         contract=row[4], status=row[5], district=row[8]))
-    return dict(proposals=proposals, **stages, services=read_json(folder / 'observed-services.json'))
+    services = read_json(folder / 'observed-services.json')
+    quarter_ids, customer_ids = (native_ids[target] for target in targets)
+    # GameEffects names a live district object, not a tile. Join the observed
+    # owner and both native IDs to the physical ledger before crediting a pair.
+    pair_services = [link for link in services['chains'] if link['player'] == player
+                     and link['source'] in quarter_ids and link['customer'] in customer_ids]
+    return dict(proposals=proposals, **stages, services=services, exact_pair_services=pair_services)
 
 
 def report(root, player, quarter, customer, city_labels=None):

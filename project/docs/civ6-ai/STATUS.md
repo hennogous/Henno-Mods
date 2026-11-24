@@ -1,5 +1,13 @@
 # Current CSC AI status
 
+**24 November — Problems 1.2 and 2.1, protect both footprints.**
+The revised-cap baseline modeled 20 strong Quarter–customer pairs. One
+completed both planned districts. Short replays verified the provisional
+cost on both Quito tiles and preserved Panama's higher-scoring Campus.
+Quito's one-slot preparation now admits Tailors, the Commercial Hub and
+the Farming Town. Its matched native choice and construction are under test.
+[Current placement evidence](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation).
+
 **22 November — Problems 6–12 qualification complete.**
 All three benchmark pairs reached turn 250.
 The guided AI operated 54 Services for 3,012 shared observed link-turns,
