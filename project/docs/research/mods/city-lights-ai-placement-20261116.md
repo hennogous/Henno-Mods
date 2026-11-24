@@ -614,3 +614,14 @@ Both arms matched all 53 foundations after the switch, and logged 76
 Bakers Stage 2 link-turns and 20 Bakers Stage 3 link-turns. Use this as
 a stronger-choice comparison. Continue scouting for lower native margins
 where the city can build both sides of the connection.
+
+The preselected fresh Continents scout reached turn 100 and saved turn 50
+for the matched replay. Delhi's owned Tailors 940 and Harbor 865 plan was
+available in the turn-95 packet with one free district slot. Industrial
+Zone 1011 led by 7.184 utility in the observation on turn 96. This is a
+plausible close contest for the Quarter-first route, with normal production
+and the Harbor's later slot still to be tested. Mbanza Kongo's Hub 1615 was
+reserved on 91 and founded on 93, before the planned Bakers 1690. It gives
+the same replay a customer-first case. The matched window loads turn 50,
+switches the prospective policy on turn 90, and follows both through turn
+125 on the same package and City Lights stack.

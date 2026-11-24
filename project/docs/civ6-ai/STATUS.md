@@ -8,8 +8,10 @@ Quito's matched one-slot replay narrowed the closest Tailors loss from 60
 to 50 utility. Neither arm built the pair. The trace exposed an extra
 deduction from the prospective footprint cost, now fixed. The matched tests
 without City Lights and at earlier Quito preserved 120 and 53 foundations,
-respectively. The next scout looks for a closer contest with room for both
-districts. The capacity and build-order forecasts have offline coverage.
+respectively. The fresh scout found Delhi's Tailors losing to an Industrial
+Zone by 7.18 utility. The matched replay follows that Tailors–Harbor plan
+and Mbanza Kongo's customer-first route. The capacity and build-order
+forecasts have offline coverage.
 [Current placement evidence](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation).
 
 **22 November — Problems 6–12 qualification complete.**
