@@ -9,11 +9,15 @@ planner are still open. Mean/max guidance time rose from 1.65/3.55 seconds
 to 2.75/7.82. City Lights and the two targeted replays are next.
 [Full comparison and timing](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november).
 
-**City Lights control, 24 November.** Turn 250 verified. Bakers completed
-17 adjacent customer or sales pairs and 13 separate goods-provider pairs.
-The only completed Tailors had no mapped partner at the endpoint.
-Guidance averaged 1.97 seconds per turn and peaked at 4.92 seconds.
-[City Lights control and baseline](../research/mods/city-lights-ai-placement-20261116.md#city-lights-turn-250-control-24-november).
+**City Lights matched result, 24 November.** Both saves verified at turn
+250. Adjacent customer or sales pairs rose from 17 to 24. Pairs with
+a working Base and functioning buyer rose from 10 to 14. Goods-provider
+pairs fell from 13 to nine. Guidance rose from 1.97/4.92 seconds
+average/max to 3.93/8.96. The candidate's two land bids on plot 973
+reached CE scoring. The district was built in both arms and the bid
+had no matching purchase. The Gori and Sodo replays and mature-save
+performance check are pending.
+[Matched City Lights evidence](../research/mods/city-lights-ai-placement-20261116.md#matched-city-lights-result-at-turn-250).
 
 **24 November — Problems 1.2 and 2.1, protect both footprints.**
 The latest candidate also compares owned and purchasable customer sites,

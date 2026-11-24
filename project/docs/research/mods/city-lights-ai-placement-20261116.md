@@ -1034,6 +1034,75 @@ Older runs can lack a readback for the paid site. The receipt confirms
 whether CE actually wrote a score update. Ownership and spending remain
 separate events.
 
+### Matched City Lights result at turn 250
+
+Both arms finished on the preselected Small Continents seed
+171124603 / 171124604 at Online speed with the same v13 package. The
+control used current defaults. The candidate enabled prospective and
+anchored pair guidance. The saves are available in Load Game as
+`CSC_LAYOUT_171124603_BASELINE_T250_c1f6b5329dee` and
+`CSC_LAYOUT_171124603_TREATMENT_T250_67c2664b3b49`.
+
+| Turn-250 outcome | Default | Candidate |
+| --- | ---: | ---: |
+| Completed Bakers / Tailors Quarters | 25 / 1 | 25 / 9 |
+| Bakers customer or sales pairs, Quarter-first / partner-first | 13 / 4 | 10 / 0 |
+| Tailors customer or sales pairs, Quarter-first / partner-first | 0 / 0 | 8 / 6 |
+| Customer pairs with a working Base supplier and functioning buyer, Bakers / Tailors | 10 / 0 | 7 / 7 |
+| Bakers goods-provider pairs, Quarter-first / provider-first | 9 / 4 | 6 / 2 |
+| Tailors goods-provider pairs, Quarter-first / provider-first | 0 / 0 | 1 / 0 |
+| Goods-provider pairs with a working Base supplier, Bakers / Tailors | 11 / 0 | 6 / 1 |
+| Common owned layouts, exact completions / eligible Bakers | 5 / 187 | 6 / 169 |
+| Common owned layouts, exact completions / eligible Tailors | 0 / 140 | 2 / 140 |
+| Working adjacent Base deposits, Bakers / Tailors | 27 / 2 | 27 / 8 |
+| Working adjacent Specialty deposits, Bakers / Tailors | 5 / 0 | 4 / 3 |
+| Bakers Stage 2 active chains / chain-turns | 15 / 1,106 | 18 / 1,175 |
+| Bakers Stage 3 active chains / chain-turns | 7 / 407 | 4 / 162 |
+| Tailors Stage 3 active chains / chain-turns | 0 / 0 | 2 / 146 |
+| Guidance seconds per turn, mean / max | 1.97 / 4.92 | 3.93 / 8.96 |
+| Elapsed minutes from launch to turn 250 | 57.6 | 69.3 |
+
+Customer and sales counts exclude City Centers. Four of the candidate's
+14 Tailors pairs were sales-only. The working-buyer metric requires an
+actual functioning mapped building. Service counts use 199 shared
+observation turns. Neither arm recorded a Tailors Stage 2 Service.
+
+For endpoint pairs, the median wait for the second foundation was
+64 turns for Quarter-first Bakers customers in the control and 75.5
+in the candidate. Customer-first Bakers had a 16.5-turn median in
+the control and no endpoint pairs in the candidate. Tailors customer
+pairs took a median of 52 turns Quarter-first and 32.5 customer-first
+in the candidate. Bakers with a provider took 34 and 100.5 turns
+in the control by build order, against 24 and 54 in the candidate.
+The sole Tailors provider pair took 68 turns. These medians describe
+the different groups of pairs completed in each game.
+
+The candidate priced 69 Bakers and 99 Tailors layouts. Five Bakers
+pairs completed both exact footprints Quarter-first. One Tailors pair
+completed both customer-first. Among the common owned survey, the
+control completed five exact pairs from 56 starts and the candidate
+completed eight from 85. Using alternate adjacent sites as well
+yielded seven distinct surveyed pairs in the control and nine in
+the candidate.
+
+Rural Community A was the most frequent native competitor. It beat a
+Quarter bid 484 times in the control and 308 times in the candidate.
+It beat a customer bid 353 and 369 times. The candidate's Quarter
+bids logged 96 exact wins, up from 48. Customer bid wins were 93,
+against 95 in the control. A native comparison can recur before any
+construction. For the two land offers on 973, CE recorded both score
+writes in versions 39 and 40, with an eligible final cache read and
+comparison in 39. Neither packet recorded a site win. The city later
+completed the Rural Community in both arms, and the candidate had no
+matching purchase on that tile. Each arm completed four pairs with
+partners built on land bought through ordinary play.
+
+The outcome supports continued testing of the candidate. Tailors
+gained supplied pairs in both build orders, while Bakers ended with
+fewer customers and providers on this seed. The remaining release
+evidence includes direct paid-site follow-through, both build orders
+on the newer continuity code, and live timing after the optimization.
+
 | Turn-140 outcome across five AI players | Control | Candidate |
 | --- | ---: | ---: |
 | Bakers with a non-City-Center customer, counted per pair | 15 | 13 |
