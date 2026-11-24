@@ -47,6 +47,17 @@ class ConnectionCounts(unittest.TestCase):
         ambiguous = log + '\nCSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t6\t7\t25\t5\t2'
         self.assertFalse(customer_land_purchases(ambiguous,history,{1},15,rows)['purchases'][0]['matching_debit'])
 
+    def test_organic_partner_land_can_complete_a_pair_without_a_planner_offer(self):
+        log = '\n'.join(['CSC_CUSTOMER_LAND_WATCH_INSTALLED',
+            'CSC_CUSTOMER_PLOT_PURCHASE\t7\t1\t8\t5\t23\t3\t2',
+            record('FOUNDATION', turn=9, player=1, city=5, district=4, plot=23, foundationDateKnown='true'),
+            *[relation(1,'TAILORS',10,23,11,'quarterFirst',neighbourCity=city,neighbourDistrict=4,role=role)
+              for city,role in ((6,'customer'),(5,'customer'),(5,'sales'))]])
+        result = customer_land_purchases(log,parse(log,'CSC_PLANNING_'),{1},15,[])
+        self.assertEqual((result['offered_tiles'], result['purchases']), (0, []))
+        self.assertEqual(result['completed_partners_on_purchased_land'], [
+            dict(player=1,city=5,plot=23,quarter='TAILORS',quarter_plot=10,district=4,bought=7,founded=9,linked=11)])
+
     def test_short_replay_does_not_count_a_different_customer_on_the_same_tile(self):
         with TemporaryDirectory() as directory:
             folder = Path(directory)

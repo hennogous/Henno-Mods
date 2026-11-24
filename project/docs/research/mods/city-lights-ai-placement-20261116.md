@@ -643,3 +643,18 @@ inside the common window. The interrupted treatment logs are in
 `continents-layout-continuity-v8/treatment/exception-turn100` under the
 24 November paired-footprints study. The customer-land replay starts from
 the separate archived turn-100 source.
+
+Across those ten common turns, all five AI players' Lua guidance combined
+averaged 2.014 seconds per turn in the control (maximum 2.526) and 2.429
+in the candidate (maximum 3.043). The mean increase was 0.415 seconds.
+Both short arms included the anchored planner and diagnostics. The full
+games compare against the packaged default.
+
+The earlier completed Continents run gives a concrete customer-land case.
+In Gori, Bakers 2492 was founded on 83. The district tree reported an
+accepted purchase request for 2419 as late as 101, and an Entertainment
+Complex was founded there on 111. A Rural Community was founded on 3011
+on 118, after a purchase request on that tile and adjacent to Bakers
+3084 founded on 110. The newer observer records the plot purchase and
+Gold change directly. Its report also counts purchases that become
+completed partners under the default policy.

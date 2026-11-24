@@ -593,21 +593,38 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
             x,y,state,contract = request.groups()
             trees[int(fields[1]),int(x),int(y)].add((int(fields[0]),int(contract),state,fields[2].strip()))
     founded = defaultdict(list)
+    completed_links = defaultdict(dict)
     for row in observations:
         if row['kind'] == 'FOUNDATION' and row.get('foundationDateKnown'):
             founded[row['player'], row['city'], row['plot']].append(
                 (row.get('foundationTurn', row['turn']), row['district']))
+        if (row['kind'] == 'RELATION' and row.get('present') and row.get('quarterComplete')
+                and row.get('neighbourComplete') and row.get('role') in ('customer','sales','goodsProvider')
+                and row['turn'] <= through):
+            key = row['player'], row['neighbourCity'], row['neighbourPlot'], row['neighbourDistrict']
+            pair = row['quarter'], row['quarterPlot']
+            completed_links[key].setdefault(pair, row['turn'])
     purchases = []
+    completed_on_purchased_land = []
     purchase_events = list(re.finditer(r'CSC_CUSTOMER_PLOT_PURCHASE\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)', log))
     purchase_ordinals = {(int(m[2]),int(m[3])) for m in purchase_events}
     for match in purchase_events:
         turn, player, ordinal, city, plot, x, y = map(int, match.groups())
         key = player, city, plot
-        if turn > through or key not in offers:
+        if turn > through or player not in players:
             continue
+        actual = min(((t,d) for t,d in founded[key] if turn-1 <= t <= through), default=None)
+        if actual:
+            # Count organic land purchases in either arm. The buyer city, tile
+            # and founded district must all match the completed relationship.
+            # Customer and sales roles sometimes describe the same two tiles.
+            for (quarter, qplot), linked in completed_links[(*key,actual[1])].items():
+                if linked >= actual[0]:
+                    completed_on_purchased_land.append(dict(player=player, city=city, plot=plot, quarter=quarter,
+                        quarter_plot=qplot, district=actual[1], bought=turn, founded=actual[0], linked=linked))
         # The latest native packet can predate execution of a retained request.
         # Report quote age and every offered type if several wanted the tile.
-        prior = [o for o in offers[key] if o[0] < match.start() and o[1] <= turn + 1]
+        prior = [o for o in offers.get(key, ()) if o[0] < match.start() and o[1] <= turn + 1]
         if not prior:
             continue
         last_turn = max(o[1] for o in prior)
@@ -618,12 +635,12 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
         first_offer = min(o[1] for o in prior)
         requests = sorted(r for r in trees[player,x,y] if first_offer-1 <= r[0] <= turn+1)
         accepted = [r[0] for r in requests if r[2]=='Accepted']
-        actual = min(((t,d) for t,d in founded[key] if turn-1 <= t <= through), default=None)
         purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
                               quotes=quotes, district_request_turn=max(accepted,default=None), request_history=requests,
                               matching_debit=sum(amount in {cost for _,cost in quotes} for amount in debits)==1,
                               foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
-    return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, offered_tiles=len(offers), purchases=purchases)
+    return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, offered_tiles=len(offers), purchases=purchases,
+                completed_partners_on_purchased_land=completed_on_purchased_land)
 
 
 def wonder_connections(log, observations, players, through):
