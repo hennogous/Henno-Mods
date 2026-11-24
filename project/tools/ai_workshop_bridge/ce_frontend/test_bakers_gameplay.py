@@ -197,6 +197,39 @@ assert(packet[2][5]==4097 and packet[4096][5]==3)
 ''')
         self.assertTrue(any('CSC_AI_ECONOMY_CAPACITY_TRIM' in message for message in messages))
 
+    def test_balanced_two_stage_bid_keeps_publication_order_across_input_permutations(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        lua.globals().print = lambda *args: None
+        lua.globals().include = lambda name: lua.execute(gameplay_source(name)) if name != 'CSC_AdjacencyCore' else None
+        lua.execute(gameplay_source('CSC_AI_BakersGameplay'))
+        lua.execute('''
+            ExposedMembers.CSC_Adjacency={IsSinglePlayer=function()return true end}
+            CSC_AI_QuarterPlacement.MaterialDeductions=function()return {},{},{},{},{},{} end
+            CSC_AI_QuarterSiteForecasts=function()return {} end
+            CSC_AI_EconomyAdapters.Snapshot=function(_,_,ui)
+                return {ui=ui,chains={},QuoteCount=function()return 0 end}
+            end
+            CE_AIDistrictScoresFinalEntry=CE_AIDistrictScoresEntry
+            CE_AIDistrictScoresEarlyCost=CE_AIDistrictScoresEntry
+            local rows={
+                {player=3,city=1,district=3,plot=100,finalQ8=200,delta=0},
+                {player=3,city=2,district=1,plot=100,earlyCostQ8=64,delta=64},
+                {player=3,city=3,district=3,plot=100,finalQ8=400,delta=0},
+            }
+            for _,order in ipairs({'123','132','213','231','312','321'}) do
+                CSC_AI_EconomyAdapters.QuarterBids=function()
+                    local offers={}
+                    for n in order:gmatch('%d') do offers[#offers+1]=rows[tonumber(n)] end
+                    return offers,{evaluated=3,final=2,unknown=0,streams=0,omissions=0}
+                end
+                boundary()
+                assert(packet and #packet==3)
+                assert(packet[1][2]==2 and packet[2][2]==3 and packet[3][2]==1,order)
+                turn=turn+1
+            end
+        ''')
+
     def test_owned_supplier_readiness_distinguishes_unlock_and_repair(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)

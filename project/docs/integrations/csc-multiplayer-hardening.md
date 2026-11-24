@@ -115,8 +115,8 @@ Validation on 20 October:
   55 registered sources. Report: `Desktop/Codex/csc-multiplayer-hardening-20261020/parity/`.
 - ModBuddy action JSON check passed; no manifest changes/new runtime files needed.
 
-The existing isolated `lupa` dependency is at
-`C:/Users/Shadow/Desktop/Codex/csc-adjacencies/test-deps` on Shadow. Add it to
+The isolated `lupa` installation used for the 24 November rerun is at
+`C:/Users/Shadow/Desktop/Codex/csc-ai-builder-availability-20261120/lua-test-deps` on Shadow. Add it to
 `PYTHONPATH` when running the unittest files. Set `CSC_GAMEPLAY_DATABASE` to
 `C:/Users/Shadow/Desktop/Codex/csc-adjacencies/mab-DebugGameplay.sqlite` for the
 QA regression fixture, so its M&C setup starts from the expected baseline.
@@ -130,6 +130,18 @@ after the customer lost its buildings. The multiplayer and Fashion House
 suites passed all 32 checks. The eight AI publisher checks passed separately.
 The [AI roadmap](../civ6-ai/roadmap.md#qualify-and-complete-quarter-layouts)
 records how the single-player gate and saved-plan tie-break work.
+
+A second audit found a bid-ordering cycle. Two complete Quarter bids were
+ordered by score, yet a neighbouring district's two-stage bid could sit
+between them by city ID when its early cost exactly matched its later
+bonus. Presenting the same three legal bids in a different order changed
+the outgoing packet. This matters when the 4,096-entry limit cuts through
+that group. The publisher now sorts by weak-site status and net change,
+breaks a zero-change tie in favour of the two-stage bid, then orders
+complete bids by score and resolves ties by ID. The regression exercises
+all six input orders through CE's simulated publication interface. Nine
+publisher checks and the 32 simulated gameplay checks passed. The running
+single-player full-game comparison uses its earlier pinned build.
 
 Native multiplayer remains pending: fresh game, simultaneous turns, save/reload,
 late join/reconnect, host migration, capture/pillage and route creation/termination

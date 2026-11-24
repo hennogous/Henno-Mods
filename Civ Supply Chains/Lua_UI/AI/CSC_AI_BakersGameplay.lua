@@ -172,9 +172,15 @@ local function publishBefore(a, b)
     -- Wide weak-site coverage must never crowd out supplier protection or
     -- a positive bid for a viable Quarter or its customer.
     if (a.weak == true) ~= (b.weak == true) then return not a.weak end
-    if a.finalQ8 and b.finalQ8 and a.finalQ8~=b.finalQ8 then return a.finalQ8>b.finalQ8 end
     local changeA,changeB=a.delta-(a.earlyCostQ8 or 0),b.delta-(b.earlyCostQ8 or 0)
     if changeA~=changeB then return changeA<changeB end
+    -- Complete scores always have zero delta. A two-stage offer can also
+    -- net to zero while influencing two separate native decisions. At equal
+    -- net change put that offer first, then order complete scores by value.
+    -- Comparing a mixed tie by city before this step could form a cycle:
+    -- changing input order would then change the packet at the capacity cut.
+    if (a.finalQ8~=nil)~=(b.finalQ8~=nil) then return a.finalQ8==nil end
+    if a.finalQ8~=b.finalQ8 then return a.finalQ8>b.finalQ8 end
     if a.player ~= b.player then return a.player < b.player end
     if a.city ~= b.city then return a.city < b.city end
     if a.plot ~= b.plot then return a.plot < b.plot end
