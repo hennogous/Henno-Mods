@@ -723,8 +723,12 @@ offers.
 In Addis Ababa the new Tailors stood on 2458 from turn 105. The planned Hub
 on 2457 received a relative bid on 106 and ten subsequent reference-site
 completion credits. On turn 135 the city selected Ruhr Valley for that plot.
-The planner identified 2532 as an alternative by 136. This gives a concrete
-reason a funded bid for the second district can outlive its proposed site.
+On 135 the planner had named 2532 as its backup. On 136 it made that backup
+its first choice and named 2533 as the new backup. All five subsequent
+packets through 140 were published with zero omitted entries, and the
+occupied 2457 received no further Hub offer. This demonstrates release and
+replanning. The queue put production into Ruhr Valley. There was no recorded
+positive Hub bid on 2532 during those five turns.
 
 The six new Quarters belonged to eight distinct proposed pairs. Seven of
 those eight partner tiles had no subsequent district foundation by turn
@@ -800,6 +804,15 @@ positive customer-site adjustments after Quarter foundation. None of those
 exact proposed tiles subsequently appeared as the native district winner.
 The matched candidate should show whether it gets more of these investments
 into the queue or completes them on a suitable adjacent alternative.
+
+Four of the eight targets yielded 15 comparisons with a final score for
+both the proposed site and the winner in the same packet. The median gap
+was 831 native utility. The closest was Meroë on turn 60. Bakers 2735 had
+been founded at +4 on turn 57. Its proposed Entertainment Complex on 2660
+received +34.5 early utility and finished at 690.2, against 759.3 for Harbor
+2587. The Harbor received contract 793, entered the queue after the Temple
+of Artemis on turn 63 and received 29.9 Production on 64. The turn-50 save preserves the lead-up for
+a matched replay if customer competition remains weak on this seed.
 
 Source on Shadow: `csc-ai-paired-footprints-20261124/full-v13-standalone-control`
 under Desktop/Codex. The paired report's `anchored_target_followthrough`
