@@ -280,21 +280,22 @@ function CSC_AI_FutureDistrictTypes(pid, city, ordinaryDistrictTree)
         end
         return false
     end
-    local result = {}
+    local result, fulfilled = {}, {}
     for kind in pairs(rules.allowed) do
         local definition, family = rules.definitions[kind], rules.family(kind)
         local base = family and rules.definitions[family]
         local exclusive = definition.MutuallyExclusiveDistrict or base and base.MutuallyExclusiveDistrict
         local exclusiveFamily = exclusive and rules.family(exclusive)
         local onePerCity = definition.OnePerCity ~= false and definition.OnePerCity ~= 0
+        if completed[kind] and intact[kind] then fulfilled[definition.Index] = true end
         if family and not blocked[family] and not (onePerCity and present[family])
             and not (exclusiveFamily and present[exclusiveFamily])
-            and not (completed[kind] and intact[kind])
+            and not fulfilled[definition.Index]
             and not conflictsWithPlaced(kind) and (kind == family or not conflictsWithPlaced(family)) then
             result[definition.Index] = true
         end
     end
-    return result
+    return result, fulfilled
 end
 
 local function betterQuarterSite(candidate, best)

@@ -338,6 +338,37 @@ end
 assert(entries[4].customer and entries[4].plot==4 and entries[4].delta==8*256)
 ''')
 
+    def test_only_the_ready_provider_offer_carries_a_full_decline_scope(self):
+        boundaries.Boundaries().bid_vm().execute('''
+local E=CSC_AI_EconomyAdapters
+E.ProspectiveConnectionsEnabled=true
+snapshot.providerDeclineLimit=1
+snapshot.CustomerCandidateSets=function()return{}end
+local profile={key='BAKERS'}
+E.CustomerEconomicOffers=function()
+ return {
+  {player=1,city=7,district=6,plot=20,delta=200,readyProvider=profile,customerPurchaseGold=50},
+  {player=1,city=7,district=6,plot=21,delta=100,readyProvider=profile},
+  {player=1,city=7,district=6,plot=22,delta=80,readyProvider=profile},
+  {player=1,city=7,district=6,plot=23,delta=-10,readyProvider=profile},
+ }
+end
+snapshot.FulfilledProviderScopes=function(offer)
+ assert(offer.plot==21 or offer.plot==22)
+ return {{{player=1,city=7,district=7,plot=21},{player=1,city=7,district=7,plot=22}}}
+end
+local entries=E.QuarterBids(snapshot,placement,{},early)
+for _,offer in ipairs(entries)do assert(not offer.providerDeclines) end
+snapshot.providerDeclineLimit=2
+entries=E.QuarterBids(snapshot,placement,{},early)
+local tagged=0
+for _,offer in ipairs(entries)do if offer.providerDeclines then
+ assert(offer.plot==21 and #offer.providerDeclines[1]==2)
+ tagged=tagged+1
+end end
+assert(tagged==1)
+''')
+
     def test_frontier_gold_payback_uses_only_starting_gold_after_completion(self):
         vm = boundaries.Boundaries().bid_vm()
         vm.execute('''
@@ -374,6 +405,33 @@ snapshot.CustomerOptions(city,plots[1],profile,{[3]=true})
 assert(reads==previous and snapshot.SpatialStats().maps==2 and assignments==5)
 CSC_AI_EconomyFacts.New(player,placement,ui).CustomerOptions(city,plots[1],profile,{[3]=true})
 assert(assignments==10)
+''')
+
+    def test_fulfilled_provider_scope_stays_in_the_buying_city_on_empty_owned_tiles(self):
+        self.facts().execute('''
+local F=CSC_AI_EconomyFacts
+CSC_AI_FutureDistrictTypes=function(_,_,ordinary)
+ assert(ordinary)
+ return {[21]=true},{[20]=true}
+end
+Map.GetPlotByIndex=function(index)return plots[index]end
+local other={GetID=function()return 8 end}
+Cities.GetPlotPurchaseCity=function(plot)return plot:GetIndex()==3 and other or city end
+plots[4].GetDistrictType=function()return 20 end
+plots[5].GetOwner=function()return -1 end
+local snapshot=F.New(player,placement,ui)
+snapshot.cities[7]={object=city}
+snapshot.IsGoodsProvider=function(_,d)return d==20 end
+local offer={city=7,plot=2,district=21,readyProvider=profile}
+local scopes=snapshot.FulfilledProviderScopes(offer)
+assert(#scopes==1 and #scopes[1]==2)
+for i,cell in ipairs(scopes[1])do
+ assert(cell.plot==i and cell.player==1 and cell.city==7 and cell.district==20)
+end
+offer.plot=3;assert(#snapshot.FulfilledProviderScopes(offer)==0)
+offer.plot=4;assert(#snapshot.FulfilledProviderScopes(offer)==0)
+offer.plot=5;assert(#snapshot.FulfilledProviderScopes(offer)==0)
+offer.plot=2;offer.district=20;assert(#snapshot.FulfilledProviderScopes(offer)==0)
 ''')
 
     def test_customer_frontier_quote_is_required_and_shared_between_districts(self):

@@ -11,9 +11,10 @@
 -- nonpositive proposals defer, while existing foundations/repairs stay native.
 -- Optional ownership scopes let CE acknowledge an already-fulfilled purchase
 -- prerequisite for a native Quarter plan. They never buy land or force a bid.
--- Optional typed declines withhold proven no-Base district-site pairs from a
--- fresh native comparison. Each turn's live potential replaces the scopes;
--- CE restores score bytes after selection and never cancels retained plans.
+-- Optional typed declines withhold no-Base Quarter sites and, in the paired
+-- planner, already-fulfilled provider types when a ready alternate has a live
+-- bid. Each publication replaces the scopes. CE restores the cache after the
+-- native site comparison and preserves standing districts and repairs.
 include('CSC_AdjacencyCore')
 include('CSC_TradeRouteCore')
 include('CSC_TradeRouteFacts')
@@ -421,6 +422,13 @@ local function refresh(turn)
             end
         end
         if economy then
+            -- Budget two full city rings' worth of cells, using the same optional
+            -- admission capability as Quarter deferral. The budget per seat
+            -- bounds the extra matrix and diagnostic work in a mature empire.
+            if declineLimit>0 and CSC_AI_EconomyAdapters.ProspectiveConnectionsEnabled
+                and CSC_AI_EconomyAdapters.FulfilledProviderDeclinesEnabled then
+                economy.providerDeclineLimit=math.min(72,declineLimit)
+            end
             local ok,replacement,counts=pcall(CSC_AI_EconomyAdapters.QuarterBids,economy,placement,protectedPlots,playerEntries,
                 previousOffers and previousOffers.economy or{})
             if ok then
@@ -515,6 +523,18 @@ local function refresh(turn)
         if entry.declineNoBase then
             if #declines < declineLimit then declines[#declines+1]=entry
             else omittedDeclines=omittedDeclines+1 end
+        end
+    end
+    -- Use only alternate provider bids that survived trimming. Quarter
+    -- deferrals keep their existing priority. Each exhausted city/type fits
+    -- as a whole or waits for the next publication.
+    for _,entry in ipairs(entries) do
+        for _,scope in ipairs(entry.providerDeclines or {}) do
+            if #scope<=declineLimit-#declines then
+                for _,target in ipairs(scope) do declines[#declines+1]=target end
+                print(string.format('CSC_AI_PROVIDER_DECLINE_PROPOSED turn=%d version=%d player=%d city=%d district=%d alternative=%d alternativePlot=%d sites=%d',
+                    turn,version+1,entry.player,entry.city,scope[1].district,entry.district,entry.plot,#scope))
+            else omittedDeclines=omittedDeclines+#scope end
         end
     end
     local width, height = Map.GetGridSize()

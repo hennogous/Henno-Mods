@@ -11,6 +11,32 @@ AI=Path(__file__).resolve().parents[3]/'Civ Supply Chains/Lua_UI/AI'
 
 
 class CustomerEconomicOffers(unittest.TestCase):
+    def test_provider_scope_requires_positive_owned_offer_and_viable_supply(self):
+        self.vm().execute('''
+print=function()end;local E=CSC_AI_EconomyAdapters
+local profile={key='BAKERS'}
+local site={horizon=10,suppliers={{kind='base',plot=99,ready=2}}}
+local chain={profile=profile,economy=site}
+for _,candidate in ipairs(groups[1].candidates)do candidate.chains={chain} end
+snapshot.IsGoodsProvider=function(p,d)return p==profile and d==6 end
+snapshot.providerDeclineLimit=72
+E.ProspectiveConnectionsEnabled=true
+local function offers()
+ local result={}
+ for _,offer in ipairs(E.CustomerEconomicOffers(snapshot,{}))do result[offer.plot]=offer end
+ return result
+end
+local rows=offers()
+assert(rows[20].readyProvider==profile and not rows[21].readyProvider)
+rows=E.MergeCustomerOffers({{player=1,city=7,district=6,plot=20,delta=20}},{rows[20]})
+assert(rows[1].readyProvider==profile and rows[1].delta==4020)
+site.suppliers[1].plot=20;assert(not offers()[20].readyProvider)
+site.suppliers[1].plot=99;site.suppliers[1].ready=10
+assert(not offers()[20].readyProvider)
+site.suppliers[1].ready=2;snapshot.providerDeclineLimit=nil
+assert(not offers()[20].readyProvider)
+''')
+
     def test_legal_but_no_longer_linked_incumbent_loses_priority(self):
         self.vm().execute('''
 print=function()end;local E=CSC_AI_EconomyAdapters

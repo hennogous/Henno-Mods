@@ -85,7 +85,12 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             natural_sacristan=None, expected_preparation=None, replay_ce=None, connection_prototype=False,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
             connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None,
-            recover_preferences_from=None, land_targets=(), timing_query=None):
+            recover_preferences_from=None, land_targets=(), timing_query=None,
+            provider_decline_switch=False):
+    if provider_decline_switch:
+        require(paired_layout_csc and paired_layout_switch_turn == start and fixture is None
+                and 0 < end-start <= 30 and connection_scout,
+                'The provider experiment switches both copies at the loaded boundary')
     if replay_ce is not None:
         replay_ce=replay_ce.resolve(strict=True)
         require((replay_ce/'DevCE.modinfo').is_file() and
@@ -231,6 +236,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                    land_targets=land_targets,
                    connection_switch_turn=connection_switch_turn,
                    paired_layout_switch_turn=paired_layout_switch_turn,
+                   provider_decline_switch=provider_decline_switch,
                    paired_layout_csc=str(paired_layout_csc) if paired_layout_csc else None,
                    connection_timing_player=connection_timing_player,
                    timing_query_sha256=sha(timing_query) if timing_query is not None else None,
@@ -368,6 +374,12 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             setting = 'true' if connection_enabled else 'false'
             switch = 'ProspectiveConnectionsEnabled' if paired_layout_switch_turn else 'AnchoredConnectionsEnabled'
             baseline = 'assert(A.AnchoredConnectionsEnabled==true);' if paired_layout_switch_turn else ''
+            if provider_decline_switch:
+                # This pair controls only empty-site admission for fulfilled
+                # providers. Both arms run the same prospective economics.
+                switch = 'FulfilledProviderDeclinesEnabled'
+                baseline += ('assert(A.ProspectiveConnectionsEnabled==false and A.FulfilledProviderDeclinesEnabled==true);'
+                             'A.ProspectiveConnectionsEnabled=true;A.FulfilledProviderDeclinesEnabled=false;')
             code = (f'local A=assert(CSC_AI_EconomyAdapters);{baseline}assert(A.{switch}==false);'
                     f'A.{switch}={setting};print("CSC_CONNECTION_SWITCH="..tostring(A.{switch}))')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-switch')
@@ -435,6 +447,8 @@ if __name__ == '__main__':
                         help='Shared installed CSC snapshot for a matched switch or a control-only connection scout')
     parser.add_argument('--paired-layout-switch-turn', type=int,
                         help='Switch prospective placement at the loaded turn or after a matched inactive pre-roll')
+    parser.add_argument('--provider-decline-switch', action='store_true',
+                        help='Keep prospective placement in both arms and switch only fulfilled provider admission')
     parser.add_argument('--connection-scout', nargs=2, action='append', type=int, default=[], metavar=('PLAYER','CITY'),
                         help='Read the existing native score and choice journal for this AI city')
     parser.add_argument('--land-target', nargs=4, action='append', type=int, default=[],
@@ -506,6 +520,9 @@ if __name__ == '__main__':
                     'A no-switch paired-layout run is a control-only connection scout')
     require(not args.quito_capacity or (paired_layout and args.start == 200 and args.paired_layout_switch_turn == 224),
             'The Quito slot fixture needs the natural turn-200 replay and turn-224 preparation')
+    require(not args.provider_decline_switch or (paired_layout and args.paired_layout_switch_turn == args.start
+            and fixture is None and args.connection_scout and args.end-args.start <= 30),
+            'The provider experiment needs a scoped matched replay at the loaded boundary')
     require(args.connection_switch_turn is None or (args.matched_connection_switch and fixture in (None, 'stirling_capacity')
             and len(arms)==2 and set(arms)=={'control','treatment'} and args.start < args.connection_switch_turn < args.end),
             'An inactive connection switch requires both matched arms and an interior turn without a setup fixture')
@@ -521,6 +538,7 @@ if __name__ == '__main__':
                          connection_switch_turn=args.connection_switch_turn,
                          connection_timing_player=args.connection_timing_player, paired_layout_csc=paired_layout,
                          paired_layout_switch_turn=args.paired_layout_switch_turn,
+                         provider_decline_switch=args.provider_decline_switch,
                          recover_preferences_from=args.recover_preferences_from if arm == arms[0] else None,
                          land_targets=args.land_target)
         if result is not None:
@@ -533,6 +551,7 @@ if __name__ == '__main__':
         require(differences==expected and a['checkpoint']==b['checkpoint']
                 and a['connection_enabled'] is False and b['connection_enabled'] is True
                 and a['packages']['ce']==b['packages']['ce'], 'Matched connection replay package or checkpoint drift')
+        policy = 'providerDecline' if args.provider_decline_switch else ('prospective' if paired_layout else 'anchored')
         write_json(args.output / 'matched-switch.json',dict(verified=True,checkpoint=a['checkpoint'],
                    switch_turn=args.paired_layout_switch_turn or args.connection_switch_turn,
-                   policy='prospective' if paired_layout else 'anchored',changed=sorted(differences)))
+                   policy=policy,changed=sorted(differences)))

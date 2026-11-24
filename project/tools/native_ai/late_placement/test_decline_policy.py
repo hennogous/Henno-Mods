@@ -92,6 +92,35 @@ end
 
 
 class Publication(unittest.TestCase):
+    def test_provider_scopes_are_atomic_and_follow_quarter_deferral(self):
+        for capacity,count in ((3,2),(4,4)):
+            with self.subTest(capacity=capacity):
+                vm,_=publication(capacity=capacity)
+                vm.execute('''
+local E=CSC_AI_EconomyAdapters
+E.Snapshot=function(_,_,ui)
+ return {ui=ui,chains={},QuoteCount=function()return 0 end}
+end
+E.QuarterBids=function()
+ return {
+  {player=3,city=42,district=2,plot=101,delta=-100,weak=true,declineNoBase=true},
+  {player=3,city=42,district=3,plot=101,delta=-100,weak=true,declineNoBase=true},
+  {player=3,city=42,district=2,plot=103,delta=100,providerDeclines={{
+   {player=3,city=42,district=3,plot=102},{player=3,city=42,district=3,plot=103}
+  }}},
+ },{evaluated=3,final=3,unknown=0,streams=0,omissions=0}
+end
+CE_AIDistrictDeclineStage=function(p,c,d,i)
+ declineScopes[#declineScopes+1]={p,c,d,i}
+ return 1
+end
+boundary()
+''')
+                self.assertEqual(vm.eval('#declineScopes'),count)
+                self.assertEqual(vm.eval('declineScopes[1][4]'),101)
+                if count==4:
+                    self.assertEqual(vm.eval('declineScopes[4][4]'),103)
+
     def test_live_scopes_withdraw_and_receipts_precede_replacement(self):
         vm,messages=publication();vm.execute('boundary()')
         self.assertEqual(vm.eval('#declineScopes'),2)

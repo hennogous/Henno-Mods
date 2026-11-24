@@ -1347,9 +1347,12 @@ function F.New(player,placement,ui,context)
         -- Capacity and research are separate live admission checks.
         local cityID=city:GetID()
         if customerTypes[cityID]==nil then
-            customerTypes[cityID]=CSC_AI_FutureDistrictTypes and CSC_AI_FutureDistrictTypes(pid,city,true)or false
+            local allowed,fulfilled
+            if CSC_AI_FutureDistrictTypes then allowed,fulfilled=CSC_AI_FutureDistrictTypes(pid,city,true) end
+            customerTypes[cityID]={allowed=allowed,fulfilled=fulfilled}
         end
-        return customerTypes[cityID]or nil
+        local types=customerTypes[cityID]
+        return types.allowed,types.fulfilled
     end
     local function customerYield(city,plot,definition)
         local key=city:GetID()..':'..plot:GetIndex()..':'..definition.Index
@@ -1465,6 +1468,46 @@ function F.New(player,placement,ui,context)
                 or CSC_Adjacency.HasTag(tag,F.DistrictFamily(district))) or false
         end
         return providerRoles[key]
+    end
+    function snapshot.FulfilledProviderScopes(offer)
+        local record=snapshot.cities[offer.city]
+        local alternative=Map.GetPlotByIndex(offer.plot)
+        local assigned=alternative and ownedCustomerCity(alternative)
+        if not (record and assigned and assigned:GetID()==offer.city and alternative:GetDistrictType()==-1)then
+            return {}
+        end
+        local allowed,fulfilled=snapshot.FutureDistrictTypes(record.object)
+        if not (allowed and allowed[offer.district] and fulfilled)then return {} end
+        local types={}
+        for district in pairs(fulfilled)do
+            if district~=offer.district and snapshot.IsGoodsProvider(offer.readyProvider,district)then
+                types[#types+1]=district
+            end
+        end
+        if #types==0 then return {} end
+        table.sort(types)
+        local center=Map.GetPlot(record.object:GetX(),record.object:GetY())
+        local emptyOwned={}
+        for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
+            local city=ownedCustomerCity(plot)
+            if city and city:GetID()==offer.city and plot:GetDistrictType()==-1 then
+                emptyOwned[#emptyOwned+1]=plot:GetIndex()
+            end
+        end
+        table.sort(emptyOwned)
+        local scopes={}
+        if #emptyOwned>0 then for _,district in ipairs(types)do
+            -- This exact type cannot create another stock construction
+            -- request. Publish an entire owned city/type together. The
+            -- native selector checks each live matrix cell and preserves
+            -- foundations created after this snapshot, including repairs.
+            local scope={}
+            for _,plot in ipairs(emptyOwned)do
+                scope[#scope+1]={player=pid,city=offer.city,district=district,plot=plot}
+            end
+            scopes[#scopes+1]=scope
+        end end
+        return scopes
     end
     local connectionRules={}
     local ordinaryYields={YIELD_FOOD=true,YIELD_PRODUCTION=true,YIELD_GOLD=true,

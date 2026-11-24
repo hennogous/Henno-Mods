@@ -59,7 +59,8 @@ class FutureTypes(unittest.TestCase):
 
     def allowed(self,change='',ordinary_tree=False):
         self.lua.execute(change)
-        return self.lua.globals().CSC_AI_FutureDistrictTypes(2,self.lua.globals().city,ordinary_tree)
+        read=self.lua.eval('function(ordinary) return (CSC_AI_FutureDistrictTypes(2,city,ordinary)) end')
+        return read(ordinary_tree)
 
     def test_foreign_uniques_are_excluded(self):
         result=self.allowed()
@@ -122,6 +123,9 @@ class FutureTypes(unittest.TestCase):
         self.assertTrue(raw[21] and raw[22])
         self.assertFalse(tree[21])
         self.assertTrue(tree[22])
+        _,fulfilled=self.lua.globals().CSC_AI_FutureDistrictTypes(2,self.lua.globals().city,True)
+        self.assertTrue(fulfilled[21])
+        self.assertFalse(fulfilled[22])
 
     def test_repeatable_type_needs_a_completed_copy_and_an_intact_copy(self):
         tree=self.allowed('placed={21};unfinished={true}',ordinary_tree=True)

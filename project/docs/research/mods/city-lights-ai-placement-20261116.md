@@ -1305,6 +1305,21 @@ worthwhile link, and verify the native winner, request and foundation.
 Te Hokianga-nui-a-Kupe has both A and B already. It can check that the
 planner abstains when no alternate provider is ready.
 
+The experimental planner uses the existing typed-decline capability
+for that comparison. A mapped provider must already have a fresh
+positive economic offer for a native-admitted owned site beside a
+Quarter with credible Base supply. Once that offer is retained in the
+packet, the planner can withhold the already-fulfilled exact provider
+type on the receiving city's empty owned sites. It keeps each
+city/type scope whole when space is tight and gives ordinary Quarter
+deferrals priority. CE restores the compared values immediately
+after selection. Standing districts, repairs, unowned tiles and
+competing district types continue through their ordinary choices.
+Both arms of the provider replay run the prospective planner with
+only this additional admission check switched. The offline fixtures
+cover the offer gate, owning city, occupied tiles, scope budget and
+packet order. Live follow-through and timing are next.
+
 Current-build static evidence for district admission and BuildFromCity
 is retained as REA record
 `ev_cc0b4b68a69f0354c95f43c1d4b26f5050bcd21c78f5c5e03661609f6fcbf996`.

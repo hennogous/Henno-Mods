@@ -24,6 +24,9 @@ E.AnchoredConnectionAuditEnabled=false
 -- The matched layout experiment switches this without changing the package.
 -- Once a footprint exists, the anchored calculation owns its link again.
 E.ProspectiveConnectionsEnabled=false
+-- The matched provider replay isolates this eligibility check while keeping
+-- the rest of the prospective planner active in both arms.
+E.FulfilledProviderDeclinesEnabled=true
 -- Match the ceiling used for Stage 2 exchange orders in the shared building
 -- packet. These are Q8 utility points in the native production comparison.
 local LATER_BUILDING_CAP_Q8=64*256
@@ -1170,6 +1173,19 @@ local CUSTOMER_RESIDUAL_LIMIT_Q8=256*256
 -- the queue; eviction restarts a plot cursor without removing native options.
 local customerSchedules={}
 local CUSTOMER_SCHEDULE_LIMIT=128
+local function connectionHasSupply(site,stage,consumedPlot)
+    local base,specialty=false,false
+    for _,supplier in ipairs(site.suppliers or{})do
+        -- The local venue forecast keeps its suppliers. A footprint that
+        -- covers one of them needs a different forecast.
+        if consumedPlot~=nil and supplier.plot==consumedPlot then return false end
+        if (supplier.ready or math.huge)<site.horizon then
+            base=base or supplier.kind=='base';specialty=specialty or supplier.kind=='specialty'
+        end
+    end
+    return base and(stage<4 or specialty)
+end
+
 function E.CustomerEconomicOffers(snapshot,protectedPlots)
     -- Native building forecasts are common to a city/type. Compare two full
     -- CSC worlds for that SAME investment, retaining signed site differences
@@ -1200,6 +1216,16 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
             end
         end end
     end
+    local function readyProvider(group,candidate,delta)
+        if not (E.ProspectiveConnectionsEnabled and snapshot.providerDeclineLimit and snapshot.IsGoodsProvider
+            and delta>0 and (candidate.links or 0)>0)then return nil end
+        -- Source groups contain owned native BUILD targets. Attach evidence
+        -- only to a real positive offer beside an existing viable Quarter.
+        for _,chain in ipairs(candidate.chains or{})do
+            if chain.economy and snapshot.IsGoodsProvider(chain.profile,group.district)
+                and connectionHasSupply(chain.economy,2,candidate.plot)then return chain.profile end
+        end
+    end
     local function referenceCredit(group,ready)
         local ref=group.reference
         local value=anchorValues[siteKey(group.city,group.district,ref.plot)]
@@ -1213,7 +1239,8 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
         -- Native private yield remains in the base score and is absent here.
         local credit=math.min(E.ConnectionCompletionCapQ8,value)
         offers[#offers+1]={player=snapshot.id,city=group.city,district=group.district,plot=ref.plot,
-            delta=credit,customer=true,customerEconomic=true,referencePlot=ref.plot}
+            delta=credit,customer=true,customerEconomic=true,referencePlot=ref.plot,
+            readyProvider=readyProvider(group,ref,credit)}
         print(string.format('CSC_AI_CONNECTION_COMPLETION turn=%d player=%d city=%d district=%d plot=%d order=quarterFirst creditQ8=%d',
             Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,ref.plot,credit))
         return credit
@@ -1325,7 +1352,8 @@ function E.CustomerEconomicOffers(snapshot,protectedPlots)
                 if delta~=0 then
                     offers[#offers+1]={player=snapshot.id,city=group.city,district=group.district,
                         plot=candidate.plot,delta=delta,customer=true,customerEconomic=true,
-                        customerEconomicQ8=delta,referencePlot=group.reference.plot,connectionPressureQ8=pressureApplied}
+                        customerEconomicQ8=delta,referencePlot=group.reference.plot,connectionPressureQ8=pressureApplied,
+                        readyProvider=readyProvider(group,candidate,delta)}
                     print(string.format('CSC_AI_CUSTOMER_ECONOMIC_BID turn=%d player=%d city=%d district=%d plot=%d reference=%d rawQ8=%d deltaQ8=%d netQ8=%d afterQ8=%d referenceQ8=%d adjacency=%.3f links=%d',
                         Game.GetCurrentGameTurn(),snapshot.id,group.city,group.district,candidate.plot,
                         group.reference.plot,raw,delta,net,value.valueQ8,reference.valueQ8,candidate.adjacency,candidate.links))
@@ -1494,6 +1522,7 @@ function E.MergeCustomerOffers(entries,offers)
                 if offer.customerEconomic then
                     previous.customerEconomic=true;previous.customerEconomicQ8=offer.delta;previous.referencePlot=offer.referencePlot
                     previous.connectionPressureQ8=offer.connectionPressureQ8
+                    previous.readyProvider=offer.readyProvider
                 end
             end
         else
@@ -1503,6 +1532,34 @@ function E.MergeCustomerOffers(entries,offers)
     end
     for i=#result,1,-1 do if result[i].finalQ8==nil and result[i].delta==0 then table.remove(result,i)end end
     return result
+end
+
+local function attachProviderDeclines(snapshot,entries)
+    local budget=snapshot.providerDeclineLimit
+    if not (E.ProspectiveConnectionsEnabled and budget and budget>0 and snapshot.FulfilledProviderScopes)then return end
+    local candidates={}
+    for _,entry in ipairs(entries)do
+        if entry.readyProvider and not entry.customerPurchaseGold and (entry.delta or 0)>(entry.earlyCostQ8 or 0) then
+            candidates[#candidates+1]=entry
+        end
+    end
+    table.sort(candidates,function(a,b)
+        if a.delta~=b.delta then return a.delta>b.delta end
+        if a.city~=b.city then return a.city<b.city end
+        if a.district~=b.district then return a.district<b.district end
+        return a.plot<b.plot
+    end)
+    local cities={}
+    for _,entry in ipairs(candidates)do if not cities[entry.city] then
+        local accepted={}
+        for _,scope in ipairs(snapshot.FulfilledProviderScopes(entry))do
+            -- Keep the whole city/type scope. A partial mask just moves a
+            -- fulfilled type to another empty tile in the same comparison.
+            if #scope<=budget then accepted[#accepted+1]=scope;budget=budget-#scope end
+        end
+        if #accepted>0 then entry.providerDeclines=accepted;cities[entry.city]=true end
+        if budget==0 then break end
+    end end
 end
 
 function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
@@ -2056,18 +2113,6 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         g.plots[option.plot]=plot
         plot.options[#plot.options+1]=option
     end
-    local function supplied(site,stage,consumedPlot)
-        local base,specialty=false,false
-        for _,supplier in ipairs(site.suppliers or{})do
-            -- The local venue forecast keeps current supply. Reject a new
-            -- customer footprint that would cover one of those suppliers.
-            if consumedPlot~=nil and supplier.plot==consumedPlot then return false end
-            if (supplier.ready or math.huge)<site.horizon then
-                base=base or supplier.kind=='base';specialty=specialty or supplier.kind=='specialty'
-            end
-        end
-        return base and(stage<4 or specialty)
-    end
     local function free(index,ownIntent)
         local reserved=snapshot.intentFootprints and snapshot.intentFootprints[index]
         return not protectedPlots[index]and (not reserved or reserved==ownIntent)
@@ -2083,15 +2128,15 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 -- with fresh geometry in the ordinary customer-site auction.
                 if E.ProspectiveConnectionsEnabled and snapshot.IsGoodsProvider
                     and snapshot.IsGoodsProvider(chain.profile,group.district)
-                    and supplied(chain.economy,2,candidate.plot) then
+                    and connectionHasSupply(chain.economy,2,candidate.plot) then
                     add('quarterFirst',chain.plot:GetIndex(),0,chain.profile.key,
                         {plot=candidate.plot,city=group.city,district=group.district,rank=candidate.adjacency,
                          site=chain.economy,chain=chain,projected=true,venue={building=''},waiting=candidate.waiting,
                          purchaseGold=candidate.purchaseGold})
                 end
                 for _,venue in ipairs(snapshot.ProjectedCustomers(chain.profile,group.city,group.district,candidate.plot))do
-                    local transactionReady=not venue.excluded and supplied(chain.economy,venue.stage,candidate.plot)
-                    local canPriceYields=snapshot.ProjectedConnectionYields and supplied(chain.economy,2,candidate.plot)
+                    local transactionReady=not venue.excluded and connectionHasSupply(chain.economy,venue.stage,candidate.plot)
+                    local canPriceYields=snapshot.ProjectedConnectionYields and connectionHasSupply(chain.economy,2,candidate.plot)
                     if venue.transaction and (transactionReady or canPriceYields)then
                         add('quarterFirst',chain.plot:GetIndex(),venue.stage,chain.profile.key,
                             {plot=candidate.plot,city=group.city,district=group.district,rank=candidate.adjacency,
@@ -2127,8 +2172,8 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             end
             for _,venue in ipairs(venues)do
                 local host=snapshot.districts[venue.plot]
-                local transactionReady=venue.transaction and not venue.excluded and supplied(site,venue.stage)
-                local canPriceYields=snapshot.ExistingConnectionYields and supplied(site,2)
+                local transactionReady=venue.transaction and not venue.excluded and connectionHasSupply(site,venue.stage)
+                local canPriceYields=snapshot.ExistingConnectionYields and connectionHasSupply(site,2)
                 local wonder=venue.districtType=='DISTRICT_WONDER'
                 if host and (host.working or not host.complete and venue.anchorReady) and (venue.transaction or venue.provider)
                     and venue.districtType~='DISTRICT_CITY_CENTER'
@@ -2971,6 +3016,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         retainPendingLayouts(snapshot,protectedPlots,evaluations)
         snapshot.planState.nextLayouts=snapshot.nextLayouts
     end
+    attachProviderDeclines(snapshot,result)
     return result,stats
 end
 

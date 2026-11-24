@@ -11,7 +11,8 @@ city={GetBuildings=function()return {HasBuilding=function()return MILLS end}end}
 player={IsHuman=function()return false end,GetCities=function()return {Members=function()local once=false;return function()if not once then once=true;return 1,city end end end}end,GetCulture=function()return {IsPolicyActive=function()return POLICY end}end}
 Players={[1]=player}
 PlayerConfigurations={[1]={GetCivilizationTypeName=function()return 'CIV_TEST' end,GetLeaderTypeName=function()return 'LEADER_TEST' end}}
-for _,name in ipairs({'Leaders','CivilizationTraits','LeaderTraits','DistrictReplaces','ExcludedDistricts'})do GameInfo[name]=info({},'Type')end
+for _,name in ipairs({'Leaders','CivilizationTraits','LeaderTraits','DistrictReplaces','ExcludedDistricts',
+ 'MutuallyExclusiveDistricts'})do GameInfo[name]=info({},'Type')end
 plot={river=0,hills=0,IsRiver=function(s)return s.river>0 end,GetRiverCrossingCount=function(s)return s.river end}
 function rule(id,y,amount,owner,key)return {ID=id,YieldType=y,YieldChange=amount,ModifierOwner=owner or'DistrictModifiers',WhoIsTheOwner=key,ProvideType='SelfBonus',AdjacencyType='FROM_RIVER_CROSSING'}end
 local base=rule('materials','YIELD_PRODUCTION',1);local sales=rule('customers','YIELD_GOLD',1)
