@@ -224,7 +224,8 @@ def prepare(source, output, at, through, dependencies, *, read_only=False, mater
             development_package_files(install)==expected_install)
         if paired_layout_csc is not None and role == 'csc':
             permitted = {'Lua_UI/AI/CSC_AI_BakersGameplay.lua', 'Lua_UI/AI/CSC_AI_EconomyAdapters.lua',
-                         'Lua_UI/AI/CSC_AI_EconomyFacts.lua', 'Lua_UI/AI/CSC_AI_EconomyModel.lua'}
+                         'Lua_UI/AI/CSC_AI_EconomyFacts.lua', 'Lua_UI/AI/CSC_AI_EconomyModel.lua',
+                         'Lua_UI/AI/CSC_AI_PlanContinuity.lua'}
             new_pin = development_package_files(paired_layout_csc)
             differences = {Path(name).as_posix() for name in originals[role] if originals[role][name] != new_pin.get(name)}
             require(live_main and reused and not paired_layout_csc.is_relative_to(install.parent)

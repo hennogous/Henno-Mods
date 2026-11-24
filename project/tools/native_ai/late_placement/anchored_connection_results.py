@@ -19,7 +19,7 @@ WONDER_OPPORTUNITY = re.compile(
     r'quarter=([A-Z_]+) anchor=(\d+) building=(BUILDING_[A-Z0-9_]+) city=\d+ plot=(\d+)')
 STRONG_LAYOUT = re.compile(
     r'CSC_AI_STRONG_QUARTER_LAYOUT turn=(\d+) player=(\d+) city=(\d+) district=(\d+) plot=(\d+) '
-    r'customerCity=(\d+) customerDistrict=(-?\d+) customerPlot=(\d+) stage=([234]) '
+    r'customerCity=(\d+) customerDistrict=(-?\d+) customerPlot=(\d+) stage=([0234]) '
     r'existing=(true|false) extraBase=(true|false) specialty=(true|false)')
 PROSPECTIVE_SUBSTITUTE = re.compile(r'CSC_AI_PROSPECTIVE_SUBSTITUTE ([^\r\n]+)')
 QUARTER_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\tDISTRICT_CSC_([A-Z_]+)_QUARTER\t')
@@ -177,11 +177,11 @@ def prospective_layouts(log, observations, players, through):
     by_turn = defaultdict(set)
     for match in STRONG_LAYOUT.finditer(log):
         turn, player, city, district, plot, buyer, customer, target, stage = map(int, match.groups()[:9])
-        existing, _, specialty = match.groups()[9:]
+        existing, extra_base, specialty = match.groups()[9:]
         if player not in players or turn > through or existing == 'true':
             continue
         key = (player, city, district, plot, buyer, customer, target, stage)
-        supply = 'BASE_AND_SPECIALTY' if specialty == 'true' else 'TWO_BASE'
+        supply = 'BASE_AND_SPECIALTY' if specialty == 'true' else 'TWO_BASE' if extra_base == 'true' else 'ONE_BASE'
         layouts.setdefault(key, (turn, supply))
         by_turn[turn, player, city, district, plot].add(key)
 
@@ -207,10 +207,11 @@ def prospective_layouts(log, observations, players, through):
             cell = tuple(row[k] for k in ('player', 'city', 'district', 'plot'))
             turn = row.get('foundationTurn', row['turn'])
             first_foundation[cell] = min(turn, first_foundation.get(cell, turn))
-        elif (row['kind'] == 'RELATION' and row.get('role') == 'customer' and row.get('present')
+        elif (row['kind'] == 'RELATION' and row.get('role') in ('customer', 'goodsProvider') and row.get('present')
               and row.get('quarterComplete') and row.get('neighbourComplete')):
             relation = tuple(row.get(k) for k in ('player', 'city', 'quarter', 'quarterPlot', 'neighbourCity',
-                                                   'neighbourDistrict', 'neighbourPlot', 'stage'))
+                                                   'neighbourDistrict', 'neighbourPlot'))
+            relation += (0 if row['role'] == 'goodsProvider' else row.get('stage'),)
             for key in links.get(relation, ()):
                 other_foundation = row.get('neighbourFoundationTurn')
                 quarter_foundation = row.get('quarterFoundationTurn')
@@ -370,6 +371,9 @@ def prospective_footprint_counts(layouts):
             if built[0] != built[1]:
                 order = 'quarter_first' if built[0] < built[1] else 'customer_first'
             count['completed_' + order] += 1
+            count['turns_between_foundations_' + order] += abs(built[0] - built[1])
+            count['turns_from_first_foundation_to_both_complete_' + order] += (
+                max(quarter['matched_completion'], customer['matched_completion']) - min(built))
     for family, count in counts.items():
         count['distinct_footprints_occupied_by_other'] = len(occupied[family])
         count['distinct_footprints_lost_after_scored_contest'] = len(scored_losses[family])
@@ -401,6 +405,7 @@ def connection_counts(log, original_ai, through, *, observations=None):
         observations = parse(log, 'CSC_PLANNING_')
     definitions = {row['district']: row['districtType'] for row in observations if row['kind']=='MAPPING'}
     completed = {}
+    providers = {}
     realized = set()
     realized_by_district = set()
     foundations = defaultdict(list)
@@ -411,7 +416,7 @@ def connection_counts(log, original_ai, through, *, observations=None):
             foundations[row['plot']].append((row['turn'], row['player'], row.get('city'), row['district']))
         if row.get('player') not in original_ai:
             continue
-        if row['kind'] != 'RELATION' or row.get('role') != 'customer' or not row.get('present'):
+        if row['kind'] != 'RELATION' or row.get('role') not in ('customer','goodsProvider') or not row.get('present'):
             continue
         if row.get('neighbourDistrict') == 0 or definitions.get(row.get('neighbourDistrict')) == 'DISTRICT_WONDER':
             continue
@@ -421,6 +426,10 @@ def connection_counts(log, original_ai, through, *, observations=None):
             row.get('foundationOrder'), 'unknown')
         quarter, qplot, cplot = (row[key] for key in ('quarter', 'quarterPlot', 'neighbourPlot'))
         key = (quarter, qplot, cplot, row['neighbourDistrict'])
+        if row['role'] == 'goodsProvider':
+            if key not in providers or providers[key] == 'unknown':
+                providers[key] = 'providerFirst' if order == 'customerFirst' else order
+            continue
         previous = completed.get(key)
         if previous is None or (previous == 'unknown' and order != 'unknown'):
             completed[key] = order
@@ -465,7 +474,8 @@ def connection_counts(log, original_ai, through, *, observations=None):
                   completed_district_opportunities=by_order_and_quarter(realized_by_district),
                   lost_to_other_foundations=by_order_and_quarter(lost),
                   lost_to_foreign_foundations=by_order_and_quarter(lost_to_foreign_build),
-                  completed_physical_pairs=dict(Counter(f'{order}:{key[0]}' for key, order in completed.items())))
+                  completed_physical_pairs=dict(Counter(f'{order}:{key[0]}' for key, order in completed.items())),
+                  completed_provider_pairs=dict(Counter(f'{order}:{key[0]}' for key, order in providers.items())))
     return counts
 
 
@@ -499,6 +509,59 @@ def supplier_history(observations, players, through):
     return dict(ever_working=counts(ever_working), working_at_endpoint=counts(endpoint),
                 working_without_observed_loss=counts(endpoint - interrupted),
                 working_again_after_loss=counts(endpoint & interrupted))
+
+
+def customer_land_purchases(log, observations, players, through, tree_rows):
+    """Join a priced offer to the buyer, observed Gold change and later use."""
+    offers = defaultdict(list)
+    for match in re.finditer(r'CSC_AI_CUSTOMER_LAND_OFFER turn=(\d+) player=(\d+) city=(\d+) '
+                             r'district=(\d+) plot=(\d+) invoice=(\d+)', log):
+        turn, player, city, district, plot, price = map(int, match.groups())
+        if player in players and turn <= through:
+            offers[player, city, plot].append((match.start(), turn, district, price))
+    treasury = {}
+    for turn, player, ordinal, before, after in re.findall(
+            r'CSC_CUSTOMER_TREASURY\t(\d+)\t(\d+)\t(\d+)\t([-\d.]+)\t([-\d.]+)', log):
+        treasury[int(player), int(ordinal)] = int(turn), float(before) - float(after)
+    trees = defaultdict(set)
+    for fields in tree_rows:
+        if len(fields) < 7 or not fields[0].strip().isdigit() or not fields[1].strip().isdigit():
+            continue
+        if fields[3].strip() != 'Build City District' or fields[5].strip() != 'Purchase Plot':
+            continue
+        request = re.search(r'Purchase (\d+) (\d+): Accepted', fields[6])
+        if request:
+            trees[int(fields[1]), *map(int, request.groups())].add(int(fields[0]))
+    founded = defaultdict(list)
+    for row in observations:
+        if row['kind'] == 'FOUNDATION' and row.get('foundationDateKnown'):
+            founded[row['player'], row['city'], row['plot']].append(
+                (row.get('foundationTurn', row['turn']), row['district']))
+    purchases = []
+    purchase_events = list(re.finditer(r'CSC_CUSTOMER_PLOT_PURCHASE\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)', log))
+    purchase_ordinals = {(int(m[2]),int(m[3])) for m in purchase_events}
+    for match in purchase_events:
+        turn, player, ordinal, city, plot, x, y = map(int, match.groups())
+        key = player, city, plot
+        if turn > through or key not in offers:
+            continue
+        # The latest native packet can predate execution of a retained request.
+        # Report quote age and every offered type if several wanted the tile.
+        prior = [o for o in offers[key] if o[0] < match.start() and o[1] <= turn + 1]
+        if not prior:
+            continue
+        last_turn = max(o[1] for o in prior)
+        quotes = sorted({(o[2], o[3]) for o in prior if o[1] == last_turn})
+        debits = [treasury[player, i][1] for i in (ordinal-1, ordinal+1)
+                  if (player,i) in treasury and treasury[player,i][0] == turn
+                  and (player,2*i-ordinal) not in purchase_ordinals]
+        requests = [t for t in trees[player,x,y] if last_turn-1 <= t <= turn+1]
+        actual = min(((t,d) for t,d in founded[key] if turn-1 <= t <= through), default=None)
+        purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
+                              quotes=quotes, district_request_turn=max(requests,default=None),
+                              matching_debit=sum(amount in {cost for _,cost in quotes} for amount in debits)==1,
+                              foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
+    return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, offered_tiles=len(offers), purchases=purchases)
 
 
 def wonder_connections(log, observations, players, through):
@@ -543,6 +606,9 @@ def run_result(root):
         raise ValueError(f'Incomplete qualification arm {root}')
     players = set(read('source.json')['original_ai'])
     log = (root / 'Lua.log').read_text(encoding='utf-8-sig')
+    for fault in ('CSC_AI_ECONOMY_FAILED', 'CSC_AI_PLAN_MEMORY_UNAVAILABLE'):
+        if fault in log:
+            raise ValueError(f'{fault} in {root}')
     observations = parse(log, 'CSC_PLANNING_')
     counts = connection_counts(log, players, through, observations=observations)
     timing = summarise(log, last=through)
@@ -580,8 +646,14 @@ def run_result(root):
             failed_requests = failed_district_requests(csv.reader(builds, skipinitialspace=True),
                 csv.reader(queue, skipinitialspace=True), players, types, through)
     competition = bid_competition(log, observations, players, through)
+    trees = root / 'AI_Behavior_Trees.csv'
+    if trees.is_file():
+        with trees.open(encoding='utf-8-sig',newline='') as rows:
+            land = customer_land_purchases(log, observations, players, through, csv.reader(rows,skipinitialspace=True))
+    else:
+        land = customer_land_purchases(log, observations, players, through, ())
     footprints = prospective_footprints(log, observations, players, through, competition)
-    return dict(counts=counts, timing=timing['publisher_wall'],
+    return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
                 supplier_history=supplier_history(observations, players, through),
@@ -645,6 +717,12 @@ def paired_full_game_result(control, treatment):
         result = run_result(root)
         report[arm] = dict(load_game=saves[arm], strong_layouts=result['prospective_pair_counts'],
                            completed_pairs=result['counts']['completed_physical_pairs'],
+                           provider_pairs=result['counts']['completed_provider_pairs'],
+                           customer_land=result['customer_land'],
+                           eligible_missing_partner=result['counts']['district_opportunities'],
+                           completed_missing_partner=result['counts']['completed_district_opportunities'],
+                           endpoint_suppliers=result['endpoint_suppliers'], supplier_history=result['supplier_history'],
+                           failed_district_requests=result['failed_district_requests'],
                            surveyed_services=operation['stock' if arm == 'control' else 'combined'],
                            guidance_wall=result['timing'], native_managed_wall=result['native_managed_timing'],
                            contested_layouts=[pair for pair in result['prospective_footprints'] if any(

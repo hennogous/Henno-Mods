@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from anchored_connection_results import (bid_competition, connection_counts, failed_district_requests,
+from anchored_connection_results import (bid_competition, connection_counts, customer_land_purchases, failed_district_requests,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
 from paired_layout_replay_results import trace_arm
@@ -22,6 +22,19 @@ def relation(player, quarter, qplot, customer, turn, first, **state):
 
 
 class ConnectionCounts(unittest.TestCase):
+    def test_purchased_customer_tile_joins_the_district_request_and_debit(self):
+        log = '\n'.join(['CSC_CUSTOMER_LAND_WATCH_INSTALLED',
+            'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',
+            'CSC_CUSTOMER_TREASURY\t8\t1\t7\t100.50\t60.50',
+            'CSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t8\t5\t23\t3\t2',
+            record('FOUNDATION', turn=10, player=1, city=5, district=4, plot=23, foundationDateKnown='true')])
+        rows = [['8','1','City TEST','Build City District','RUNNING','Purchase Plot','Purchase 3 2: Accepted on #12']]
+        history = parse(log,'CSC_PLANNING_')
+        purchase, = customer_land_purchases(log,history,{1},15,rows)['purchases']
+        self.assertEqual((purchase['district_request_turn'],purchase['matching_debit'],purchase['foundation']), (8,True,(10,4)))
+        ambiguous = log + '\nCSC_CUSTOMER_PLOT_PURCHASE\t8\t1\t6\t7\t25\t5\t2'
+        self.assertFalse(customer_land_purchases(ambiguous,history,{1},15,rows)['purchases'][0]['matching_debit'])
+
     def test_short_replay_does_not_count_a_different_customer_on_the_same_tile(self):
         with TemporaryDirectory() as directory:
             folder = Path(directory)
@@ -173,6 +186,21 @@ class ConnectionCounts(unittest.TestCase):
         counts = prospective_footprint_counts(rows)['DISTRICT_CSC_TAILORS_QUARTER']
         self.assertEqual((counts['modeled_pairs'], counts['pairs_with_quarter_offer'],
                           counts['pairs_completed'], counts['completed_customer_first']), (1, 1, 1, 1))
+        self.assertEqual(counts['turns_between_foundations_customer_first'], 1)
+        self.assertEqual(counts['turns_from_first_foundation_to_both_complete_customer_first'], 3)
+
+    def test_single_base_provider_pair_keeps_its_role_and_build_order(self):
+        log = '\n'.join([
+            'CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',
+            'CSC_AI_STRONG_QUARTER_LAYOUT turn=3 player=1 city=7 district=43 plot=10 '
+            'customerCity=8 customerDistrict=6 customerPlot=20 stage=0 existing=false extraBase=false specialty=false',
+            relation(1,'TAILORS',10,20,12,'neighbourFirst',role='goodsProvider',city=7,neighbourCity=8),
+        ])
+        observations = parse(log, 'CSC_PLANNING_')
+        self.assertEqual(prospective_layouts(log, observations, {1}, 25)['TAILORS:ONE_BASE']['completed_pair'], 1)
+        counts = connection_counts(log, {1}, 25, observations=observations)
+        self.assertEqual(counts['completed_provider_pairs'], {'providerFirst:TAILORS': 1})
+        self.assertEqual(counts['completed_physical_pairs'], {})
 
     def test_folds_stage_duplicates_and_joins_both_orders(self):
         log = '\n'.join([

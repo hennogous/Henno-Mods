@@ -76,7 +76,8 @@ def candidate_package(original, csc_source, candidate, policy_files=POLICY_FILES
 
 
 def require_clean_replay_log(log):
-    for marker in ('CSC_AI_BAKERS_DISTRICTS_FAILED', 'CSC_MILESTONE_SERVICE_FAULT'):
+    for marker in ('CSC_AI_BAKERS_DISTRICTS_FAILED', 'CSC_MILESTONE_SERVICE_FAULT',
+                   'CSC_AI_ECONOMY_FAILED', 'CSC_AI_PLAN_MEMORY_UNAVAILABLE'):
         require(marker not in log, 'Replay log contains ' + marker)
 
 
@@ -110,7 +111,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     output.mkdir(parents=True)
     controller = make_probe_controller(output, user_root=plan.user_root)
     controller.study_endpoint = end
-    controller.autoplay_interval_seconds = 15 * 60
+    controller.autoplay_interval_seconds = (20 if paired_layout_csc else 15) * 60
     controller.allow_observer_warning_dismissal = True
     controller.allow_observer_first_meet_dismissal = True
     controller.allow_observer_congress_review = True
@@ -276,6 +277,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         service_observation('service-observer', every_turn=True)
         native_status('native-before')
         if connection_scout:
+            raw=controller.cmd(read(HERE/'customer_land_watch.lua'), 'PlotInfo', 'customer-land-history')
+            require('CSC_CUSTOMER_LAND_WATCH_INSTALLED' in raw, 'Land purchase observer did not install')
             # Read the existing CE journal before each publication replaces it.
             # This attaches neither a second native observer nor policy writer.
             raw=controller.cmd(read(HERE/'planning_observer.lua'), 'CSC_AI_BakersGameplay', 'connection-history')

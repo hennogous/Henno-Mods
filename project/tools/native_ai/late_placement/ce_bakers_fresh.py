@@ -842,13 +842,14 @@ Modding.EnableMod(chosen.Handle,true)
             anchor = 'true' if paired_layout_policy == 'on' else default_anchor
             script = (f'local A=assert(CSC_AI_EconomyAdapters);assert(A.AnchoredConnectionsEnabled=={default_anchor});'
                       'assert(Game.GetCurrentGameTurn()==1 and A.ProspectiveConnectionsEnabled==false);'
+                      'A.AnchoredConnectionAuditEnabled=true;'
                       f'A.AnchoredConnectionsEnabled={anchor};A.ProspectiveConnectionsEnabled={setting};'
                       'print("CSC_PAIR_POLICY="..tostring(A.ProspectiveConnectionsEnabled)..'
-                      '",anchored="..tostring(A.AnchoredConnectionsEnabled))')
+                      '",anchored="..tostring(A.AnchoredConnectionsEnabled)..",audit="..tostring(A.AnchoredConnectionAuditEnabled))')
             reply = controller.cmd(script, 'CSC_AI_BakersGameplay', 'paired-layout-policy')
-            require(f'CSC_PAIR_POLICY={setting},anchored={anchor}' in reply, 'Paired layout switch did not acknowledge')
+            require(f'CSC_PAIR_POLICY={setting},anchored={anchor},audit=true' in reply, 'Paired layout switch did not acknowledge')
             write_json(out / 'paired-layout-opening.json', dict(turn=1, opening=opening,
-                       policy=paired_layout_policy, anchored=anchor=='true', acknowledged=True))
+                       policy=paired_layout_policy, anchored=anchor=='true', audit=True, acknowledged=True))
         if args.mill_opening_components:
             # A controlled opening fixture: preserve the Rice and Granary
             # while removing only the Farm. The native probe writes no scores.

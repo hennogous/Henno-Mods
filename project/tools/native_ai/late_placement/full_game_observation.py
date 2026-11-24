@@ -146,6 +146,10 @@ print('CSC_DISTRICT_CATALOGUE_END')
         raw=controller.cmd(ui_code,'PlotInfo','install-passive-ui-district-adjacency')
         require('CSC_DISTRICT_UI_INSTALLED'in raw and 'CSC_DISTRICT_UI_FAULT'not in raw,
                 'UI district observer failed to initialize')
+        land=read(HERE/'customer_land_watch.lua')
+        (out/'customer_land_watch.lua').write_text(land,encoding='utf-8')
+        raw=controller.cmd(land,'PlotInfo','install-customer-land-observer')
+        require('CSC_CUSTOMER_LAND_WATCH_INSTALLED' in raw,'Land purchase observer did not initialize')
     for name in('full_game_census.lua','full_game_preflight.lua','full_game_observation.py',
                 'processing_time_summary.py','storekeeper_runtime.lua'):
         (out/name).write_bytes((HERE/name).read_bytes())
