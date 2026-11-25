@@ -36,8 +36,10 @@ forecast slot opening. In the matched Kristiansand replay the provider
 tile entered the city's borders by turn 164 in both copies, with no
 purchase event for it. The candidate's native plot request had started
 on 161 and waited through its timeout after the tile was owned. Both
-finished the same supplied pair on 179. The early-slot Atzcapotzalco
-comparison uses the same turn-50 checkpoint for both versions.
+finished the same supplied pair on 179. In the later Atzcapotzalco
+comparison, both versions paid 45 Gold for a Hub tile while the city's
+slots were full. The candidate's delayed quote found a better owned
+option. Both cities eventually built a Preserve on the paid tile.
 [Paid customer cases](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
 [Sodo replay and exact outcomes](../research/mods/city-lights-ai-placement-20261116.md#sodo-completed-the-same-supplied-provider-pair-in-opposite-orders).
 

@@ -1330,6 +1330,18 @@ Once the ordinary owned site has a comparable price and the paid link loses,
 the planner drops the saved invoice and its ownership recheck. Existing
 native spending contracts retain the game's own lifetime.
 
+**Matched forecast-slot replay.** Both versions loaded the same
+turn-50 save and ran through 95 with prospective guidance enabled.
+Atzcapotzalco's own tree requested the Commercial Hub tile on turn
+60 and the city paid 45 Gold on 61 in both variants. The turn-61
+capacity read still showed one used slot and one allowed. The candidate
+quoted the Hub using the eight-turn wait it forecast at that point.
+The paid link was −5,205 Q8 after the invoice, while its owned link
+alternative was +2,850 Q8. Neither variant published a paid-site offer.
+Both later used the plot for a Preserve: founded on 87 and complete
+on 93. This separates the destination of the native land request from
+the district that ultimately used it.
+
 The full-game observer keeps the buying city's label at payment so that
 the report can match the earliest typed district request from that city
 to the same purchase, even when another city wanted the tile. It requires

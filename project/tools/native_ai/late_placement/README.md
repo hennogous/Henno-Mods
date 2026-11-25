@@ -44,6 +44,13 @@ their missing score receipts do not mean the native adjacency is inert.
 If saved-world loading does not apply the changed SQL, use a fresh integrated
 full-game run. Never infer this solely from presence of the SQL source file.
 
+On Shadow, the Windows Firaxis profile under `LOCALAPPDATA` holds `Cache`
+and `Logs`. `Mods` and `Saves/Single` are under Documents. For a matched
+fresh run, use the verified source's `resource-stack-preflight.json`
+database path to recover `--user-root` and its `checkpoint.json`
+`native_save` directory for `--saves`. Pass `--mods` separately from the
+installed package record. Confirm all three paths before the native launch.
+
 ## Finding a credible frontier purchase fixture
 
 `frontier_discovery.py` loads the existing hash-verified Continents, Pangaea
