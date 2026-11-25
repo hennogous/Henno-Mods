@@ -2358,6 +2358,9 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
     end
     local function customerPurchaseChoice(group)
         if not snapshot.CustomerNetValue then return nil,false end
+        local handoff=snapshot.handoffs and snapshot.handoffs[group.key]
+        local saved=handoff and handoff.record
+        local inspectedSaved=false
         local rows,paidTypes={},{}
         for _,footprint in pairs(group.plots)do for _,option in ipairs(footprint.options)do
             if option.purchaseGold and option.purchaseGold>0 and not option.waiting then
@@ -2405,6 +2408,9 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 else row.valueQ8,row.grossQ8=value(option,row.wait) end
                 if row.valueQ8==nil then return nil,true end
             end
+            if saved and (saved.invoice or 0)>0 and option.purchaseGold
+                and saved.partnerCity==option.city and saved.partnerDistrict==option.district
+                and saved.partnerPlot==row.plot then inspectedSaved=true end
         end
         local best
         for _,row in ipairs(rows)do if row.option.purchaseGold and row.valueQ8 and row.valueQ8>0 then
@@ -2441,7 +2447,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 best={row=row,backup=backup,margin=margin,scarcity=scarcity,credit=credit}
             end
         end end
-        return best,true
+        return best,true,inspectedSaved
     end
     local function competitiveBackup(first,second)
         if not second or not second.valueQ8 or second.valueQ8<=0 then return 0 end
@@ -2517,7 +2523,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             local g=candidates[(turn+pid+step)%#candidates+1]
             if g~=visits[1] then visits[#visits+1]=g end
         end
-        local purchaseChoice,purchaseGroup
+        local purchaseChoice,purchaseGroup,inspectedSavedPurchase
         if order=='quarterFirst' and snapshot.planCustomerPurchases and #visits>0 then
             -- A recurring handoff owns the first ordinary quote. Alternate
             -- appraisal priority by a full group rotation so that handoff
@@ -2527,7 +2533,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             for step=0,#visits-1 do
                 local group=visits[(firstVisit+step-1)%#visits+1]
                 local attempted
-                purchaseChoice,attempted=customerPurchaseChoice(group)
+                purchaseChoice,attempted,inspectedSavedPurchase=customerPurchaseChoice(group)
                 if attempted then purchaseGroup=group;break end
             end
         end
@@ -2650,7 +2656,25 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 nextMemory[group.key]=first.plot
                 group.best=first;group.backup=second;group.competitiveBackupQ8=fallback;group.costQ8=cost
                 plans[#plans+1]=group
-            else nextMemory[group.key]=nil end
+            else
+                nextMemory[group.key]=nil
+                if handoff and group==purchaseGroup and inspectedSavedPurchase then
+                    -- This still-unowned handoff lost a complete fresh
+                    -- appraisal. Release its saved invoice and its CE
+                    -- ownership recheck. Missing quotes and skipped groups
+                    -- never reach here. The native purchase contract keeps
+                    -- the game's own lifetime and cancellation rules.
+                    local old=handoff.record
+                    local key=old.city..':'..old.district
+                    local released=snapshot.nextLayouts[key]==old or snapshot.savedLayouts[key]==old
+                    if snapshot.nextLayouts[key]==old then snapshot.nextLayouts[key]=nil end
+                    if snapshot.savedLayouts[key]==old then snapshot.savedLayouts[key]=nil end
+                    if released and snapshot.auditConnections then
+                        print(string.format('CSC_AI_CUSTOMER_LAND_RELEASED turn=%d player=%d city=%d district=%d plot=%d reason=appraised_without_replacement',
+                            turn,pid,old.partnerCity,old.partnerDistrict,old.partnerPlot))
+                    end
+                end
+            end
         end
     end
     -- A new purchase bid can compete this turn. Give the saved identity to

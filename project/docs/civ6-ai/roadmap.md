@@ -140,6 +140,10 @@ The native AI can request a tile before construction capacity opens.
 An upcoming slot can now enter the land appraisal when the next citizen
 will open it within ten turns. Paid and owned sites use the same expected
 construction date; the land invoice remains due immediately.
+When a fresh comparison rules out a saved paid site and yields no
+worthwhile replacement, the planner drops its saved claim and ownership
+recheck. An incomplete comparison preserves the plan until it can be
+repriced or expires.
 [Purchase appraisal and comparison](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
 
 ## Current work

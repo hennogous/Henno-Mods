@@ -585,6 +585,37 @@ chosen=plan()
 assert(chosen.best.plot==23 and chosen.backup.plot==22 and chosen.purchaseCreditQ8==5*256 and chosen.costQ8==0)
 ''')
 
+    def test_saved_paid_handoff_releases_only_after_its_complete_appraisal_loses(self):
+        vm=self.vm()
+        vm.execute((AI/'CSC_AI_PlanContinuity.lua').read_text(encoding='utf-8'))
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local E,C=CSC_AI_EconomyAdapters,CSC_AI_PlanContinuity
+local supply={base={{plot=37}},specialty={}}
+local old=C.LayoutRecord({city=7,district=3,plot=10},
+    {city=7,district=1,plot=20,stage=3,purchaseGold=20},supply,nil,nil,nil,19)
+old.phase=1
+main.purchaseGold=20
+snapshot.planCustomerPurchases=true
+snapshot.cities={[7]={object={}}}
+snapshot.DistrictCapacity=function()return {known=true,allowed=2,used=1}end
+snapshot.Price=function(flow)return flow.amount*256 end
+snapshot.handoffs={['quarterFirst:10:3:TEST']={record=old,plot=20,phase=1}}
+snapshot.savedLayouts={['7:3']=old}
+snapshot.nextLayouts={['7:3']=old}
+snapshot.customerOwnedReferences={['7:1']={plot=22,links=0}}
+local native={[20]=80*256}
+snapshot.CustomerNetValue=function(_,_,plot)return native[plot] end
+-- The city's ordinary owned reference still lacks a native quote.
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+assert(snapshot.nextLayouts['7:3']==old and snapshot.savedLayouts['7:3']==old)
+native[22]=180*256
+-- A complete priced comparison rejects the old paid link. The planner's
+-- next saved property (and its associated ownership scope) drops it.
+assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
+assert(not snapshot.nextLayouts['7:3'] and not snapshot.savedLayouts['7:3'])
+''')
+
     def test_paid_proposal_cannot_displace_a_live_handoff_in_saved_layouts(self):
         vm=self.vm()
         vm.execute((AI/'CSC_AI_PlanContinuity.lua').read_text(encoding='utf-8'))

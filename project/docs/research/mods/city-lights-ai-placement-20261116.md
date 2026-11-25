@@ -1324,6 +1324,11 @@ leaves the owned plan in charge. Atzcapotzalco had two citizens at the
 original turn-60 request, so the one-citizen forecast would first apply
 at population three. The new policy and its fallback have offline
 coverage. An early purchase from this policy still needs a matched replay.
+An accompanying Lua test restores a saved plan for a paid site with
+its Quarter already founded. An unavailable owned quote keeps the plan.
+Once the ordinary owned site has a comparable price and the paid link loses,
+the planner drops the saved invoice and its ownership recheck. Existing
+native spending contracts retain the game's own lifetime.
 
 The full-game observer keeps the buying city's label at payment so that
 the report can match the earliest typed district request from that city
