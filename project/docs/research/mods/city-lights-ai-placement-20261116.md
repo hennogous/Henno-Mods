@@ -1770,8 +1770,13 @@ The city paid 35 Gold on 151. Its treasury debit and plot purchase event
 matched on the same clock. The Hub founded on 152 and completed on 154
 beside the working Bakers. The first native request was already accepted
 before CSC's positive packet. This is an exact purchase and use case.
-For bid timing, the next matched setup lets the AI finish its pending Water
-Park before selecting the next district.
+
+A follow-up let the AI finish a partly constructed Water Park. Meroë
+received four paid Hub packets on turns 151–154, all written to the
+eligible native cache. The credits ranged from +5,095 to +6,610 Q8.
+The Water Park remained the active district contract through turn 154,
+the turn it completed. The city owned the Hub tile by 155 with no
+purchase event. The paid Hub had no city comparison before that.
 
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
