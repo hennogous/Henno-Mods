@@ -1391,6 +1391,25 @@ target on turn 75. The treatment selected the Hub there on 77, founded
 it on 83 and completed it on 87. The control used the tile for a Wonder
 on 83. The paid-offer phase ended without a Gold debit on 601.
 
+#### Barcelona's paid customer site reached the native cache
+
+The standalone full run priced a 60 Gold Commercial Hub on plot 2088
+beside Barcelona's Bakers on 2162. The positive appraisal triggered
+a missing footprint-options list when applying rival-placement costs.
+The affected turns lost that player's economy publication. The other
+players and turns continued to the verified turn-250 endpoint.
+
+Both corrected copies loaded the archived turn-100 save and reached
+125. The candidate's offers on turns 107 and 110 wrote +267 and
++611 Q8 into the eligible native cell. Its turn-111 offer was staged
+with no eligible native write. Barcelona's already-requested Theater
+Square took production from turn 107 through completion on 111. The
+watched Hub cell recorded no city comparison while its paid offers
+were active. By turn 112 the tile belonged to the neighboring city
+in both copies. The observed funds were already above the 60 Gold
+invoice when the first bid landed. Both copies finished with two
+working Bakers Base materials beside the existing Quarter.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the

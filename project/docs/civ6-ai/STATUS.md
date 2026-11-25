@@ -4,9 +4,12 @@
 The treatment reached two positive paid-site appraisals for a Hub on
 2088, then lost those publications because the appraisal row dropped
 the list of districts that could complete the link. The fix preserves
-that list when charging rival placements. A regression reproduces the
-failure with the prior code and passes with the fix. The affected live
-window and full comparison are being repeated on the corrected build.
+that list when charging rival placements. The matched replay verified
+that Barcelona's offers on turns 107 and 110 reached the native
+score cache. Its Theater Square took production through turn 111.
+The neighboring city acquired the offered tile by turn 112 in both
+arms. The corrected full game is running.
+[Paid-site replay](../research/mods/city-lights-ai-placement-20261116.md#barcelonas-paid-customer-site-reached-the-native-cache).
 
 **Hattin provider competition, Problems 1.2 and 2.1.** Hattin's
 control repeatedly chose a Rural type that was already built. The
