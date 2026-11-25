@@ -1497,10 +1497,23 @@ archive and in Load Game.
 
 The number of pairs with working Base and a working mapped customer
 building went from 13 to nine. Bakers accounted for that decrease.
+The mix of Bakers customers changed from eight Commercial Hubs and
+four entertainment districts to five Hubs and seven entertainment
+districts. The candidate's five working Bakers buyers were all Hubs.
+Six of its entertainment pairs had working Base and were still waiting
+for the Zoo or Ferris Wheel. Teayo's Entertainment Complex on plot 1045
+is a traced example. The candidate published +8,427 Q8 on turn 56
+beside Bakers 1119. The eligible native comparison recorded the site
+win, and the Complex was founded on turn 58. Its Zoo was absent on 250.
+
 Across all Quarter sites, there were 27 → 31 working Bakers Base
 links, 2 → 11 working Tailors Base links and three working Specialty
 links in each game. The logs showed 26 → 38 Base links working at the
-endpoint without an observed interruption.
+endpoint without an observed interruption. The seven Tailors pairs
+without healthy supply at the candidate endpoint came from three
+Quarter sites. A pillaged Quarter affected three pairs, one
+non-working Flax deposit affected three, and a pillaged Theater Square
+affected one. Two more supplied Tailors pairs shared a damaged Temple.
 
 The common shortlist surveys owned pairs whose Quarter has at least
 +2 adjacency. Each arm sees these opportunities as its own cities grow.
