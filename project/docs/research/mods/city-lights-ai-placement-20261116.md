@@ -1632,6 +1632,27 @@ The paired-footprint campaign archive includes `full-v30-city-lights-comparison.
 The Load Game names are `CSC_LAYOUT_171124605_BASELINE_T250_29cb97e433ec`
 and `CSC_LAYOUT_171124605_TREATMENT_T250_49bc8da48861`.
 
+### Exact conversion by Quarter and which plot was founded first
+
+These counts use the common owned-site survey in both configurations.
+Its denominator preserves each eligible Quarter and partner footprint.
+The build-order columns count only rows whose first surveyed district
+was founded. Each cell gives exact completed pairs out of those started
+layouts. The last column also includes eligible layouts that never
+started. The City Lights rows include surveyed Rural providers.
+
+| Configuration and Quarter | Quarter first, default → candidate | Partner first, default → candidate | All eligible, default → candidate |
+| --- | ---: | ---: | ---: |
+| Standalone Bakers | 1/28 → 1/34 | 2/6 → 1/3 | 149 → 157 |
+| Standalone Tailors | 1/4 → 2/26 | — → 3/4 | 89 → 99 |
+| City Lights Bakers | 1/25 → 1/31 | 3/11 → 0/7 | 185 → 165 |
+| City Lights Tailors | — → 4/14 | 0/4 → 2/8 | 134 → 101 |
+
+Tailors produced more exact completions in both configurations, in both
+build orders where a comparison was available. Bakers lost some exact
+partner-first completions. The separate adjacent-substitute counts above
+allow the missing district to finish on a different legal tile.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the
@@ -1677,6 +1698,12 @@ buy it for 35 Gold. The private appraisal valued the link above its
 owned alternative by 20,975 Q8 and set aside 5,243 Q8 for a bid. The
 matched replay gives both arms the same released tile and lets the game's
 AI decide what to buy and build.
+
+The game had already published its turn-150 packet when the fixture
+released the plot. That packet still treated it as owned. Turn 151 was
+the first regular publication that could use the new ownership state.
+The control acquired the plot without a purchase by turn 155, founded
+the Hub on 166 and completed the pair on 168.
 
 The private timing wrapper previously dropped the connection planner's
 return value. A positive appraisal could therefore appear alongside an

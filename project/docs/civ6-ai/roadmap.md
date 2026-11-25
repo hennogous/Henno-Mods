@@ -87,6 +87,12 @@ each configuration. Keep each endpoint loadable and check live games
 every 20 minutes. Short diagnostic replays can reuse the earlier Quito,
 Delhi and customer-first saves.
 
+The four selected games reached turn 250 and have verified loadable
+saves. The comparison report breaks down surveyed opportunities and
+exact completions by Quarter and foundation order, alongside supplier
+retention, Services, competing bids and turn time.
+[Matched turn-250 conversion](../research/mods/city-lights-ai-placement-20261116.md#exact-conversion-by-quarter-and-which-plot-was-founded-first)
+
 **City Lights loading.** The existing `ModSupport_CL` game criterion loads the SQL that maps Rural Communities to each Quarter's goods-provider tag. The same Lua planner reads the active mappings in both configurations. Keep those district lists in gameplay data so the planner picks up new providers as the design grows.
 
 The planner also reads the active `MutuallyExclusiveDistricts` rows. An
