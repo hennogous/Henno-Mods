@@ -1493,7 +1493,25 @@ competing district types continue through their ordinary choices.
 Both arms of the provider replay run the prospective planner with
 only this additional admission check switched. The offline fixtures
 cover the offer gate, owning city, occupied tiles, scope budget and
-packet order. Live follow-through and timing are next.
+packet order.
+
+Both matched replays reached turn 225. Hattin's control decoded
+another Rural A six times, then founded a Theater Square on plot 427
+on turn 220. The treatment published 14 matching admission scopes
+and CE recorded 127 masks in the native comparisons. The treatment
+decoded the repeated Rural A three times. On turn 207 it reserved
+plot 425 for an Industrial Zone and accepted the construction request.
+The scoped cache read returned 389,077 Q8 for the Industrial Zone
+and 383,503 for Rural B at 425, a difference of 21.8 native utility.
+The Industrial Zone founded there on turn 220. Rural B went unbuilt
+at that site in both arms. Hattin's Bakers retained one
+working Base and one working Specialty in both games.
+
+Te Hokianga-nui-a-Kupe already had both Rural types. It received no
+admission scope or native mask in either arm. The replay verifies the
+per-type gate and the continued competition from other districts.
+Kristiansand supplies the separate example of following through and
+completing the adjacent provider.
 
 Current-build static evidence for district admission and BuildFromCity
 is retained as REA record

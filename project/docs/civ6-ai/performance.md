@@ -86,9 +86,12 @@ producer or customer investment change. Those states would repeat in the
 same world. The old logical visit count still applies to the work budget
 and the failure boundary. The offline comparison returned identical bids,
 ledgers, plans and errors across 226 forecasts, including 23 route cases.
-The 203 joint cases made 148,484 price calls instead of 163,989. A same-save
-City Lights test with forced identical inputs will measure the effect on
-actual processing time before interpreting that reduction as a speedup.
+The 203 joint cases made 148,484 price calls instead of 163,989. In the
+City Lights turn-200 replay, the four passes for player 5 returned the
+same forecast, bid and plan fingerprint. The full player passes averaged
+2.45 seconds before the skip and 2.56 after it. World pricing averaged
+1.95 and 2.07 seconds respectively. The sample confirms identical
+outputs and fewer offline price calls. It showed no wall-time gain.
 
 At the five sampled turns from 150 to 250, the full prospective forecasts
 rejected 195 of 381 standalone quotes and 116 of 346 City Lights quotes on

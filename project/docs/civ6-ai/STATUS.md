@@ -1,5 +1,12 @@
 # Current CSC AI status
 
+**Hattin provider competition, Problems 1.2 and 2.1.** Hattin's
+control repeatedly chose a Rural type that was already built. The
+candidate's admission scopes reached the native selection. The
+Industrial Zone still beat Rural B on plot 425 and founded there
+on turn 220. Both Bakers materials were working at the endpoint.
+[Matched provider replay](../research/mods/city-lights-ai-placement-20261116.md#the-stock-tree-considers-a-completed-exact-district-type-fulfilled).
+
 **Skedsmo Quarter-first replay, Problems 1.6 and 2.1.** Both copies
 finished the Hub beside the existing Bakers with a working Base supplier.
 The candidate completed it on turn 229, one turn earlier. The separate
