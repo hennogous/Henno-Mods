@@ -1410,6 +1410,22 @@ in both copies. The observed funds were already above the 60 Gold
 invoice when the first bid landed. Both copies finished with two
 working Bakers Base materials beside the existing Quarter.
 
+#### Malinalco reserved the quoted Hub tile for Tailors
+
+The same corrected replay also priced a 65 Gold Commercial Hub on
+Malinalco's plot 603. Both offers reached the native score cache. The
+turn-114 offer added 315 Q8 and recorded a city selection. In that
+packet, the Tailors receipt recorded the site win on 603. Malinalco's
+build tree requested the plot for Tailors on turn 114 in both arms.
+
+In control, the native land request reported completion on turn 118,
+and Tailors founded on 120 and completed by 125 with working Flax.
+In the candidate, the Tailors request stayed accepted until turn 124,
+when the matching plot-purchase event recorded a 70 Gold debit.
+Tailors had yet to found at 125. Matching the district on the purchase
+request matters here. A quote and later debit on the same plot alone
+would attribute the purchase to the Hub offer.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the

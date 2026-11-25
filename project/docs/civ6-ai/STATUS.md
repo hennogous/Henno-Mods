@@ -1,14 +1,17 @@
 # Current CSC AI status
 
-**Standalone qualification, 25 November.** Both turn-250 saves verified.
-The treatment reached two positive paid-site appraisals for a Hub on
-2088, then lost those publications because the appraisal row dropped
-the list of districts that could complete the link. The fix preserves
-that list when charging rival placements. The matched replay verified
-that Barcelona's offers on turns 107 and 110 reached the native
-score cache. Its Theater Square took production through turn 111.
-The neighboring city acquired the offered tile by turn 112 in both
-arms. The corrected full game is running.
+**Standalone qualification, 25 November.** The corrected baseline
+reached turn 250 in 55 minutes and left a verified Load Game save.
+It ended with 12 Bakers and five Tailors customer pairs, 15 of them
+with working Base supply. Guidance averaged 1.45 seconds per turn
+and peaked at 3.41 seconds. The matched candidate game is underway.
+
+**Paid customer sites, Problem 1.5.** In the corrected short replay,
+Barcelona's Hub offers reached the native cache while its Theater
+Square was in production. In Malinalco, a Hub offer reached a city
+comparison that chose Tailors on the same tile. The city requested
+the tile for Tailors in both arms. It paid 70 Gold on turn 124 in
+the candidate, with construction still pending at the endpoint.
 [Paid-site replay](../research/mods/city-lights-ai-placement-20261116.md#barcelonas-paid-customer-site-reached-the-native-cache).
 
 **Hattin provider competition, Problems 1.2 and 2.1.** Hattin's
