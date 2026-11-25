@@ -36,9 +36,8 @@ forecast slot opening. In the matched Kristiansand replay the provider
 tile entered the city's borders by turn 164 in both copies, with no
 purchase event for it. The candidate's native plot request had started
 on 161 and waited through its timeout after the tile was owned. Both
-finished the same supplied pair on 179. The
-early-slot Atzcapotzalco comparison remains queued behind the City Lights
-provider-admission and performance replays.
+finished the same supplied pair on 179. The early-slot Atzcapotzalco
+comparison uses the same turn-50 checkpoint for both versions.
 [Paid customer cases](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
 [Sodo replay and exact outcomes](../research/mods/city-lights-ai-placement-20261116.md#sodo-completed-the-same-supplied-provider-pair-in-opposite-orders).
 
@@ -59,6 +58,11 @@ average/max to 3.93/8.96. The candidate's two land bids on plot 973
 reached CE scoring. The district was built in both arms and the bid
 had no matching purchase. The mature-save performance check is pending.
 [Matched City Lights evidence](../research/mods/city-lights-ai-placement-20261116.md#matched-city-lights-result-at-turn-250).
+
+The adjacency screen skipped five mature City Lights forecasts in a
+same-save player pass. All four passes generated identical bids and saved
+plans. Average pass time fell from 2.58 to 2.51 seconds.
+[Guidance processing time](performance.md#quarter-layout-campaign-24-november).
 
 **24 November — Problems 1.2 and 2.1, protect both footprints.**
 The latest candidate also compares owned and purchasable customer sites,

@@ -99,10 +99,13 @@ placement quality. The planner now avoids a full forecast on an unreserved,
 unsaved plot when the current adjacency, the best possible Stage 2 terrain
 gain and its admitted partner's gain still fall below the placement floor.
 Saved plans, reserved plots and unknown values keep their normal quote.
-The same-save comparison records the number screened out and must return
-identical offers and saved layouts. The old rejection counts are the upper
-limit on what this check can save, because some sites excluded by the full
-forecast can still pass its conservative upper bound.
+The same-save City Lights comparison on turn 200 skipped five candidate
+forecasts per pass for player 5. Both baseline and screened passes returned
+the same bids and saved layouts. Average total player time was 2.58 seconds
+before the screen and 2.51 with it. World pricing averaged 2.04 and 1.99
+seconds respectively. The old rejection counts are the upper limit on what
+this check can save, because some sites excluded by the full forecast can
+still pass its conservative upper bound.
 
 The turn-200 standalone profiling replay measured seven turns after the
 matched switch, across all original AI seats. It sampled successful
@@ -119,5 +122,5 @@ Building the candidate's ledgers took 77% of these measured stages. A
 shadow cache for 16 extra previously priced states found 569 revisits
 with 0.87 seconds of gross build and pricing time across the seven turns.
 Avoiding impossible placements before building their ledgers is a larger
-opportunity than retaining more trial states. The screen still needs its
-same-save timing and full-game measurement.
+opportunity than retaining more trial states. The final matched games measure
+the effect over full turns and across all AI players.
