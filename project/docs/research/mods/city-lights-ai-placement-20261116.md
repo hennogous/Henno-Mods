@@ -1785,6 +1785,25 @@ on 152 and completed on 154. The candidate's paid offer for 2660 first
 appeared on 151, while the earlier owned reservation was already active.
 The late offer therefore persisted even with a fresh initial publication.
 
+The private turn-150 diagnostic found the paid Meroë group among four
+Quarter-first groups. The ordinary pass did not visit it. Prioritizing
+the exact group still produced no paid bid. Both passes marked capacity
+stale after reading the pre-setup count of seven used slots, so neither
+could treat the Hub as eligible to buy.
+
+Saving and reloading the prepared board preserved all 201 checked census
+rows and restored a fresh capacity read of eight used slots out of nine.
+The ordinary diagnostic pass still skipped the Meroë group. A private
+pass granting it one of the same two visits and the single paid appraisal
+found a 39,307 Q8 linked margin and a +8,192 Q8 credit on the 35 Gold Hub
+site. Neither diagnostic pass published a packet. The difference isolates
+which group receives the appraisal, after capacity has been verified.
+In the live continuation, the city submitted its Hub contract on 150 and
+completed it on 154. The first paid offer for 2660 again arrived on 151.
+It reached eligible native scoring on 151 and 152. No purchase for that
+plot occurred by the turn-161 endpoint. The replay stopped before running
+a control because the planned first-turn comparison had already passed.
+
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
 The turn-200 pilot released plot 530 from Malinalco in a copy of the

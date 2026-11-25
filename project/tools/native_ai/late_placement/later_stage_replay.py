@@ -19,6 +19,7 @@ from driver import (HeldProcess, NativeSession, configure, flags, launch, load, 
 from planning_continue import HERE, compare_structure, enable, parse_census, prepare
 from later_stage_results import service_durations
 from ce_bakers_fresh import package_identity
+from full_game_controller.checkpoint import save_inactive_boundary
 
 
 POLICY_FILES = (
@@ -86,7 +87,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
             connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None,
             recover_preferences_from=None, land_targets=(), timing_query=None,
-            provider_decline_switch=False, fixture_parameters=None, timing_query_at_switch=False):
+            provider_decline_switch=False, fixture_parameters=None, timing_query_at_switch=False,
+            archive_prepared_frontier=False, prepared_frontier=None):
     if fixture == 'customer_frontier':
         require(paired_layout_csc and paired_layout_switch_turn == start
                 and isinstance(fixture_parameters, dict),
@@ -101,6 +103,30 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 (replay_ce/'Binaries/Win64'/DLL).is_file(), 'Expected a staged Dev CE build')
     plan = prepare(source, output, start, start, None, read_only=True, replay_ce=replay_ce,
                    paired_layout_csc=paired_layout_csc)
+    original_checkpoint = plan.checkpoint['sha256']
+    original_save = Path(plan.checkpoint['native_save'])
+    prepared_board = None
+    if archive_prepared_frontier or prepared_frontier is not None:
+        require(fixture == 'customer_frontier' and not (archive_prepared_frontier and prepared_frontier),
+                'Prepared checkpoints are only for separate, scoped customer-frontier replays')
+    if prepared_frontier is not None:
+        receipt = Path(prepared_frontier).resolve(strict=True)
+        prepared_board = load(receipt)
+        closed = load(receipt.parent / 'session-closed.json')
+        require(closed['verified'] and closed['owners_absent'] and closed['preferences_verified']
+                and closed['package_callback_completed'] and prepared_board['source'] == str(plan.source)
+                and prepared_board['source_sha256'] == original_checkpoint
+                and prepared_board['parameters'] == fixture_parameters,
+                'A prepared checkpoint must come from the same verified layout fixture')
+        prepared_save = prepared_board['checkpoint']
+        native, archive = (Path(prepared_save[key]).resolve(strict=True) for key in ('native_save', 'archive'))
+        require(prepared_save['verified'] and prepared_save['turn'] == start
+                and prepared_board['census']['turn'] == start
+                and native.parent == plan.saves and archive.parent == receipt.parent
+                and sha(native) == prepared_save['sha256'] == sha(archive),
+                'Prepared checkpoint clock, location or hash differs')
+        plan.checkpoint = prepared_save
+        plan.expected_census = prepared_board['census']
     switch_turn = paired_layout_switch_turn or connection_switch_turn
     if timing_query_at_switch:
         require(timing_query is not None and switch_turn is not None and start < switch_turn < end
@@ -247,7 +273,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             installed.append(item)
         verify_packages()
         write_json(output / 'inputs.json', dict(source=str(source), start=start, end=end,
-                   checkpoint=plan.checkpoint['sha256'], fixture=fixture,
+                   checkpoint=plan.checkpoint['sha256'], original_checkpoint=original_checkpoint,
+                   fixture=fixture,
                    fixture_parameters=fixture_parameters,
                    natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
                    connection_scout=connection_scout, connection_enabled=connection_enabled,
@@ -311,14 +338,28 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 require(civic_start[0] == str(preparation_turn), 'Civic UI did not reach the preparation turn')
                 if expected_preparation is not None:
                     require(civic_start == expected_preparation['civic_start'], 'Starting civic state differs between arms')
-            setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay')
+            setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay') if prepared_board is None else None
             if fixture == 'customer_frontier':
-                receipt = re.search(r'CSC_MILESTONE_CUSTOMER_FRONTIER_SETUP\t([^\r\n]+)', setup)
-                require(receipt is not None, 'Customer frontier setup receipt is missing its facts')
-                frontier_start = receipt[1].split('\t')
+                if prepared_board is None:
+                    receipt = re.search(r'CSC_MILESTONE_CUSTOMER_FRONTIER_SETUP\t([^\r\n]+)', setup)
+                    require(receipt is not None, 'Customer frontier setup receipt is missing its facts')
+                    frontier_start = receipt[1].split('\t')
+                else:
+                    frontier_start = prepared_board['fixture_start']
                 if expected_preparation is not None:
                     require(frontier_start == expected_preparation['frontier_start'],
                             'Released footprint, price, capacity or supply differs between arms')
+                if archive_prepared_frontier:
+                    # File-backed restart lets the engine rebuild its city
+                    # cache after WorldBuilder changes the district count.
+                    # Neither replay needs to apply the setup a second time.
+                    before_save = census(start, 'prepared-frontier-census')
+                    checkpoint = save_inactive_boundary(controller, turn=start,
+                        name=f'CSC_PREPARED_FRONTIER_{start}_{original_checkpoint[:10]}',
+                        native_directory=plan.saves, archive=output/'prepared-frontier.Civ6Save')
+                    write_json(output/'prepared-frontier.json', dict(source=str(plan.source),
+                        source_sha256=original_checkpoint, parameters=fixture_parameters,
+                        fixture_start=frontier_start, checkpoint=checkpoint, census=before_save))
                 if timing_query is not None:
                     capture_policy_timing(start)
             if fixture == 'market':
@@ -410,7 +451,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     f'A.{switch}={setting};print("CSC_CONNECTION_SWITCH="..tostring(A.{switch}))')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-switch')
             require(f'CSC_CONNECTION_SWITCH={setting}' in raw, 'Connection switch did not read back')
-            if fixture == 'customer_frontier' and fixture_parameters.get('refreshPublisher'):
+            if (fixture == 'customer_frontier' and fixture_parameters.get('refreshPublisher')
+                    and not archive_prepared_frontier):
                 # Change the paused world's initial conditions before resuming.
                 # This dedicated diagnostic package lets the real publisher
                 # see them before any AI tree reads the prepared turn's scores.
@@ -447,7 +489,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 log = plan.user_root / 'Logs' / name
                 if log.is_file():
                     shutil.copy2(log, output / name)
-    require(session.closed and sha(Path(plan.checkpoint['native_save'])) == plan.checkpoint['sha256'],
+    require(session.closed and sha(Path(plan.checkpoint['native_save'])) == plan.checkpoint['sha256']
+            and sha(original_save) == original_checkpoint,
             'Source save changed or replay closure unverified')
     log = read(output / 'Lua.log')
     require_clean_replay_log(log)
