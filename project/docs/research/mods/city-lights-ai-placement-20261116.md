@@ -1380,6 +1380,16 @@ control. Its tree named Rural Community A in contract 2108 on turn
 131, then founded Bakers on 2753 on 148 and completed the pair on 152.
 The turn-100 checkpoint precedes both foundations.
 
+The interrupted City Lights baseline recorded two more ordinary purchases
+that eventually formed supplied pairs. Nidaros requested Rural Community A
+on turn 2, bought its tile on 10, and linked the provider to Bakers on
+126. Tromsø requested Commercial Hub 1823 on 147, acquired the tile on
+157, and founded the Hub on 162. The Bakers founded in a neighbouring
+city on 212, with working Base when the pair completed on 214. That
+neighbouring city was absent from the turn-175 census, so Tromsø's
+request predates the city that would have introduced this particular
+Bakers opportunity to the planner.
+
 **Tenochtitlan's three paid Hub offers.** The turn-50 through 95
 Atzcapotzalco replay also saw a 45 Gold Commercial Hub site on plot
 601 in Tenochtitlan. The treatment paired it with a potential Tailors
