@@ -20,8 +20,12 @@ handed off to the planned Rural site on the next pass, and completed
 both districts on turn 137 versus turn 128 in control. The candidate's
 first exact pair quote came after the purchase. In the original Bakavu
 game a Hub reused a tile bought for a Mbanza. Both replay copies used an
-owned Hub site beside Bakers. The next matched customer-land replay uses
-Atzcapotzalco, where the original request directly named the Hub.
+owned Hub site beside Bakers. In the original Atzcapotzalco game, the
+native Hub purchase request started six turns before a district slot
+opened and paid the following turn. Both matched copies finished Bakers
+and selected the same owned Hub site after an Aqueduct. The next
+candidate compares paid and owned alternatives before a reliably
+forecast slot opening. Kristiansand is the next paid-provider replay.
 [Paid customer cases](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
 [Sodo replay and exact outcomes](../research/mods/city-lights-ai-placement-20261116.md#sodo-completed-the-same-supplied-provider-pair-in-opposite-orders).
 

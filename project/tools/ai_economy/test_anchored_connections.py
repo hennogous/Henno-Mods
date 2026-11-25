@@ -385,6 +385,53 @@ assert(plan.purchaseCreditQ8>0 and plan.costQ8>0)
 assert(plan.costQ8+plan.purchaseCreditQ8==allowance)
 ''')
 
+    def test_early_customer_land_compares_waiting_owned_sites_at_the_same_start(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+main.purchaseGold=32
+backup.waiting=true
+snapshot.connectionGroups[1].candidates={main,backup}
+snapshot.planCustomerPurchases=true
+snapshot.cities={[7]={object={}}}
+snapshot.customerOwnedReferences={['7:1']={plot=22,links=0}}
+local capacity={known=true,allowed=1,used=1,nextSlotTurns=4}
+snapshot.DistrictCapacity=function()return capacity end
+local prices={[20]=200*256,[21]=140*256,[22]=120*256}
+local seen={}
+snapshot.CustomerNetValue=function(_,_,plot,ready)
+    assert(ready==7)
+    seen[plot]=true
+    return prices[plot]
+end
+CSC_AI_EconomyModel.CustomerBuildingForecast=function(_,venues,_,ready)
+    assert(ready==7 or venues[1].plot==21 and ready==3)
+    return {valueQ8=(venues[1].plot==20 and 96 or 64)*256}
+end
+snapshot.ProjectedConnectionYields=function()return {YIELD_PRODUCTION=1}end
+snapshot.Price=function(stream)
+    if stream.fixed then
+        assert(stream.yield=='YIELD_GOLD' and stream.amount==-32 and stream.ready==0)
+        return -32*256
+    end
+    assert(stream.ready==4 or stream.ready==0)
+    return 8*256
+end
+local plan=E.AnchoredConnectionPlans(snapshot,{})[1]
+assert(seen[20] and seen[21] and seen[22])
+assert(plan.best.plot==20 and plan.backup.plot==21 and plan.purchaseCreditQ8>0)
+assert(plan.best.wait==4 and plan.costQ8+plan.purchaseCreditQ8<=E.ConnectionCompletionCapQ8)
+prices[22]=330*256
+plan=E.AnchoredConnectionPlans(snapshot,{})[1]
+assert(plan.best.plot==21 and not plan.purchaseCreditQ8)
+prices[22]=nil
+plan=E.AnchoredConnectionPlans(snapshot,{})[1]
+assert(plan.best.plot==21 and not plan.purchaseCreditQ8)
+capacity.nextSlotTurns=11;seen={}
+assert(E.AnchoredConnectionPlans(snapshot,{})[1].best.plot==21 and not next(seen))
+capacity.nextSlotTurns=4;capacity.known=false
+assert(E.AnchoredConnectionPlans(snapshot,{})[1].best.plot==21 and not next(seen))
+''')
+
     def test_quarter_first_changes_a_near_tie_and_preserves_strong_competition(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

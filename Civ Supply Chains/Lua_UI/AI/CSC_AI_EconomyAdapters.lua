@@ -1703,6 +1703,10 @@ local CONNECTION_COST_CAP_Q8=64*256
 -- per player and publication. Six adjacent plots can host more than six
 -- district/building combinations. An incomplete appraisal keeps the owned plan.
 local CUSTOMER_PURCHASE_QUOTE_LIMIT=12
+-- The targeted Purchase Plot node starts saving before CanZone admits
+-- construction. Compare this early only when the next citizen is expected
+-- within the ten-turn request window observed in the Atzcapotzalco replay.
+local CUSTOMER_PURCHASE_SLOT_LOOKAHEAD=10
 E.ConnectionCompletionCapQ8=CONNECTION_COST_CAP_Q8
 local STRONG_SITE_LINK_RELIEF_LIMIT_Q8=128*256
 
@@ -2297,13 +2301,14 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         if a.district~=b.district then return a.district<b.district end
         return a.venue.building<b.venue.building
     end
-    local function value(option)
+    local function value(option,slotWait)
         local utility,gains=0,nil
         if option.projected then
             if option.transactionReady then
                 local ready=snapshot.ConnectionDistrictTurns(option.city,option.district)
                 if not ready then return nil end
-                local forecast=M.CustomerBuildingForecast(option.site,{option.venue},option.city,ready,snapshot.Price)
+                local forecast=M.CustomerBuildingForecast(option.site,{option.venue},option.city,
+                    ready+(slotWait or 0),snapshot.Price)
                 if not forecast then return nil end
                 utility=forecast.valueQ8
             end
@@ -2324,7 +2329,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             -- Only the receiving Quarter's real gameplay yield reaches this
             -- local price. The loaded rule starts at the partner foundation
             -- once the receiving Quarter has itself completed.
-            local ready=option.site.quarterReady or 0
+            local ready=math.max(option.site.quarterReady or 0,slotWait or 0)
             local price=snapshot.Price({player=pid,city=option.site.city,yield=yield,amount=amount,ready=ready},option.site.horizon)
             if price==nil then return nil end
             utility=utility+price
@@ -2338,31 +2343,48 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         end
         return utility,gross
     end
+    local function customerPurchaseWait(option)
+        local definition=GameInfo.Districts[option.district]
+        local city=snapshot.cities[option.city]
+        if not definition or not city then return nil end
+        if definition.RequiresPopulation==false or definition.RequiresPopulation==0 then return 0 end
+        local capacity=snapshot.DistrictCapacity and snapshot.DistrictCapacity(city.object)
+        if not capacity or not capacity.known then return nil end
+        if capacity.allowed>capacity.used then return 0 end
+        if capacity.allowed==capacity.used and capacity.nextSlotTurns
+            and capacity.nextSlotTurns<=CUSTOMER_PURCHASE_SLOT_LOOKAHEAD then
+            return capacity.nextSlotTurns
+        end
+    end
     local function customerPurchaseChoice(group)
         if not snapshot.CustomerNetValue then return nil,false end
         local rows,paidTypes={},{}
         for _,footprint in pairs(group.plots)do for _,option in ipairs(footprint.options)do
-            if not option.waiting then
-                local admitted=true
-                if option.purchaseGold then
-                    local definition=GameInfo.Districts[option.district]
-                    local city=snapshot.cities[option.city]
-                    local capacity=city and snapshot.DistrictCapacity and snapshot.DistrictCapacity(city.object)
-                    admitted=definition and city and option.purchaseGold>0
-                        and (definition.RequiresPopulation==false or definition.RequiresPopulation==0
-                            or capacity and capacity.known and capacity.allowed>capacity.used)
-                    if admitted then paidTypes[option.city..':'..option.district]=option end
+            if option.purchaseGold and option.purchaseGold>0 and not option.waiting then
+                local wait=customerPurchaseWait(option)
+                if wait then
+                    paidTypes[option.city..':'..option.district]={option=option,wait=wait}
+                    rows[#rows+1]={plot=footprint.plot,option=option,wait=wait}
                 end
-                if admitted then rows[#rows+1]={plot=footprint.plot,option=option} end
             end
         end end
         if not next(paidTypes) or #rows>CUSTOMER_PURCHASE_QUOTE_LIMIT then return nil,false end
+        -- Compare owned and paid candidates against the same predicted slot
+        -- opening. Waiting owned sites enter only this purchase appraisal;
+        -- they still cannot receive an immediate construction bid.
+        for _,footprint in pairs(group.plots)do for _,option in ipairs(footprint.options)do
+            local paid=paidTypes[option.city..':'..option.district]
+            if not option.purchaseGold and (not option.waiting or paid and paid.wait>0) then
+                rows[#rows+1]={plot=footprint.plot,option=option,wait=paid and paid.wait or 0}
+            end
+        end end
         -- A legal ordinary site can compete without touching this Quarter.
         -- Use the already measured owned reference when it has no CSC link.
-        for key,option in pairs(paidTypes)do
+        for key,paid in pairs(paidTypes)do
+            local option=paid.option
             local reference=(snapshot.customerOwnedReferences or{})[key]
             if reference and (reference.links or 0)==0 then
-                rows[#rows+1]={plot=reference.plot,ordinary=true,
+                rows[#rows+1]={plot=reference.plot,ordinary=true,wait=paid.wait,
                     option={city=option.city,district=option.district,venue={building=''}}}
             end
         end
@@ -2376,11 +2398,11 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         for _,row in ipairs(rows)do
             local option=row.option
             local ready=snapshot.ConnectionDistrictTurns(option.city,option.district)
-            row.nativeQ8=ready and snapshot.CustomerNetValue(option.city,option.district,row.plot,ready)
+            row.nativeQ8=ready and snapshot.CustomerNetValue(option.city,option.district,row.plot,ready+row.wait)
             if row.nativeQ8==nil then return nil,true end
             if row.nativeQ8>0 then
                 if row.ordinary then row.valueQ8,row.grossQ8=0,0
-                else row.valueQ8,row.grossQ8=value(option) end
+                else row.valueQ8,row.grossQ8=value(option,row.wait) end
                 if row.valueQ8==nil then return nil,true end
             end
         end
@@ -2594,8 +2616,8 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     group.purchaseCreditQ8=purchase.credit
                     cost=math.max(0,E.ConnectionLossQ8(purchase.scarcity,0)-purchase.credit)
                     fallback=first.valueQ8-purchase.scarcity
-                    print(string.format('CSC_AI_CUSTOMER_LAND_APPRAISED turn=%d player=%d city=%d district=%d plot=%d invoice=%d ownedMarginQ8=%d scarcityQ8=%d creditQ8=%d',
-                        turn,pid,target.city,target.district,target.plot,target.purchaseGold,purchase.margin,purchase.scarcity,purchase.credit))
+                    print(string.format('CSC_AI_CUSTOMER_LAND_APPRAISED turn=%d player=%d city=%d district=%d plot=%d invoice=%d ownedMarginQ8=%d scarcityQ8=%d creditQ8=%d slotWait=%d',
+                        turn,pid,target.city,target.district,target.plot,target.purchaseGold,purchase.margin,purchase.scarcity,purchase.credit,purchase.row.wait))
                     if snapshot.nextLayouts then
                         local chain=target.chain
                         local quarter={city=chain.city:GetID(),district=chain.profile.district.Index,plot=chain.plot:GetIndex()}

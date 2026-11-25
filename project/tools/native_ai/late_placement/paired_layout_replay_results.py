@@ -22,6 +22,7 @@ PROVIDER_SCOPE = re.compile(
 CUSTOMER_APPRAISAL = re.compile(
     r'CSC_AI_CUSTOMER_LAND_APPRAISED turn=(\d+) player=(\d+) city=(\d+) district=(\d+) '
     r'plot=(\d+) invoice=(\d+) ownedMarginQ8=(-?\d+) scarcityQ8=(-?\d+) creditQ8=(\d+)'
+    r'(?: slotWait=(\d+))?'
 )
 
 
@@ -235,9 +236,11 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                                      purchase_after_switch=after_switch(row['turn'])))
             land = dict(
                 appraisals=[dict(turn=turn, invoice=invoice, owned_margin_q8=margin,
-                                 scarcity_q8=scarcity, credit_q8=credit, post_switch=after_switch(turn))
-                            for turn, owner, city, district, plot, invoice, margin, scarcity, credit
-                            in (map(int, match.groups()) for match in CUSTOMER_APPRAISAL.finditer(log))
+                                 scarcity_q8=scarcity, credit_q8=credit, slot_wait=wait,
+                                 post_switch=after_switch(turn))
+                            for turn, owner, city, district, plot, invoice, margin, scarcity, credit, wait
+                            in ([int(value) if value is not None else None for value in match.groups()]
+                                for match in CUSTOMER_APPRAISAL.finditer(log))
                             if owner == player and (city, district, plot) == targets[1]],
                 offers=offers,
                 spending=spending,

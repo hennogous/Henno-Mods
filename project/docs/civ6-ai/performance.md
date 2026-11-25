@@ -74,6 +74,13 @@ differences in what the two empires built during the full games.
 [Standalone layout results](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november)
 and [City Lights results](../research/mods/city-lights-ai-placement-20261116.md#matched-city-lights-result-at-turn-250).
 
+A separate turn-200 City Lights replay compared caching the existing
+customer's adjacency footprint with the current facts reader. Four
+same-save passes produced identical forecast and layout fingerprints.
+The two current passes averaged 1.39 seconds for the measured player;
+the two cached passes averaged 1.45 seconds. Customer-site work averaged
+0.156 and 0.158 seconds respectively. The current reader stays in use.
+
 The joint model now skips the second sweep when the first accepts no
 producer or customer investment change. Those states would repeat in the
 same world. The old logical visit count still applies to the work budget

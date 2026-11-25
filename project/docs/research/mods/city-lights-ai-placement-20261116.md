@@ -1296,9 +1296,34 @@ The original standalone game offers a second replay case. Atzcapotzalco
 founded Bakers on 1125 at turn 51, completed it on 59, then bought 1051
 for 45 Gold at turn 67. Its Hub foundation was on 83 and the pair was
 complete by 89. The native tree named the Hub when it accepted contract
-809 on turn 60. The original record has no CSC purchase offer. The
-hash-verified candidate with the new appraisal is queued for a matched
-replay from the turn-50 checkpoint through 95.
+809 on turn 60. The same city's capacity read showed one used slot and
+one allowed on turns 59–65. It went from population two to three on turn
+61 and opened the second slot at population four on 66. The native tree
+could start saving before construction capacity opened. The original record
+has no CSC purchase offer.
+
+Both matched copies of the turn-50 save reached turn 95. Both completed
+Bakers on turn 59 and had a working Base and Specialty supplier at the
+endpoint. The candidate identified the unowned Hub option on 1051 on
+turn 59; the quote was 45 Gold and the treasury held 63.47 by turn 60.
+It retained an owned Hub alternative on 1200 while the city's single
+slot was filled. The city opened its second slot on turn 66 in both
+copies. Neither copy bought 1051. Both selected an Aqueduct on turn 60
+and then selected the Hub on the owned 1200 on turn 69. Neither had
+completed the Hub by turn 95.
+The tested planner only appraised paid sites once a slot was free. The replay
+also had an owned backup, so the purchase record alone cannot say which
+site would have won an earlier, same-timing comparison.
+
+The next candidate lets the native savings request compete early when
+the reported next citizen will open a slot within ten turns. Paid sites
+compete with linked owned sites and the leading ordinary owned site at
+the same expected opening. Projected returns include the wait and the
+Gold invoice is priced today. Unknown growth or an incomplete comparison
+leaves the owned plan in charge. Atzcapotzalco had two citizens at the
+original turn-60 request, so the one-citizen forecast would first apply
+at population three. The new policy and its fallback have offline
+coverage. An early purchase from this policy still needs a matched replay.
 
 The City Lights turn-150 save has a second candidate if the
 Atzcapotzalco replay diverges. Kristiansand's Bakers on 2194 was

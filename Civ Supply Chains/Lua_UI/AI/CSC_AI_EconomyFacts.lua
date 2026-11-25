@@ -2280,11 +2280,18 @@ function F.New(player,placement,ui,context)
                         local capacity=snapshot.DistrictCapacity(city)
                         if capacity and capacity.known and capacity.used>=capacity.allowed then
                             local candidates={}
+                            local referenceKey=group.city..':'..group.district
                             for _,row in ipairs(map.free)do
                                 local link=group.related[row.index]
                                 if link and not protectedPlots[row.index]then
                                     candidates[#candidates+1]={plot=row.index,adjacency=row.adjacency,
                                         links=link.links,chains=link.chains,waiting=true}
+                                elseif snapshot.planCustomerPurchases and capacity.nextSlotTurns
+                                    and not references[referenceKey]then
+                                    -- When a slot is due, the paid-site appraisal
+                                    -- also needs the best ordinary owned option
+                                    -- from this same map-legal shortlist.
+                                    references[referenceKey]={plot=row.index,links=0}
                                 end
                             end
                             if #candidates>0 then

@@ -136,7 +136,11 @@ The native net quote includes the invoice. The purchase credit uses the
 additional CSC value left after that comparison. The existing native
 savings and spending decisions still govern purchase. A matched replay
 must link the new appraisal to a purchase and construction on the tile.
-[Purchase appraisal and comparison](../research/mods/city-lights-ai-placement-20261116.md#matched-standalone-result-24-november).
+The native AI can request a tile before construction capacity opens.
+An upcoming slot can now enter the land appraisal when the next citizen
+will open it within ten turns. Paid and owned sites use the same expected
+construction date; the land invoice remains due immediately.
+[Purchase appraisal and comparison](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
 
 ## Current work
 

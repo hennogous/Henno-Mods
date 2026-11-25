@@ -26,16 +26,21 @@ APPRAISAL = '''
             if target then
                 for _,option in ipairs(target.options)do
                     if option.purchaseGold and option.city==BUYER and option.district==DISTRICT then
-                        local paid={plot=FRONTIER,option=option,valueQ8=value(option)}
+                        local slotWait
+                        if type(customerPurchaseWait)=='function' then slotWait=customerPurchaseWait(option) end
+                        local paid={plot=FRONTIER,option=option,valueQ8=value(option,slotWait)}
                         local ready=snapshot.ConnectionDistrictTurns(option.city,option.district)
-                        local net=ready and snapshot.CustomerNetValue and snapshot.CustomerNetValue(option.city,option.district,option.plot,ready)
+                        local net=ready and snapshot.CustomerNetValue
+                            and snapshot.CustomerNetValue(option.city,option.district,option.plot,ready+(slotWait or 0))
                         local buyer=snapshot.cities[option.city]
                         local capacity=buyer and snapshot.DistrictCapacity and snapshot.DistrictCapacity(buyer.object)
                         local ownedCount,otherCount,unknown,bestOwned,bestAlternative=0,0,0,nil,nil
                         for alternativePlot,row in pairs(group.plots)do
                             if alternativePlot~=FRONTIER then for _,backup in ipairs(row.options)do
                                     if backup.purchaseGold then otherCount=otherCount+1 else ownedCount=ownedCount+1 end
-                                    local quote=value(backup)
+                                    local comparableWait=backup.city==option.city and backup.district==option.district
+                                        and slotWait or nil
+                                    local quote=value(backup,comparableWait)
                                     if not quote then
                                         unknown=unknown+1
                                     elseif paid.valueQ8 then
@@ -51,12 +56,13 @@ APPRAISAL = '''
                             end end
                         end
                         local margin=paid.valueQ8 and unknown==0 and paid.valueQ8-(bestAlternative or 0) or nil
-                        print(string.format('CSC_DIAGNOSTIC_CUSTOMER_APPRAISAL turn=%d player=%d anchor=%d stage=%d city=%d district=%d plot=%d invoice=%d paidQ8=%s nativeSiteQ8=%s used=%d allowed=%d owned=%d otherFrontier=%d unknown=%d comparableOwnedQ8=%s marginQ8=%s actualPlot=%s actualPurchaseCreditQ8=%s',
+                        print(string.format('CSC_DIAGNOSTIC_CUSTOMER_APPRAISAL turn=%d player=%d anchor=%d stage=%d city=%d district=%d plot=%d invoice=%d paidQ8=%s nativeSiteQ8=%s used=%d allowed=%d owned=%d otherFrontier=%d unknown=%d comparableOwnedQ8=%s marginQ8=%s actualPlot=%s actualPurchaseCreditQ8=%s nextSlotTurns=%s appraisalWait=%s',
                             turn,pid,ANCHOR,stage,option.city,option.district,option.plot,option.purchaseGold,
                             tostring(paid.valueQ8),tostring(net),capacity and capacity.used or -1,
                             capacity and capacity.allowed or -1,ownedCount,otherCount,unknown,
                             tostring(bestOwned),tostring(margin),tostring(actual[stage] and actual[stage].best.plot),
-                            tostring(actual[stage] and actual[stage].purchaseCreditQ8)))
+                            tostring(actual[stage] and actual[stage].purchaseCreditQ8),
+                            tostring(capacity and capacity.nextSlotTurns),tostring(slotWait)))
                         inspected=inspected+1
                     end
                 end
