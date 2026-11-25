@@ -1255,7 +1255,11 @@ in the table above precede this change.
 (`737c6582fd7e`, map seed 1457395586) passed the controller's source and
 package preflight. Three historical buying cities on this seed had a
 district purchase request followed by an actual adjacent pair. Gori's
-Entertainment Complex 2419 was founded on 111 beside Bakers 2492. Caracas
+turn-91 request for plot 2419 decoded a Commercial Hub under contract
+1633. Its Entertainment Complex later founded on that tile on turn 111
+and completed on 118, beside the Bakers Quarter at 2492 in city 196610.
+The historical record has no plot-purchase event or matching debit for
+this tile. The request and later district are distinct events. Caracas
 founded Rural Community 2826 on 117 beside Bakers 2751. Batumi founded
 Rural Community 3011 on 118 beside Bakers 3084, and a second Bakers
 Quarter on 3012 later linked back to it. Use those three sites in both
