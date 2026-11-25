@@ -7,9 +7,14 @@ with working Base supply. Guidance averaged 1.45 seconds per turn
 and peaked at 3.41 seconds. The candidate was last observed on
 turn 234 before Shadow stopped. At the shared turn-200 census, it had 20
 completed customer pairs (17 with working Base), against 12 in the
-baseline (all supplied). The City Lights pair started on the same
-pins, with a fresh same-seed standalone candidate queued behind it.
+baseline (all supplied). A fresh same-seed standalone candidate is running.
 [Interrupted standalone comparison](../research/mods/city-lights-ai-placement-20261116.md#standalone-turn-200-before-the-host-interruption).
+
+**City Lights qualification, 25 November.** The baseline's observing
+civilisation was eliminated after the turn-237 reading. The controller
+closed cleanly and preserved the logs. The replacement uses the same
+builds and settings, with new seeds fixed before either arm plays.
+[Benchmark selections](roadmap.md#qualify-and-complete-quarter-layouts).
 
 **Paid customer sites, Problem 1.5.** In the corrected short replay,
 Barcelona's Hub offers reached the native cache while its Theater

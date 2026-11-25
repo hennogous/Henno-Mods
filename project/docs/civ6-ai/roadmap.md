@@ -75,7 +75,17 @@ The immediate focus is the city planning capability shared by Problems 1 and 2. 
 
 **Candidate coverage, 24 November.** In an offline test, a viable Base and a specific customer take a Quarter from +1 today to +2 after the customer is built. That extra point also increases the bid. The planner evaluates the partner's own yield, discounts delayed construction, checks capacity and charges the combined land cost once. Other tests cover plan recovery from a save, support for the missing district in either order, protection of the last usable supplier and withdrawal of an uneconomic offer. All 222 economy checks pass. The remaining decision is whether this produces more completed, supplied pairs in ordinary games.
 
-**Full-game selections made before candidate outcomes.** Use Small Continents on Online speed for both configurations. CSC alone uses map seed 171124601 and game seed 171124602. CSC with City Lights uses map seed 171124603 and game seed 171124604. Compare the default and candidate on the same start and roster within each configuration. Keep each endpoint loadable and check live games every 20 minutes. Short diagnostic replays can reuse the earlier Quito, Delhi and customer-first saves.
+**Full-game selections made before candidate outcomes.** Use Small
+Continents on Online speed for both configurations. CSC alone uses map
+seed 171124601 and game seed 171124602. The original City Lights baseline
+used 171124603/171124604. Its observing civilisation was eliminated after
+the turn-237 reading, so the controller closed that game and kept the
+partial evidence. The replacement City Lights pair is fixed at map
+seed 171124605 and game seed 171124606 before either arm is played.
+Compare the default and candidate on the same start and roster within
+each configuration. Keep each endpoint loadable and check live games
+every 20 minutes. Short diagnostic replays can reuse the earlier Quito,
+Delhi and customer-first saves.
 
 **City Lights loading.** The existing `ModSupport_CL` game criterion loads the SQL that maps Rural Communities to each Quarter's goods-provider tag. The same Lua planner reads the active mappings in both configurations. Keep those district lists in gameplay data so the planner picks up new providers as the design grows.
 
