@@ -86,7 +86,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
             connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None,
             recover_preferences_from=None, land_targets=(), timing_query=None,
-            provider_decline_switch=False, fixture_parameters=None):
+            provider_decline_switch=False, fixture_parameters=None, timing_query_at_switch=False):
     if fixture == 'customer_frontier':
         require(paired_layout_csc and paired_layout_switch_turn == start
                 and isinstance(fixture_parameters, dict),
@@ -102,6 +102,10 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
     plan = prepare(source, output, start, start, None, read_only=True, replay_ce=replay_ce,
                    paired_layout_csc=paired_layout_csc)
     switch_turn = paired_layout_switch_turn or connection_switch_turn
+    if timing_query_at_switch:
+        require(timing_query is not None and switch_turn is not None and start < switch_turn < end
+                and fixture is None and natural_sacristan is None,
+                'A switch-boundary timing query needs an unmodified pre-roll')
     deferred_capacity = fixture in ('stirling_capacity', 'quito_capacity')
     if replay_ce is not None:
         require(package_identity(replay_ce)[0]==plan.protocol['ce'], 'Dev CE replay mod identity differs')
@@ -204,12 +208,12 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         require(f'CSC_MILESTONE_{fixture.upper()}_{mode.upper()}' in raw, 'Fixture evidence missing')
         return raw
 
-    def capture_policy_timing():
+    def capture_policy_timing(turn):
         # Private copies of the model read one paused world. They neither
         # publish scores nor advance turns, so this can inspect common setup.
         raw = controller.cmd(read(timing_query), 'CSC_AI_BakersGameplay', 'same-state-timing', wait=60)
         (output / 'same-state-timing.txt').write_text(raw, encoding='utf-8')
-        require('CSC_CUSTOMER_TIMING_COMPLETE=' in raw and 'CSC_COAST_END\t'+str(start) in raw,
+        require('CSC_CUSTOMER_TIMING_COMPLETE=' in raw and re.search(rf'CSC_COAST_END\t{turn}\b', raw),
                 'Same-state timing checks did not complete')
 
     def sacristan_civic_state(mode):
@@ -254,6 +258,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                    paired_layout_csc=str(paired_layout_csc) if paired_layout_csc else None,
                    connection_timing_player=connection_timing_player,
                    timing_query_sha256=sha(timing_query) if timing_query is not None else None,
+                   timing_query_turn=(switch_turn if timing_query_at_switch else start)
+                   if timing_query is not None else None,
                    packages={i['role']: i['files'] for i in installed}))
         session.start(lambda: launch(SimpleNamespace(binary=plan.binary), output))
         session.wait_context('MainMenu')
@@ -288,8 +294,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     'tostring(A.AnchoredConnectionAuditEnabled))')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'paired-layout-common-opening')
             require(re.search(r'CSC_REPLAY_ANCHORED\s+true\s+true',raw), 'Missing common replay policy')
-        if timing_query is not None and fixture != 'customer_frontier':
-            capture_policy_timing()
+        if timing_query is not None and not timing_query_at_switch and fixture != 'customer_frontier':
+            capture_policy_timing(start)
         if natural_sacristan is not None:
             # Both arms use the same integrated package throughout pre-roll.
             # Only the target civic's Service credit is toggled after setup.
@@ -314,7 +320,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     require(frontier_start == expected_preparation['frontier_start'],
                             'Released footprint, price, capacity or supply differs between arms')
                 if timing_query is not None:
-                    capture_policy_timing()
+                    capture_policy_timing(start)
             if fixture == 'market':
                 fixture_receipt('legal', 'PlotInfo')
             elif fixture == 'entertainment':
@@ -364,6 +370,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             if start < switch_turn:
                 play_between(start, switch_turn)
             prepared = census(switch_turn, 'connection-switch-census')
+            if timing_query_at_switch:
+                capture_policy_timing(switch_turn)
             if expected_preparation is not None:
                 prior = expected_preparation['census']
                 proof = compare_structure(prior, prepared)

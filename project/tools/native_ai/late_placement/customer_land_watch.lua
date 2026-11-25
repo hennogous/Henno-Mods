@@ -63,6 +63,16 @@ if landTargets and #landTargets>0 then
                 print('CSC_CUSTOMER_LAND_TARGET',turn,pid,cityID,district,index,owner,
                     buyer and buyer:GetID() or -1,plot:GetDistrictType(),tostring(raw),tostring(unique),
                     tostring(plot:CanHaveDistrict(district,pid,cityID)),Players[pid]:GetTreasury():GetGoldBalance())
+                if owner==-1 then
+                    -- The stock City Panel uses these same reads for its
+                    -- growth hex. Record the next expansion alongside the
+                    -- quote so an imminent free claim is visible in a replay.
+                    local ok,nextPlot,turns=pcall(function()
+                        local culture=city:GetCulture()
+                        return culture:GetNextPlot(),culture:GetTurnsUntilExpansion()
+                    end)
+                    if ok then print('CSC_CUSTOMER_LAND_BORDER',turn,pid,cityID,index,nextPlot,turns)end
+                end
             else
                 print('CSC_CUSTOMER_LAND_TARGET_UNAVAILABLE',turn,pid,cityID,district,index,
                     tostring(city~=nil),tostring(known))

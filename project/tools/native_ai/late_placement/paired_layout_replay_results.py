@@ -15,6 +15,7 @@ from planning_results import parse
 
 
 PLAN = re.compile(r'CSC_AI_PROSPECTIVE_CONNECTION ([^\r\n]+)')
+CUSTOMER_LAND_BORDER = re.compile(r'CSC_CUSTOMER_LAND_BORDER\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(-?\d+)\t(-?\d+)')
 PROVIDER_SCOPE = re.compile(
     r'CSC_AI_PROVIDER_DECLINE_PROPOSED turn=(\d+) version=(\d+) player=(\d+) city=(\d+) '
     r'district=(\d+) alternative=(\d+) alternativePlot=(\d+) sites=(\d+)'
@@ -220,6 +221,10 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                                      offer_during_post_switch_publication=offered_after_switch,
                                      purchase_after_switch=after_switch(row['turn'])))
             land = dict(
+                border_growth=[dict(turn=turn, next_plot=next_plot, turns=turns)
+                               for turn, owner, city, plot, next_plot, turns in
+                               (map(int, row) for row in CUSTOMER_LAND_BORDER.findall(log))
+                               if (owner, city, plot) == (player, customer_city, customer_plot)],
                 appraisals=[dict(turn=turn, invoice=invoice, owned_margin_q8=margin,
                                  scarcity_q8=scarcity, credit_q8=credit, slot_wait=wait,
                                  post_switch=after_switch(turn))

@@ -1717,6 +1717,34 @@ empty purchase bid list in these private snapshots. The wrapper now
 keeps the plan when assembling simulated packet entries. The live mod
 and the full game's recorded turn times use a different path.
 
+### Malinalco's paid Hub bid lost to its Entertainment Complex
+
+The turn-200 pilot released plot 530 from Malinalco in a copy of the
+standalone candidate save. The plot had no resource or improvement.
+Two working Base suppliers remained beside Bakers 604. Malinalco was
+the unique buyer and its quote changed from 80 to 100 Gold. At turn 205,
+CSC published an exact Hub bid of +6,464 Q8 in packet 6. The native
+receipt showed one write, one eligible cache read and one city comparison.
+The Hub scored 613,661 Q8. The Entertainment Complex won the same plot
+at 760,826 Q8, a gap of 147,165 Q8. The city submitted the Entertainment
+Complex request and its Purchase Plot node reported `Not Buying anything`.
+
+The stock growth preview named plot 530 with one turn remaining at
+turn 205. It belonged to Malinalco at the next sample with no plot
+purchase event. The Entertainment Complex founded on 207. This gives
+an ordinary paid Hub offer with a measured native loss to a stronger
+district. The unowned sample, city comparison and acquisition are
+separate clocks. The save and package hashes are in
+`paid-customer-pilot-530-at-200/inputs.json` on Shadow.
+
+Teayo's 35 Gold Entertainment Complex appraisal lost to its owned
+alternatives in the private scan. The city later acquired the released
+site by its next district decision without a purchase. Aduatuca's quote
+did not pass the unique-buyer screen. Faras's target was not a bare
+unimproved tile at the loaded checkpoint. Adrianople's target did not
+pass the receiving city's empty-owned-tile check. These preflight
+failures did not reach bid publication or native competition.
+
 ### Bogotá bought land and completed its Rural provider in both arms
 
 The controller recreated the original City Lights opening through turn 25

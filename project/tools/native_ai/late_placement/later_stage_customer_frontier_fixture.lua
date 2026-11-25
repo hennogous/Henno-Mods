@@ -56,6 +56,15 @@ if mode=='setup'then
     -- Both cities may have territory beside the same tile. Releasing it in
     -- a fixture must still satisfy the production buyer's uniqueness check.
     local price=reader.GetPlotPurchaseQuote(playerID,scope.customerCity,scope.customerPlot)
+    if not price then
+        for _,city in player:GetCities():Members()do
+            local quote=reader.GetRawPlotPurchaseQuote(playerID,city:GetID(),scope.customerPlot)
+            if quote or city:GetID()==scope.customerCity then
+                print('CSC_MILESTONE_CUSTOMER_FRONTIER_QUOTE',city:GetID(),city:GetName(),
+                    tostring(quote),Map.GetPlotDistance(city:GetX(),city:GetY(),site:GetX(),site:GetY()))
+            end
+        end
+    end
     assert(price and price>0,'The surveyed customer city is not the unique eligible buyer')
     assert(site:CanHaveDistrict(target.Index,playerID,scope.customerCity),'Released site cannot host the customer')
     local capacity=assert(reader.GetDistrictCapacity(playerID,scope.customerCity))

@@ -34,6 +34,13 @@ Community and completed the provider link in both arms. A live positive
 CSC offer preceding a matching ordinary customer purchase remains open.
 [Matched Meroë and Bogotá evidence](../research/mods/city-lights-ai-placement-20261116.md#mero%C3%AB-completed-its-hub-after-acquiring-the-tile-without-buying-it).
 
+Malinalco's 100 Gold Hub offer reached a live comparison on the exact
+plot. The city chose a stronger Entertainment Complex by 147,165 Q8.
+Its growth preview also had that plot one turn from annexation. The
+Entertainment Complex founded after the land became owned with no
+purchase event.
+[Native contest and expansion sample](../research/mods/city-lights-ai-placement-20261116.md#malinalcos-paid-hub-bid-lost-to-its-entertainment-complex).
+
 **Hattin provider competition, Problems 1.2 and 2.1.** Hattin's
 control repeatedly chose a Rural type that was already built. The
 candidate's admission scopes reached the native selection. The
