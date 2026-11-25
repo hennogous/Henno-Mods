@@ -1662,6 +1662,32 @@ the existing Quarter's partner through execution under both planners.
 Native competition also chose a Campus and a Neighborhood in the
 receiving city during the replay.
 
+A separate turn-200 diagnostic released the planned Hub tile in a test
+copy to see whether it could demonstrate a paid customer bid. Skedsmo
+and Sarpsborg each bordered plot 1163 and had a 100 Gold quote at two
+tiles' distance. Ålesund bordered it at three tiles and quoted 150 Gold.
+The buyer check declined the site because the cheapest two quotes tied.
+Use the original replay as evidence for the Quarter-first build order and
+choose a site with a unique eligible buyer for the purchase test.
+
+### Bogotá bought land and completed its Rural provider in both arms
+
+The controller recreated the original City Lights opening through turn 25
+and verified the recorded starting census. Both arms loaded that save with
+the same package and terrain, treasury and district state. Bakers founded
+on plot 1136 at turn 27. Bogotá requested neighbouring plot 1210 for Rural
+Community A on turn 28 under contract 315, and its treasury paid 30 Gold
+on turn 29. Rural A founded on turn 47 and completed on 48 in both arms.
+By turn 50 the candidate copy had two working Base suppliers and one
+working Specialty supplier beside Bakers.
+
+The first purchase request preceded the Bakers completion on turn 33.
+Neither arm logged a paid CSC offer for the exact Rural plot. This replay
+shows the native purchaser and City Lights construction tree completing a
+supplied provider layout across two cities from the same start. The
+ordinary customer purchase test still needs an accepted CSC offer before
+the matching district request.
+
 #### What happened after a priced City Lights layout began
 
 The candidate priced 168 distinct exact layouts. Fifty saw at least one

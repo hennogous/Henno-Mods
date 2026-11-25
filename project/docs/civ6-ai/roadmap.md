@@ -100,6 +100,12 @@ deliverability when valuing new provider footprints, while preserving
 links to standing providers and options for different provider types.
 [Repeated Rural site selections](../research/mods/city-lights-ai-placement-20261116.md#the-stock-tree-considers-a-completed-exact-district-type-fulfilled)
 
+Bogotá's matched turn-25 replay followed the stock 30 Gold purchase of
+an adjacent Rural provider site through construction and a supplied
+Bakers link in both arms. CSC's paid customer offer still needs its own
+matching native decision and purchase.
+[Bogotá purchase and provider completion](../research/mods/city-lights-ai-placement-20261116.md#bogot%C3%A1-bought-land-and-completed-its-rural-provider-in-both-arms)
+
 The short Rustavi replay recorded a released claim with a viable
 substitute. In the City Lights turn-250 comparison, Oslo let Chichen
 Itza use the released Hub plot and completed the Bakers–Hub pair on
