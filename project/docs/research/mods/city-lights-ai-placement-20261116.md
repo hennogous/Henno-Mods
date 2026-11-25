@@ -1932,6 +1932,42 @@ over 250 turns. Measured guidance accounted for an extra 0.84 and 0.89
 seconds per turn. With more supplied layouts, operating buyers and
 Services in both configurations, the performance and evidence review
 supports enabling the planner for the confirmed single-player publisher.
+
+#### Service establishments and AI economy totals
+
+The turn-250 census counts installed Service buildings. The native Service
+observer separately counts active supplier-to-customer turns on 199 common
+clocks per matched pair. A Service can receive more than one supplier on a
+turn, and an established Service can be inactive.
+
+| Service | Standalone buildings | Standalone active link-turns | City Lights buildings | City Lights active link-turns |
+| --- | ---: | ---: | ---: | ---: |
+| Storekeeper | 19 → 21 | 1,368 → 1,656 | 14 → 22 | 1,071 → 1,404 |
+| Innkeeper | 4 → 4 | 248 → 225 | 3 → 5 | 147 → 275 |
+| Dockmaster | 0 → 0 | 0 → 0 | 0 → 1 | 0 → 65 |
+| Sacristan | 1 → 2 | 58 → 89 | 0 → 2 | 0 → 125 |
+| Stage Manager | 0 → 1 | 0 → 1 | 1 → 1 | 20 → 11 |
+| All Services | **24 → 28** | **1,674 → 1,971** | **18 → 31** | **1,238 → 1,880** |
+
+| Turn-250 totals across the five AI empires | Standalone, default → candidate | City Lights, default → candidate |
+| --- | ---: | ---: |
+| Cities | 56 → 49 | 58 → 56 |
+| Population | 707 → 702 | 785 → 813 |
+| Production per turn | 2,118 → 2,136 | 2,499 → 3,388 |
+| Food surplus per turn | 233 → 283 | 384 → 450 |
+| Gross Gold per turn | 2,966 → 2,817 | 4,229 → 8,013 |
+| Maintenance per turn | 1,672 → 1,953 | 3,357 → 4,961 |
+| Net Gold per turn | 1,294 → 864 | 872 → 3,052 |
+| Gold in treasury | 3,435 → 3,911 | 1,381 → 10,699 |
+
+The ten evenly spaced censuses from 25 through 250 show average Production
+per turn of 857 → 892 standalone and 1,022 → 1,181 with City Lights.
+Average Food surplus was 195 → 231 and 255 → 249. Average net Gold was
+504 → 413 and 640 → 1,323. These are sampled empire-wide rates. The
+censuses support whole-game comparisons at the sampled turns, while an
+exact cumulative output total would need every turn's yields. The City
+Lights endgame economy includes changes in empire development across the
+two games, so the total is a balance signal for this seed.
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
 The turn-200 pilot released plot 530 from Malinalco in a copy of the
