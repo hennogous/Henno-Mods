@@ -1356,6 +1356,30 @@ Both later used the plot for a Preserve: founded on 87 and complete
 on 93. This separates the destination of the native land request from
 the district that ultimately used it.
 
+**Current candidate and two-growth appraisal.** A replay from the current
+candidate's own turn-50 checkpoint again founded Bakers 1125 on turn 51.
+At the inactive turn-59 snapshot, its Base and Specialty suppliers were
+both forecast five turns away. The paid Hub plots 1051 and 1052 each
+quoted 45 Gold and +2 ordinary adjacency. The city had population two
+and its only slot was occupied. CSC uses the native growth date as a
+slot forecast only when the next citizen opens a slot.
+
+Two private appraisals ran on that same board. The first used the live
+capacity forecast. The second supplied the seven turns between the
+checkpoint and the original slot opening, without changing the city or
+publishing a packet. It retained the linked owned site 1200 and added
+the ordinary owned reference 1198. The paid appraisal reached four
+native plot quotes, and neither arm produced a positive paid offer.
+The earlier slot estimate exposed the purchase comparison. The paid
+options still failed the economic screen.
+
+In the live replay the city chose an Aqueduct on 60 and a Campus on 69.
+The candidate later submitted two paid Hub signals from the Tailors
+layout at 1050, +71 Q8 on 72 and +129 Q8 on 75. Both wrote to the
+eligible cache while the Campus request held the city. Neither reached a
+new city comparison. The border brought 1051 into the city on 76 with
+no purchase event. The plot remained empty through the turn-96 check.
+
 The full-game observer keeps the buying city's label at payment so that
 the report can match the earliest typed district request from that city
 to the same purchase, even when another city wanted the tile. It requires
