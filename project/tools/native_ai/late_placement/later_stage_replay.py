@@ -86,7 +86,11 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
             connection_scout=(), connection_enabled=None, connection_switch_turn=None,
             connection_timing_player=None, paired_layout_csc=None, paired_layout_switch_turn=None,
             recover_preferences_from=None, land_targets=(), timing_query=None,
-            provider_decline_switch=False):
+            provider_decline_switch=False, fixture_parameters=None):
+    if fixture == 'customer_frontier':
+        require(paired_layout_csc and paired_layout_switch_turn == start
+                and isinstance(fixture_parameters, dict),
+                'Customer frontier replay needs the exact shared save, policy switch and target coordinates')
     if provider_decline_switch:
         require(paired_layout_csc and paired_layout_switch_turn == start and fixture is None
                 and 0 < end-start <= 30 and connection_scout,
@@ -193,11 +197,20 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         script = read(HERE / f'later_stage_{fixture}_fixture.lua')
         label = f'{fixture}-{mode}'
         options = (f'local mode={lua(mode)}\nlocal expectedBuyer={lua(expected)}\n'
-                   f'local naturalSacristan={lua(natural_sacristan)}\nlocal fixtureTurn={preparation_turn}\n')
+                   f'local naturalSacristan={lua(natural_sacristan)}\nlocal fixtureTurn={preparation_turn}\n'
+                   f'local fixtureParameters={lua(fixture_parameters)}\n')
         raw = controller.cmd(options + script, context, label)
         (output / (label + '.txt')).write_text(raw, encoding='utf-8')
         require(f'CSC_MILESTONE_{fixture.upper()}_{mode.upper()}' in raw, 'Fixture evidence missing')
         return raw
+
+    def capture_policy_timing():
+        # Private copies of the model read one paused world. They neither
+        # publish scores nor advance turns, so this can inspect common setup.
+        raw = controller.cmd(read(timing_query), 'CSC_AI_BakersGameplay', 'same-state-timing', wait=60)
+        (output / 'same-state-timing.txt').write_text(raw, encoding='utf-8')
+        require('CSC_CUSTOMER_TIMING_COMPLETE=' in raw and 'CSC_COAST_END\t'+str(start) in raw,
+                'Same-state timing checks did not complete')
 
     def sacristan_civic_state(mode):
         raw = fixture_receipt(mode, 'PlotInfo')
@@ -231,6 +244,7 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         verify_packages()
         write_json(output / 'inputs.json', dict(source=str(source), start=start, end=end,
                    checkpoint=plan.checkpoint['sha256'], fixture=fixture,
+                   fixture_parameters=fixture_parameters,
                    natural_sacristan=natural_sacristan, preparation_turn=preparation_turn,
                    connection_scout=connection_scout, connection_enabled=connection_enabled,
                    land_targets=land_targets,
@@ -274,13 +288,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     'tostring(A.AnchoredConnectionAuditEnabled))')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'paired-layout-common-opening')
             require(re.search(r'CSC_REPLAY_ANCHORED\s+true\s+true',raw), 'Missing common replay policy')
-        if timing_query is not None:
-            # This compares private copies of the model on the same paused
-            # world. Neither evaluator publishes scores or advances turns.
-            raw = controller.cmd(read(timing_query), 'CSC_AI_BakersGameplay', 'same-state-timing', wait=60)
-            (output / 'same-state-timing.txt').write_text(raw, encoding='utf-8')
-            require('CSC_CUSTOMER_TIMING_COMPLETE=' in raw and 'CSC_COAST_END\t'+str(start) in raw,
-                    'Same-state timing checks did not complete')
+        if timing_query is not None and fixture != 'customer_frontier':
+            capture_policy_timing()
         if natural_sacristan is not None:
             # Both arms use the same integrated package throughout pre-roll.
             # Only the target civic's Service credit is toggled after setup.
@@ -297,6 +306,15 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                 if expected_preparation is not None:
                     require(civic_start == expected_preparation['civic_start'], 'Starting civic state differs between arms')
             setup = fixture_receipt('setup', 'CSC_AI_BakersGameplay')
+            if fixture == 'customer_frontier':
+                receipt = re.search(r'CSC_MILESTONE_CUSTOMER_FRONTIER_SETUP\t([^\r\n]+)', setup)
+                require(receipt is not None, 'Customer frontier setup receipt is missing its facts')
+                frontier_start = receipt[1].split('\t')
+                if expected_preparation is not None:
+                    require(frontier_start == expected_preparation['frontier_start'],
+                            'Released footprint, price, capacity or supply differs between arms')
+                if timing_query is not None:
+                    capture_policy_timing()
             if fixture == 'market':
                 fixture_receipt('legal', 'PlotInfo')
             elif fixture == 'entertainment':
@@ -425,6 +443,8 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
         result = dict(census=prepared)
         if deferred_capacity:
             result['capacity_census'] = capacity_census
+        if fixture == 'customer_frontier':
+            result['frontier_start'] = frontier_start
         return result
 
 

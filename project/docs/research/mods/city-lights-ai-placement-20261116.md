@@ -1670,6 +1670,20 @@ The buyer check declined the site because the cheapest two quotes tied.
 Use the original replay as evidence for the Quarter-first build order and
 choose a site with a unique eligible buyer for the purchase test.
 
+Meroë's turn-150 save has two working Bakers suppliers and a known later
+Hub site on plot 2660. The controlled setup releases only that empty
+plot on a copy. The city has two open district slots and can uniquely
+buy it for 35 Gold. The private appraisal valued the link above its
+owned alternative by 20,975 Q8 and set aside 5,243 Q8 for a bid. The
+matched replay gives both arms the same released tile and lets the game's
+AI decide what to buy and build.
+
+The private timing wrapper previously dropped the connection planner's
+return value. A positive appraisal could therefore appear alongside an
+empty purchase bid list in these private snapshots. The wrapper now
+keeps the plan when assembling simulated packet entries. The live mod
+and the full game's recorded turn times use a different path.
+
 ### Bogotá bought land and completed its Rural provider in both arms
 
 The controller recreated the original City Lights opening through turn 25

@@ -180,9 +180,11 @@ for pass,arm in ipairs(order)do for _,pid in ipairs(players)do
  local customerSeconds,customerStats=0,nil
  local originalCustomer=E.CustomerEconomicOffers
  E.CustomerEconomicOffers=function(...)
-  local started=clock();local offers,stats=originalCustomer(...)
+  -- QuarterBids consumes the third result for the actual connection costs
+  -- and paid customer credit. The diagnostic must preserve that work.
+  local started=clock();local offers,stats,plans=originalCustomer(...)
   customerSeconds=customerSeconds+clock()-started;customerStats=stats
-  return offers,stats
+  return offers,stats,plans
  end
  local started=clock()
  local snapshot,reason=E.Snapshot(player,P,ui);assert(snapshot,reason)
