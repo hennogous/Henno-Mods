@@ -1368,6 +1368,17 @@ control. Its tree named Rural Community A in contract 2108 on turn
 131, then founded Bakers on 2753 on 148 and completed the pair on 152.
 The turn-100 checkpoint precedes both foundations.
 
+**Tenochtitlan's three paid Hub offers.** The turn-50 through 95
+Atzcapotzalco replay also saw a 45 Gold Commercial Hub site on plot
+601 in Tenochtitlan. The treatment paired it with a potential Tailors
+on 675. Packets on turns 72–74 wrote and read the paid site in the
+native cache, with credits of 691, 689 and 186 Q8. The city's district
+tree was still waiting on its turn-65 Harbor purchase at plot 819
+during those offers. Both copies began valuing 601 as an owned build
+target on turn 75. The treatment selected the Hub there on 77, founded
+it on 83 and completed it on 87. The control used the tile for a Wonder
+on 83. The paid-offer phase ended without a Gold debit on 601.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the
