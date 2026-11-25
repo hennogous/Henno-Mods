@@ -1,5 +1,20 @@
 # CSC findings and evidence
 
+## AI-C230 — A paid customer bid led to a working Bakers layout
+
+25 November 2026, roadmap 1.5, 1.6 and 2.1. On a prepared turn-150 Meroë
+save, the rotating planner appraised owned Hub 2810 and purchasable Hub
+2660 for the same city and district. The calibrated candidate credited a
+quarter of the linked margin after the land charge. Packet 2's +9,826 Q8
+reached the first native selection and Hub 2660 won. The AI requested
+that site on 150, paid 35 Gold on 151, founded it on 152 and completed
+the link to Bakers 2735 on 154. Two mapped Base suppliers stayed working
+through 161. The rotation-only copy used owned plot 2810. The city census,
+treasury and opening publication matched across copies. This demonstrates
+the ordinary customer purchase path on the prepared board with CSC
+`2640d4d3`, Dev CE `120fbea9…` and GameCore `4de40abf…`.
+[Replay, score accounting and purchase chronology](../research/mods/city-lights-ai-placement-20261116.md#calibrated-paid-credit-led-to-a-supplied-mero%C3%AB-hub).
+
 ## AI-C229 — A viable substitute lets a different investment use the original customer tile
 
 24 November 2026, roadmap 1.6 and 2.1. In the matched City Lights

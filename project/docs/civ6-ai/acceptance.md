@@ -76,6 +76,11 @@ to duplicate an already proved consumer or completion path.
   construction at226, physically retained227–230. Astra audits both scopes.
   The supplier was already the sole control candidate: no additional supplier
   BUY-versus-NOT-BUY effect is required or claimed.
+- **1.5, 1.6 and 2.1: linked ordinary customer purchase.** AI-C230
+  verifies a live paid-site bid ahead of the native request, 35 Gold
+  payment, exact Hub construction and two working Base suppliers in a
+  prepared matched replay. Astra confirmed the focused scope. Fresh
+  full-game conversion and turn time govern the default policy.
 - **1.8, levels 1–3: known weak-site suppression.** AI-C138's isolated
   production deduction changes the owned-site winner/request; AI-C139's
   dynamic frontier scanner reproduces suppression without fixed-plot policy.
