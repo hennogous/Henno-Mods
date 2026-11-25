@@ -34,6 +34,11 @@ Community and completed the provider link in both arms. A live positive
 CSC offer preceding a matching ordinary customer purchase remains open.
 [Matched Meroë and Bogotá evidence](../research/mods/city-lights-ai-placement-20261116.md#mero%C3%AB-completed-its-hub-after-acquiring-the-tile-without-buying-it).
 
+When Meroë started with its chosen Water Park complete, it paid 35 Gold
+and completed the exact Hub beside working Bakers suppliers. The native
+request had already started one turn before CSC's paid Hub bid.
+[Meroë purchase and construction](../research/mods/city-lights-ai-placement-20261116.md#mero%C3%AB-bought-the-exact-hub-footprint-with-the-water-park-already-complete).
+
 Malinalco's 100 Gold Hub offer reached a live comparison on the exact
 plot. The city chose a stronger Entertainment Complex by 147,165 Q8.
 Its growth preview also had that plot one turn from annexation. The

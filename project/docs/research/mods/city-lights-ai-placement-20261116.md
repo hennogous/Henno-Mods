@@ -1755,6 +1755,24 @@ empty purchase bid list in these private snapshots. The wrapper now
 keeps the plan when assembling simulated packet entries. The live mod
 and the full game's recorded turn times use a different path.
 
+#### Meroë bought the exact Hub footprint with the Water Park already complete
+
+A diagnostic copy began with the Water Park already complete on plot
+2737, the same plot the untreated native city chose in the earlier
+replay. Hub plot 2660 was released, the 35 Gold quote stayed unique and
+both Bakers Base suppliers remained active. The game made every later
+production, savings and purchase decision.
+
+Meroë's native district tree requested 2660 for a Commercial Hub
+on turn 150 under contract 3290. On 151, the planner appraised the
+paid site 36,251 Q8 ahead of the alternatives and offered +8,192 Q8.
+The city paid 35 Gold on 151. Its treasury debit and plot purchase event
+matched on the same clock. The Hub founded on 152 and completed on 154
+beside the working Bakers. The first native request was already accepted
+before CSC's positive packet. This is an exact purchase and use case.
+For bid timing, the next matched setup lets the AI finish its pending Water
+Park before selecting the next district.
+
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
 The turn-200 pilot released plot 530 from Malinalco in a copy of the
