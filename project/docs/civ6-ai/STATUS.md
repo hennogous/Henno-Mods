@@ -4,7 +4,12 @@
 reached turn 250 in 55 minutes and left a verified Load Game save.
 It ended with 12 Bakers and five Tailors customer pairs, 15 of them
 with working Base supply. Guidance averaged 1.45 seconds per turn
-and peaked at 3.41 seconds. The matched candidate game is underway.
+and peaked at 3.41 seconds. The candidate was last observed on
+turn 234 before Shadow stopped. At the shared turn-200 census, it had 20
+completed customer pairs (17 with working Base), against 12 in the
+baseline (all supplied). The City Lights pair started on the same
+pins, with a fresh same-seed standalone candidate queued behind it.
+[Interrupted standalone comparison](../research/mods/city-lights-ai-placement-20261116.md#standalone-turn-200-before-the-host-interruption).
 
 **Paid customer sites, Problem 1.5.** In the corrected short replay,
 Barcelona's Hub offers reached the native cache while its Theater

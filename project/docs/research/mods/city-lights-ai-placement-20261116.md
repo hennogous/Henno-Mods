@@ -1426,6 +1426,29 @@ Tailors had yet to found at 125. Matching the district on the purchase
 request matters here. A quote and later debit on the same plot alone
 would attribute the purchase to the Hub offer.
 
+### Standalone turn 200 before the host interruption
+
+The corrected standalone baseline reached turn 250. The candidate
+was last observed on turn 234 before Shadow stopped. Its turn-200 save and
+370-row census survived. The shared turn-200 results were:
+
+| Measure | Default | Candidate |
+| --- | ---: | ---: |
+| Completed Bakers customer pairs | 8 | 8 |
+| Completed Tailors customer pairs | 4 | 12 |
+| Completed pairs with working Base | 12 | 17 |
+| Bakers Stage 2 active Service link-turns | 811 | 1,001 |
+| Mean guidance seconds per turn | 1.24 | 1.88 |
+| Maximum guidance seconds per turn | 2.74 | 3.71 |
+
+The Service row uses 159 clocks verified in both arms. The guidance
+rows cover all 200 publisher turns. Tailors accounted for the increase
+in pairs, including five more customer-first pairs with working Base.
+Native bid and plot-purchase IDs start over on load. The replacement
+candidate uses the same seed and build from a fresh opening so its
+score, purchase and follow-through records form one continuous series.
+The archived partial game remains available for focused save replays.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the
