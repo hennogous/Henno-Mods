@@ -1,18 +1,17 @@
 # Current CSC AI status
 
-**Standalone qualification, 25 November.** The corrected baseline
-reached turn 250 in 55 minutes and left a verified Load Game save.
-It ended with 12 Bakers and five Tailors customer pairs, 15 of them
-with working Base supply. Guidance averaged 1.45 seconds per turn
-and peaked at 3.41 seconds. The candidate was last observed on
-turn 234 before Shadow stopped. At the shared turn-200 census, it had 20
-completed customer pairs (17 with working Base), against 12 in the
-baseline (all supplied). A fresh same-seed standalone candidate is running.
-[Interrupted standalone comparison](../research/mods/city-lights-ai-placement-20261116.md#standalone-turn-200-before-the-host-interruption).
+**Standalone qualification, 25 November.** Both games reached turn
+250 and left verified Load Game saves. The candidate increased completed
+customer pairs from 17 to 25 and supplied pairs from 15 to 17. All eight
+additional pairs were Tailors. Bakers Stage 2 Service link-turns rose
+from 1,368 to 1,674. Total time averaged 13.22 and 14.19 seconds per turn
+in the default and candidate games respectively. The two paid Hub offers
+in the candidate gave no purchase.
+[Turn-250 comparison](../research/mods/city-lights-ai-placement-20261116.md#corrected-standalone-comparison-at-turn-250).
 
 **City Lights qualification, 25 November.** The baseline's observing
 civilisation was eliminated after the turn-237 reading. The controller
-closed cleanly and preserved the logs. The replacement uses the same
+closed cleanly and preserved the logs. The replacement pair uses the same
 builds and settings, with new seeds fixed before either arm plays.
 [Benchmark selections](roadmap.md#qualify-and-complete-quarter-layouts).
 

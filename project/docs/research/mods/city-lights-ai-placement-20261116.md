@@ -1479,6 +1479,71 @@ which district the selected request originally named. A purchase with
 no identifiable active request stays unattributed. Tenochtitlan's
 turn-149 acquisition was one such case.
 
+### Corrected standalone comparison at turn 250
+
+Both Small Continents games reached turn 250 on Online speed with map
+seed 171124601, game seed 171124602 and the same pinned v30 CSC and
+Dev CE packages. The replacement candidate started from the same
+verified opening. The two turn-250 saves were hash-verified in the
+archive and in Load Game.
+
+| Quarter and first foundation | Completed pairs, default → candidate | With working Base, default → candidate | Median turns between foundations |
+| --- | ---: | ---: | ---: |
+| Bakers, Quarter first | 8 → 9 | 7 → 9 | 27.5 → 34 |
+| Bakers, customer first | 4 → 3 | 4 → 2 | 50 → 34 |
+| Tailors, Quarter first | 4 → 5 | 3 → 2 | 75.5 → 59 |
+| Tailors, customer first | 1 → 8 | 1 → 4 | 63 → 39.5 |
+| **Total at turn 250** | **17 → 25** | **15 → 17** | |
+
+The number of pairs with working Base and a working mapped customer
+building went from 13 to nine. Bakers accounted for that decrease.
+Across all Quarter sites, there were 27 → 31 working Bakers Base
+links, 2 → 11 working Tailors Base links and three working Specialty
+links in each game. The logs showed 26 → 38 Base links working at the
+endpoint without an observed interruption.
+
+The common shortlist surveys owned pairs whose Quarter has at least
++2 adjacency. Each arm sees these opportunities as its own cities grow.
+Four of 238 surveyed pairs completed on their exact tiles in the default
+game and seven of 256 in the candidate. Once a surveyed foundation
+existed, counting any completed adjacent site for the intended type and
+city gave nine of 34 versus 12 of 59 opportunities. Some completed
+physical pairs satisfied two surveyed opportunities. The candidate
+started more surveyed layouts, and converting the remaining district
+remains the main gap. Separately, the candidate appraised 57 Bakers and
+59 Tailors pairs. Three completed on those exact tiles.
+
+| Native Service and timing | Default | Candidate |
+| --- | ---: | ---: |
+| Bakers Stage 2 chains / active link-turns | 17 / 1,368 | 19 / 1,674 |
+| Bakers Stage 3 chains / active link-turns | 5 / 248 | 3 / 208 |
+| Tailors Stage 3 chains / active link-turns | 1 / 58 | 2 / 69 |
+| Game wall time per turn, including launch | 13.22 s | 14.19 s |
+| Guidance mean / maximum per turn | 1.45 / 3.41 s | 2.31 / 6.66 s |
+
+Services use 199 clocks verified in both games. Tailors Stage 2 and
+both Stage 4 families recorded no active chains on those clocks.
+The candidate game averaged 0.97 seconds more per turn, about 7%.
+
+Of 421 recorded candidate Quarter bid losses, Neighborhoods won 196
+and Theater Squares 36. Customer bids lost 166 recorded comparisons,
+most often to Theater Squares (24), Campuses (23) and Encampments (20).
+The separate production queue records include Universities and Pike and
+Shot during failed district requests. A district comparison is upstream
+of that production competition.
+
+The candidate published two paid Hub offers for Barcelona's plot 2088,
+and one reached the eligible cache. Barcelona did not buy that plot. In an
+ordinary paid case, Atzcapotzalco requested Hub 1051 on turn 60, paid
+45 Gold on 67 and founded it on 83. The Hub completed pairs with
+Bakers and Tailors. Skedsmo bought plot 1163 for a Preserve and later
+used it for its Hub. Those outcomes identify useful frontier saves.
+The positive CSC paid-offer-to-construction replay remains open.
+
+Archive on Shadow: `csc-ai-paired-footprints-20261124/full-v30-standalone-comparison.json`.
+The Load Game names are `CSC_LAYOUT_171124601_BASELINE_T250_1c28300f58bc`
+and `CSC_LAYOUT_171124601_TREATMENT_T250_9839f6ad9221`.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the
