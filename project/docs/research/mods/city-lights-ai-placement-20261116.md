@@ -1505,6 +1505,12 @@ for the Zoo or Ferris Wheel. Teayo's Entertainment Complex on plot 1045
 is a traced example. The candidate published +8,427 Q8 on turn 56
 beside Bakers 1119. The eligible native comparison recorded the site
 win, and the Complex was founded on turn 58. Its Zoo was absent on 250.
+The existing Quarter had no Specialty supplier. Its Stage 4 transaction
+failed the supply gate, and the anchored plan's 3,778 Q8 came from
+the Quarter's own adjacency. Between the turn-50 and turn-75 censuses, the
+Quarter's live Gold adjacency rose from one to two with Production still
+at two. The separate +8,427 Q8 bid compares the two full economic worlds
+for the Entertainment Complex sites.
 
 Across all Quarter sites, there were 27 → 31 working Bakers Base
 links, 2 → 11 working Tailors Base links and three working Specialty
