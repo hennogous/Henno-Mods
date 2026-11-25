@@ -1333,12 +1333,25 @@ The native choice readback and completed pair have their own fields.
 When a paid offer enters a recorded district comparison, the report also
 names the competing winner and its score gap.
 
-The City Lights turn-150 save has a second candidate if the
-Atzcapotzalco replay diverges. Kristiansand's Bakers on 2194 was
-already founded, with one adjacent Flax. In the original game it
+**Kristiansand provider replay.** In the City Lights turn-150 save,
+Kristiansand's Bakers on 2194 was already founded, with one adjacent
+Flax. In the original game it
 finished on 160. The tree first reported Rural Community A's plot
 purchase contract 3256 on 161. Kristiansand paid 80 Gold for 2193
 on 166, founded the provider on 188 and completed the pair on 189.
+
+Both matched copies reached turn 195. The candidate identified 2193
+as a provider opportunity on turn 151. The tile entered Kristiansand's
+borders by turn 164 in both copies, with no plot-purchase event or
+paid-site offer for it. The provider founded on turn 177 in control
+and 176 in treatment. Both completed the same pair on 179 and had a
+working Base supplier at the endpoint.
+
+Kaiapoi is another archived purchase case in the same City Lights
+control. Its tree named Rural Community A in contract 2108 on turn
+118. The city paid 70 Gold for 2679 on 119, founded the provider on
+131, then founded Bakers on 2753 on 148 and completed the pair on 152.
+The turn-100 checkpoint precedes both foundations.
 
 ### Tenochtitlan completed a customer-first Tailors layout
 

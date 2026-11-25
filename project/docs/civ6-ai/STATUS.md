@@ -25,7 +25,11 @@ native Hub purchase request started six turns before a district slot
 opened and paid the following turn. Both matched copies finished Bakers
 and selected the same owned Hub site after an Aqueduct. The next
 candidate compares paid and owned alternatives before a reliably
-forecast slot opening. Kristiansand is the next paid-provider replay.
+forecast slot opening. In the matched Kristiansand replay the provider
+tile entered the city's borders by turn 164 in both copies, with no
+purchase event for it. Both finished the same supplied pair on 179. The
+early-slot Atzcapotzalco comparison remains queued behind the City Lights
+provider-admission and performance replays.
 [Paid customer cases](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
 [Sodo replay and exact outcomes](../research/mods/city-lights-ai-placement-20261116.md#sodo-completed-the-same-supplied-provider-pair-in-opposite-orders).
 
