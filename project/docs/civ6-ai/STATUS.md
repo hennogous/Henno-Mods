@@ -39,6 +39,13 @@ and completed the exact Hub beside working Bakers suppliers. The native
 request had already started one turn before CSC's paid Hub bid.
 [Meroë purchase and construction](../research/mods/city-lights-ai-placement-20261116.md#mero%C3%AB-bought-the-exact-hub-footprint-with-the-water-park-already-complete).
 
+The candidate's new rotation appraised Meroë's 35 Gold site on turn 150
+and reached the city's first comparison. The owned Hub on 2810 won by
+515 Q8, about two native utility points. Both copies built on 2810. The
+remaining question in this replay is how to price the linked benefit of
+the paid site against the owned winner.
+[Matched timing and scores](../research/mods/city-lights-ai-placement-20261116.md#rotating-paid-layouts-reached-mero%C3%ABs-first-native-comparison).
+
 Malinalco's 100 Gold Hub offer reached a live comparison on the exact
 plot. The city chose a stronger Entertainment Complex by 147,165 Q8.
 Its growth preview also had that plot one turn from annexation. The

@@ -1804,6 +1804,26 @@ It reached eligible native scoring on 151 and 152. No purchase for that
 plot occurred by the turn-161 endpoint. The replay stopped before running
 a control because the planned first-turn comparison had already passed.
 
+#### Rotating paid layouts reached Meroë's first native comparison
+
+The revised scheduler gives a priced, capacity-eligible frontier group a
+visit on alternating turns when there are more groups than forecast slots.
+The handoff still keeps its visit. There are still at most two visits per
+build order and one native purchase appraisal per player each publication.
+A regression with four eligible frontier groups and a recurring handoff
+visits all four, including when the input order is reversed.
+
+Both replays loaded the same prepared save and matched all 201 checked
+census rows and the treasury. The rotation moved the paid Hub offer from
+151 to 150 at the same 35 Gold price and +8,192 Q8 credit. The offer
+reached the first city comparison. Its final score was 426,040 Q8 and
+the owned Hub on 2810 won with 426,555 Q8. Both copies completed the owned
+Hub on 154. The candidate did not purchase 2660, and both Bakers suppliers
+were working at the turn-161 endpoint. The score gap before the paid
+credit was 8,707 Q8. The next check is whether the paid appraisal counted
+the actual owned winner and which share of the remaining economic margin
+is appropriate for paying for a stronger linked site.
+
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
 The turn-200 pilot released plot 530 from Malinalco in a copy of the

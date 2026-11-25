@@ -697,6 +697,57 @@ end
 assert(otherVisits==2)
 ''')
 
+    def test_paid_frontier_rotation_preserves_handoff_and_reaches_even_sized_list(self):
+        vm = self.vm()
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.connectionGroups={}
+snapshot.planCustomerPurchases=true
+snapshot.cities={[7]={object={}}}
+snapshot.Supply=function()return nil end
+snapshot.Price=function(flow)return flow.amount*256 end
+GameInfo.Districts[1].RequiresPopulation=false
+snapshot.handoffs={['quarterFirst:101:3:TEST']={record={phase=1},plot=201,phase=1}}
+for i=1,5 do
+    local anchor,owned=100+i,200+i
+    local existing={ready=true,economy=economy,profile=chain.profile,plot={GetIndex=function()return anchor end}}
+    local options={{plot=owned,adjacency=2,chains={existing}}}
+    values[owned]=16*256
+    if i>1 then
+        options[2]={plot=owned+10,adjacency=1,chains={existing},purchaseGold=35}
+        values[owned+10]=96*256
+    end
+    snapshot.connectionGroups[i]={city=7,district=1,candidates=options}
+end
+function cycle()
+    local frontierVisits={}
+    local visited={}
+    for now=20,27 do
+        turn=now
+        local quoted={}
+        snapshot.CustomerNetValue=function(_,_,plot)
+            if plot>210 then quoted[#quoted+1]=plot end
+            return 120*256
+        end
+        local plans=E.AnchoredConnectionPlans(snapshot,{})
+        assert(#plans==2 and plans[1].anchor==101 and plans[1].best.plot==201)
+        assert(#quoted<=1)
+        if now%2==0 then
+            assert(#quoted==1 and plans[2].best.plot==quoted[1])
+            assert(plans[2].purchaseCreditQ8>0)
+            assert(not visited[quoted[1]], 'paid rotation skipped an eligible group')
+            visited[quoted[1]]=true
+            frontierVisits[#frontierVisits+1]=quoted[1]
+        end
+    end
+    return table.concat(frontierVisits,',')
+end
+local first=cycle()
+local groups=snapshot.connectionGroups
+snapshot.connectionGroups={groups[5],groups[4],groups[3],groups[2],groups[1]}
+assert(cycle()==first)
+''')
+
     def test_customer_first_prefers_the_stronger_complete_bid_over_an_older_equal_link(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters

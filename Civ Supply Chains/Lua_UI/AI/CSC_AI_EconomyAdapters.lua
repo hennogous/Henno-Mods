@@ -2452,6 +2452,18 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         end end
         return best,true,inspectedSaved
     end
+    local function hasReadyCustomerLand(group)
+        -- Cheap admission only. The snapshot caches capacity by city.
+        -- The selected group still has to beat the owned sites after its
+        -- bounded native appraisal charges the actual invoice.
+        for _,footprint in pairs(group.plots)do
+            for _,option in ipairs(footprint.options)do
+                if option.purchaseGold and option.purchaseGold>0 and not option.waiting
+                    and customerPurchaseWait(option)~=nil then return true end
+            end
+        end
+        return false
+    end
     local function competitiveBackup(first,second)
         if not second or not second.valueQ8 or second.valueQ8<=0 then return 0 end
         local a,b=first.option,second.option
@@ -2494,6 +2506,8 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
             if prior and group.plots[prior]then nextMemory[group.key]=prior end
         end
         table.sort(candidates,function(a,b)return a.key<b.key end)
+        local round=turn+pid
+        local canAppraisePurchases=order=='quarterFirst' and snapshot.planCustomerPurchases and snapshot.CustomerNetValue
         -- Rotate each direction independently. Normally four groups share
         -- eight local prices per player. One visited Quarter-first group
         -- may expand to the separately bounded customer-land appraisal.
@@ -2519,20 +2533,42 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 end
             end
             local eligible=#fresh>0 and fresh or ready
-            if #eligible>0 then visits[1]=eligible[(turn+pid)%#eligible+1] end
+            if #eligible>0 then visits[1]=eligible[round%#eligible+1] end
+        end
+        local frontierVisit,ordinaryRound=nil,round
+        if canAppraisePurchases and #candidates>CONNECTION_GROUPS_PER_ORDER then
+            local frontierGroups={}
+            for _,group in ipairs(candidates)do
+                if hasReadyCustomerLand(group)then frontierGroups[#frontierGroups+1]=group end
+            end
+            if #frontierGroups>0 then
+                -- Alternate one frontier visit with the ordinary rotation.
+                -- Count rotations on each half of the schedule so even-sized
+                -- lists do not skip every other group. The handoff visit and
+                -- the per-player budgets stay the same across a save/reload.
+                ordinaryRound=math.floor(round/2)
+                if round%2==1 then
+                    frontierVisit=frontierGroups[ordinaryRound%#frontierGroups+1]
+                    if frontierVisit~=visits[1]then visits[#visits+1]=frontierVisit end
+                end
+            end
         end
         for step=0,#candidates-1 do
             if #visits>=CONNECTION_GROUPS_PER_ORDER then break end
-            local g=candidates[(turn+pid+step)%#candidates+1]
-            if g~=visits[1] then visits[#visits+1]=g end
+            local g=candidates[(ordinaryRound+step)%#candidates+1]
+            if g~=visits[1] and g~=visits[2] then visits[#visits+1]=g end
         end
         local purchaseChoice,purchaseGroup,inspectedSavedPurchase
-        if order=='quarterFirst' and snapshot.planCustomerPurchases and #visits>0 then
-            -- A recurring handoff owns the first ordinary quote. Alternate
-            -- appraisal priority by a full group rotation so that handoff
-            -- cannot spend the only purchase appraisal every turn.
+        if canAppraisePurchases and #visits>0 then
+            -- Link the reserved visit to the paid appraisal on the same
+            -- publication. A second group is only tried if the first never
+            -- reaches its native quote loop.
             local firstVisit=1
-            if #visits==2 and math.floor((turn+pid)/#candidates)%2==1 then firstVisit=2 end
+            if frontierVisit then
+                if frontierVisit==visits[2]then firstVisit=2 end
+            elseif #visits==2 and math.floor(round/#candidates)%2==1 then
+                firstVisit=2
+            end
             for step=0,#visits-1 do
                 local group=visits[(firstVisit+step-1)%#visits+1]
                 local attempted
