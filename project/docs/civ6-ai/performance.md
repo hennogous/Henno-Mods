@@ -54,6 +54,19 @@ budget. The Pangaea turn-200 comparison confirmed equality for all bids,
 plans, and detailed forecasts in two tested player passes.
 [Optimization and measurements](../research/mods/csc-ai-joint-guidance-performance-20261118.md).
 
+## Qualified Quarter-layout default, 25 November
+
+In the final matched Online games, the planner added an average of
+0.84 seconds per turn standalone and 0.89 seconds with City Lights.
+Maximum whole-publisher time per turn was 4.97 and 5.42 seconds in the
+two candidate games. Average total game time was 13.17 → 14.52 seconds
+standalone and 14.12 → 16.67 seconds with City Lights. Total time also
+includes startup, passive observation and changes in what the AI did.
+The qualification paired these costs with more supplied layouts and
+working buyers. Keep the City Lights total-turn measurement in later
+performance comparisons.
+[Final matched placement and timings](../research/mods/city-lights-ai-placement-20261116.md#final-calibrated-turn-250-qualification).
+
 ## Quarter-layout campaign, 24 November
 
 Timing over the full 250 turns averaged 1.65 → 2.75 seconds with CSC alone

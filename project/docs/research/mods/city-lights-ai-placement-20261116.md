@@ -1852,6 +1852,86 @@ The final full-game comparison uses fresh games and the same pinned
 calibration in both arms, with the layout planner enabled only in the
 candidate. The two preselected map and game seed pairs stay fixed.
 
+### Final calibrated turn-250 qualification
+
+Four Small Continents games used Online speed, one CSC package and one Dev
+CE build. The standalone maps used seeds 171124601/171124602. City Lights
+used 171124605/171124606. The turn-one map, roster and units matched within
+each pair. All four endpoint saves verified in the archive and Load Game.
+The tuned arms enabled the anchored and prospective layout policies.
+
+| Load Game entry | Save name |
+| --- | --- |
+| Standalone default | `CSC_LAYOUT_171124601_BASELINE_T250_aa443a73630d` |
+| Standalone candidate | `CSC_LAYOUT_171124601_TREATMENT_T250_3fa8f58d5025` |
+| City Lights default | `CSC_LAYOUT_171124605_BASELINE_T250_dba2a7a4eaa9` |
+| City Lights candidate | `CSC_LAYOUT_171124605_TREATMENT_T250_a028858f581b` |
+
+| Configuration, Quarter and first foundation | Completed, default → candidate | With working Base | Median turns to second foundation |
+| --- | ---: | ---: | ---: |
+| Standalone Bakers, Quarter first | 8 → 14 | 7 → 9 | 27.5 → 74 |
+| Standalone Bakers, customer first | 4 → 4 | 4 → 3 | 50 → 37.5 |
+| Standalone Tailors, Quarter first | 4 → 8 | 3 → 8 | 75.5 → 65 |
+| Standalone Tailors, customer first | 1 → 6 | 1 → 6 | 63 → 23.5 |
+| City Lights Bakers, Quarter first | 7 → 11 | 6 → 11 | 84 → 62 |
+| City Lights Bakers, customer first | 3 → 0 | 2 → 0 | 28 → — |
+| City Lights Tailors, Quarter first | 1 → 5 | 1 → 5 | 49 → 62 |
+| City Lights Tailors, customer first | 0 → 2 | 0 → 2 | — → 41 |
+| City Lights Bakers–Rural, Quarter first | 2 → 6 | 2 → 6 | 26 → 19.5 |
+| City Lights Bakers–Rural, provider first | 2 → 2 | 2 → 2 | 25.5 → 10.5 |
+| City Lights Tailors–Rural, Quarter first | 0 → 3 | 0 → 3 | — → 15 |
+| City Lights Tailors–Rural, provider first | 0 → 1 | 0 → 1 | — → 18 |
+
+Working Base and buyer counts rose from 13 to 18 standalone and from 8
+to 11 with City Lights. Across all Quarter sites, working Base links
+rose from 29 to 42 and from 17 to 35. Of those, 26 → 36 and 13 → 23
+were working without an observed interruption. Working Specialty rose
+from 3 to 4 and from 4 to 8. The observer recorded two → three mapped
+material losses standalone and two → one with City Lights.
+
+| Survey of owned layouts with at least +2 Quarter adjacency | Quarter first, exact / eligible | Partner first, exact / eligible | All eligible, including unstarted |
+| --- | ---: | ---: | ---: |
+| Standalone Bakers | 1/28 → 2/35 | 2/6 → 1/5 | 3/149 → 3/148 |
+| Standalone Tailors | 1/4 → 3/23 | 0/0 → 2/6 | 1/89 → 5/87 |
+| City Lights Bakers | 1/25 → 1/32 | 3/11 → 0/7 | 4/185 → 1/152 |
+| City Lights Tailors | 0/0 → 3/16 | 0/4 → 1/6 | 0/134 → 4/102 |
+
+Total exact completions rose from 4/238 to 8/235 standalone and from
+4/319 to 5/254 with City Lights. The City Lights completion rate among
+exact surveyed layouts that started fell from 4/40 to 5/61. The broader
+endpoint supplied-pair counts capture different or late layouts as well.
+Deduplicating completed physical pairs attached to a surveyed first site
+gives 8 → 13 standalone and 4 → 5 with City Lights. In the candidate-only
+priced set, 5/119 and 3/134 layouts completed on their exact two tiles.
+
+| Measured outcome | Standalone, default → candidate | City Lights, default → candidate |
+| --- | ---: | ---: |
+| Bakers Stage 2 chains / active link-turns | 17 / 1,368 → 19 / 1,656 | 12 / 1,071 → 17 / 1,404 |
+| Bakers Stage 3 chains / active link-turns | 5 / 248 → 4 / 225 | 3 / 147 → 6 / 275 |
+| Tailors Stage 2 chains / active link-turns | 0 / 0 → 0 / 0 | 0 / 0 → 1 / 65 |
+| Tailors Stage 3 chains / active link-turns | 1 / 58 → 2 / 89 | 0 / 0 → 2 / 125 |
+| Tailors Stage 4 chains / active link-turns | 0 / 0 → 1 / 1 | 1 / 20 → 1 / 11 |
+| Guidance time, mean / max per turn | 1.49 / 3.07 s → 2.33 / 4.97 s | 1.41 / 3.18 s → 2.30 / 5.42 s |
+| Total game time, mean per turn | 13.17 → 14.52 s | 14.12 → 16.67 s |
+
+The Service comparison uses 199 common observed clocks per configuration.
+Native comparisons still passed over 424 standalone Quarter and 239
+customer bids. Neighborhoods won 158 of those Quarter comparisons and
+Campuses won 61 of the customer comparisons. With City Lights, 530
+Quarter and 554 customer bids were outscored. Type A Rural Communities
+won 338 of the Quarter comparisons and 298 of the customer comparisons.
+At plot 1350, an Industrial Zone won a same-site contest over the linked
+Hub by 71,849 Q8. Later production pressure also remained visible, such as
+a Settler training while Meroë's Holy Site contract failed. Five paid
+offers across two sites standalone and nine across two sites with City
+Lights produced no matching purchase in these full games. Meroë supplies
+the separate short matched evidence of paid selection and construction.
+
+The standalone and City Lights matches added about 5.6 and 10.6 minutes
+over 250 turns. Measured guidance accounted for an extra 0.84 and 0.89
+seconds per turn. With more supplied layouts, operating buyers and
+Services in both configurations, the performance and evidence review
+supports enabling the planner for the confirmed single-player publisher.
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
 The turn-200 pilot released plot 530 from Malinalco in a copy of the

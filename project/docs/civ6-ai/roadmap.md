@@ -1,23 +1,23 @@
 # CSC AI roadmap
 
-**Immediate focus for Problems 1 and 2.** [Qualify and complete Quarter layouts in either build order](#qualify-and-complete-quarter-layouts).
+**Problems 1 and 2 layout milestone.** [The qualified planner is enabled for single player](#qualify-and-complete-quarter-layouts).
 
 ## Problems at a glance
 
 | Topic | Description | Status |
 | --- | --- | --- |
-| [1. Quarter placement](#1-quarter-placement) | Choose productive, legal Quarter sites. Buy viable sites when justified and defer weak options. | Bakers and Tailors guidance integrated. Broader purchase and construction reliability remains open. |
+| [1. Quarter placement](#1-quarter-placement) | Choose productive, legal Quarter sites. Buy viable sites when justified and defer weak options. | Joint Bakers and Tailors planning enabled. Both build orders and paid customer follow-through have live evidence. |
 | 1.1 Materials | Prefer viable mapped Base and Specialty deposits, including compatibility resources. | Base-aware siting verified in a matched native choice. |
 | 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | Matched customer-first replay completed the Quarter beside its customers. The revised treatment gives stronger early bids to sites with robust supply and a competitive mapped customer. |
 | 1.3 Rivers | Price the river and Mill geometry the site can use. | River/Mill geometry changed the chosen Bakers site. |
 | 1.4 Adjacency | Prefer +3 with +2 as the ordinary minimum and a narrow Tailors exception. | Stronger siting verified in a replay and observed in full games. |
-| 1.5 Tile purchase | Secure worthwhile Quarter, customer and supplier tiles. | Paid Quarter and supplier acquisition verified. Meroë demonstrates a customer bid, purchase and completed pair in a matched replay. Final full games are running. |
-| 1.6 Construction readiness and follow-through | Carry legal, affordable plans through capacity checks, foundation, and completion. | Integrated follow-through verified in a representative paid-footprint case. |
+| 1.5 Tile purchase | Secure worthwhile Quarter, customer and supplier tiles. | Paid Quarter and supplier acquisition verified. Meroë demonstrates a customer bid, purchase and completed pair in a matched replay. |
+| 1.6 Construction readiness and follow-through | Carry legal, affordable plans through capacity checks, foundation, and completion. | Matched games and replays recorded supplied completions in both build orders. City Lights exact follow-through remains a calibration measure. |
 | 1.7 Place or defer | Defer weak city plans and reconsider when viable supply appears. | Deferral and reconsideration verified in separate representative cases. |
 | 1.8 Discourage poor placements | Reduce the value of individual weak or destructive sites. | Weak-site suppression verified. Wider siting calibration remains open. |
-| [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Site preferences and finite material protection verified. Coordination and broader protection remain open. |
-| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | In the revised matched Continents run, completed pairs rose from 7 to 10 and a Dockmaster operated. Fractal and Pangaea qualification are pending. |
-| 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection verified. Broader exclusion and retained plans remain open. |
+| [2. Other district placement](#2-other-district-placement) | Put customers near their supplier Quarters and protect important deposits from construction. | Joint customer and provider guidance enabled, with finite material protection and alternate-site release verified. |
+| 2.1 Customer placement | Prefer viable sites beside an existing or feasible supplier Quarter. | Enabled for single player. In the final matched games, customer pairs with working Base rose 15 → 26 standalone and 9 → 18 with City Lights. |
+| 2.2 Material protection | Account for deposits and working suppliers a district would cover. | Finite protection and release verified. Matched games retained more working supply with some material losses. |
 | [3. Material work and Builder capacity](#3-material-work-and-builder-capacity) | Develop and repair Base and Specialty supply with available Builders. | Builder follow-through verified in matched and ordinary play. Track recurring delays in combined runs. |
 | 3.1 Exact job and timing | Prepare mapped supply ahead of the buyer and aim for working supply by Online turn +10. | Base results were mixed in the two matched pairs. Treatment reached 8/11 and 4/9. Tailors and Specialty coverage are limited. |
 | 3.2 Assignment and supply | Use reachable charged Builders and price additional capacity for uncovered work. | Verified for idle-worker handoffs and on-site finishing. Axum's Bamboo recovered, Edinburgh's Pasture advanced by 38 turns, and the integrated scheduler completed Mashhad's sole Pasture. |
@@ -61,7 +61,7 @@
 
 ## Qualify and complete Quarter layouts
 
-The immediate focus is the city planning capability shared by Problems 1 and 2. A good plan identifies a Quarter tile, the deposits that can supply it, and concrete sites for its mapped partners. Either district may be the city's best first investment. In the revised-cap baseline, the planner identified 20 strong pairs and one completed both planned districts. The main opportunity is converting more of the good layouts we already see. [Matched placement evidence](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation)
+This milestone covers the city planning capability shared by Problems 1 and 2. A good plan identifies a Quarter tile, the deposits that can supply it, and concrete sites for its mapped partners. Either district may be the city's best first investment. In the revised-cap baseline, the planner identified 20 strong pairs and one completed both planned districts. [Starting-point evidence](../research/mods/city-lights-ai-placement-20261116.md#both-footprints-before-either-foundation)
 
 | Roadmap | Starting point for this work | Gap to close |
 | --- | --- | --- |
@@ -92,8 +92,13 @@ saves. The comparison report breaks down surveyed opportunities and
 exact completions by Quarter and foundation order, alongside supplier
 retention, Services, competing bids and turn time.
 [Matched turn-250 conversion](../research/mods/city-lights-ai-placement-20261116.md#exact-conversion-by-quarter-and-which-plot-was-founded-first)
-The final qualification uses the calibrated customer-land policy and the
-same preselected seeds in both configurations.
+The final four games reused the preselected seeds and qualified the
+calibrated customer-land policy for single player. The candidate added
+supplied pairs and working buyers in each configuration. Stronger
+districts continued to win native comparisons. City Lights exact
+completion after the first foundation and its higher total turn time
+remain follow-up calibration measures.
+[Final qualification and timing](../research/mods/city-lights-ai-placement-20261116.md#final-calibrated-turn-250-qualification).
 
 **City Lights loading.** The existing `ModSupport_CL` game criterion loads the SQL that maps Rural Communities to each Quarter's goods-provider tag. The same Lua planner reads the active mappings in both configurations. Keep those district lists in gameplay data so the planner picks up new providers as the design grows.
 

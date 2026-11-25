@@ -1,5 +1,20 @@
 # CSC findings and evidence
 
+## AI-C231 — The calibrated planner produced more supplied pairs in both matched games
+
+25 November 2026, roadmap Problems 1 and 2. Four matched Online Small
+Continents games on CSC `2640d4d3` and GameCore `4de40abf…` reached
+turn 250. With the layout planner enabled, customer pairs with working
+Base rose 15 → 26 standalone and 9 → 18 with City Lights. Pairs also
+operating a mapped buyer rose 13 → 18 and 8 → 11. City Lights supplied
+Rural pairs rose 4 → 12. Stronger competing districts continued to win
+same-site and city-wide native comparisons. The measured guidance
+increase averaged under one second per turn in both setups. Total turn
+time rose 10% and 18% respectively. The planner ships for the confirmed
+single-player publisher. The City Lights exact conversion after a first
+foundation fell from 4/40 to 5/61, a priority for further calibration.
+[Matched outcomes and saves](../research/mods/city-lights-ai-placement-20261116.md#final-calibrated-turn-250-qualification).
+
 ## AI-C230 — A paid customer bid led to a working Bakers layout
 
 25 November 2026, roadmap 1.5, 1.6 and 2.1. On a prepared turn-150 Meroë

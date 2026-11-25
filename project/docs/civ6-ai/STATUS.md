@@ -1,22 +1,18 @@
 # Current CSC AI status
 
-**Standalone qualification, 25 November.** Both games reached turn
-250 and left verified Load Game saves. The candidate increased completed
-customer pairs from 17 to 25 and supplied pairs from 15 to 17. All eight
-additional pairs were Tailors. Bakers Stage 2 Service link-turns rose
-from 1,368 to 1,674. Total time averaged 13.22 and 14.19 seconds per turn
-in the default and candidate games respectively. The two paid Hub offers
-in the candidate gave no purchase.
-[Turn-250 comparison](../research/mods/city-lights-ai-placement-20261116.md#corrected-standalone-comparison-at-turn-250).
+**Quarter layouts enabled for the single-player publisher, 25 November.**
+All four final games reached turn 250 and left verified Load Game saves.
+The calibrated planner raised completed customer pairs from 17 to 32
+standalone and from 11 to 18 with City Lights. Pairs with working Base
+rose from 15 to 26 and from 9 to 18. Pairs with both working Base and an
+operating buyer rose from 13 to 18 and from 8 to 11. Supplied City Lights
+provider pairs rose from 4 to 12.
 
-**City Lights qualification, 25 November.** Both games on the
-replacement seed reached turn 250 and left verified Load Game saves.
-The candidate increased completed customer pairs from 11 to 20 and
-Rural Community provider pairs from four to 13. Working Base supply
-held at nine customer pairs and rose from four to 11 provider pairs.
-The candidate recorded one Dockmaster lasting 65 verified Service
-turns. Average game time was 13.84 versus 16.43 seconds per turn.
-[Turn-250 comparison](../research/mods/city-lights-ai-placement-20261116.md#corrected-city-lights-comparison-at-turn-250).
+Measured guidance averaged 0.84 seconds more per turn standalone and
+0.89 seconds more with City Lights. Total time averaged 13.17 → 14.52
+and 14.12 → 16.67 seconds per turn. First-founded exact conversion with
+City Lights went from 4/40 to 5/61 and remains worth tracking.
+[Final turn-250 comparisons](../research/mods/city-lights-ai-placement-20261116.md#final-calibrated-turn-250-qualification).
 
 **Paid customer sites, Problem 1.5.** In the corrected short replay,
 Barcelona's Hub offers reached the native cache while its Theater
@@ -42,8 +38,8 @@ request had already started one turn before CSC's paid Hub bid.
 The revised rotation and paid credit reached Meroë's first comparison on
 150. The linked Hub won, the AI paid 35 Gold on 151, and it completed the
 exact pair on 154. Both Base suppliers were working through 161. The
-rotation-only copy built its Hub on the owned site. The final matched
-turn-250 qualification is running with the calibrated build.
+rotation-only copy built its Hub on the owned site. The calibrated build
+completed the final matched qualification.
 [Native choice, payment and completion](../research/mods/city-lights-ai-placement-20261116.md#calibrated-paid-credit-led-to-a-supplied-mero%C3%AB-hub).
 
 Malinalco's 100 Gold Hub offer reached a live comparison on the exact

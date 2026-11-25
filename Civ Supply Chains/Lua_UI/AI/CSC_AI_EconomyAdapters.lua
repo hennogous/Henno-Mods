@@ -15,15 +15,15 @@ local C=CSC_AI_PlanContinuity
 local planStates={}
 local wonderCustomers
 local wonderAuditMemory={}
--- Opt in on a frozen test package while we qualify the additional placement
--- cost through native comparison and check turn time on ordinary worlds.
-E.AnchoredConnectionsEnabled=false
--- The matched campaign enables this on both packages. The control reads the
--- same eligible footprint facts and returns before pricing or changing bids.
+-- These planners ship for the confirmed single-player publisher. The matched
+-- Online games qualified both build orders with and without City Lights.
+E.AnchoredConnectionsEnabled=true
+-- Diagnostic-only survey. A matched control can collect the same eligible
+-- footprint facts without pricing those links or publishing their bids.
 E.AnchoredConnectionAuditEnabled=false
--- The matched layout experiment switches this without changing the package.
--- Once a footprint exists, the anchored calculation owns its link again.
-E.ProspectiveConnectionsEnabled=false
+-- Forecast both available footprints before either foundation. Once one
+-- exists, the anchored calculation takes over and revalues the remaining leg.
+E.ProspectiveConnectionsEnabled=true
 -- The matched provider replay isolates this eligibility check while keeping
 -- the rest of the prospective planner active in both arms.
 E.FulfilledProviderDeclinesEnabled=true

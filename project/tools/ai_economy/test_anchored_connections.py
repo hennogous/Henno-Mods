@@ -503,12 +503,14 @@ assert(otherOnly)
     def test_founded_customer_keeps_its_buyable_quarter_until_ordinary_build_admission(self):
         self.vm().execute('''
 local E=CSC_AI_EconomyAdapters
+assert(E.AnchoredConnectionsEnabled and E.ProspectiveConnectionsEnabled)
 local candidate=quarterAt(20)
 local entry=candidate.entry
 snapshot.connectionGroups={};snapshot.connectionQuarters={candidate}
 entry.frontier=true;entry.purchaseGold=65;entry.capacityState='ready';entry.economy=true
 entry.qualityCapQ8=200*256;entry.qualityCapAdjustmentQ8=-20*256
 candidate.site.quarterWork={unlock=0};legal={}
+E.ProspectiveConnectionsEnabled=false
 assert(#E.AnchoredConnectionPlans(snapshot,{})==0)
 E.ProspectiveConnectionsEnabled=true
 local plans=E.AnchoredConnectionPlans(snapshot,{})
