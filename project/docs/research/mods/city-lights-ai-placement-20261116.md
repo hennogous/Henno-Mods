@@ -1444,6 +1444,16 @@ was last observed on turn 234 before Shadow stopped. Its turn-200 save and
 The Service row uses 159 clocks verified in both arms. The guidance
 rows cover all 200 publisher turns. Tailors accounted for the increase
 in pairs, including five more customer-first pairs with working Base.
+
+At the last shared census on turn 225, the default had 17 completed
+pairs and the candidate had 25. Pairs with working Base rose from 16
+to 21. Of the candidate's 369 recorded Quarter losses at the district
+comparison, 173 went to Neighborhoods. Theater Squares and Campuses
+were the most frequent winners against the candidate's customer bids.
+The candidate's two paid Hub offers were both for the same Barcelona
+site. The first reached the eligible native cache, and neither led to
+a recorded purchase.
+
 Native bid and plot-purchase IDs start over on load. The replacement
 candidate uses the same seed and build from a fresh opening so its
 score, purchase and follow-through records form one continuous series.
