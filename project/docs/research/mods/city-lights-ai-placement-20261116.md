@@ -1277,6 +1277,16 @@ separate observations. For the Sodo follow-up, both arms switch at the
 loaded turn-100 boundary. The replay now checks the original AI seats'
 treasuries as well as the structural census before switching.
 
+The current v30 Gori replay used the turn-50 save without plot or
+treasury edits and switched the candidate on at turn 87. Gori could buy
+plot 2419 for 70 Gold and held 87.54 Gold. The historical Bakers site
+was still empty. The model recorded no eligible paid candidate for the
+groups it visited. Gori's border grew onto 2419 by turn 101 without a
+purchase event. Bakers 2492 eventually founded on turn 108 in a different
+city and completed on 114. The customer tile was still empty at the
+turn-122 endpoint. This replay did not recreate the live decision to
+buy land beside the historical Quarter.
+
 #### Purchase requests in Bakavu and Atzcapotzalco
 
 **Bakavu purchase replay.** In the completed City Lights control,
