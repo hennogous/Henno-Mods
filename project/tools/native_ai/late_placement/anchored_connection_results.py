@@ -33,6 +33,11 @@ CUSTOMER_BID = re.compile(r'CSC_AI_(?:CUSTOMER_(?:FUTURE|ECONOMIC|PROSPECTIVE)_B
 CUSTOMER_RECEIPT = re.compile(r'CSC_CUSTOMER_WATCH_NATIVE [^\r\n]*? ordinal=(\d+) record=(\{[^\r\n]+\})')
 
 
+def layout_identity(row):
+    return tuple(row.get(key) for key in ('player', 'city', 'quarter', 'quarterPlot',
+                                           'neighbourCity', 'neighbourDistrict', 'neighbourPlot'))
+
+
 def bid_competition(log, observations, players, through):
     """Name winners only when a positive CSC cell was observed before selection.
 
@@ -422,12 +427,14 @@ def prospective_footprint_counts(layouts):
     return {family: dict(values) for family, values in counts.items()}
 
 
-def common_layout_report(log, observations, players, through):
+def common_layout_report(log, observations, players, through, *, endpoint_pairs=None):
     """Both policies log their top two Quarter bids and ordinary owned partner sites.
 
     Count each physical pair once at its first qualifying observation. Future-only
     +1 and paid partners have separate candidate diagnostics. Founding and a live
     completed relationship must agree on cities as well as coordinates.
+    The optional endpoint facts count the same completed layouts that
+    still have a working Base under the original owner and cities.
     """
     titles = {int(i): title for i,title in QUARTER_TITLE.findall(log)}
     layouts = {}
@@ -454,12 +461,14 @@ def common_layout_report(log, observations, players, through):
             foundations.setdefault(key,r.get('foundationTurn',r['turn']))
         elif (r['kind']=='RELATION' and r.get('present') and r.get('quarterComplete') and r.get('neighbourComplete')
               and r.get('role') in ('customer','goodsProvider','sales')):
-            key = tuple(r.get(k) for k in ('player','city','quarter','quarterPlot','neighbourCity','neighbourDistrict','neighbourPlot'))
+            key = layout_identity(r)
             if r['turn'] >= layouts.get(key, 0):
                 linked.setdefault(key,r['turn'])
     district_ids = {name: i for i,name in titles.items()}
     counts = defaultdict(Counter)
     targets = defaultdict(set)
+    retained = {pair['layout'] for pair in endpoint_pairs or () if pair['working_base']}
+    retained_buyers = {pair['layout'] for pair in endpoint_pairs or () if pair['working_base'] and pair['working_buyer']}
     for key,seen in layouts.items():
         player,city,quarter,plot,buyer,customer,target=key
         q=foundations.get((player,city,district_ids[quarter],plot))
@@ -470,6 +479,9 @@ def common_layout_report(log, observations, players, through):
                else 'partnerFirst' if q is None or p<q else 'sameTurn')
         count=counts[f'{quarter}:{order}']
         count['eligible_pairs']+=1
+        if endpoint_pairs is not None:
+            count.setdefault('completed_with_working_base_at_endpoint', 0)
+            count.setdefault('completed_with_working_base_and_buyer_at_endpoint', 0)
         if order in ('quarterFirst', 'partnerFirst'):
             quarter_site = (player, city, district_ids[quarter], plot)
             customer_site = (player, buyer, customer, target)
@@ -481,6 +493,9 @@ def common_layout_report(log, observations, players, through):
             if key in linked and linked[key]>=max(q,p):
                 count['both_completed_adjacent']+=1
                 count['total_turns_to_completed_pair_from_first_foundation']+=linked[key]-min(p,q)
+                if key in retained:
+                    count['completed_with_working_base_at_endpoint']+=1
+                    count['completed_with_working_base_and_buyer_at_endpoint']+=key in retained_buyers
     return ({key:dict(value) for key,value in sorted(counts.items())},
             anchored_target_results(targets, foundations, linked, district_ids))
 
@@ -742,8 +757,8 @@ def supplier_history(observations, players, through):
                 working_again_after_loss=counts(endpoint & interrupted))
 
 
-def endpoint_pair_supply(census, observations, players, *, include_timing=False):
-    """Count completed pairs, their working suppliers and known foundation intervals."""
+def endpoint_pair_facts(census, observations, players):
+    """Retain each current physical link and its supply under the live owner."""
     quarter_hosts, materials = {}, defaultdict(set)
     for kind, payload in census['rows']:
         fields = payload.split('\t')
@@ -767,7 +782,7 @@ def endpoint_pair_supply(census, observations, players, *, include_timing=False)
             key = ':'.join(str(row.get(k, '')) for k in ('quarterPlot','neighbourPlot','role','stage','building'))
             active[key] = row
 
-    pairs, buyer_districts, working_buyers = {}, set(), set()
+    pairs = {}
     for row in active.values():
         role = row['role']
         qplot, target = row['quarterPlot'], row['neighbourPlot']
@@ -786,25 +801,32 @@ def endpoint_pair_supply(census, observations, players, *, include_timing=False)
         pair = qplot,target,family
         founded = row.get('quarterFoundationTurn'), row.get('neighbourFoundationTurn')
         gap = abs(founded[0] - founded[1]) if all(type(t) is int and 0 <= t <= census['turn'] for t in founded) else None
-        pairs[pair] = (f'{host[0]}:{family}:{order}', materials[qplot],
-                       not (host[3] or row['neighbourPillaged']), gap)
+        healthy = not (host[3] or row['neighbourPillaged'])
+        facts = pairs.setdefault(pair, dict(layout=layout_identity(row), label=f'{host[0]}:{family}:{order}',
+            family=family, foundation_gap=gap, working_base=healthy and 'BASE' in materials[qplot],
+            working_spec=healthy and 'SPEC' in materials[qplot], mapped_buyer=False, working_buyer=False))
         if role == 'customer':
-            buyer_districts.add(pair)
-            if row.get('buildingStatus') == 2:
-                working_buyers.add(pair)
+            facts['mapped_buyer'] = True
+            facts['working_buyer'] = facts['working_buyer'] or healthy and row.get('buildingStatus') == 2
+    return list(pairs.values())
+
+
+def summarise_endpoint_pairs(pairs, *, include_timing=False):
+    """Count completed pairs, their working suppliers and known foundation intervals."""
     counts = defaultdict(Counter)
     gaps = defaultdict(list)
-    for pair, (label, working, healthy, gap) in pairs.items():
+    for pair in pairs:
+        label, gap = pair['label'], pair['foundation_gap']
         counts[label]['completed'] += 1
         if include_timing and gap is not None:
             gaps[label].append(gap)
-        if pair[-1] == 'customer':
-            counts[label]['mapped_buyer_district' if pair in buyer_districts else 'sales_only_district'] += 1
-        if healthy and 'BASE' in working:
+        if pair['family'] == 'customer':
+            counts[label]['mapped_buyer_district' if pair['mapped_buyer'] else 'sales_only_district'] += 1
+        if pair['working_base']:
             counts[label]['with_working_base'] += 1
-            if pair in working_buyers:
+            if pair['working_buyer']:
                 counts[label]['with_working_base_and_customer_building'] += 1
-            if 'SPEC' in working:
+            if pair['working_spec']:
                 counts[label]['with_working_base_and_spec'] += 1
     result = {label: dict(values) for label, values in sorted(counts.items())}
     if include_timing:
@@ -814,6 +836,10 @@ def endpoint_pair_supply(census, observations, players, *, include_timing=False)
                 mean=sum(observed)/len(observed) if observed else None, median=median(observed) if observed else None,
                 maximum=max(observed, default=None))
     return result
+
+
+def endpoint_pair_supply(census, observations, players, *, include_timing=False):
+    return summarise_endpoint_pairs(endpoint_pair_facts(census, observations, players), include_timing=include_timing)
 
 
 def customer_land_purchases(log, observations, players, through, tree_rows):
@@ -1048,9 +1074,10 @@ def run_result(root):
         land = customer_land_purchases(log, observations, players, through, ())
     footprints = prospective_footprints(log, observations, players, through, competition)
     priced = prospective_footprints(log, observations, players, through, competition, priced=True)
-    common, anchored_targets = common_layout_report(log, observations, players, through)
+    endpoint_pairs = endpoint_pair_facts(census, observations, players)
+    common, anchored_targets = common_layout_report(log, observations, players, through, endpoint_pairs=endpoint_pairs)
     return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
-                endpoint_pair_supply=endpoint_pair_supply(census, observations, players, include_timing=True),
+                endpoint_pair_supply=summarise_endpoint_pairs(endpoint_pairs, include_timing=True),
                 common_layouts=common, anchored_targets=anchored_targets,
                 native_managed_timing=timing['native_managed_cell_wall'],
                 endpoint_suppliers=dict(supply), supplier_losses=dict(supplier_losses),
@@ -1168,6 +1195,7 @@ def paired_full_game_result(control, treatment):
                            eligible_missing_partner=result['counts']['district_opportunities'],
                            completed_missing_partner=result['counts']['completed_district_opportunities'],
                            endpoint_suppliers=result['endpoint_suppliers'], supplier_history=result['supplier_history'],
+                           supplier_losses=result['supplier_losses'],
                            failed_district_requests=result['failed_district_requests'],
                            # A city can pass over a Quarter for a district on
                            # another tile. Preserve that auction as well as the

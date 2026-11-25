@@ -1171,6 +1171,28 @@ comparable substitute. Oslo supplies the full-game example where a
 released tile was used by a competing investment and the replacement
 completed the intended link.
 
+#### Which surveyed layouts kept working supply
+
+The common owned-site survey now follows the same exact pair through
+its first foundation, completed adjacency and working supply at turn
+250. The endpoint match uses the original player and both cities. The
+full report retains separate Bakers, Tailors and build-order counts.
+
+| First turn-250 pair | Surveyed layouts with either district started | Same layouts completed | Completed with working Base at 250 | Also had a working mapped buyer |
+| --- | ---: | ---: | ---: | ---: |
+| Standalone control | 38 | 4 | 4 | 3 |
+| Standalone candidate | 58 | 12 | 10 | 8 |
+| City Lights control | 56 | 5 | 5 | 3 |
+| City Lights candidate | 85 | 8 | 7 | 6 |
+
+The standalone candidate improved the share of started layouts with
+working supply from 10.5% to 17.2%. City Lights completed two more
+supplied exact layouts while its share went from 8.9% to 8.2%.
+The City Lights candidate's seven supplied exact layouts comprised
+five Quarter-first Bakers and one Tailors in each build order. The
+older candidate used in these games predates the latest purchase
+appraisal, provider admission and performance changes.
+
 #### Future adjacency reached a native score
 
 The qualification log identified 28 standalone and 39 City Lights

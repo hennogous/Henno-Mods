@@ -4,8 +4,9 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from anchored_connection_results import (anchored_target_results, bid_competition, common_layout_conversion, completed_substitute_pairs,
-                                         connection_counts, customer_land_purchases, endpoint_pair_supply, failed_district_requests, loadable_layout_endpoint,
+from anchored_connection_results import (anchored_target_results, bid_competition, common_layout_conversion, common_layout_report,
+                                         completed_substitute_pairs, connection_counts, customer_land_purchases, endpoint_pair_facts,
+                                         endpoint_pair_supply, failed_district_requests, loadable_layout_endpoint,
                                          prospective_footprint_counts, prospective_footprints, prospective_layouts,
                                          supplier_history, wonder_connections)
 from paired_layout_replay_results import trace_arm
@@ -100,6 +101,28 @@ class ConnectionCounts(unittest.TestCase):
         counts=common_layout_conversion(log,parse(log,'CSC_PLANNING_'),{1},15)['TAILORS:partnerFirst']
         self.assertEqual(counts,dict(eligible_pairs=1,both_founded=1,total_turns_between_foundations=5,
                                     both_completed_adjacent=1,total_turns_to_completed_pair_from_first_foundation=8))
+
+    def test_exact_layout_links_to_active_endpoint_supply_under_the_original_owner(self):
+        bid=('CSC_AI_SPATIAL_BID turn=3 player=1 city=7 district=43 plot=10 rank=1 adjacency=2.000 '
+             'customerCity1=8 customerPlot1=20 customerType1=6 customerCity2=-1')
+        log='\n'.join(['CSC_DISTRICT_CATALOGUE\t43\tDISTRICT_CSC_TAILORS_QUARTER\ttrue',bid,
+            record('FOUNDATION',turn=4,player=1,city=8,district=6,plot=20,foundationDateKnown='true'),
+            record('FOUNDATION',turn=9,player=1,city=7,district=43,plot=10,foundationDateKnown='true'),
+            relation(1,'TAILORS',10,20,12,'neighbourFirst',city=7,neighbourCity=8,
+                     neighbourPillaged='false',building='BUYER',buildingStatus=2)])
+        observed = parse(log, 'CSC_PLANNING_')
+        census = {'turn':15, 'rows':[('QUARTER','TAILORS\t1\t7\t10\ttrue\tfalse'),
+            ('MATERIAL','10\t11\tBASE\tFLAX\ttrue')]}
+        def cohort():
+            pairs=endpoint_pair_facts(census, observed, {1,2})
+            counts,_=common_layout_report(log, observed, {1,2},15,endpoint_pairs=pairs)
+            return counts['TAILORS:partnerFirst']
+        self.assertEqual(cohort()['completed_with_working_base_at_endpoint'],1)
+        self.assertEqual(cohort()['completed_with_working_base_and_buyer_at_endpoint'],1)
+        census['rows'][0]=('QUARTER','TAILORS\t2\t9\t10\ttrue\tfalse')
+        self.assertEqual(cohort()['both_completed_adjacent'],1)
+        self.assertEqual(cohort()['completed_with_working_base_at_endpoint'],0)
+        self.assertEqual(cohort()['completed_with_working_base_and_buyer_at_endpoint'],0)
 
     def test_actual_adjacent_partner_can_precede_the_surveyed_quarter(self):
         quarter = (1, 7, 43, 10)
