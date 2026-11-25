@@ -9,11 +9,14 @@ in the default and candidate games respectively. The two paid Hub offers
 in the candidate gave no purchase.
 [Turn-250 comparison](../research/mods/city-lights-ai-placement-20261116.md#corrected-standalone-comparison-at-turn-250).
 
-**City Lights qualification, 25 November.** The baseline's observing
-civilisation was eliminated after the turn-237 reading. The controller
-closed cleanly and preserved the logs. The replacement pair uses the same
-builds and settings, with new seeds fixed before either arm plays.
-[Benchmark selections](roadmap.md#qualify-and-complete-quarter-layouts).
+**City Lights qualification, 25 November.** Both games on the
+replacement seed reached turn 250 and left verified Load Game saves.
+The candidate increased completed customer pairs from 11 to 20 and
+Rural Community provider pairs from four to 13. Working Base supply
+held at nine customer pairs and rose from four to 11 provider pairs.
+The candidate recorded one Dockmaster lasting 65 verified Service
+turns. Average game time was 13.84 versus 16.43 seconds per turn.
+[Turn-250 comparison](../research/mods/city-lights-ai-placement-20261116.md#corrected-city-lights-comparison-at-turn-250).
 
 **Paid customer sites, Problem 1.5.** In the corrected short replay,
 Barcelona's Hub offers reached the native cache while its Theater

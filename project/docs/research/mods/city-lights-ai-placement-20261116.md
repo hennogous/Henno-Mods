@@ -1563,6 +1563,75 @@ Archive on Shadow: `csc-ai-paired-footprints-20261124/full-v30-standalone-compar
 The Load Game names are `CSC_LAYOUT_171124601_BASELINE_T250_1c28300f58bc`
 and `CSC_LAYOUT_171124601_TREATMENT_T250_9839f6ad9221`.
 
+### Corrected City Lights comparison at turn 250
+
+Both games used Small Continents, Online speed and the replacement
+map/game seeds 171124605/171124606. The same pinned v30 CSC, Dev CE and
+City Lights packages loaded in both arms. The original City Lights
+baseline that stopped after the turn-237 reading remains separate.
+The replacement's two turn-250 saves verified in the archive and in
+Load Game.
+
+| Quarter, partner and first foundation | Completed pairs, default → candidate | With working Base, default → candidate | Median turns between foundations |
+| --- | ---: | ---: | ---: |
+| Bakers customer, Quarter first | 7 → 12 | 6 → 5 | 84 → 64.5 |
+| Bakers customer, partner first | 3 → 0 | 2 → 0 | 28 → — |
+| Tailors customer, Quarter first | 1 → 6 | 1 → 2 | 49 → 74 |
+| Tailors customer, partner first | 0 → 2 | 0 → 2 | — → 63 |
+| **Customer total** | **11 → 20** | **9 → 9** | |
+| Bakers Rural Community, Quarter first | 2 → 6 | 2 → 5 | 26 → 19.5 |
+| Bakers Rural Community, partner first | 2 → 1 | 2 → 1 | 25.5 → 21 |
+| Bakers Rural Community, order unavailable | 0 → 1 | 0 → 0 | — |
+| Tailors Rural Community, Quarter first | 0 → 2 | 0 → 2 | — → 28.5 |
+| Tailors Rural Community, partner first | 0 → 3 | 0 → 3 | — → 13 |
+| **Provider total** | **4 → 13** | **4 → 11** | |
+
+Pairs with working Base and a working mapped customer building rose
+from eight to nine. At the Quarter sites, there were 16 → 21 working
+Bakers Base links, 1 → 7 working Tailors Base links and 4 → 7 working
+Specialty links across both Quarter families. The logs showed 13 → 19
+Base links with uninterrupted supply at the endpoint.
+
+Four of 319 surveyed owned pairs completed on their exact plots in
+the default game. Seven of 266 did in the candidate. Once a surveyed
+foundation existed, counting any adjacent completion for the intended
+type and city gave four of 36 versus nine of 57 opportunities. The
+candidate separately appraised 74 Bakers and 63 Tailors layouts; three
+completed on those exact tiles.
+
+| Native Service and timing | Default | Candidate |
+| --- | ---: | ---: |
+| Bakers Stage 2 chains / active link-turns | 12 / 1,071 | 14 / 1,308 |
+| Bakers Stage 3 chains / active link-turns | 3 / 147 | 6 / 233 |
+| Tailors Stage 2 chains / active link-turns | 0 / 0 | 1 / 65 |
+| Tailors Stage 3 chains / active link-turns | 0 / 0 | 2 / 116 |
+| Tailors Stage 4 chains / active link-turns | 1 / 20 | 0 / 0 |
+| Game wall time per turn, including launch | 13.84 s | 16.43 s |
+| Guidance mean / maximum per turn | 1.37 / 3.15 s | 2.25 / 4.20 s |
+
+Services use 199 clocks verified in both games. The candidate game
+averaged 2.59 seconds more per turn, about 19%. Its measured guidance
+averaged 0.88 seconds more. Rural Community A remained the most frequent
+winner against candidate Quarter bids (268 of 449 recorded losses)
+and candidate customer bids (206 of 436). The preceding district
+comparison and the production queue carry separate outcomes. Line
+Infantry, Builders and Catapults took production during some failed
+district requests.
+
+The candidate offered eight paid packets on two tiles. Seven wrote to
+the eligible cache, with no city selection recorded for either paid
+target. The repeated 35 Gold Rural Community A offer concerned plot
+1772, beside Bakers 1846. The city owned it by turn 68 with no
+recorded purchase, and built an Encampment there on 171. In the default
+game, Bogotá's request was accepted for Rural Community A on 28.
+The city paid 30 Gold on 29 and completed the provider on 45 beside
+another city's Bakers. The scoped acquisition test still needs an
+ordinary customer with a positive CSC offer.
+
+The paired-footprint campaign archive includes `full-v30-city-lights-comparison.json`.
+The Load Game names are `CSC_LAYOUT_171124605_BASELINE_T250_29cb97e433ec`
+and `CSC_LAYOUT_171124605_TREATMENT_T250_49bc8da48861`.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the
