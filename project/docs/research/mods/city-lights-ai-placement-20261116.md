@@ -906,6 +906,13 @@ paid plot at 70 utility after a 20 Gold invoice, against 60 for the best
 owned option. This establishes that the shortlist can miss an economic
 advantage. Replaying 1453 will show whether it did so on Continents.
 
+The turn-50 replay reached 122. By the planned appraisal window on
+115–120, plot 1454 had become a City Center and its Bakers was on
+1381. Plot 1453 was already owned. The six requested diagnostic reads
+found no matching frontier layout. This replay did not reproduce the
+original three-site comparison, so the appraisal moved to a different
+candidate.
+
 The candidate now appraises up to twelve legal district and building
 options in one rotating Quarter-first group per player and turn. This
 lets a third customer plot compete even when the two leading geometry
@@ -1270,6 +1277,13 @@ complete by 89. The native tree named the Hub when it accepted contract
 809 on turn 60. The original record has no CSC purchase offer. The
 hash-verified candidate with the new appraisal is queued for a matched
 replay from the turn-50 checkpoint through 95.
+
+The City Lights turn-150 save has a second candidate if the
+Atzcapotzalco replay diverges. Kristiansand's Bakers on 2194 was
+already founded, with one adjacent Flax. In the original game it
+finished on 160. The tree first reported Rural Community A's plot
+purchase contract 3256 on 161. Kristiansand paid 80 Gold for 2193
+on 166, founded the provider on 188 and completed the pair on 189.
 
 ### Tenochtitlan completed a customer-first Tailors layout
 
