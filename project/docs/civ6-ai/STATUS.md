@@ -1,5 +1,13 @@
 # Current CSC AI status
 
+**Standalone qualification, 25 November.** Both turn-250 saves verified.
+The treatment reached two positive paid-site appraisals for a Hub on
+2088, then lost those publications because the appraisal row dropped
+the list of districts that could complete the link. The fix preserves
+that list when charging rival placements. A regression reproduces the
+failure with the prior code and passes with the fix. The affected live
+window and full comparison are being repeated on the corrected build.
+
 **Hattin provider competition, Problems 1.2 and 2.1.** Hattin's
 control repeatedly chose a Rural type that was already built. The
 candidate's admission scopes reached the native selection. The

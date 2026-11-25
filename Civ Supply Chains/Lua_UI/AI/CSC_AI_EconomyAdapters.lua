@@ -2367,7 +2367,10 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                 local wait=customerPurchaseWait(option)
                 if wait then
                     paidTypes[option.city..':'..option.district]={option=option,wait=wait}
-                    rows[#rows+1]={plot=footprint.plot,option=option,wait=wait}
+                    -- A selected appraisal row becomes the anchored plan.
+                    -- Keep every linked completion for this footprint so the
+                    -- rival-site cost can exempt those district types.
+                    rows[#rows+1]={plot=footprint.plot,option=option,options=footprint.options,wait=wait}
                 end
             end
         end end

@@ -568,6 +568,13 @@ local chosen=plan()
 -- native NetValue) + 40. CSC's credit is one quarter of the 15 margin.
 assert(chosen.best.plot==22 and chosen.backup.plot==20)
 assert(chosen.purchaseCreditQ8==960 and chosen.costQ8==960)
+CE_AIDistrictScoresEarlyCost=function()end
+Map.GetPlotByIndex=function()return {CanHaveDistrict=function()return true end}end
+local costs=E.ApplyConnectionCosts(snapshot,{},{chosen},{[3]=true})
+assert(#costs==2)
+for _,row in ipairs(costs)do
+    assert(row.plot==22 and row.district~=1 and row.earlyCostQ8==960)
+end
 free=0;chosen=plan();assert(chosen.best.plot~=22 and not chosen.purchaseCreditQ8)
 free=1;known=false;assert(plan().best.plot~=22)
 known=true;native[20]=nil;assert(plan().best.plot~=22)
