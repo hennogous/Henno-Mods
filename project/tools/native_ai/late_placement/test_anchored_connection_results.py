@@ -220,6 +220,30 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(row['first_observed_request_district'], 'DISTRICT_MBANZA')
         self.assertEqual(row['typed_offer_matches'], [])
 
+        # One city can let a request expire and accept a new district for the
+        # same tile. The old typed request must never inherit the new payment.
+        reissued = [
+            entry(3,'LOC_CITY_NAME_BUYER','Decode Trigger','District: DISTRICT_MBANZA; Value: 100'),
+            entry(3,'LOC_CITY_NAME_BUYER','Purchase Plot','Purchase 3 2: Accepted on #9'),
+            *correct,
+            entry(9,'LOC_CITY_NAME_BUYER','Purchase Plot','Purchase 3 2: Accepted on #12'),
+        ]
+        row, = customer_land_purchases(log,history,{1},15,reissued)['purchases']
+        self.assertEqual(row['first_observed_buying_city_contract'], 12)
+        self.assertEqual(row['first_observed_request_district'], 'DISTRICT_HARBOR')
+        self.assertEqual(len(row['typed_offer_matches']), 1)
+
+        overlapping = [*reissued,
+            entry(10,'LOC_CITY_NAME_BUYER','Purchase Plot','Purchase 3 2: Accepted on #9')]
+        row, = customer_land_purchases(log,history,{1},15,overlapping)['purchases']
+        self.assertIsNone(row['first_observed_buying_city_contract'])
+        self.assertEqual(row['typed_offer_matches'], [])
+        completed = [*overlapping,
+            entry(10,'LOC_CITY_NAME_BUYER','Purchase Plot','Purchase 3 2: Done on #12')]
+        row, = customer_land_purchases(log,history,{1},15,completed)['purchases']
+        self.assertEqual(row['first_observed_buying_city_contract'], 12)
+        self.assertEqual(len(row['typed_offer_matches']), 1)
+
     def test_short_replay_does_not_count_a_different_customer_on_the_same_tile(self):
         with TemporaryDirectory() as directory:
             folder = Path(directory)

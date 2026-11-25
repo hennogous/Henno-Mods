@@ -192,8 +192,9 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                 # The base audit matches tile coordinates and player. The
                 # named city resolves competing requests for the same plot.
                 buying_city_label = 'City ' + buying_city if buying_city else row['buyer_label']
-                buyer = plot_buyer_request(row['request_history'], row['request_districts'], buying_city_label)
-                # Tie the first accepted contract to its earliest logged request.
+                buyer = plot_buyer_request(row['request_history'], row['request_districts'],
+                                           buying_city_label, row['turn'])
+                # Tie the paying city's contract to its earliest logged request.
                 # A later approval can pay for a different district or for a
                 # request submitted before CSC offered this site. The scout can
                 # read a native choice one turn after the request was logged.

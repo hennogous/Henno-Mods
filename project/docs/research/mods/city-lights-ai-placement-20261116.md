@@ -1459,6 +1459,16 @@ candidate uses the same seed and build from a fresh opening so its
 score, purchase and follow-through records form one continuous series.
 The archived partial game remains available for focused save replays.
 
+The logs also showed cities retrying a purchase for the same tile.
+Tlacopan's original Water Park request ended after turn 139. A second
+request was accepted on 141 and was still visible when the city acquired
+the tile on 142. Ålesund retried a Campus request before its turn-116
+purchase. The report now uses the completion or the sole acceptance
+around the purchase to choose among repeated requests. It then checks
+which district the selected request originally named. A purchase with
+no identifiable active request stays unattributed. Tenochtitlan's
+turn-149 acquisition was one such case.
+
 ### Tenochtitlan completed a customer-first Tailors layout
 
 Both standalone copies loaded the same turn-150 save and founded the

@@ -853,26 +853,35 @@ def endpoint_pair_supply(census, observations, players, *, include_timing=False)
     return summarise_endpoint_pairs(endpoint_pair_facts(census, observations, players), include_timing=include_timing)
 
 
-def plot_buyer_request(requests, typed_requests, city_label):
-    """Find the buying city's first accepted handle and what prompted it."""
+def plot_buyer_request(requests, typed_requests, city_label, purchase_turn):
+    """Identify the contract associated with the purchase and its original district."""
     matched = [(turn, contract, state) for turn, contract, state, city in requests
                if city == city_label]
     accepted = [(turn, contract) for turn, contract, state in matched if state == 'Accepted']
-    earliest = min((turn for turn, _ in accepted), default=None)
-    candidates = {contract for turn, contract in accepted if turn == earliest}
+    candidates = {contract for _, contract in accepted}
+    if len(candidates) > 1:
+        # The city can retry the same tile with a new district after the
+        # previous request expires. Use the contract completed around the
+        # ownership event, or the only acceptance still visible at that clock.
+        completed = {contract for turn, contract, state in matched
+                     if state == 'Done' and contract in candidates and abs(turn-purchase_turn) <= 1}
+        candidates = completed or {contract for turn, contract in accepted if abs(turn-purchase_turn) <= 1}
     result = dict(buying_city_request_turn=max((turn for turn, _ in accepted), default=None),
-                  first_observed_buying_city_acceptance=earliest,
+                  first_observed_buying_city_acceptance=None,
                   first_observed_buying_city_request=None, first_observed_request_district=None,
                   first_observed_buying_city_contract=None)
     if len(candidates) != 1:
         return result
     contract, = candidates
+    acceptance_turns = [turn for turn, number in accepted if number == contract]
     first = min(turn for turn, number, state in matched
                 if number == contract and state in ('Submitted', 'Accepted'))
     names = {district for turn, number, state, city, district in typed_requests
              if city == city_label and number == contract and turn == first
              and state in ('Submitted', 'Accepted')}
-    result.update(first_observed_buying_city_request=first,
+    result.update(buying_city_request_turn=max(acceptance_turns),
+                  first_observed_buying_city_acceptance=min(acceptance_turns),
+                  first_observed_buying_city_request=first,
                   first_observed_buying_city_contract=contract,
                   first_observed_request_district=next(iter(names)) if len(names) == 1 else None)
     return result
@@ -984,7 +993,7 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                   and (player,2*i-ordinal) not in purchase_ordinals]
         requests = sorted(r for r in trees[player,x,y] if r[0] <= min(through,turn+1))
         districts = sorted(r for r in request_districts[player,x,y] if r[0] <= min(through,turn+1))
-        buyer = plot_buyer_request(requests, districts, buyer_label)
+        buyer = plot_buyer_request(requests, districts, buyer_label, turn)
         # Preserve physical acquisition in both arms even if CSC never bid.
         # Treasury changes and request history are observations, with exact
         # expected-invoice and policy-packet checks retained below.
