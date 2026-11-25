@@ -1,9 +1,18 @@
 """Timing aggregation uses actual attempts/turns and preserves missing data."""
 import unittest
-from processing_time_summary import summarise
+from processing_time_summary import launch_to_endpoint_wall, summarise
 
 
 class ProcessingTimes(unittest.TestCase):
+    def test_launch_to_endpoint_uses_the_inactive_final_clock(self):
+        launch = {'time': 1000.5}
+        boundary = {'time': 4500.5, 'turn': 250, 'active': False}
+        self.assertEqual(launch_to_endpoint_wall(launch, boundary, 250),
+                         {'seconds': 3500.0, 'average_seconds_per_turn': 14.0})
+        self.assertIsNone(launch_to_endpoint_wall(launch, boundary | {'turn':249}, 250))
+        self.assertIsNone(launch_to_endpoint_wall(launch, boundary | {'active':True}, 250))
+        self.assertIsNone(launch_to_endpoint_wall(launch, boundary | {'time':999}, 250))
+
     def test_retry_work_is_summed_and_native_packet_counter_is_not_duplicated(self):
         result=summarise('''
 Lua: CSC_AI_PROCESSING turn=1 published=0 ok=0 wallMicros=1000 luaClockMicros=500

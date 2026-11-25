@@ -10,7 +10,7 @@ import re
 from statistics import median
 
 from planning_results import parse
-from processing_time_summary import summarise
+from processing_time_summary import launch_to_endpoint_wall, summarise
 
 
 OPPORTUNITY = re.compile(
@@ -1033,6 +1033,9 @@ def run_result(root):
     if (not counts['opportunities'] or timing['unobserved_turns'] or timing['incomplete_wall_turns']
             or timing['failed_attempts']):
         raise ValueError(f'Unqualified opportunity or guidance timing coverage in {root}')
+    launch, boundary = 'launch-bootstrap.json', 'live-status.json'
+    game_wall = (launch_to_endpoint_wall(read(launch), read(boundary), through)
+                 if (root/launch).is_file() and (root/boundary).is_file() else None)
     census = read('full-census-250.json')
     quarters = {row.split('\t')[3]: row.split('\t')[0] for kind, row in census['rows'] if kind == 'QUARTER'}
     supply = Counter()
@@ -1076,7 +1079,7 @@ def run_result(root):
     priced = prospective_footprints(log, observations, players, through, competition, priced=True)
     endpoint_pairs = endpoint_pair_facts(census, observations, players)
     common, anchored_targets = common_layout_report(log, observations, players, through, endpoint_pairs=endpoint_pairs)
-    return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'],
+    return dict(counts=counts, customer_land=land, timing=timing['publisher_wall'], game_wall=game_wall,
                 endpoint_pair_supply=summarise_endpoint_pairs(endpoint_pairs, include_timing=True),
                 common_layouts=common, anchored_targets=anchored_targets,
                 native_managed_timing=timing['native_managed_cell_wall'],
@@ -1204,6 +1207,7 @@ def paired_full_game_result(control, treatment):
                                                  for k in ('outcomes','lost_to','losses')},
                            surveyed_services=operation['stock' if arm == 'control' else 'combined'],
                            guidance_wall=result['timing'], native_managed_wall=result['native_managed_timing'],
+                           launch_to_endpoint_wall=result['game_wall'],
                            partner_choices=[dict(quarter_plot=p['quarter']['plot'], quarter=p['quarter']['district'],
                                 customer_plot=p['customer']['plot'], customer=p['customer']['district'],
                                 player=p['quarter']['player'], choices=p['post_foundation_choices'])

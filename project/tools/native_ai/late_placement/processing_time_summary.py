@@ -7,6 +7,7 @@ counter is separate native overhead; it excludes ordinary engine routines.
 import argparse
 from collections import defaultdict
 import json
+import math
 from pathlib import Path
 import re
 
@@ -17,6 +18,17 @@ def distribution(values):
             'average_ms':sum(values.values())/1000/len(values)if values else None,
             'max_ms':max(values.values())/1000 if values else None,
             'slowest':[{'turn':turn,'ms':micros/1000}for turn,micros in ordered[:5]]}
+
+
+def launch_to_endpoint_wall(launch, boundary, endpoint):
+    """Controller wait to the confirmed endpoint, including startup and observation."""
+    start, finish = launch.get('time'), boundary.get('time')
+    if (endpoint <= 0 or boundary.get('turn') != endpoint or boundary.get('active') is not False
+            or any(type(value) not in (int, float) or not math.isfinite(value) for value in (start, finish))
+            or finish <= start):
+        return None
+    elapsed = finish - start
+    return {'seconds': elapsed, 'average_seconds_per_turn': elapsed / endpoint}
 
 
 def summarise(text,*,first=1,last=250):

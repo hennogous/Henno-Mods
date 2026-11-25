@@ -33,6 +33,9 @@ Turn0 startup is outside the default turn1–250 distribution. The ordinary Lua
 log retains it for separate inspection. Whole-turn game speed also includes
 native AI, rendering, passive test observers and controller waits; the direct
 publisher measurement isolates the synchronous guidance cost from those tasks.
+The matched layout report also records launch-to-endpoint wall time and its
+average per game turn. These use the controller's launch clock and confirmed
+inactive endpoint. Startup and passive observations are included.
 
 Keep recurring work bounded: definitions are cached; a publication shares an
 immutable route observation and at most128 distinct route timelines; customer
