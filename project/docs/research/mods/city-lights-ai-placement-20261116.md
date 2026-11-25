@@ -1691,6 +1691,8 @@ The buyer check declined the site because the cheapest two quotes tied.
 Use the original replay as evidence for the Quarter-first build order and
 choose a site with a unique eligible buyer for the purchase test.
 
+### Meroë completed its Hub after acquiring the tile without buying it
+
 Meroë's turn-150 save has two working Bakers suppliers and a known later
 Hub site on plot 2660. The controlled setup releases only that empty
 plot on a copy. The city has two open district slots and can uniquely
@@ -1702,8 +1704,12 @@ AI decide what to buy and build.
 The game had already published its turn-150 packet when the fixture
 released the plot. That packet still treated it as owned. Turn 151 was
 the first regular publication that could use the new ownership state.
-The control acquired the plot without a purchase by turn 155, founded
-the Hub on 166 and completed the pair on 168.
+Both arms retained the same Water Park contract while the Hub tile was
+unowned. Meroë acquired the tile without a purchase by turn 155, then
+submitted the Hub contract. Both arms founded the Hub on turn 166 and
+completed the supplied pair on 168. The candidate had no live paid offer
+for this plot. The next case must preserve a payable title at a fresh
+district decision so the AI can act on a current offer.
 
 The private timing wrapper previously dropped the connection planner's
 return value. A positive appraisal could therefore appear alongside an

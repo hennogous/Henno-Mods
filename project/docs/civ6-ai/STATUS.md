@@ -26,6 +26,14 @@ the tile for Tailors in both arms. It paid 70 Gold on turn 124 in
 the candidate, with construction still pending at the endpoint.
 [Paid-site replay](../research/mods/city-lights-ai-placement-20261116.md#barcelonas-paid-customer-site-reached-the-native-cache).
 
+Meroë's matched test released a 35 Gold Hub tile beside two working
+Bakers suppliers. The city kept its existing Water Park contract, gained
+the tile without a purchase by turn 155, and completed the Hub pair on
+168 in both arms. Bogotá's City Lights copy paid 30 Gold for a Rural
+Community and completed the provider link in both arms. A live positive
+CSC offer preceding a matching ordinary customer purchase remains open.
+[Matched Meroë and Bogotá evidence](../research/mods/city-lights-ai-placement-20261116.md#mero%C3%AB-completed-its-hub-after-acquiring-the-tile-without-buying-it).
+
 **Hattin provider competition, Problems 1.2 and 2.1.** Hattin's
 control repeatedly chose a Rural type that was already built. The
 candidate's admission scopes reached the native selection. The
