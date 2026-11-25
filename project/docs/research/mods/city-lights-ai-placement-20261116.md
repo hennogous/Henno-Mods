@@ -1352,6 +1352,16 @@ paid-site offer for it. The provider founded on turn 177 in control
 and 176 in treatment. Both completed the same pair on 179 and had a
 working Base supplier at the endpoint.
 
+The treatment's native tree had already requested the unowned tile for
+Rural A on turn 161 under contract 3251. After the city owned it, the
+decorator still waited on that contract through its ten-turn limit on
+171. When the land entered the borders, CSC added 7,832 Q8 of linked
+completion value to its normal 2,048 Q8 spatial preference. The native
+NetValue read delivered the combined +9,880 Q8. The city submitted the
+provider construction request on turn 173, as did the control.
+This records early native purchase intent and the existing ownership
+acknowledgement gap in the same case.
+
 Kaiapoi is another archived purchase case in the same City Lights
 control. Its tree named Rural Community A in contract 2108 on turn
 118. The city paid 70 Gold for 2679 on 119, founded the provider on

@@ -34,7 +34,9 @@ and selected the same owned Hub site after an Aqueduct. The next
 candidate compares paid and owned alternatives before a reliably
 forecast slot opening. In the matched Kristiansand replay the provider
 tile entered the city's borders by turn 164 in both copies, with no
-purchase event for it. Both finished the same supplied pair on 179. The
+purchase event for it. The candidate's native plot request had started
+on 161 and waited through its timeout after the tile was owned. Both
+finished the same supplied pair on 179. The
 early-slot Atzcapotzalco comparison remains queued behind the City Lights
 provider-admission and performance replays.
 [Paid customer cases](../research/mods/city-lights-ai-placement-20261116.md#purchase-requests-in-bakavu-and-atzcapotzalco).
