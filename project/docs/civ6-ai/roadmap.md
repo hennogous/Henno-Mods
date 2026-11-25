@@ -11,7 +11,7 @@
 | 1.2 Neighbors | Value mapped customers, goods providers, and specific feasible future footprints. | Matched customer-first replay completed the Quarter beside its customers. The revised treatment gives stronger early bids to sites with robust supply and a competitive mapped customer. |
 | 1.3 Rivers | Price the river and Mill geometry the site can use. | River/Mill geometry changed the chosen Bakers site. |
 | 1.4 Adjacency | Prefer +3 with +2 as the ordinary minimum and a narrow Tailors exception. | Stronger siting verified in a replay and observed in full games. |
-| 1.5 Tile purchase | Secure worthwhile Quarter, customer and supplier tiles. | Paid Quarter and supplier acquisition verified. Saving for a customer tile and following through on its purchase are open. |
+| 1.5 Tile purchase | Secure worthwhile Quarter, customer and supplier tiles. | Paid Quarter and supplier acquisition verified. Meroë demonstrates a customer bid, purchase and completed pair in a matched replay. Final full games are running. |
 | 1.6 Construction readiness and follow-through | Carry legal, affordable plans through capacity checks, foundation, and completion. | Integrated follow-through verified in a representative paid-footprint case. |
 | 1.7 Place or defer | Defer weak city plans and reconsider when viable supply appears. | Deferral and reconsideration verified in separate representative cases. |
 | 1.8 Discourage poor placements | Reduce the value of individual weak or destructive sites. | Weak-site suppression verified. Wider siting calibration remains open. |
@@ -87,11 +87,13 @@ each configuration. Keep each endpoint loadable and check live games
 every 20 minutes. Short diagnostic replays can reuse the earlier Quito,
 Delhi and customer-first saves.
 
-The four selected games reached turn 250 and have verified loadable
+The four games with the earlier candidate reached turn 250 and have verified loadable
 saves. The comparison report breaks down surveyed opportunities and
 exact completions by Quarter and foundation order, alongside supplier
 retention, Services, competing bids and turn time.
 [Matched turn-250 conversion](../research/mods/city-lights-ai-placement-20261116.md#exact-conversion-by-quarter-and-which-plot-was-founded-first)
+The final qualification uses the calibrated customer-land policy and the
+same preselected seeds in both configurations.
 
 **City Lights loading.** The existing `ModSupport_CL` game criterion loads the SQL that maps Rural Communities to each Quarter's goods-provider tag. The same Lua planner reads the active mappings in both configurations. Keep those district lists in gameplay data so the planner picks up new providers as the design grows.
 
@@ -146,8 +148,10 @@ either district is founded, the candidate can retain the pair across
 a missed forecast and a reload. It checks the current Quarter bid,
 customer eligibility, supporting deposits and competing site claims.
 The next foundation hands off to the other district. The original expiry
-still applies. The offline cases cover both build orders. The Gori replay
-must still connect the treasury debit, ownership and construction in play.
+still applies. The offline cases cover both build orders. The matched
+Meroë replay connects the current bid to a native Hub request, 35 Gold
+debit, matching construction site and two working Base suppliers.
+[Matched Meroë purchase](../research/mods/city-lights-ai-placement-20261116.md#calibrated-paid-credit-led-to-a-supplied-mero%C3%AB-hub).
 If a city founds its once-per-city district on a different tile, the live
 district type list retires the old plan even when the planned site stays
 empty. Growth and research can still make an otherwise viable plan ready.
@@ -156,8 +160,9 @@ A founded Quarter's land appraisal now compares available paid customer
 sites against owned layouts and the city's leading ordinary owned site.
 The native net quote includes the invoice. The purchase credit uses the
 additional CSC value left after that comparison. The existing native
-savings and spending decisions still govern purchase. A matched replay
-must link the new appraisal to a purchase and construction on the tile.
+savings and spending decisions still govern purchase. A paid group with a
+usable slot can take one of the existing rotating visits, preserving the
+priority visit for a saved handoff and the single paid appraisal budget.
 The native AI can request a tile before construction capacity opens.
 An upcoming slot can now enter the land appraisal when the next citizen
 will open it within ten turns. Paid and owned sites use the same expected

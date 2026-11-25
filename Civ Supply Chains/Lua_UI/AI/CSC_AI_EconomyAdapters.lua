@@ -2418,7 +2418,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
         local best
         for _,row in ipairs(rows)do if row.option.purchaseGold and row.valueQ8 and row.valueQ8>0 then
             local margin,scarcity,backup,backupMargin=row.valueQ8,row.valueQ8,nil,math.huge
-            local strongerPaid=false
+            local strongerPaid,ownedReference=false,nil
             for _,other in ipairs(rows)do if other.plot~=row.plot and other.valueQ8 then
                 local difference=row.valueQ8-other.valueQ8
                 local combined=difference
@@ -2432,7 +2432,7 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     combined=row.grossQ8-other.grossQ8+nativeDifference
                 end
                 if other.option.purchaseGold then strongerPaid=strongerPaid or combined<0
-                else margin=math.min(margin,difference) end
+                elseif difference<margin then margin,ownedReference=difference,other end
                 scarcity=math.min(scarcity,difference)
                 -- The persisted backup stores only a plot for this buyer
                 -- and district. Other rivals cap the price but cannot
@@ -2441,13 +2441,17 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     backup,backupMargin=other,difference
                 end
             end end
-            -- Comparable paid alternatives can limit protection for this
-            -- exact tile while still leaving a reason to buy instead of
-            -- using an owned plot. Publish only a fraction of the CSC margin.
-            local credit=math.floor(E.ConnectionLossQ8(margin,0)/2)
+            -- Use a quarter of the positive linked margin, after comparing
+            -- owned sites and charging for the land. Apply the shared 64
+            -- utility ceiling in Q8 to the published bid. The recipient is
+            -- the native district/site comparison, before purchase and
+            -- production decisions. Comparable paid sites can separately
+            -- reduce the remaining footprint protection.
+            local credit=math.min(CONNECTION_COST_CAP_Q8,math.floor(math.max(0,margin)/4))
             if not strongerPaid and credit>0 and (not best or margin>best.margin
                 or margin==best.margin and row.option.purchaseGold<best.row.option.purchaseGold)then
-                best={row=row,backup=backup,margin=margin,scarcity=scarcity,credit=credit}
+                best={row=row,backup=backup,margin=margin,scarcity=scarcity,credit=credit,
+                    ownedReference=ownedReference}
             end
         end end
         return best,true,inspectedSaved
@@ -2661,8 +2665,10 @@ function E.AnchoredConnectionPlans(snapshot,protectedPlots)
                     group.purchaseCreditQ8=purchase.credit
                     cost=math.max(0,E.ConnectionLossQ8(purchase.scarcity,0)-purchase.credit)
                     fallback=first.valueQ8-purchase.scarcity
-                    print(string.format('CSC_AI_CUSTOMER_LAND_APPRAISED turn=%d player=%d city=%d district=%d plot=%d invoice=%d ownedMarginQ8=%d scarcityQ8=%d creditQ8=%d slotWait=%d',
-                        turn,pid,target.city,target.district,target.plot,target.purchaseGold,purchase.margin,purchase.scarcity,purchase.credit,purchase.row.wait))
+                    local reference=purchase.ownedReference
+                    print(string.format('CSC_AI_CUSTOMER_LAND_APPRAISED turn=%d player=%d city=%d district=%d plot=%d invoice=%d ownedMarginQ8=%d scarcityQ8=%d creditQ8=%d slotWait=%d ownedPlot=%d ownedDistrict=%d ownedNetQ8=%d paidNetQ8=%d',
+                        turn,pid,target.city,target.district,target.plot,target.purchaseGold,purchase.margin,purchase.scarcity,purchase.credit,purchase.row.wait,
+                        reference and reference.plot or -1,reference and reference.option.district or -1,reference and reference.nativeQ8 or -1,purchase.row.nativeQ8))
                     if snapshot.nextLayouts then
                         local chain=target.chain
                         local quarter={city=chain.city:GetID(),district=chain.profile.district.Index,plot=chain.plot:GetIndex()}

@@ -277,7 +277,7 @@ class ConnectionCounts(unittest.TestCase):
                 'CSC_CUSTOMER_LAND_WATCH_INSTALLED',
                 record('PUBLICATION',turn=7,version=3,pendingTurn=7,accepted='true'),
                 record('PUBLICATION',turn=8,version=4,pendingTurn=8,accepted='true'),
-                'CSC_AI_CUSTOMER_LAND_APPRAISED turn=8 player=1 city=5 district=4 plot=23 invoice=40 ownedMarginQ8=800 scarcityQ8=-100 creditQ8=200 slotWait=4',
+                'CSC_AI_CUSTOMER_LAND_APPRAISED turn=8 player=1 city=5 district=4 plot=23 invoice=40 ownedMarginQ8=800 scarcityQ8=-100 creditQ8=200 slotWait=4 ownedPlot=30 ownedDistrict=4 ownedNetQ8=24000 paidNetQ8=23800',
                 'CSC_AI_CUSTOMER_LAND_APPRAISED turn=8 player=1 city=5 district=5 plot=23 invoice=40 ownedMarginQ8=800 scarcityQ8=-100 creditQ8=200',
                 'CSC_AI_CUSTOMER_LAND_OFFER turn=7 player=1 city=5 district=4 plot=23 invoice=40',
                 'CSC_CUSTOMER_TREASURY\t10\t1\t7\t100.50\t60.50',
@@ -358,6 +358,8 @@ class ConnectionCounts(unittest.TestCase):
         appraisal, = rows['exact_customer_land']['appraisals']
         self.assertEqual((appraisal['owned_margin_q8'], appraisal['scarcity_q8'], appraisal['credit_q8'],
                           appraisal['slot_wait'], appraisal['post_switch']), (800,-100,200,4,True))
+        self.assertEqual((appraisal['owned_reference_plot'], appraisal['owned_reference_district'],
+                          appraisal['owned_native_q8'], appraisal['paid_native_q8']), (30,4,24000,23800))
         acquisition, = rows['exact_customer_land']['acquisitions']
         self.assertEqual(acquisition['treasury_changes'], [40.0])
         linked, = rows['exact_customer_land']['completed_on_purchased_plot']

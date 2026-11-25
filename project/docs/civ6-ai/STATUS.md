@@ -31,7 +31,7 @@ Bakers suppliers. The city kept its existing Water Park contract, gained
 the tile without a purchase by turn 155, and completed the Hub pair on
 168 in both arms. Bogotá's City Lights copy paid 30 Gold for a Rural
 Community and completed the provider link in both arms. A live positive
-CSC offer preceding a matching ordinary customer purchase remains open.
+CSC offer came later in the controlled Meroë tests below.
 [Matched Meroë and Bogotá evidence](../research/mods/city-lights-ai-placement-20261116.md#mero%C3%AB-completed-its-hub-after-acquiring-the-tile-without-buying-it).
 
 When Meroë started with its chosen Water Park complete, it paid 35 Gold
@@ -39,12 +39,12 @@ and completed the exact Hub beside working Bakers suppliers. The native
 request had already started one turn before CSC's paid Hub bid.
 [Meroë purchase and construction](../research/mods/city-lights-ai-placement-20261116.md#mero%C3%AB-bought-the-exact-hub-footprint-with-the-water-park-already-complete).
 
-The candidate's new rotation appraised Meroë's 35 Gold site on turn 150
-and reached the city's first comparison. The owned Hub on 2810 won by
-515 Q8, about two native utility points. Both copies built on 2810. The
-remaining question in this replay is how to price the linked benefit of
-the paid site against the owned winner.
-[Matched timing and scores](../research/mods/city-lights-ai-placement-20261116.md#rotating-paid-layouts-reached-mero%C3%ABs-first-native-comparison).
+The revised rotation and paid credit reached Meroë's first comparison on
+150. The linked Hub won, the AI paid 35 Gold on 151, and it completed the
+exact pair on 154. Both Base suppliers were working through 161. The
+rotation-only copy built its Hub on the owned site. The final matched
+turn-250 qualification is running with the calibrated build.
+[Native choice, payment and completion](../research/mods/city-lights-ai-placement-20261116.md#calibrated-paid-credit-led-to-a-supplied-mero%C3%AB-hub).
 
 Malinalco's 100 Gold Hub offer reached a live comparison on the exact
 plot. The city chose a stronger Entertainment Complex by 147,165 Q8.

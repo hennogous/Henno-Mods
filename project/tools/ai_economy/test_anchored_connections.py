@@ -592,6 +592,30 @@ chosen=plan()
 assert(chosen.best.plot==23 and chosen.backup.plot==22 and chosen.purchaseCreditQ8==5*256 and chosen.costQ8==0)
 ''')
 
+    def test_strong_paid_hub_still_shares_one_bounded_connection_budget(self):
+        self.vm().execute('''
+local E=CSC_AI_EconomyAdapters
+local paid={plot=22,adjacency=1,chains={chain},purchaseGold=35}
+snapshot.connectionGroups[1].candidates={main,paid}
+snapshot.planCustomerPurchases=true
+snapshot.cities={[7]={object={}}}
+GameInfo.Districts[1].RequiresPopulation=false
+snapshot.Price=function(flow)return flow.amount*256 end
+local native={[20]=120*256,[22]=100*256}
+snapshot.CustomerNetValue=function(_,_,plot)return native[plot] end
+values[20],values[22]=30*256,240*256
+local function plan()return E.AnchoredConnectionPlans(snapshot,{})[1]end
+local chosen=plan()
+assert(chosen.best.plot==22 and chosen.purchaseCreditQ8==190*256/4)
+assert(chosen.purchaseCreditQ8+chosen.costQ8==E.ConnectionCompletionCapQ8)
+values[22]=400*256
+chosen=plan()
+assert(chosen.purchaseCreditQ8==E.ConnectionCompletionCapQ8 and chosen.costQ8==0)
+native[20]=480*256
+chosen=plan()
+assert(chosen.best.plot==20 and not chosen.purchaseCreditQ8)
+''')
+
     def test_saved_paid_handoff_releases_only_after_its_complete_appraisal_loses(self):
         vm=self.vm()
         vm.execute((AI/'CSC_AI_PlanContinuity.lua').read_text(encoding='utf-8'))

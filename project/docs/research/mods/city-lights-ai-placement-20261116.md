@@ -1824,6 +1824,34 @@ credit was 8,707 Q8. The next check is whether the paid appraisal counted
 the actual owned winner and which share of the remaining economic margin
 is appropriate for paying for a stronger linked site.
 
+#### Calibrated paid credit led to a supplied Meroë Hub
+
+The next matched replay used the same rotating planner, prepared turn-150
+save, installed CE, treasury and opening publication. The only policy
+change was how the positive paid margin was capped. The credit remains one
+quarter of the margin and now uses the shared 64-utility ceiling on the
+published offer. Purchase credit and footprint protection share that
+ceiling. This changes offers only above 128 utility of positive linked
+margin. Repricing archived appraisals changed none of the nine offers
+from the two earlier full candidate games.
+
+The exact appraisal compared paid Hub 2660 at a native site value of
+339,629 Q8 with owned Hub 2810 at 348,336 Q8. Those are the same two sites
+in the live comparison, with the same 8,707 Q8 gap before the paid credit.
+After charging the 35 Gold price and valuing the additional linked
+economy, the paid site had a 39,307 Q8 margin. Its 9,826 Q8 offer was
+published on turn 150 in packet 2. The eligible native cache read scored
+that Hub at 427,674 Q8, and the city picked it. It submitted the first
+typed Hub request on 150, paid 35 Gold on 151, founded the Hub on 152,
+and completed the Bakers pair on 154. Both Base suppliers were working
+without an observed interruption through 161. The rotation-only copy
+chose and completed the owned Hub on 2810 with no corresponding payment.
+
+This establishes the native customer purchase path in a prepared board.
+The final full-game comparison uses fresh games and the same pinned
+calibration in both arms, with the layout planner enabled only in the
+candidate. The two preselected map and game seed pairs stay fixed.
+
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
 The turn-200 pilot released plot 530 from Malinalco in a copy of the
