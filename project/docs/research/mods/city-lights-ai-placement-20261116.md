@@ -1806,6 +1806,18 @@ unimproved tile at the loaded checkpoint. Adrianople's target did not
 pass the receiving city's empty-owned-tile check. These preflight
 failures did not reach bid publication or native competition.
 
+#### Faras priced the released site with its improvement intact
+
+A follow-up released plot 2724 in a copy of the original Faras game.
+It preserved the pillaged Farm and the working Flax beside Bakers 2798.
+Faras was the unique buyer at 35 Gold. The planner found small Hub
+advantages on 151, 156 and 159, with credits of +50, +230 and +1,140 Q8.
+The native city instead entered a new Encampment contract on 154 at
+2,439 utility after its previous Water Park request. CSC never offered
+a paid Entertainment Complex on 2724. The tile was gained without a
+purchase by turn 160 and remained empty at 167. The Encampment took
+the first fresh district decision while 2724 was for sale.
+
 ### Bogotá bought land and completed its Rural provider in both arms
 
 The controller recreated the original City Lights opening through turn 25
