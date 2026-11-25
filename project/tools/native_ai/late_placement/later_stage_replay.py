@@ -410,6 +410,14 @@ def run_arm(source, output, start, end, candidate_source, fixture=None, *,
                     f'A.{switch}={setting};print("CSC_CONNECTION_SWITCH="..tostring(A.{switch}))')
             raw = controller.cmd(code, 'CSC_AI_BakersGameplay', 'connection-switch')
             require(f'CSC_CONNECTION_SWITCH={setting}' in raw, 'Connection switch did not read back')
+            if fixture == 'customer_frontier' and fixture_parameters.get('refreshPublisher'):
+                # Change the paused world's initial conditions before resuming.
+                # This dedicated diagnostic package lets the real publisher
+                # see them before any AI tree reads the prepared turn's scores.
+                raw = controller.cmd('assert(CSC_TEST_FRONTIER_REFRESH)()',
+                                     'CSC_AI_BakersGameplay', 'prepared-turn-publication')
+                require(f'CSC_TEST_FRONTIER_REFRESHED\t{switch_turn}' in raw,
+                        'Prepared-turn policy publication was not confirmed')
             play_between(switch_turn, end)
         state = controller.state_read('later-stage-final-clock')
         require(state['turn'] == end and not state['active'], 'Wrong replay boundary')

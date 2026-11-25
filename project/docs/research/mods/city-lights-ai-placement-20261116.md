@@ -1778,6 +1778,13 @@ The Water Park remained the active district contract through turn 154,
 the turn it completed. The city owned the Hub tile by 155 with no
 purchase event. The paid Hub had no city comparison before that.
 
+A second controlled match refreshed the ordinary publisher after the
+setup and before autoplay, so both arms could act on the prepared board
+at turn 150. Both chose the owned Hub plot 2810 on that turn. It founded
+on 152 and completed on 154. The candidate's paid offer for 2660 first
+appeared on 151, while the earlier owned reservation was already active.
+The late offer therefore persisted even with a fresh initial publication.
+
 ### Malinalco's paid Hub bid lost to its Entertainment Complex
 
 The turn-200 pilot released plot 530 from Malinalco in a copy of the
