@@ -1325,6 +1325,14 @@ original turn-60 request, so the one-citizen forecast would first apply
 at population three. The new policy and its fallback have offline
 coverage. An early purchase from this policy still needs a matched replay.
 
+The full-game observer keeps the buying city's label at payment so that
+the report can match the earliest typed district request from that city
+to the same purchase, even when another city wanted the tile. It requires
+the accepted CSC packet, a native write receipt and the matching debit.
+The native choice readback and completed pair have their own fields.
+When a paid offer enters a recorded district comparison, the report also
+names the competing winner and its score gap.
+
 The City Lights turn-150 save has a second candidate if the
 Atzcapotzalco replay diverges. Kristiansand's Bakers on 2194 was
 already founded, with one adjacent Flax. In the original game it

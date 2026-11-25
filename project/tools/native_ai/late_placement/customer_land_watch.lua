@@ -30,7 +30,12 @@ Events.CityMadePurchase.Add(function(id,city,x,y,kind)
     local plot=Map.GetPlot(x,y)
     if plot then
         local turn,player,ordinal=event(id)
-        print('CSC_CUSTOMER_PLOT_PURCHASE',turn,player,ordinal,city,plot:GetIndex(),x,y)
+        -- The district-tree CSV names the buyer by its city label. Capture
+        -- that label at payment, even if the city is later captured or lost.
+        local buyer=CityManager.GetCity(id,city)
+        local name=buyer and buyer:GetName()
+        print('CSC_CUSTOMER_PLOT_PURCHASE',turn,player,ordinal,city,plot:GetIndex(),x,y,
+            type(name)=='string' and (name:gsub('[\t\r\n]',' ')) or '')
     end
 end)
 -- Short replays can nominate particular plots seen in a historical purchase

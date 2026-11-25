@@ -9,7 +9,7 @@ import re
 
 from anchored_connection_results import (
     CUSTOMER_RECEIPT, DISTRICT_TITLE, PROSPECTIVE_SUBSTITUTE,
-    customer_land_purchases, foundation_order, supplier_history,
+    customer_land_purchases, foundation_order, plot_buyer_request, supplier_history,
 )
 from planning_results import parse
 
@@ -191,46 +191,30 @@ def trace_arm(folder, targets, player, names, width=None, city_labels=None, swit
                     continue
                 # The base audit matches tile coordinates and player. The
                 # named city resolves competing requests for the same plot.
-                buying_city_label = 'City ' + buying_city if buying_city else None
-                requests = [(turn, contract, status) for turn, contract, status, city in row['request_history']
-                            if city == buying_city_label]
-                confirmed = [(turn, contract) for turn, contract, status in requests if status == 'Accepted']
-                latest_acceptance = max((turn for turn, _ in confirmed), default=None)
-                first_acceptance = min((turn for turn, _ in confirmed), default=None)
-                first_contracts = {contract for turn, contract in confirmed if turn == first_acceptance}
+                buying_city_label = 'City ' + buying_city if buying_city else row['buyer_label']
+                buyer = plot_buyer_request(row['request_history'], row['request_districts'], buying_city_label)
                 # Tie the first accepted contract to its earliest logged request.
                 # A later approval can pay for a different district or for a
                 # request submitted before CSC offered this site. The scout can
                 # read a native choice one turn after the request was logged.
                 matching_choices = []
-                first_request, request_district = None, None
-                if len(first_contracts) == 1:
-                    contract, = first_contracts
-                    first_request = min(turn for turn, number, status in requests if number == contract
-                                        and status in ('Submitted', 'Accepted'))
-                    declared_types = {district for turn, number, status, city, district in row['request_districts']
-                                      if city == buying_city_label and number == contract and turn == first_request
-                                      and status in ('Submitted', 'Accepted')}
-                    if len(declared_types) == 1:
-                        request_district, = declared_types
-                    if request_district is not None and request_district == names.get(customer_type):
-                        priced_packets = {offer['version']: offer for offer in earlier_offers
-                                          if row['treasury_changes'].count(offer['invoice']) == 1
-                                          and offer['logged_after_commit'] and (offer['receipt'] or {}).get('writes', 0) > 0}
-                        matching_choices = [dict(choice, invoice=priced_packets[choice['version']]['invoice'])
-                                            for choice in stages['comparisons']
-                                            if (choice['city'], choice['target_district_index'],
-                                                choice['target_plot']) == targets[1]
-                                            and choice['version'] in priced_packets and choice['target_selected']
-                                            and choice['post_switch_packet']
-                                            and first_request - 1 <= choice['publication_turn'] <= first_request
-                                            and first_request - 1 <= choice['observed_turn'] <= first_request + 1]
+                first_request = buyer['first_observed_buying_city_request']
+                request_district = buyer['first_observed_request_district']
+                if request_district is not None and request_district == names.get(customer_type):
+                    priced_packets = {offer['version']: offer for offer in earlier_offers
+                                      if row['treasury_changes'].count(offer['invoice']) == 1
+                                      and offer['logged_after_commit'] and (offer['receipt'] or {}).get('writes', 0) > 0}
+                    matching_choices = [dict(choice, invoice=priced_packets[choice['version']]['invoice'])
+                                        for choice in stages['comparisons']
+                                        if (choice['city'], choice['target_district_index'],
+                                            choice['target_plot']) == targets[1]
+                                        and choice['version'] in priced_packets and choice['target_selected']
+                                        and choice['post_switch_packet']
+                                        and first_request - 1 <= choice['publication_turn'] <= first_request
+                                        and first_request - 1 <= choice['observed_turn'] <= first_request + 1]
                 offered_after_switch = (after_switch(row['quote_turn'])
                                         if row['quote_turn'] in accepted_turns else None)
-                spending.append(dict(row, buying_city_request_turn=latest_acceptance,
-                                     first_observed_buying_city_acceptance=first_acceptance,
-                                     first_observed_buying_city_request=first_request,
-                                     first_observed_request_district=request_district,
+                spending.append(dict(row, **buyer,
                                      switched_native_choices_at_first_acceptance=matching_choices,
                                      offer_during_post_switch_publication=offered_after_switch,
                                      purchase_after_switch=after_switch(row['turn'])))

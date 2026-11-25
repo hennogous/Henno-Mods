@@ -182,6 +182,44 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(result['completed_partners_on_purchased_land'], [
             dict(player=1,city=5,plot=23,quarter='TAILORS',quarter_plot=10,district=4,bought=7,founded=9,linked=11)])
 
+    def test_full_game_purchase_matches_the_paid_city_first_typed_request(self):
+        log = '\n'.join([
+            'CSC_CUSTOMER_LAND_WATCH_INSTALLED',
+            'CSC_DISTRICT_CATALOGUE\t4\tDISTRICT_HARBOR\ttrue',
+            'CSC_DISTRICT_CATALOGUE\t5\tDISTRICT_MBANZA\ttrue',
+            record('PUBLICATION', pendingTurn=6, version=3, accepted='true'),
+            record('PUBLICATION', pendingTurn=8, version=4, accepted='true'),
+            record('NATIVE_BEST', turn=8, observedTurn=8, version=3, player=1, city=5, district=4, plot=23),
+            'CSC_AI_CUSTOMER_LAND_OFFER turn=6 player=1 city=5 district=4 plot=23 invoice=40 bidQ8=200 version=3',
+            'CSC_AI_CUSTOMER_RECEIPT turn=8 version=3 player=1 city=5 district=4 plot=23 result={"writes":1}',
+            'CSC_AI_CUSTOMER_LAND_OFFER turn=8 player=1 city=5 district=5 plot=23 invoice=40 bidQ8=500 version=4',
+            'CSC_AI_CUSTOMER_RECEIPT turn=9 version=4 player=1 city=5 district=5 plot=23 result={"writes":1}',
+            'CSC_CUSTOMER_TREASURY\t10\t1\t7\t64.10\t24.10',
+            'CSC_CUSTOMER_PLOT_PURCHASE\t10\t1\t8\t5\t23\t3\t2\tLOC_CITY_NAME_BUYER',
+            record('FOUNDATION', turn=12, player=1, city=5, district=4, plot=23, foundationDateKnown='true'),
+        ])
+        def entry(turn, city, node, message):
+            return [str(turn), '1', 'City '+city, 'Build City District', 'RUNNING', node, message]
+        correct = [
+            entry(6,'OTHER','Decode Trigger','District: DISTRICT_MBANZA; Value: 100'),
+            entry(6,'OTHER','Purchase Plot','Purchase 3 2: Accepted on #11'),
+            entry(7,'LOC_CITY_NAME_BUYER','Decode Trigger','District: DISTRICT_HARBOR; Value: 150'),
+            entry(7,'LOC_CITY_NAME_BUYER','Purchase Plot','Purchase 3 2: Submitted on #12'),
+            entry(8,'LOC_CITY_NAME_BUYER','Purchase Plot','Purchase 3 2: Accepted on #12'),
+        ]
+        history = parse(log, 'CSC_PLANNING_')
+        row, = customer_land_purchases(log,history,{1},15,correct)['purchases']
+        self.assertEqual((row['first_observed_buying_city_request'], row['first_observed_buying_city_contract'],
+                          row['first_observed_request_district']), (7,12,'DISTRICT_HARBOR'))
+        self.assertEqual(row['typed_offer_matches'], [
+            dict(turn=6, version=3, district=4, invoice=40, native_choice_readback_turns=[8])])
+        corrected = [*correct[:2],
+                     entry(7,'LOC_CITY_NAME_BUYER','Decode Trigger','District: DISTRICT_MBANZA; Value: 150'),
+                     *correct[3:]]
+        row, = customer_land_purchases(log,history,{1},15,corrected)['purchases']
+        self.assertEqual(row['first_observed_request_district'], 'DISTRICT_MBANZA')
+        self.assertEqual(row['typed_offer_matches'], [])
+
     def test_short_replay_does_not_count_a_different_customer_on_the_same_tile(self):
         with TemporaryDirectory() as directory:
             folder = Path(directory)
@@ -331,6 +369,12 @@ class ConnectionCounts(unittest.TestCase):
         self.assertEqual(bid_competition(reference,parse(reference,'CSC_PLANNING_'),{1},250),competition)
         quarter_credit = reference.replace('order=quarterFirst','order=customerFirst')
         self.assertNotIn('customer',bid_competition(quarter_credit,parse(quarter_credit,'CSC_PLANNING_'),{1},250)['lost_to'])
+        paid = log + '\nCSC_AI_CUSTOMER_LAND_OFFER turn=4 player=1 city=7 district=6 plot=20 invoice=30 bidQ8=12 version=4'
+        comparison = bid_competition(paid, parse(paid, 'CSC_PLANNING_'), {1}, 250)
+        self.assertEqual(comparison['lost_to']['customerLand'], {'DISTRICT_RURALCOMMUNITYA': 1})
+        self.assertNotIn('customer', comparison['lost_to'])
+        stale = paid.removesuffix('version=4') + 'version=5'
+        self.assertEqual(bid_competition(stale, parse(stale, 'CSC_PLANNING_'), {1}, 250), competition)
 
     def test_expired_request_lists_actual_production_in_the_right_owner_window(self):
         district = 'DISTRICT_CSC_TAILORS_QUARTER'

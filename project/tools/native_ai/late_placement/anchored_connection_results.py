@@ -31,6 +31,9 @@ QUARTER_RECEIPT = re.compile(r'CSC_QUARTER_WATCH_(WRITE|BEST)\t([^\r\n]+)')
 DISTRICT_TITLE = re.compile(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t([^\t\r\n]+)')
 CUSTOMER_BID = re.compile(r'CSC_AI_(?:CUSTOMER_(?:FUTURE|ECONOMIC|PROSPECTIVE)_BID|CONNECTION_COMPLETION) ([^\r\n]+)')
 CUSTOMER_RECEIPT = re.compile(r'CSC_CUSTOMER_WATCH_NATIVE [^\r\n]*? ordinal=(\d+) record=(\{[^\r\n]+\})')
+CUSTOMER_LAND_OFFER = re.compile(
+    r'CSC_AI_CUSTOMER_LAND_OFFER turn=(\d+) player=(\d+) city=(\d+) district=(\d+) '
+    r'plot=(\d+) invoice=(\d+)(?: bidQ8=(-?\d+)(?: version=(\d+))?)?')
 
 
 def layout_identity(row):
@@ -67,6 +70,12 @@ def bid_competition(log, observations, players, through):
         if len(published) == 1 and credit > 0 and int(row['player']) in players:
             version = next(iter(published))
             customers.add((version, *(int(row[k]) for k in ('player', 'city', 'district', 'plot'))))
+    paid_customers = set()
+    for match in CUSTOMER_LAND_OFFER.finditer(log):
+        turn, player, city, district, plot, _ = map(int, match.groups()[:6])
+        if (player in players and match[7] and int(match[7]) > 0
+                and match[8] and int(match[8]) in versions.get(turn, ())):
+            paid_customers.add((int(match[8]), player, city, district, plot))
 
     decisions = defaultdict(list)
     for row in observations:
@@ -82,13 +91,14 @@ def bid_competition(log, observations, players, through):
         if group in decisions and row['eligible'] == '1' and quarters.get(key) == int(row['result']):
             decisions[group].append((int(row['nativeOrdinal']), 'quarter', *key[3:], int(row['result'])))
 
-    if customers:
+    priced_customers = customers | paid_customers
+    if priced_customers:
         positive = set()
         for match in CUSTOMER_RECEIPT.finditer(log):
             row = json.loads(match[2])
             key = tuple(row[k] for k in ('version', 'player', 'city', 'district', 'plot'))
             group = (row['generation'], *key[:3])
-            if group not in decisions or key not in customers:
+            if group not in decisions or key not in priced_customers:
                 continue
             cell = (row['generation'], *key)
             if row['k'] == 'net':
@@ -97,7 +107,8 @@ def bid_competition(log, observations, players, through):
                 else:
                     positive.discard(cell)
             if row['k'] == 'cache' and row['result'] > 0 and row['eligible'] == 1 and cell in positive:
-                decisions[group].append((int(match[1]), 'customer', *key[3:], row['result']))
+                kind = 'customerLand' if key in paid_customers else 'customer'
+                decisions[group].append((int(match[1]), kind, *key[3:], row['result']))
 
     outcomes = defaultdict(Counter)
     lost_to = defaultdict(Counter)
@@ -842,14 +853,44 @@ def endpoint_pair_supply(census, observations, players, *, include_timing=False)
     return summarise_endpoint_pairs(endpoint_pair_facts(census, observations, players), include_timing=include_timing)
 
 
+def plot_buyer_request(requests, typed_requests, city_label):
+    """Find the buying city's first accepted handle and what prompted it."""
+    matched = [(turn, contract, state) for turn, contract, state, city in requests
+               if city == city_label]
+    accepted = [(turn, contract) for turn, contract, state in matched if state == 'Accepted']
+    earliest = min((turn for turn, _ in accepted), default=None)
+    candidates = {contract for turn, contract in accepted if turn == earliest}
+    result = dict(buying_city_request_turn=max((turn for turn, _ in accepted), default=None),
+                  first_observed_buying_city_acceptance=earliest,
+                  first_observed_buying_city_request=None, first_observed_request_district=None,
+                  first_observed_buying_city_contract=None)
+    if len(candidates) != 1:
+        return result
+    contract, = candidates
+    first = min(turn for turn, number, state in matched
+                if number == contract and state in ('Submitted', 'Accepted'))
+    names = {district for turn, number, state, city, district in typed_requests
+             if city == city_label and number == contract and turn == first
+             and state in ('Submitted', 'Accepted')}
+    result.update(first_observed_buying_city_request=first,
+                  first_observed_buying_city_contract=contract,
+                  first_observed_request_district=next(iter(names)) if len(names) == 1 else None)
+    return result
+
+
 def customer_land_purchases(log, observations, players, through, tree_rows):
     """Join a priced offer to the buyer, observed Gold change and later use."""
     offers = defaultdict(list)
     native_offers = []
     versions = defaultdict(set)
+    choices = defaultdict(set)
+    names = {int(index): title for index, title in DISTRICT_TITLE.findall(log)}
     for row in observations:
         if row['kind'] == 'PUBLICATION' and row['accepted']:
             versions[row['pendingTurn']].add(row['version'])
+        if row['kind'] == 'NATIVE_BEST' and row.get('player') in players and row['turn'] <= through:
+            key = tuple(row[key] for key in ('version', 'player', 'city', 'district', 'plot'))
+            choices[key].add(row.get('observedTurn', row['turn']))
     receipts = {}
     for match in re.finditer(r'CSC_AI_CUSTOMER_RECEIPT turn=\d+ version=(\d+) player=(\d+) city=(\d+) '
                              r'district=(\d+) plot=(\d+) result=(\{[^\r\n]*\})', log):
@@ -858,8 +899,7 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
         except json.JSONDecodeError:
             continue
         receipts[tuple(map(int, match.groups()[:5]))] = receipt
-    for match in re.finditer(r'CSC_AI_CUSTOMER_LAND_OFFER turn=(\d+) player=(\d+) city=(\d+) '
-                             r'district=(\d+) plot=(\d+) invoice=(\d+)(?: bidQ8=(-?\d+)(?: version=(\d+))?)?', log):
+    for match in CUSTOMER_LAND_OFFER.finditer(log):
         turn, player, city, district, plot, price = map(int, match.groups()[:6])
         if player in players and turn <= through:
             # New logs come after a successful commit and carry the exact
@@ -928,10 +968,12 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
     ai_purchases = 0
     district_uses = []
     completed_on_purchased_land = []
-    purchase_events = list(re.finditer(r'CSC_CUSTOMER_PLOT_PURCHASE\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)', log))
+    purchase_events = list(re.finditer(
+        r'CSC_CUSTOMER_PLOT_PURCHASE\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)(?:\t([^\r\n]+))?', log))
     purchase_ordinals = {(int(m[2]),int(m[3])) for m in purchase_events}
     for match in purchase_events:
-        turn, player, ordinal, city, plot, x, y = map(int, match.groups())
+        turn, player, ordinal, city, plot, x, y = map(int, match.groups()[:7])
+        buyer_label = 'City ' + match[8].strip() if match[8] and match[8].strip() else None
         key = player, city, plot
         if turn > through or player not in players:
             continue
@@ -942,12 +984,14 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
                   and (player,2*i-ordinal) not in purchase_ordinals]
         requests = sorted(r for r in trees[player,x,y] if r[0] <= min(through,turn+1))
         districts = sorted(r for r in request_districts[player,x,y] if r[0] <= min(through,turn+1))
+        buyer = plot_buyer_request(requests, districts, buyer_label)
         # Preserve physical acquisition in both arms even if CSC never bid.
         # Treasury changes and request history are observations, with exact
         # expected-invoice and policy-packet checks retained below.
         observed_purchases.append(dict(turn=turn, player=player, city=city, plot=plot,
                                        treasury_changes=debits, request_history=requests,
-                                       request_districts=districts, foundation=actual))
+                                       request_districts=districts, foundation=actual,
+                                       buyer_label=buyer_label, **buyer))
         if actual:
             # Include every district founded by the paying city. This lets us
             # see where the ordinary land path succeeds before a partner exists.
@@ -971,11 +1015,30 @@ def customer_land_purchases(log, observations, players, through, tree_rows):
         # Keep the full observed request history. A contract already accepted
         # before the first offer can stay accepted until its treasury pays.
         accepted = [r[0] for r in requests if r[2]=='Accepted']
+        first = buyer['first_observed_buying_city_request']
+        typed_matches = []
+        if first is not None and buyer['first_observed_request_district']:
+            for offer in prior:
+                # Keep the first typed request, exact committed packet and
+                # Gold debit together. A later receipt cannot turn a retained
+                # contract into an earlier CSC-influenced request.
+                offered = offer['turn']
+                if (names.get(offer['district']) != buyer['first_observed_request_district']
+                        or not first-1 <= offered <= first
+                        or offer['version'] not in versions[offered]
+                        or not offer['logged_after_commit'] or (offer['receipt'] or {}).get('writes', 0) <= 0
+                        or debits.count(offer['invoice']) != 1):
+                    continue
+                key = offer['version'], player, city, offer['district'], plot
+                chosen = sorted(observed for observed in choices.get(key, ()) if first-1 <= observed <= first+1)
+                typed_matches.append(dict(turn=offered, version=offer['version'], district=offer['district'],
+                                          invoice=offer['invoice'], native_choice_readback_turns=chosen))
         purchases.append(dict(turn=turn, player=player, city=city, plot=plot, quote_turn=last_turn,
                               quotes=quotes, district_request_turn=max(accepted,default=None), request_history=requests,
                               request_districts=districts, earlier_offers=prior, treasury_changes=debits,
                               matching_debit=sum(amount in {cost for _,cost in quotes} for amount in debits)==1,
-                              foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes))))
+                              foundation=actual, built_offered_type=bool(actual and any(d==actual[1] for d,_ in quotes)),
+                              buyer_label=buyer_label, typed_offer_matches=typed_matches, **buyer))
     return dict(observed='CSC_CUSTOMER_LAND_WATCH_INSTALLED' in log, ai_plot_purchases=ai_purchases,
                 districts_on_purchased_plots=district_uses, offered_tiles=len(offers), offers=native_offers, purchases=purchases,
                 observed_plot_purchases=observed_purchases,
