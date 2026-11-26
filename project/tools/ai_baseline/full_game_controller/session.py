@@ -149,7 +149,7 @@ class NativeSession:
 
     def close(self, *, restore_preferences, restore_package=lambda: None,
               before_menu=lambda: None, after_native_exit=lambda: None,
-              exit_timeout=60):
+              exit_timeout=60, menu_timeout=180):
         if self.closed:
             raise SessionError('Session already closed')
         # A freeze/restoration failure must not be described as complete. Keep
@@ -177,7 +177,7 @@ class NativeSession:
             self.sleep(.5)
         if 'GameCore_Tuner' in states or 'PlotInfo' in states:
             self.issue_once('menu', 'Events.ExitToMainMenu();', 'PlotInfo')
-        self.wait_context('MainMenu', 180)
+        self.wait_context('MainMenu', menu_timeout)
         restore_preferences()
         self.issue_once('exit', 'assert(type(ExitOK)=="function");ExitOK();', 'FrontEndPopup')
         deadline = self.clock() + exit_timeout

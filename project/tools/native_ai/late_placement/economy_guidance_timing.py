@@ -165,7 +165,12 @@ def run(reference,out,predecessor,pid,seed,*,endpoint=500,preflight=False,resume
         out.mkdir(parents=True)
         write_json(out/'planned-inputs.json',receipt)
         (out/'csc-original.modinfo').write_bytes(original)
-    wait_for_worker(pid,predecessor)
+    if not resume_game:
+        wait_for_worker(pid,predecessor)
+    else:
+        # A native owner receipt proves the original queue wait already
+        # ended. The old predecessor PID may since have been reused.
+        require(any(out.glob('off*/session-owner.json')),'The queued benchmark never launched')
     require(not native_inventory(),'Another Civ or FireTuner session is present')
     relative=str(metadata.relative_to(installed))
     ci=pins['packages']['csc']

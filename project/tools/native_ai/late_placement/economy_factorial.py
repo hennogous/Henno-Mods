@@ -202,7 +202,10 @@ def play(p, seed, game, arm, out, recovery=None, *, guidance=None):
     finally:
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda: restore_preferences(c,out) if (out/'original-preferences.json').is_file() else None,
-                          restore_package=lambda: verify_pins(p))
+                          restore_package=lambda: verify_pins(p),
+                          # A Large game can take several minutes to unload at
+                          # turn 500. Continue observing the one exit request.
+                          menu_timeout=600 if endpoint==500 else 180)
         elif session.owner is not None:
             write_json(out/'unexpected-native-exit.json',dict(exit_code=session.owner.poll(),identity=session.owner.identity))
             session.owner.close()
