@@ -71,8 +71,11 @@ def verify_modules(session, fork, output, original_sha):
         modules = [modules]
     paths = {row['ModuleName']: Path(row['FileName']).resolve() for row in modules}
     write_json(output / 'loaded-modules.json', {name: {'path': str(path), 'sha256': sha(path)} for name, path in paths.items()})
-    require(set(paths) == {DLL, 'GameCore_XP2_FinalRelease.dll'}, 'Unexpected loaded GameCore module set')
-    require(paths[DLL] == fork and sha(paths['GameCore_XP2_FinalRelease.dll']) == original_sha,
+    expected = {'GameCore_XP2_FinalRelease.dll'}
+    if fork is not None:
+        expected.add(DLL)
+    require(set(paths) == expected, 'Unexpected loaded GameCore module set')
+    require((fork is None or paths[DLL] == fork) and sha(paths['GameCore_XP2_FinalRelease.dll']) == original_sha,
             'Unexpected proxy or original GameCore identity')
 
 

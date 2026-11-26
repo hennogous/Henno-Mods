@@ -25,7 +25,7 @@ from storekeeper_runtime import audit
 LOGS = ('Lua.log', 'Database.log', 'Modding.log', 'AI_CityBuild.csv', 'AI_Research.csv',
         'AI_Behavior_Trees.csv', 'City_BuildQueue.csv', 'UnitOperations.log', 'DiplomacyManager.csv')
 MAPS = ('Continents', 'Pangaea', 'Fractal', 'Island_Plates')
-MAP_SIZES = {'small': (6, 9), 'standard': (8, 12)}  # Major and city-state counts.
+MAP_SIZES = {'small': (6, 9), 'standard': (8, 12), 'large': (10, 15)}  # Major and city-state counts.
 QUALIFICATION_SEEDS = {
     'Continents': (17260413, 27410653),
     'Pangaea': (18431267, 28681391),
@@ -44,9 +44,11 @@ def check_qualification(args):
         raise ValueError('The untuned Continents qualification arm requires the matching tuned source')
 
 
-def host(map_seed, game_seed, map_name, map_size):
+def host(map_seed, game_seed, map_name, map_size, *, speed='online'):
     if map_name not in MAPS:
         raise ValueError('Unknown map script')
+    if speed not in ('online','standard'):
+        raise ValueError('Unknown benchmark game speed')
     majors, city_states = MAP_SIZES[map_size]
     return f"""
 GameConfiguration.SetToDefaults()
@@ -58,7 +60,7 @@ MapConfiguration.SetScript('{map_name}.lua')
 MapConfiguration.SetMapSize('MAPSIZE_{map_size.upper()}')
 GameConfiguration.SetParticipatingPlayerCount({majors})
 GameConfiguration.SetValue('CITY_STATE_COUNT',{city_states})
-GameConfiguration.SetGameSpeedType('GAMESPEED_ONLINE')
+GameConfiguration.SetGameSpeedType('GAMESPEED_{speed.upper()}')
 GameConfiguration.SetHandicapType('DIFFICULTY_PRINCE')
 MapConfiguration.SetValue('RANDOM_SEED',{map_seed})
 GameConfiguration.SetValue('GAME_SYNC_RANDOM_SEED',{game_seed})

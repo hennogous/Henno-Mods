@@ -221,9 +221,12 @@ class FullGameController:
   log=self.diagnostics.USER/'Logs/DiplomacyManager.csv'
   if not log.exists():return
   candidates=[];seen_from=set()
+  # The caller pins the original AI seats for its map size. Existing
+  # Small-map controllers retain their original five-sender scope.
+  senders={str(seat) for seat in getattr(self,'observer_warning_senders',range(1,6))}
   for row in reversed(list(csv.reader(log.read_text(encoding='utf-8-sig',errors='replace').splitlines()))):
    row=[v.strip()for v in row]
-   if len(row)<5 or row[0]!=str(proof['turn'])or row[1]not in('1','2','3','4','5')or row[2]!='0':continue
+   if len(row)<5 or row[0]!=str(proof['turn'])or row[1]not in senders or row[2]!='0':continue
    if row[1]in seen_from:continue
    seen_from.add(row[1]) # A newer deal/demand prevents fallback to an old warning.
    cancellable=row[4]in CANCELLABLE_OBSERVER_PROMPTS
