@@ -68,14 +68,17 @@ print('CSC_GUIDANCE_POPUP_CLOCK_READY')
     require('CSC_GUIDANCE_POPUP_CLOCK_READY' in raw,'Popup logging registration failed')
 
 
-def observed_turns(out,endpoint):
+def observed_turns(out,endpoint,first=1):
+    # New games install the observer on turn one, after its turn-start event.
+    # A loaded game supplies its first autoplay turn explicitly.
+    first_clock=max(2,first)
     log=read(out/'Lua.log')
     marks={}
     for row in re.finditer(r'CSC_GUIDANCE_CLOCK\s+(\d+)\s+([\d.]+)',log):
         turn, now=int(row[1]),float(row[2])
         require(turn not in marks and math.isfinite(now),'Ambiguous Core turn clock')
         marks[turn]=now
-    require(set(range(2,endpoint+1)) <= marks.keys(),'Missing Core turn clock')
+    require(set(range(first_clock,endpoint+1)) <= marks.keys(),'Missing Core turn clock')
     excluded={}
     def exclude(turn, reason):
         excluded.setdefault(turn,set()).add(reason)
@@ -101,9 +104,9 @@ def observed_turns(out,endpoint):
                 exclude(row['core_proof']['turn'],row['context'])
     # Every multiple of five hands control back to the controller. Its gap
     # includes polling and reactivation, so use intervals inside each window.
-    valid={t:marks[t+1]-marks[t] for t in range(2,endpoint) if t%5!=0 and t not in excluded}
+    valid={t:marks[t+1]-marks[t] for t in range(first_clock,endpoint) if t%5!=0 and t not in excluded}
     require(valid and all(v>0 for v in valid.values()),'Missing or invalid clean turn intervals')
-    return valid,excluded,summarise(log,last=endpoint)
+    return valid,excluded,summarise(log,first=first,last=endpoint)
 
 
 def compare_timings(out, games,endpoint):

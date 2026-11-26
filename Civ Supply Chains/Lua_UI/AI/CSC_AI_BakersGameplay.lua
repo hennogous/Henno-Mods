@@ -74,8 +74,38 @@ local function readReceipt(getter, ...)
     -- Observability is optional on older CE builds. A readback fault must
     -- not prevent the next valid policy packet from being published.
     local ok, result = pcall(getter, ...)
-    if ok and type(result) == 'string' then return result end
-    return '{"readbackError":true}'
+    if ok and type(result) == 'string' then return result,true end
+    return '{"readbackError":true}',false
+end
+
+-- When the economic planner owns both Quarters it consumes supplier protection
+-- directly and supplies its own customer bids. Its managed defaults cover even
+-- unpriced plots. The legacy scan then has no live recipient. Run it on failure
+-- (or for an older snapshot that still relies on its early customer nominations).
+local function addFallbackPlacements(player, chains, protectedPlots, playerUI, economy, playerEntries, turn, id)
+    for _, profile in ipairs(placement.StageTwoProfiles()) do
+        local ok, industryBids, counts = pcall(CSC_AI_QuarterSiteForecasts, player, profile, chains,
+            economy and function(_,plot,p)return economy.Supply(plot,p)end or placement.ReadSuppliers, protectedPlots, playerUI, economy)
+        if ok then
+            for _, bid in ipairs(industryBids) do playerEntries[#playerEntries + 1] = bid end
+            -- This is CSC's assessment of the current legal targets.
+            -- The engine may still pick a penalized or unassisted site.
+            if counts and counts.legal > 0 then
+                print(string.format('CSC_AI_QUARTER_PLAN turn=%d player=%d key=%s legal=%d noBase=%d coversMaterial=%d noHost=%d bothPending=%d deferCities=%d offers=%d strong=%d lowAdjacency=%d',
+                    turn, id, profile.key, counts.legal, counts.noBase, counts.coversMaterial,
+                    counts.noHost, counts.bothPending, counts.deferCities, counts.offered, counts.strong, counts.lowAdjacency or 0))
+            end
+            if counts and (counts.frontierObserved or 0) > 0 then
+                -- These are proposed deductions on map candidates. The
+                -- CE consumer still validates the native frontier row.
+                print(string.format('CSC_AI_FRONTIER_QUARTER_PLAN turn=%d player=%d key=%s observed=%d bids=%d uncertain=%d',
+                    turn, id, profile.key, counts.frontierObserved, counts.frontierBids, counts.frontierUncertain))
+            end
+        else
+            print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',
+                turn, id, profile.key, tostring(industryBids)))
+        end
+    end
 end
 
 local function reportReceipts(turn, version, status)
@@ -90,6 +120,17 @@ local function reportReceipts(turn, version, status)
         local ok,reason=pcall(CSC_AI_EconomyAdapters.ObserveNativeChoices,status,previous.economy or{})
         if not ok then print('CSC_AI_PLAN_INPUT_UNAVAILABLE',turn,tostring(reason))end
     end
+    -- The published lists below point to the same entry when one site is
+    -- both a frontier Quarter and a planned connection. Each successful
+    -- receipt scans the native journal; share that read within this boundary
+    -- while keeping each role's diagnostic line and retrying readback faults.
+    local districtReceipts={}
+    local function districtReceipt(site)
+        if districtReceipts[site] then return districtReceipts[site] end
+        local value,ok=readReceipt(CE_AIDistrictScoresReceipt,version,site.player,site.city,site.district,site.plot)
+        if ok then districtReceipts[site]=value end
+        return value
+    end
     for _,scope in ipairs(previous.managed or{})do
         local result=readReceipt(CE_AIDistrictScoresManagedReceipt,version,scope.player,scope.district)
         print(string.format('CSC_AI_QUARTER_COVERAGE turn=%d version=%d player=%d district=%d result=%s',
@@ -97,7 +138,7 @@ local function reportReceipts(turn, version, status)
     end
     for i=1,math.min(#(previous.economy or {}),customerReceiptLimit)do
         local site=previous.economy[i]
-        local result=readReceipt(CE_AIDistrictScoresReceipt,version,site.player,site.city,site.district,site.plot)
+        local result=districtReceipt(site)
         print(string.format('CSC_AI_ECONOMY_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d bidQ8=%d result=%s',
             turn,version,site.player,site.city,site.district,site.plot,site.finalQ8,result))
     end
@@ -116,7 +157,7 @@ local function reportReceipts(turn, version, status)
     end
     for i = 1, math.min(#previous.frontier, frontierReceiptLimit) do
         local site = previous.frontier[i]
-        local result = readReceipt(CE_AIDistrictScoresReceipt, version, site.player, site.city, site.district, site.plot)
+        local result = districtReceipt(site)
         print(string.format('CSC_AI_FRONTIER_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d result=%s',
             turn, version, site.player, site.city, site.district, site.plot, result))
     end
@@ -131,14 +172,14 @@ local function reportReceipts(turn, version, status)
     local customerCount = #land + #previous.customers
     for i = 1, math.min(customerCount, customerReceiptLimit) do
         local site = land[i] or previous.customers[i - #land]
-        local result = readReceipt(CE_AIDistrictScoresReceipt, version, site.player, site.city, site.district, site.plot)
+        local result = districtReceipt(site)
         print(string.format('CSC_AI_CUSTOMER_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d result=%s',
             turn, version, site.player, site.city, site.district, site.plot, result))
     end
     -- Diagnostic only. Retain a few exact entries in each placement order
     -- after packet trimming. A receipt can say staged without a native read.
     for _,site in ipairs(previous.connections or {})do
-        local result=readReceipt(CE_AIDistrictScoresReceipt,version,site.player,site.city,site.district,site.plot)
+        local result=districtReceipt(site)
         print(string.format('CSC_AI_CONNECTION_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d order=%s costQ8=%d result=%s',
             turn,version,site.player,site.city,site.district,site.plot,site.connectionOrder,site.connectionCostQ8,result))
     end
@@ -396,30 +437,9 @@ local function refresh(turn)
                 allowances = allowances + #site.improvements
             end
         end
-        -- An unsupported placement read must leave the working supplier
-        -- protection active. A fresh native site score is still required.
-        for _, profile in ipairs(placement.StageTwoProfiles()) do
-            local ok, industryBids, counts = pcall(CSC_AI_QuarterSiteForecasts, player, profile, chains,
-                economy and function(_,plot,p)return economy.Supply(plot,p)end or placement.ReadSuppliers, protectedPlots, playerUI, economy)
-            if ok then
-                for _, bid in ipairs(industryBids) do playerEntries[#playerEntries + 1] = bid end
-                -- This is CSC's assessment of the current legal targets.
-                -- The engine may still pick a penalized or unassisted site.
-                if counts and counts.legal > 0 then
-                    print(string.format('CSC_AI_QUARTER_PLAN turn=%d player=%d key=%s legal=%d noBase=%d coversMaterial=%d noHost=%d bothPending=%d deferCities=%d offers=%d strong=%d lowAdjacency=%d',
-                        turn, id, profile.key, counts.legal, counts.noBase, counts.coversMaterial,
-                        counts.noHost, counts.bothPending, counts.deferCities, counts.offered, counts.strong, counts.lowAdjacency or 0))
-                end
-                if counts and (counts.frontierObserved or 0) > 0 then
-                    -- These are proposed deductions on map candidates. The
-                    -- CE consumer still validates the native frontier row.
-                    print(string.format('CSC_AI_FRONTIER_QUARTER_PLAN turn=%d player=%d key=%s observed=%d bids=%d uncertain=%d',
-                        turn, id, profile.key, counts.frontierObserved, counts.frontierBids, counts.frontierUncertain))
-                end
-            else
-                print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',
-                    turn, id, profile.key, tostring(industryBids)))
-            end
+        local deferFallback=economy and type(economy.CustomerOptions)=='function'
+        if not deferFallback then
+            addFallbackPlacements(player,chains,protectedPlots,playerUI,economy,playerEntries,turn,id)
         end
         if economy then
             -- Budget two full city rings' worth of cells, using the same optional
@@ -469,7 +489,12 @@ local function refresh(turn)
                 print(string.format('CSC_AI_QUARTER_DEFERRALS turn=%d player=%d quality=%d economics=%d invoice=%d unknown=%d capacityReady=%d capacityFull=%d capacityUnknown=%d',
                     turn,id,counts.qualityDeferred or 0,counts.economicDeferred or 0,counts.invoiceDeferred or 0,counts.unknown or 0,
                     counts.capacityReady or 0,counts.capacityFull or 0,counts.capacityUnknown or 0))
-            else print(string.format('CSC_AI_ECONOMY_FAILED turn=%d player=%d reason=%s',turn,id,tostring(replacement)))end
+            else
+                print(string.format('CSC_AI_ECONOMY_FAILED turn=%d player=%d reason=%s',turn,id,tostring(replacement)))
+                if deferFallback then
+                    addFallbackPlacements(player,chains,protectedPlots,playerUI,economy,playerEntries,turn,id)
+                end
+            end
         end
         if wonderLimit>0 and maxWonderOfferQ8>0 and CSC_AI_EconomyAdapters then
             -- QuarterBids has reconciled the confirmed Quarter footprints for

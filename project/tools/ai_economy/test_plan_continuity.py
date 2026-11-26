@@ -421,6 +421,15 @@ assert(pages==3)
 assert(CSC_AI_PlanContinuity.New(1,2,props.CSC_AI_QuarterIntentV1_1).plans['7:36:2'].plot==2)
 ''')
 
+    def test_no_confirmable_offer_skips_the_selection_journal(self):
+        self.runtime().execute('''
+local E=CSC_AI_EconomyAdapters
+CE_AIDistrictScoresTraceRead=function()error('Nothing can be confirmed in this packet')end
+local status='{"trace_count":129,"generation":1,"version":1}'
+E.ObserveNativeChoices(status,{})
+E.ObserveNativeChoices(status,{{economy=true,finalQ8=0},{economy=true,carried=true,finalQ8=256}})
+''')
+
     def test_stale_journal_page_cannot_partially_confirm_a_choice(self):
         vm=self.runtime()
         vm.execute('''

@@ -187,6 +187,26 @@ local fallback,failed=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},e
 assert(#fallback==1 and failed.invoiceDeferred==1 and failed.managed and not failed.fallback)
 ''')
 
+    def test_two_quarter_types_share_land_checks_and_refresh_after_purchase(self):
+        self.bid_vm().execute('''
+local bakers=placement.StageTwoProfiles()[1]
+local tailors={key='TAILORS',district={Index=37,Hash=2,RequiresPopulation=true}}
+placement.StageTwoProfiles=function()return{bakers,tailors}end
+local reads=0
+local revealed=PlayersVisibility[1].IsRevealed
+PlayersVisibility[1].IsRevealed=function(...)
+ reads=reads+1;return revealed(...)
+end
+local E=CSC_AI_EconomyAdapters
+local entries,stats=E.QuarterBids(snapshot,placement,{},{})
+assert(reads==3 and stats.evaluated==6 and #entries==6)
+-- A rival's purchase retires this frontier plot for both profiles next pass.
+plots[2]=plot(2,2);reads=0
+entries,stats=E.QuarterBids(snapshot,placement,{},{})
+assert(reads==3 and stats.evaluated==4 and #entries==4)
+for _,row in ipairs(entries)do assert(row.plot~=2)end
+''')
+
     def test_minimum_two_site_reaches_publication_on_owned_and_frontier_paths(self):
         vm=self.bid_vm()
         vm.execute('''

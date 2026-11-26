@@ -1406,6 +1406,18 @@ function F.New(player,placement,ui,context)
         end
         return city
     end
+    -- All district types inspect the same ring around this city in a synchronous
+    -- player pass. Share only its ordered plot list; each consumer still checks
+    -- its own ownership, protection, terrain and native placement requirements.
+    local cityRings={}
+    function snapshot.CityRing(city)
+        local id=city:GetID()
+        if not cityRings[id] then
+            local center=Map.GetPlot(city:GetX(),city:GetY())
+            cityRings[id]=CSC_Adjacency.PlotsInBand(center,1,3)
+        end
+        return cityRings[id]
+    end
     local function customerMap(city,definition,protectedPlots)
         local key=city:GetID()..':'..definition.Index
         if customerMaps[key]then return customerMaps[key]end
@@ -1414,8 +1426,7 @@ function F.New(player,placement,ui,context)
         local cityID=city:GetID()
         local allowed=snapshot.FutureDistrictTypes(city)
         if not allowed or not allowed[definition.Index]then return result end
-        local center=Map.GetPlot(city:GetX(),city:GetY())
-        for _,p in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
+        for _,p in ipairs(snapshot.CityRing(city))do
             local owner=ownedCustomerCity(p)
             if owner and owner:GetID()==cityID and p:GetDistrictType()==-1
                 and p:GetResourceType()==-1 and not protectedPlots[p:GetIndex()]
@@ -1486,9 +1497,8 @@ function F.New(player,placement,ui,context)
         end
         if #types==0 then return {} end
         table.sort(types)
-        local center=Map.GetPlot(record.object:GetX(),record.object:GetY())
         local emptyOwned={}
-        for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
+        for _,plot in ipairs(snapshot.CityRing(record.object))do
             local city=ownedCustomerCity(plot)
             if city and city:GetID()==offer.city and plot:GetDistrictType()==-1 then
                 emptyOwned[#emptyOwned+1]=plot:GetIndex()

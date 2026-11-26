@@ -157,9 +157,12 @@ function E.ObserveNativeChoices(status,entries)
     local version=number(status,'version')
     if not count or not generation or count<0 or count>16384 then return end
     local offered={}
-    for _,entry in ipairs(entries)do if entry.economy and not entry.carried then
+    for _,entry in ipairs(entries)do if entry.economy and not entry.carried and entry.finalQ8>0 then
         offered[table.concat({entry.player,entry.city,entry.district,entry.plot},':')]=entry
     end end
+    -- Only a positive published Quarter can be confirmed. Empty offer sets
+    -- need no journal transfer and cannot advance a saved plan.
+    if not next(offered)then return end
     local choices={}
     -- One complete read per publication, max256 pages at the CE16384-record
     -- contract. Do not derive policy from the diagnostic top16/top32 receipts.
@@ -168,12 +171,12 @@ function E.ObserveNativeChoices(status,entries)
         local page=CE_AIDistrictScoresTraceRead(offset,64,generation)
         if type(page)~='string'or page:find('"stale":true',1,true)then return end
         for record in page:gmatch('{[^{}]+}')do
-            if record:match('"k":"([^"]+)"')=='best'
+            if record:find('"k":"best"',1,true)
                 and number(record,'version')==version and number(record,'existingDistrict')==0 then
                 local pid,city,district,plot=number(record,'player'),number(record,'city'),number(record,'district'),number(record,'plot')
                 if pid and city and district and plot then
                     local entry=offered[table.concat({pid,city,district,plot},':')]
-                    if entry and entry.finalQ8>0 and number(record,'result')==entry.finalQ8 then choices[#choices+1]=entry end
+                    if entry and number(record,'result')==entry.finalQ8 then choices[#choices+1]=entry end
                 end
             end
         end
@@ -1025,7 +1028,7 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
     local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
     local state=snapshot.planState
     local facts,reason=snapshot.Site(city,plot,profile)
-    local details={reason='unknown',legacyIgnoredQ8=ignoredLegacy or 0,protectionQ8=protectionQ8 or 0,
+    local details={reason='unknown',legacyIgnoredQ8=ignoredLegacy,protectionQ8=protectionQ8 or 0,
         owner=plot:GetOwner(),adjacency=geometry.upper,invoice=invoice}
     local site,quote,parts,bid
     if facts then
@@ -1103,9 +1106,9 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
             end
             if details.reason=='positive'then
                 if plan then
-                    print(string.format('CSC_AI_PLAN_QUOTE_PROPOSED turn=%d player=%d city=%d district=%d plot=%d economicQ8=%d protectionQ8=%d ignoredLegacyQ8=%d displacementQ8=%d currentDisplacementQ8=%s purchaseQ8=%s footprintWorkers=%s footprintMode=%s finalQ8=%d',
+                    print(string.format('CSC_AI_PLAN_QUOTE_PROPOSED turn=%d player=%d city=%d district=%d plot=%d economicQ8=%d protectionQ8=%d ignoredLegacyQ8=%s displacementQ8=%d currentDisplacementQ8=%s purchaseQ8=%s footprintWorkers=%s footprintMode=%s finalQ8=%d',
                         Game.GetCurrentGameTurn(),snapshot.id,city:GetID(),profile.district.Index,plot:GetIndex(),
-                        quote.valueQ8,protectionQ8 or 0,ignoredLegacy or 0,details.displacementQ8,
+                        quote.valueQ8,protectionQ8 or 0,tostring(ignoredLegacy),details.displacementQ8,
                         tostring(details.currentDisplacementQ8),tostring(details.purchaseQ8),tostring(site.footprintWorkers),site.footprintCostMode,bid))
                 end
                 return {bid=bid,quote=quote,site=site,parts=parts,details=details}
@@ -2981,6 +2984,30 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     if snapshot.planState then snapshot.planState.nextLayouts=nil end
     snapshot.planCustomerPurchases=E.ProspectiveConnectionsEnabled and E.AnchoredConnectionsEnabled
     local visibility=PlayersVisibility[pid]
+    -- Both Quarter types use the same ownership and frontier rules. Keep the
+    -- answer per city/plot within this pass: an owned plot can be assigned
+    -- to only one city, whereas a frontier plot may be reachable from two.
+    local quarterLand={}
+    local function landOwner(city,plot)
+        local cityID,index=city:GetID(),plot:GetIndex()
+        local checked=quarterLand[cityID]
+        if not checked then checked={};quarterLand[cityID]=checked end
+        if checked[index]~=nil then return checked[index] end
+        local eligible=false
+        if plot:GetDistrictType()==-1 and visibility:IsRevealed(plot:GetX(),plot:GetY())then
+            local owner=plot:GetOwner()
+            if owner==pid then
+                local assigned=Cities.GetPlotPurchaseCity(plot)
+                if assigned and assigned:GetID()==cityID then eligible=owner end
+            elseif owner==-1 then
+                for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
+                    if near:GetOwner()==pid then eligible=owner;break end
+                end
+            end
+        end
+        checked[index]=eligible
+        return eligible
+    end
     reconcilePlans(snapshot)
     restoreLayouts(snapshot,profiles)
     for _,profile in ipairs(profiles)do
@@ -3009,16 +3036,12 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                     capacity and capacity.population or -1,capacity and capacity.used or -1,
                     capacity and capacity.allowed or -1,exempt and'exempt'or capacity and capacity.reason or'unavailable'))
                 local capacityState=exempt and'exempt'or capacity and capacity.reason or'unavailable'
-                local center=Map.GetPlot(city:GetX(),city:GetY())
-                for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
-                    local owner=plot:GetOwner()
-                    local assigned=owner==pid and Cities.GetPlotPurchaseCity(plot)
-                    local frontier=false
-                    if owner==-1 then for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
-                        frontier=frontier or near:GetOwner()==pid
-                    end end
-                    if plot:GetDistrictType()==-1 and visibility:IsRevealed(plot:GetX(),plot:GetY())
-                        and (assigned and assigned:GetID()==city:GetID()or frontier)then
+                local ring=snapshot.CityRing and snapshot.CityRing(city)
+                    or CSC_Adjacency.PlotsInBand(Map.GetPlot(city:GetX(),city:GetY()),1,3)
+                for _,plot in ipairs(ring)do
+                    local owner=landOwner(city,plot)
+                    if owner then
+                        local frontier=owner==-1
                         -- Enumerate a bounded superset of native map potential,
                         -- including future unlocks. Current CanProduce/BUILD
                         -- and CanHaveDistrict filters are deliberately absent.

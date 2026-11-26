@@ -1,9 +1,24 @@
 """Timing aggregation uses actual attempts/turns and preserves missing data."""
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from processing_time_summary import launch_to_endpoint_wall, summarise
 
 
 class ProcessingTimes(unittest.TestCase):
+    def test_mature_replay_uses_only_measured_turns_and_screens_popups_and_handoffs(self):
+        from economy_guidance_timing import observed_turns
+        with TemporaryDirectory() as directory:
+            out=Path(directory)
+            records=['CSC_GUIDANCE_POPUP 352 popup']
+            for t in range(350,361):
+                records.append(f'CSC_GUIDANCE_CLOCK {t} {10*t}')
+                records.append(f'CSC_AI_PROCESSING turn={t} published=1 ok=1 wallMicros=1000')
+            (out/'Lua.log').write_text('\n'.join(records))
+            clean,_,guidance=observed_turns(out,360,351)
+            self.assertEqual(clean,{t:10 for t in (351,354,356,357,358,359)})
+            self.assertEqual(guidance['publisher_wall']['turns'],10)
+
     def test_launch_to_endpoint_uses_the_inactive_final_clock(self):
         launch = {'time': 1000.5}
         boundary = {'time': 4500.5, 'turn': 250, 'active': False}

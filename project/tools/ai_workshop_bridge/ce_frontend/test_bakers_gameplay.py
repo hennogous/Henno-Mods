@@ -106,6 +106,37 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_fallback_scans_once_only_when_its_bids_have_a_consumer(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        lua.globals().print = lambda *args: None
+        lua.globals().include = lambda name: lua.execute(gameplay_source(name)) if name!='CSC_AdjacencyCore' else None
+        lua.execute(gameplay_source('CSC_AI_BakersGameplay'))
+        lua.execute('''
+ExposedMembers.CSC_Adjacency={IsSinglePlayer=function()return true end}
+local protection={player=3,city=42,district=1,plot=101,delta=-512,protectionQ8=512}
+CSC_AI_QuarterPlacement.MaterialDeductions=function()return{protection},{},{},{},{},{}end
+local scans=0
+CSC_AI_QuarterSiteForecasts=function()
+ scans=scans+1;return {{player=3,city=42,district=3,plot=100,delta=256}}
+end
+CSC_AI_EconomyAdapters.Snapshot=function(_,_,ui)
+ if turn==3 then return nil,'unsupported' end
+ return {ui=ui,chains={},CustomerOptions=function()return{}end,QuoteCount=function()return 0 end}
+end
+CSC_AI_EconomyAdapters.QuarterBids=function(_,_,protected,entries)
+ assert(protected[101] and #entries==1 and entries[1]==protection)
+ if turn==2 then error('simulated quote fault')end
+ return entries,{evaluated=0,final=0,unknown=0,streams=0,omissions=0}
+end
+boundary();assert(scans==0 and #packet==1 and packet[1][5]==-512)
+for t=2,3 do
+ turn=t;boundary();assert(scans==t-1 and #packet==2)
+ local kept={};for _,row in ipairs(packet)do kept[row[4]]=row[5]end
+ assert(kept[100]==256 and kept[101]==-512)
+end
+''')
+
     def test_network_games_and_unknown_modes_never_publish_on_load_or_turn(self):
         ui = SOURCE.parent / 'Adjacencies/CSC_AdjacencyUI.lua'
         for mode in ('network', 'hotseat', 'missing-query', 'unknown-result'):
@@ -321,8 +352,10 @@ assert(packet and #packet==4096 and version==2)
                 return '{"ready":1,"faults":0,"maxBidQ8":1024}'
             end
             CE_AIBuildingNominationBid=function() return 1 end
+            local receiptReads=0
             CE_AIDistrictScoresReceipt=function(v,p,c,d,i)
                 assert(v==version and p==3 and c==42 and d==2 and i==100)
+                receiptReads=receiptReads+1
                 return '{"staged":1,"scoreAttempts":0}'
             end
             CE_AIBuildingNominationReceipt=function(v,p,c,b)
@@ -331,6 +364,7 @@ assert(packet and #packet==4096 and version==2)
             end
             boundary()
             turn=2; boundary()
+            assert(receiptReads==1) -- same committed row in the customer and connection logs
         """)
         self.assertTrue(any('CSC_AI_CONNECTION_RECEIPT turn=2 version=1' in line
                             and 'order=plannedSupply costQ8=4096' in line for line in messages))

@@ -2,6 +2,23 @@
 
 The [Large Standard turn-350 performance review](../research/mods/csc-guidance-performance-review-20261126.md) compares guidance on and off with City Lights. It traces mature-turn growth to the district-planning pass and ranks changes to economic forecasting, site discovery and Dev CE delivery.
 
+### Removing the second Quarter scan, 26 November
+
+**Matched mature-save result.** Both builds replayed turns 351–360 from the original guided turn-350 checkpoint on Large Continents, Standard speed, with City Lights and Dev CE. The control used the original November 26 benchmark Lua. The candidate included the legal-target cache, shorter forecast lifetimes, independent-chain reuse and scan changes. Both loaded the same save and published all ten turns successfully.
+
+| Timed work | Original mean | Optimized mean | Original maximum | Optimized maximum |
+| --- | ---: | ---: | ---: | ---: |
+| CSC guidance, all 10 turns | 6.82 s | 6.18 s | 7.43 s | 6.55 s |
+| Whole turn, 8 matched clean intervals | 37.03 s | 35.76 s | 56.55 s | 55.54 s |
+
+CSC saved 0.64 seconds per turn on average (9.4%) and finished sooner on all ten turns. Whole turns averaged 1.26 seconds faster (3.4%) and finished sooner on all eight measured intervals. The clock excludes popups and controller handoffs. This is one mature map with the optimizations measured together.
+
+All 594 logged Quarter forecasts and all 340 ranked Quarter site bids matched exactly, including site, score and customer footprints. All 631 customer bid records matched (208 future, 73 prospective and 350 economic), as did 3,245 footprint protection costs, 230 connection plans and 72 completion records. The original emitted 160 owned-site fallback scan summaries. The optimized arm needed none. A failed-planner regression separately exercised the fallback with material protection intact. [Game-controller replay and comparison](../../tools/native_ai/late_placement/mature_guidance_replay.py)
+
+The economic planner publishes a score for each worthwhile Quarter plot, a default for the remaining plots, and the customer bids for its layouts. The older siting scan used to visit the owned and frontier plots first. Its Quarter scores were discarded on every successful managed pass. It now runs if the economic snapshot is unavailable, if the managed pass fails, or if the snapshot relies on the older customer nominations. Material protection is computed before either planner runs. The `CSC_AI_QUARTER_PLAN` and `CSC_AI_FRONTIER_QUARTER_PLAN` log rows now describe fallback scans. Use `CSC_AI_ECONOMY_PLAN` and `CSC_AI_SPATIAL_BID` for normal play.
+
+Quarter, customer and City Lights provider planning share the ordered radius-three tile list for each city within a player pass. Bakers and Tailors also share the initial plot ownership, frontier and visibility checks. Each still evaluates its own materials, customers, purchase quotes and economic bids. At the next turn the planner reads ownership and eligibility again. CSC skips the native selection journal when the prior packet has no new positive Quarter offer that could establish a plan. When one bid appears in multiple diagnostic categories, CSC reads its receipt once and uses it for each category's log.
+
 ### Reusing independent supply chains, 26 November
 
 The Quarter and customer planners used to reschedule and reprice every established chain for each proposed district plot. When an existing chain keeps the same suppliers, customers and investment plan, and has its production queues to itself, the planner can carry its scheduled buildings, yield streams and successful individual prices forward. It does this within one player's planning pass. A new pass starts from current game facts. Ordinary and Service-aware forecasts each use their own baseline.
