@@ -1,5 +1,7 @@
 # AI guidance processing time
 
+The [Large Standard turn-350 performance review](../research/mods/csc-guidance-performance-review-20261126.md) compares guidance on and off with City Lights. It traces mature-turn growth to the district-planning pass and ranks changes to economic forecasting, site discovery and Dev CE delivery.
+
 Henno requested average and maximum added processing time in the next full-game
 run,17 November2026. Every subsequent full-run report should include these
 measurements alongside placement and supply-chain outcomes.

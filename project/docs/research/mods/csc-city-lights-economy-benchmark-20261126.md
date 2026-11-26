@@ -1,5 +1,7 @@
 # CSC and City Lights economy benchmark
 
+The [Large Standard timing comparison](csc-guidance-performance-review-20261126.md) uses the combined CSC and City Lights stack and switches the CSC guidance on and off through turn 350.
+
 Small Continents, Online speed, Prince, Gathering Storm. Each seed fixes
 the same six leaders and rules across Vanilla, CSC, City Lights, and the
 combined stack. The five original AI seats supply the totals. CSC uses its
