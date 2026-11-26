@@ -2483,11 +2483,9 @@ function F.New(player,placement,ui,context)
     end
     local receiverNeighbours={}
     local function investmentWorld(cityID,districtIndex,plotIndex,quarterSite)
-        -- First correctness path: include ALL owned implemented chains. Queue
-        -- sharing/population pools are not the only links: distant exporters
-        -- can share a route counter or amenity recipient. A future component
-        -- optimization must match this bounded full-world result. Never
-        -- truncate its inventory or inherit single-site population baselines.
+        -- Keep all owned chains in both worlds. Distant exporters can share
+        -- a route counter or amenity recipient even with independent queues.
+        -- The model reuses unchanged local work before pooling these effects.
         local key=cityID..':'..districtIndex..':'..plotIndex..(quarterSite and ':quarter'or ':customer')
         if not quarterSite and customerWorlds[key]then return customerWorlds[key][1],customerWorlds[key][2]end
         local buyer,definition,plot=snapshot.cities[cityID],GameInfo.Districts[districtIndex],Map.GetPlotByIndex(plotIndex)
@@ -2521,11 +2519,6 @@ function F.New(player,placement,ui,context)
         for _,chain in ipairs(snapshot.chains)do
             local site=chain.economy
             if not site then return nil,'Existing Quarter economy unavailable'end
-            local changed=copy(site);changed.service=nil;changed.suppliers={};changed.customers={}
-            for _,supplier in ipairs(site.suppliers)do
-                if supplier.plot~=plotIndex then changed.suppliers[#changed.suppliers+1]=supplier end
-            end
-            for _,customer in ipairs(site.customers)do changed.customers[#changed.customers+1]=customer end
             -- Partner transactions always use the touching tiles, even
             -- when a gameplay adjacency rule reads a wider ring. Reuse
             -- that separate geometry across the city's candidate worlds.
@@ -2537,8 +2530,27 @@ function F.New(player,placement,ui,context)
                 end
                 receiverNeighbours[chain]=neighbours
             end
-            if neighbours[plotIndex] then
+            -- Preserve the immutable baseline identity for distant sites.
+            -- A material can be worked across city borders, so check its
+            -- actual plot as well as the geometry for a prospective buyer.
+            local changed=site
+            local removesSupplier=false
+            for _,supplier in ipairs(site.suppliers)do
+                if supplier.plot==plotIndex then removesSupplier=true;break end
+            end
+            if removesSupplier or neighbours[plotIndex] then
+                changed=copy(site);changed.service=nil
                 after.affectedChains[site.key]=true
+            end
+            if removesSupplier then
+                changed.suppliers={}
+                for _,supplier in ipairs(site.suppliers)do
+                    if supplier.plot~=plotIndex then changed.suppliers[#changed.suppliers+1]=supplier end
+                end
+            end
+            if neighbours[plotIndex] then
+                changed.customers={}
+                for _,customer in ipairs(site.customers)do changed.customers[#changed.customers+1]=customer end
                 for _,source in ipairs(snapshot.ProjectedCustomers(chain.profile,cityID,districtIndex,plotIndex))do
                     local venue=copy(source);venue.complete=true;venue.projected=true;venue.working=false;venue.intactOwner=false
                     venue.unlock=math.max(venue.unlock or INF,ready);venue.hostReady=ready
@@ -2549,7 +2561,6 @@ function F.New(player,placement,ui,context)
                 end
             end
             after.sites[#after.sites+1]=changed
-            if #changed.suppliers~=#site.suppliers then after.affectedChains[site.key]=true end
             local yields,problem=quarterAdjacencyChange(chain,project,plotIndex)
             if not yields then return nil,problem end
             for yield,delta in pairs(yields)do

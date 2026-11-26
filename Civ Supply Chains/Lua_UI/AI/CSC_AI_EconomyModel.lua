@@ -197,7 +197,13 @@ local function ledger(site, second, shared)
     local function populationFlow(id,yield,target,ready,city,population,property,building,multiplier)
         if not present(ready)or ready>=site.horizon or target<=0 then return end
         local key=cityKey(city)..':'..yield..':'..tostring(property or id)
-        local list=populationFlows[key]or{};populationFlows[key]=list
+        local list=populationFlows[key]
+        if not list then
+            list={};populationFlows[key]=list
+            -- A reusable chain must recreate the original insertion order
+            -- when its unrounded flows join the whole world's payout pools.
+            if context.poolOrder then context.poolOrder[#context.poolOrder+1]=key end
+        end
         list[#list+1]={id=(context.joint and site.key..'/'or'')..id,yield=yield,target=target,ready=ready,
             city=city,player=site.player,population=population,building=building,multiplier=multiplier or 1,
             investmentKey=building and investmentKey(site.city,building)}
@@ -929,6 +935,65 @@ function M.Forecast(site,price,placementObjective)
     return best
 end
 
+-- A fixed chain may keep its raw ledger if it exclusively owns the queues
+-- it can schedule. Cross-city yields, population flows, route changes and
+-- Service effects still enter the common world at their original position.
+-- A reference to another Quarter's start depends on traversal of that world.
+local function independentQueues(sites,world)
+    local owner,shared={},{}
+    local function claim(site,city)
+        local key=site.player..':'..city
+        if owner[key] and owner[key]~=site then
+            shared[owner[key]]=true;shared[site]=true
+        else owner[key]=site end
+        if world.queueReady and world.queueReady[key] then shared[site]=true end
+    end
+    for _,site in ipairs(sites)do
+        claim(site,site.city)
+        for _,customer in ipairs(site.customers or{})do claim(site,customer.city or site.city)end
+        for city in pairs(site.queueReady or{})do claim(site,city)end
+        for _,flow in ipairs(site.direct or{})do
+            if flow.quarterStartKey and flow.quarterStartKey~=site.key then shared[site]=true end
+        end
+    end
+    return shared
+end
+
+local function copy(source)
+    local result={};for k,v in pairs(source)do result[k]=v end;return result
+end
+
+local function appendFixedLedger(context,part,priceSources)
+    local target,source=context.result,part.result
+    for i,stream in ipairs(source.streams)do
+        if context.seen[stream.id] then return 'Duplicate economic relationship: '..stream.id end
+        context.seen[stream.id]=true
+        -- The final pricing and depth passes annotate stream headers. Give
+        -- each result its own so one alternative cannot modify another.
+        local header=copy(stream)
+        target.streams[#target.streams+1]=header
+        local slot=part.prices[i]
+        if not slot then slot={};part.prices[i]=slot end
+        priceSources[header]=slot
+    end
+    for _,item in ipairs(source.investments)do target.investments[#target.investments+1]=copy(item) end
+    for _,item in ipairs(source.omissions)do target.omissions[#target.omissions+1]=copy(item) end
+    for k,v in pairs(source.byBuilding)do target.byBuilding[k]=v end
+    for k,v in pairs(source.futureDepths)do target.futureDepths[k]=v end
+    for key,stage in pairs(source.chainStages)do
+        local owned=copy(stage);owned.ready=copy(stage.ready)
+        target.chainStages[key]=owned
+    end
+    for k,v in pairs(source.quarterReadyByChain)do target.quarterReadyByChain[k]=v end
+    for k,v in pairs(source.quarterStartByChain)do target.quarterStartByChain[k]=v end
+    if source.hasServiceHousing then target.hasServiceHousing=true end
+    for _,key in ipairs(part.poolOrder)do
+        local flows=context.populationFlows[key] or {}
+        context.populationFlows[key]=flows
+        for _,flow in ipairs(part.populationFlows[key])do flows[#flows+1]=flow end
+    end
+end
+
 -- A proposed customer can affect several Quarters and their city's shared
 -- production queue. Live decision adapters evaluate them in this pure context;
 -- packet publication is separate. The facts adapter must include the complete
@@ -939,7 +1004,7 @@ end
 -- budget returns unavailable instead of presenting a partial world as complete.
 -- Values cover this counterfactual world and flow back to the decision adapter
 -- for comparison with an alternative built from the same live snapshot.
-function M.JointForecast(world,price)
+function M.JointForecast(world,price,fixedLedgers)
     local sites,keys,definitions={},{},{}
     local horizon=world.horizon
     if not present(horizon)or horizon<=0 then return nil,'Finite joint horizon required'end
@@ -994,9 +1059,6 @@ function M.JointForecast(world,price)
         end end
     end
     local evaluations,limit=0,world.maxEvaluations or 512
-    local function copy(source)
-        local result={};for k,v in pairs(source)do result[k]=v end;return result
-    end
     local function plan(site,second,mask)
         local value=copy(site);value.service=nil
         if not world.includeServices and not world.evaluationMemo then value.services=nil end
@@ -1048,6 +1110,11 @@ function M.JointForecast(world,price)
             end
         end
     end
+    -- Only the adapter that owns this immutable baseline and price mode may
+    -- supply reusable entries. Its table admits original baseline site objects
+    -- only. Changed candidate facts and overlapping queues take the full path.
+    local shared=fixedLedgers and next(fixedLedgers) and baseline and independentQueues(sites,world)
+    local reuse={}
     local alternatives,nodes,nodeKeys={},{},{}
     for i,site in ipairs(sites)do
         alternatives[i]=options(site)
@@ -1062,6 +1129,7 @@ function M.JointForecast(world,price)
             end
             if not selected then return nil,'Baseline investment identity unavailable'end
             alternatives[i]={selected}
+            reuse[i]=shared and not shared[site] and fixedLedgers[site]~=nil
         end
         for _,customer in ipairs(site.customers or{})do
             if customer.type and not customer.working and not customer.intactOwner then
@@ -1071,7 +1139,7 @@ function M.JointForecast(world,price)
         end
     end
     table.sort(nodes)
-    local function buildLedger(selected,disabled)
+    local function buildLedger(selected,disabled,priceSources)
         local context=newLedger(sites[1]or{},nil)
         context.joint=true;context.includeServices=world.includeServices==true or world.evaluationMemo~=nil
         context.result.siteAdjustmentQ8=0;context.result.chainStages={}
@@ -1083,7 +1151,23 @@ function M.JointForecast(world,price)
         end
         for i,v in ipairs(selected)do
             context.result.siteAdjustmentQ8=context.result.siteAdjustmentQ8+(v.site.nativeSiteAdjustmentQ8 or 0)
-            ledger(v.site,v.second,context)
+            if reuse[i] then
+                local site=sites[i]
+                local part=fixedLedgers[site]
+                if part==true then
+                    part=newLedger(site,nil)
+                    part.joint=true;part.includeServices=context.includeServices
+                    part.result.chainStages={};part.poolOrder={};part.prices={}
+                    part.disabledBuildings=disabled
+                    ledger(v.site,v.second,part)
+                    if part.error then return nil,part.error end
+                    part.disabledBuildings=nil;part.clocks=nil;part.seen=nil
+                    fixedLedgers[site]=part
+                end
+                context.error=appendFixedLedger(context,part,priceSources)
+            else
+                ledger(v.site,v.second,context)
+            end
             if context.error then return nil,context.error end
         end
         local result,problem=finishLedger(context)
@@ -1146,8 +1230,9 @@ function M.JointForecast(world,price)
             key=table.concat(fields,'|')
         end
         local full=memo and memo.entries[key]
+        local priceSources=shared and {}
         if full then memo.hits=memo.hits+1 else
-            local problem;full,problem=buildLedger(selected,disabled)
+            local problem;full,problem=buildLedger(selected,disabled,priceSources)
             if not full then return nil,problem end
             if memo and memo.count<16 then memo.entries[key]=full;memo.count=memo.count+1 end
         end
@@ -1159,7 +1244,27 @@ function M.JointForecast(world,price)
                 if world.includeServices or o.id:sub(1,8)~='service:'then result.omissions[#result.omissions+1]=o end
             end
         end
-        local value,error=M.Price(result,price,horizon)
+        -- Only untouched stream headers survive pooling by identity. Newly
+        -- rounded population, amenities, housing and route streams therefore
+        -- always receive their actual world price. The template belongs to
+        -- this one publisher/price mode; failed prices keep their normal retry.
+        local quote=price
+        if priceSources and next(priceSources) then
+            quote=function(stream,window)
+                local slot=priceSources[stream]
+                if not slot then return price(stream,window) end
+                if slot.valueQ8~=nil and slot.forecastDepth==stream.forecastDepth then
+                    return slot.valueQ8,slot.bidValueQ8
+                end
+                local raw,weighted=price(stream,window)
+                if numeric(raw) and raw==math.floor(raw)
+                    and (weighted==nil or numeric(weighted) and weighted==math.floor(weighted)) then
+                    slot.valueQ8=raw;slot.bidValueQ8=weighted;slot.forecastDepth=stream.forecastDepth
+                end
+                return raw,weighted
+            end
+        end
+        local value,error=M.Price(result,quote,horizon)
         if not value then return nil,error end
         result.valueQ8=value;result.servicesExcluded=not world.includeServices;result.modelOnly=true
         result.serviceValueQ8=0;result.serviceStreams=0

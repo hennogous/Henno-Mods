@@ -15,13 +15,14 @@ from test_joint_customer_economy import JointEconomy
 def main():
     vm = JointEconomy().vm()
     prepare = vm.eval('''function(n)
-        local incumbents={}
+        local incumbents,admitted={},{}
         for i=1,n do
             local site=chain('fixed'..i,i)
             local buyer=venue(100+i,i)
             buyer.working=true
             site.customers={buyer}
             incumbents[i]=site
+            admitted[site]=true
         end
         local base=assert(M.JointForecast(world(incumbents),price))
         local candidate=chain('candidate',1000)
@@ -35,28 +36,33 @@ def main():
         after.baselinePlan=base.plan
         after.affectedChains={candidate=true}
         after.firstChainKey='candidate'
-        return function(repeats)
+        return function(repeats,reuse)
             local calls=0
             local function counted(s,h) calls=calls+1;return price(s,h) end
             local result
-            for i=1,repeats do result=assert(M.JointForecast(after,counted)) end
+            for i=1,repeats do result=assert(M.JointForecast(after,counted,reuse and admitted or nil)) end
             return result.valueQ8-base.valueQ8, result.evaluations, calls/repeats
         end
     end''')
     reference = None
     for n in (1, 4, 8, 16):
         run = prepare(n)
-        delta, evaluations, calls = run(1)
+        delta, evaluations, calls = run(1, False)
         if reference is None:
             reference = delta, evaluations
         assert (delta, evaluations) == reference
-        samples = []
-        for _ in range(7):
-            start = perf_counter()
-            assert run(25) == (delta, evaluations, calls)
-            samples.append((perf_counter() - start) * 1000 / 25)
-        print(f'{n:2} incumbents  {evaluations:2} visits  {calls:4.0f} prices  '
-              f'{delta:8} marginal Q8  {median(samples):.3f} ms/forecast')
+        samples = {False: [], True: []}
+        assert run(1, True)[:2] == (delta, evaluations)
+        reused = run(1, True)
+        assert reused[:2] == (delta, evaluations) and reused[2] < calls
+        for batch in range(7):
+            for reuse in (False, True) if batch % 2 == 0 else (True, False):
+                start = perf_counter()
+                assert run(25, reuse) == (reused if reuse else (delta, evaluations, calls))
+                samples[reuse].append((perf_counter() - start) * 1000 / 25)
+        print(f'{n:2} incumbents  {evaluations:2} visits  {calls:4.0f}/{reused[2]:.0f} prices  '
+              f'{delta:8} marginal Q8  {median(samples[False]):.3f} full / '
+              f'{median(samples[True]):.3f} reused ms/forecast')
 
 
 if __name__ == '__main__':

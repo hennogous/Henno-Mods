@@ -2,11 +2,28 @@
 
 The [Large Standard turn-350 performance review](../research/mods/csc-guidance-performance-review-20261126.md) compares guidance on and off with City Lights. It traces mature-turn growth to the district-planning pass and ranks changes to economic forecasting, site discovery and Dev CE delivery.
 
+### Reusing independent supply chains, 26 November
+
+The Quarter and customer planners used to reschedule and reprice every established chain for each proposed district plot. When an existing chain keeps the same suppliers, customers and investment plan, and has its production queues to itself, the planner can carry its scheduled buildings, yield streams and successful individual prices forward. It does this within one player's planning pass. A new pass starts from current game facts. Ordinary and Service-aware forecasts each use their own baseline.
+
+Each candidate still gets a whole-empire comparison. A shared city queue, shared Market, or yield loss timed to another Quarter's construction takes the full scheduling path. Population payouts are combined before rounding. The planner recalculates trade, Amenities and Housing after combining chains, so a prospective district can still break a route or change the value of a Service elsewhere.
+
+In a Lua 5.1 fixture, a new Quarter competed against the same baseline while the number of independent existing chains increased. Each row shows the median time per forecast across seven paired batches of 25 forecasts, after warming the cache. All cases returned the same marginal value of 27,648 Q8 and visited the same ten investment choices.
+
+| Existing independent chains | Full forecast | Reused forecast | Price calls, full → reused |
+| ---: | ---: | ---: | ---: |
+| 1 | 0.198 ms | 0.180 ms | 16 → 10 |
+| 4 | 0.480 ms | 0.378 ms | 52 → 28 |
+| 8 | 0.925 ms | 0.728 ms | 100 → 52 |
+| 16 | 1.727 ms | 1.277 ms | 196 → 100 |
+
+The fixture measures a single forecast with a simple Lua price function. The price counts include calls that the game's existing price cache could already answer. Offline regressions also compare the complete result from the Quarter and customer adapters with and without City Lights, shared buyer queues and rounded returns, a tile purchase, losing and regaining a supplier, route loss and restoration, and pooled Service Housing. The effect on average and late-game turn times still needs a matched game measurement. [Benchmark](../../tools/ai_economy/benchmark_independent_chains.py) · [Regression cases](../../tools/ai_economy/test_independent_chain_forecasts.py)
+
 ### Shared legal targets and shorter forecast lifetimes, 26 November
 
 The customer-first planner now uses the same player/publication BUILD-target cache as the Quarter planner. A fixture queried two city/district keys from both paths, one populated and one empty. Each key needed one UI call. The following publication picked up a change in legality. Standalone fact readers can still query their supplied UI directly.
 
-The facts reader releases each candidate Quarter world after the site calculation. The adapter retains shared baseline and customer results and releases each site's winning ledger after extracting its marginal value. A Lua 5.1 comparison against commit `2573f6c9` matched the entire returned forecast, placement score and score components on 128 quotes across ordinary and City Lights fixtures, with Service pricing enabled and disabled. Each batch warmed one three-chain forecast, varied its land invoice 32 times in one publication, and collected garbage before reading the retained heap. The previous code retained about 1,190 KiB of additional heap per batch, and the revised code retained 39–40 KiB, after accounting for the serialized comparison output. This measures retained memory on those inputs. Live turn-time savings remain unmeasured. The next economic optimization is reusing independent chain contributions during pricing.
+The facts reader releases each candidate Quarter world after the site calculation. The adapter retains shared baseline and customer results and releases each site's winning ledger after extracting its marginal value. A Lua 5.1 comparison against commit `2573f6c9` matched the entire returned forecast, placement score and score components on 128 quotes across ordinary and City Lights fixtures, with Service pricing enabled and disabled. Each batch warmed one three-chain forecast, varied its land invoice 32 times in one publication, and collected garbage before reading the retained heap. The previous code retained about 1,190 KiB of additional heap per batch, and the revised code retained 39–40 KiB, after accounting for the serialized comparison output. This measures retained memory on those inputs. Live turn-time savings remain unmeasured.
 
 Henno requested average and maximum added processing time in the next full-game
 run,17 November2026. Every subsequent full-run report should include these
@@ -49,8 +66,8 @@ Keep recurring work bounded: definitions are cached; a publication shares an
 immutable route observation and at most128 distinct route timelines; customer
 economic comparisons receive at most16 world forecasts per player/publication.
 Unchanged chains retain their discrete investment choices while affected chains
-and shared customer investments are reconsidered. Queue times, population
-rounding and shared benefits are still recomputed in each candidate world.
+and shared customer investments are reconsidered. Shared queue times, population
+rounding and shared benefits are recomputed in each candidate world.
 
 The current mature-save qualification and resulting full-game measurements are
 recorded in the [customer-world implementation report](../research/mods/csc-customer-world-pricing-20261117.md).

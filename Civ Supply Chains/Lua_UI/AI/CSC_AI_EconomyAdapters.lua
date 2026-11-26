@@ -321,6 +321,7 @@ function E.Snapshot(player,placement,ui)
         return raw,bid
     end
     local worldQuotes={}
+    local fixedLedgersByBaseline={}
     local worldStats={worlds=0,evaluations=0,budgetFailures=0,unknown=0,cacheHits=0}
     snapshot.WorldStats=function()
         local routes=snapshot.TradeCacheStats and snapshot.TradeCacheStats()or{}
@@ -339,16 +340,27 @@ function E.Snapshot(player,placement,ui)
         if reusable and worldQuotes[world]then worldStats.cacheHits=worldStats.cacheHits+1;return worldQuotes[world]end
         worldStats.worlds=worldStats.worlds+1
         local planWorld=world
+        local fixedLedgers
         if world.baselineWorld then
             local baseline,problem=snapshot.WorldQuote(world.baselineWorld)
             if not baseline then return nil,problem end
             -- Freeze only unrelated discrete choices around the common plan.
-            -- Every trial still schedules/prices every chain, so shared queues,
-            -- rounded returns and route losses respond to the candidate.
+            -- Shared queues, rounded returns and route losses still respond to each candidate.
             planWorld={};for k,v in pairs(world)do planWorld[k]=v end
             planWorld.baselinePlan=baseline.plan
+            -- Ordinary and Service-aware baselines have distinct identities.
+            -- Admit only their original facts (at most 64 chains); projected
+            -- suppliers, buyers and invoices can never fill this cache.
+            if not world.evaluationMemo and (world.includeServices==true)==(world.baselineWorld.includeServices==true) then
+                fixedLedgers=fixedLedgersByBaseline[world.baselineWorld]
+                if not fixedLedgers then
+                    fixedLedgers={}
+                    for _,site in ipairs(world.baselineWorld.sites)do fixedLedgers[site]=true end
+                    fixedLedgersByBaseline[world.baselineWorld]=fixedLedgers
+                end
+            end
         end
-        local value,problem=M.JointForecast(planWorld,snapshot.Price)
+        local value,problem=M.JointForecast(planWorld,snapshot.Price,fixedLedgers)
         if value then
             if reusable then worldQuotes[world]=value end
             worldStats.evaluations=worldStats.evaluations+(value.evaluations or 0)
