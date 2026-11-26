@@ -12,6 +12,32 @@ AI = Path(__file__).resolve().parents[3] / 'Civ Supply Chains/Lua_UI/AI'
 
 
 class CustomerFirstPlanning(unittest.TestCase):
+    def test_native_targets_are_shared_only_within_a_publication(self):
+        vm = self.facts()
+        vm.execute((AI / 'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+E.Available=function()return true end
+local calls={}
+local read=ui.GetLegalDistrictTargets
+ui.GetLegalDistrictTargets=function(pid,cityID,hash)
+    calls[hash]=(calls[hash] or 0)+1
+    return read(pid,cityID,hash)
+end
+local s=assert(E.Snapshot(player,placement,ui))
+assert(#s.ui.GetLegalDistrictTargets(1,7,200)==2)
+assert(#s.ui.GetLegalDistrictTargets(1,7,210)==0)
+local candidates=s.CustomerFirstOptions({})
+assert(#candidates==1 and candidates[1].plot==2 and candidates[1].quarterPlot==3)
+assert(calls[200]==1 and calls[210]==1)
+legal={}
+assert(#E.Snapshot(player,placement,ui).CustomerFirstOptions({})==0)
+assert(calls[200]==2 and calls[210]==2)
+ui.GetLegalDistrictTargets=nil
+local unavailable=assert(E.Snapshot(player,placement,ui))
+assert(unavailable.ui.GetLegalDistrictTargets==nil and #unavailable.CustomerFirstOptions({})==0)
+''')
+
     def test_census_coast_diagnostics_reuse_the_candidate_queries(self):
         self.facts().execute('''
 GameInfo.Districts[20].DistrictType='DISTRICT_HARBOR'

@@ -1684,13 +1684,16 @@ function F.New(player,placement,ui,context)
         local graph=F.CustomerQuarterMap()
         local districtIDs={};for id in pairs(graph)do districtIDs[#districtIDs+1]=id end;table.sort(districtIDs)
         local cityIDs={};for id in pairs(snapshot.cities)do cityIDs[#cityIDs+1]=id end;table.sort(cityIDs)
-        if type(ui.GetLegalDistrictTargets)~='function'or not Map.GetPlotDistance then return options end
+        -- The Quarter scan and the customer comparisons share this publication's
+        -- native BUILD targets. A standalone facts reader uses its supplied UI.
+        local query=snapshot.ui or ui
+        if type(query.GetLegalDistrictTargets)~='function'or not Map.GetPlotDistance then return options end
         for _,id in ipairs(cityIDs)do
             local city=snapshot.cities[id].object
             local allowed=snapshot.FutureDistrictTypes(city)
             for _,district in ipairs(districtIDs)do if allowed and allowed[district]then
                 local mapping=graph[district];local definition=mapping.definition
-                local ok,targets=pcall(ui.GetLegalDistrictTargets,pid,id,definition.Hash)
+                local ok,targets=pcall(query.GetLegalDistrictTargets,pid,id,definition.Hash)
                 if not ok or type(targets)~='table'then work.unknown=work.unknown+1
                 else
                     local legal,prospects={},{}
@@ -2486,7 +2489,7 @@ function F.New(player,placement,ui,context)
         -- optimization must match this bounded full-world result. Never
         -- truncate its inventory or inherit single-site population baselines.
         local key=cityID..':'..districtIndex..':'..plotIndex..(quarterSite and ':quarter'or ':customer')
-        if customerWorlds[key]then return customerWorlds[key][1],customerWorlds[key][2]end
+        if not quarterSite and customerWorlds[key]then return customerWorlds[key][1],customerWorlds[key][2]end
         local buyer,definition,plot=snapshot.cities[cityID],GameInfo.Districts[districtIndex],Map.GetPlotByIndex(plotIndex)
         if not buyer or not definition or not plot or plot:GetOwner()~=pid and not(quarterSite and plot:GetOwner()==-1)then
             return nil,'Owned customer or owned/frontier Quarter footprint required'end
@@ -2576,18 +2579,15 @@ function F.New(player,placement,ui,context)
         after.trade,problem=snapshot.TradeWorld(after.sites,{removedPlot=plotIndex,ready=0})
         if not after.trade then return nil,problem end
         after.customer={city=cityID,district=districtIndex,plot=plotIndex,ready=ready,cost=cost}
-        customerWorlds[key]={before,after}
+        -- Customer alternatives can be revisited by several decision adapters.
+        -- Quarter candidates carry the current invoice and are consumed once.
+        if not quarterSite then customerWorlds[key]={before,after} end
         return before,after
     end
     function snapshot.CustomerWorld(cityID,districtIndex,plotIndex)
         return investmentWorld(cityID,districtIndex,plotIndex)
     end
     function snapshot.QuarterWorld(city,plot,profile,site)
-        -- Candidate facts may contain a continuity-adjusted footprint invoice;
-        -- keep that exact candidate as the new investment. The pair is not
-        -- cached because the adapter can revise those same-footprint terms.
-        local key=city:GetID()..':'..profile.district.Index..':'..plot:GetIndex()..':quarter'
-        customerWorlds[key]=nil
         return investmentWorld(city:GetID(),profile.district.Index,plot:GetIndex(),site)
     end
     return snapshot

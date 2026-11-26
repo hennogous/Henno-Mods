@@ -332,7 +332,11 @@ function E.Snapshot(player,placement,ui)
         -- Fact worlds and this Price function are immutable for one publication.
         -- Share the ordinary baseline and repeated references across adapters;
         -- no stale native weights, route counters or construction times survive.
-        if worldQuotes[world]then worldStats.cacheHits=worldStats.cacheHits+1;return worldQuotes[world]end
+        -- QuarterForecast installs a site-specific objective on a fresh world.
+        -- Its caller extracts the marginal bid immediately. Caching that result
+        -- would retain every site's winning ledger until the player pass ends.
+        local reusable=world.objective==nil
+        if reusable and worldQuotes[world]then worldStats.cacheHits=worldStats.cacheHits+1;return worldQuotes[world]end
         worldStats.worlds=worldStats.worlds+1
         local planWorld=world
         if world.baselineWorld then
@@ -346,7 +350,8 @@ function E.Snapshot(player,placement,ui)
         end
         local value,problem=M.JointForecast(planWorld,snapshot.Price)
         if value then
-            worldQuotes[world]=value;worldStats.evaluations=worldStats.evaluations+(value.evaluations or 0)
+            if reusable then worldQuotes[world]=value end
+            worldStats.evaluations=worldStats.evaluations+(value.evaluations or 0)
         elseif type(problem)=='string'and problem:find('budget',1,true)then
             worldStats.budgetFailures=worldStats.budgetFailures+1
         else worldStats.unknown=worldStats.unknown+1 end
@@ -397,10 +402,12 @@ function E.Snapshot(player,placement,ui)
     -- observe the same legal targets without repeating context crossings.
     snapshot.ui=setmetatable({}, {__index=ui})
     local targets={}
-    snapshot.ui.GetLegalDistrictTargets=function(pid,city,hash)
-        local key=pid..':'..city..':'..hash
-        if not targets[key]then targets[key]=ui.GetLegalDistrictTargets(pid,city,hash)end
-        return targets[key]
+    if type(ui.GetLegalDistrictTargets)=='function' then
+        snapshot.ui.GetLegalDistrictTargets=function(pid,city,hash)
+            local key=pid..':'..city..':'..hash
+            if not targets[key]then targets[key]=ui.GetLegalDistrictTargets(pid,city,hash)end
+            return targets[key]
+        end
     end
     for _,name in ipairs({'GetRawPlotPurchaseQuote','GetPlotPurchaseQuote'})do
         local method=name

@@ -4,6 +4,47 @@ from customer_world_fixture import world
 
 
 class CustomerWorld(unittest.TestCase):
+    def test_only_reusable_worlds_survive_a_quarter_quote(self):
+        from customer_world_fixture import MOD
+        vm = world()
+        vm.execute((MOD/'Lua_UI/AI/CSC_AI_EconomyAdapters.lua').read_text())
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+E.Available=function()return true end
+local s=assert(E.Snapshot(player,placement,ui))
+s.Price=price
+local refs=setmetatable({}, {__mode='v'})
+local make,score=s.QuarterWorld,s.WorldQuote
+s.QuarterWorld=function(...)
+    local before,after=make(...)
+    refs.facts=after
+    return before,after
+end
+s.WorldQuote=function(w)
+    local result,err=score(w)
+    if w.objective then refs.scored=w;refs.result=result end
+    return result,err
+end
+local function check(invoice)
+    local site=assert(s.Site(CITIES[3],PLOTS[3],profile))
+    site.purchaseGold=invoice
+    local bid=assert(E.QuarterForecast(s,CITIES[3],PLOTS[3],profile,site,0,false))
+    collectgarbage('collect')
+    assert(refs.facts==nil and refs.scored==nil and refs.result==nil)
+    return bid.valueQ8
+end
+local ordinary=check(0)
+assert(check(42)<ordinary and check(0)==ordinary)
+-- Also exercise the private world clone used when Service pricing is available.
+s.serviceKinds={GROWTH=true}
+check(0)
+local before,after=assert(s.CustomerWorld(3,GameInfo.Districts.DISTRICT_COMMERCIAL_HUB.Index,3))
+local again,reused=assert(s.CustomerWorld(3,GameInfo.Districts.DISTRICT_COMMERCIAL_HUB.Index,3))
+assert(before==s.CurrentWorld() and before==again and after==reused)
+local cached=assert(s.WorldQuote(after))
+assert(s.WorldQuote(reused)==cached)
+''')
+
     def test_joint_quarter_adapter_scopes_cost_diagnostics_to_the_new_chain(self):
         vm=world()
         from customer_world_fixture import MOD

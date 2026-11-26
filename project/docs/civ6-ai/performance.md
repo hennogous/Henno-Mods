@@ -2,6 +2,12 @@
 
 The [Large Standard turn-350 performance review](../research/mods/csc-guidance-performance-review-20261126.md) compares guidance on and off with City Lights. It traces mature-turn growth to the district-planning pass and ranks changes to economic forecasting, site discovery and Dev CE delivery.
 
+### Shared legal targets and shorter forecast lifetimes, 26 November
+
+The customer-first planner now uses the same player/publication BUILD-target cache as the Quarter planner. A fixture queried two city/district keys from both paths, one populated and one empty. Each key needed one UI call. The following publication picked up a change in legality. Standalone fact readers can still query their supplied UI directly.
+
+The facts reader releases each candidate Quarter world after the site calculation. The adapter retains shared baseline and customer results and releases each site's winning ledger after extracting its marginal value. A Lua 5.1 comparison against commit `2573f6c9` matched the entire returned forecast, placement score and score components on 128 quotes across ordinary and City Lights fixtures, with Service pricing enabled and disabled. Each batch warmed one three-chain forecast, varied its land invoice 32 times in one publication, and collected garbage before reading the retained heap. The previous code retained about 1,190 KiB of additional heap per batch, and the revised code retained 39–40 KiB, after accounting for the serialized comparison output. This measures retained memory on those inputs. Live turn-time savings remain unmeasured. The next economic optimization is reusing independent chain contributions during pricing.
+
 Henno requested average and maximum added processing time in the next full-game
 run,17 November2026. Every subsequent full-run report should include these
 measurements alongside placement and supply-chain outcomes.
