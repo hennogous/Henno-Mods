@@ -73,12 +73,14 @@ def read_arm(folder):
     # observer, even if no Quarter was built before that game's endpoint.
     receipt = next((folder/'pending-commands').glob('*observe-foundations.lua'),None)
     watched = receipt is not None and 'local CSC_OBSERVE_SUPPLIER_LOSS=' in receipt.read_text(encoding='utf-8-sig')
-    timing = {int(k):v for k,v in load(folder/'measured.json')['clean'].items()}
+    measured=load(folder/'measured.json')
+    timing = {int(k):v for k,v in measured['clean'].items()}
     report = dict(quarters=result, economy=economy(census)[0], founded=len(foundations),
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
         last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')} if watched else None,
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
-        unresolved_service_samples=sum(unknown for _,unknown in intervals.values()))
+        unresolved_service_samples=sum(unknown for _,unknown in intervals.values()),
+        planner_processing={k:measured['direct'][k] for k in ('turns','average_ms','max_ms')})
     return report, intervals, links, timing
 
 

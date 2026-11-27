@@ -34,4 +34,12 @@ In the first stock game the exported database contains the vanilla `UnitPriority
 | With both working Base and completed customer | 1 (5.9%) | 1 (5.9%) |
 | Without an owned Base deposit at the endpoint | 14 | 12 |
 
-Across both Quarters, 26 of 37 observed AI foundations lacked usable owned Base at foundation. Six last-working-supplier losses were observed (three per Quarter type), with three losses of the last viable deposit. None of the six working-supplier losses showed a district occupying that supplier at the next turn boundary. The Service observer recorded two Bakers Stage 2 links for 50 active chain-turns and one Tailors Stage 3 link for 23. The 199 common-cadence observations exclude the five-turn controller handoffs. The stock game averaged 5.43 seconds per popup-free turn and peaked at 16.60 seconds (196 intervals).
+Of the 37 observed AI foundations, 26 lacked usable owned Base. Reading all six neighbors showed that 8/18 Bakers and 6/19 Tailors had *any* mapped Base adjacent. Three foundations had Base only outside the owner's borders. The other 23 had none on any neighboring tile. None of the 37 started beside a working Base supplier. That makes undeveloped land an important test for the lightweight guidance.
+
+Six last-working-supplier losses were observed (three per Quarter type), with three losses of the last viable deposit. None of the six working-supplier losses showed a district occupying that supplier at the next turn boundary. The Service observer recorded two Storekeeper links for 50 active chain-turns and one Sacristan link for 23. The 199 observations exclude the five-turn controller handoffs. The stock game averaged 5.43 seconds per popup-free turn and peaked at 16.60 seconds (196 intervals).
+
+### Follow-up candidate for undeveloped land
+
+All eleven foundation sites with viable owned Base had at least one neighboring bonus-class resource. The same signal also covered **12 of the 26** sites without viable owned Base. Waiting for adjacent improvements misses many early opportunities, while a bonus-resource cue by itself can attract a Quarter to unrelated resources.
+
+The replay can test an extra stock adjacency rule against the same start (`--deposit-cues`). For each Quarter, a class must include at least two Base types, cover at least half its Base catalogue, and have at least one Base for every six resources in that class. On the standalone catalogue this gives Bakers +2 private yield for a neighboring bonus resource (six of twelve types match) and Tailors +1 (two of twelve). The registered yield has no conversion into Production or Gold. Compare the realized supplies and customers before choosing a shipping default.
