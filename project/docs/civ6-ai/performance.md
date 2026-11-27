@@ -2,6 +2,34 @@
 
 The [Large Standard turn-350 performance review](../research/mods/csc-guidance-performance-review-20261126.md) compares guidance on and off with City Lights. It traces mature-turn growth to the district-planning pass and ranks changes to economic forecasting, site discovery and Dev CE delivery.
 
+### Actually skipping Quarter forecasts, 27 November
+
+The experimental candidate refreshes every eligible Quarter site after a city has no positive bid for that Quarter. It also reprices the previous leading Quarter site's proposed customer footprints as possible Quarter sites. It retains the prior top two, changed or new sites, confirmed plans, a rotating spare and the eight-turn refresh. A skip occurs immediately before the expensive economic forecast. The ordinary full planner remains the default.
+
+Both arms loaded the same turn-one Small Continents save (Online, Prince, CSC + City Lights, seed 171124605). The full planner reached turn 250. The candidate's observer civilization was eliminated during turns 225–230. Turn 225 is the last shared physical census. The complete comparison covers 224 publications per arm and 176 matched whole-turn intervals, with popup and controller-handoff intervals excluded. On an earlier seed, 27112601, the full planner lost its observer after turn 195; that run contributes no timing or placement figures below.
+
+| Through turn 225 | Full planner | Selective planner |
+| --- | ---: | ---: |
+| Deep Quarter forecasts executed | 7,810 | 7,125 |
+| Whole turn, mean / maximum | 9.46 / 26.99 s | 9.56 / 27.36 s |
+| CSC guidance, mean / maximum | 1.800 / 3.572 s | 1.777 / 3.617 s |
+| Whole turn, mean in turns 201–225 | 16.41 s | 17.07 s |
+| AI-founded Bakers / Tailors | 21 / 6 | 21 / 6 |
+| Founded with Base / with both Base and Spec | 27 / 7 | 27 / 7 |
+| Founded with at least +2 current Production and Gold | 26 | 26 |
+| Founded with at least +4 including potential local Mill | 7 | 8 |
+| Completed Quarters with Base and a completed mapped customer | 24 | 23 |
+
+The candidate skipped 978 of its own 8,103 eligible forecasts (12.1%). Its game generated 293 more forecast opportunities as play diverged. Across the arms, CSC spent 0.023 seconds less per turn on guidance, and whole turns averaged 0.098 seconds longer. Estimating each site's eligibility and detecting changes still incurs work before the cutoff, as do all customer and other planning decisions.
+
+The original AI players founded 26 of their 27 Quarters on identical plots, including every Tailors location. The full-only Bakers site had one Base, +2 at foundation and +3 with a Wind Mill. The candidate-only Bakers site had two Base, river adjacency, +3 at foundation and +4 with a Water Mill. They were built by different civilizations. Counting all holdings at turn 225, including transfers, both groups held 22 Bakers and seven Tailors, with 28 of 29 plots in common. The full planner had 29 complete and the candidate had 28. Neither group had a Tailors Quarter adjoining a working Stage 2 customer district.
+
+The controller's census reads gameplay-defined material and customer relations. Physical founding events include the original five AI players, and sampled customer coverage includes completed Quarters and completed mapped customer districts. The per-turn accounting counts calls at the economic forecast itself. [Matched replay and result checker](../../tools/native_ai/late_placement/shortlist_pair.py)
+
+**Mature timing check.** Both arms also reloaded the same Large Continents, Standard-speed turn-350 save and played turns 351–360. The full planner executed 600 Quarter forecasts. The candidate executed 537 and skipped 63 (10.5%). All 237 leading city/Quarter proposals matched on plot and final bid. The eight matched whole-turn intervals averaged 37.94 seconds with full pricing and 37.23 seconds with selective pricing. Each interval was faster, averaging a 0.72-second saving (1.9%). The respective maxima were 57.92 and 57.81 seconds. Over all ten turns, direct CSC guidance averaged 6.57 and 6.21 seconds (0.36 seconds saved, 5.5%), with maxima of 6.88 and 7.03 seconds.
+
+Keep the candidate experimental. The mature-save result makes selective pricing worth considering for expensive late-game turns. On the Small game the cutoff preserved placement quality but produced no whole-game timing gain. These two games do not establish a threshold for switching the policy on automatically.
+
 ### Testing a shorter list of Quarter forecasts, 27 November
 
 The full planner bids on every qualifying site. In a diagnostic game the controller also tracks which sites a cheaper planner would have priced. It makes that choice before seeing the current scores. For each city and Quarter it keeps its own two previous leaders, newly eligible or locally changed sites, confirmed plans and saved footprints. It adds one other plot in rotation. A new city, a gap in observation or the scheduled eight-turn refresh gets a complete evaluation.

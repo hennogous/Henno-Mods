@@ -232,6 +232,10 @@ def play(p, seed, game, arm, out, recovery=None, *, guidance=None, shortlist=Fal
         elif session.owner is not None:
             write_json(out/'unexpected-native-exit.json',dict(exit_code=session.owner.poll(),identity=session.owner.identity))
             session.owner.close()
+        if pricing and checkpoint is None and session.closed:
+            # An eliminated observer ends autoplay. Keep the measured prefix
+            # before the next Civ launch rotates its ordinary logs.
+            shutil.copyfile(user/'Logs/Lua.log',out/'Lua.log')
     require(session.closed and checkpoint is not None,'Endpoint session did not complete')
     native,archive=(Path(checkpoint[key]) for key in ('native_save','archive'))
     require(sha(native)==sha(archive)==checkpoint['sha256'],'Endpoint save hash differs')
