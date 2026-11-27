@@ -39,7 +39,8 @@ def read_arm(folder):
     links = defaultdict(set)
     losses = defaultdict(set)
     poor = set()
-    foundations = set()
+    foundations = {}
+    district_profiles = defaultdict(set)
     seats = set(load(folder/'source.json')['original_ai'])
     for line in (folder/'Lua.log').read_text(encoding='utf-8-sig',errors='replace').splitlines():
         if 'CSC_MILESTONE_SERVICE_END\t' in line:
@@ -58,11 +59,20 @@ def read_arm(folder):
             player = int(row['player'])
             if player not in seats:
                 continue
-            if event == 'SITE' and row['event'] == 'foundation':
-                key = (player,int(row['plot']),int(row['turn']))
-                foundations.add(key)
-                if int(row['base']) == 0:
-                    poor.add(key)
+            if event == 'SITE':
+                # Older receipts have the native district index only. Recover
+                # its name from this game's censused plots; newer receipts
+                # carry the type directly, even for a subsequently razed city.
+                profile = profiles.get(int(row['plot']))
+                if row.get('quarterType'):
+                    profile = row['quarterType'].removeprefix('DISTRICT_CSC_').removesuffix('_QUARTER')
+                if profile:
+                    district_profiles[row['district']].add(profile)
+                if row['event'] == 'foundation':
+                    key = (player,int(row['plot']),int(row['turn']))
+                    foundations[key] = row
+                    if int(row['base']) == 0:
+                        poor.add(key)
             if event == 'SUPPLIER_LOSS':
                 key = (player,int(row['quarter']),row['class'],int(row['turn']))
                 if row['lastWorking'] == 'true':
@@ -80,7 +90,21 @@ def read_arm(folder):
     watched = receipt is not None and 'local CSC_OBSERVE_SUPPLIER_LOSS=' in receipt.read_text(encoding='utf-8-sig')
     measured=load(folder/'measured.json')
     timing = {int(k):v for k,v in measured['clean'].items()}
+    placement = {}
+    for row in foundations.values():
+        names = district_profiles[row['district']]
+        profile = next(iter(names)) if len(names)==1 else 'unresolved'
+        stats = placement.setdefault(profile, dict(founded=0,owned_base=0,working_base=0,
+            owned_spec=0,both_materials=0,current_adjacency_3plus=0))
+        base,spec = int(row['base'])>0,int(row['spec'])>0
+        stats['founded'] += 1
+        stats['owned_base'] += base
+        stats['working_base'] += int(row['baseWorking'])>0
+        stats['owned_spec'] += spec
+        stats['both_materials'] += base and spec
+        stats['current_adjacency_3plus'] += float(row['eligibleGold'])+float(row['eligibleProduction'])>=3
     report = dict(quarters=result, economy=economy(census)[0], founded=len(foundations),
+        placement_by_quarter=placement,
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
         last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')} if watched else None,
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,

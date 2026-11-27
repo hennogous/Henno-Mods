@@ -1,8 +1,11 @@
 """Replay CSC stock, ordinary-database guidance and advanced planning on shared starts."""
 import argparse
 from contextlib import closing
+import gzip
 import hashlib
+import json
 from pathlib import Path
+import re
 import shutil
 import sqlite3
 from types import SimpleNamespace
@@ -33,6 +36,24 @@ def stock_controls(database):
                 a.YieldChange,a.TilesRequired,a.AdjacentResourceClass FROM District_Adjacencies d
                 JOIN Adjacency_YieldChanges a ON a.ID=d.YieldChangeId
                 WHERE a.YieldType='YIELD_CSC_AI_PLACEMENT' ORDER BY d.DistrictType,a.ID""").fetchall())
+
+
+def record_opening_geography(controller, seed_folder):
+    """One stock map read per seed, before the measured turns begin."""
+    target=seed_folder/'opening-map.json.gz'
+    if target.exists():
+        return
+    source=HERE.parents[1]/'map_survey/dump.lua'
+    raw=controller.cmd(read(source),'CSC_AdjacencyGameplay','record-material-geography')
+    match=re.search(r'CSCMAP_SURVEY=([^\r\n]+)',raw)
+    require(match is not None,'Missing opening geography')
+    data=json.loads(match[1])
+    require(data['turn']==1 and len(data['plots'])==data['width']*data['height'],'Incomplete opening geography')
+    # A shared seed has one immutable plot layout. Keep its neighbor table
+    # compressed for offline coastal-material and site audits across all arms.
+    temp=target.with_suffix('.tmp')
+    temp.write_bytes(gzip.compress(match[1].encode('utf-8'),mtime=0))
+    temp.replace(target)
 
 
 def observers(c,seats):
@@ -170,6 +191,13 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         if mode!='stock':
             require(controls['builder_priority']==[(1,10)] and controls['recruiting_city']==[(13,None),(23,None)],
                     'Expected the stock city bindings and the standalone Builder request preference')
+        if not (source.parent/'opening-map.json.gz').exists():
+            # Geometry is a secondary diagnostic. A failed export should be
+            # visible and retryable next arm without discarding a matched game.
+            try:
+                record_opening_geography(c,source.parent)
+            except (ValueError, RuntimeError, OSError, KeyError) as exc:
+                write_json(out/'opening-map-error.json',dict(error=str(exc)))
         observers(c,range(1,len(game['roster'])))
         for turn in range(5,end+1,5):
             c.play(turn)
