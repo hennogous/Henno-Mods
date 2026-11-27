@@ -5,6 +5,7 @@ CSC offers one setup option, **Advanced CSC AI planning**. In a single-player ga
 | Decision | Input used by the lightweight candidate |
 | --- | --- |
 | Place a mapped customer next to a Quarter, in either build order | One private adjacency yield per neighboring partner. The SQL derives both directions from building transactions, sales and provider tags, including district replacements. City settlement and generic Wonder tiles are excluded. |
+| Place a Quarter near undeveloped Base materials | Count nearby resource classes that cover a substantial share of the Quarter's gameplay-defined Base catalogue. On standalone CSC each neighboring bonus resource gives Bakers two private units and Tailors one. A modded catalogue can qualify a different class or change its strength. |
 | Place a Quarter near working material infrastructure | One private adjacency yield for selected neighboring improvement families. At least one Base must use the improvement. The family qualifies when a third of its mapped resource types are Base or half are Base and Spec together. An improvement which can occupy ordinary terrain or features requires two neighbors. In the standalone catalogue Bakers sees Farms (two), Pastures and Plantations. Tailors sees Pastures. |
 | Recruit a Builder | A +10 preference in the stock unit-request list when a mod has not already supplied that Builder row. Civ selects the job, recruiting city, unit and route. |
 
@@ -128,3 +129,20 @@ The stock Farm beside Korea's Seowon provides a useful reverse direction. Ghidra
 Stock AI completed 16 Bakers and 14 Tailors across the five original AI empires. One Bakers had both a working Base and a completed customer. No Tailors did. Nine Bakers and six Tailors touched a completed mapped customer. Twelve Bakers and all 14 Tailors had a functioning Stage 2 producer. The game recorded zero active Service links across 249 observations. Popup-free turns averaged 6.22 seconds and peaked at 17.29 across 197 intervals.
 
 Of the 15 Tailors foundations, nine touched a clear coastal tile. Only two also had a usable owned Base. Both available coastal tiles lay outside the empire's borders when the Quarter went down. The turn-83 Quarter (plot 2286) had raw Flax and later a working Textile Workshop and a Theater Square. The Flax still lacked a working improvement at the turn-200 census and became ineligible as a supplier on 215. The turn-112 Quarter (plot 2679) still had both Sheep and a working Textile Workshop at turn 250, but its Sheep remained unimproved. These sites give the native Builder treatment two distinct missed opportunities to compare against.
+
+The no-CE deposit treatment finished with four supplied Bakers beside a customer across 17 completed Bakers, up from one across 16. All four also had a functioning producer and Stage 2 customer building. Six Storekeeper links delivered 289 active chain-turns across the run. Tailors finished at zero supplied pairs across 15 completed Quarters. Seven of its 15 foundations touched a clear coast tile and two had usable owned Base, but the two groups did not overlap. There were ten losses of the last viable deposit, six to district coverage. Three of the other four coincided with a harvest by the same player on that exact tile. A further two working-supplier losses involved pillaged improvements.
+
+### Shipping decision after the two no-CE games
+
+The raw-resource cue is now part of CSC's ordinary AI connector SQL. Across the two seeds, supplied Bakers with a completed customer rose from **2/33 (6%) to 11/37 (30%)**. Tailors finished at **1/31 stock and 1/32 treated**. Total observed Service link-turns rose from **73 to 498**. Stock produced 50 Storekeeper and 23 Sacristan link-turns. The treatment produced 466 Storekeeper and 32 Innkeeper link-turns. On the first seed all five treated AI empires ended with a supplied Bakers beside a customer, compared with one stock empire.
+
+| Turn-250 comparison | Seed 171124601, stock → lightweight | Seed 171124605, stock → lightweight |
+| --- | ---: | ---: |
+| Completed Quarters with working Base and customer, both types | 2/34 → 8/37 | 1/30 → 4/32 |
+| Foundations without usable owned Base | 26/37 → 21/36 | 24/32 → 25/33 |
+| Losses of last working supplier / last viable deposit | 6/3 → 5/9 | 2/5 → 6/10 |
+| Actual Service link-turns | 73 → 209 | 0 → 289 |
+| Mean elapsed turn, seconds | 5.41 → 6.29 | 6.22 → 6.36 |
+| Maximum elapsed turn, seconds | 16.60 → 20.62 | 17.29 → 21.09 |
+
+Each column uses the same starting save and the common observations for its two arms. The timed intervals exclude popups (193 and 195 respectively). Total turn time includes the empires' different development. Both games ran with the Firaxis core and zero advanced publications. The source integration reproduced the qualification SQL rows, including adjacency identifiers and weights, when compiled against the game database. Gameplay transaction and modifier values matched. The advanced comparison uses the same resource cue and a CE-enabled opening with the same starting map and roster.

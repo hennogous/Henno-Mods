@@ -498,6 +498,7 @@ CREATE TABLE BehaviorTreeNodes(NodeId,TreeName,NodeType);
 CREATE TABLE TreeData(DefnId,NodeId,TreeName,DefaultData);
 CREATE TABLE Districts(DistrictType PRIMARY KEY);
 CREATE TABLE TypeTags(Type,Tag);
+CREATE TABLE Resources(ResourceType PRIMARY KEY,ResourceClassType);
 CREATE TABLE DistrictReplaces(CivUniqueDistrictType,ReplacesDistrictType);
 CREATE TABLE CSC_QuarterCustomerBuildings(QuarterKey,ProducerStage,DistrictType);
 CREATE TABLE CSC_Stage3CustomerTransactions(SellerDistrictType,CustomerDistrictType);
@@ -507,7 +508,7 @@ CREATE TABLE Improvement_ValidResources(ImprovementType,ResourceType);
 CREATE TABLE Improvement_ValidTerrains(ImprovementType,TerrainType);
 CREATE TABLE Improvement_ValidFeatures(ImprovementType,FeatureType);
 CREATE TABLE Improvements(ImprovementType PRIMARY KEY,Buildable,Workable);
-CREATE TABLE Adjacency_YieldChanges(ID PRIMARY KEY,Description,YieldType,YieldChange,TilesRequired,AdjacentDistrict,AdjacentImprovement);
+CREATE TABLE Adjacency_YieldChanges(ID PRIMARY KEY,Description,YieldType,YieldChange,TilesRequired,AdjacentDistrict,AdjacentImprovement,AdjacentResourceClass);
 CREATE TABLE District_Adjacencies(DistrictType,YieldChangeId,PRIMARY KEY(DistrictType,YieldChangeId));
 INSERT INTO Districts VALUES('DISTRICT_CSC_TAILORS_QUARTER'),('DISTRICT_CSC_BAKERS_QUARTER'),
  ('DISTRICT_COMMERCIAL_HUB'),('DISTRICT_HOLY_SITE'),('DISTRICT_HARBOR'),
@@ -600,6 +601,25 @@ INSERT INTO Improvement_ValidTerrains VALUES ('FARM','PLAINS');
                              WHERE AdjacentImprovement IS NOT NULL ORDER BY AdjacentImprovement''')
         self.assertEqual(list(rows), [('DISTRICT_CSC_TEST_QUARTER','FARM',2),('DISTRICT_CSC_TEST_QUARTER','PASTURE',1)])
         self.assertTrue(audit(db)['complete'])
+        # One newly loaded class is highly predictive for TEST and weaker for
+        # TAG_ONLY. An unrelated luxury and duplicate tags must not inflate it.
+        db.executemany('INSERT INTO Resources VALUES (?,?)', [
+            (f'MOD_BONUS_{n}','RESOURCECLASS_BONUS') for n in range(8)])
+        db.execute("INSERT INTO Resources VALUES ('MOD_LUX','RESOURCECLASS_LUXURY')")
+        db.executemany('INSERT INTO TypeTags VALUES (?,?)', [
+            (f'MOD_BONUS_{n}', 'CLASS_CSC_TEST_BASE') for n in range(4)] + [
+            ('MOD_BONUS_0','CLASS_CSC_TEST_BASE'), ('MOD_LUX','CLASS_CSC_TEST_BASE'),
+            ('MOD_BONUS_1','CLASS_CSC_TAG_ONLY_BASE'), ('MOD_BONUS_2','CLASS_CSC_TAG_ONLY_BASE')])
+        db.execute("""INSERT INTO CSC_QuarterMaterialAdjacencyConfig VALUES
+                   ('TAG_ONLY','CLASS_CSC_TAG_ONLY_BASE','','FROM_RINGS_TYPETAG_RESOURCE')""")
+        db.executescript(sql)
+        db.executescript(sql)
+        deposits = db.execute("""SELECT DistrictType,AdjacentResourceClass,YieldChange,TilesRequired,YieldType
+            FROM District_Adjacencies JOIN Adjacency_YieldChanges ON ID=YieldChangeId
+            WHERE AdjacentResourceClass IS NOT NULL ORDER BY DistrictType""").fetchall()
+        self.assertEqual(deposits, [
+            ('DISTRICT_CSC_TAG_ONLY_QUARTER','RESOURCECLASS_BONUS',1,1,'YIELD_CSC_AI_PLACEMENT'),
+            ('DISTRICT_CSC_TEST_QUARTER','RESOURCECLASS_BONUS',2,1,'YIELD_CSC_AI_PLACEMENT')])
 
     def test_material_terms_match_generated_native_without_unit_assumptions(self):
         import sys
