@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 
 
-MARKER = re.compile(r"\b(CSC_SHORTLIST_(?:SCOPE|PASS|WATCH|ERROR)|CSC_AI_(?:SPATIAL_BID|ECONOMY_PLAN|PROCESSING))\b(.*)")
+MARKER = re.compile(r"\b(CSC_SHORTLIST_(?:SCOPE|PASS|WATCH|ERROR)|CSC_AI_(?:SPATIAL_BID|ECONOMY_PLAN|PLAN_EVENT|PROCESSING))\b(.*)")
 FIELD = re.compile(r"(\w+)=([^\s]+)")
 
 
@@ -29,6 +29,8 @@ def counts(rows):
 
 def analyze(log, first, last):
     scopes, passes, normal, published = {}, {}, {}, {}
+    customer_plots = {}
+    selected = set()
     plans = Counter()
     watches = []
     failures = []
@@ -55,6 +57,9 @@ def analyze(log, first, last):
             published[turn] = (row["ok"], row["published"])
         elif tag == "CSC_AI_ECONOMY_PLAN":
             plans[turn, row["player"]] += 1
+        elif tag == "CSC_AI_PLAN_EVENT":
+            if row["kind"] == "selected" and row["reason"] == "native_best":
+                selected.add((row["forecastTurn"],row["player"],row["city"],row["district"],row["plot"]))
         elif tag == "CSC_SHORTLIST_WATCH":
             watches.append(row)
         else:
@@ -65,6 +70,7 @@ def analyze(log, first, last):
             elif row["rank"] == 1:
                 assert key not in normal, key
                 normal[key] = row["plot"], row["finalQ8"]
+                customer_plots[key] = {row.get("customerPlot1",-1), row.get("customerPlot2",-1)}
 
     # An absent observer can otherwise look like a short period of perfect recall.
     assert not failures, failures
@@ -79,13 +85,26 @@ def analyze(log, first, last):
     groups = defaultdict(list)
     episodes = {}
     gaps = []
+    miss_context = Counter()
+    confirmed = Counter()
+    after_empty = Counter()
     for key, row in sorted(scopes.items()):
         turn, pid, city, district = key
         groups["all"].append(row)
         groups[row["quarter"]].append(row)
         groups["turns %d–%d" % (turn-(turn-1)%50, turn+49-(turn-1)%50)].append(row)
+        # Price out a possible change against the actual shadow history. The
+        # history of a modified selector would diverge after the first change.
+        prior = turn-1, pid, city, district
+        if scopes.get(prior,{}).get("alternate",-1) < 0:
+            after_empty["extra_calls"] += row["calls"]-row["kept"]
+            after_empty["misses_covered"] += row["winner"] != row["alternate"]
         if row["winner"] < 0:
             continue
+        if (*key,row["winner"]) in selected:
+            confirmed["full leaders selected by native AI"] += 1
+            if row["winner"] != row["alternate"]:
+                confirmed["missed leaders selected by native AI"] += 1
         if row["quarter"] == "TAILORS" and row["harbor"]:
             groups["Tailors leader with a possible or built Harbor"].append(row)
         if row["base"] and row["spec"]:
@@ -95,6 +114,12 @@ def analyze(log, first, last):
         if (turn-1, pid, city, district) not in leaders:
             groups["first bid after an empty or absent scope"].append(row)
         if row["winner"] != row["alternate"]:
+            if prior not in normal:
+                miss_context["preceding turn had no positive full bid"] += 1
+            elif row["winner"] in customer_plots[prior]:
+                miss_context["previous full leader listed this plot for a customer"] += 1
+            else:
+                miss_context["other change of leader"] += 1
             plot_key = pid, city, district, row["winner"]
             gap = (row["bid"]-row["alternateBid"])/256
             gaps.append(gap)
@@ -106,6 +131,9 @@ def analyze(log, first, last):
     return dict(turns=[first,last], passes=len(passes), checked_rankings=len(normal),
                 groups={label: counts(rows) for label,rows in groups.items()},
                 missed_sites=sorted(episodes.values(), key=lambda r: -r["worst_gap"]),
+                miss_context=dict(miss_context),
+                new_native_selections=dict(confirmed),
+                full_refresh_after_no_shadow_bid=dict(after_empty),
                 mean_gap_when_site_differs=sum(gaps)/len(gaps) if gaps else None,
                 watches_closed=len(watches),
                 watch_endings=dict(Counter(str(w["occupant"]) for w in watches)),

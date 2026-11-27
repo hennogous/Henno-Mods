@@ -10,6 +10,22 @@ The comparison counts calls to the Quarter economy forecast after the ordinary e
 
 The observer is loaded by the game controller only when requested. See [the observation rules](../../tools/native_ai/late_placement/shortlist_observer.lua) and [the results checker](../../tools/native_ai/late_placement/shortlist_results.py). Run the checker with the archived game directory containing the protocol, observer receipt and Lua log.
 
+**Full-game result.** Small Continents, Online, Prince, CSC + City Lights, map seed 27112601, game seed 27112602. From turns 2–250 all 1,245 original-AI player passes were observed and all 2,698 leading proposals matched the independent full-planner log before applying the hypothetical shortlist. The endpoint save was verified and the controller restored the original mod preferences.
+
+| Quarter | Full forecasts | Could skip | Exact preferred plot retained | Turns with a bid lost entirely¹ |
+| --- | ---: | ---: | ---: | ---: |
+| Bakers | 3,037 | 380 (12.5%) | 1,028 / 1,034 | 3 |
+| Tailors | 5,192 | 760 (14.6%) | 1,649 / 1,664 | 5 |
+| Both | 8,229 | 1,140 (13.9%) | 2,677 / 2,698 (99.2%) | 8 |
+
+¹ Each observation refers to one player's city and Quarter type on one turn. Across the 21 missed leaders, five alternatives were within 5% of the leading value, eight were further behind and eight had no positive alternative. Late-game savings were smaller: 178 of 1,847 calls (9.6%) over turns 201–250. The shortlist recovered all 19 tracked miss episodes within two turns (17 within one). Their Quarter plots were still free when repriced.
+
+The shortlist kept 299 of 300 leading layouts with both Base and Spec. It kept all 246 leading Tailors layouts with Base and a possible or completed Harbor, representing ten distinct city/site combinations across seven cities. One of the 48 full leaders newly confirmed by the native best-site journal was missed. On turn 49, Harald's leading Bakers proposal named plot 1122 as a customer site. On turn 50, that tile became the best Quarter site with both Base and Spec. Its bid was 2,170 against the shortlist's 1,176. Civ selected it before the shortlist rediscovered it. CSC withdrew support on turn 52 as the economics changed.
+
+**Decision.** Keep full evaluation in ordinary games. Sixteen of the 21 misses occurred when the full planner had no bid the preceding turn. Repricing all candidates after the *shortlist* had no bid would cover 17 misses for 344 extra calls on the recorded history, leaving 796 calls (9.7%) available to skip. A revised rule would build a different history. Test that rule and retain the previous lead's customer footprints before testing a live cutoff. In a matched replay, check actual turn time as well as native selections of lower-ranked plots.
+
+For this instrumented run the full guidance averaged 2.34 seconds per turn with a 5.10-second maximum (turn 211). Whole turns averaged 11.38 seconds over 198 popup-free intervals inside controller windows, peaking at 32.56 seconds on turn 239. The live game executed every forecast, so these timings include the diagnostic and provide a reference for a later timed comparison.
+
 ### Removing the second Quarter scan, 26 November
 
 **Matched mature-save result.** Both builds replayed turns 351–360 from the original guided turn-350 checkpoint on Large Continents, Standard speed, with City Lights and Dev CE. The control used the original November 26 benchmark Lua. The candidate included the legal-target cache, shorter forecast lifetimes, independent-chain reuse and scan changes. Both loaded the same save and published all ten turns successfully.
