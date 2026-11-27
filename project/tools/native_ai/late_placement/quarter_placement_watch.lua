@@ -206,6 +206,7 @@ if CSC_OBSERVE_SUPPLIER_LOSS and harvest and Events.UnitOperationStarted then
    end
   end)
  end)
+ emit('HARVEST_OBSERVER',{operation=harvest,turn=Game.GetCurrentGameTurn()})
 end
 local function observeSuppliers(player,district,profile)
  local site=Map.GetPlot(district:GetX(),district:GetY())

@@ -56,6 +56,7 @@ def read_arm(folder):
     loss_states = {'working': defaultdict(set), 'deposit': defaultdict(set)}
     harvest_turn = {}
     harvested_losses = set()
+    harvest_watched = False
     poor = set()
     foundations = {}
     clear_coast = set()
@@ -73,6 +74,9 @@ def read_arm(folder):
             links[int(t)].add((int(player),quarter,stage,service,producer,customer))
         elif 'CSC_QUARTER_WATCH_' in line:
             event, _, tail = line.split('CSC_QUARTER_WATCH_',1)[1].partition('\t')
+            if event == 'HARVEST_OBSERVER':
+                harvest_watched = True
+                continue
             if event not in ('SITE','NEIGHBOR','SUPPLIER_LOSS','HARVEST'):
                 continue
             row = dict(field.split('=',1) for field in tail.split('\t') if '=' in field)
@@ -91,6 +95,7 @@ def read_arm(folder):
             if player not in seats:
                 continue
             if event == 'HARVEST':
+                harvest_watched = True
                 harvest_turn[player,int(row['plot'])] = int(row['turn'])
             if event == 'SITE':
                 # Older receipts have the native district index only. Recover
@@ -129,7 +134,6 @@ def read_arm(folder):
     receipt = next((folder/'pending-commands').glob('*observe-foundations.lua'),None)
     observer = receipt.read_text(encoding='utf-8-sig') if receipt else ''
     watched = 'local CSC_OBSERVE_SUPPLIER_LOSS=' in observer
-    harvest_watched = watched and "emit('HARVEST'" in observer
     measured=load(folder/'measured.json')
     timing = {int(k):v for k,v in measured['clean'].items()}
     placement = {}
@@ -168,7 +172,7 @@ def read_arm(folder):
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
         last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')} if watched else None,
         supplier_tile_states_after_loss=state_counts if watched else None,
-        deposit_losses_with_matching_harvest=len(harvested_losses) if harvest_watched else None,
+        deposit_losses_with_matching_harvest=len(harvested_losses) if watched and harvest_watched else None,
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
         unresolved_service_samples=sum(unknown for _,unknown in intervals.values()),
         planner_processing={k:measured['direct'][k] for k in ('turns','average_ms','max_ms')})

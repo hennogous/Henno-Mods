@@ -17,6 +17,9 @@ rows={};print=function(...)local t={...};for i,v in ipairs(t)do t[i]=tostring(v)
 turn=150;complete=false;trace='{"records":[]}'
 local function event()return {Add=function(f)return f end}end
 Events={DistrictAddedToMap=event(),DistrictBuildProgressChanged=event()}
+Events.UnitOperationStarted={Add=function(f)onOperation=f end}
+UnitOperationTypes={HARVEST_RESOURCE=42}
+CSC_OBSERVE_SUPPLIER_LOSS={[1]=true}
 Events.DistrictAddedToMap.Add=function(f)added=f end
 Events.DistrictBuildProgressChanged.Add=function(f)progress=f end
 GameEvents={OnGameTurnStarted={Add=function(f)poll=f end}}
@@ -42,6 +45,20 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.vm.execute(SOURCE)
 
     def output(self):return '\n'.join(self.vm.globals().rows.values())
+
+    def test_harvest_receipt_only_for_visible_unit_on_watched_seat(self):
+        self.vm.execute("""
+        Players[1].GetUnits=function()return {FindID=function(_,id)
+            if id==8 then return {GetX=function()return 3 end,GetY=function()return 4 end}end
+        end}end
+        onOperation(2,8,42);onOperation(1,8,17);onOperation(1,9,42);onOperation(1,8,42)
+        """)
+        rows = self.output().splitlines()
+        self.assertTrue(any(line.startswith('CSC_QUARTER_WATCH_HARVEST_OBSERVER\t') for line in rows))
+        receipts = [line for line in rows if line.startswith('CSC_QUARTER_WATCH_HARVEST\t')]
+        self.assertEqual(len(receipts),1)
+        self.assertIn('plot=1062',receipts[0])
+        self.assertIn('unit=8',receipts[0])
 
     def publish(self,version=4,bid=100):
         return self.vm.execute('return CSC_AI_DistrictBridge.Publish('+str(version)+',74,46,38,{1},'
