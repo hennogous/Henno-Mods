@@ -47,8 +47,12 @@ print('CSC_NATIVE_CUE_READ',Map.GetPlotByIndex({a}):GetAdjacencyYield({player},{
     change('positive-control',f"city:AttachModifierByID('{modifier}_ALWAYS')")
     samples['unconditional']=preview('unconditional')
     expected=[base[0]+7*count_a,base[1]+7*count_b]
+    change('two-neighbors',f"city:AttachModifierByID('{modifier}_PAIR')")
+    samples['two_neighbors']=preview('two-neighbors')
+    pair_delta=[after-before for after,before in zip(samples['two_neighbors'],samples['unconditional'])]
     write_json(folder/'city-cue-result.json',dict(turn=turn,player=player,city=city,district=district,
         plots=[a,b],terrain_counts=[count_a,count_b],modifier=modifier,expected=expected,readbacks=samples,
+        two_neighbor_delta=pair_delta,two_neighbor_floor=[count_a//2,count_b//2],
         positive_control=samples['unconditional']==expected,restored=samples['cleared']==base,
         plot_gate=samples['plot_enabled']==expected,city_gate=samples['city_enabled']==expected))
     return True

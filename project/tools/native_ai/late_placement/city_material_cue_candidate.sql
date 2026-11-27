@@ -43,4 +43,13 @@ SELECT ModifierId || '_ALWAYS', 'MODIFIER_CSC_AI_PROBE_CITY_TERRAIN' FROM CSC_AI
 INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
 SELECT r.ModifierId || '_ALWAYS', a.Name, a.Value
 FROM CSC_AI_ProbeCityRules r JOIN ModifierArguments a ON a.ModifierId = r.ModifierId;
+-- Civ uses TilesRequired in its own terrain effects. A one-unit award per
+-- two neighbors lets the probe read the actual rounding at the stock preview.
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType)
+SELECT ModifierId || '_PAIR', 'MODIFIER_CSC_AI_PROBE_CITY_TERRAIN' FROM CSC_AI_ProbeCityRules;
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT r.ModifierId || '_PAIR', a.Name, CASE WHEN a.Name = 'Amount' THEN '1' ELSE a.Value END
+FROM CSC_AI_ProbeCityRules r JOIN ModifierArguments a ON a.ModifierId = r.ModifierId
+UNION ALL
+SELECT ModifierId || '_PAIR', 'TilesRequired', '2' FROM CSC_AI_ProbeCityRules;
 DROP TABLE CSC_AI_ProbeCityRules;
