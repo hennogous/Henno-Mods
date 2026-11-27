@@ -10,6 +10,22 @@ AI = ROOT / 'Civ Supply Chains/Lua_UI/AI'
 
 
 class Boundaries(unittest.TestCase):
+    def test_advanced_setup_gates_planner_before_first_include(self):
+        publisher = (AI/'CSC_AI_BakersGameplay.lua').read_text(encoding='utf-8')
+        for option, compatible, expected in (
+                ('false', True, False), ('0', True, False), ('"0"', True, False),
+                ('true', False, False), ('nil', False, False),
+                ('true', True, True), ('nil', True, True)):
+            with self.subTest(option=option, compatible=compatible):
+                vm=LuaRuntime()
+                vm.execute("GameConfiguration={GetValue=function(key) assert(key=='CSC_ADVANCED_AI_PLANNING'); return "
+                           +option+" end}; function include(name) first=name;error('observed include') end")
+                if compatible:
+                    vm.execute('function CE_AIDistrictScoresStatus() end')
+                ok,_ = vm.execute('local ok,err=pcall(function()\n'+publisher+'\nend);return ok,err')
+                self.assertEqual(ok,not expected)
+                self.assertEqual(vm.globals().first,'CSC_AdjacencyCore' if expected else None)
+
     def test_raw_invoice_survives_tied_buyers_while_legacy_screen_stays_conservative(self):
         vm=LuaRuntime()
         vm.execute('''
@@ -486,7 +502,12 @@ CREATE TABLE DistrictReplaces(CivUniqueDistrictType,ReplacesDistrictType);
 CREATE TABLE CSC_QuarterCustomerBuildings(QuarterKey,ProducerStage,DistrictType);
 CREATE TABLE CSC_Stage3CustomerTransactions(SellerDistrictType,CustomerDistrictType);
 CREATE TABLE CSC_QuarterWonderSales(QuarterKey,BuildingType,ProducerStage);
-CREATE TABLE Adjacency_YieldChanges(ID PRIMARY KEY,Description,YieldType,YieldChange,TilesRequired,AdjacentDistrict);
+CREATE TABLE CSC_QuarterMaterialAdjacencyConfig(QuarterKey,SourceTag,SourceFilter,AdjacencyType);
+CREATE TABLE Improvement_ValidResources(ImprovementType,ResourceType);
+CREATE TABLE Improvement_ValidTerrains(ImprovementType,TerrainType);
+CREATE TABLE Improvement_ValidFeatures(ImprovementType,FeatureType);
+CREATE TABLE Improvements(ImprovementType PRIMARY KEY,Buildable,Workable);
+CREATE TABLE Adjacency_YieldChanges(ID PRIMARY KEY,Description,YieldType,YieldChange,TilesRequired,AdjacentDistrict,AdjacentImprovement);
 CREATE TABLE District_Adjacencies(DistrictType,YieldChangeId,PRIMARY KEY(DistrictType,YieldChangeId));
 INSERT INTO Districts VALUES('DISTRICT_CSC_TAILORS_QUARTER'),('DISTRICT_CSC_BAKERS_QUARTER'),
  ('DISTRICT_COMMERCIAL_HUB'),('DISTRICT_HOLY_SITE'),('DISTRICT_HARBOR'),
@@ -506,10 +527,11 @@ INSERT INTO CSC_QuarterWonderSales VALUES('TAILORS','BUILDING_TEST_WONDER',4);
         sql = (ROOT / 'Civ Supply Chains/Data/CSC_Q_ALL_AI_Connectors.sql').read_text(encoding='utf-8')
         db.executescript(sql)
         db.executescript(sql)
-        self.assertEqual({r[0] for r in db.execute('SELECT DistrictType FROM District_Adjacencies')},
+        customer_hosts = "SELECT DistrictType FROM District_Adjacencies WHERE YieldChangeId GLOB 'CSC_AI_CUSTOMER_*'"
+        self.assertEqual({r[0] for r in db.execute(customer_hosts)},
                          {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER',
                           'DISTRICT_COMMERCIAL_HUB','DISTRICT_UNIQUE_HUB'})
-        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],8)
+        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],16)
         db.executescript('''
 INSERT OR IGNORE INTO Districts VALUES('DISTRICT_RURALCOMMUNITYA'),('DISTRICT_HOLY_SITE'),('DISTRICT_UNIQUE_RURAL');
 INSERT INTO DistrictReplaces VALUES('DISTRICT_UNIQUE_RURAL','DISTRICT_RURALCOMMUNITYA');
@@ -519,12 +541,12 @@ INSERT INTO TypeTags VALUES
  ('DISTRICT_ABSENT_MOD','CLASS_CSC_TAILORS_GOODS_PROVIDER');
 ''')
         db.executescript(sql);db.executescript(sql)
-        self.assertEqual({r[0]for r in db.execute('SELECT DistrictType FROM District_Adjacencies')},
+        self.assertEqual({r[0]for r in db.execute(customer_hosts)},
             {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER',
              'DISTRICT_RURALCOMMUNITYA','DISTRICT_UNIQUE_RURAL','DISTRICT_COMMERCIAL_HUB','DISTRICT_UNIQUE_HUB'})
         self.assertEqual({r[0]for r in db.execute('SELECT DISTINCT DistrictType FROM District_Adjacencies WHERE DistrictType LIKE \'%HUB\'')},
                          {'DISTRICT_COMMERCIAL_HUB','DISTRICT_UNIQUE_HUB'})
-        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],10)
+        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],20)
         from customer_connector_audit import audit
         self.assertTrue(audit(db)['complete'])
         self.assertTrue(any(r.get('building')=='BUILDING_TEST_WONDER'for r in audit(db)['excluded']))
@@ -554,6 +576,27 @@ INSERT INTO TypeTags VALUES
         edge=next(e for e in result['edges'] if e['customer']=='DISTRICT_URBAN_CUSTOMER'
                   and e['quarter']=='DISTRICT_CSC_TEST_QUARTER')
         self.assertEqual(set(edge['sources']),{'sales-tag','goods-provider'})
+        # A subscribed resource extends the same source catalogue. A shared
+        # improvement needs one Base match, plus sufficient coverage of its
+        # valid resources. Empty-land hosts need a cluster of two.
+        db.executescript('''
+INSERT INTO CSC_QuarterMaterialAdjacencyConfig VALUES
+ ('TEST','CLASS_CSC_TEST_BASE','','FROM_RINGS_TYPETAG_RESOURCE'),
+ ('TEST','CLASS_CSC_TEST_SPEC','','FROM_RINGS_TYPETAG_RESOURCE');
+INSERT INTO TypeTags VALUES ('RESOURCE_MOD_BASE','CLASS_CSC_TEST_BASE'),('RESOURCE_MOD_SPEC','CLASS_CSC_TEST_SPEC');
+INSERT INTO Improvements VALUES ('FARM',1,1),('PASTURE',1,1),('MINE',1,1);
+INSERT INTO Improvement_ValidResources VALUES
+ ('FARM','RESOURCE_MOD_BASE'),('PASTURE','RESOURCE_MOD_BASE'),('PASTURE','OTHER'),
+ ('PASTURE','ANOTHER'),('MINE','RESOURCE_MOD_SPEC');
+INSERT INTO Improvement_ValidTerrains VALUES ('FARM','PLAINS');
+''')
+        db.executescript(sql)
+        db.executescript(sql)
+        rows = db.execute('''SELECT DistrictType, AdjacentImprovement, TilesRequired
+                             FROM District_Adjacencies JOIN Adjacency_YieldChanges ON YieldChangeId=ID
+                             WHERE AdjacentImprovement IS NOT NULL ORDER BY AdjacentImprovement''')
+        self.assertEqual(list(rows), [('DISTRICT_CSC_TEST_QUARTER','FARM',2),('DISTRICT_CSC_TEST_QUARTER','PASTURE',1)])
+        self.assertTrue(audit(db)['complete'])
 
     def test_material_terms_match_generated_native_without_unit_assumptions(self):
         import sys

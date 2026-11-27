@@ -1,6 +1,6 @@
--- Static CSC inputs to the stock AI. The mod action is gated on the CE
--- package with supplier exclusion support. These rows load once with the
--- database and complement the per-turn offers in Lua_UI/AI.
+-- Stock AI reads these district/site and Builder preferences with or without
+-- CE. SQL generates them once from the final gameplay catalogues. The
+-- advanced single-player planner can also supply site-specific economic bids.
 --
 -- The private yield gives a customer district a co-location signal. It
 -- grants no ordinary currency conversion. The yield itself is global, so its
@@ -85,8 +85,9 @@ FROM CSC_AI_CustomerEdges e
 JOIN DistrictReplaces r ON r.ReplacesDistrictType = e.Customer;
 
 -- Attach +1 private yield per adjacent mapped Quarter to the partner
--- district's score input. Critical material plots are handled by the
--- separate native supplier protections that accompany the Lua policy.
+-- district's score input. Only the advanced planner can quote the loss of
+-- an exact supplier here. The lightweight run measures how often Civ
+-- covers the last supplier when offered this co-location incentive.
 -- AI-C168 isolates this SQL link after a saved-world load: it changes the
 -- native final Harbor values and competing Water Entertainment values on
 -- the same footprints. It is therefore not a fixed, purely additive bid;
@@ -111,7 +112,73 @@ INSERT OR IGNORE INTO District_Adjacencies
 SELECT Customer, 'CSC_AI_CUSTOMER_' || Customer || '__' || Quarter
 FROM CSC_AI_CustomerEdges;
 
+-- The customer may already be standing when Civ first considers a Quarter.
+-- Give the Quarter one location cue on that side as well. Each posted rule
+-- describes one real partner family or loaded replacement. City Centers and
+-- generic Wonder tiles are excluded by the edge table above. This modest
+-- private yield does not assume a completed buyer, supplier or Service.
+INSERT OR IGNORE INTO Adjacency_YieldChanges
+        (   ID,   Description,   YieldType,   YieldChange,   TilesRequired,   AdjacentDistrict   )
+SELECT  'CSC_AI_QUARTER_' || Quarter || '__' || Customer,
+        'LOC_CSC_AI_PLACEMENT_NAME', 'YIELD_CSC_AI_PLACEMENT', 1, 1, Customer
+FROM CSC_AI_CustomerEdges;
+
+INSERT OR IGNORE INTO District_Adjacencies
+        (   DistrictType,   YieldChangeId   )
+SELECT  Quarter, 'CSC_AI_QUARTER_' || Quarter || '__' || Customer
+FROM CSC_AI_CustomerEdges;
+
 DROP TABLE CSC_AI_CustomerEdges;
+
+-- The stock adjacency reader can recognize a neighboring improvement, but
+-- cannot match our resource tags at a hypothetical district site. Prefer
+-- improvement families that frequently work this Quarter's materials. Read
+-- the actual resource/improvement mappings after optional mods have loaded.
+-- Each family gets at most one signal even when it serves both material classes.
+CREATE TEMP TABLE CSC_AI_MaterialSites AS
+WITH MaterialKinds AS (
+    SELECT DISTINCT m.QuarterKey, t.Type AS ResourceType,
+           CASE WHEN m.SourceTag = 'CLASS_CSC_' || m.QuarterKey || '_BASE' THEN 1 ELSE 0 END AS IsBase
+    FROM CSC_QuarterMaterialAdjacencyConfig m
+    JOIN TypeTags t ON t.Tag = m.SourceTag
+    WHERE m.SourceFilter = '' AND m.AdjacencyType = 'FROM_RINGS_TYPETAG_RESOURCE'
+      AND m.SourceTag IN ('CLASS_CSC_' || m.QuarterKey || '_BASE', 'CLASS_CSC_' || m.QuarterKey || '_SPEC')
+), Families AS (
+    SELECT ImprovementType, COUNT(DISTINCT ResourceType) AS ResourceCount
+    FROM Improvement_ValidResources
+    GROUP BY ImprovementType
+)
+SELECT q.DistrictType AS Quarter, i.ImprovementType AS Improvement,
+       CASE WHEN EXISTS (SELECT 1 FROM Improvement_ValidTerrains v WHERE v.ImprovementType = i.ImprovementType)
+              OR EXISTS (SELECT 1 FROM Improvement_ValidFeatures v WHERE v.ImprovementType = i.ImprovementType)
+            THEN 2 ELSE 1 END AS TilesRequired
+FROM MaterialKinds m
+JOIN Districts q ON q.DistrictType = 'DISTRICT_CSC_' || m.QuarterKey || '_QUARTER'
+JOIN Improvement_ValidResources v ON v.ResourceType = m.ResourceType
+JOIN Improvements i ON i.ImprovementType = v.ImprovementType
+JOIN Families f ON f.ImprovementType = v.ImprovementType
+WHERE i.Buildable = 1 AND i.Workable = 1
+GROUP BY q.DistrictType, i.ImprovementType, f.ResourceCount
+-- These are tuning thresholds on resource TYPES, not estimates of map
+-- abundance. At least one Base must fit. One third Base admits Pastures;
+-- one half Base or Spec combined admits a Bakers plantation. Farms can
+-- stand on bare terrain, so they require a pair before awarding one point.
+HAVING COUNT(DISTINCT CASE WHEN m.IsBase = 1 THEN m.ResourceType END) > 0
+   AND (3 * COUNT(DISTINCT CASE WHEN m.IsBase = 1 THEN m.ResourceType END) >= f.ResourceCount
+        OR 2 * COUNT(DISTINCT m.ResourceType) >= f.ResourceCount);
+
+INSERT OR IGNORE INTO Adjacency_YieldChanges
+        (   ID,   Description,   YieldType,   YieldChange,   TilesRequired,   AdjacentImprovement   )
+SELECT 'CSC_AI_SUPPLIER_' || Quarter || '__' || Improvement,
+       'LOC_CSC_AI_PLACEMENT_NAME', 'YIELD_CSC_AI_PLACEMENT', 1, TilesRequired, Improvement
+FROM CSC_AI_MaterialSites;
+
+INSERT OR IGNORE INTO District_Adjacencies
+        (   DistrictType,   YieldChangeId   )
+SELECT Quarter, 'CSC_AI_SUPPLIER_' || Quarter || '__' || Improvement
+FROM CSC_AI_MaterialSites;
+
+DROP TABLE CSC_AI_MaterialSites;
 
 -- Add 10 to the Builder unit request priority if no other rule already
 -- specifies it. This affects recruitment. The Lua supplier bid affects the

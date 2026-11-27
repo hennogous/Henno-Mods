@@ -15,6 +15,19 @@
 -- planner, already-fulfilled provider types when a ready alternate has a live
 -- bid. Each publication replaces the scopes. CE restores the cache after the
 -- native site comparison and preserves standing districts and repairs.
+-- Game setup owns the advanced planner switch. A save made before the
+-- option existed retains its previous default. With the switch off or CE
+-- absent, native database rules run independently and no planner subscribes
+-- to turns or reads cities. The publisher still checks single-player state.
+local advanced=GameConfiguration and GameConfiguration.GetValue('CSC_ADVANCED_AI_PLANNING')
+if advanced==false or advanced==0 or advanced=='0' or advanced=='false' then
+    print('CSC_AI_MODE native reason=setup')
+    return
+end
+if type(CE_AIDistrictScoresStatus)~='function' then
+    print('CSC_AI_MODE native reason=capability')
+    return
+end
 include('CSC_AdjacencyCore')
 include('CSC_TradeRouteCore')
 include('CSC_TradeRouteFacts')

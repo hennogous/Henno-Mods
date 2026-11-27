@@ -333,11 +333,18 @@ def run(args):
         for action in csc_manifest.find('InGameActions'))
     optional_gate=csc_manifest.find("ActionCriteria/Criteria[@id='CSC_CE_SupplierExclusion']/ModInUse")
     main_csc = csc_id == MAIN_CSC_ID
-    main_mod_optional=((main_csc or getattr(args,'main_mod_package',False)) and optional_gate is not None
-                       and optional_gate.text==ce_id)
+    # Older CSC packages used a CE ModInUse criterion on their SQL. In the
+    # Workshop layout the SQL always loads and the saved setup option gates
+    # the Lua publisher. This package check precedes the actual DLL/API check.
+    legacy_ce_gate = optional_gate is not None and optional_gate.text == ce_id
+    setup_path = csc/'Settings/Settings.xml'
+    has_advanced_option = (integrated_connectors and setup_path.is_file() and
+        ET.parse(setup_path).find(".//*[@ParameterId='CSC_ADVANCED_AI_PLANNING']") is not None)
+    main_mod_optional = ((main_csc or getattr(args,'main_mod_package',False))
+                         and (legacy_ce_gate or has_advanced_option))
     require(ce_id != csc_id and (csc_manifest.find(f"Dependencies/Mod[@id='{ce_id}']") is not None
                                or main_mod_optional),
-            'CSC must depend on CE, or explicitly qualify its main-mod optional CE criterion')
+            'Expected a CE dependency or a main CSC package with optional CE planning')
     # The usual run uses the player's installed CSC identity. Its matching
     # snapshot is read-only and archived on exit, so the save can still find
     # the installed package. Historical and dormant controls retain their

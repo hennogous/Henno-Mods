@@ -32,7 +32,7 @@ files:
   ai_connectors:
     file: Data/CSC_Q_ALL_AI_Connectors.sql
     load_order: 3001
-    criteria: [CSC_CE_SupplierExclusion]
+    criteria: []
   material_hosts:
     file: Data/CSC_Q_ALL_MaterialHosts.sql
     load_order: 800010

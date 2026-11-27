@@ -54,18 +54,26 @@ def audit(db):
         for (customer, quarter), sources in base:
             if customer == parent and unique in districts:
                 expected[(unique, quarter)].update('replacement:'+s for s in sources)
-    actual, duplicates = {}, []
-    for customer, quarter, amount, tiles in db.execute('''
-SELECT d.DistrictType,a.AdjacentDistrict,a.YieldChange,a.TilesRequired
+    actual, reciprocal, duplicates = {}, {}, []
+    for district, neighbor, amount, tiles, rule in db.execute('''
+SELECT d.DistrictType,a.AdjacentDistrict,a.YieldChange,a.TilesRequired,a.ID
 FROM District_Adjacencies d JOIN Adjacency_YieldChanges a ON a.ID=d.YieldChangeId
-WHERE a.YieldType='YIELD_CSC_AI_PLACEMENT' '''):
-        if (customer,quarter) in actual: duplicates.append([customer,quarter])
-        actual[(customer, quarter)] = dict(amount=amount, tiles=tiles)
+WHERE a.YieldType='YIELD_CSC_AI_PLACEMENT' AND a.AdjacentDistrict IS NOT NULL '''):
+        # Both directions describe the same economic relationship. Verify
+        # their physical hosts independently so a reversed SQL row is caught.
+        reverse = rule.startswith('CSC_AI_QUARTER_')
+        pair = (neighbor, district) if reverse else (district, neighbor)
+        recorded = reciprocal if reverse else actual
+        if pair in recorded: duplicates.append(list(pair))
+        recorded[pair] = dict(amount=amount, tiles=tiles)
     missing = sorted(set(expected)-set(actual))
     extra = sorted(set(actual)-set(expected))
     invalid = [dict(customer=c,quarter=q,**r)for (c,q),r in actual.items()
                if r['amount']<=0 or r['tiles']!=1]
-    return dict(complete=not(missing or extra or invalid or duplicates), expected=len(expected), actual=len(actual),
+    reverse_errors = [list(pair) for pair in sorted(set(expected) | set(reciprocal))
+                      if pair not in expected or reciprocal.get(pair) != dict(amount=1, tiles=1)]
+    return dict(complete=not(missing or extra or invalid or duplicates or reverse_errors),
+        reciprocal_errors=reverse_errors, expected=len(expected), actual=len(actual),
         missing=[dict(customer=c,quarter=q,sources=sorted(expected[(c,q)]))for c,q in missing],
         unexpected=[dict(customer=c,quarter=q)for c,q in extra], invalid=invalid, duplicates=duplicates, excluded=excluded,
         edges=[dict(customer=c,quarter=q,sources=sorted(s),native=actual.get((c,q)))

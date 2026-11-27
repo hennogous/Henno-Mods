@@ -6,6 +6,12 @@
 
 <GameData>
     <LocalizedText>
+        <Replace Tag="LOC_CSC_ADVANCED_AI_PLANNING_NAME" Language="en_US">
+            <Text>Advanced CSC AI planning</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_ADVANCED_AI_PLANNING_DESCRIPTION" Language="en_US">
+            <Text>In single player, use a compatible Community Extension to help the AI plan supply chains. This can increase turn times. Basic placement and Builder guidance is available in all games.</Text>
+        </Replace>
 
         <Replace Tag="LOC_CSC_HEADER_INTERNAL_NAME" Language="en_US">
             <Text>[COLOR:ResProductionLabelCS]CIV SUPPLY CHAINS: SETTINGS[ENDCOLOR]</Text>
