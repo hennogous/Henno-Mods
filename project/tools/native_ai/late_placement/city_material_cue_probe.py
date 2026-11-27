@@ -4,17 +4,20 @@ import re
 from driver import HERE, lua, read, require, write_json
 
 
-def observe_city_cue(controller, folder, seats, turn):
-    pair = controller.cmd('local CSC_CUE_SEATS='+lua(list(seats))+'\n'+read(HERE/'city_material_cue_probe.lua'),
-                          'PlotInfo',f'city-cue-select-{turn}')
+def observe_city_cue(controller, folder, seats, turn, allow_fallback):
+    setup='local CSC_CUE_SEATS='+lua(list(seats))+'\nlocal CSC_CUE_ALLOW_FALLBACK='+lua(allow_fallback)
+    pair = controller.cmd('\n'.join((setup,read(HERE/'city_material_cue_choice.lua'),
+                          read(HERE/'city_material_cue_probe.lua'))),'PlotInfo',f'city-cue-select-{turn}')
     if 'CSC_NATIVE_CUE_NO_PAIR' in pair:
         return False
     match = re.search(r'CSC_NATIVE_CUE_PAIR\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)'
-                      r'\s+(\d+)\s+(\d+)\s+(MOD_CSC_AI_LOCAL_CUE_\w+)\s+([\d.-]+)\s+([\d.-]+)',pair)
+                      r'\s+(\d+)\s+(\d+)\s+(MOD_CSC_AI_LOCAL_CUE_\w+)\s+([\d.-]+)\s+([\d.-]+)'
+                      r'\s+(\d+)\s+(-?\d+)\s+(\d+)\s+([01])',pair)
     require(match is not None,'Missing stock preview pair')
     player,city,district,a,b,count_a,count_b=map(int,match.groups()[:7])
     modifier=match[8]
     base=[float(match[9]),float(match[10])]
+    cutoff,hits,total,exact=map(int,match.groups()[10:])
     preamble=f"""local city=assert(CityManager.GetCity({player},{city}))
 local plot=assert(Map.GetPlot(city:GetX(),city:GetY()))
 """
@@ -47,12 +50,13 @@ print('CSC_NATIVE_CUE_READ',Map.GetPlotByIndex({a}):GetAdjacencyYield({player},{
     change('positive-control',f"city:AttachModifierByID('{modifier}_ALWAYS')")
     samples['unconditional']=preview('unconditional')
     expected=[base[0]+7*count_a,base[1]+7*count_b]
-    change('two-neighbors',f"city:AttachModifierByID('{modifier}_PAIR')")
-    samples['two_neighbors']=preview('two-neighbors')
-    pair_delta=[after-before for after,before in zip(samples['two_neighbors'],samples['unconditional'])]
+    change('terrain-cutoff',f"city:AttachModifierByID('{modifier}_COUNT_{cutoff}')")
+    samples['threshold']=preview('terrain-cutoff')
+    delta=[after-before for after,before in zip(samples['threshold'],samples['unconditional'])]
     write_json(folder/'city-cue-result.json',dict(turn=turn,player=player,city=city,district=district,
         plots=[a,b],terrain_counts=[count_a,count_b],modifier=modifier,expected=expected,readbacks=samples,
-        two_neighbor_delta=pair_delta,two_neighbor_floor=[count_a//2,count_b//2],
+        cutoff=cutoff,eligible_sites=total,sites_rewarded=hits if exact else None,exact_base=bool(exact),
+        threshold_delta=delta,threshold_prediction=[count_a//cutoff,count_b//cutoff],
         positive_control=samples['unconditional']==expected,restored=samples['cleared']==base,
         plot_gate=samples['plot_enabled']==expected,city_gate=samples['city_enabled']==expected))
     return True

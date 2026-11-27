@@ -43,13 +43,18 @@ SELECT ModifierId || '_ALWAYS', 'MODIFIER_CSC_AI_PROBE_CITY_TERRAIN' FROM CSC_AI
 INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
 SELECT r.ModifierId || '_ALWAYS', a.Name, a.Value
 FROM CSC_AI_ProbeCityRules r JOIN ModifierArguments a ON a.ModifierId = r.ModifierId;
--- Civ uses TilesRequired in its own terrain effects. A one-unit award per
--- two neighbors lets the probe read the actual rounding at the stock preview.
+-- One private point per complete group. The probe chooses the smallest
+-- count that excludes every candidate lacking mapped Base in this city.
+CREATE TEMP TABLE CSC_AI_ProbeCutoffs AS
+WITH Counts(N) AS (VALUES (1),(2),(3),(4),(5),(6))
+SELECT r.ModifierId, n.N, r.ModifierId || '_COUNT_' || n.N AS ThresholdId
+FROM CSC_AI_ProbeCityRules r CROSS JOIN Counts n;
 INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType)
-SELECT ModifierId || '_PAIR', 'MODIFIER_CSC_AI_PROBE_CITY_TERRAIN' FROM CSC_AI_ProbeCityRules;
+SELECT ThresholdId, 'MODIFIER_CSC_AI_PROBE_CITY_TERRAIN' FROM CSC_AI_ProbeCutoffs;
 INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
-SELECT r.ModifierId || '_PAIR', a.Name, CASE WHEN a.Name = 'Amount' THEN '1' ELSE a.Value END
-FROM CSC_AI_ProbeCityRules r JOIN ModifierArguments a ON a.ModifierId = r.ModifierId
+SELECT r.ThresholdId, a.Name, CASE WHEN a.Name = 'Amount' THEN '1' ELSE a.Value END
+FROM CSC_AI_ProbeCutoffs r JOIN ModifierArguments a ON a.ModifierId = r.ModifierId
 UNION ALL
-SELECT ModifierId || '_PAIR', 'TilesRequired', '2' FROM CSC_AI_ProbeCityRules;
+SELECT ThresholdId, 'TilesRequired', N FROM CSC_AI_ProbeCutoffs;
+DROP TABLE CSC_AI_ProbeCutoffs;
 DROP TABLE CSC_AI_ProbeCityRules;

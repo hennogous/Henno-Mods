@@ -203,7 +203,7 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             c.play(turn)
             if city_cue_probe and turn>=20 and not (out/'city-cue-result.json').is_file():
                 from city_material_cue_probe import observe_city_cue
-                observe_city_cue(c,out,range(1,len(game['roster'])),turn)
+                observe_city_cue(c,out,range(1,len(game['roster'])),turn,allow_fallback=turn>=end-5)
         if city_cue_probe:
             require((out/'city-cue-result.json').is_file(),'No testable owned material/terrain pair by endpoint')
         ck=save_inactive_boundary(c,turn=end,name=f'CSC_LIGHT_{seed}_{arm_name.upper()}_T{end}',
