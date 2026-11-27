@@ -69,17 +69,29 @@ def read_arm(folder):
     for t,(count,_) in intervals.items():
         if count != len(links[t]):
             raise ValueError(f'Active link count disagrees with receipts at turn {t}')
+    # An early smoke game predated the loss watcher. Zero needs a registered
+    # observer, even if no Quarter was built before that game's endpoint.
+    receipt = next((folder/'pending-commands').glob('*observe-foundations.lua'),None)
+    watched = receipt is not None and 'local CSC_OBSERVE_SUPPLIER_LOSS=' in receipt.read_text(encoding='utf-8-sig')
     timing = {int(k):v for k,v in load(folder/'measured.json')['clean'].items()}
     report = dict(quarters=result, economy=economy(census)[0], founded=len(foundations),
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
-        last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')},
-        losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result},
+        last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')} if watched else None,
+        losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
         unresolved_service_samples=sum(unknown for _,unknown in intervals.values()))
     return report, intervals, links, timing
 
 
 def compare(folders):
+    if len({folder.name for folder in folders}) != len(folders):
+        raise ValueError('Use one folder per named arm on the same seed')
+    opening=load(folders[0]/'source.json')
+    for folder in folders[1:]:
+        if opening != load(folder/'source.json'):
+            raise ValueError('Opening map, roster or starting sites differ')
     arms = {folder.name:read_arm(folder) for folder in folders}
+    if len({arm[0]['endpoint_turn'] for arm in arms.values()}) != 1:
+        raise ValueError('Endpoint turns differ')
     sample = set.intersection(*(set(intervals) for _,intervals,_,_ in arms.values()))
     turns = set.intersection(*(set(timing) for _,_,_,timing in arms.values()))
     if not sample or not turns:
