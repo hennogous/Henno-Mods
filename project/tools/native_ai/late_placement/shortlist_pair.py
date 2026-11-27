@@ -67,7 +67,10 @@ def prepare(pins, seed, game, folder, *, stack=ARMS['combined'], advanced_option
                                             cl='cl' in stack,ce='ce' in stack))
         if advanced_option is not None:
             expected=lua(advanced_option)
-            raw=controller.cmd(f"""assert(GameConfiguration.GetValue('CSC_ADVANCED_AI_PLANNING')=={expected})
+            raw=controller.cmd(f"""local value=GameConfiguration.GetValue('CSC_ADVANCED_AI_PLANNING')
+local saved=tostring(value):lower()
+assert(saved=='true' or saved=='false' or saved=='1' or saved=='0')
+assert((saved=='true' or saved=='1')=={expected})
 assert(type(CE_AIDistrictScoresStatus)=='function')
 assert((CSC_AI_EconomyAdapters~=nil)=={expected})
 assert(GameInfo.Yields.YIELD_CSC_AI_PLACEMENT)

@@ -23,3 +23,15 @@ The two preselected Continents map seeds are 171124601 and 171124605 on Small/On
 The first no-CE smoke test reached turn 25 and saved successfully. Only the pinned Firaxis XP2 core loaded. Sixteen Quarter-to-customer adjacency links were present while the full planner was absent, and the observer recognized 33 Service attachments. This test preceded the material-family cue. The five AI empires had completed no Quarters by that turn. The full games measure placement quality and Service operation.
 
 In the first stock game the exported database contains the vanilla `UnitPriorityBoosts` list with no Builder entry. Both Build Unit nodes in the Build City Improvement tree (13 and 23) leave Required City unbound. Ghidra shows that XP2 initializes that input to −1 and uses the binding, when available, on the branch with no controlled cities. Writing an explicit −1 there repeats stock behavior. The candidate therefore leaves the tree alone, including any recruitment constraint that another mod has supplied.
+
+### Seed 171124601 at turn 250
+
+| Stock AI across five original AI seats | Bakers | Tailors |
+| --- | ---: | ---: |
+| Completed Quarters | 17 | 17 |
+| With an adjacent working Base | 1 | 2 |
+| With a completed mapped customer | 13 | 4 |
+| With both working Base and completed customer | 1 (5.9%) | 1 (5.9%) |
+| Without an owned Base deposit at the endpoint | 14 | 12 |
+
+Across both Quarters, 26 of 37 observed AI foundations lacked usable owned Base at foundation. Six last-working-supplier losses were observed (three per Quarter type), with three losses of the last viable deposit. None of the six working-supplier losses showed a district occupying that supplier at the next turn boundary. The Service observer recorded two Bakers Stage 2 links for 50 active chain-turns and one Tailors Stage 3 link for 23. The 199 common-cadence observations exclude the five-turn controller handoffs. The stock game averaged 5.43 seconds per popup-free turn and peaked at 16.60 seconds (196 intervals).
