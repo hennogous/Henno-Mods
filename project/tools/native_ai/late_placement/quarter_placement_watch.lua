@@ -190,6 +190,23 @@ end
 -- pillage, lost ownership, or a resource disappearing. A captured Quarter
 -- starts a new history. This observer never participates in a Builder bid.
 local supplierHistory={}
+-- A harvested resource can disappear between two supplier censuses. Capture
+-- the stock operation and the acting unit's tile while the unit still exists.
+-- A last-charge unit may already be gone; the boundary census still records
+-- that loss. This subscription is only installed by the benchmark.
+local harvest=UnitOperationTypes and UnitOperationTypes.HARVEST_RESOURCE
+if CSC_OBSERVE_SUPPLIER_LOSS and harvest and Events.UnitOperationStarted then
+ Events.UnitOperationStarted.Add(function(player,unitID,operation)
+  if operation~=harvest or not CSC_OBSERVE_SUPPLIER_LOSS[player] then return end
+  safe(function()
+   local unit=Players[player]:GetUnits():FindID(unitID)
+   local plot=unit and Map.GetPlot(unit:GetX(),unit:GetY())
+   if plot then
+    emit('HARVEST',{turn=Game.GetCurrentGameTurn(),player=player,unit=unitID,plot=plot:GetIndex()})
+   end
+  end)
+ end)
+end
 local function observeSuppliers(player,district,profile)
  local site=Map.GetPlot(district:GetX(),district:GetY())
  local id=site:GetIndex()

@@ -12,6 +12,21 @@ def load(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
 
+def supplier_tile_state(row):
+    """Physical state after a loss; the boundary observer cannot name a Builder operation."""
+    if int(row['ownerAfter']) != int(row['player']):
+        return 'ownership_changed'
+    if int(row['district']) >= 0:
+        return 'district_on_tile'
+    if row['resourceAfter'] != row['resource']:
+        return 'resource_changed_or_removed'
+    if row['pillaged'] == 'true':
+        return 'improvement_pillaged'
+    if int(row['improvementAfter']) < 0:
+        return 'resource_still_there_without_improvement'
+    return 'resource_and_improvement_still_there'
+
+
 def read_arm(folder):
     protocol = load(folder/'protocol.json')
     turn = protocol['turn']
@@ -38,6 +53,9 @@ def read_arm(folder):
     intervals = {}
     links = defaultdict(set)
     losses = defaultdict(set)
+    loss_states = {'working': defaultdict(set), 'deposit': defaultdict(set)}
+    harvest_turn = {}
+    harvested_losses = set()
     poor = set()
     foundations = {}
     district_profiles = defaultdict(set)
@@ -53,12 +71,14 @@ def read_arm(folder):
             links[int(t)].add((int(player),quarter,stage,service,producer,customer))
         elif 'CSC_QUARTER_WATCH_' in line:
             event, _, tail = line.split('CSC_QUARTER_WATCH_',1)[1].partition('\t')
-            if event not in ('SITE','SUPPLIER_LOSS'):
+            if event not in ('SITE','SUPPLIER_LOSS','HARVEST'):
                 continue
             row = dict(field.split('=',1) for field in tail.split('\t') if '=' in field)
             player = int(row['player'])
             if player not in seats:
                 continue
+            if event == 'HARVEST':
+                harvest_turn[player,int(row['plot'])] = int(row['turn'])
             if event == 'SITE':
                 # Older receipts have the native district index only. Recover
                 # its name from this game's censused plots; newer receipts
@@ -77,17 +97,26 @@ def read_arm(folder):
                 key = (player,int(row['quarter']),row['class'],int(row['turn']))
                 if row['lastWorking'] == 'true':
                     losses['working'].add(key)
+                    loss_states['working'][key].add(supplier_tile_state(row))
                     if int(row['district']) >= 0:
                         losses['working_district_covered'].add(key)
                 if row['lastDeposit'] == 'true':
                     losses['deposit'].add(key)
+                    state = supplier_tile_state(row)
+                    loss_states['deposit'][key].add(state)
+                    # Log order excludes later actions on the same turn.
+                    latest = harvest_turn.get((player,int(row['supplier'])))
+                    if state == 'resource_changed_or_removed' and latest in (key[-1]-1,key[-1]):
+                        harvested_losses.add(key)
     for t,(count,_) in intervals.items():
         if count != len(links[t]):
             raise ValueError(f'Active link count disagrees with receipts at turn {t}')
     # An early smoke game predated the loss watcher. Zero needs a registered
     # observer, even if no Quarter was built before that game's endpoint.
     receipt = next((folder/'pending-commands').glob('*observe-foundations.lua'),None)
-    watched = receipt is not None and 'local CSC_OBSERVE_SUPPLIER_LOSS=' in receipt.read_text(encoding='utf-8-sig')
+    observer = receipt.read_text(encoding='utf-8-sig') if receipt else ''
+    watched = 'local CSC_OBSERVE_SUPPLIER_LOSS=' in observer
+    harvest_watched = watched and "emit('HARVEST'" in observer
     measured=load(folder/'measured.json')
     timing = {int(k):v for k,v in measured['clean'].items()}
     placement = {}
@@ -103,10 +132,20 @@ def read_arm(folder):
         stats['owned_spec'] += spec
         stats['both_materials'] += base and spec
         stats['current_adjacency_3plus'] += float(row['eligibleGold'])+float(row['eligibleProduction'])>=3
+    # The last two suppliers can disappear together. Preserve both states on
+    # that single Quarter loss rather than crediting it to either tile alone.
+    state_counts = {}
+    for kind, events in loss_states.items():
+        counts = defaultdict(int)
+        for states in events.values():
+            counts[' + '.join(sorted(states))] += 1
+        state_counts[kind] = dict(sorted(counts.items()))
     report = dict(quarters=result, economy=economy(census)[0], founded=len(foundations),
         placement_by_quarter=placement,
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
         last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')} if watched else None,
+        supplier_tile_states_after_loss=state_counts if watched else None,
+        deposit_losses_with_matching_harvest=len(harvested_losses) if harvest_watched else None,
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
         unresolved_service_samples=sum(unknown for _,unknown in intervals.values()),
         planner_processing={k:measured['direct'][k] for k in ('turns','average_ms','max_ms')})

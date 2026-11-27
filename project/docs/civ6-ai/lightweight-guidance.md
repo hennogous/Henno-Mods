@@ -105,6 +105,8 @@ At the moment of foundation, the deposit rule's gain was concentrated in Bakers.
 
 **One working chain was lost to its own customer.** At player 3's Bakers on plot 1047, the Storekeeper operated from turn 68 through 127. On 128 a Commercial Hub covered plot 1120, removing its last working Flax. Subsequent censuses identified the completed Hub on that tile and the Storekeeper never returned. Another Hub covered the last raw Bananas at player 4's Bakers on turn 71. The other seven final-deposit losses in this arm had no district on the tile at the next observation. The queued supplier-job treatment also tests a plausible retention mechanism: the district evaluator subtracts the same intact-improvement Value that includes the improvement's own Quarter adjacency. [Improvement loss trace](../research/mods/civ6-district-improvement-loss-20261106.md)
 
+The last viable deposit disappeared on a tile still owned by the same player, with no district present, seven times in the deposit arm and twice in stock. The benchmark now records a Builder starting a harvest on the exact tile so subsequent games can distinguish harvesting from other resource changes. Of the deposit arm's five losses of a *working* supplier, one tile became a district, one improvement was pillaged and three tiles retained their resource but lost their improvement.
+
 ### Follow-up candidate for first customer buildings
 
 Across the ten 25-turn censuses of the first lightweight game, two supplied Bakers had a functioning, adjacent City Center missing its Granary. One of those Quarters had also completed a Mill by turn 250. The supplied Tailors lacked a Harbor throughout its observed operating life, so changing Lighthouse construction alone cannot complete that chain.
