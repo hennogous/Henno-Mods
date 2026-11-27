@@ -33,11 +33,11 @@ def verify_guidance(c, user, out, enabled, phase):
     write_json(out/f'guidance-{phase}.json',status)
 
 
-def install_clocks(c):
+def install_clocks(c, *, stock=False):
     # Read the same native monotonic clock in both arms, at the Core turn
     # boundary. UI callbacks only record presentation so the report can screen
     # affected turns without losing ordinary engine or guidance work.
-    raw=c.cmd('''
+    clock_code='''
 local now=assert(CE_AIMonotonicSeconds)
 assert(type(now())=='number')
 local last=-1
@@ -48,7 +48,13 @@ GameEvents.OnGameTurnStarted.Add(function()
     print(string.format('CSC_GUIDANCE_CLOCK %d %.6f',turn,now()))
 end)
 print('CSC_GUIDANCE_CORE_CLOCK_READY')
-''','GameCore_Tuner','install-guidance-core-clock')
+'''
+    if stock:
+        # All arms, including advanced, use the stock UI automation clock
+        # with the same turn event. Popup and controller gaps are excluded.
+        clock_code=clock_code.replace('CE_AIMonotonicSeconds','Automation.GetTime').replace(
+            'GameEvents.OnGameTurnStarted','Events.TurnBegin')
+    raw=c.cmd(clock_code,'PlotInfo' if stock else 'GameCore_Tuner','install-guidance-core-clock')
     require('CSC_GUIDANCE_CORE_CLOCK_READY' in raw,'Core clock registration failed')
     raw=c.cmd('''
 local names={'NaturalDisasterPopup_Shown','NaturalDisasterPopup_Closed',

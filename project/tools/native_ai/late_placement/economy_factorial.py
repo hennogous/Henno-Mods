@@ -101,12 +101,12 @@ def host_roster(seed, game):
         'ReleasePlayerParameters()', fixed+'ReleasePlayerParameters()')
 
 
-def read_opening(c, out, roster, *, csc, cl, speed='online'):
-    code = f'local csc={lua(csc)};local cl={lua(cl)};local expectedSpeed={lua("GAMESPEED_"+speed.upper())}\n'+'''
+def read_opening(c, out, roster, *, csc, cl, speed='online', ce=None):
+    code = f'local csc={lua(csc)};local cl={lua(cl)};local ce={lua(csc if ce is None else ce)};local expectedSpeed={lua("GAMESPEED_"+speed.upper())}\n'+'''
 assert(Game.GetCurrentGameTurn()==1 and Players[0]:IsHuman())
 assert((GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER~=nil)==csc)
 assert((GameInfo.Districts.DISTRICT_RURALCOMMUNITYA~=nil)==cl)
-assert((type(CE_AIDistrictScoresStatus)=='function')==csc)
+assert((type(CE_AIDistrictScoresStatus)=='function')==ce)
 local speed=GameConfiguration.GetGameSpeedType()
 assert(speed==expectedSpeed or GameInfo.GameSpeeds[speed].GameSpeedType==expectedSpeed)
 local facts={}

@@ -134,7 +134,10 @@ if CSC_MILESTONE_SERVICE_EVERY_TURN then
     local lastTurn, fault
     Events.TurnBegin.Add(function()
         local turn = Game.GetCurrentGameTurn()
-        if fault or turn == lastTurn or not AutoplayManager.IsActive() then return end
+        -- A matched full-game observer follows the original AI seats even
+        -- on the fifth turn when autoplay hands control back to the harness.
+        if fault or turn == lastTurn then return end
+        if not CSC_MILESTONE_INCLUDE_HANDOFFS and not AutoplayManager.IsActive() then return end
         lastTurn = turn
         local ok, reason = pcall(snapshot, turn)
         if not ok then

@@ -181,6 +181,40 @@ local function safe(callback,...)
  local ok,error=pcall(callback,...)
  if not ok then emit('FAULT',{turn=Game.GetCurrentGameTurn(),error=error})end
 end
+-- Optional benchmark observer. Compare the six neighbors of each existing
+-- Quarter at successive turn boundaries. Keep the previous footprint so a
+-- district covering the last working supplier can be distinguished from
+-- pillage, lost ownership, or a resource disappearing. A captured Quarter
+-- starts a new history. This observer never participates in a Builder bid.
+local supplierHistory={}
+local function observeSuppliers(player,district,profile)
+ local site=Map.GetPlot(district:GetX(),district:GetY())
+ local id=site:GetIndex()
+ local owner=player:GetID()
+ local supply=P.ReadSuppliers(player,site,profile)
+ local turn=Game.GetCurrentGameTurn()
+ local past=supplierHistory[id]
+ if past and past.owner==owner and past.turn==turn-1 and past.district==district:GetID() then
+  for _,class in ipairs({'base','specialty'})do
+   local working=false
+   for _,material in ipairs(supply[class])do working=working or material.working end
+   for _,old in ipairs(past.supply[class])do
+    -- All former working suppliers are listed when several disappear in a
+    -- single interval. Count one loss per turn, Quarter and material class.
+    if (#supply[class]==0 or (old.working and not working)) then
+     local plot=Map.GetPlotByIndex(old.plot)
+     local newResource=GameInfo.Resources[plot:GetResourceType()]
+     emit('SUPPLIER_LOSS',{turn=turn,player=owner,quarter=id,class=class,supplier=old.plot,
+      resource=old.resource,district=plot:GetDistrictType(),ownerAfter=plot:GetOwner(),
+      resourceAfter=newResource and newResource.ResourceType or '-',pillaged=plot:IsImprovementPillaged(),
+      improvementAfter=plot:GetImprovementType(),lastDeposit=#supply[class]==0,
+      lastWorking=old.working and not working})
+    end
+   end
+  end
+ end
+ supplierHistory[id]={owner=owner,turn=turn,district=district:GetID(),supply=supply}
+end
 local function scan(kind)
  -- Seed city-states too: a later captured Quarter must not look newly founded
  -- merely because its original owner was outside the Lua/CE scoring cohort.
@@ -190,6 +224,9 @@ local function scan(kind)
    for i=0,districts:GetNumDistricts()-1 do
     local d=districts:GetDistrictByIndex(i)
     if d and watched[d:GetType()]then
+     if CSC_OBSERVE_SUPPLIER_LOSS and CSC_OBSERVE_SUPPLIER_LOSS[player:GetID()] then
+      observeSuppliers(player,d,watched[d:GetType()])
+     end
      if kind=='seed'then
       local index=Map.GetPlot(d:GetX(),d:GetY()):GetIndex()
       seen[index]={player=player:GetID(),city=city:GetID(),districtID=d:GetID(),complete=d:IsComplete()}

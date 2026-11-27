@@ -48,7 +48,7 @@ GameEvents.OnGameTurnStarted.Add(function()
     require('CSC_PLACEMENT_CENSUS_READY' in raw,'Missing supply-chain census')
 
 
-def prepare(pins, seed, game, folder):
+def prepare(pins, seed, game, folder, *, stack=ARMS['combined'], advanced_option=None, save_name=None):
     require(not native_inventory(), 'Another session owns the game')
     folder.mkdir(parents=True)
     controller = make_probe_controller(folder,user_root=Path(pins['userdata']))
@@ -56,11 +56,24 @@ def prepare(pins, seed, game, folder):
     try:
         session.start(lambda: launch(SimpleNamespace(binary=Path(pins['binary'])),folder))
         session.wait_context('MainMenu')
-        select_stack(session,folder,[pins['packages'][name]['id'] for name in ARMS['combined']])
-        session.issue_once('host-shared-opening',host_roster(seed,game),'MainMenu')
+        select_stack(session,folder,[pins['packages'][name]['id'] for name in stack])
+        setup=host_roster(seed,game)
+        if advanced_option is not None:
+            setup=setup.replace('ReleasePlayerParameters()',
+                "GameConfiguration.SetValue('CSC_ADVANCED_AI_PLANNING',"+lua(advanced_option)+")\nReleasePlayerParameters()")
+        session.issue_once('host-shared-opening',setup,'MainMenu')
         session.ready_after_issue(1,('GameCore_Tuner','PlotInfo'),timeout=600,
-            eligibility=lambda: read_opening(controller,folder,game['roster'],csc=True,cl=True))
-        record=save_inactive_boundary(controller,turn=1,name=f'CSC_SHORTLIST_{seed}_START',
+            eligibility=lambda: read_opening(controller,folder,game['roster'],csc='csc' in stack,
+                                            cl='cl' in stack,ce='ce' in stack))
+        if advanced_option is not None:
+            expected=lua(advanced_option)
+            raw=controller.cmd(f"""assert(GameConfiguration.GetValue('CSC_ADVANCED_AI_PLANNING')=={expected})
+assert(type(CE_AIDistrictScoresStatus)=='function')
+assert((CSC_AI_EconomyAdapters~=nil)=={expected})
+assert(GameInfo.Yields.YIELD_CSC_AI_PLACEMENT)
+print('CSC_ADVANCED_OPTION_OK',{expected})""",'CSC_AI_BakersGameplay','verify-saved-advanced-setting')
+            require('CSC_ADVANCED_OPTION_OK' in raw,'Advanced setting did not select the requested mode')
+        record=save_inactive_boundary(controller,turn=1,name=save_name or f'CSC_SHORTLIST_{seed}_START',
             native_directory=Path(pins['saves']),archive=folder/'opening.Civ6Save')
         write_json(folder/'checkpoint.json',record)
     finally:
