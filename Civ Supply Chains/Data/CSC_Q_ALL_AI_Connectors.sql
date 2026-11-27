@@ -191,23 +191,6 @@ AND NOT EXISTS (
     SELECT 1 FROM AiFavoredItems WHERE ListType = 'UnitPriorityBoosts' AND Item = 'UNIT_BUILDER'
 );
 
--- Build City Improvement can consider other cities when recruiting a Builder.
--- Definition slot 2 is the native Required City input for the Build Unit node.
--- The sentinel -1 relaxes the city ID match. Ordinary eligibility still
--- applies when Civ evaluates which city can recruit for the request.
-INSERT INTO TreeData
-        (   DefnId,   NodeId,   TreeName,   DefaultData   )
-SELECT 2, n.NodeId, n.TreeName, '-1'
-FROM BehaviorTreeNodes n
-WHERE n.TreeName = 'Build City Improvement' AND n.NodeType = 'Build Unit'
-AND NOT EXISTS (
-    SELECT 1 FROM TreeData t
-    WHERE t.TreeName = n.TreeName AND t.NodeId = n.NodeId AND t.DefnId = 2
-);
-
-UPDATE TreeData SET DefaultData = '-1'
-WHERE DefnId = 2 AND TreeName = 'Build City Improvement'
-AND NodeId IN (
-    SELECT NodeId FROM BehaviorTreeNodes
-    WHERE TreeName = 'Build City Improvement' AND NodeType = 'Build Unit'
-);
+-- On stock XP2, the two Build Unit nodes in Build City Improvement leave
+-- Required City unbound. BuildFromCityNode already defaults to -1 when
+-- reading that input. Keep any explicit city binding chosen by another mod.

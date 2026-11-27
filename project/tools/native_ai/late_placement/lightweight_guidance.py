@@ -1,7 +1,9 @@
 """Replay CSC stock, ordinary-database guidance and advanced planning on shared starts."""
 import argparse
+from contextlib import closing
 from pathlib import Path
 import shutil
+import sqlite3
 from types import SimpleNamespace
 import xml.etree.ElementTree as ET
 
@@ -14,6 +16,22 @@ from full_game_controller.checkpoint import save_inactive_boundary
 from full_game_observation import archive_censuses
 from mature_guidance_replay import replace
 from shortlist_pair import prepare
+
+
+def stock_controls(database):
+    """Read Firaxis's gameplay export after load, before the next game replaces it."""
+    with closing(sqlite3.connect(database.resolve().as_uri()+'?mode=ro',uri=True)) as db:
+        return dict(
+            builder_priority=db.execute("""SELECT Favored,Value FROM AiFavoredItems
+                WHERE ListType='UnitPriorityBoosts' AND Item='UNIT_BUILDER'""").fetchall(),
+            recruiting_city=db.execute("""SELECT n.NodeId,t.DefaultData FROM BehaviorTreeNodes n
+                LEFT JOIN TreeData t ON t.TreeName=n.TreeName AND t.NodeId=n.NodeId AND t.DefnId=2
+                WHERE n.TreeName='Build City Improvement' AND n.NodeType='Build Unit'
+                ORDER BY n.NodeId""").fetchall(),
+            placements=db.execute("""SELECT d.DistrictType,a.AdjacentDistrict,a.AdjacentImprovement,
+                a.YieldChange,a.TilesRequired FROM District_Adjacencies d
+                JOIN Adjacency_YieldChanges a ON a.ID=d.YieldChangeId
+                WHERE a.YieldType='YIELD_CSC_AI_PLACEMENT' ORDER BY d.DistrictType,a.ID""").fetchall())
 
 
 def observers(c,seats):
@@ -110,6 +128,11 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         raw=c.cmd(code,'CSC_AI_BakersGameplay','verify-running-treatment')
         require('CSC_LIGHT_MODE_OK' in raw,'Runtime tuning mode differs')
         (out/'mode.txt').write_text(raw,encoding='utf8')
+        controls=stock_controls(user/'Cache/DebugGameplay.sqlite')
+        write_json(out/'stock-controls.json',controls)
+        if mode!='stock':
+            require(controls['builder_priority']==[(1,10)] and controls['recruiting_city']==[(13,None),(23,None)],
+                    'Expected the stock city bindings and the standalone Builder request preference')
         observers(c,range(1,len(game['roster'])))
         for turn in range(5,end+1,5):c.play(turn)
         ck=save_inactive_boundary(c,turn=end,name=f'CSC_LIGHT_{seed}_{mode.upper()}_T{end}',

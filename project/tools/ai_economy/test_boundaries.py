@@ -523,10 +523,13 @@ INSERT INTO CSC_Stage3CustomerTransactions VALUES
  ('DISTRICT_CSC_TAILORS_QUARTER','DISTRICT_COMMERCIAL_HUB'),
  ('DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_COMMERCIAL_HUB');
 INSERT INTO CSC_QuarterWonderSales VALUES('TAILORS','BUILDING_TEST_WONDER',4);
+INSERT INTO BehaviorTreeNodes VALUES (13,'Build City Improvement','Build Unit'),(23,'Build City Improvement','Build Unit');
+INSERT INTO TreeData VALUES (2,23,'Build City Improvement','7');
 ''')
         sql = (ROOT / 'Civ Supply Chains/Data/CSC_Q_ALL_AI_Connectors.sql').read_text(encoding='utf-8')
         db.executescript(sql)
         db.executescript(sql)
+        self.assertEqual(db.execute('SELECT NodeId,DefaultData FROM TreeData').fetchall(),[(23,'7')])
         customer_hosts = "SELECT DistrictType FROM District_Adjacencies WHERE YieldChangeId GLOB 'CSC_AI_CUSTOMER_*'"
         self.assertEqual({r[0] for r in db.execute(customer_hosts)},
                          {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER',
