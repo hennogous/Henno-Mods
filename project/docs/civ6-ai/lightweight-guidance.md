@@ -76,6 +76,14 @@ For exact raw resources, the stock adjacency row exposes a single resource class
 
 Two other stock controls help explain the boundary. Ghidra traced the `PlotEvaluations` item `Specific Resource` from its index initialization to its sole direct reader, `CitySiteEvaluation::AddSubValue` on the reference XP2 build. That preference informs where to settle a city. In the shipped Build City District tree, Decode Trigger supplies the location already chosen by the district evaluation. Purchase Plot, Reserve Plot and Build Production consume that location. The stock Lua Script Condition node declares a string input and no Map Point output. A separate Use Scripted Command node dispatches commands on units controlled by the tree. Neither supplies a documented site bid here. The current experiment therefore leaves settlement and those trees alone.
 
+### A city-specific alternative
+
+The district valuator has a second route on owned land. Before its competition adjustment it calls the stock adjacency calculator. That calculator also reads the owning city's active dynamic adjacency modifiers for the proposed district and yield. Thus a city could give Tailors an incentive for a particular terrain **only where that city's actual Flax, Cotton or Sheep makes the terrain informative**. This uses the same native effect as the terrain-adjacency pantheons. A change in the exact resource layout could switch off the incentive.
+
+In a preliminary offline survey we sampled every third clearable plot by index as a hypothetical center, searched three tiles out, and required *every* site signaled by a single terrain or feature to touch an actual Base. The maps contained such a cue for 213/1,414 Bakers neighborhoods and 105/749 Tailors neighborhoods that had Base opportunities. These overlapping neighborhoods include land outside eventual borders. This is a selective supplement to the broad fallback.
+
+The disposable no-CE `--city-cue-probe --end 50` checks the terrain mechanism separately. It selects two owned sites in one city with different counts of the same terrain, reads their stock Quarter adjacency, enables a private +7 test modifier, and checks withdrawal and an unconditional positive control. A production implementation would need to keep each rule aligned with the city's actual deposits and measure placement gains and turn cost.
+
 ### Follow-up candidate for first customer buildings
 
 Across the ten 25-turn censuses of the first lightweight game, two supplied Bakers had a functioning, adjacent City Center missing its Granary. One of those Quarters had also completed a Mill by turn 250. The supplied Tailors lacked a Harbor throughout its observed operating life, so changing Lighthouse construction alone cannot complete that chain.

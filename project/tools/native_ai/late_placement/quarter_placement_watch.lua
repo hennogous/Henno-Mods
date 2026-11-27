@@ -125,7 +125,7 @@ local function snapshot(kind,player,cityID,districtID,x,y,districtType,complete)
  for _,v in ipairs(supply.specialty)do if v.working then specWorking=specWorking+1 end end
  local index=plot:GetIndex();local bid=offers[key(player,cityID,districtType,index)]
  emit('SITE',{event=kind,turn=Game.GetCurrentGameTurn(),player=player,city=cityID,
-  district=districtType,districtID=districtID,plot=index,complete=complete,
+  district=districtType,districtID=districtID,quarterType=profile.district.DistrictType,plot=index,complete=complete,
   base=#supply.base,spec=#supply.specialty,baseWorking=baseWorking,specWorking=specWorking,
   river=plot:IsRiver(),hills=plot:IsHills(),
   eligibleProduction=value.current.production,eligibleGold=value.current.gold,
@@ -142,8 +142,11 @@ local function snapshot(kind,player,cityID,districtID,x,y,districtType,complete)
  for _,near in ipairs(Map.GetAdjacentPlots(x,y))do
   local resource=GameInfo.Resources[near:GetResourceType()]
   local improvement=GameInfo.Improvements[near:GetImprovementType()]
+  local terrain=GameInfo.Terrains[near:GetTerrainType()]
+  local feature=GameInfo.Features[near:GetFeatureType()]
   emit('NEIGHBOR',{event=kind,turn=Game.GetCurrentGameTurn(),plot=index,neighbor=near:GetIndex(),
    owner=near:GetOwner(),resource=resource and resource.ResourceType or '-',
+   terrain=terrain and terrain.TerrainType or '-',feature=feature and feature.FeatureType or '-',
    improvement=improvement and improvement.ImprovementType or '-',
    pillaged=near:IsImprovementPillaged(),district=near:GetDistrictType()})
  end

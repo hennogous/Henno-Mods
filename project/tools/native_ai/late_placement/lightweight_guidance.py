@@ -63,7 +63,8 @@ GameEvents.OnGameTurnStarted.Add(function()
     install_clocks(c,stock=True)
 
 
-def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False):
+def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
+           city_cue_probe=False):
     study=load(root/'study.json')
     pins=study['pins'];game=pins['seeds'][str(seed)]
     source=root/str(seed)/'opening'
@@ -80,8 +81,11 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         require(mode=='advanced','Only the CE arm may need its own seeded opening')
         source=source.parent/'prepare-advanced'
     record=load(source/'checkpoint.json')
+    if city_cue_probe:
+        require(mode=='native' and end in (25,50) and not (deposit_cues or customer_buildings or supplier_jobs),
+                'The local cue probe needs its own short no-CE game')
     arm_name=label or (mode+('-deposits' if deposit_cues else '')+('-buildings' if customer_buildings else '')
-                      +('-jobs' if supplier_jobs else ''))
+                      +('-jobs' if supplier_jobs else '')+('-city-cue-probe' if city_cue_probe else ''))
     out=source.parent/arm_name
     require(not native_inventory() and not out.exists(),'Game in use or output exists')
     out.mkdir()
@@ -104,7 +108,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         require(connectors is not None,'Expected native action')
         actions.remove(connectors)
         active=ET.tostring(doc,encoding='utf-8',xml_declaration=True)
-    if deposit_cues or customer_buildings or supplier_jobs:
+    if deposit_cues or customer_buildings or supplier_jobs or city_cue_probe:
         require(mode in ('native','advanced'),'The stock control must keep ordinary AI')
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
         require(sha(staged_path)==load(root/'material-candidate.json')['full'],'Underlying connector revision changed')
@@ -112,14 +116,15 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         active=original
         for enabled_overlay,name in [(deposit_cues,'undeveloped_material_candidate.sql'),
                                      (customer_buildings,'customer_building_candidate.sql'),
-                                     (supplier_jobs,'supplier_job_candidate.sql')]:
+                                     (supplier_jobs,'supplier_job_candidate.sql'),
+                                     (city_cue_probe,'city_material_cue_candidate.sql')]:
             if enabled_overlay:
                 addition=(HERE/name).read_bytes()
                 active+=b'\n'+addition
                 (out/name).write_bytes(addition)
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
-        supplier_jobs=supplier_jobs,active_file=staged_path.name,
+        supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
     try:
         if active!=original:replace(staged_path,active)
@@ -166,7 +171,13 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             require(controls['builder_priority']==[(1,10)] and controls['recruiting_city']==[(13,None),(23,None)],
                     'Expected the stock city bindings and the standalone Builder request preference')
         observers(c,range(1,len(game['roster'])))
-        for turn in range(5,end+1,5):c.play(turn)
+        for turn in range(5,end+1,5):
+            c.play(turn)
+            if city_cue_probe and turn>=20 and not (out/'city-cue-result.json').is_file():
+                from city_material_cue_probe import observe_city_cue
+                observe_city_cue(c,out,range(1,len(game['roster'])),turn)
+        if city_cue_probe:
+            require((out/'city-cue-result.json').is_file(),'No testable owned material/terrain pair by endpoint')
         ck=save_inactive_boundary(c,turn=end,name=f'CSC_LIGHT_{seed}_{arm_name.upper()}_T{end}',
                                   native_directory=saves,archive=out/'endpoint.Civ6Save')
         write_json(out/'checkpoint.json',ck)
@@ -198,5 +209,7 @@ if __name__=='__main__':
     p.add_argument('--deposit-cues',action='store_true',help='Test the undeveloped-resource class cue on this seed')
     p.add_argument('--customer-buildings',action='store_true',help='Test the stock preference for first customer buildings')
     p.add_argument('--supplier-jobs',action='store_true',help='Test stock Builder improvement values next to a Quarter')
+    p.add_argument('--city-cue-probe',action='store_true',help='Inspect a city-specific stock adjacency in a disposable replay')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
-    a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,a.supplier_jobs)
+    a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
+                           a.supplier_jobs,a.city_cue_probe)
