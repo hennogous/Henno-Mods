@@ -1,11 +1,11 @@
--- Diagnostic only. Retain the two leaders we actually priced last turn,
--- reprice changed sites and live plans, rotate one remaining plot and
--- refresh each city/Quarter every eight turns. No CE writes or game orders.
--- Fresh sessions start cold. Only the previous turn's facts and ranked
--- choices survive. The complete planner supplies the reference winner.
+-- The game controller loads this study only for an explicit trial. In shadow
+-- mode it compares a shortlist with the full planner. Live mode can return
+-- false immediately before QuarterForecast, removing that site from the bid.
+-- Cold starts and gaps in a city's history always get a complete evaluation.
 local E=assert(CSC_AI_EconomyAdapters)
 assert(not E.ShortlistObserver)
-local O={passes=0}
+local O={passes=0,live=CSC_LIVE_SHORTLIST==true}
+if O.live then assert(E.SupportsSelectiveQuarterForecasts) end
 local histories={}
 local watches={}
 local function yes(value)return value and 1 or 0 end
@@ -65,6 +65,60 @@ function O.site(snapshot,city,plot,profile,site,options,invoice,plan)
         or (snapshot.intentFootprints and snapshot.intentFootprints[index]),
         base=site.baseCount,spec=site.specialtyCount,harbor=harbor,
         partner=(site.strongLayout or site.prospectiveLayout or {}).plot or -1}
+    if O.live then
+        local turn=Game.GetCurrentGameTurn()
+        local history=histories[snapshot.id]
+        local prior=history and history.turn==turn-1 and history.groups[key]
+        local row=g.rows[index]
+        -- An empty shortlist can conceal an entire new investment when the
+        -- city's economy changes. Give every eligible site a fresh chance.
+        if not prior or not prior.best or (turn+cityID+district)%8==0 then return true end
+        -- A customer footprint can itself become the best Quarter location
+        -- next turn. Price it even if today's geometry still looks identical.
+        return row.must or prior.leaders[index] or prior.partners[index] or index==prior.spare
+            or prior.signatures[index]~=row.signature
+    end
+end
+
+local function finishLive(snapshot,entries)
+    local turn,pid=Game.GetCurrentGameTurn(),snapshot.id
+    local groups=snapshot.shortlistSample and snapshot.shortlistSample.groups or {}
+    local history=histories[pid]
+    local state={turn=turn,groups={}}
+    for _,entry in ipairs(entries)do
+        if entry.economy and not entry.carried and entry.finalQ8>0 then
+            local g=assert(groups[scope(entry.city,entry.district)])
+            if not g.best or earlier(entry,g.best)then g.second=g.best;g.best=entry
+            elseif not g.second or earlier(entry,g.second)then g.second=entry end
+        end
+    end
+    for key,g in pairs(groups)do
+        local prior=history and history.turn==turn-1 and history.groups[key]
+        local cursor=prior and prior.spare or -1
+        local nextGroup={best=g.best~=nil,leaders={},partners={},signatures={}}
+        if g.best then
+            nextGroup.leaders[g.best.plot]=true
+            if g.second then nextGroup.leaders[g.second.plot]=true end
+            for _,option in ipairs(g.best.customerLayout or {})do nextGroup.partners[option.plot]=true end
+            if g.best.strongLayout then nextGroup.partners[g.best.strongLayout.plot]=true end
+            if g.best.prospectiveLayout then nextGroup.partners[g.best.prospectiveLayout.plot]=true end
+        end
+        -- Pick the next spare by plot ID from the last known candidate set.
+        -- This permits a one-pass cutoff. A disappearing spare costs one
+        -- rotation; new, changed and protected plots always qualify directly.
+        local first,nextPlot
+        for plot,row in pairs(g.rows)do
+            nextGroup.signatures[plot]=row.signature
+            if not row.must and not nextGroup.leaders[plot] and not nextGroup.partners[plot] then
+                if not first or plot<first then first=plot end
+                if plot>cursor and (not nextPlot or plot<nextPlot)then nextPlot=plot end
+            end
+        end
+        nextGroup.spare=nextPlot or first
+        state.groups[key]=nextGroup
+    end
+    histories[pid]=state
+    O.passes=O.passes+1
 end
 
 local function selectPlots(g,prior,turn)
@@ -86,6 +140,7 @@ local function selectPlots(g,prior,turn)
 end
 
 function O.finish(snapshot,entries)
+    if O.live then return finishLive(snapshot,entries) end
     local turn,pid=Game.GetCurrentGameTurn(),snapshot.id
     local previous=histories[pid]
     local pending=watches[pid] or {};watches[pid]=pending
@@ -155,4 +210,4 @@ function O.finish(snapshot,entries)
     print('CSC_SHORTLIST_PASS',turn,pid,#keys)
 end
 E.ShortlistObserver=O
-print('CSC_SHORTLIST_READY')
+print(O.live and 'CSC_SHORTLIST_LIVE_READY' or 'CSC_SHORTLIST_READY')

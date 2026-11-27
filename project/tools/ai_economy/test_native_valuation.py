@@ -205,6 +205,24 @@ for _,f in ipairs(r.quote.streams)do total=total+f.valueQ8 end
 assert(total==r.quote.valueQ8)
 ''')
 
+    def test_only_a_live_decline_skips_the_actual_quarter_forecast(self):
+        self.vm().execute('''
+local s=site();snapshot.Site=function()return s end
+local city={GetID=function()return 10 end}
+local plot={GetIndex=function()return 1 end,GetOwner=function()return 1 end}
+local profile={district={Index=42}}
+local function evaluate()return E.QuotePlacement(snapshot,city,plot,profile,{upper=4},false,0,0,0,false,{})end
+local calls=0;local forecast=E.QuarterForecast
+E.QuarterForecast=function(...)calls=calls+1;return forecast(...)end
+E.MeasureQuarterPricing=true
+E.ShortlistObserver={live=true,site=function()return false end}
+assert(evaluate().shortlistDeferred and calls==0 and not snapshot.deepForecastCalls)
+E.ShortlistObserver.live=false
+assert(evaluate().quote and calls==1)
+E.ShortlistObserver={live=true,site=function()error('study fault')end}
+assert(evaluate().quote and calls==2 and E.ShortlistObserver==nil and snapshot.deepForecastCalls==2)
+''')
+
     def test_quality_bound_keeps_the_best_terrain_and_preserves_saved_sites(self):
         self.vm().execute('''
 local s=site();s.adjacency=1

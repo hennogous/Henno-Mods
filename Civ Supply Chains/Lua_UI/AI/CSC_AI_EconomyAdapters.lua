@@ -1024,6 +1024,10 @@ local function upperPlacementAdjacency(site)
     if finiteAdjacency(upper) then return upper end
 end
 
+-- The controller tests this optional selector only in the single-player
+-- publisher. Unconfigured games, read-only observers and observer faults all
+-- take the full forecast path. Only an explicit live decline can omit a bid.
+E.SupportsSelectiveQuarterForecasts=true
 function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,protectionQ8,ignoredLegacy,covers,protected,screenedOptions)
     local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
     local state=snapshot.planState
@@ -1075,12 +1079,17 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         -- joint Quarter worlds use site.services when qualified CE is present.
         local transactionSite={};for k,v in pairs(site)do transactionSite[k]=v end
         transactionSite.service=nil
-        -- The opt-in shortlist study observes only facts already available
-        -- before this expensive forecast. Its return value never enters a bid.
+        -- Check after the normal siting gates and before the expensive joint
+        -- forecast. Omitted sites receive the managed Quarter default in CE.
         if E.ShortlistObserver then
-            local ok,err=pcall(E.ShortlistObserver.site,snapshot,city,plot,profile,site,options,invoice,plan)
-            if not ok then E.ShortlistObserver=nil;print('CSC_SHORTLIST_ERROR',tostring(err))end
+            local ok,decision=pcall(E.ShortlistObserver.site,snapshot,city,plot,profile,site,options,invoice,plan)
+            if not ok then E.ShortlistObserver=nil;print('CSC_SHORTLIST_ERROR',tostring(decision))
+            elseif E.ShortlistObserver.live and decision==false and not plan then
+                details.reason='shortlist_deferred'
+                return {details=details,shortlistDeferred=true}
+            end
         end
+        if E.MeasureQuarterPricing then snapshot.deepForecastCalls=(snapshot.deepForecastCalls or 0)+1 end
         local ok,value,message=pcall(E.QuarterForecast,snapshot,city,plot,profile,transactionSite,protectionQ8,covers)
         if ok then quote,reason=value,message else reason=tostring(value)end
         if quote then
@@ -3104,7 +3113,9 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                 evaluations[id]=evaluation.details
                                 local quote,site,parts=evaluation.quote,evaluation.site,evaluation.parts
                                 if evaluation.carried then stats.carried=stats.carried+1 end
-                                if evaluation.qualityBoundDeferred then
+                                if evaluation.shortlistDeferred then
+                                    stats.shortlistDeferred=(stats.shortlistDeferred or 0)+1
+                                elseif evaluation.qualityBoundDeferred then
                                     stats.qualityDeferred=stats.qualityDeferred+1
                                     stats.qualityBoundDeferred=stats.qualityBoundDeferred+1
                                 elseif not quote and not evaluation.carried then
@@ -3313,11 +3324,15 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         snapshot.planState.nextLayouts=snapshot.nextLayouts
     end
     attachProviderDeclines(snapshot,result)
-    -- Compare the diagnostic's retained plots to the complete returned bids.
-    -- The normal publisher owns this array and sends it through packet trimming.
+    -- Record retained leaders after customer adjustments to the bids. The
+    -- normal publisher owns this array and sends it through packet trimming.
     if E.ShortlistObserver then
         local ok,err=pcall(E.ShortlistObserver.finish,snapshot,result)
         if not ok then E.ShortlistObserver=nil;print('CSC_SHORTLIST_ERROR',tostring(err))end
+    end
+    if E.MeasureQuarterPricing then
+        print(string.format('CSC_QUARTER_PRICING turn=%d player=%d calls=%d skipped=%d',
+            Game.GetCurrentGameTurn(),pid,snapshot.deepForecastCalls or 0,stats.shortlistDeferred or 0))
     end
     return result,stats
 end

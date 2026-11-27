@@ -140,7 +140,7 @@ def verify_endpoint(out, path, seats=range(1,6), turns=TURNS):
                 f'Invalid AI economy scope at turn {t}')
 
 
-def play(p, seed, game, arm, out, recovery=None, *, guidance=None, shortlist=False):
+def play(p, seed, game, arm, out, recovery=None, *, guidance=None, shortlist=False, opening=None, pricing=None):
     verify_pins(p)
     out.mkdir()
     saves,user = Path(p['saves']),Path(p['userdata'])
@@ -164,10 +164,16 @@ def play(p, seed, game, arm, out, recovery=None, *, guidance=None, shortlist=Fal
         if recovery and (recovery/'original-preferences.json').is_file() and not (recovery/'preferences-restored.json').is_file():
             restore_preferences(c,recovery)
         select_stack(session,out,enabled)
-        session.issue_once('host-economy-benchmark',host_roster(seed,game),'MainMenu')
         active = ARMS[arm]
-        session.ready_after_issue(1, ('GameCore_Tuner','PlotInfo'), eligibility=lambda: read_opening(
-            c,out,game['roster'],csc='csc' in active,cl='cl' in active,speed=game.get('speed','online')))
+        def eligible():
+            return read_opening(c,out,game['roster'],csc='csc' in active,cl='cl' in active,speed=game.get('speed','online'))
+        contexts=('GameCore_Tuner','PlotInfo')
+        if opening:
+            session.load_once(opening['native_save'],sha256=opening['sha256'],native_directory=saves,turn=1,
+                              contexts=contexts,eligibility=eligible,timeout=600)
+        else:
+            session.issue_once('host-economy-benchmark',host_roster(seed,game),'MainMenu')
+            session.ready_after_issue(1,contexts,eligibility=eligible)
         fork = Path(p['packages']['ce']['path'])/'Binaries/Win64'/DLL if 'ce' in active else None
         verify_modules(session,fork,out,p['core_sha256'])
         if 'csc' in active and guidance is not False:
@@ -185,10 +191,14 @@ def play(p, seed, game, arm, out, recovery=None, *, guidance=None, shortlist=Fal
             require('CSC_SHORTLIST_READY' in raw,'Shortlist observer did not load')
             write_json(out/'shortlist.json',dict(observer_sha256=sha(study),first_turn=2,
                         retained_leaders=2,rotation=1,refresh=8,live_policy='full'))
-        observer=read(HERE/'economy_factorial_census.lua').replace('__SEATS__',lua(list(seats))).replace(
-            'local maximum = 250',f'local maximum = {endpoint}')
-        raw=c.cmd(observer,'GameCore_Tuner','install-passive-economy-snapshots')
-        require('CSC_FACTOR_ECONOMY_INSTALLED' in raw,'Economic census did not install')
+        if pricing:
+            from shortlist_pair import install_observers
+            install_observers(c,out,seats,pricing)
+        else:
+            observer=read(HERE/'economy_factorial_census.lua').replace('__SEATS__',lua(list(seats))).replace(
+                'local maximum = 250',f'local maximum = {endpoint}')
+            raw=c.cmd(observer,'GameCore_Tuner','install-passive-economy-snapshots')
+            require('CSC_FACTOR_ECONOMY_INSTALLED' in raw,'Economic census did not install')
         # The controller's passive popup recovery is scoped to five-turn
         # windows. The Lua snapshots still share the fixed 25-turn clock.
         for turn in range(5,endpoint+1,5):
@@ -200,6 +210,8 @@ def play(p, seed, game, arm, out, recovery=None, *, guidance=None, shortlist=Fal
         if guidance is not None:
             verify_guidance(c,user,out,guidance,'endpoint')
         name=(f'CSC_ECONOMY_{seed}_{arm.upper()}' if guidance is None else f'CSC_GUIDANCE_{seed}_{"ON" if guidance else "OFF"}')+f'_T{endpoint}'
+        if pricing:
+            name=f'CSC_SHORTLIST_{seed}_{pricing.upper()}_T{endpoint}'
         try:
             checkpoint=save_inactive_boundary(c,turn=endpoint,name=name,native_directory=saves,archive=out/'endpoint.Civ6Save')
         except (SavePermissionUnavailable, SaveFileUnavailable) as error:

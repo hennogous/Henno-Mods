@@ -201,7 +201,7 @@ local function scan(kind)
  end
 end
 local publish=B.Publish
-B.Publish=function(version,width,height,count,players,entries,...)
+local function observedPublication(version,width,height,count,players,entries,...)
  safe(drain)
  local accepted,message=publish(version,width,height,count,players,entries,...)
  if accepted then
@@ -221,6 +221,9 @@ B.Publish=function(version,width,height,count,players,entries,...)
  end
  return accepted,message
 end
+-- Timing replays need physical district events. They leave the publisher
+-- untouched so transferring CE's journal cannot dominate the measured pass.
+if not CSC_LIFECYCLE_ONLY then B.Publish=observedPublication end
 safe(scan,'seed')
 Events.DistrictAddedToMap.Add(function(...)safe(inspect,'added',...)end)
 Events.DistrictBuildProgressChanged.Add(function(player,district,city,x,y,kind)
