@@ -1075,6 +1075,12 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         -- joint Quarter worlds use site.services when qualified CE is present.
         local transactionSite={};for k,v in pairs(site)do transactionSite[k]=v end
         transactionSite.service=nil
+        -- The opt-in shortlist study observes only facts already available
+        -- before this expensive forecast. Its return value never enters a bid.
+        if E.ShortlistObserver then
+            local ok,err=pcall(E.ShortlistObserver.site,snapshot,city,plot,profile,site,options,invoice,plan)
+            if not ok then E.ShortlistObserver=nil;print('CSC_SHORTLIST_ERROR',tostring(err))end
+        end
         local ok,value,message=pcall(E.QuarterForecast,snapshot,city,plot,profile,transactionSite,protectionQ8,covers)
         if ok then quote,reason=value,message else reason=tostring(value)end
         if quote then
@@ -3307,6 +3313,12 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         snapshot.planState.nextLayouts=snapshot.nextLayouts
     end
     attachProviderDeclines(snapshot,result)
+    -- Compare the diagnostic's retained plots to the complete returned bids.
+    -- The normal publisher owns this array and sends it through packet trimming.
+    if E.ShortlistObserver then
+        local ok,err=pcall(E.ShortlistObserver.finish,snapshot,result)
+        if not ok then E.ShortlistObserver=nil;print('CSC_SHORTLIST_ERROR',tostring(err))end
+    end
     return result,stats
 end
 

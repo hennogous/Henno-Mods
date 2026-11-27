@@ -140,7 +140,7 @@ def verify_endpoint(out, path, seats=range(1,6), turns=TURNS):
                 f'Invalid AI economy scope at turn {t}')
 
 
-def play(p, seed, game, arm, out, recovery=None, *, guidance=None):
+def play(p, seed, game, arm, out, recovery=None, *, guidance=None, shortlist=False):
     verify_pins(p)
     out.mkdir()
     saves,user = Path(p['saves']),Path(p['userdata'])
@@ -178,6 +178,13 @@ def play(p, seed, game, arm, out, recovery=None, *, guidance=None):
             from economy_guidance_timing import install_clocks, verify_guidance
             verify_guidance(c,user,out,guidance,'opening')
             install_clocks(c)
+        if shortlist:
+            require(guidance is True,'Shortlist observation needs the normal guided planner')
+            study=HERE/'shortlist_observer.lua'
+            raw=c.cmd(read(study),'CSC_AI_BakersGameplay','install-read-only-shortlist-study')
+            require('CSC_SHORTLIST_READY' in raw,'Shortlist observer did not load')
+            write_json(out/'shortlist.json',dict(observer_sha256=sha(study),first_turn=2,
+                        retained_leaders=2,rotation=1,refresh=8,live_policy='full'))
         observer=read(HERE/'economy_factorial_census.lua').replace('__SEATS__',lua(list(seats))).replace(
             'local maximum = 250',f'local maximum = {endpoint}')
         raw=c.cmd(observer,'GameCore_Tuner','install-passive-economy-snapshots')
@@ -186,6 +193,10 @@ def play(p, seed, game, arm, out, recovery=None, *, guidance=None):
         # windows. The Lua snapshots still share the fixed 25-turn clock.
         for turn in range(5,endpoint+1,5):
             c.play(turn)
+            if shortlist and turn==5:
+                raw=c.cmd("assert(CSC_AI_EconomyAdapters.ShortlistObserver.passes>0);print('CSC_SHORTLIST_ACTIVE')",
+                          'CSC_AI_BakersGameplay','verify-shortlist-observation')
+                require('CSC_SHORTLIST_ACTIVE' in raw,'Shortlist diagnostic did not reach the player boundaries')
         if guidance is not None:
             verify_guidance(c,user,out,guidance,'endpoint')
         name=(f'CSC_ECONOMY_{seed}_{arm.upper()}' if guidance is None else f'CSC_GUIDANCE_{seed}_{"ON" if guidance else "OFF"}')+f'_T{endpoint}'
@@ -422,6 +433,18 @@ if __name__=='__main__':
     parser.add_argument('--seed-pool',nargs='+',type=int,default=())
     parser.add_argument('--matched-seeds',type=int)
     parser.add_argument('--carry',type=Path)
+    parser.add_argument('--shortlist-seed',type=int,help='Run one guided CSC + City Lights game with passive Quarter shortlist observation')
     args=parser.parse_args()
-    batch(args.reference.resolve(),args.output.resolve(),preflight=args.preflight,resume=args.resume,
-          seed_pool=args.seed_pool,matched_seeds=args.matched_seeds,carry=args.carry.resolve() if args.carry else None)
+    if args.shortlist_seed is not None:
+        if args.resume or args.preflight or args.seed_pool or args.matched_seeds or args.carry:
+            parser.error('The shortlist study runs one fresh game and takes its own seed')
+        pins=plan(args.reference.resolve(),[args.shortlist_seed])
+        require(not native_inventory(),'Another session owns the game')
+        out=args.output.resolve()
+        out.mkdir(parents=True)
+        write_json(out/'planned-inputs.json',pins)
+        play(pins,args.shortlist_seed,pins['seeds'][args.shortlist_seed],'combined',out/'full',
+             guidance=True,shortlist=True)
+    else:
+        batch(args.reference.resolve(),args.output.resolve(),preflight=args.preflight,resume=args.resume,
+              seed_pool=args.seed_pool,matched_seeds=args.matched_seeds,carry=args.carry.resolve() if args.carry else None)

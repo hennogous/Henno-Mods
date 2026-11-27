@@ -2,6 +2,14 @@
 
 The [Large Standard turn-350 performance review](../research/mods/csc-guidance-performance-review-20261126.md) compares guidance on and off with City Lights. It traces mature-turn growth to the district-planning pass and ranks changes to economic forecasting, site discovery and Dev CE delivery.
 
+### Testing a shorter list of Quarter forecasts, 27 November
+
+The full planner bids on every qualifying site. In a diagnostic game the controller also tracks which sites a cheaper planner would have priced. It makes that choice before seeing the current scores. For each city and Quarter it keeps its own two previous leaders, newly eligible or locally changed sites, confirmed plans and saved footprints. It adds one other plot in rotation. A new city, a gap in observation or the scheduled eight-turn refresh gets a complete evaluation.
+
+The comparison counts calls to the Quarter economy forecast after the ordinary eligibility and adjacency checks. It also checks the leading plot and bid against the normal publisher's log for each city and Quarter. A missed leader can mean an equally valuable alternative, a lower offer, or a lost offer altogether. The observer follows missed plots for up to ten turns to record repricing and occupation. All construction in this game follows the full planner.
+
+The observer is loaded by the game controller only when requested. See [the observation rules](../../tools/native_ai/late_placement/shortlist_observer.lua) and [the results checker](../../tools/native_ai/late_placement/shortlist_results.py). Run the checker with the archived game directory containing the protocol, observer receipt and Lua log.
+
 ### Removing the second Quarter scan, 26 November
 
 **Matched mature-save result.** Both builds replayed turns 351–360 from the original guided turn-350 checkpoint on Large Continents, Standard speed, with City Lights and Dev CE. The control used the original November 26 benchmark Lua. The candidate included the legal-target cache, shorter forecast lifetimes, independent-chain reuse and scan changes. Both loaded the same save and published all ten turns successfully.
