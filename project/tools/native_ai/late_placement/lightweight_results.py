@@ -58,6 +58,8 @@ def read_arm(folder):
     harvested_losses = set()
     poor = set()
     foundations = {}
+    clear_coast = set()
+    observed_terrain = set()
     district_profiles = defaultdict(set)
     seats = set(load(folder/'source.json')['original_ai'])
     for line in (folder/'Lua.log').read_text(encoding='utf-8-sig',errors='replace').splitlines():
@@ -71,9 +73,20 @@ def read_arm(folder):
             links[int(t)].add((int(player),quarter,stage,service,producer,customer))
         elif 'CSC_QUARTER_WATCH_' in line:
             event, _, tail = line.split('CSC_QUARTER_WATCH_',1)[1].partition('\t')
-            if event not in ('SITE','SUPPLIER_LOSS','HARVEST'):
+            if event not in ('SITE','NEIGHBOR','SUPPLIER_LOSS','HARVEST'):
                 continue
             row = dict(field.split('=',1) for field in tail.split('\t') if '=' in field)
+            if event == 'NEIGHBOR':
+                # A featureless, resourceless coast tile beside the Quarter
+                # leaves a possible Harbor footprint. Ownership and a city's
+                # remaining district slots still govern actual construction.
+                if row['event'] == 'foundation' and 'terrain' in row and 'feature' in row:
+                    site = (int(row['plot']),int(row['turn']))
+                    observed_terrain.add(site)
+                    if (row['terrain'] == 'TERRAIN_COAST' and row['resource'] == '-'
+                            and row['feature'] == '-' and int(row['district']) < 0):
+                        clear_coast.add(site)
+                continue
             player = int(row['player'])
             if player not in seats:
                 continue
@@ -124,14 +137,24 @@ def read_arm(folder):
         names = district_profiles[row['district']]
         profile = next(iter(names)) if len(names)==1 else 'unresolved'
         stats = placement.setdefault(profile, dict(founded=0,owned_base=0,working_base=0,
-            owned_spec=0,both_materials=0,current_adjacency_3plus=0))
+            owned_spec=0,both_materials=0,current_adjacency_3plus=0,coast_surveyed_foundations=0,clear_coast_neighbor=0,
+            owned_base_and_clear_coast_neighbor=0))
         base,spec = int(row['base'])>0,int(row['spec'])>0
         stats['founded'] += 1
         stats['owned_base'] += base
         stats['working_base'] += int(row['baseWorking'])>0
         stats['owned_spec'] += spec
         stats['both_materials'] += base and spec
+        site = (int(row['plot']),int(row['turn']))
+        stats['coast_surveyed_foundations'] += site in observed_terrain
+        coastal = site in clear_coast
+        stats['clear_coast_neighbor'] += coastal
+        stats['owned_base_and_clear_coast_neighbor'] += base and coastal
         stats['current_adjacency_3plus'] += float(row['eligibleGold'])+float(row['eligibleProduction'])>=3
+    for stats in placement.values():
+        if not stats['coast_surveyed_foundations']:
+            stats['clear_coast_neighbor'] = None
+            stats['owned_base_and_clear_coast_neighbor'] = None
     # The last two suppliers can disappear together. Preserve both states on
     # that single Quarter loss rather than crediting it to either tile alone.
     state_counts = {}
