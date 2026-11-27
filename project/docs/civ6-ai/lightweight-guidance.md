@@ -38,6 +38,21 @@ Of the 37 observed AI foundations, 26 lacked usable owned Base. Reading all six 
 
 Six last-working-supplier losses were observed (three per Quarter type), with three losses of the last viable deposit. None of the six working-supplier losses showed a district occupying that supplier at the next turn boundary. The Service observer recorded two Storekeeper links for 50 active chain-turns and one Sacristan link for 23. The 199 observations exclude the five-turn controller handoffs. The stock game averaged 5.43 seconds per popup-free turn and peaked at 16.60 seconds (196 intervals).
 
+### First lightweight treatment on the same opening
+
+Both arms loaded the Firaxis XP2 core and completed 34 Quarters by turn 250. The private adjacency and Builder preference produced more customer neighbors on this seed. The scarce link was an operating material supplier.
+
+| Turn 250 | Stock Bakers | Lightweight Bakers | Stock Tailors | Lightweight Tailors |
+| --- | ---: | ---: | ---: | ---: |
+| Completed Quarters | 17 | 18 | 17 | 16 |
+| With a completed mapped customer | 13 | 17 | 4 | 7 |
+| With a working Base | 1 | 2 | 2 | 1 |
+| With both | 1 (6%) | 2 (11%) | 1 (6%) | 0 (0%) |
+
+In the lightweight arm both supplied Bakers touched a City Center without a Granary. One had a Wind Mill. The supplied Tailors had its producers but lacked a Harbor. Across the 199 common Service observations, stock recorded 73 active chain-turns and lightweight recorded zero. Foundations without an owned viable Base went from 26/37 to 29/38. Losses of the last working supplier went from six to five, including zero losses in either arm where a district occupied the supplier at the next observation.
+
+Across 194 common popup-free turns, stock averaged 5.42 seconds (maximum 16.60) and lightweight averaged 5.82 seconds (maximum 18.00). These are elapsed turn times for two diverging games. Both recorded zero advanced planner passes.
+
 ### Follow-up candidate for undeveloped land
 
 All eleven foundation sites with viable owned Base had at least one neighboring bonus-class resource. The same signal also covered **12 of the 26** sites without viable owned Base. Waiting for adjacent improvements misses many early opportunities, while a bonus-resource cue by itself can attract a Quarter to unrelated resources.

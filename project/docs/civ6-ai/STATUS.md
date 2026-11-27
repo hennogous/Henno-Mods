@@ -2,7 +2,7 @@
 
 **Lightweight guidance experiment, 27 November.** We use Ghidra offline to trace how the stock AI reads a Workshop-compatible rule, which district and plot candidates it affects, and where that value enters the comparison. For the first experiment the rule is private-yield adjacency between a Quarter and its mapped customer. The game reads the relationship from `District_Adjacencies`. A build with CE disabled must load the rules and play through the normal district decisions. CE remains optional for players who enable the advanced planner in single player. Compare completed Quarters with a working Base supplier and a completed customer on matched starts.
 
-The first no-CE pilot reached turn 25 with 16 reciprocal links and zero planner publications. The full-game candidate also reads the loaded material/improvement mappings. [Controls, measurement and first results](lightweight-guidance.md)
+The first matched turn-250 game with CE absent raised completed Quarters beside mapped customers from 17 to 24 out of 34. Only two in each arm also had a working Base. Active Service chain-turns fell from 73 to zero on the common samples. The next placement experiment targets undeveloped deposits, which the improvement rules miss when early Quarters are founded. [Controls, measurement and matched results](lightweight-guidance.md)
 
 **Quarter layouts enabled for the single-player publisher, 25 November.**
 All four final games reached turn 250 and left verified Load Game saves.
