@@ -59,8 +59,25 @@ All eleven foundation sites with viable owned Base had at least one neighboring 
 
 The replay can test an extra stock adjacency rule against the same start (`--deposit-cues`). For each Quarter, a class must include at least two Base types, cover at least half its Base catalogue, and have at least one Base for every six resources in that class. On the standalone catalogue this gives Bakers +2 private yield for a neighboring bonus resource (six of twelve types match) and Tailors +1 (two of twelve). The registered yield has no conversion into Production or Gold. Compare the realized supplies and customers before choosing a shipping default.
 
+**How much does a bonus deposit tell us?** The five independent vanilla-Abundant Continents maps in the map lab contain 4,489 ordinary clearable land sites. This count excludes occupied sites, impassable land, unremovable features other than floodplains, and strategic/luxury footprints. It uses each map's actual Quarter tags and native neighbors. It describes map geometry before city ownership, production or Builder decisions.
+
+| Map condition | Sites | Adjacent Bakers Base | Adjacent Tailors Base |
+| --- | ---: | ---: | ---: |
+| All clearable sites | 4,489 | 1,693 (38%) | 503 (11%) |
+| At least one adjacent bonus resource | 2,571 | 1,693 (66%) | 468 (18%) |
+| At least two adjacent bonus resources | 796 | 632 (79%) | 182 (23%) |
+| At least one adjacent land bonus resource | 2,375 | 1,693 (71%) | 468 (20%) |
+
+One bonus resource catches 93% of the genuine Tailors sites, but four in five sites it flags lack Sheep, Flax or Cotton. Two bonuses are a stronger Bakers cue. A blanket requirement for two would also discard 63% of the genuine Bakers sites. A prospective vote can scale with the cluster while keeping single-resource sites eligible. Avoid a general coast penalty for Tailors: the Harbor is its Stage 2 customer. [Map survey inputs and definitions](../../tools/map_survey/README.md)
+
+For exact raw resources, the stock adjacency row exposes a single resource class. Historical gameplay tests confirm that a combined class string cannot retain bonus membership and also act as a second classification. CSC's earlier exact-resource modifier did correctly highlight mapped plots next to *existing* Quarters. Its transfer to a prospective district score was unverified. The hypothetical requirement compiler also drops some gameplay gates, including the property requirement, and its ordinary PlotAdjacentToOwner handler does not measure the distance between two plots. Reusing that modifier as a site bid needs a candidate-stage readback. [Class test](../research/mods/native-resourceclass-multivalue-probe-20261028.md) · [Exact live-yield experiment](../research/mods/csc-ai-quarter-resource-incentives-20261019.md)
+
 ### Follow-up candidate for first customer buildings
 
 Across the ten 25-turn censuses of the first lightweight game, two supplied Bakers had a functioning, adjacent City Center missing its Granary. One of those Quarters had also completed a Mill by turn 250. The supplied Tailors lacked a Harbor throughout its observed operating life, so changing Lighthouse construction alone cannot complete that chain.
 
 The diagnostic `--customer-buildings` option adds a stock major-leader Buildings preference for each Stage 2 customer and its unique replacements, read from the gameplay definitions. On the standalone map that selects Granary and Lighthouse. The current stock database had no preference rows for either. The traced native selector doubles the building value on a positive accumulated preference, which makes this a broad investment across the empire. Measure customer construction, actual Services and the cost to competing investments before deciding whether to ship it. Real Strategy offers a narrower alternative if broad investment proves costly: a stock Lua strategy condition can activate the same preference for a player with a ready chain. [Building preference trace](../research/mods/csc-ai-native-production-analysis-20261028.md)
+
+### Can the Quarter guide an ordinary Builder?
+
+The stock Farm beside Korea's Seowon provides a useful reverse direction. Ghidra shows the city values a proposed improvement at the specific plot, follows the improvement's adjacency rows, reads neighboring district identity/completion/pillage state and weights the yield before the ordinary Builder job is selected. This supports a private-yield experiment with no Lua or CE. Each registered Stage 2 Base supplier gets one private unit per neighboring Quarter, or two for a selective resource-only family. The six standalone rows include Tailors Flax Farms and Cotton Plantations even though those families are weak predictors of a good site when placing the Quarter first. Check the actual fraction of owned Base deposits improved and any extra empty Farms before promoting the option. The test control is `--supplier-jobs`.
