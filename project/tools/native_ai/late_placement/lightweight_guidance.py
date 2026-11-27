@@ -63,7 +63,7 @@ GameEvents.OnGameTurnStarted.Add(function()
     install_clocks(c,stock=True)
 
 
-def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False):
+def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False):
     study=load(root/'study.json')
     pins=study['pins'];game=pins['seeds'][str(seed)]
     source=root/str(seed)/'opening'
@@ -80,7 +80,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False):
         require(mode=='advanced','Only the CE arm may need its own seeded opening')
         source=source.parent/'prepare-advanced'
     record=load(source/'checkpoint.json')
-    arm_name=label or (mode+'-deposits' if deposit_cues else mode)
+    arm_name=label or (mode+('-deposits' if deposit_cues else '')+('-buildings' if customer_buildings else ''))
     out=source.parent/arm_name
     require(not native_inventory() and not out.exists(),'Game in use or output exists')
     out.mkdir()
@@ -103,16 +103,20 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False):
         require(connectors is not None,'Expected native action')
         actions.remove(connectors)
         active=ET.tostring(doc,encoding='utf-8',xml_declaration=True)
-    if deposit_cues:
+    if deposit_cues or customer_buildings:
         require(mode in ('native','advanced'),'The stock control must keep ordinary AI')
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
         require(sha(staged_path)==load(root/'material-candidate.json')['full'],'Underlying connector revision changed')
         original=staged_path.read_bytes()
-        addition=(HERE/'undeveloped_material_candidate.sql').read_bytes()
-        active=original+b'\n'+addition
-        (out/'deposit-treatment.sql').write_bytes(addition)
+        active=original
+        for enabled_overlay,name in [(deposit_cues,'undeveloped_material_candidate.sql'),
+                                     (customer_buildings,'customer_building_candidate.sql')]:
+            if enabled_overlay:
+                addition=(HERE/name).read_bytes()
+                active+=b'\n'+addition
+                (out/name).write_bytes(addition)
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
-        opening=source.name,deposit_cues=deposit_cues,active_file=staged_path.name,
+        opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
     try:
         if active!=original:replace(staged_path,active)
@@ -142,6 +146,14 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         require('CSC_LIGHT_MODE_OK' in raw,'Runtime tuning mode differs')
         (out/'mode.txt').write_text(raw,encoding='utf8')
         controls=stock_controls(user/'Cache/DebugGameplay.sqlite')
+        # Confirm the ordinary AI actually loaded the exact customer-building
+        # list generated for this treatment before attributing results to it.
+        with closing(sqlite3.connect((user/'Cache/DebugGameplay.sqlite').as_uri()+'?mode=ro',uri=True)) as db:
+            controls['customer_buildings']=db.execute("""SELECT f.Item,f.Favored,f.Value
+                FROM AiLists a JOIN AiFavoredItems f USING(ListType)
+                WHERE a.ListType='CSC_AI_FIRST_CUSTOMER_BUILDINGS' AND a.System='Buildings'
+                AND a.LeaderType='TRAIT_LEADER_MAJOR_CIV' ORDER BY f.Item""").fetchall()
+        require(bool(controls['customer_buildings'])==customer_buildings,'Customer building control differs')
         write_json(out/'stock-controls.json',controls)
         if mode!='stock':
             require(controls['builder_priority']==[(1,10)] and controls['recruiting_city']==[(13,None),(23,None)],
@@ -177,5 +189,6 @@ if __name__=='__main__':
     p.add_argument('mode',choices=['prepare','verify-off','prepare-advanced','native','stock','advanced'])
     p.add_argument('--ce-opening',action='store_true',help='Use the separately verified same-seed CE opening')
     p.add_argument('--deposit-cues',action='store_true',help='Test the undeveloped-resource class cue on this seed')
+    p.add_argument('--customer-buildings',action='store_true',help='Test the stock preference for first customer buildings')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
-    a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues)
+    a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings)

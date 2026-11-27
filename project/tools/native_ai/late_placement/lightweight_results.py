@@ -28,7 +28,12 @@ def read_arm(folder):
         result[profile] = dict(complete=complete, working_base_and_customer=supplied,
             share=supplied/complete if complete else None, no_base=complete-totals['base'],
             working_base=totals['base_improved'], both_materials=totals['both'],
-            mapped_customer=totals['customer_any_completed'])
+            mapped_customer=totals['customer_any_completed'],
+            stage2_producer=totals['producer2_working'],
+            stage2_customer_district=totals['mapped_customer2_completed'],
+            stage2_customer_building=totals['mapped_customer2_with_working_building'],
+            supplied_stage2_customer_building=totals['base_improved_customer2_working'],
+            stage2_chain_physical=totals['stage2_physical'])
 
     intervals = {}
     links = defaultdict(set)
