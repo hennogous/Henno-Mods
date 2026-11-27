@@ -27,8 +27,9 @@ local function ownedSites(city, player, profile)
                 local owner = Cities.GetPlotPurchaseCity(p)
                 if owner and owner:GetID() == city:GetID() then
                     local item = {plot=p, count={}, materialTerrain={}}
-                    for _, near in ipairs(Map.GetAdjacentPlots(p:GetX(), p:GetY())) do
-                        local terrain = GameInfo.Terrains[near:GetTerrainType()]
+                    for direction = 0, 5 do
+                        local near = Map.GetAdjacentPlot(p:GetX(), p:GetY(), direction)
+                        local terrain = near and GameInfo.Terrains[near:GetTerrainType()]
                         if terrain then
                             local key = terrain.TerrainType
                             item.count[key] = (item.count[key] or 0) + 1
