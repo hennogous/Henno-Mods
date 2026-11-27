@@ -2,7 +2,7 @@
 
 **Lightweight guidance experiment, 27 November.** We use Ghidra offline to trace how the stock AI reads a Workshop-compatible rule, which district and plot candidates it affects, and where that value enters the comparison. For the first experiment the rule is private-yield adjacency between a Quarter and its mapped customer. The game reads the relationship from `District_Adjacencies`. A build with CE disabled must load the rules and play through the normal district decisions. CE remains optional for players who enable the advanced planner in single player. Compare completed Quarters with a working Base supplier and a completed customer on matched starts.
 
-The first matched turn-250 game with CE absent raised completed Quarters beside mapped customers from 17 to 24 out of 34. Only two in each arm also had a working Base. Active Service chain-turns fell from 73 to zero on the common samples. The next placement experiment targets undeveloped deposits, which the improvement rules miss when early Quarters are founded. [Controls, measurement and matched results](lightweight-guidance.md)
+On the first matched seed at turn 250, adding a stock bonus-resource cue raised supplied Bakers beside a customer from 1/17 to 7/20 and Storekeeper activity from 50 to 177 chain-turns. Tailors held at 1/17 and none ended beside a Harbor. One Commercial Hub destroyed an operating Storekeeper's last Flax. The second seed and the stock Builder/customer preferences are under test. [Controls, costs and matched results](lightweight-guidance.md#first-full-game-with-the-undeveloped-deposit-cue)
 
 **Quarter layouts enabled for the single-player publisher, 25 November.**
 All four final games reached turn 250 and left verified Load Game saves.

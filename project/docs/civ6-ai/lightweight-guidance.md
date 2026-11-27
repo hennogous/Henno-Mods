@@ -84,6 +84,25 @@ In a preliminary offline survey we sampled every third clearable plot by index a
 
 The disposable no-CE `--city-cue-probe --end 50` checks the terrain mechanism separately. It selects two owned sites in one city with different counts of the same terrain, reads their stock Quarter adjacency, enables a private +7 test modifier, and checks withdrawal and an unconditional positive control. A production implementation would need to keep each rule aligned with the city's actual deposits and measure placement gains and turn cost.
 
+### First full game with the undeveloped-deposit cue
+
+All three games on seed 171124601 used the identical turn-one save. These figures use 199 common Service observations and 191 common popup-free intervals.
+
+| At turn 250 | Stock CSC | Lightweight, improvements only | Lightweight, plus raw deposits |
+| --- | ---: | ---: | ---: |
+| Bakers with working Base and completed mapped customer | 1/17 (6%) | 2/18 (11%) | **7/20 (35%)** |
+| Tailors with working Base and completed mapped customer | 1/17 (6%) | 0/16 | **1/17 (6%)** |
+| Completed Quarters with any completed mapped customer | 17/34 | 24/34 | 25/37 |
+| Foundations without usable owned Base | 26/37 | 29/38 | 21/36 |
+| Storekeeper active chain-turns | 50 (2 chains) | 0 | **177 (4 chains)** |
+| Other active Services | Sacristan 23 (1) | 0 | Innkeeper 32 (1) |
+| Last working supplier losses / last viable deposit losses | 6 / 3 | 5 / 4 | 5 / 9 |
+| Mean / maximum elapsed turn, seconds | 5.41 / 16.60 | 5.82 / 18.00 | 6.29 / 20.62 |
+
+The deposit arm ended with eight working-Base Bakers and two working-Base Tailors. No completed Tailors touched a Harbor; seven touched another mapped customer. The 37 endpoint Quarters are current holdings, while the 36 foundations count this cohort's own observed construction. The stock empires held 47 cities and the deposit empires 52.
+
+**One working chain was lost to its own customer.** At player 3's Bakers on plot 1047, the Storekeeper operated from turn 68 through 127. On 128 a Commercial Hub covered plot 1120, removing its last working Flax. Subsequent censuses identified the completed Hub on that tile and the Storekeeper never returned. Another Hub covered the last raw Bananas at player 4's Bakers on turn 71. The other seven final-deposit losses in this arm had no district on the tile at the next observation. The queued supplier-job treatment also tests a plausible retention mechanism: the district evaluator subtracts the same intact-improvement Value that includes the improvement's own Quarter adjacency. [Improvement loss trace](../research/mods/civ6-district-improvement-loss-20261106.md)
+
 ### Follow-up candidate for first customer buildings
 
 Across the ten 25-turn censuses of the first lightweight game, two supplied Bakers had a functioning, adjacent City Center missing its Granary. One of those Quarters had also completed a Mill by turn 250. The supplied Tailors lacked a Harbor throughout its observed operating life, so changing Lighthouse construction alone cannot complete that chain.
