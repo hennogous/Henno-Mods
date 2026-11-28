@@ -445,3 +445,24 @@ The experimental selector checks every revealed, unowned land tile within three 
 The candidate issued 978 city/Quarter reviews. In 622 reviews the city had legal sites but none beside an owned Base. In 323 it had an owned supplied option but found no safe cue. Four reviews returned no eligible owned sites. The remaining 29 chose a site to reward. The frontier check rejected at least one otherwise acceptable terrain in 40 reviews. Three foundations followed reviews that had selected a target and all three had Base. The nine foundations without Base followed five reviews with no supplied site and four with no safe cue.
 
 **Decision.** Keep ordinary lightweight guidance as the default. The frontier check caught the exact false incentive in Tenochtitlan, and the full candidate removed five weak placements on the fresh map. It also lost two supplied Bakers and 50 Storekeeper turns. The next isolated comparison should keep the frontier check and lift the blanket penalty in cities that have a supplied legal site but no safe terrain cue. This targets the 323 reviews where the candidate penalised good land along with poor land. [Selector and test driver](../../tools/native_ai/late_placement/lightweight_guidance.py) and [outcome analysis](../../tools/native_ai/late_placement/lightweight_results.py)
+
+### Lifting the penalty when a supplied site has no safe cue
+
+The third run loaded the same turn-one save on Continents seed 281126037 and reached turn 200 on Online speed. It retained the frontier veto, the six-point terrain reward and the general penalty in cities lacking a known supplied site. When the city had a legal owned site beside owned Base but no terrain rule could distinguish it safely, the city cleared both the penalty and the terrain reward. A later review could reapply either. This comparison uses the five original AI players, 199 common Service observations and 152 common popup-free turns.
+
+| Outcome | Ordinary lightweight | Frontier with penalty | Frontier with fallback |
+| --- | ---: | ---: | ---: |
+| Bakers founded beside owned Base / all | 8/13 | 6/11 | 7/12 |
+| Tailors founded beside owned Base / all | 1/10 | 1/5 | 2/8 |
+| Supplied foundations / all | 9/23 (39%) | 7/16 (44%) | 9/20 (45%) |
+| Foundations without owned Base | 14 | 9 | 11 |
+| Foundations beside both Base and Specialty | 0 | 0 | 1 |
+| Foundations at +3 current adjacency or better | 5 | 1 | 2 |
+| Completed Quarters with working Base and a completed customer at turn 200 | 2 | 2 | 2 |
+| Storekeepers / active Service turns | 1 / 60 | 1 / 10 | 1 / 26 |
+| Dockmasters | 0 | 0 | 0 |
+| Mean / maximum turn time, seconds | 3.84 / 10.24 | 3.78 / 10.08 | 3.93 / 10.70 |
+
+The fallback released the penalty in all 326 eligible reviews. Forty reviews rejected at least one otherwise acceptable terrain because of a frontier rival. Thirty-two reviews selected a safe positive target. Twelve foundations followed a review that used the fallback, and seven of those landed beside Base.
+
+The fallback recovered the ordinary run's count of nine supplied foundations while removing three weak ones. It also produced the only Quarter beside both material classes, a Bakers. Ordinary guidance still led on +3 placements and Storekeeper activity. The first Storekeeper appeared on turn 127 with ordinary guidance, 188 with the earlier frontier candidate and 175 with the fallback. The fallback chain stayed active through turn 200. Of the two supplied Tailors foundations in the fallback run, neither had working Base at foundation, and no completed Tailors had a working Base at the endpoint. Carry the fallback forward as the experimental candidate. The ordinary configuration remains the release default.
