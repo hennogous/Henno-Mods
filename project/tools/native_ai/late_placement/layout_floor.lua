@@ -62,7 +62,7 @@ function pairPolicy.choose(sites, city, player, profile, turn)
                     -- the foundation observer identifies it by player/city
                     -- ID and plot. Store both identities on the new signal.
                     print('CSC_SPLIT_SIGNAL',turn,player,city:GetID(),city:GetName(),
-                          profile.district.DistrictType,cue.target,cue.a,cue.b,cue.delta)
+                          profile.district.DistrictType,cue.target,cue.a,cue.b,cue.delta,cue.c or '-')
                 end
             end
             if pairPolicy.releaseAmbiguousFloor and not cue.target then

@@ -143,6 +143,24 @@ class PairedSiteTest(unittest.TestCase):
         assert(signed.a:match('__P_GRASS$') and signed.b:match('__N_PLAINS$'))
         frontier.count={GRASS=2,PLAINS=2,WATER=1}
         assert(not choose().target)
+        terrainKeys={'GRASS','PLAINS','TUNDRA'}
+        good.count={GRASS=2,PLAINS=2,TUNDRA=2}
+        left.count={GRASS=3,TUNDRA=3}
+        right.count={PLAINS=3,TUNDRA=3}
+        sites.frontierWeak={}
+        assert(not choose().target)
+        pairPolicy.thirdRelief=true
+        local three=choose()
+        assert(three.target==675 and three.delta==6 and three.c)
+        sites.frontierWeak={{count={GRASS=1,TUNDRA=1},unknown=4,neighbors=6}}
+        assert(not choose().target)
+        GameInfo.Terrains=function()return function()return nil end end
+        pairPolicy.update(city,center,1,profile,three,25,'owner')
+        assert(center:GetProperty(three.c)==1)
+        pairPolicy.update(city,center,1,profile,{a=three.c},26,'owner')
+        assert(center:GetProperty(three.c)==1 and center:GetProperty(three.a)==0)
+        pairPolicy.update(city,center,1,profile,nil,27,'owner')
+        assert(center:GetProperty(three.c)==0 and not center:GetProperty('CSC_AI_PAIR_ACTIVE_QUARTER3'))
         """)
 
     def test_foundation_and_capture_callbacks_clear_only_the_affected_city(self):

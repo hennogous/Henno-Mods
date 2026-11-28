@@ -16,6 +16,11 @@ local function inspect()
     local can, result = queue:CanProduce(d.Hash,false,true)
     local reasons = result and result[CityCommandResults.FAILURE_REASONS] or {}
     local gate = 'CSC_AI_PAIR_ACTIVE_'..d.DistrictType
+    -- Plot 796 is the original Flax next to 870. A change in its ownership,
+    -- resource or occupation can end the supplied layout during a long bid.
+    local flax=Map.GetPlotByIndex(796)
+    print('CSC_STIRLING_SUPPLIER',turn,flax:GetOwner(),flax:GetResourceType(),
+          flax:GetDistrictType(),flax:GetImprovementType())
     print('CSC_STIRLING_CAPACITY',turn,city:GetPopulation(),ds:GetNumZonedDistrictsRequiringPopulation(),
           ds:GetNumAllowedDistrictsRequiringPopulation(),tostring(can),table.concat(reasons,'|'),
           center:GetProperty(gate..1) or '-',center:GetProperty(gate..2) or '-',table.concat(inventory,','))

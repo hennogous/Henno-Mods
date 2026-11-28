@@ -44,6 +44,25 @@ def decode(field):
     return sites
 
 
+def third_target(sites, keys):
+    """One or two positive terms, with the remaining terms negative. No floor."""
+    best = None
+    for terms in combinations(keys,3):
+        for solo in terms:
+            pair=[k for k in terms if k!=solo]
+            for sign in (1,-1):
+                def balance(s):
+                    v=s.counts.get(solo,0)-sum(s.counts.get(k,0) for k in pair)
+                    return sign*v+s.unknown
+                if any(balance(s)>0 for s in sites if not s.rank):
+                    continue
+                for s in sites:
+                    value=balance(s)
+                    if s.rank and value>0 and (best is None or (s.rank,value)>best[:2]):
+                        best=s.rank,value,s.plot,terms,solo,sign
+    return best
+
+
 def compare(log, eligible):
     counts = Counter()
     distinct = defaultdict(set)
@@ -78,12 +97,16 @@ def compare(log, eligible):
             raise ValueError(f'Single-cue reproduction failed at {turn} {key}: {expected} vs {captured}')
         if single:
             tally('current_single', *key, single[2])
+            tally('through_two_terms', *key, single[2])
+            tally('through_three_terms', *key, single[2])
             continue
         # A second terrain can affect only rivals and provide zero matches at
         # the target. Include those terrains for an honest two-weight test.
         keys = sorted(eligible.intersection(k for s in sites if s.plot>=0 for k in s.counts))
         pair = target(sites, combinations(keys, 2), 3)
         if pair:
+            tally('through_two_terms', *key, pair[2])
+            tally('through_three_terms', *key, pair[2])
             tally('additional_pair', *key, pair[2])
             tally('additional_' + quarter, *key, pair[2])
             if pair[1] > 0:
@@ -100,7 +123,14 @@ def compare(log, eligible):
                 if s.rank and value>0 and (best is None or (s.rank,value)>best[:2]):
                     best=s.rank,value,s.plot
         if best:
+            tally('through_two_terms', *key, best[2])
+            tally('through_three_terms', *key, best[2])
             tally('additional_signed_'+quarter, *key, best[2])
+            continue
+        third=third_target(sites,keys)
+        if third:
+            tally('through_three_terms', *key, third[2])
+            tally('additional_third_'+quarter, *key, third[2])
     return {k:dict(reviews=v, **{s:len(distinct[k,s]) for s in ('cities','city_quarters','targets')})
             for k,v in counts.items()}
 

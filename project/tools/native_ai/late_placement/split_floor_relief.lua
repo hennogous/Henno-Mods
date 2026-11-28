@@ -72,5 +72,41 @@ function pairPolicy.splitRelief(sites, profile)
             end
         end
     end
+    if best or not pairPolicy.thirdRelief then return best end
+    -- A third cue can distinguish sites that share both of the simpler
+    -- patterns. Compare only terrain types present on legal owned footprints.
+    -- Test both signs of each contrast together, sharing the rival scan.
+    -- Cold data stays in this review; no extra map reads or SQL rows are needed.
+    local prefix='CSC_AI_PAIR_'..profile.district.DistrictType
+    local function consider(a,b,c)
+        local positive,negative=true,true
+        for _,s in ipairs(rivals) do
+            local v=(s.count[a] or 0)-(s.count[b] or 0)-(s.count[c] or 0)
+            if v+s.unknown>0 then positive=false end
+            if -v+s.unknown>0 then negative=false end
+            if not positive and not negative then return end
+        end
+        for _,s in ipairs(supplied) do
+            local v=(s.count[a] or 0)-(s.count[b] or 0)-(s.count[c] or 0)
+            if (positive and v>0) or (negative and v<0) then
+                local change=3*math.abs(v)
+                if not best or s.rank>best.rank or (s.rank==best.rank and change>best.delta) then
+                    local first=v>0 and '__P_' or '__N_'
+                    local other=v>0 and '__N_' or '__P_'
+                    best={floor=false,a=prefix..first..a,b=prefix..other..b,c=prefix..other..c,
+                          target=s.plot,rank=s.rank,delta=change}
+                end
+            end
+        end
+    end
+    for i=1,#keys-2 do
+        for j=i+1,#keys-1 do
+            for k=j+1,#keys do
+                consider(keys[i],keys[j],keys[k])
+                consider(keys[j],keys[i],keys[k])
+                consider(keys[k],keys[i],keys[j])
+            end
+        end
+    end
     return best
 end

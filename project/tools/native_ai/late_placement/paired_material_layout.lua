@@ -94,14 +94,17 @@ end
 
 function pairPolicy.update(city,center,player,profile,cue,turn,ownerKey)
     local key='CSC_AI_PAIR_ACTIVE_'..profile.district.DistrictType
-    local wanted={cue and cue.a,cue and cue.b}
-    local old={center:GetProperty(key..1),center:GetProperty(key..2)}
-    if old[1]==wanted[1] and old[2]==wanted[2] then return end
-    for slot=1,2 do
+    local wanted={cue and cue.a,cue and cue.b,cue and cue.c}
+    local old={center:GetProperty(key..1),center:GetProperty(key..2),center:GetProperty(key..3)}
+    if old[1]==wanted[1] and old[2]==wanted[2] and old[3]==wanted[3] then return end
+    -- Also clear a third saved switch when resuming in the simpler policy.
+    -- Retain rules moving between slots so the same city keeps one attachment.
+    local slots=(wanted[3] or old[3]) and 3 or 2
+    for slot=1,slots do
         local id=old[slot]
-        if id and id~=wanted[1] and id~=wanted[2] then center:SetProperty(id,0) end
+        if id and id~=wanted[1] and id~=wanted[2] and id~=wanted[3] then center:SetProperty(id,0) end
     end
-    for slot=1,2 do
+    for slot=1,slots do
         local id=wanted[slot]
         if id then
             if city:GetProperty(id..'_BOUND')~=1 then
@@ -115,4 +118,8 @@ function pairPolicy.update(city,center,player,profile,cue,turn,ownerKey)
     end
     print('CSC_PAIR_SWITCH',turn,player,city:GetID(),profile.district.DistrictType,
           old[1] or '-',old[2] or '-',wanted[1] or '-',wanted[2] or '-')
+    if old[3]~=wanted[3] then
+        print('CSC_PAIR_THIRD_SWITCH',turn,player,city:GetID(),profile.district.DistrictType,
+              old[3] or '-',center:GetProperty(key..3) or '-')
+    end
 end

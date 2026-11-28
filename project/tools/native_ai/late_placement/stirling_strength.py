@@ -2,6 +2,8 @@
 import argparse
 import csv
 import hashlib
+from itertools import groupby
+import json
 from pathlib import Path
 import shutil
 from types import SimpleNamespace
@@ -19,6 +21,35 @@ def city_rows(path, column):
     with path.open(encoding='utf-8-sig', errors='replace') as stream:
         return [r for r in csv.reader(stream, skipinitialspace=True)
                 if len(r)>column and r[column]=='LOC_CITY_NAME_STIRLING']
+
+
+def comparison(folder):
+    summaries={}
+    for w in (6,9,12):
+        data=load(folder/f'stirling-weight-{w}'/'decision.json')
+        facts=data['facts']
+        start=[r for r in facts if r[:2]==['PREVIEW','80']]
+        target,=[r for r in start if r[2]=='870']
+        rivals=[r for r in start if r[2]!='870' and r[5]=='true']
+        best=max(float(r[4]) for r in rivals)
+        capacities=[r for r in facts if r[0]=='CAPACITY']
+        windows=[]
+        for state,rows in groupby(capacities,key=lambda r:(r[4],r[3],r[5],r[7]==GATE)):
+            rows=list(rows)
+            windows.append((int(rows[0][1]),int(rows[-1][1]),*state))
+        contracts=[r for r in data['submissions'] if len(r)>9 and r[1]=='5' and r[5]=='SUBMITTED'
+                   and 80<=int(r[0])<=data['end'] and r[8]!='NO_DISTRICT']
+        production=[]
+        for item,rows in groupby((r for r in data['production'] if 80<=int(r[0])<=data['end']),
+                                 key=lambda r:r[3]):
+            rows=list(rows)
+            production.append((int(rows[0][0]),int(rows[-1][0]),item))
+        summaries[w]=dict(source=data['source'],target=float(target[4]),rival=best,
+                          rival_plots=[int(r[2]) for r in rivals if float(r[4])==best],
+                          windows=windows,district_submissions=[(r[0],r[8],r[9]) for r in contracts],
+                          production=production)
+    require(len({s['source'] for s in summaries.values()})==1,'Strength arms used different save states')
+    return summaries
 
 
 def replay(study, saved, out, weight, end):
@@ -100,10 +131,12 @@ if __name__=='__main__':
     parser.add_argument('study',type=Path)
     parser.add_argument('saved',type=Path)
     parser.add_argument('--end',type=int,default=115)
+    parser.add_argument('--report-only',action='store_true',help='Summarize completed replays without launching Civ')
     args=parser.parse_args()
     for strength in (6,9,12):
         out=args.saved.parent/f'stirling-weight-{strength}'
         if not (out/'decision.json').is_file():
+            require(not args.report_only,'Incomplete replay: '+str(out))
             if out.exists():
                 require((out/'session-closed.json').is_file() and not native_inventory(),
                         'Previous attempt still owns the game or lacks its closure receipt')
@@ -112,3 +145,4 @@ if __name__=='__main__':
                 keep=next(i for i in range(1,100) if not out.with_name(f'{out.name}-attempt-{i}').exists())
                 out.rename(out.with_name(f'{out.name}-attempt-{keep}'))
             replay(args.study,args.saved,out,strength,args.end)
+    print(json.dumps(comparison(args.saved.parent),indent=2))
