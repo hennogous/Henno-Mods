@@ -55,6 +55,9 @@ function pairPolicy.choose(sites, city, player, profile, turn)
             -- leave every site penalised, including the one the city should
             -- consider. Let Civ compare these sites at their ordinary values.
             -- A safe cue still needs the floor under its competing footprints.
+            if not cue.target and pairPolicy.splitRelief then
+                cue=pairPolicy.splitRelief(sites,profile) or cue
+            end
             if pairPolicy.releaseAmbiguousFloor and not cue.target then
                 cue.floor=false
             end

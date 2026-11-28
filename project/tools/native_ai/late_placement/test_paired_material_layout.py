@@ -113,6 +113,37 @@ class PairedSiteTest(unittest.TestCase):
         assert(pick({good}).floor and not pick({good,bad}).a)
         """)
 
+    def test_split_relief_with_hidden_frontier_neighbor_and_ordinary_fallback(self):
+        self.vm.execute("terrainKeys={'GRASS','PLAINS'};reliefWeight=6")
+        self.vm.execute('\n'.join((HERE/f).read_text() for f in
+                        ('paired_material_layout.lua','layout_floor.lua','split_floor_relief.lua')))
+        self.vm.execute("""
+        pairPolicy.releaseAmbiguousFloor=true
+        local good,left,right=site(675,1,2,true),site(750,1,0,false),site(751,0,1,false)
+        good.count.WATER=3;left.count.WATER=5;right.count.WATER=5
+        local frontier={count={WATER=5},unknown=1,neighbors=6}
+        local sites={good,left,right,frontierWeak={frontier}}
+        local function choose()return pairPolicy.choose(sites,city,1,profile,25)end
+        local result=choose()
+        assert(result.a and result.b and result.target==675 and result.delta==3)
+        -- One Tundra-like match plus an unseen hex can erase the penalty on
+        -- the frontier, the same hazard observed on Tenochtitlan's plot 599.
+        frontier.count={WATER=4,PLAINS=1}
+        local veto=choose()
+        assert(not veto.a and not veto.b and not veto.floor)
+        -- Each weak rival matches both cues equally. A positive-only rule
+        -- rewards them; the signed pair gives them zero and the target +3.
+        good.count={GRASS=3,PLAINS=2,WATER=1}
+        left.count={GRASS=2,PLAINS=2,WATER=2}
+        right.count={GRASS=1,PLAINS=1,WATER=4}
+        frontier.count={GRASS=1,PLAINS=2,WATER=2}
+        local signed=choose()
+        assert(not signed.floor and signed.target==675 and signed.delta==3)
+        assert(signed.a:match('__P_GRASS$') and signed.b:match('__N_PLAINS$'))
+        frontier.count={GRASS=2,PLAINS=2,WATER=1}
+        assert(not choose().target)
+        """)
+
     def test_foundation_and_capture_callbacks_clear_only_the_affected_city(self):
         self.vm.execute(SETUP + """
         profiles={[4]={district={Index=4,DistrictType='TEST'}}}

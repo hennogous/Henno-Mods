@@ -9,7 +9,7 @@ from types import SimpleNamespace
 
 from lightweight_guidance import (HERE, HeldProcess, NativeSession, launch, load, make_probe_controller,
                                  native_inventory, relief_sql, replace, require, restore_preferences, select_stack,
-                                 sha, write_json)
+                                 sha, split_relief_sql, write_json)
 
 
 def observe_teno(c, out, user):
@@ -69,6 +69,8 @@ def read_cities(study, receipt, native_save, out, sites=False):
         if rel.endswith('.sql'):
             if protocol.get('layout_floor'):
                 candidate = original+b'\n'+(HERE/'no_base_city_rules.sql').read_bytes()+relief_sql(protocol['layout_floor'])
+                if protocol.get('split_relief'):
+                    candidate+=split_relief_sql()
             else:
                 candidate = original+b'\n'+(HERE/'paired_material_rules.sql').read_bytes()
         else:
