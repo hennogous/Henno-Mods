@@ -36,6 +36,7 @@ player.GetCities=function()return {Members=function()return ipairs(cities)end}en
 PlayerManager={GetAliveMajors=function()return {player}end}
 GameEvents={OnGameTurnStarted={Add=function(f)tick=f end}}
 terrainKeys={'PLAINS'};profiles={{district={Index=4,DistrictType='TEST'}}}
+function citySites()return {} end
 function ownedSites()
     scans=scans+1
     return {{count={PLAINS=3},materialTerrain=good and {PLAINS=true} or {},customerRank=1},
@@ -46,6 +47,51 @@ print=function(kind,...)if kind=='CSC_LOCAL_CUE_FAULT' then fault=true end end
 
 
 class LocalMaterialGuidance(unittest.TestCase):
+    def test_geometry_shared_across_quarters_and_hidden_rings_defer(self):
+        vm = LuaRuntime()
+        vm.execute("""
+        function catalogue(rows,key)
+            local t={}
+            for _,r in ipairs(rows)do if key then t[r[key]]=r;t[r.Index]=r end end
+            return setmetatable(t,{__call=function()local i=0;return function()i=i+1;return rows[i]end end})
+        end
+        local a='DISTRICT_CSC_A_QUARTER';local b='DISTRICT_CSC_B_QUARTER'
+        GameInfo={
+            Districts=catalogue({{DistrictType=a,Index=1},{DistrictType=b,Index=2},
+                {DistrictType='HARBOR',Index=3,Coast=1}},'DistrictType'),
+            CSC_QuarterMaterialAdjacencyConfig=catalogue({
+                {QuarterKey='A',SourceTag='CLASS_CSC_A_BASE',SourceFilter='',AdjacencyType='FROM_RINGS_TYPETAG_RESOURCE'},
+                {QuarterKey='B',SourceTag='CLASS_CSC_B_BASE',SourceFilter='',AdjacencyType='FROM_RINGS_TYPETAG_RESOURCE'}}),
+            Resources=catalogue({{ResourceType='COTTON',Index=0}},'ResourceType'),
+            TypeTags=catalogue({{Type='COTTON',Tag='CLASS_CSC_A_BASE'},{Type='COTTON',Tag='CLASS_CSC_B_BASE'}}),
+            Terrains=catalogue({{TerrainType='PLAINS',Index=0},{TerrainType='TERRAIN_COAST',Index=1,Water=1}},'TerrainType'),
+            CSC_QuarterCustomerBuildings=catalogue({{QuarterKey='A',ProducerStage=2,DistrictType='HARBOR'}}),
+            DistrictReplaces=catalogue({})}
+        function plot(id,owner,terrain,resource)
+           return {GetIndex=function()return id end,GetX=function()return id end,GetY=function()return 0 end,
+             GetOwner=function()return owner end,GetTerrainType=function()return terrain end,GetResourceType=function()return resource end,
+             GetDistrictType=function()return -1 end,GetFeatureType=function()return -1 end,CanHaveDistrict=function()return true end}
+        end
+        local first=plot(1,2,0,-1);local second=plot(2,2,0,-1)
+        local cotton=plot(3,2,0,0);local coast=plot(4,-1,1,-1)
+        local empty=plot(5,2,0,-1)
+        rings={{cotton,coast,empty},{empty}}
+        city={GetX=function()return 1 end,GetY=function()return 0 end,GetID=function()return 7 end}
+        Cities={GetPlotPurchaseCity=function()return city end}; reads=0;hide=false
+        Map={GetPlotXYWithRangeCheck=function(x,y,dx,dy)if dy==0 and dx==1 then return first elseif dy==0 and dx==2 then return second end end,
+            GetAdjacentPlot=function(x,y,d)reads=reads+1;return rings[x][d+1]end}
+        Players={[2]={}};PlayersVisibility={[2]={IsRevealed=function(_,x,y)return not (hide and x==5)end}}
+        """)
+        source = (HERE/'city_material_cue_choice.lua').read_text() + '\n' + (HERE/'city_material_cue_sites.lua').read_text()
+        vm.execute(source + """
+        local view=citySites(city,2)
+        local a=ownedSites(city,2,profiles[1],view);local b=ownedSites(city,2,profiles[2],view)
+        assert(reads==12 and #a==2 and #b==2)
+        local first=selectMaterialCue(a,terrainKeys);local second=selectMaterialCue(b,terrainKeys)
+        assert(first.cutoff==2 and first.hits==1 and first.customerRank==1 and second.customerRank==0)
+        hide=true;assert(#ownedSites(city,2,profiles[1],citySites(city,2))==0)
+        """)
+
     def test_budget_reloads_withdrawal_and_reattachment(self):
         vm = LuaRuntime()
         vm.execute(SETUP)

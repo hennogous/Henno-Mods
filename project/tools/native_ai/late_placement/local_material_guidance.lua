@@ -83,10 +83,12 @@ local function reviewPlayer(player, turn)
     -- At most one radius-three city scan per major AI per turn. Oldest
     -- review first prevents large empires starving their newer cities.
     local evaluated, matched = 0, 0
+    local snapshot
     for _, profile in ipairs(ordered) do
         local cue
         if not chosen:GetDistricts():HasDistrict(profile.district.Index) then
-            local sites = ownedSites(chosen,id,profile)
+            snapshot = snapshot or citySites(chosen,id)
+            local sites = ownedSites(chosen,id,profile,snapshot)
             evaluated = evaluated + #sites
             cue = selectMaterialCue(sites,terrainKeys)
             if cue then matched = matched + 1 end
@@ -101,12 +103,29 @@ local disabled = false
 local function advance()
     if disabled or not singlePlayer() then return end
     local turn = Game.GetCurrentGameTurn()
+    local clock = os and os.clock
+    local started = clock and clock()
     local ok, message = pcall(function()
         for _, player in ipairs(PlayerManager.GetAliveMajors()) do reviewPlayer(player,turn) end
     end)
-    if not ok then disabled = true; print('CSC_LOCAL_CUE_FAULT',turn,message) end
+    if started then print('CSC_LOCAL_CUE_LUA_MICROS',turn,math.floor((clock()-started)*1000000+0.5)) end
+    if not ok then
+        disabled = true
+        print('CSC_LOCAL_CUE_FAULT',turn,message)
+        -- A partial review can leave an old terrain gate active. Withdraw
+        -- existing gates before handing these cities back to database guidance.
+        for _, player in ipairs(PlayerManager.GetAliveMajors()) do
+            for _, city in player:GetCities():Members() do
+                local center = Map.GetPlot(city:GetX(),city:GetY())
+                for _, profile in ipairs(ordered) do
+                    pcall(update,city,center,player:GetID(),profile,nil,turn)
+                end
+            end
+        end
+    end
 end
 GameEvents.OnGameTurnStarted.Add(advance)
+if Events and Events.LoadScreenClose then Events.LoadScreenClose.Add(advance) end
 -- The normal game-load callback runs before the controller starts autoplay.
 -- Capture the original seats here as well as at the first turn boundary.
 advance()

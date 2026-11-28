@@ -65,10 +65,14 @@ def read_arm(folder):
     founder_rules = {}
     founder_terrain = defaultdict(Counter)
     city_cue_stats = Counter()
+    city_cue_time = Counter()
     district_profiles = defaultdict(set)
     seats = set(load(folder/'source.json')['original_ai'])
     for line in (folder/'Lua.log').read_text(encoding='utf-8-sig',errors='replace').splitlines():
-        if 'CSC_LOCAL_CUE_REVIEW\t' in line:
+        if 'CSC_LOCAL_CUE_LUA_MICROS\t' in line:
+            turn_id,micros=map(int,line.split('CSC_LOCAL_CUE_LUA_MICROS\t',1)[1].split())
+            city_cue_time[turn_id] += micros
+        elif 'CSC_LOCAL_CUE_REVIEW\t' in line:
             _,_,_,evaluated,matched = line.split('CSC_LOCAL_CUE_REVIEW\t',1)[1].split()
             city_cue_stats['city_reviews'] += 1
             city_cue_stats['legal_sites_evaluated'] += int(evaluated)
@@ -190,6 +194,10 @@ def read_arm(folder):
         if not stats['coast_surveyed_foundations']:
             stats['clear_coast_neighbor'] = None
             stats['owned_base_and_clear_coast_neighbor'] = None
+    if city_cue_time:
+        city_cue_stats['lua_clock_turns'] = len(city_cue_time)
+        city_cue_stats['mean_lua_clock_ms'] = mean(city_cue_time.values()) / 1000
+        city_cue_stats['max_lua_clock_ms'] = max(city_cue_time.values()) / 1000
     # The last two suppliers can disappear together. Preserve both states on
     # that single Quarter loss rather than crediting it to either tile alone.
     state_counts = {}

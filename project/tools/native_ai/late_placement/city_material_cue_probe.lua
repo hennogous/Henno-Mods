@@ -35,10 +35,11 @@ end
 local fallback
 for _, pid in ipairs(CSC_CUE_SEATS) do
     for _, city in Players[pid]:GetCities():Members() do
+        local snapshot = citySites(city,pid)
         for district in GameInfo.Districts() do
             local profile = profiles[district.Index]
             if profile then
-                local sites = ownedSites(city, pid, profile)
+                local sites = ownedSites(city, pid, profile, snapshot)
                 local exact = selectMaterialCue(sites, terrainKeys)
                 if exact then report(pid, city, profile, exact, true); return end
                 if CSC_CUE_ALLOW_FALLBACK and not fallback then
