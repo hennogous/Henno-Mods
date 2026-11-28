@@ -498,3 +498,23 @@ Qualification is at least 10 supplied foundations, including 3 Tailors, and at m
 **Stirling strength result.** Three games loaded the same turn-80 save (SHA-256 prefix `dfbcbf4ca62a`) on the Firaxis core. Only Stirling received the extra Desert weight, under its original city gate. At +6, +9 and +12 the private preview on supplied plot 870 was **+1, +4 and +7**. The leading rival, plot 797, stayed at **−4**. None of the three runs submitted Tailors. All three repeated the same city production through turn 114. After the fourth slot opened on turn 100, Stirling finished its Trebuchet, put production into the Theater Square on 107, the Castle on 108–109 and the Holy Site on 110–113. The district submissions had values 5,578 for the Theater Square on 104, 1,870 for the Holy Site on 108 and 865 for the Industrial Zone on 114. These are contract values in the city-build log, distinct from private adjacency units.
 
 Stirling had already accepted its Holy Site contract when the cue first appeared. The stock logs expose the contracts; they do not identify a hidden reservation owner for plot 870. The plot continued to pass the placement check throughout the cue. The planner found zero supplied sites on its turn-114 review and withdrew the cue. On both stronger replays the UI still showed the Flax at 114 and showed no resource on its plot by 115. This left fourteen observed turns with an open slot, a supplied site, and an active cue. The qualification candidate keeps the +6 single-terrain reward and expands coverage to other cities. [Replay and read-only comparison](../../tools/native_ai/late_placement/stirling_strength.py)
+
+**Tenochtitlan regression.** The three-cue candidate replayed seed 171124601 through turn 50. At turn 25 the city found one supplied Tailors option among seven owned sites and returned to ordinary scoring. On turn 30 the private previews were +3 on supplied plot 675, +2 on 750, and +1 on unclaimed 599. The historical unsafe cue had lifted 599 to +7. The city acquired 599 by turn 37 and founded no Tailors there through turn 50. All four original-AI Quarter foundations in this replay were Bakers beside owned Base.
+
+### How selectively can a city reward one supplied site?
+
+All three runs below finished the same Continents opening (281126037) to turn 200. Counts cover the five original AI players. Services cover 199 common samples; times cover 155 common popup-free turn intervals. The three-cue endpoint save and verified settings-restoration receipt are in the study's `split-three-t200` arm.
+
+| Outcome | Ordinary lightweight | Previous fallback | Up to three cues |
+|---|---:|---:|---:|
+| Supplied Bakers / Tailors at foundation | 8 / 1 | 7 / 2 | 3 / 3 |
+| Weak foundations | 14 | 11 | 6 |
+| Foundations with at least +3 actual starting adjacency | 5 | 2 | 1 |
+| Completed Quarters with working Base and completed customer | 2 | 2 | 0 |
+| Storekeepers / active turns | 1 / 60 | 1 / 26 | 0 / 0 |
+| Other Services / active turns | 0 / 0 | 0 / 0 | 0 / 0 |
+| Mean / max popup-free turn, seconds | 3.88 / 10.24 | 3.96 / 10.70 | 3.79 / 12.01 |
+
+For a separate offline test, use the 99 complete turn-1–80 reviews from the Stirling source replay that offered supplied and weak sites. Give up to three terrain types unequal weights of ±3 or ±6, optionally retaining the one-point-per-neighbor penalty. Require every recorded weak site to stay at or below ordinary, allow for unseen frontier neighbors, and keep all modeled changes within ±12 private units. For each review ask whether a top-ranked supplied site can receive the largest unique increase among the recorded footprints. Using the ordinary land terrain types, this worked at +6 or higher in 8 reviews and at +12 in 1. Including neighboring water and mountain terrain, it worked in 16 and 5 respectively. In 15 of the 99 reviews, every top-ranked supplied choice had a fully observed weak site with identical terrain counts across all terrain types. Further weighting of terrain counts alone cannot distinguish either member of those pairs.
+
+These are predicted *changes* to private site previews. The recording includes owned candidates and weak frontier candidates; it omits supplied unowned sites. A future isolation test should record those too, plus adjacent features and the ordinary preview on every rival. The live Stirling trials above show why a city with an upcoming district decision is a better strength-calibration fixture. [Offline pattern search](../../tools/native_ai/late_placement/weighted_site_patterns.py)
