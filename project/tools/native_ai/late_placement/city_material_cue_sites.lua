@@ -1,5 +1,6 @@
 -- Shared by the controlled preview and the lightweight candidate. The map
 -- supplies the candidate sites and CSC's loaded gameplay tags identify Base.
+local pairPolicy -- Optional signed-cue adapter installed only in the paired experiment.
 local profiles, tags = {}, {}
 for row in GameInfo.CSC_QuarterMaterialAdjacencyConfig() do
     local district = GameInfo.Districts["DISTRICT_CSC_" .. row.QuarterKey .. "_QUARTER"]
@@ -105,10 +106,13 @@ local function ownedSites(city, player, profile, snapshot)
             -- An unseen neighbor could make a material-free competitor reach
             -- the terrain cutoff. Defer this city's cue until the ring is known.
             if not g.known then return {} end
-            local item = {plot=candidate.plot,count=g.count,materialTerrain={},
+            local item = {plot=candidate.plot,count=g.count,materialTerrain={},baseCount=0,
                 customerRank=profile.coastal and g.clearCoast and 1 or 0}
             for _, deposit in ipairs(g.materials) do
-                if profile.resources[deposit.id] then item.materialTerrain[deposit.terrain] = true end
+                if profile.resources[deposit.id] then
+                    item.materialTerrain[deposit.terrain] = true
+                    item.baseCount = item.baseCount + 1
+                end
                 if profile.specialty[deposit.id] then item.hasSpecialty = true end
             end
             for _, district in ipairs(g.districts) do

@@ -350,3 +350,28 @@ An offline survey searched both opening maps for signed counts of neighboring te
 Start with the terrain-only option because both signs have reached live stock previews. A bounded city review can read the underlying private adjacency, choose up to two small offsets, and re-read the strongest qualifying site and strongest unsuitable rival. Prefer sites where the supplier can be retained and a customer can fit. Clear stale rules when borders, deposits or districts change. The decision test is whether weak foundations move to supplied sites in the same city while sound investments elsewhere continue. [Reproduce the map calculation](../../tools/native_ai/late_placement/city_pair_coverage.py)
 
 Two early control decisions provide replay targets on seed 171124601. Nidaros had a Bakers opportunity on turn 15 and founded on plot 935 without adjacent Base on 16. Tenochtitlan had a Tailors opportunity on turn 26 and founded on plot 750 without adjacent Base on 37. For each, first verify that an alternative supplier layout was visible, owned and legal at the native decision. The city review includes future purchasable land.
+
+### Live trial of signed city-specific terrain cues
+
+The experimental no-CE policy compares owned, legal Quarter footprints in one city, using visible, owned Base deposits from the gameplay tags. It favors an existing Stage 2 customer, then a possible coast footprint for a coastal customer, Specialty and multiple Base deposits. River crossings and the Wind Mill's own-tile Hills bonus break ties according to the loaded Production rules. It takes the better Mill alternative on a hill by a river. A clear coast tile is an opportunity to investigate when planning the Harbor.
+
+For a city with both supplied and unsupplied candidates, the policy first looks for one terrain rule that places a best-layout site strictly above every site without Base on that component. If one cannot distinguish them, it tries signed sums of two different terrain counts. Each matching neighbor adds or subtracts two private yield units. Different cities and Quarter types can choose different rules. The scheduler checks one city per original major AI per turn, at least 12 turns apart for each city. Ineligible or no-longer-useful rules switch off. Quarter foundation and city transfer also withdraw the affected rules. [Site selector and switches](../../tools/native_ai/late_placement/paired_material_layout.lua)
+
+On seed 171124601, three turn-50 replays used the same turn-one save, ordinary CSC and the Firaxis core. The dynamic arm and fixed river arm are independent. The fixed arm adds one private yield for a riverbank to Quarters that receive river Production directly. In the loaded catalogue this qualified Tailors. It leaves the Water and Wind Mill choice in Bakers untouched.
+
+* Nidaros founded Bakers on plot 935 on turn 16 with and without the dynamic rules. The turn-15 review found four legal owned sites and zero beside owned Base.
+* In player 3's second city, the turn-24 review picked plot 1119 from six legal Bakers sites. Two had Base. The next turn Civ founded on 1119 instead of control plot 1047. Both adjoined the same Flax.
+* Tenochtitlan had seven legal Tailors sites on turn 26. Only plot 675 touched owned Base. The city activated a positive Tundra rule, submitted a 249-point Tailors bid on turn 30 and built on material-free plot 750 on turn 37. Its cue was withdrawn on foundation.
+* In player 4's city 65536 at turn 50, the policy naturally combined negative Coast with positive Plains for Bakers. Switching both rules off and on moved the private site previews from 4 to 2 and back to 4 on plot 2611 and from −6 to 0 and back to −6 on 2685. Another city's Bakers site stayed at 2 throughout. At turn 25 a separate check had already left a different AI player's site unchanged. The score belongs to the city, district and active rules. [Paused stock preview](../../tools/native_ai/late_placement/paired_material_preview.py)
+
+The Lua selector took an average of 0.32 ms, a 95th percentile of 0.99 ms and a maximum of 2.70 ms over 1,087 mixed neighborhoods on the two opening maps. These are per-neighborhood medians of five choices in standalone Lua 5.1, using the saved terrain and Base distributions. The benchmark excludes Civ API reads, modifier updates and city scheduling. [Reproduce the offline timing](../../tools/native_ai/late_placement/paired_material_cost.py)
+
+| At turn 50, seed 171124601 | Lightweight control | Dynamic city cues | Fixed river cue only |
+| --- | ---: | ---: | ---: |
+| Bakers foundations with owned Base / all | 2/4 | 1/2 | 2/4 |
+| Tailors foundations with owned Base / all | 0/1 | 0/1 | 0/1 |
+| Tailors foundations on a river | 0 | 0 | 1 |
+| Completed Quarters with working Base and a completed customer | 1 | 1 | 1 |
+| Mean / maximum popup-free turn, seconds | 2.10 / 3.78 | 2.07 / 3.34 | 2.06 / 3.16 |
+
+The comparison uses 39 common popup-free turn intervals. In the dynamic game there were 68 city/Quarter reviews, 25 with a useful cue. Thirteen switches activated one rule, eight activated a pair and four withdrew all rules. The only Tailors founded with the fixed river cue was in player 3's city 196610 on turn 36 (river plot 1121, zero owned Base). The control's Tailors was in a different city. These results leave the river cue experimental.

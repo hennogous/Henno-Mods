@@ -22,6 +22,7 @@ local function activeKey(profile)
 end
 
 local function update(city, center, player, profile, cue, turn)
+    if pairPolicy then return pairPolicy.update(city,center,player,profile,cue,turn,ownerKey) end
     local district = profile.district.DistrictType
     local key = activeKey(profile)
     local previous = center:GetProperty(key)
@@ -90,7 +91,11 @@ local function reviewPlayer(player, turn)
             snapshot = snapshot or citySites(chosen,id)
             local sites = ownedSites(chosen,id,profile,snapshot)
             evaluated = evaluated + #sites
-            cue = selectMaterialCue(sites,terrainKeys)
+            if pairPolicy then
+                cue = pairPolicy.choose(sites,chosen,id,profile,turn)
+            else
+                cue = selectMaterialCue(sites,terrainKeys)
+            end
             if cue then matched = matched + 1 end
         end
         update(chosen,chosenCenter,id,profile,cue,turn)
@@ -125,6 +130,28 @@ local function advance()
     end
 end
 GameEvents.OnGameTurnStarted.Add(advance)
+if pairPolicy and Events then
+    -- City-center properties can outlive a reservation or an owner. Clear
+    -- both slots as soon as a Quarter occupies its site or a city changes
+    -- hands. No city-wide search is needed for either event.
+    if Events.DistrictAddedToMap then Events.DistrictAddedToMap.Add(function(pid,did,cid,x,y,kind)
+        if not singlePlayer() then return end
+        local city = CityManager.GetCity(pid,cid)
+        local plot = Map.GetPlot(x,y)
+        local profile = profiles[plot and plot:GetDistrictType() or kind]
+        if city and profile then
+            update(city,Map.GetPlot(city:GetX(),city:GetY()),pid,profile,nil,Game.GetCurrentGameTurn())
+        end
+    end) end
+    if Events.CityTransfered then Events.CityTransfered.Add(function(pid,cid)
+        if not singlePlayer() then return end
+        local city = CityManager.GetCity(pid,cid)
+        if not city then return end
+        local center = Map.GetPlot(city:GetX(),city:GetY())
+        for _,profile in ipairs(ordered) do update(city,center,pid,profile,nil,Game.GetCurrentGameTurn()) end
+        center:SetProperty(ownerKey,nil)
+    end) end
+end
 if Events and Events.LoadScreenClose then Events.LoadScreenClose.Add(advance) end
 -- The normal game-load callback runs before the controller starts autoplay.
 -- Capture the original seats here as well as at the first turn boundary.

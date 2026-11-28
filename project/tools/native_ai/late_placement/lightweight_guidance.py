@@ -88,15 +88,17 @@ GameEvents.OnGameTurnStarted.Add(function()
 
 def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
            city_cue_probe=False,local_material_cues=False,as_installed=False,no_base_city=False,probe_no_base=False,
-           observe_no_base=False):
+           observe_no_base=False,paired_layout=False,river_cue=False):
     study=load(root/'study.json')
-    if no_base_city:
+    release_trial=no_base_city or paired_layout or river_cue
+    if release_trial:
+        require(sum(map(bool,(no_base_city,paired_layout,river_cue)))==1,'Test each release overlay independently')
         require(mode=='native' and deposit_cues and label and not any((as_installed,local_material_cues,
                 city_cue_probe,customer_buildings,supplier_jobs)),'Use the ordinary release for the no-Base comparison')
     require(not probe_no_base or no_base_city,'The readback needs the city treatment')
     require(not observe_no_base or (no_base_city and not probe_no_base),
             'The matched control records opportunity and leaves every district preference unchanged')
-    if as_installed or no_base_city:
+    if as_installed or release_trial:
         require(mode in ('native','advanced') and not city_cue_probe and label,
                 'An installed-build check needs a separate label and a real treatment')
     pins=study['pins'];game=pins['seeds'][str(seed)]
@@ -133,7 +135,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     session=NativeSession(out,c,inventory=native_inventory,hold=HeldProcess,write=write_json)
     manifest=next(Path(pins['packages']['csc']['path']).glob('*.modinfo'))
     original=manifest.read_bytes()
-    if as_installed or no_base_city:
+    if as_installed or release_trial:
         # Qualify the package a player loads. Flags below describe expected
         # runtime behaviour; none may stage an experimental file in this mode.
         # Hash the SQL, settings and every AI Lua module against the checkout.
@@ -163,10 +165,11 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         require(connectors is not None,'Expected native action')
         actions.remove(connectors)
         active=ET.tostring(doc,encoding='utf-8',xml_declaration=True)
-    if no_base_city:
+    if release_trial:
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
         original=staged_path.read_bytes()
-        active=original+b'\n'+(HERE/'no_base_city_rules.sql').read_bytes()
+        overlay='paired_material_rules.sql' if paired_layout else 'river_cue.sql' if river_cue else 'no_base_city_rules.sql'
+        active=original+b'\n'+(HERE/overlay).read_bytes()
     elif not as_installed and (deposit_cues or customer_buildings or supplier_jobs or city_cue_probe or local_material_cues):
         require(mode in ('native','advanced'),'The stock control must keep ordinary AI')
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
@@ -195,7 +198,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         (out/'supplier_job_candidate.sql').write_bytes(job_rules)
     script_path=manifest.parent/'Lua_UI/AI/CSC_AI_BakersGameplay.lua'
     script_before=script_active=None
-    if (local_material_cues or no_base_city) and not as_installed:
+    if (local_material_cues or no_base_city or paired_layout) and not as_installed:
         require(sha(script_path)==sha(HERE.parents[3]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_BakersGameplay.lua'),
                 'Installed gameplay entry differs from the qualified CSC entry')
         script_before=script_path.read_bytes()
@@ -203,6 +206,8 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         # treatment runs through Workshop Lua and SQL with the Firaxis core.
         scripts=('no_base_city.lua',) if no_base_city else (
             'city_material_cue_choice.lua','city_material_cue_sites.lua','local_material_guidance.lua')
+        if paired_layout:
+            scripts=('city_material_cue_sites.lua','paired_material_layout.lua','local_material_guidance.lua')
         parts=[read(HERE/name) for name in scripts]
         if observe_no_base:
             parts.insert(0,'local CSC_NO_BASE_OBSERVE_ONLY=true')
@@ -211,7 +216,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
-        as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
+        paired_layout=paired_layout,river_cue=river_cue,as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
         gameplay_sha256=hashlib.sha256(script_active).hexdigest() if script_active else None,
         material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if host_active else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
@@ -259,6 +264,14 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         require(bool(controls['customer_buildings'])==customer_buildings,'Customer building control differs')
         require(bool(controls['supplier_jobs'])==supplier_jobs,'Supplier job control differs')
         write_json(out/'stock-controls.json',controls)
+        if paired_layout or river_cue:
+            with closing(sqlite3.connect((user/'Cache/DebugGameplay.sqlite').as_uri()+'?mode=ro',uri=True)) as db:
+                rivers=db.execute("SELECT DistrictType FROM District_Adjacencies WHERE YieldChangeId='CSC_AI_TRIAL_RIVER'").fetchall()
+                signs=db.execute("""SELECT DISTINCT CAST(Value AS INT) FROM ModifierArguments
+                    WHERE ModifierId GLOB 'CSC_AI_PAIR_*' AND Name='Amount' ORDER BY 1""").fetchall()
+            require(rivers==([('DISTRICT_CSC_TAILORS_QUARTER',)] if river_cue else []),'Unexpected river trial scope')
+            require(signs==([(-2,),(2,)] if paired_layout else []),'Missing or unexpected signed rule definitions')
+            write_json(out/'layout-controls.json',dict(rivers=rivers,signs=signs))
         if mode!='stock':
             require(controls['builder_priority']==[(1,10)] and controls['recruiting_city']==[(13,None),(23,None)],
                     'Expected the stock city bindings and the standalone Builder request preference')
@@ -270,12 +283,40 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             except (ValueError, RuntimeError, OSError, KeyError) as exc:
                 write_json(out/'opening-map-error.json',dict(error=str(exc)))
         observers(c,range(1,len(game['roster'])))
+        if paired_layout and seed==171124601 and end>50:
+            # Read-only follow-up to the short replay. Tenochtitlan's turn-26
+            # review favored 675 and its turn-37 foundation occupied 750.
+            # UI receipts expose whether these two sites actually competed
+            # on owned legal land and how the native private previews ranked.
+            c.cmd("""
+Events.TurnBegin.Add(function()
+ local t=Game.GetCurrentGameTurn()
+ if t<24 or t>37 then return end
+ local city=CityManager.GetCity(3,65536)
+ if not city or city:GetName()~='LOC_CITY_NAME_TENOCHTITLAN' then return end
+ local center=Map.GetPlot(city:GetX(),city:GetY())
+ local d=GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER
+ local prefix='CSC_AI_PAIR_ACTIVE_'..d.DistrictType
+ for _,i in ipairs({675,750}) do
+  local plot=Map.GetPlotByIndex(i)
+  local owner=Cities.GetPlotPurchaseCity(plot)
+  local legal=plot:GetOwner()==3 and owner and owner:GetID()==65536 and plot:CanHaveDistrict(d.Index,3,65536)
+  print('CSC_PAIR_TENO',t,i,plot:GetOwner(),owner and owner:GetID() or -1,
+        legal==true,legal and plot:GetAdjacencyYield(3,65536,d.Index,GameInfo.Yields.YIELD_CSC_AI_PLACEMENT.Index) or '-',
+        center:GetProperty(prefix..1) or '-',center:GetProperty(prefix..2) or '-')
+ end
+end)
+""",'PlotInfo','observe-tenochtitlan-competition')
         if no_base_city:
             c.cmd("""Events.DistrictAddedToMap.Add(function(pid,did,cid,x,y,kind)
                 print('CSC_NO_BASE_DISTRICT_ADDED',Game.GetCurrentGameTurn(),pid,cid,x,y,kind)
             end)""",'CSC_AI_BakersGameplay','record-district-alternatives')
         for turn in range(5,end+1,5):
             c.play(turn)
+            # Keep full-game outcomes free of diagnostic property toggles.
+            if paired_layout and end<=50 and turn in (25,50):
+                from paired_material_preview import observe
+                observe(c,out,turn)
             if probe_no_base and turn%10==0 and not (out/'no-base-preview.json').exists():
                 from no_base_preview import observe
                 observe(c,out,turn)
@@ -318,7 +359,7 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         finally:
             if session.closed:
                 shutil.copyfile(user/'Logs/Lua.log',out/'Lua.log')
-                if no_base_city:
+                if no_base_city or paired_layout or river_cue:
                     for name in ('AI_CityBuild.csv','City_BuildQueue.csv'):
                         path=user/'Logs'/name
                         if path.is_file():
@@ -332,7 +373,7 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
                         if current!=prior:replace(path,prior)
             if eliminated and (out/'Lua.log').is_file():
                 archive_censuses(read(out/'Lua.log'),out)
-    summarize_finished(out,end,ce,no_base_city,local_material_cues)
+    summarize_finished(out,end,ce,no_base_city,local_material_cues or paired_layout)
 
 
 def keep_endpoint_autosave(out,saves,end,reason):
@@ -378,9 +419,11 @@ if __name__=='__main__':
     p.add_argument('--local-material-cues',action='store_true',help='Run bounded city-specific material guidance from CSC')
     p.add_argument('--as-installed',action='store_true',help='Verify the installed release against source and leave its files untouched; other flags describe expected controls')
     p.add_argument('--no-base-city',action='store_true',help='Stage the city opportunity trial over the verified ordinary release')
+    p.add_argument('--paired-layout',action='store_true',help='Test one or two signed terrain cues per city')
+    p.add_argument('--river-cue',action='store_true',help='Test the fixed private river cue separately')
     p.add_argument('--probe-no-base',action='store_true',help='Toggle and restore one active gate for an intra-turn native readback')
     p.add_argument('--observe-no-base',action='store_true',help='Run the identical opportunity review with its scoring action disabled')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
     a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
                            a.supplier_jobs,a.city_cue_probe,a.local_material_cues,a.as_installed,a.no_base_city,a.probe_no_base,
-                           a.observe_no_base)
+                           a.observe_no_base,a.paired_layout,a.river_cue)
