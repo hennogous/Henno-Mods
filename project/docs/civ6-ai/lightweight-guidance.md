@@ -112,9 +112,11 @@ Player 3's city 131073 gives a matched example. On turn 24 the city rule rewarde
 | Last viable deposit losses | 3 | 9 | 12 |
 | Mean / maximum turn, seconds | 5.31 / 16.60 | 6.19 / 20.62 | 6.14 / 17.73 |
 
-The local arm recorded one Storekeeper for 50 common link-turns. Six Quarters lost their last deposit to a district and six lost the resource on an otherwise undistricted tile. Three had a matching harvest operation. Player 3's alternative Quarter on plot 1119 lost its last working Flax when a Commercial Hub took plot 1120 on turn 163. Its Mill, adjacent Granary and Market were all functioning by turn 250.
+The local arm recorded one Storekeeper for 50 common link-turns. Six Quarters lost their last deposit to a district and six lost the resource on an otherwise undistricted tile. Three had a matching harvest operation. Joining each covering district to its own Quarter's loaded private adjacency links identified one mapped customer and five unrelated districts. Player 3's alternative Quarter on plot 1119 lost its last working Flax when a Commercial Hub took plot 1120 on turn 163. Its Mill, adjacent Granary and Market were all functioning by turn 250. Protecting suppliers only when siting a mapped customer would still leave the other five district losses.
 
 The local rule made 624 city reviews and evaluated 5,550 legal Quarter sites. All 39 foundations occurred within twelve turns of a review in that city. For the 30 foundations with no active rule, the last review had evaluated legal sites. Increasing review frequency alone has little support on this map. The gameplay Lua clock advanced one whole second on two of the 250 turns and zero on the rest. The elapsed turn comparison uses the independent clock across 188 common popup-free intervals. Service totals cover 199 common observations.
+
+The first city-specific run of seed 171124605 was interrupted after turn 125. Civ logged the five-turn activation and its acknowledgement, but the controller missed the reply. Its last complete census showed 2/10 supplied customer pairs for Bakers and 0/8 for Tailors, with zero Service link-turns so far. At the same turn the broad cue had 3/9 and 0/8 with 66 Storekeeper link-turns. The stock arm had zero supplied pairs. The turn-125 autosave was preserved. The controller now performs a read-only check of the exact finite interval before deciding whether it can safely continue after an activation reply is lost.
 
 ### First full game with the undeveloped-deposit cue
 
@@ -153,7 +155,9 @@ The diagnostic `--customer-buildings` option adds a stock major-leader Buildings
 
 The stock Farm beside Korea's Seowon provides a useful reverse direction. Ghidra shows the city values a proposed improvement at the specific plot, follows the improvement's adjacency rows, reads neighboring district identity/completion/pillage state and weights the yield before the ordinary Builder job is selected. This supports a private-yield experiment with no Lua or CE. Each registered Stage 2 Base supplier gets one private unit per neighboring Quarter, or two for a selective resource-only family. The six standalone rows include Tailors Flax Farms and Cotton Plantations even though those families are weak predictors of a good site when placing the Quarter first. Check the actual fraction of owned Base deposits improved and any extra empty Farms before promoting the option. The test control is `--supplier-jobs`.
 
-The first two loads on seeds 171124601 and 171124605 stopped at turn one. The intended Builder rows were absent. The connector action runs at 3001, while the gameplay transaction processor populates `CSC_MaterialTransactionInputHosts` at 800010 to include late Workshop improvements. The corrected candidate runs immediately after that processor. Replaying this order in a copy of the live database produced zero rows before reconciliation and six afterward. Both startup attempts are excluded from play results.
+The first two loads on seeds 171124601 and 171124605 stopped at turn one. The intended Builder rows were absent. The pinned connector action runs at 3001, while the gameplay transaction processor populates `CSC_MaterialTransactionInputHosts` at 800010 to include late Workshop improvements. The corrected candidate runs immediately after that processor. Replaying this order in a copy of the live database produced zero rows before reconciliation and six afterward. Both startup attempts are excluded from play results.
+
+The corrected first-seed game loaded all six rows and the Granary and Lighthouse preferences with CE disabled. Farms receive one private unit for either Quarter, Pastures two for either, and Plantations two for Bakers and one for Tailors.
 
 ### Seed 171124605 at turn 250
 

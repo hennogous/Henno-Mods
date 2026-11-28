@@ -60,6 +60,7 @@ def read_arm(folder, through=None):
     loss_states = {'working': defaultdict(set), 'deposit': defaultdict(set)}
     district_types = {}
     covering_districts = defaultdict(set)
+    losing_quarters = {}
     harvest_turn = {}
     harvested_losses = set()
     harvest_watched = False
@@ -162,6 +163,7 @@ def read_arm(folder, through=None):
                         poor.add(key)
             if event == 'SUPPLIER_LOSS':
                 key = (player,int(row['quarter']),row['class'],int(row['turn']))
+                losing_quarters[key] = row.get('quarterType')
                 if row['lastWorking'] == 'true':
                     losses['working'].add(key)
                     loss_states['working'][key].add(supplier_tile_state(row))
@@ -245,6 +247,24 @@ def read_arm(folder, through=None):
         for states in events.values():
             counts[' + '.join(sorted(states))] += 1
         state_counts[kind] = dict(sorted(counts.items()))
+    customer_losses = None
+    if watched and district_types:
+        # These are the actual customer→Quarter private adjacency links in
+        # this game's rules. Generic Wonder district IDs need the building
+        # identity before they can be classified as a specific CSC customer.
+        placements = load(folder/'stock-controls.json')['placements']
+        edges = {(r[0],r[1]) for r in placements if r[1] and r[1].startswith('DISTRICT_CSC_')}
+        if edges:
+            customer_losses = Counter()
+            for key,indices in covering_districts.items():
+                district = losing_quarters.get(key)
+                types = {district_types[index] for index in indices}
+                if not district or 'DISTRICT_WONDER' in types:
+                    customer_losses['unresolved'] += 1
+                elif any((host,district) in edges for host in types):
+                    customer_losses['mapped_partner_on_supplier'] += 1
+                else:
+                    customer_losses['other_district_on_supplier'] += 1
     report = dict(quarters=result, economy=economy(census)[0], founded=len(foundations),
         placement_by_quarter=placement,local_material_guidance=dict(city_cue_stats) if protocol.get('local_material_cues') else None,
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
@@ -253,6 +273,7 @@ def read_arm(folder, through=None):
         district_types_covering_last_deposit=dict(Counter(
             ' + '.join(sorted(district_types[i] for i in indices)) for indices in covering_districts.values()
         )) if watched and district_types else None,
+        district_cover_losses_by_relationship=dict(customer_losses) if customer_losses is not None else None,
         deposit_losses_with_matching_harvest=len(harvested_losses) if watched and harvest_watched else None,
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
         unresolved_service_samples=sum(unknown for _,unknown in intervals.values()),

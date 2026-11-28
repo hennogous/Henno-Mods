@@ -2,6 +2,8 @@
 
 **Problems 1 and 2 layout milestone.** [The qualified planner is enabled for single player](#qualify-and-complete-quarter-layouts).
 
+**Workshop guidance without CE.** For 1.1 and 2.1, ordinary district adjacency raised completed Bakers with both a working Base and a customer from 2/33 to 11/37 across two seeds. Tailors held at one supplied pair. For 2.2 and 13.3, districts and harvests still removed last suppliers. The 3.1 and 5.1 comparison tests whether stock Builder improvement preferences and first customer buildings convert more of the surviving layouts into operating chains. The table below tracks the full advanced planner. [Lightweight treatment and matched games](lightweight-guidance.md)
+
 ## Problems at a glance
 
 | Topic | Description | Status |
