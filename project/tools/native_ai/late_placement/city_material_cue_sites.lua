@@ -80,6 +80,11 @@ end
 local function geometry(site, player, cache)
     local g = {count={}, materials={}, districts={}, clearCoast=false, known=true, unknown=0, neighbors=0}
     local x, y = site.plot:GetX(), site.plot:GetY()
+    if pairPolicy and pairPolicy.vocabulary then
+        g.clues={}
+        if site.plot:IsRiver() then g.clues.RIVER=1 end
+        g.index=site.index
+    end
     local actor, vision = Players[player], PlayersVisibility[player]
     for direction = 0, 5 do
         local near = Map.GetAdjacentPlot(x,y,direction)
@@ -91,6 +96,20 @@ local function geometry(site, player, cache)
             local key = GameInfo.Terrains[near:GetTerrainType()].TerrainType
             g.count[key] = (g.count[key] or 0) + 1
             local owner, district, resource = near:GetOwner(), near:GetDistrictType(), near:GetResourceType()
+            if g.clues then
+                g.clues[key]=g.count[key]
+                local feature=GameInfo.Features[near:GetFeatureType()]
+                local imp=GameInfo.Improvements[near:GetImprovementType()]
+                if feature then
+                    local f=feature.FeatureType
+                    g.clues[f]=(g.clues[f] or 0)+1
+                end
+                if imp then
+                    local i=imp.ImprovementType
+                    g.clues[i]=(g.clues[i] or 0)+1
+                end
+                if district>=0 then g.clues.ANY_DISTRICT=(g.clues.ANY_DISTRICT or 0)+1 end
+            end
             if owner == player and district >= 0 then
                 g.districts[#g.districts+1] = district
             elseif owner == player and visibleResource(actor,resource,cache) then
@@ -114,7 +133,7 @@ local function ownedSites(city, player, profile, snapshot)
             -- An unseen neighbor could make a material-free competitor reach
             -- the terrain cutoff. Defer this city's cue until the ring is known.
             if not g.known then return {} end
-            local item = {plot=candidate.plot,count=g.count,materialTerrain={},baseCount=0,
+            local item = {plot=candidate.plot,count=g.count,geometry=g,materialTerrain={},baseCount=0,
                 customerRank=profile.coastal and g.clearCoast and 1 or 0}
             for _, deposit in ipairs(g.materials) do
                 if profile.resources[deposit.id] then
@@ -134,6 +153,7 @@ local function ownedSites(city, player, profile, snapshot)
         -- nominate a target or trigger a land purchase. Include every revealed
         -- legal footprint within three even if acquiring it would take time.
         plots.frontierWeak={}
+        if pairPolicy.vocabulary then plots.frontierAll={} end
         for _,candidate in ipairs(snapshot.frontier) do
             if candidate.plot:CanHaveDistrict(profile.district.Index,player,city:GetID()) then
                 local g=candidate.geometry or geometry(candidate,player,snapshot.visibleResources)
@@ -143,6 +163,9 @@ local function ownedSites(city, player, profile, snapshot)
                     if profile.resources[deposit.id] then supplied=true; break end
                 end
                 if not supplied then plots.frontierWeak[#plots.frontierWeak+1]=g end
+                if plots.frontierAll then
+                    plots.frontierAll[#plots.frontierAll+1]={geometry=g,supplied=supplied}
+                end
             end
         end
     end

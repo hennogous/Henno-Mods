@@ -71,6 +71,9 @@ def read_cities(study, receipt, native_save, out, sites=False):
                 candidate = original+b'\n'+(HERE/'no_base_city_rules.sql').read_bytes()+relief_sql(protocol['layout_floor'])
                 if protocol.get('split_relief'):
                     candidate+=split_relief_sql()
+                if protocol.get('vocabulary'):
+                    archived=arm/'vocabulary-connectors.sql'
+                    candidate=archived.read_bytes() if archived.exists() else candidate+b'\n'+(HERE/'city_vocabulary_rules.sql').read_bytes()
             else:
                 candidate = original+b'\n'+(HERE/'paired_material_rules.sql').read_bytes()
         else:
