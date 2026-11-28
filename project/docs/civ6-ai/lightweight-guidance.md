@@ -101,6 +101,21 @@ The turn-one map for seed 171124601 had 947 clearable land sites. Of these, 278 
 
 Player 3's city 131073 gives a matched example. On turn 24 the city rule rewarded one of its six legal Bakers sites. On turn 25 the city founded Bakers on that site (1119). With the broad resource cue alone, the same city founded Bakers on 1047 on turn 25. Both sites touched the same City Center and Flax on 1120. A second city built at the same Base-adjacent site in both games. Across all five AI seats, the first 50 turns produced two Bakers with owned Base in each treatment, among three foundations with the local rule and five with the broad cue alone.
 
+**Full local-material replay on seed 171124601.** The rule was active at nine of 39 foundations. Four of six Bakers and one of three Tailors with an active rule landed on rewarded sites. All five had an owned Base at foundation. Across all placements, 11/21 Bakers and 3/18 Tailors started with owned Base. In the broad-cue game those counts were 12/20 and 3/16.
+
+| Turn 250, common observations | Stock | Broad resource cue | Broad plus city-specific cue |
+| --- | ---: | ---: | ---: |
+| Working Base and completed customer, Bakers | 1/17 | 7/20 | 2/21 |
+| Working Base and completed customer, Tailors | 1/17 | 1/17 | 0/18 |
+| Completed mapped customers, Bakers / Tailors (count of Quarters) | 13 / 4 | 18 / 7 | 19 / 8 |
+| Service link-turns | 73 | 209 | 50 |
+| Last viable deposit losses | 3 | 9 | 12 |
+| Mean / maximum turn, seconds | 5.31 / 16.60 | 6.19 / 20.62 | 6.14 / 17.73 |
+
+The local arm recorded one Storekeeper for 50 common link-turns. Six Quarters lost their last deposit to a district and six lost the resource on an otherwise undistricted tile. Three had a matching harvest operation. Player 3's alternative Quarter on plot 1119 lost its last working Flax when a Commercial Hub took plot 1120 on turn 163. Its Mill, adjacent Granary and Market were all functioning by turn 250.
+
+The local rule made 624 city reviews and evaluated 5,550 legal Quarter sites. All 39 foundations occurred within twelve turns of a review in that city. For the 30 foundations with no active rule, the last review had evaluated legal sites. Increasing review frequency alone has little support on this map. The gameplay Lua clock advanced one whole second on two of the 250 turns and zero on the rest. The elapsed turn comparison uses the independent clock across 188 common popup-free intervals. Service totals cover 199 common observations.
+
 ### First full game with the undeveloped-deposit cue
 
 All three games on seed 171124601 used the identical turn-one save. These figures use 199 common Service observations and 191 common popup-free intervals.

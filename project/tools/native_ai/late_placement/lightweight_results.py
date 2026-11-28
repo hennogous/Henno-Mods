@@ -227,13 +227,16 @@ def read_arm(folder, through=None):
             stats['owned_base_and_clear_coast_neighbor'] = None
     if city_cue_time:
         city_cue_stats['lua_clock_turns'] = len(city_cue_time)
-        # The stock gameplay Lua clock can stay constant for every review.
-        # Whole-turn timings from the UI clock remain available in that case.
-        if max(city_cue_time.values()) > 0:
+        # Stock gameplay Lua can return the same time for most reviews and a
+        # whole second when a review straddles its clock tick. That would turn
+        # a short pass into a misleading one-second "maximum".
+        if any(value % 1000000 for value in city_cue_time.values()):
+            city_cue_stats['lua_clock_resolved'] = True
             city_cue_stats['mean_lua_clock_ms'] = mean(city_cue_time.values()) / 1000
             city_cue_stats['max_lua_clock_ms'] = max(city_cue_time.values()) / 1000
         else:
             city_cue_stats['lua_clock_resolved'] = False
+            city_cue_stats['whole_second_ticks'] = sum(city_cue_time.values()) // 1000000
     # The last two suppliers can disappear together. Preserve both states on
     # that single Quarter loss rather than crediting it to either tile alone.
     state_counts = {}
