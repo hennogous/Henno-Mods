@@ -19,6 +19,8 @@ The shipping connector action runs at 800011, after optional material removals, 
 
 For a release replay, use `lightweight_guidance.py --as-installed` with a fresh label and the expected treatment flags. It checks the installed AI Lua files, connector, settings and manifest against source before starting Civ. The flags select runtime checks; the game loads the installed package directly. Ordinary experimental runs still stage and restore their pinned inputs.
 
+**Installed build verified, 28 November.** Two fresh launches used the regular CSC installation and ran seed 171124601 to turn 50, each with a verified save. Both loaded the same 38 private district adjacency rows and the same Builder preference as their turn-250 benchmark. With only the Firaxis core loaded, the advanced publisher ran zero times. With compatible CE and the default setup option, the full planner ran on all 49 measured turns. The final package ships the resource-class and partner rules tested on both seeds. The city-specific terrain and extra job/building treatments remain research fixtures.
+
 ## Research behind the choices
 
 City Lights supplies a local example of stock improvement adjacency. RHAI5 uses the stock unit-request list in `core/Ops/RH_Ops.sql`. AI+ uses the Required City parameter on the Build Unit node of the Build City Improvement tree in `behaviortrees.xml`. Real Strategy's `base/RealStrategy_Anti.sql` illustrates gating a player's preference lists through a Lua strategy condition. That is a candidate for changing broad investment priorities when a shortage is observed.
@@ -121,6 +123,10 @@ The local arm recorded one Storekeeper for 50 common link-turns. Six Quarters lo
 The local rule made 624 city reviews and evaluated 5,550 legal Quarter sites. All 39 foundations occurred within twelve turns of a review in that city. For the 30 foundations with no active rule, the last review had evaluated legal sites. Increasing review frequency alone has little support on this map. The gameplay Lua clock advanced one whole second on two of the 250 turns and zero on the rest. The elapsed turn comparison uses the independent clock across 188 common popup-free intervals. Service totals cover 199 common observations.
 
 The first city-specific run of seed 171124605 was interrupted after turn 125. Civ logged the five-turn activation and its acknowledgement, but the controller missed the reply. Its last complete census showed 2/10 supplied customer pairs for Bakers and 0/8 for Tailors, with zero Service link-turns so far. At the same turn the broad cue had 3/9 and 0/8 with 66 Storekeeper link-turns. The stock arm had zero supplied pairs. The turn-125 autosave was preserved. The controller now performs a read-only check of the exact finite interval before deciding whether it can safely continue after an activation reply is lost.
+
+The fresh replay on this seed reached turn 250. The treatment reviewed 4,096 legal site candidates across 626 city visits and activated 54 rules. Six of the 35 foundations had a rule active. Four landed on rewarded terrain, with actual owned Base at three of the four. At turn 250, 14/17 Bakers and 9/19 Tailors had a completed customer, yet none had a working Base. One earlier Storekeeper delivered 69 link-turns. Ten Quarters lost their last viable deposit. Stock, broad and local elapsed turns averaged 6.20, 6.38 and 6.25 seconds, with maxima of 17.29, 21.09 and 21.64, over 190 common popup-free intervals.
+
+Across the two completed games, the local rule rewarded nine actual foundations and eight had the intended material. The broad default produced 11 supplied Bakers customer pairs at the endpoints, versus two with the local rule added. Local targeting remains an experimental example of how to guide stock placement toward a specific material. The player-facing lightweight mode uses the broader SQL rules.
 
 ### First full game with the undeveloped-deposit cue
 
@@ -267,3 +273,5 @@ The second map (171124605) repeated the Tailors pattern. Three completed Tailors
 | Mean / maximum seconds per turn | 6.11 / 17.29 | 6.25 / 21.09 | 6.01 / 20.41 |
 
 Four Storekeepers provided 505 link-turns, one Innkeeper 20 and one Groundskeeper five. The comparison uses 249 common Service observations and 190 common popup-free turns. Across both seeds the added preferences produced more operating Tailors Base suppliers and 561 Service link-turns versus 498 with the simpler rules. They also reduced completed Bakers with a working Base and customer from **11 to 6** and yielded **zero supplied Tailors customer pairs**. Keep the simpler default. The useful part to revisit is whether the Builder cue alone can serve Quarters that already have a credible customer.
+
+Of the six supplied Tailors across these two games, three worked Flax and three worked Cotton. Only two had an empty sea-coast footprint recorded beside them at foundation. The first map's plot 2691 bordered unowned coast. On the second map, player 5's Tailors on plot 2375 bordered its own clear coast on 2448, ended with working Cotton and never produced a Dockmaster. That save has a concrete customer follow-through case to inspect.
