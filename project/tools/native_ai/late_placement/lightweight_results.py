@@ -86,17 +86,36 @@ def read_arm(folder, through=None):
     founder_terrain = defaultdict(Counter)
     city_cue_stats = Counter()
     frontier_stats = Counter()
+    floor_reviews = {}
+    ambiguous_fallback = set()
     city_cue_time = Counter()
     district_profiles = defaultdict(set)
     seats = set(load(folder/'source.json')['original_ai'])
     for line in (folder/'Lua.log').read_text(encoding='utf-8-sig',errors='replace').splitlines():
-        if 'CSC_FRONTIER_REVIEW\t' in line:
-            stamp,pid,_,_,weak,vetoes,target=line.split('CSC_FRONTIER_REVIEW\t',1)[1].split()
+        if 'CSC_FLOOR_REVIEW\t' in line:
+            stamp,pid,cid,q,n,good,floor,_,_=line.split('CSC_FLOOR_REVIEW\t',1)[1].split()
+            key=(int(pid),int(cid),q)
+            floor_reviews[key]=(int(stamp),int(n),int(good),floor=='true')
+            ambiguous_fallback.discard(key)
+        elif 'CSC_FRONTIER_REVIEW\t' in line:
+            stamp,pid,cid,q,weak,vetoes,target=line.split('CSC_FRONTIER_REVIEW\t',1)[1].split()
             if int(stamp)<=turn and int(pid) in seats:
                 frontier_stats['quarter_reviews']+=1
                 frontier_stats['reviews_with_weak_frontier']+=int(weak)>0
                 frontier_stats['reviews_rejecting_a_terrain']+=int(vetoes)>0
                 frontier_stats['reviews_selecting_a_target']+=int(target)>=0
+                # Both rows come from the same city/Quarter decision. All
+                # supplied sites with no frontier rival already used ordinary
+                # scoring in the older policy and are excluded here.
+                key=(int(pid),int(cid),q)
+                reviewed,n,good,penalty=floor_reviews[key]
+                if reviewed!=int(stamp):
+                    raise ValueError('Frontier and floor reviews belong to different turns')
+                if good>0 and int(target)<0 and (n>good or int(weak)>0):
+                    frontier_stats['ambiguous_supplied_reviews']+=1
+                    if not penalty:
+                        frontier_stats['ambiguous_reviews_using_ordinary_scores']+=1
+                        ambiguous_fallback.add(key)
         elif 'CSC_LOCAL_CUE_LUA_MICROS\t' in line:
             turn_id,micros=map(int,line.split('CSC_LOCAL_CUE_LUA_MICROS\t',1)[1].split())
             if turn_id <= turn:
@@ -176,6 +195,9 @@ def read_arm(folder, through=None):
                     district_profiles[row['district']].add(profile)
                 if row['event'] == 'foundation':
                     key = (player,int(row['plot']),int(row['turn']))
+                    if key not in foundations and (player,int(row['city']),row.get('quarterType')) in ambiguous_fallback:
+                        frontier_stats['foundations_after_ordinary_fallback']+=1
+                        frontier_stats['supplied_foundations_after_ordinary_fallback']+=int(row['base'])>0
                     foundations[key] = row
                     rule = active_city_rules.get((player,int(row['city']),row.get('quarterType')))
                     if rule:

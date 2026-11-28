@@ -51,6 +51,13 @@ function pairPolicy.choose(sites, city, player, profile, turn)
                     cue.target = target
                 end
             end
+            -- With a known supplied footprint, an ambiguous terrain cue can
+            -- leave every site penalised, including the one the city should
+            -- consider. Let Civ compare these sites at their ordinary values.
+            -- A safe cue still needs the floor under its competing footprints.
+            if pairPolicy.releaseAmbiguousFloor and not cue.target then
+                cue.floor=false
+            end
         end
     end
     print('CSC_FLOOR_REVIEW',turn,player,city:GetID(),profile.district.DistrictType,

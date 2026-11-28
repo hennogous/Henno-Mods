@@ -94,10 +94,12 @@ def relief_sql(weight):
 
 def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
            city_cue_probe=False,local_material_cues=False,as_installed=False,no_base_city=False,probe_no_base=False,
-           observe_no_base=False,paired_layout=False,river_cue=False,layout_floor=None,frontier=False):
+           observe_no_base=False,paired_layout=False,river_cue=False,layout_floor=None,frontier=False,
+           release_ambiguous_floor=False):
     study=load(root/'study.json')
     floor_trial=layout_floor is not None
     require(not frontier or layout_floor in (6,8,10),'A frontier check needs positive site relief')
+    require(not release_ambiguous_floor or frontier,'The ordinary-score fallback requires the frontier check')
     release_trial=no_base_city or paired_layout or river_cue or floor_trial
     if release_trial:
         require(sum(map(bool,(no_base_city,paired_layout,river_cue,floor_trial)))==1,'Test each release overlay independently')
@@ -223,6 +225,8 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         parts=[read(HERE/name) for name in scripts]
         if frontier:
             parts.insert(-1,'pairPolicy.guardFrontier=true')
+        if release_ambiguous_floor:
+            parts.insert(-1,'pairPolicy.releaseAmbiguousFloor=true')
         if floor_trial:
             parts.insert(0,f'local reliefWeight={int(layout_floor)}')
         if observe_no_base:
@@ -232,7 +236,8 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
-        paired_layout=paired_layout,river_cue=river_cue,layout_floor=layout_floor,frontier=frontier,as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
+        paired_layout=paired_layout,river_cue=river_cue,layout_floor=layout_floor,frontier=frontier,
+        release_ambiguous_floor=release_ambiguous_floor,as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
         gameplay_sha256=hashlib.sha256(script_active).hexdigest() if script_active else None,
         material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if host_active else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
@@ -449,10 +454,11 @@ if __name__=='__main__':
     p.add_argument('--paired-layout',action='store_true',help='Test one or two signed terrain cues per city')
     p.add_argument('--layout-floor',type=int,choices=(0,6,8,10),help='Default penalty with this private terrain relief on distinguishable supplied sites (zero for penalty only)')
     p.add_argument('--frontier',action='store_true',help='Reject proxies that reward weak legal frontier footprints; refresh after ownership changes')
+    p.add_argument('--release-ambiguous-floor',action='store_true',help='Use ordinary scores if a supplied owned site has no safe terrain cue')
     p.add_argument('--river-cue',action='store_true',help='Test the fixed private river cue separately')
     p.add_argument('--probe-no-base',action='store_true',help='Toggle and restore one active gate for an intra-turn native readback')
     p.add_argument('--observe-no-base',action='store_true',help='Run the identical opportunity review with its scoring action disabled')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
     a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
                            a.supplier_jobs,a.city_cue_probe,a.local_material_cues,a.as_installed,a.no_base_city,a.probe_no_base,
-                           a.observe_no_base,a.paired_layout,a.river_cue,a.layout_floor,a.frontier)
+                           a.observe_no_base,a.paired_layout,a.river_cue,a.layout_floor,a.frontier,a.release_ambiguous_floor)

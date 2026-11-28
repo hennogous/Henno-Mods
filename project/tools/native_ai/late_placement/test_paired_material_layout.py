@@ -91,6 +91,24 @@ class PairedSiteTest(unittest.TestCase):
         assert(not pick(bordered).a)
         assert(pick({good,frontierWeak={frontier}}).floor)
         assert(not pick({frontierWeak={frontier}}).target)
+        pairPolicy.releaseAmbiguousFloor=true
+        local fallback=pick(bordered)
+        assert(not fallback.floor and not fallback.a and not fallback.target)
+        assert(not pick({good,site(751,1,5,false)}).floor)
+        assert(pick({bad,frontierWeak={frontier}}).floor and pick({}).floor)
+        local distinct=pick({good,bad})
+        assert(distinct.floor and distinct.target==675 and distinct.a)
+        -- Civ reads the centre properties when scoring a site. Check a city
+        -- which already had BOTH the penalty and a positive cue attached.
+        GameInfo.Terrains=function()return function()return nil end end
+        local gate='CSC_AI_NO_BASE_QUARTER'
+        local function publish(cue)pairPolicy.update(city,center,1,profile,cue,10,'owner')end
+        publish(distinct)
+        assert(center:GetProperty(gate)==1 and center:GetProperty(distinct.a)==1)
+        publish(fallback)
+        assert(center:GetProperty(gate)==0 and center:GetProperty(distinct.a)==0)
+        publish(pick({bad}))
+        assert(center:GetProperty(gate)==1 and center:GetProperty(distinct.a)==0)
         reliefWeight=0
         assert(pick({good}).floor and not pick({good,bad}).a)
         """)
