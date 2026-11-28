@@ -421,3 +421,27 @@ The six supplied foundations warrant further work. The next candidate should che
 | The opening map offered no Base that any third-ring-or-closer footprint could touch. | 4 | Bergen Tailors, Avaldsnes Tailors, Scone Tailors, Avaldsnes Bakers |
 
 Roxburgh and Shaat Bakers also had pairs where both the alternate footprint and the deposit were observed unclaimed. Their actual foundations made acquiring just the deposit sufficient. The six wider opportunities count land geometry. Prices, the AI's visibility, and changes to harvestable deposits can affect whether a purchase was possible on the relevant turn. A useful future diagnostic would retain the city assignment, owner and purchase quote for both ends at the last pre-bid review. [Offline land audit](../../tools/native_ai/late_placement/layout_land_audit.py)
+
+### Checking the terrain reward against the frontier
+
+The experimental selector checks every revealed, unowned land tile within three hexes where the native placement query passes. A footprint without a visible owned Base can veto any terrain reward that would bring it back to its ordinary score or higher. Unseen neighbors count as possible terrain matches when checking this limit. Rewards still originate from supplied sites the city already owns. Acquiring land brings the city forward for a review within the existing budget of one city per original AI player per turn.
+
+**Tenochtitlan replay, seed 171124601.** On turn 25 the city evaluated fourteen weak frontier footprints and rejected both terrain cues that had passed the owned-site check. On turn 30 the private previews were −5 for the unclaimed Silk-side footprint 599, −3 for the supplied footprint 675 and −4 for 750. Previously 599 had scored +7, beaten 675 at +3 and become a Tailors Quarter. This time 599 stayed unclaimed through turn 37. The city finished the Oracle and put production into a Builder on 39. Across the five AI players, the revised candidate founded three Bakers beside Base and zero Tailors by turn 50. The previous candidate had founded five supplied Bakers and two Tailors, one supplied.
+
+**Fresh Continents comparison.** Both games reached turn 200 on Online speed with five original AI players, CSC and the Firaxis core. They shared the same turn-one save on map seed 281126037 and game seed 281126038 (save hash prefix `1b1a24932963`). The control used the installed lightweight guidance. Service totals cover 199 common observations and timing covers 155 common popup-free turn intervals.
+
+| Metric | Ordinary lightweight | With frontier checks and penalty |
+| --- | ---: | ---: |
+| Bakers foundations beside owned Base / all | 8/13 | 6/11 |
+| Tailors foundations beside owned Base / all | 1/10 | 1/5 |
+| Total foundations beside owned Base | 9 (39%) | 7 (44%) |
+| Total foundations without owned Base | 14 | 9 |
+| Foundations with at least +3 current adjacency | 5 | 1 |
+| Completed Quarters with working Base and a completed customer at turn 200 | 2 | 2 |
+| Storekeepers / active Service turns | 1 / 60 | 1 / 10 |
+| Dockmasters | 0 | 0 |
+| Mean / maximum turn time, seconds | 3.86 / 10.24 | 3.77 / 10.08 |
+
+The candidate issued 978 city/Quarter reviews. In 622 reviews the city had legal sites but none beside an owned Base. In 323 it had an owned supplied option but found no safe cue. Four reviews returned no eligible owned sites. The remaining 29 chose a site to reward. The frontier check rejected at least one otherwise acceptable terrain in 40 reviews. Three foundations followed reviews that had selected a target and all three had Base. The nine foundations without Base followed five reviews with no supplied site and four with no safe cue.
+
+**Decision.** Keep ordinary lightweight guidance as the default. The frontier check caught the exact false incentive in Tenochtitlan, and the full candidate removed five weak placements on the fresh map. It also lost two supplied Bakers and 50 Storekeeper turns. The next isolated comparison should keep the frontier check and lift the blanket penalty in cities that have a supplied legal site but no safe terrain cue. This targets the 323 reviews where the candidate penalised good land along with poor land. [Selector and test driver](../../tools/native_ai/late_placement/lightweight_guidance.py) and [outcome analysis](../../tools/native_ai/late_placement/lightweight_results.py)
