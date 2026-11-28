@@ -13,6 +13,8 @@ The material cue deliberately uses an observable feature of the map. A Pasture c
 
 How good is “any bonus resource” on the actual maps? Counting individual **land** bonus deposits in the turn-one surveys gives Bakers 103/169 and 93/149 matches on the two seeds, or **62% combined**. Tailors matches 50/169 and 38/149, or **28%**. Flax counts for both Quarters. Another 263 bonus deposits were in water and none supplied either Quarter. Cotton supplies Tailors through a different resource class. This helps explain why the broad cue is more informative for a Bakers site, particularly when comparing sites along the coast.
 
+For a possible Dockmaster, we also counted clearable land sites with at least one adjacent empty, featureless, non-lake Coast tile. Of the 358 such sites beside a bonus resource, 103 touched a Tailors Base. Requiring the bonus resource to be on land retained 102 of those 103 sites and reduced the shortlist to 265. Of the 93 coastal sites signalled only by a water bonus, just one had a Tailors Base. These opening-map counts describe terrain potential before city borders and district capacity. They identify a promising filter for a future Tailors trial.
+
 The shipping connector action runs at 800011, after optional material removals, City Lights registrations and CSC's supplier-host reconciliation at 800010. This lets its family counts reflect the loaded resource and improvement catalogue. Regenerating the connector from the completed standalone game's database reproduced all 38 district adjacency rows, including their weights, thresholds and partner types. The benchmark retains its pinned earlier load order; experimental supplier-job rows load after 800010 in that package.
 
 For a release replay, use `lightweight_guidance.py --as-installed` with a fresh label and the expected treatment flags. It checks the installed AI Lua files, connector, settings and manifest against source before starting Civ. The flags select runtime checks; the game loads the installed package directly. Ordinary experimental runs still stage and restore their pinned inputs.
@@ -251,3 +253,17 @@ The first turn-250 replay added six stock improvement adjacency rules derived fr
 | Mean / maximum seconds per turn | 5.35 / 16.60 | 6.25 / 20.62 | 5.68 / 16.68 |
 
 The extra preferences left eight of nine surviving Base plots working, but the empires retained fewer Bakers suppliers. Six Tailors had customers and three had working Base. Those groups did not overlap. The only active Service was one Storekeeper for 31 turns. This result favors the simpler shipping treatment on this map. Timing uses 189 common popup-free turns and Service totals use 199 common observations. The endpoint is available in the Load menu as `CSC_LIGHT_171124601_JOBS_CUSTOMERS_T250`.
+
+The second map (171124605) repeated the Tailors pattern. Three completed Tailors had working Base, six had mapped customers and none had both. The extra preferences did produce long-lived Bakers Services here.
+
+| Seed 171124605 at turn 250 | Stock CSC | Lightweight CSC | Plus Builder and building preferences |
+| --- | ---: | ---: | ---: |
+| Bakers with working Base and completed customer | 1/16 | 4/17 | 3/18 |
+| Tailors with working Base and completed customer | 0/14 | 0/15 | 0/15 |
+| Distinct working / present Base plots, Bakers | 1/2 | 4/7 | 4/6 |
+| Distinct working / present Base plots, Tailors | 0/1 | 0/0 | 3/3 |
+| Active Service link-turns | 0 | 289 | 530 |
+| Last viable deposit losses | 5 | 10 | 7 |
+| Mean / maximum seconds per turn | 6.11 / 17.29 | 6.25 / 21.09 | 6.01 / 20.41 |
+
+Four Storekeepers provided 505 link-turns, one Innkeeper 20 and one Groundskeeper five. The comparison uses 249 common Service observations and 190 common popup-free turns. Across both seeds the added preferences produced more operating Tailors Base suppliers and 561 Service link-turns versus 498 with the simpler rules. They also reduced completed Bakers with a working Base and customer from **11 to 6** and yielded **zero supplied Tailors customer pairs**. Keep the simpler default. The useful part to revisit is whether the Builder cue alone can serve Quarters that already have a credible customer.
