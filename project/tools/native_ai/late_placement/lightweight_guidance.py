@@ -139,13 +139,24 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         active=original
         for enabled_overlay,name in [(deposit_cues,'undeveloped_material_candidate.sql'),
                                      (customer_buildings,'customer_building_candidate.sql'),
-                                     (supplier_jobs,'supplier_job_candidate.sql'),
                                      (city_cue_probe,'city_material_cue_candidate.sql'),
                                      (local_material_cues,'local_material_rules.sql')]:
             if enabled_overlay:
                 addition=(HERE/name).read_bytes()
                 active+=b'\n'+addition
                 (out/name).write_bytes(addition)
+    host_path=manifest.parent/'Data/CSC_Q_ALL_MaterialHosts.sql'
+    host_before=host_active=None
+    if supplier_jobs:
+        # The connector action runs at 3001. CSC resolves actual supplier
+        # hosts at 800010 after optional mods register their improvements.
+        # Append this experimental consumer immediately after that producer.
+        require(sha(host_path)==sha(HERE.parents[3]/'Civ Supply Chains/Data/CSC_Q_ALL_MaterialHosts.sql'),
+                'Installed material-host reconciliation differs from the qualified source')
+        host_before=host_path.read_bytes()
+        job_rules=(HERE/'supplier_job_candidate.sql').read_bytes()
+        host_active=host_before+b'\n'+job_rules
+        (out/'supplier_job_candidate.sql').write_bytes(job_rules)
     script_path=manifest.parent/'Lua_UI/AI/CSC_AI_BakersGameplay.lua'
     script_before=script_active=None
     if local_material_cues:
@@ -161,11 +172,13 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
-        gameplay_sha256=hashlib.sha256(script_active).hexdigest() if local_material_cues else None,active_file=staged_path.name,
+        gameplay_sha256=hashlib.sha256(script_active).hexdigest() if local_material_cues else None,
+        material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if supplier_jobs else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
     eliminated = False
     try:
         if active!=original:replace(staged_path,active)
+        if supplier_jobs:replace(host_path,host_active)
         if local_material_cues:replace(script_path,script_active)
         session.start(lambda:launch(SimpleNamespace(binary=Path(pins['binary'])),out))
         session.wait_context('MainMenu')
@@ -250,7 +263,8 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             if session.closed:
                 shutil.copyfile(user/'Logs/Lua.log',out/'Lua.log')
             if not native_inventory():
-                for path,staged,prior in ((script_path,script_active,script_before),(staged_path,active,original)):
+                for path,staged,prior in ((script_path,script_active,script_before),(host_path,host_active,host_before),
+                                          (staged_path,active,original)):
                     if staged!=prior:
                         current=path.read_bytes()
                         require(current in (staged,prior),'Installed benchmark input changed during replay: '+str(path))
