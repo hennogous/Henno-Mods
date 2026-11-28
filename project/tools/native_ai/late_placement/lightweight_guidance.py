@@ -16,7 +16,8 @@ from driver import (HERE, HeldProcess, NativeSession, launch, load, lua, make_pr
                     native_inventory, read, require, restore_preferences, sha, write_json)
 from economy_factorial import read_opening, select_stack
 from economy_guidance_timing import install_clocks, observed_turns
-from full_game_controller.checkpoint import SaveFileUnavailable, archive_autosave_window, save_inactive_boundary
+from full_game_controller.checkpoint import (SaveFileUnavailable, SavePermissionUnavailable,
+                                            archive_autosave_window, save_inactive_boundary)
 from full_game_controller.controller import ObserverEliminated
 from full_game_observation import archive_censuses
 from mature_guidance_replay import replace
@@ -290,14 +291,11 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             ck=save_inactive_boundary(c,turn=end,name=f'CSC_LIGHT_{seed}_{mode.upper()}_T{end}',
                                       native_directory=saves,archive=out/'endpoint.Civ6Save')
             write_json(out/'checkpoint.json',ck)
-        except SaveFileUnavailable:
-            # On the first supplier-jobs replay Civ acknowledged the manual
-            # save and remained at turn 250, but only its autosave appeared.
-            # Preserve that exact turn before the next game rotates the saves.
-            start_ns=int(load(out/'launch-bootstrap.json')['time']*1_000_000_000)
-            receipt,=archive_autosave_window(saves,out/'endpoint-autosave',end,end,start_ns)
-            require(receipt['status']=='archived','Current game has no matching endpoint autosave')
-            write_json(out/'endpoint-autosave.json',dict(receipt=receipt))
+        except (SaveFileUnavailable, SavePermissionUnavailable) as error:
+            # An AI turn boundary can be fully observed while the local seat
+            # lacks manual-save permission. Keep the native autosave from
+            # this launch before rotation, along with the reason for fallback.
+            keep_endpoint_autosave(out,saves,end,str(error))
     except ObserverEliminated as error:
         # The native game can defeat the observer during a five-turn window.
         # Preserve a playable lead-in before the next game's autosave rotation.
@@ -334,6 +332,18 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
                         if current!=prior:replace(path,prior)
             if eliminated and (out/'Lua.log').is_file():
                 archive_censuses(read(out/'Lua.log'),out)
+    summarize_finished(out,end,ce,no_base_city,local_material_cues)
+
+
+def keep_endpoint_autosave(out,saves,end,reason):
+    start_ns=int(load(out/'launch-bootstrap.json')['time']*1_000_000_000)
+    receipt,=archive_autosave_window(saves,out/'endpoint-autosave',end,end,start_ns)
+    require(receipt['status']=='archived','Current game has no matching endpoint autosave')
+    write_json(out/'endpoint-autosave.json',dict(receipt=receipt,manual_save=reason))
+
+
+def summarize_finished(out,end,ce,no_base_city,local_material_cues):
+    """Validate the retained observations, including after a late save failure."""
     log=read(out/'Lua.log')
     if no_base_city:
         require('CSC_NO_BASE_INSTALLED' in log and 'CSC_NO_BASE_REVIEW' in log
@@ -344,9 +354,15 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         require('CSC_LOCAL_CUE_INSTALLED' in log and 'CSC_LOCAL_CUE_REVIEW' in log and
                 'CSC_LOCAL_CUE_FAULT' not in log,'Local material guidance failed or missed every city review')
     require(set(archive_censuses(log,out))==set(range(25,end+1,25)),'Incomplete physical census')
-    times,excluded,direct=observed_turns(out,end,2)
+    # The final gameplay census can arrive while the UI is still on the
+    # preceding turn. Preserve the measured prefix when that exact gameplay
+    # endpoint has a native autosave. Interior clock gaps remain errors.
+    timing_end=end
+    if (out/'endpoint-autosave.json').exists() and not re.search(r'CSC_GUIDANCE_CLOCK\s+'+str(end)+r'\s+',log):
+        timing_end=end-1
+    times,excluded,direct=observed_turns(out,timing_end,2)
     require(bool(direct['published_packets'])==ce,'Unexpected advanced publications')
-    write_json(out/'measured.json',dict(clean=times,direct=direct['publisher_wall'],
+    write_json(out/'measured.json',dict(clean=times,direct=direct['publisher_wall'],last_ui_clock=timing_end,
         excluded={t:sorted(v) for t,v in excluded.items()}))
 
 

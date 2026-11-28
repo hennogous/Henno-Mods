@@ -311,6 +311,20 @@ The penalty reached 204 city/Quarter reviews across this game. The two remaining
 
 **Isolated Stavanger decision.** Both replays loaded the same archived autosave (`25fa828c49fd`), attached the same dormant terrain rules, and changed only Stavanger's Tailors property. The gameplay entry set it at core turn 63 as the turn-64 autosave resumed. With the property off, the native AI again submitted the 486-point Tailors bid on 67 and put production into Tailors on 69. With the property on, the log contained no district submission for Stavanger on 67, and on 69 the city put production into a Monument. The Settler (379) and Walls (42) submissions on turn 66 matched in both replays. The local penalty can therefore change an actual production decision in the Firaxis-only game. Which alternative wins depends on the other options in that particular game. [Replay tool](../../tools/native_ai/late_placement/no_base_bid_replay.py)
 
+| Seed 171124605, same opening, turn 250 | Earlier lightweight run | With city penalty |
+| --- | ---: | ---: |
+| Bakers founded without Base next door | 7/18 | 6/19 |
+| Tailors founded without Base next door | 12/15 | 11/16 |
+| Completed Bakers with working Base and customer | 4/17 | 1/16 |
+| Completed Tailors with working Base and customer | 0/15 | 1/16 |
+| Storekeeper link-turns | 285 | 211 |
+| Losses of last viable deposit | 10 | 11 |
+| Mean / maximum popup-free turn, seconds | 6.31 / 21.09 | 6.67 / 40.19 |
+
+This second control used the established lightweight deposit rules and the same opening save. It predates the diagnostic city review. Of the treatment's 17 weak foundations, 11 occurred in cities with a recorded Base opportunity, four in cities assessed as lacking one, and two with incomplete visibility. Both games reached 250. The trial preserved the turn-250 autosave and physical census. Its final UI clock and Service observation were at 249, leaving 248 common Service observations and 194 common timed turns.
+
+Across both maps, the city penalty reduced weak foundations from 36/71 to 32/71. Completed Quarters with a working Base and customer fell from nine to six. With 23 of the 32 weak foundations in cities that had identified an alternative, the next experiment should distinguish the sites *within* those cities. Keep the broader city penalty outside the shipping default pending better chain outcomes.
+
 ### Can an unbuilt improvement mark the right deposit?
 
 A disposable improvement for each Quarter accepted the Base resources in the loaded gameplay tags. The stock database registered six valid resource types for Bakers and three for Tailors. A standard Builder could construct the probe improvement. Two cold loads of the same turn-50 save varied one setting, the private yield for placing a Quarter beside that improvement. Player 3 could place Tailors on plot 754 beside owned, unimproved Flax on plot 827. The stock Builder eligibility check accepted the proposed improvement on that Flax.
