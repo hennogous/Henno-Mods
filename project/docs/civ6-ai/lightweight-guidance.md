@@ -375,3 +375,18 @@ The Lua selector took an average of 0.32 ms, a 95th percentile of 0.99 ms and a 
 | Mean / maximum popup-free turn, seconds | 2.10 / 3.78 | 2.07 / 3.34 | 2.06 / 3.16 |
 
 The comparison uses 39 common popup-free turn intervals. In the dynamic game there were 68 city/Quarter reviews, 25 with a useful cue. Thirteen switches activated one rule, eight activated a pair and four withdrew all rules. The only Tailors founded with the fixed river cue was in player 3's city 196610 on turn 36 (river plot 1121, zero owned Base). The control's Tailors was in a different city. These results leave the river cue experimental.
+
+Each review selected rules for one city/Quarter combination. At turn 50 player 4's city 65536 had both Bakers rules active, and its city 131073 had neither. Reloading the named turn-50 save with the same candidate reproduced the active rule IDs, both preview values, the other-city control and the withdrawal/restoration sequence exactly. Offline regression fixtures also verified that the Quarter-foundation callback clears both slots only in the affected city and that city transfer withdraws its old rules. [Cold-load replay](../../tools/native_ai/late_placement/paired_layout_reload.py) and [lifecycle tests](../../tools/native_ai/late_placement/test_paired_material_layout.py)
+
+**Mature comparison through turn 200.** Shadow interrupted the dynamic game at turn 215. At Henno's request the analysis ends at the last complete pre-interruption census, turn 200. All three columns use the same opening save and the same 199 Service observations and 153 popup-free turn intervals. The first two controls are earlier runs of lightweight deposit and partner guidance. The second also recorded city opportunities with its penalty disabled. This comparison excludes the interrupted continuation.
+
+| Seed 171124601, five original AI seats | Lightweight | Lightweight with observation only | Dynamic city cues |
+| --- | ---: | ---: | ---: |
+| Foundations beside usable owned Base / all | 13/30 | 12/28 | 12/31 |
+| Completed Quarters with a working Base and completed customer | 6 | 7 | 5 |
+| Storekeeper link-turns | 182 | 244 | 171 |
+| Mean / maximum popup-free turn, seconds | 5.09 / 19.70 | 5.38 / 19.55 | 5.31 / 16.96 |
+
+The dynamic policy produced 9/17 Bakers and 3/14 Tailors foundations beside usable owned Base. Of 19 foundations without it, 14 followed a city review that found **zero legal owned candidates with its own adjacent Base**. Three followed a review that chose a pattern, and two followed a review with Base possibilities but no active pattern. In Tenochtitlan both candidate sites were owned by the city and legal on turns 26, 30 and 36. With the Tundra cue active, Civ's private adjacency preview was **5 on supplied tile 675 and 2 on tile 750** on each turn. Civ still founded on 750. That case distinguishes a signal that reached the site preview from an investment whose total value was high enough to change construction.
+
+Keep the lightweight release default. The strongest reason to revisit the experiment is its ability to distinguish sites locally. For the larger set of weak placements, first separate cities that could acquire a suitable tile from those that should defer the Quarter. Increasing terrain weights in cities that already have eligible sites reaches a smaller part of the problem.
