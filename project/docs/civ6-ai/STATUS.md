@@ -4,6 +4,8 @@
 
 **Two no-CE seeds completed, 28 November.** The main CSC source includes the tested resource-class cue in its ordinary AI connector SQL. Completed Bakers with a working Base and mapped customer rose from 2/33 to 11/37. Actual Service activity rose from 73 to 498 link-turns. Tailors held at one supplied pair across the two maps. Losses of the last viable deposit increased on both seeds. The next comparisons test the same cue with advanced planning, stronger stock supplier jobs and customer buildings, and a city-specific cue for actual local materials. [Matched results, turn times and remaining gaps](lightweight-guidance.md#shipping-decision-after-the-two-no-ce-games)
 
+**First matched advanced game, 28 November.** On seed 171124601 every one of the advanced game's 31 foundations had an owned Base. Stock, lightweight and advanced guidance produced 2, 8 and 22 completed Quarters with a working Base and mapped customer. Average turn times were 5.38, 6.25 and 8.07 seconds. [Three-way comparison and Service outcomes](lightweight-guidance.md#what-advanced-planning-adds-on-seed-171124601)
+
 **Quarter layouts enabled for the single-player publisher, 25 November.**
 All four final games reached turn 250 and left verified Load Game saves.
 The calibrated planner raised completed customer pairs from 17 to 32

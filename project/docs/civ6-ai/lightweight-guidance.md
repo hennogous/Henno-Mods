@@ -152,3 +152,34 @@ The raw-resource cue is now part of CSC's ordinary AI connector SQL. Across the 
 | Maximum elapsed turn, seconds | 16.60 → 20.62 | 17.29 → 21.09 |
 
 Each column uses the same starting save and the common observations for its two arms. The timed intervals exclude popups (193 and 195 respectively). Total turn time includes the empires' different development. Both games ran with the Firaxis core and zero advanced publications. The source integration reproduced the qualification SQL rows, including adjacency identifiers and weights, when compiled against the game database. Gameplay transaction and modifier values matched. The advanced comparison uses the same resource cue and a CE-enabled opening with the same starting map and roster.
+
+Every 25 turns the controller counted the mapped suppliers beside each AI Quarter, including Quarters under construction. The table counts a Quarter once per material class at each census across both games. A Quarter that kept its supplier for 100 turns can appear four times. This captures how often the AI had access to a supplier during development.
+
+| Across twenty censuses per treatment | Bakers, stock → lightweight | Tailors, stock → lightweight |
+| --- | ---: | ---: |
+| Quarter with accessible Base | 30 → 99 | 38 → 23 |
+| Quarter with working Base | 9 → 60 | 14 → 14 |
+| Quarter with accessible Spec | 9 → 36 | 7 → 6 |
+| Quarter with working Spec | 7 → 31 | 7 → 3 |
+
+For Bakers, the treatment improved access to both material classes well before the endpoint. For Tailors, fewer observations had access to Base and the number with a working Base stayed level. This favors testing a more selective Tailors placement cue. More Quarters also had suppliers they could lose. Counts with an accessible Base or Spec nearly doubled across the two Quarters (84 → 164, counting each class separately). Of the treatment's 19 last-deposit losses, 18 involved Base and eight showed a district on the supplier tile.
+
+### What advanced planning adds on seed 171124601
+
+The advanced game used the same SQL as the lightweight game, with the full CE planner enabled in single player. It started with the same terrain, rivers, resources, leaders and starting positions. The CE mod stack required its own turn-one save. The three-way comparison uses 199 common Service observations and 191 common popup-free turns.
+
+| At turn 250 | Stock CSC | Lightweight CSC | Advanced CSC |
+| --- | ---: | ---: | ---: |
+| Bakers with working Base and completed mapped customer | 1/17 | 7/20 | **19/26** |
+| Tailors with working Base and completed mapped customer | 1/17 | 1/17 | **3/6** |
+| New foundations with usable owned Base | 11/37 | 15/36 | **31/31** |
+| Last viable deposit losses | 3 | 9 | 1 |
+| Storekeeper active link-turns | 50 | 177 | 942 |
+| Innkeeper active link-turns | 0 | 32 | 139 |
+| Sacristan active link-turns | 23 | 0 | 9 |
+| Total active Service link-turns | 73 | 209 | **1,090** |
+| Mean / maximum turn, seconds | 5.38 / 16.60 | 6.25 / 20.62 | **8.07 / 24.82** |
+
+The advanced run recorded 26 Bakers and five Tailors foundations. All five Tailors began with at least +3 current Production and Gold adjacency; one had a clear coast tile next door. No completed Tailors had a Harbor at the endpoint. Twelve Bakers still had a working Stage 2 chain at the endpoint.
+
+Only one last deposit was lost in the advanced game. The 22 interruptions to a working supplier included 11 pillaged improvements, nine where the resource remained without its improvement, one mixed loss and one covered by a district. The full planner averaged 1.72 seconds of measured processing across 249 turns and peaked at 3.95 seconds. The advanced and lightweight games ended with 59 and 52 cities, respectively.
