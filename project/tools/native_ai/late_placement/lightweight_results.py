@@ -54,6 +54,8 @@ def read_arm(folder):
     links = defaultdict(set)
     losses = defaultdict(set)
     loss_states = {'working': defaultdict(set), 'deposit': defaultdict(set)}
+    district_types = {}
+    covering_districts = defaultdict(set)
     harvest_turn = {}
     harvested_losses = set()
     harvest_watched = False
@@ -98,6 +100,10 @@ def read_arm(folder):
             links[int(t)].add((int(player),quarter,stage,service,producer,customer))
         elif 'CSC_QUARTER_WATCH_' in line:
             event, _, tail = line.split('CSC_QUARTER_WATCH_',1)[1].partition('\t')
+            if event == 'DISTRICT_INDEX':
+                fields = dict(v.split('=',1) for v in tail.split('\t') if '=' in v)
+                district_types[int(fields['index'])] = fields['districtType']
+                continue
             if event == 'HARVEST_OBSERVER':
                 harvest_watched = True
                 continue
@@ -151,6 +157,8 @@ def read_arm(folder):
                     losses['deposit'].add(key)
                     state = supplier_tile_state(row)
                     loss_states['deposit'][key].add(state)
+                    if int(row['district']) >= 0:
+                        covering_districts[key].add(int(row['district']))
                     # Log order excludes later actions on the same turn.
                     latest = harvest_turn.get((player,int(row['supplier'])))
                     if state == 'resource_changed_or_removed' and latest in (key[-1]-1,key[-1]):
@@ -211,6 +219,9 @@ def read_arm(folder):
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
         last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')} if watched else None,
         supplier_tile_states_after_loss=state_counts if watched else None,
+        district_types_covering_last_deposit=dict(Counter(
+            ' + '.join(sorted(district_types[i] for i in indices)) for indices in covering_districts.values()
+        )) if watched and district_types else None,
         deposit_losses_with_matching_harvest=len(harvested_losses) if watched and harvest_watched else None,
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
         unresolved_service_samples=sum(unknown for _,unknown in intervals.values()),

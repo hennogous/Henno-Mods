@@ -33,6 +33,11 @@ Players={[1]={GetCities=function()return empty end,GetDistricts=function()return
 CityManager={GetCity=function()return city end}
 PlayerManager={GetAlive=function()return {}end}
 GameInfo={Resources={},Improvements={}}
+GameInfo.Districts=function()
+ local entries={{Index=6,DistrictType='DISTRICT_COMMERCIAL_HUB'},{Index=71,DistrictType='DISTRICT_TEST'}}
+ local index=0
+ return function()index=index+1;return entries[index]end
+end
 CSC_AI_DistrictBridge={Publish=function(...)args={...};return accepted,'receipt'end}
 accepted=true
 CSC_Adjacency={}
@@ -45,6 +50,12 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.vm.execute(SOURCE)
 
     def output(self):return '\n'.join(self.vm.globals().rows.values())
+
+    def test_supplier_watch_names_districts_from_the_loaded_ruleset(self):
+        entries = [line for line in self.output().splitlines() if line.startswith('CSC_QUARTER_WATCH_DISTRICT_INDEX\t')]
+        pairs = [dict(field.split('=', 1) for field in entry.split('\t')[1:]) for entry in entries]
+        self.assertEqual({row['index']: row['districtType'] for row in pairs},
+                         {'6': 'DISTRICT_COMMERCIAL_HUB', '71': 'DISTRICT_TEST'})
 
     def test_harvest_receipt_only_for_visible_unit_on_watched_seat(self):
         self.vm.execute("""

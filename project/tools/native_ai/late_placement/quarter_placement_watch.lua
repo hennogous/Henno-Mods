@@ -190,6 +190,13 @@ end
 -- pillage, lost ownership, or a resource disappearing. A captured Quarter
 -- starts a new history. This observer never participates in a Builder bid.
 local supplierHistory={}
+if CSC_OBSERVE_SUPPLIER_LOSS and GameInfo.Districts then
+ -- Native district indices vary with the loaded mods. Record this world's
+ -- lookup once so an unrelated Campus can be distinguished from a customer.
+ for district in GameInfo.Districts() do
+  emit('DISTRICT_INDEX',{index=district.Index,districtType=district.DistrictType})
+ end
+end
 -- A harvested resource can disappear between two supplier censuses. Capture
 -- the stock operation and the acting unit's tile while the unit still exists.
 -- A last-charge unit may already be gone; the boundary census still records
@@ -225,7 +232,7 @@ local function observeSuppliers(player,district,profile)
     if (#supply[class]==0 or (old.working and not working)) then
      local plot=Map.GetPlotByIndex(old.plot)
      local newResource=GameInfo.Resources[plot:GetResourceType()]
-     emit('SUPPLIER_LOSS',{turn=turn,player=owner,quarter=id,class=class,supplier=old.plot,
+     emit('SUPPLIER_LOSS',{turn=turn,player=owner,quarter=id,quarterType=profile.district.DistrictType,class=class,supplier=old.plot,
       resource=old.resource,district=plot:GetDistrictType(),ownerAfter=plot:GetOwner(),
       resourceAfter=newResource and newResource.ResourceType or '-',pillaged=plot:IsImprovementPillaged(),
       improvementAfter=plot:GetImprovementType(),lastDeposit=#supply[class]==0,
