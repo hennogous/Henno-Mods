@@ -17,18 +17,22 @@ local function selectMaterialCue(sites, terrains)
         end
         if badSite and target and highestTarget > highestBad then
             local cutoff = highestBad + 1
-            local hits, customerRank = 0, 0
+            local hits, bestLayout = 0, 0
             for _, site in ipairs(sites) do
                 if (site.count[terrain] or 0) >= cutoff then
                     hits = hits + 1
-                    customerRank = math.max(customerRank,site.customerRank or 0)
+                    -- At the same customer readiness, prefer a site that can
+                    -- supply later stages too. Evaluate both on the same site.
+                    local layout = 2 * (site.customerRank or 0) + (site.hasSpecialty and 1 or 0)
+                    bestLayout = math.max(bestLayout,layout)
                 end
             end
             -- Every hit touches real Base. Prefer the cue that gives Civ the
             -- best customer opportunity, followed by the most Base options.
             -- Stable terrain and plot order resolve remaining ties.
-            if not best or customerRank > best.customerRank or (customerRank == best.customerRank and hits > best.hits) then
-                best = {a=target, b=badSite, terrain=terrain, cutoff=cutoff, hits=hits, total=#sites, customerRank=customerRank}
+            if not best or bestLayout > best.layout or (bestLayout == best.layout and hits > best.hits) then
+                best = {a=target, b=badSite, terrain=terrain, cutoff=cutoff, hits=hits, total=#sites,
+                    layout=bestLayout, customerRank=math.floor(bestLayout/2)}
             end
         end
     end

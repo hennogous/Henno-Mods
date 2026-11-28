@@ -6,14 +6,15 @@ for row in GameInfo.CSC_QuarterMaterialAdjacencyConfig() do
     local tag = "CLASS_CSC_" .. row.QuarterKey .. "_BASE"
     if district and row.SourceTag == tag and row.SourceFilter == ''
             and row.AdjacencyType == 'FROM_RINGS_TYPETAG_RESOURCE' and not profiles[district.Index] then
-        local profile = {district=district, resources={}, customers={}, coastal=false}
+        local profile = {district=district, resources={}, specialty={}, customers={}, coastal=false}
         profiles[district.Index] = profile
-        tags[tag] = profile
+        tags[tag] = profile.resources
+        tags["CLASS_CSC_" .. row.QuarterKey .. "_SPEC"] = profile.specialty
     end
 end
 for row in GameInfo.TypeTags() do
-    local profile, resource = tags[row.Tag], GameInfo.Resources[row.Type]
-    if profile and resource then profile.resources[resource.Index] = resource end
+    local class, resource = tags[row.Tag], GameInfo.Resources[row.Type]
+    if class and resource then class[resource.Index] = resource end
 end
 local function flag(value) return value == true or tonumber(value) == 1 end
 for row in GameInfo.CSC_QuarterCustomerBuildings() do
@@ -108,6 +109,7 @@ local function ownedSites(city, player, profile, snapshot)
                 customerRank=profile.coastal and g.clearCoast and 1 or 0}
             for _, deposit in ipairs(g.materials) do
                 if profile.resources[deposit.id] then item.materialTerrain[deposit.terrain] = true end
+                if profile.specialty[deposit.id] then item.hasSpecialty = true end
             end
             for _, district in ipairs(g.districts) do
                 if profile.customers[district] then item.customerRank = 2; break end

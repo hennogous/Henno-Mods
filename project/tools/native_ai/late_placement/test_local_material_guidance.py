@@ -62,8 +62,9 @@ class LocalMaterialGuidance(unittest.TestCase):
             CSC_QuarterMaterialAdjacencyConfig=catalogue({
                 {QuarterKey='A',SourceTag='CLASS_CSC_A_BASE',SourceFilter='',AdjacencyType='FROM_RINGS_TYPETAG_RESOURCE'},
                 {QuarterKey='B',SourceTag='CLASS_CSC_B_BASE',SourceFilter='',AdjacencyType='FROM_RINGS_TYPETAG_RESOURCE'}}),
-            Resources=catalogue({{ResourceType='COTTON',Index=0}},'ResourceType'),
-            TypeTags=catalogue({{Type='COTTON',Tag='CLASS_CSC_A_BASE'},{Type='COTTON',Tag='CLASS_CSC_B_BASE'}}),
+            Resources=catalogue({{ResourceType='COTTON',Index=0},{ResourceType='MOD_DYE',Index=1}},'ResourceType'),
+            TypeTags=catalogue({{Type='COTTON',Tag='CLASS_CSC_A_BASE'},{Type='COTTON',Tag='CLASS_CSC_B_BASE'},
+                {Type='MOD_DYE',Tag='CLASS_CSC_B_SPEC'}}),
             Terrains=catalogue({{TerrainType='PLAINS',Index=0},{TerrainType='TERRAIN_COAST',Index=1,Water=1}},'TerrainType'),
             CSC_QuarterCustomerBuildings=catalogue({{QuarterKey='A',ProducerStage=2,DistrictType='HARBOR'}}),
             DistrictReplaces=catalogue({})}
@@ -74,8 +75,8 @@ class LocalMaterialGuidance(unittest.TestCase):
         end
         local first=plot(1,2,0,-1);local second=plot(2,2,0,-1)
         local cotton=plot(3,2,0,0);local coast=plot(4,-1,1,-1)
-        local empty=plot(5,2,0,-1)
-        rings={{cotton,coast,empty},{empty}}
+        local empty=plot(5,2,0,-1);local dye=plot(6,2,0,1)
+        rings={{cotton,coast,empty,dye},{empty}}
         city={GetX=function()return 1 end,GetY=function()return 0 end,GetID=function()return 7 end}
         Cities={GetPlotPurchaseCity=function()return city end}; reads=0;hide=false
         Map={GetPlotXYWithRangeCheck=function(x,y,dx,dy)if dy==0 and dx==1 then return first elseif dy==0 and dx==2 then return second end end,
@@ -87,9 +88,22 @@ class LocalMaterialGuidance(unittest.TestCase):
         local view=citySites(city,2)
         local a=ownedSites(city,2,profiles[1],view);local b=ownedSites(city,2,profiles[2],view)
         assert(reads==12 and #a==2 and #b==2)
+        assert(not a[1].hasSpecialty and b[1].hasSpecialty)
         local first=selectMaterialCue(a,terrainKeys);local second=selectMaterialCue(b,terrainKeys)
         assert(first.cutoff==2 and first.hits==1 and first.customerRank==1 and second.customerRank==0)
         hide=true;assert(#ownedSites(city,2,profiles[1],citySites(city,2))==0)
+        """)
+
+    def test_specialty_breaks_ties_on_the_same_base_and_customer_site(self):
+        vm = LuaRuntime()
+        vm.execute((HERE/'city_material_cue_choice.lua').read_text() + """
+        local a={count={A=1},materialTerrain={A=true},customerRank=1}
+        local b={count={B=1},materialTerrain={B=true},customerRank=1,hasSpecialty=true}
+        local bad={count={},materialTerrain={},customerRank=2,hasSpecialty=true}
+        local function pick()return selectMaterialCue({a,b,bad},{'A','B'}).terrain end
+        assert(pick()=='B')
+        a.customerRank=2;assert(pick()=='A')
+        b.materialTerrain={};b.customerRank=2;assert(pick()=='A')
         """)
 
     def test_budget_reloads_withdrawal_and_reattachment(self):
