@@ -310,8 +310,22 @@ class FullGameController:
   self.capture_blocker(target);self.dismiss_observer_warning(target)
   return self._await_target(target)
  def play(self,target):
-  self.ready(self.last_interval_turn,'before-'+str(target))
-  self.cmd('Automation.SetActive(false);AutoplayManager.SetDisableAssertsForAutoplay(true);AutoplayManager.SetTurns('+str(target)+'-Game.GetCurrentGameTurn());AutoplayManager.SetReturnAsPlayer(0);AutoplayManager.SetObserveAsPlayer(-1);AutoplayManager.SetActive(true);print("CSC_DIAG_AUTOPLAY",Game.GetCurrentGameTurn(),AutoplayManager.GetTurns(),AutoplayManager.IsActive());','GameCore_Tuner','autoplay-'+str(target),wait=2)
+  start=self.last_interval_turn
+  self.ready(start,'before-'+str(target))
+  try:
+   self.cmd('Automation.SetActive(false);AutoplayManager.SetDisableAssertsForAutoplay(true);AutoplayManager.SetTurns('+str(target)+'-Game.GetCurrentGameTurn());AutoplayManager.SetReturnAsPlayer(0);AutoplayManager.SetObserveAsPlayer(-1);AutoplayManager.SetActive(true);print("CSC_DIAG_AUTOPLAY",Game.GetCurrentGameTurn(),AutoplayManager.GetTurns(),AutoplayManager.IsActive());','GameCore_Tuner','autoplay-'+str(target),wait=2)
+  except MissingAcknowledgment:
+   # Civ can enter AI turns before its console sends the acknowledgement.
+   # Inspect the existing operation once. Resending SetActive could start a
+   # second interval or take control away from a different player.
+   proof=self.state_read('verify-transmitted-autoplay-'+str(target))
+   if proof.get('player0_alive') is False:raise ObserverEliminated('Original observer eliminated during activation')
+   running=(proof['active'] and start<=proof['turn']<target and proof['remaining']==target-proof['turn']
+            and proof['local_player']==-1 and not proof['player0_human'])
+   finished=(proof['turn']==target and not proof['active'] and proof['remaining']==0
+             and proof['local_player']==0 and proof['player0_human'])
+   if proof.get('player0_alive') is not True or not (running or finished):raise
+   self.diagnostics.journal('autoplay-confirmed-after-missing-reply',start=start,target=target,proof=proof)
   return self._await_target(target)
  def _await_target(self,target):
   interval_seconds=getattr(self,'autoplay_interval_seconds',1800)

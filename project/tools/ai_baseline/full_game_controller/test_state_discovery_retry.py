@@ -107,6 +107,24 @@ class AutoplayDiscoveryTests(unittest.TestCase):
     @staticmethod
     def done():return dict(turn=135,active=False,remaining=0,local_player=0,player0_human=True)
 
+    def test_missing_activation_reply_uses_only_the_exact_existing_interval(self):
+        active=dict(turn=132,active=True,remaining=3,local_player=-1,player0_human=False,player0_alive=True)
+        complete=dict(self.done(),player0_alive=True)
+        for evidence,accepted in ((active,True),(complete,True),(dict(active,remaining=4),False),
+                                  (dict(active,local_player=0),False),(dict(complete,turn=134),False)):
+            with self.subTest(evidence=evidence):
+                runner=self.runner([evidence]);runner.last_interval_turn=130;runner._await_target=Mock()
+                runner.cmd.side_effect=MissingAcknowledgment('sent-once','')
+                if accepted:
+                    control.FullGameController.play(runner,135)
+                    runner._await_target.assert_called_once_with(135)
+                else:
+                    with self.assertRaises(MissingAcknowledgment):
+                        control.FullGameController.play(runner,135)
+                    runner._await_target.assert_not_called()
+                runner.cmd.assert_called_once()
+                runner.state_read.assert_called_once_with('verify-transmitted-autoplay-135')
+
     def test_busy_progress_discovery_returns_to_reading_without_activation(self):
         runner=self.runner([control.StateDiscoveryUnavailable('busy'),self.done()])
         self.await_target(runner)
