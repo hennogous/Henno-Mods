@@ -86,8 +86,11 @@ GameEvents.OnGameTurnStarted.Add(function()
 
 
 def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
-           city_cue_probe=False,local_material_cues=False):
+           city_cue_probe=False,local_material_cues=False,as_installed=False):
     study=load(root/'study.json')
+    if as_installed:
+        require(mode in ('native','advanced') and not city_cue_probe and label,
+                'An installed-build check needs a separate label and a real treatment')
     pins=study['pins'];game=pins['seeds'][str(seed)]
     source=root/str(seed)/'opening'
     if mode=='prepare':
@@ -122,7 +125,28 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     session=NativeSession(out,c,inventory=native_inventory,hold=HeldProcess,write=write_json)
     manifest=next(Path(pins['packages']['csc']['path']).glob('*.modinfo'))
     original=manifest.read_bytes()
-    require(original==(root/'candidate.modinfo').read_bytes(),'Installed manifest changed before replay')
+    if as_installed:
+        # Qualify the package a player loads. Flags below describe expected
+        # runtime behaviour; none may stage an experimental file in this mode.
+        # Hash the SQL, settings and every AI Lua module against the checkout.
+        mod_source=HERE.parents[3]/'Civ Supply Chains'
+        checked=['Data/CSC_Q_ALL_AI_Connectors.sql','Settings/Settings.xml','Settings/Settings_Text.xml']
+        checked.extend(p.relative_to(mod_source).as_posix() for p in sorted((mod_source/'Lua_UI/AI').glob('*.lua')))
+        hashes={f:sha(mod_source/f) for f in checked}
+        require(all(sha(manifest.parent/f)==digest for f,digest in hashes.items()),
+                'Installed guidance differs from the source being qualified')
+        actions=load(HERE.parents[3]/'project/modbuddy/CivSupplyChains.actions.json')['blocks']['inGameActions']
+        connector=next(a for a in actions if a['id']=='CSC_AI_Connectors')
+        release_manifest=ET.fromstring(original)
+        registered={e.text.replace('\\','/') for e in release_manifest.findall('Files/File')}
+        require(set(checked)<=registered,'Installed manifest is missing a qualified guidance or settings file')
+        built=release_manifest.find("InGameActions/UpdateDatabase[@id='CSC_AI_Connectors']")
+        require(built is not None and built.findtext('Properties/LoadOrder')==connector['properties']['LoadOrder']
+                and [e.text for e in built.findall('File')]==connector['files'] and built.find('Criteria') is None,
+                'Installed native connector action differs from the release source')
+        write_json(out/'installed-guidance.json',dict(files=hashes,manifest=sha(manifest)))
+    else:
+        require(original==(root/'candidate.modinfo').read_bytes(),'Installed manifest changed before replay')
     staged_path=manifest
     active=original
     if mode=='stock':
@@ -131,7 +155,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         require(connectors is not None,'Expected native action')
         actions.remove(connectors)
         active=ET.tostring(doc,encoding='utf-8',xml_declaration=True)
-    if deposit_cues or customer_buildings or supplier_jobs or city_cue_probe or local_material_cues:
+    if not as_installed and (deposit_cues or customer_buildings or supplier_jobs or city_cue_probe or local_material_cues):
         require(mode in ('native','advanced'),'The stock control must keep ordinary AI')
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
         require(sha(staged_path)==load(root/'material-candidate.json')['full'],'Underlying connector revision changed')
@@ -147,8 +171,8 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
                 (out/name).write_bytes(addition)
     host_path=manifest.parent/'Data/CSC_Q_ALL_MaterialHosts.sql'
     host_before=host_active=None
-    if supplier_jobs:
-        # The connector action runs at 3001. CSC resolves actual supplier
+    if supplier_jobs and not as_installed:
+        # The pinned connector action runs at 3001. CSC resolves actual supplier
         # hosts at 800010 after optional mods register their improvements.
         # Append this experimental consumer immediately after that producer.
         require(sha(host_path)==sha(HERE.parents[3]/'Civ Supply Chains/Data/CSC_Q_ALL_MaterialHosts.sql'),
@@ -159,7 +183,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         (out/'supplier_job_candidate.sql').write_bytes(job_rules)
     script_path=manifest.parent/'Lua_UI/AI/CSC_AI_BakersGameplay.lua'
     script_before=script_active=None
-    if local_material_cues:
+    if local_material_cues and not as_installed:
         require(sha(script_path)==sha(HERE.parents[3]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_BakersGameplay.lua'),
                 'Installed gameplay entry differs from the qualified CSC entry')
         script_before=script_path.read_bytes()
@@ -172,14 +196,14 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
-        gameplay_sha256=hashlib.sha256(script_active).hexdigest() if local_material_cues else None,
-        material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if supplier_jobs else None,active_file=staged_path.name,
+        as_installed=as_installed,gameplay_sha256=hashlib.sha256(script_active).hexdigest() if script_active else None,
+        material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if host_active else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
     eliminated = False
     try:
         if active!=original:replace(staged_path,active)
-        if supplier_jobs:replace(host_path,host_active)
-        if local_material_cues:replace(script_path,script_active)
+        if host_active is not None:replace(host_path,host_active)
+        if script_active is not None:replace(script_path,script_active)
         session.start(lambda:launch(SimpleNamespace(binary=Path(pins['binary'])),out))
         session.wait_context('MainMenu')
         select_stack(session,out,[pins['packages'][key]['id'] for key in enabled])
@@ -293,6 +317,7 @@ if __name__=='__main__':
     p.add_argument('--supplier-jobs',action='store_true',help='Test stock Builder improvement values next to a Quarter')
     p.add_argument('--city-cue-probe',action='store_true',help='Inspect a city-specific stock adjacency in a disposable replay')
     p.add_argument('--local-material-cues',action='store_true',help='Run bounded city-specific material guidance from CSC')
+    p.add_argument('--as-installed',action='store_true',help='Verify the installed release against source and leave its files untouched; other flags describe expected controls')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
     a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
-                           a.supplier_jobs,a.city_cue_probe,a.local_material_cues)
+                           a.supplier_jobs,a.city_cue_probe,a.local_material_cues,a.as_installed)

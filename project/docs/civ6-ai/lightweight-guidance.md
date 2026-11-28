@@ -13,6 +13,8 @@ The material cue deliberately uses an observable feature of the map. A Pasture c
 
 The shipping connector action runs at 800011, after optional material removals, City Lights registrations and CSC's supplier-host reconciliation at 800010. This lets its family counts reflect the loaded resource and improvement catalogue. Regenerating the connector from the completed standalone game's database reproduced all 38 district adjacency rows, including their weights, thresholds and partner types. The benchmark retains its pinned earlier load order; experimental supplier-job rows load after 800010 in that package.
 
+For a release replay, use `lightweight_guidance.py --as-installed` with a fresh label and the expected treatment flags. It checks the installed AI Lua files, connector, settings and manifest against source before starting Civ. The flags select runtime checks; the game loads the installed package directly. Ordinary experimental runs still stage and restore their pinned inputs.
+
 ## Research behind the choices
 
 City Lights supplies a local example of stock improvement adjacency. RHAI5 uses the stock unit-request list in `core/Ops/RH_Ops.sql`. AI+ uses the Required City parameter on the Build Unit node of the Build City Improvement tree in `behaviortrees.xml`. Real Strategy's `base/RealStrategy_Anti.sql` illustrates gating a player's preference lists through a Lua strategy condition. That is a candidate for changing broad investment priorities when a shortage is observed.
