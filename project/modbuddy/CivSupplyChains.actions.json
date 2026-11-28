@@ -1244,16 +1244,6 @@
         ]
       },
       {
-        "type": "UpdateDatabase",
-        "id": "CSC_AI_Connectors",
-        "properties": {
-          "LoadOrder": "3001"
-        },
-        "files": [
-          "Data/CSC_Q_ALL_AI_Connectors.sql"
-        ]
-      },
-      {
         "type": "UpdateText",
         "id": "ModSupport_LGD_MC_MODE_TEXT",
         "properties": {
@@ -1416,6 +1406,16 @@
         },
         "files": [
           "Data/CSC_Q_ALL_MaterialHosts.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AI_Connectors",
+        "properties": {
+          "LoadOrder": "800011"
+        },
+        "files": [
+          "Data/CSC_Q_ALL_AI_Connectors.sql"
         ]
       },
       {

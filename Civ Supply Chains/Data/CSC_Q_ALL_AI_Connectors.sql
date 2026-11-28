@@ -1,5 +1,6 @@
 -- Stock AI reads these district/site and Builder preferences with or without
--- CE. SQL generates them once from the final gameplay catalogues. The
+-- CE. Load at 800011, after optional resource removals and CSC's late
+-- reconciliation of improvements that can supply each transaction. The
 -- advanced single-player planner can also supply site-specific economic bids.
 --
 -- The private yield gives a customer district a co-location signal. It

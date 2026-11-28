@@ -164,6 +164,8 @@ class PopulationCatalogue(unittest.TestCase):
         self.assertLess(order('ModSupport_LGD'),order('CSC_BuildingTransactionProcessor'))
         self.assertLess(order('CSC_BuildingTransactionProcessor'),order('CSC_AdjacencyProcessor'))
         self.assertLess(order('CSC_AdjacencyProcessor'),order('CSC_AI_Connectors'))
+        self.assertLess(order('ModSupport_REMOVE_ALL_UNUSED'),order('CSC_AI_Connectors'))
+        self.assertLess(order('CSC_MaterialTransactions'),order('CSC_AI_Connectors'))
         self.assertNotIn('criteria',actions['CSC_BuildingTransactionProcessor'])
 
     def test_contract_rejects_unimplemented_shapes_and_mismatched_native_bindings(self):

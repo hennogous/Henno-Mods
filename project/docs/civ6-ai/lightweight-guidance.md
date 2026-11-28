@@ -11,6 +11,8 @@ CSC offers one setup option, **Advanced CSC AI planning**. In a single-player ga
 
 The material cue deliberately uses an observable feature of the map. A Pasture can hold Cattle, Sheep or Horses. Bakers and Tailors each benefit from one of those resources. A Cotton Plantation can feed Tailors but the family also covers thirteen other resources, so a lone Plantation gives Tailors no private adjacency in the standalone catalogue. The outcome measure counts the actual resource and working improvement.
 
+The shipping connector action runs at 800011, after optional material removals, City Lights registrations and CSC's supplier-host reconciliation at 800010. This lets its family counts reflect the loaded resource and improvement catalogue. Regenerating the connector from the completed standalone game's database reproduced all 38 district adjacency rows, including their weights, thresholds and partner types. The benchmark retains its pinned earlier load order; experimental supplier-job rows load after 800010 in that package.
+
 ## Research behind the choices
 
 City Lights supplies a local example of stock improvement adjacency. RHAI5 uses the stock unit-request list in `core/Ops/RH_Ops.sql`. AI+ uses the Required City parameter on the Build Unit node of the Build City Improvement tree in `behaviortrees.xml`. Real Strategy's `base/RealStrategy_Anti.sql` illustrates gating a player's preference lists through a Lua strategy condition. That is a candidate for changing broad investment priorities when a shortage is observed.
@@ -94,6 +96,8 @@ The `--local-material-cues` candidate runs this selection from CSC's normal game
 The turn-one map for seed 171124601 had 947 clearable land sites. Of these, 278 touched actual Tailors Base, and 76 touched both a Base and a clear coastal tile, spread across 32 distinct source deposits. Before city ownership, a terrain threshold singled out Base-adjacent sites in 165/287 sampled Tailors neighborhoods with a Base opportunity. This map has room for the local rule to help.
 
 **First fifty turns with the city rule running from CSC.** Across five AI cities on seed 171124601, ordinary gameplay Lua activated nine rules (five Bakers and four Tailors) and withdrew five. It performed 37 city reviews covering 334 legal Quarter-site evaluations. Two Bakers were founded while their city's cue was active. Both landed on rewarded terrain and had a usable owned Base. A third Bakers and one Tailors were founded without an active cue and had no usable owned Base. This short run establishes that the live candidate reaches real placements. The Firaxis gameplay Lua clock returned zero elapsed time for every review. Use the independent popup-free turn clock for performance comparisons.
+
+Player 3's city 131073 gives a matched example. On turn 24 the city rule rewarded one of its six legal Bakers sites. On turn 25 the city founded Bakers on that site (1119). With the broad resource cue alone, the same city founded Bakers on 1047 on turn 25. Both sites touched the same City Center and Flax on 1120. A second city built at the same Base-adjacent site in both games. Across all five AI seats, the first 50 turns produced two Bakers with owned Base in each treatment, among three foundations with the local rule and five with the broad cue alone.
 
 ### First full game with the undeveloped-deposit cue
 
