@@ -16,7 +16,7 @@ from driver import (HERE, HeldProcess, NativeSession, launch, load, lua, make_pr
                     native_inventory, read, require, restore_preferences, sha, write_json)
 from economy_factorial import read_opening, select_stack
 from economy_guidance_timing import install_clocks, observed_turns
-from full_game_controller.checkpoint import archive_autosave_window, save_inactive_boundary
+from full_game_controller.checkpoint import SaveFileUnavailable, archive_autosave_window, save_inactive_boundary
 from full_game_controller.controller import ObserverEliminated
 from full_game_observation import archive_censuses
 from mature_guidance_replay import replace
@@ -261,9 +261,21 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
                 observe_city_cue(c,out,range(1,len(game['roster'])),turn,allow_fallback=turn>=end-5)
         if city_cue_probe:
             require((out/'city-cue-result.json').is_file(),'No testable owned material/terrain pair by endpoint')
-        ck=save_inactive_boundary(c,turn=end,name=f'CSC_LIGHT_{seed}_{arm_name.upper()}_T{end}',
-                                  native_directory=saves,archive=out/'endpoint.Civ6Save')
-        write_json(out/'checkpoint.json',ck)
+        # Keep the native save name short even when the experimental arm
+        # has a long descriptive directory. The checkpoint helper appends
+        # a per-directory identifier to distinguish runs of the same mode.
+        try:
+            ck=save_inactive_boundary(c,turn=end,name=f'CSC_LIGHT_{seed}_{mode.upper()}_T{end}',
+                                      native_directory=saves,archive=out/'endpoint.Civ6Save')
+            write_json(out/'checkpoint.json',ck)
+        except SaveFileUnavailable:
+            # On the first supplier-jobs replay Civ acknowledged the manual
+            # save and remained at turn 250, but only its autosave appeared.
+            # Preserve that exact turn before the next game rotates the saves.
+            start_ns=int(load(out/'launch-bootstrap.json')['time']*1_000_000_000)
+            receipt,=archive_autosave_window(saves,out/'endpoint-autosave',end,end,start_ns)
+            require(receipt['status']=='archived','Current game has no matching endpoint autosave')
+            write_json(out/'endpoint-autosave.json',dict(receipt=receipt))
     except ObserverEliminated as error:
         # The native game can defeat the observer during a five-turn window.
         # Preserve a playable lead-in before the next game's autosave rotation.

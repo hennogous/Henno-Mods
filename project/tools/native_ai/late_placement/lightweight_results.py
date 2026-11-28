@@ -36,6 +36,17 @@ def read_arm(folder, through=None):
     endpoint = summarize(census)
     result = {}
     profiles = {}
+    # A Builder works a physical plot once even when it supplies two nearby
+    # Quarters. Deduplicate within each Quarter family and material class.
+    deposits = defaultdict(set)
+    working_plots = defaultdict(set)
+    for quarter in quarter_rows(census):
+        if quarter['complete']:
+            for plot,kind,_,working in quarter['materials']:
+                key=(quarter['profile'],kind)
+                deposits[key].add(plot)
+                if working=='true':
+                    working_plots[key].add(plot)
     for path in sorted(folder.glob('full-census-*.json')):
         if int(path.stem.rsplit('-',1)[1]) > turn:
             continue
@@ -52,7 +63,9 @@ def read_arm(folder, through=None):
             stage2_customer_district=totals['mapped_customer2_completed'],
             stage2_customer_building=totals['mapped_customer2_with_working_building'],
             supplied_stage2_customer_building=totals['base_improved_customer2_working'],
-            stage2_chain_physical=totals['stage2_physical'])
+            stage2_chain_physical=totals['stage2_physical'],
+            material_plots={kind:dict(present=len(deposits[profile,kind]),working=len(working_plots[profile,kind]))
+                            for kind in ('BASE','SPEC')})
 
     intervals = {}
     links = defaultdict(set)

@@ -231,3 +231,21 @@ The advanced game reached turn 242, when the observer civilisation was eliminate
 All three results cover the same 224 Service observations and 175 popup-free intervals. Three of the six completed advanced Tailors had both material classes. The single lost last deposit had a Wonder on its tile. The advanced planner averaged 1.41 seconds per turn and peaked at 3.00 seconds. The stock, lightweight and advanced empires held 47, 42 and 53 cities respectively.
 
 On this seed's turn-one map, 55 of 889 clearable sites touched both a Tailors Base and a clear coastal tile, using 26 distinct sources. A local terrain threshold distinguished Base sites in 105 of 235 sampled neighborhoods with a Base opportunity. These are possible locations before settlement and border growth. They give the no-CE city-specific experiment a second map with relevant layouts.
+
+### Can ordinary Builder and customer preferences complete more chains?
+
+The first turn-250 replay added six stock improvement adjacency rules derived from the material hosts and a major-leader building preference for the Granary and Lighthouse. The live game database contained all eight entries. Each arm used the same starting save on seed 171124601. Working plots count distinct owned, intact suppliers alongside completed Quarters.
+
+| At turn 250 | Stock CSC | Lightweight CSC | Lightweight plus Builder and building preferences |
+| --- | ---: | ---: | ---: |
+| Bakers with working Base and completed customer | 1/17 | 7/20 | 3/18 |
+| Tailors with working Base and completed customer | 1/17 | 1/17 | 0/15 |
+| Distinct working / present Base plots, Bakers | 1/4 | 10/11 | 5/5 |
+| Distinct working / present Base plots, Tailors | 2/5 | 2/4 | 3/4 |
+| Bakers with functioning first customer building | 9 | 12 | 10 |
+| Tailors with functioning first customer building | 1 | 0 | 1 |
+| Active Service link-turns | 73 | 209 | 31 |
+| Last viable deposit losses | 3 | 9 | 8 |
+| Mean / maximum seconds per turn | 5.35 / 16.60 | 6.25 / 20.62 | 5.68 / 16.68 |
+
+The extra preferences left eight of nine surviving Base plots working, but the empires retained fewer Bakers suppliers. Six Tailors had customers and three had working Base. Those groups did not overlap. The only active Service was one Storekeeper for 31 turns. This result favors the simpler shipping treatment on this map. Timing uses 189 common popup-free turns and Service totals use 199 common observations. The endpoint is available in the Load menu as `CSC_LIGHT_171124601_JOBS_CUSTOMERS_T250`.
