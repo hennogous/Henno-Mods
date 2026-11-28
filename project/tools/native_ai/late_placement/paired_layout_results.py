@@ -16,6 +16,16 @@ def report(folder):
             reviews[p,c,d]=dict(turn=int(t),sites=int(n),with_base=int(n)-int(b),target=int(goal),margin=int(margin))
             counts['quarter_reviews']+=1
             counts['with_cue']+=int(goal!='-1')
+        elif 'CSC_FLOOR_REVIEW\t' in line:
+            t,p,c,d,n,good,penalty,goal,rule=line.split('CSC_FLOOR_REVIEW\t',1)[1].split()
+            reviews[p,c,d]=dict(turn=int(t),sites=int(n),with_base=int(good),target=int(goal),
+                                penalty=penalty=='true',rule=rule)
+            counts['quarter_reviews']+=1
+            counts['with_cue']+=int(goal!='-1')
+        elif 'CSC_SPLIT_SIGNAL\t' in line:
+            t,p,c,name,d,goal,a,b,delta=line.split('CSC_SPLIT_SIGNAL\t',1)[1].split()
+            # This precedes the plain floor review in the gameplay log.
+            counts['mixed_terrain_reviews' if '__N_' in b else 'two_positive_reviews']+=1
         elif 'CSC_PAIR_SWITCH\t' in line:
             fields=line.split('CSC_PAIR_SWITCH\t')[1].split()
             counts['activate_two' if fields[-1]!='-' else 'activate_one' if fields[-2]!='-' else 'withdraw']+=1

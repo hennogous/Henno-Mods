@@ -57,6 +57,13 @@ function pairPolicy.choose(sites, city, player, profile, turn)
             -- A safe cue still needs the floor under its competing footprints.
             if not cue.target and pairPolicy.splitRelief then
                 cue=pairPolicy.splitRelief(sites,profile) or cue
+                if cue.target then
+                    -- CityBuild.csv identifies a submission by city name;
+                    -- the foundation observer identifies it by player/city
+                    -- ID and plot. Store both identities on the new signal.
+                    print('CSC_SPLIT_SIGNAL',turn,player,city:GetID(),city:GetName(),
+                          profile.district.DistrictType,cue.target,cue.a,cue.b,cue.delta)
+                end
             end
             if pairPolicy.releaseAmbiguousFloor and not cue.target then
                 cue.floor=false

@@ -22,6 +22,7 @@ class PairedSiteTest(unittest.TestCase):
         end
         function makeCity()
           local c=props(); function c:GetID()return 34 end
+          function c:GetName()return 'CITY' end
           c.bound=0;function c:AttachModifierByID(id)self.bound=self.bound+1 end
           return c,props()
         end

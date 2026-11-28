@@ -8,12 +8,10 @@ local function inspect()
     local center = Map.GetPlot(city:GetX(),city:GetY())
     local ds, queue = city:GetDistricts(), city:GetBuildQueue()
     local inventory={}
-    for i=0,ds:GetNumDistricts()-1 do
-        local district=ds:GetDistrictByIndex(i)
-        if district then
-            local kind=GameInfo.Districts[district:GetType()].DistrictType
-            inventory[#inventory+1]=kind..'/'..tostring(district:IsComplete())..'/'..tostring(district:IsPillaged())
-        end
+    -- The UI district collection exposes HasDistrict. Indexed enumeration of
+    -- individual district objects belongs to the gameplay API.
+    for definition in GameInfo.Districts() do
+        if ds:HasDistrict(definition.Index) then inventory[#inventory+1]=definition.DistrictType end
     end
     local can, result = queue:CanProduce(d.Hash,false,true)
     local reasons = result and result[CityCommandResults.FAILURE_REASONS] or {}

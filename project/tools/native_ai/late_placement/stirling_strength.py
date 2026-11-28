@@ -104,4 +104,11 @@ if __name__=='__main__':
     for strength in (6,9,12):
         out=args.saved.parent/f'stirling-weight-{strength}'
         if not (out/'decision.json').is_file():
+            if out.exists():
+                require((out/'session-closed.json').is_file() and not native_inventory(),
+                        'Previous attempt still owns the game or lacks its closure receipt')
+                # Preserve diagnostic failures separately. Never send another
+                # launch while the previous session is alive.
+                keep=next(i for i in range(1,100) if not out.with_name(f'{out.name}-attempt-{i}').exists())
+                out.rename(out.with_name(f'{out.name}-attempt-{keep}'))
             replay(args.study,args.saved,out,strength,args.end)

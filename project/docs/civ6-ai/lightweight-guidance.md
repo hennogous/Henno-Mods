@@ -487,4 +487,6 @@ The actual replay through turn 80 gave a different answer. Of 244 complete revie
 
 The saved turn-80 reconstruction reproduced Stirling's three supplied Tailors choices among nine legal owned sites and its original Desert cue on plot 870. The plot touches Flax and one Desert hex. The earlier game's build log records a Holy Site contract submitted on turn 79 at 977 and accepted on turn 80. The city's early production during the cue window went to military units. The same-state test compares desert rewards of +6, +9 and +12 and records the district slots, production eligibility and legal rival previews alongside each contract.
 
+At the turn-80 boundary, Stirling had population 8 and had zoned all three available specialty districts. Civ's production check explicitly required population 10 to build Tailors. The site query still admitted plot 870, which already led the private-yield previews at +1 against −4 on the strongest rival, plot 797. The city reached population 9 on turn 83 and the same restriction remained. Site preview and current construction eligibility are separate measurements in this case.
+
 Qualification is at least 10 supplied foundations, including 3 Tailors, and at most 13 weak foundations by turn 200. Map seed 281126041 with game seed 281126042 is reserved for a fresh-seed comparison if the candidate passes.
