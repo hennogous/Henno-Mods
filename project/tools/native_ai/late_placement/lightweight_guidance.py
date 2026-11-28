@@ -86,9 +86,16 @@ GameEvents.OnGameTurnStarted.Add(function()
 
 
 def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
-           city_cue_probe=False,local_material_cues=False,as_installed=False):
+           city_cue_probe=False,local_material_cues=False,as_installed=False,no_base_city=False,probe_no_base=False,
+           observe_no_base=False):
     study=load(root/'study.json')
-    if as_installed:
+    if no_base_city:
+        require(mode=='native' and deposit_cues and label and not any((as_installed,local_material_cues,
+                city_cue_probe,customer_buildings,supplier_jobs)),'Use the ordinary release for the no-Base comparison')
+    require(not probe_no_base or no_base_city,'The readback needs the city treatment')
+    require(not observe_no_base or (no_base_city and not probe_no_base),
+            'The matched control records opportunity and leaves every district preference unchanged')
+    if as_installed or no_base_city:
         require(mode in ('native','advanced') and not city_cue_probe and label,
                 'An installed-build check needs a separate label and a real treatment')
     pins=study['pins'];game=pins['seeds'][str(seed)]
@@ -125,7 +132,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     session=NativeSession(out,c,inventory=native_inventory,hold=HeldProcess,write=write_json)
     manifest=next(Path(pins['packages']['csc']['path']).glob('*.modinfo'))
     original=manifest.read_bytes()
-    if as_installed:
+    if as_installed or no_base_city:
         # Qualify the package a player loads. Flags below describe expected
         # runtime behaviour; none may stage an experimental file in this mode.
         # Hash the SQL, settings and every AI Lua module against the checkout.
@@ -155,7 +162,11 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         require(connectors is not None,'Expected native action')
         actions.remove(connectors)
         active=ET.tostring(doc,encoding='utf-8',xml_declaration=True)
-    if not as_installed and (deposit_cues or customer_buildings or supplier_jobs or city_cue_probe or local_material_cues):
+    if no_base_city:
+        staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
+        original=staged_path.read_bytes()
+        active=original+b'\n'+(HERE/'no_base_city_rules.sql').read_bytes()
+    elif not as_installed and (deposit_cues or customer_buildings or supplier_jobs or city_cue_probe or local_material_cues):
         require(mode in ('native','advanced'),'The stock control must keep ordinary AI')
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
         require(sha(staged_path)==load(root/'material-candidate.json')['full'],'Underlying connector revision changed')
@@ -183,20 +194,24 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         (out/'supplier_job_candidate.sql').write_bytes(job_rules)
     script_path=manifest.parent/'Lua_UI/AI/CSC_AI_BakersGameplay.lua'
     script_before=script_active=None
-    if local_material_cues and not as_installed:
+    if (local_material_cues or no_base_city) and not as_installed:
         require(sha(script_path)==sha(HERE.parents[3]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_BakersGameplay.lua'),
                 'Installed gameplay entry differs from the qualified CSC entry')
         script_before=script_path.read_bytes()
         # Load at the normal CSC gameplay entry, including save/reload. This
         # treatment runs through Workshop Lua and SQL with the Firaxis core.
-        parts=[read(HERE/name) for name in ('city_material_cue_choice.lua','city_material_cue_sites.lua',
-                                            'local_material_guidance.lua')]
+        scripts=('no_base_city.lua',) if no_base_city else (
+            'city_material_cue_choice.lua','city_material_cue_sites.lua','local_material_guidance.lua')
+        parts=[read(HERE/name) for name in scripts]
+        if observe_no_base:
+            parts.insert(0,'local CSC_NO_BASE_OBSERVE_ONLY=true')
         script_active=('do\n'+'\n'.join(parts)+'\nend\n'+script_before.decode('utf-8-sig')).encode()
         (out/'local-gameplay.lua').write_bytes(script_active)
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
-        as_installed=as_installed,gameplay_sha256=hashlib.sha256(script_active).hexdigest() if script_active else None,
+        as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
+        gameplay_sha256=hashlib.sha256(script_active).hexdigest() if script_active else None,
         material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if host_active else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
     eliminated = False
@@ -254,8 +269,15 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             except (ValueError, RuntimeError, OSError, KeyError) as exc:
                 write_json(out/'opening-map-error.json',dict(error=str(exc)))
         observers(c,range(1,len(game['roster'])))
+        if no_base_city:
+            c.cmd("""Events.DistrictAddedToMap.Add(function(pid,did,cid,x,y,kind)
+                print('CSC_NO_BASE_DISTRICT_ADDED',Game.GetCurrentGameTurn(),pid,cid,x,y,kind)
+            end)""",'CSC_AI_BakersGameplay','record-district-alternatives')
         for turn in range(5,end+1,5):
             c.play(turn)
+            if probe_no_base and turn%10==0 and not (out/'no-base-preview.json').exists():
+                from no_base_preview import observe
+                observe(c,out,turn)
             if city_cue_probe and turn>=20 and not (out/'city-cue-result.json').is_file():
                 from city_material_cue_probe import observe_city_cue
                 observe_city_cue(c,out,range(1,len(game['roster'])),turn,allow_fallback=turn>=end-5)
@@ -298,6 +320,11 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         finally:
             if session.closed:
                 shutil.copyfile(user/'Logs/Lua.log',out/'Lua.log')
+                if no_base_city:
+                    for name in ('AI_CityBuild.csv','City_BuildQueue.csv'):
+                        path=user/'Logs'/name
+                        if path.is_file():
+                            shutil.copyfile(path,out/name)
             if not native_inventory():
                 for path,staged,prior in ((script_path,script_active,script_before),(host_path,host_active,host_before),
                                           (staged_path,active,original)):
@@ -308,6 +335,10 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             if eliminated and (out/'Lua.log').is_file():
                 archive_censuses(read(out/'Lua.log'),out)
     log=read(out/'Lua.log')
+    if no_base_city:
+        require('CSC_NO_BASE_INSTALLED' in log and 'CSC_NO_BASE_REVIEW' in log
+                and not any('Runtime Error' in line and 'CSC_AI_BakersGameplay' in line for line in log.splitlines()),
+                'City opportunity review failed to run cleanly')
     require('CSC_MILESTONE_SERVICE_FAULT' not in log and 'CSC_QUARTER_WATCH_FAULT' not in log,'Observer fault')
     if local_material_cues:
         require('CSC_LOCAL_CUE_INSTALLED' in log and 'CSC_LOCAL_CUE_REVIEW' in log and
@@ -330,6 +361,10 @@ if __name__=='__main__':
     p.add_argument('--city-cue-probe',action='store_true',help='Inspect a city-specific stock adjacency in a disposable replay')
     p.add_argument('--local-material-cues',action='store_true',help='Run bounded city-specific material guidance from CSC')
     p.add_argument('--as-installed',action='store_true',help='Verify the installed release against source and leave its files untouched; other flags describe expected controls')
+    p.add_argument('--no-base-city',action='store_true',help='Stage the city opportunity trial over the verified ordinary release')
+    p.add_argument('--probe-no-base',action='store_true',help='Toggle and restore one active gate for an intra-turn native readback')
+    p.add_argument('--observe-no-base',action='store_true',help='Run the identical opportunity review with its scoring action disabled')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
     a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
-                           a.supplier_jobs,a.city_cue_probe,a.local_material_cues,a.as_installed)
+                           a.supplier_jobs,a.city_cue_probe,a.local_material_cues,a.as_installed,a.no_base_city,a.probe_no_base,
+                           a.observe_no_base)
