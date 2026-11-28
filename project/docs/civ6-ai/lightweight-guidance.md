@@ -466,3 +466,13 @@ The third run loaded the same turn-one save on Continents seed 281126037 and rea
 The fallback released the penalty in all 326 eligible reviews. Forty reviews rejected at least one otherwise acceptable terrain because of a frontier rival. Thirty-two reviews selected a safe positive target. Twelve foundations followed a review that used the fallback, and seven of those landed beside Base.
 
 The fallback recovered the ordinary run's count of nine supplied foundations while removing three weak ones. It also produced the only Quarter beside both material classes, a Bakers. Ordinary guidance still led on +3 placements and Storekeeper activity. The first Storekeeper appeared on turn 127 with ordinary guidance, 188 with the earlier frontier candidate and 175 with the fallback. The fallback chain stayed active through turn 200. Of the two supplied Tailors foundations in the fallback run, neither had working Base at foundation, and no completed Tailors had a working Base at the endpoint. Carry the fallback forward as the experimental candidate. The ordinary configuration remains the release default.
+
+**Where the signal reached a foundation.** Joining each foundation to its most recent city/Quarter review gives the following breakdown for the fallback run. Reviews can recur many times before a production decision.
+
+| Most recent review | Reviews | Bakers beside Base / founded | Tailors beside Base / founded |
+| --- | ---: | ---: | ---: |
+| Positive terrain cue selected | 32 | 2/2 | 0/0 |
+| Supplied site, ordinary scoring | 326 | 5/6 | 2/6 |
+| No supplied legal owned site identified | 593 | 0/4 | 0/2 |
+
+The 32 positive reviews nominated twelve distinct city/Quarter/plot combinations. One of the two subsequent Bakers foundations matched the nominated tile exactly (2339 on turn 82). The other founded on supplied plot 1933 on turn 166 after a review targeted 2008. For Tailors, 14 positive reviews produced four distinct targets. In Stirling the Desert cue for plot 870 stayed active from turn 80 until withdrawal on 114. The city spent production on military units, a defense repair, a Theater Square, a Castle and a Holy Site during that window. Its native city-build log recorded no Tailors submission. Stirling is a useful same-state test of whether a better-valued Tailors site can enter production competition. The comparison should record rival site previews, district submissions and the project that receives production.
