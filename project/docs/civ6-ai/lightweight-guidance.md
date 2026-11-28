@@ -192,6 +192,15 @@ The raw-resource cue is now part of CSC's ordinary AI connector SQL. Across the 
 
 Each column uses the same starting save and the common observations for its two arms. The timed intervals exclude popups (193 and 195 respectively). Total turn time includes the empires' different development. Both games ran with the Firaxis core and zero advanced publications. The source integration reproduced the qualification SQL rows, including adjacency identifiers and weights, when compiled against the game database. Gameplay transaction and modifier values matched. The advanced comparison uses the same resource cue and a CE-enabled opening with the same starting map and roster.
 
+**Weak Quarter foundations.** Both treatments recorded 69 foundations across the five AI seats on each of the two maps combined. Reading the neighbor rows at foundation and matching their undistricted resources to each Quarter's Base tags, regardless of ownership, gives the following counts. This includes resources that could later be bought or acquired through border growth.
+
+| Founded with no mapped Base on any neighbor | Stock CSC | Lightweight CSC |
+| --- | ---: | ---: |
+| Bakers | 21/35 | 10/38 |
+| Tailors | 26/34 | 24/31 |
+
+Of the 34 lightweight sites without any adjacent Base, 23 had an adjacent bonus resource (eight Bakers and fifteen Tailors). Another twelve foundations had mapped Base nearby but none usable and owned at that moment. Keep these acquisition opportunities separate when measuring weak-placement suppression. A proposed stock-only test is a small flat negative private adjacency on the Quarter itself, retaining the existing positive location cues. Check the signed value in Civ's comparison on a bare and a well-supplied site before judging the rule by full-game placements and operating Services.
+
 Every 25 turns the controller counted the mapped suppliers beside each AI Quarter, including Quarters under construction. The table counts a Quarter once per material class at each census across both games. A Quarter that kept its supplier for 100 turns can appear four times. This captures how often the AI had access to a supplier during development.
 
 | Across twenty censuses per treatment | Bakers, stock → lightweight | Tailors, stock → lightweight |
