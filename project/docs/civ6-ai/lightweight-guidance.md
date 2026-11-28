@@ -93,6 +93,8 @@ The `--local-material-cues` candidate runs this selection from CSC's normal game
 
 The turn-one map for seed 171124601 had 947 clearable land sites. Of these, 278 touched actual Tailors Base, and 76 touched both a Base and a clear coastal tile, spread across 32 distinct source deposits. Before city ownership, a terrain threshold singled out Base-adjacent sites in 165/287 sampled Tailors neighborhoods with a Base opportunity. This map has room for the local rule to help.
 
+**First fifty turns with the city rule running from CSC.** Across five AI cities on seed 171124601, ordinary gameplay Lua activated nine rules (five Bakers and four Tailors) and withdrew five. It performed 37 city reviews covering 334 legal Quarter-site evaluations. Two Bakers were founded while their city's cue was active. Both landed on rewarded terrain and had a usable owned Base. A third Bakers and one Tailors were founded without an active cue and had no usable owned Base. This short run establishes that the live candidate reaches real placements. The Firaxis gameplay Lua clock returned zero elapsed time for every review. Use the independent popup-free turn clock for performance comparisons.
+
 ### First full game with the undeveloped-deposit cue
 
 All three games on seed 171124601 used the identical turn-one save. These figures use 199 common Service observations and 191 common popup-free intervals.
