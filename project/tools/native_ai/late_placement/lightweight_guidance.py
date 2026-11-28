@@ -86,13 +86,20 @@ GameEvents.OnGameTurnStarted.Add(function()
     install_clocks(c,stock=True)
 
 
+def relief_sql(weight):
+    """Rebuild exactly the candidate loaded by the replay or its saved-game audit."""
+    return (f"\nCREATE TEMP TABLE CSC_AI_ReliefWeight(Amount INTEGER); INSERT INTO CSC_AI_ReliefWeight VALUES ({int(weight)});\n".encode()
+            +(HERE/'layout_relief_rules.sql').read_bytes())
+
+
 def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
            city_cue_probe=False,local_material_cues=False,as_installed=False,no_base_city=False,probe_no_base=False,
-           observe_no_base=False,paired_layout=False,river_cue=False):
+           observe_no_base=False,paired_layout=False,river_cue=False,layout_floor=None):
     study=load(root/'study.json')
-    release_trial=no_base_city or paired_layout or river_cue
+    floor_trial=layout_floor is not None
+    release_trial=no_base_city or paired_layout or river_cue or floor_trial
     if release_trial:
-        require(sum(map(bool,(no_base_city,paired_layout,river_cue)))==1,'Test each release overlay independently')
+        require(sum(map(bool,(no_base_city,paired_layout,river_cue,floor_trial)))==1,'Test each release overlay independently')
         require(mode=='native' and deposit_cues and label and not any((as_installed,local_material_cues,
                 city_cue_probe,customer_buildings,supplier_jobs)),'Use the ordinary release for the no-Base comparison')
     require(not probe_no_base or no_base_city,'The readback needs the city treatment')
@@ -170,6 +177,8 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         original=staged_path.read_bytes()
         overlay='paired_material_rules.sql' if paired_layout else 'river_cue.sql' if river_cue else 'no_base_city_rules.sql'
         active=original+b'\n'+(HERE/overlay).read_bytes()
+        if floor_trial and layout_floor:
+            active+=relief_sql(layout_floor)
     elif not as_installed and (deposit_cues or customer_buildings or supplier_jobs or city_cue_probe or local_material_cues):
         require(mode in ('native','advanced'),'The stock control must keep ordinary AI')
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
@@ -198,7 +207,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         (out/'supplier_job_candidate.sql').write_bytes(job_rules)
     script_path=manifest.parent/'Lua_UI/AI/CSC_AI_BakersGameplay.lua'
     script_before=script_active=None
-    if (local_material_cues or no_base_city or paired_layout) and not as_installed:
+    if (local_material_cues or no_base_city or paired_layout or floor_trial) and not as_installed:
         require(sha(script_path)==sha(HERE.parents[3]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_BakersGameplay.lua'),
                 'Installed gameplay entry differs from the qualified CSC entry')
         script_before=script_path.read_bytes()
@@ -208,7 +217,11 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
             'city_material_cue_choice.lua','city_material_cue_sites.lua','local_material_guidance.lua')
         if paired_layout:
             scripts=('city_material_cue_sites.lua','paired_material_layout.lua','local_material_guidance.lua')
+        if floor_trial:
+            scripts=('city_material_cue_sites.lua','paired_material_layout.lua','layout_floor.lua','local_material_guidance.lua')
         parts=[read(HERE/name) for name in scripts]
+        if floor_trial:
+            parts.insert(0,f'local reliefWeight={int(layout_floor)}')
         if observe_no_base:
             parts.insert(0,'local CSC_NO_BASE_OBSERVE_ONLY=true')
         script_active=('do\n'+'\n'.join(parts)+'\nend\n'+script_before.decode('utf-8-sig')).encode()
@@ -216,7 +229,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
-        paired_layout=paired_layout,river_cue=river_cue,as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
+        paired_layout=paired_layout,river_cue=river_cue,layout_floor=layout_floor,as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
         gameplay_sha256=hashlib.sha256(script_active).hexdigest() if script_active else None,
         material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if host_active else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
@@ -261,6 +274,16 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             controls['supplier_jobs']=db.execute("""SELECT i.ImprovementType,r.AdjacentDistrict,r.YieldChange
                 FROM Improvement_Adjacencies i JOIN Adjacency_YieldChanges r ON r.ID=i.YieldChangeId
                 WHERE r.ID GLOB 'CSC_AI_SUPPLY_JOB_*' ORDER BY i.ImprovementType,r.AdjacentDistrict""").fetchall()
+            if floor_trial:
+                controls['floor_weights']=db.execute("""SELECT CAST(Value AS INTEGER),COUNT(*)
+                    FROM ModifierArguments WHERE Name='Amount' AND
+                    (ModifierId GLOB 'CSC_AI_NO_BASE_*' OR ModifierId GLOB 'CSC_AI_PAIR_*__R_*')
+                    GROUP BY CAST(Value AS INTEGER) ORDER BY 1""").fetchall()
+                weights=dict(controls['floor_weights'])
+                penalties=weights.pop(-1,0)
+                expected={layout_floor:penalties} if layout_floor else {}
+                require(penalties>0 and weights==expected,
+                        'Private penalties and relief must cover the same Quarter and terrain combinations')
         require(bool(controls['customer_buildings'])==customer_buildings,'Customer building control differs')
         require(bool(controls['supplier_jobs'])==supplier_jobs,'Supplier job control differs')
         write_json(out/'stock-controls.json',controls)
@@ -283,7 +306,7 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
             except (ValueError, RuntimeError, OSError, KeyError) as exc:
                 write_json(out/'opening-map-error.json',dict(error=str(exc)))
         observers(c,range(1,len(game['roster'])))
-        if paired_layout and seed==171124601 and end>50:
+        if seed==171124601 and ((paired_layout and end>50) or floor_trial):
             # Read-only follow-up to the short replay. Tenochtitlan's turn-26
             # review favored 675 and its turn-37 foundation occupied 750.
             # UI receipts expose whether these two sites actually competed
@@ -359,7 +382,7 @@ end)
         finally:
             if session.closed:
                 shutil.copyfile(user/'Logs/Lua.log',out/'Lua.log')
-                if no_base_city or paired_layout or river_cue:
+                if release_trial:
                     for name in ('AI_CityBuild.csv','City_BuildQueue.csv'):
                         path=user/'Logs'/name
                         if path.is_file():
@@ -373,7 +396,7 @@ end)
                         if current!=prior:replace(path,prior)
             if eliminated and (out/'Lua.log').is_file():
                 archive_censuses(read(out/'Lua.log'),out)
-    summarize_finished(out,end,ce,no_base_city,local_material_cues or paired_layout)
+    summarize_finished(out,end,ce,no_base_city,local_material_cues or paired_layout or floor_trial)
 
 
 def keep_endpoint_autosave(out,saves,end,reason):
@@ -420,10 +443,11 @@ if __name__=='__main__':
     p.add_argument('--as-installed',action='store_true',help='Verify the installed release against source and leave its files untouched; other flags describe expected controls')
     p.add_argument('--no-base-city',action='store_true',help='Stage the city opportunity trial over the verified ordinary release')
     p.add_argument('--paired-layout',action='store_true',help='Test one or two signed terrain cues per city')
+    p.add_argument('--layout-floor',type=int,choices=(0,6,8,10),help='Default penalty with this private terrain relief on distinguishable supplied sites (zero for penalty only)')
     p.add_argument('--river-cue',action='store_true',help='Test the fixed private river cue separately')
     p.add_argument('--probe-no-base',action='store_true',help='Toggle and restore one active gate for an intra-turn native readback')
     p.add_argument('--observe-no-base',action='store_true',help='Run the identical opportunity review with its scoring action disabled')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
     a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
                            a.supplier_jobs,a.city_cue_probe,a.local_material_cues,a.as_installed,a.no_base_city,a.probe_no_base,
-                           a.observe_no_base,a.paired_layout,a.river_cue)
+                           a.observe_no_base,a.paired_layout,a.river_cue,a.layout_floor)

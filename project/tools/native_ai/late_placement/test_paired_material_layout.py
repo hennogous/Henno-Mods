@@ -57,12 +57,33 @@ class PairedSiteTest(unittest.TestCase):
         assert(center:GetProperty(A)==0 and center:GetProperty(B)==1 and center:GetProperty(C)==1)
         assert(other:GetProperty(A)==1 and not other:GetProperty(C))
         """)
+
         self.vm.execute((HERE/'paired_material_layout.lua').read_text())
         self.vm.execute("""
         apply(city,center,{a='b',b='c'});assert(city.bound==3)
         apply(city,center,nil)
         assert(center:GetProperty('b')==0 and center:GetProperty('c')==0 and not center:GetProperty('CSC_AI_PAIR_ACTIVE_QUARTER2'))
         apply(city,center,{a='a'});assert(city.bound==3 and center:GetProperty('a')==1)
+        """)
+
+    def test_relief_keeps_each_known_weak_site_below_ordinary_value(self):
+        self.vm.execute("terrainKeys={'GRASS','PLAINS'};reliefWeight=6")
+        # Both policy files normally share the gameplay entry's lexical scope.
+        self.vm.execute((HERE/'paired_material_layout.lua').read_text()+'\n'+(HERE/'layout_floor.lua').read_text())
+        self.vm.execute("""
+        local good=site(675,1,5,true)
+        local bad=site(750,0,6,false)
+        local function pick(sites)return pairPolicy.choose(sites,city,1,profile,10)end
+        local mixed=pick({good,bad})
+        assert(mixed.floor and mixed.target==675 and mixed.a:match('__R_GRASS$'))
+        assert(pick({bad}).floor and not pick({bad}).a)
+        assert(not pick({good}).floor and not pick({good}).a)
+        local same=pick({good,site(751,1,5,false)})
+        assert(same.floor and not same.a)
+        local newRival=site(599,2,4,false)
+        assert(not pick({good,bad,newRival}).a)
+        reliefWeight=0
+        assert(pick({good}).floor and not pick({good,bad}).a)
         """)
 
     def test_foundation_and_capture_callbacks_clear_only_the_affected_city(self):

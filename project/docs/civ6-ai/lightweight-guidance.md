@@ -390,3 +390,34 @@ Each review selected rules for one city/Quarter combination. At turn 50 player 4
 The dynamic policy produced 9/17 Bakers and 3/14 Tailors foundations beside usable owned Base. Of 19 foundations without it, 14 followed a city review that found **zero legal owned candidates with its own adjacent Base**. Three followed a review that chose a pattern, and two followed a review with Base possibilities but no active pattern. In Tenochtitlan both candidate sites were owned by the city and legal on turns 26, 30 and 36. With the Tundra cue active, Civ's private adjacency preview was **5 on supplied tile 675 and 2 on tile 750** on each turn. Civ still founded on 750. That case distinguishes a signal that reached the site preview from an investment whose total value was high enough to change construction.
 
 Keep the lightweight release default. The strongest reason to revisit the experiment is its ability to distinguish sites locally. For the larger set of weak placements, first separate cities that could acquire a suitable tile from those that should defer the Quarter. Increasing terrain weights in cities that already have eligible sites reaches a smaller part of the problem.
+
+### Starting with a penalty and earning it back
+
+Three stock-engine runs loaded the same turn-one save on Continents seed 171124601. The experimental penalty counted every neighboring terrain hex at −1 private placement yield. The correction could restore an entirely supplied set of legal sites or activate a +6 terrain cue when the chosen supplied footprint recovered its value and every known legal owned alternative without Base stayed below its ordinary value. Cities reviewed their land every twelve turns at most once per major player per turn. The fixed river cue was off.
+
+| Five original AI players through turn 50 | Ordinary lightweight | Penalty alone | Penalty plus correction |
+| --- | ---: | ---: | ---: |
+| Bakers beside owned Base / all foundations | 2/4 | 3/3 | 5/5 |
+| Tailors beside owned Base / all foundations | 0/1 | 0/0 | 1/2 |
+| Foundations without owned Base | 3 | 0 | 1 |
+| Completed Quarters with working Base and a completed customer | 1 | 2 | 2 |
+| Mean / maximum popup-free turn, seconds (39 common turns) | 2.10 / 3.78 | 2.02 / 2.89 | 2.06 / 3.58 |
+
+**Nidaros.** Ordinary guidance put Bakers on plot 935 on turn 16 with zero owned Base. With the penalty alone the city put production into a Builder on turn 17, submitted a 403-point Bakers bid on turn 25, and founded on supplied plot 1009 on turn 26.
+
+**Tenochtitlan.** With the penalty alone, the turn-30 private previews were −3 on supplied plot 675 and −4 on 750. The city worked on the Oracle. With the correction, the turn-26 review found one supplied site among seven eligible sites. The Tundra rule restored 675 to +3 and kept 750 at −4. The city submitted a 326-point Tailors bid on turn 32, finished the Oracle, and founded Tailors on plot **599** on turn 38. This riverside hill had an owned Silk specialty deposit and zero owned Base. It had two adjacent flat Tundra tiles against one at 675. At the turn-38 review the selector withdrew the rule. The alternate footprint matters when judging the terrain proxy's accuracy or deciding whether to increase its weight.
+
+**When 599 entered the competition.** A cold replay from the original turn-27 autosave reproduced the Tailors on 599. Through turn 31, 599 was unowned, its placement query passed and Civ showed **+7** when asked for this city's Tailors adjacency. Ownership changed to player 3 by turn 32, the original bid turn. The preview remained +7 through turn 37 while 675 read +3 and 750 read −4. The scheduled review withdrew the Tundra cue on turn 38, six turns after the bid. By turn 39 the replay showed Tailors physically on 599. The means of acquisition (gold or border growth) was unrecorded.
+
+The six supplied foundations warrant further work. The next candidate should check revealed, plausible acquisitions when selecting its proxy and reconsider the rule when a competing footprint enters the city. A larger Tundra weight would give twice the extra reward to 599. Keep the current lightweight default and hold fresh-seed qualification until the supplied site wins this decision. [Replay driver](../../tools/native_ai/late_placement/lightweight_guidance.py), [saved-game observations](../../tools/native_ai/late_placement/layout_city_locations.py) and [experimental city policy](../../tools/native_ai/late_placement/layout_floor.lua)
+
+**What extra land could have bought in the previous turn-200 game.** Fourteen weak foundations followed a review with legal owned sites and zero owned Base layouts. All fourteen cities were identified in their own archived save. The survey combines their fixed centers, the starting resource map, and the actual neighboring plots recorded when each Quarter was founded.
+
+| Land opportunity | Cases | Cities |
+| --- | ---: | --- |
+| The Quarter was already beside an unclaimed mapped Base within three tiles of its city. Securing just the deposit could supply that placement. | 3 | Roxburgh (two deposits), Shaat Bakers, Cempoala |
+| A different footprint could reach a mapped starting Base within three tiles. Ownership of the alternate pair at the decision was unrecorded. | 6 | Nidaros, Malinalco, Skedsmo, Kerma, Faras, Dundee |
+| The only possible Base was in the fourth ring, reachable by a third-ring Quarter. | 1 | Shaat Tailors |
+| The opening map offered no Base that any third-ring-or-closer footprint could touch. | 4 | Bergen Tailors, Avaldsnes Tailors, Scone Tailors, Avaldsnes Bakers |
+
+Roxburgh and Shaat Bakers also had pairs where both the alternate footprint and the deposit were observed unclaimed. Their actual foundations made acquiring just the deposit sufficient. The six wider opportunities count land geometry. Prices, the AI's visibility, and changes to harvestable deposits can affect whether a purchase was possible on the relevant turn. A useful future diagnostic would retain the city assignment, owner and purchase quote for both ends at the last pre-bid review. [Offline land audit](../../tools/native_ai/late_placement/layout_land_audit.py)
