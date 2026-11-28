@@ -322,3 +322,17 @@ A disposable improvement for each Quarter accepted the Base resources in the loa
 | Marker removed | +1 | +1 |
 
 The proposed improvement contributes to the prospective district adjacency while it physically occupies the supplier tile. Its resource restrictions alone give the untouched deposit no signal through this rule. A scripted replacement with the ordinary Farm would retire the marker bonus. The probe ran with the Firaxis core and used a diagnostic placement on a disposable save. It measured the input to district siting on an AI-owned plot. Human action hiding, automatic replacement and overall construction outcomes were outside this test. Keep the probe outside the player build. [Probe SQL](../../tools/native_ai/late_placement/possible_supplier.sql) and [matched replay](../../tools/native_ai/late_placement/possible_supplier.py).
+
+### Using two stock cues to distinguish sites inside a city
+
+An offline survey searched both opening maps for signed counts of neighboring terrain and features. In each sampled radius-three neighborhood, at least one clearable site touched a mapped Base and at least one missed. A rule succeeded if its highest-scoring Base site strictly beat every site without Base. The city-specific choice used the real resource tags as its answer key. The counts include overlapping hypothetical cities and land outside future borders. A successful rule can change one component of Civ's ranking.
+
+| Map neighborhoods distinguished | Bakers, out of 565 | Tailors, out of 522 |
+| --- | ---: | ---: |
+| One signed terrain count | 464 (82%) | 366 (70%) |
+| Up to two signed terrain counts | 541 (96%) | 455 (87%) |
+| Up to two signed terrain or feature counts | 557 (99%) | 514 (98%) |
+
+Start with the terrain-only option because both signs have reached live stock previews. A bounded city review can read the underlying private adjacency, choose up to two small offsets, and re-read the strongest qualifying site and strongest unsuitable rival. Prefer sites where the supplier can be retained and a customer can fit. Clear stale rules when borders, deposits or districts change. The decision test is whether weak foundations move to supplied sites in the same city while sound investments elsewhere continue. [Reproduce the map calculation](../../tools/native_ai/late_placement/city_pair_coverage.py)
+
+Two early control decisions provide replay targets on seed 171124601. Nidaros had a Bakers opportunity on turn 15 and founded on plot 935 without adjacent Base on 16. Tenochtitlan had a Tailors opportunity on turn 26 and founded on plot 750 without adjacent Base on 37. For each, first verify that an alternative supplier layout was visible, owned and legal at the native decision. The city review includes future purchasable land.
