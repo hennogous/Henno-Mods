@@ -82,6 +82,15 @@ class PairedSiteTest(unittest.TestCase):
         assert(same.floor and not same.a)
         local newRival=site(599,2,4,false)
         assert(not pick({good,bad,newRival}).a)
+        local frontier={count={GRASS=2},unknown=0,neighbors=6}
+        local bordered={good,bad,frontierWeak={frontier}}
+        assert(not pick(bordered).a and pick(bordered).floor)
+        frontier.count={}
+        assert(pick(bordered).target==675)
+        frontier.unknown=1
+        assert(not pick(bordered).a)
+        assert(pick({good,frontierWeak={frontier}}).floor)
+        assert(not pick({frontierWeak={frontier}}).target)
         reliefWeight=0
         assert(pick({good}).floor and not pick({good,bad}).a)
         """)

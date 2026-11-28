@@ -130,6 +130,18 @@ local function advance()
     end
 end
 GameEvents.OnGameTurnStarted.Add(advance)
+if pairPolicy and pairPolicy.guardFrontier and Events and Events.CityTileOwnershipChanged then
+    Events.CityTileOwnershipChanged.Add(function(pid,cid)
+        if disabled or not singlePlayer() or Game:GetProperty('CSC_AI_OriginalHuman_'..pid)~=0 then return end
+        local city=CityManager.GetCity(pid,cid)
+        if not city then return end
+        -- Make this city eligible on the next planning pass. Coalesce several
+        -- acquisitions and preserve the one-city-per-player scan budget.
+        local due=Game.GetCurrentGameTurn()-reviewInterval
+        local reviewed=city:GetProperty(lastReview)
+        if reviewed and reviewed>due then city:SetProperty(lastReview,due) end
+    end)
+end
 if pairPolicy and Events then
     -- City-center properties can outlive a reservation or an owner. Clear
     -- both slots as soon as a Quarter occupies its site or a city changes

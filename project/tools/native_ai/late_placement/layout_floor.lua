@@ -9,8 +9,10 @@ function pairPolicy.choose(sites, city, player, profile, turn)
     for _, site in ipairs(sites) do
         if site.baseCount > 0 then good = good + 1 end
     end
+    local frontier=sites.frontierWeak or {}
+    local vetoes=0
     if reliefWeight > 0 and good > 0 then
-        if good == #sites then
+        if good == #sites and #frontier==0 then
             cue.floor = false
         else
             local bestRank, bestDelta = -1, -1
@@ -27,6 +29,19 @@ function pairPolicy.choose(sites, city, player, profile, turn)
                         target, targetRank, delta = site.plot:GetIndex(), value, change
                     end
                 end
+                if safe and target then
+                    for _, rival in ipairs(frontier) do
+                        -- A hidden neighbor could also match the rewarded
+                        -- terrain. Use its worst possible contribution without
+                        -- reading through fog. The floor counts actual hexes.
+                        local matches=(rival.count[key] or 0)+rival.unknown
+                        if reliefWeight*matches>=rival.neighbors then
+                            safe=false
+                            vetoes=vetoes+1
+                            break
+                        end
+                    end
+                end
                 -- Stable terrain/plot order breaks exact ties. Limit the
                 -- award to one terrain signal even when several distinguish it.
                 if safe and target and (targetRank > bestRank or
@@ -40,6 +55,9 @@ function pairPolicy.choose(sites, city, player, profile, turn)
     end
     print('CSC_FLOOR_REVIEW',turn,player,city:GetID(),profile.district.DistrictType,
           #sites,good,cue.floor,cue.target or -1,cue.a or '-')
+    if sites.frontierWeak then
+        print('CSC_FRONTIER_REVIEW',turn,player,city:GetID(),profile.district.DistrictType,#frontier,vetoes,cue.target or -1)
+    end
     return cue
 end
 

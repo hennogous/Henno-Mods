@@ -85,11 +85,19 @@ def read_arm(folder, through=None):
     founder_rules = {}
     founder_terrain = defaultdict(Counter)
     city_cue_stats = Counter()
+    frontier_stats = Counter()
     city_cue_time = Counter()
     district_profiles = defaultdict(set)
     seats = set(load(folder/'source.json')['original_ai'])
     for line in (folder/'Lua.log').read_text(encoding='utf-8-sig',errors='replace').splitlines():
-        if 'CSC_LOCAL_CUE_LUA_MICROS\t' in line:
+        if 'CSC_FRONTIER_REVIEW\t' in line:
+            stamp,pid,_,_,weak,vetoes,target=line.split('CSC_FRONTIER_REVIEW\t',1)[1].split()
+            if int(stamp)<=turn and int(pid) in seats:
+                frontier_stats['quarter_reviews']+=1
+                frontier_stats['reviews_with_weak_frontier']+=int(weak)>0
+                frontier_stats['reviews_rejecting_a_terrain']+=int(vetoes)>0
+                frontier_stats['reviews_selecting_a_target']+=int(target)>=0
+        elif 'CSC_LOCAL_CUE_LUA_MICROS\t' in line:
             turn_id,micros=map(int,line.split('CSC_LOCAL_CUE_LUA_MICROS\t',1)[1].split())
             if turn_id <= turn:
                 city_cue_time[turn_id] += micros
@@ -291,6 +299,10 @@ def read_arm(folder, through=None):
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
         unresolved_service_samples=sum(unknown for _,unknown in intervals.values()),
         planner_processing={k:processing[k] for k in ('turns','average_ms','max_ms')})
+    if protocol.get('frontier'):
+        if not frontier_stats['quarter_reviews']:
+            raise ValueError('No frontier review receipts in the comparison window')
+        report['frontier_guidance']=dict(frontier_stats)
     return report, intervals, links, timing
 
 

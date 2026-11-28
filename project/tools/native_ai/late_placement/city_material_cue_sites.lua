@@ -42,7 +42,7 @@ end
 -- Discard the snapshot after the pass so an ownership or supplier change is
 -- visible on the next review without a separate map-invalidation system.
 local function citySites(city, player)
-    local snapshot = {candidates={}, visibleResources={}}
+    local snapshot = {candidates={}, frontier={}, visibleResources={}}
     local x, y, id = city:GetX(), city:GetY(), city:GetID()
     for dy = -3, 3 do
         for dx = -3, 3 do
@@ -52,6 +52,12 @@ local function citySites(city, player)
                 if owner and owner:GetID() == id then
                     snapshot.candidates[#snapshot.candidates+1] = {plot=p, index=p:GetIndex()}
                 end
+            elseif pairPolicy and pairPolicy.guardFrontier and p and p:GetOwner()<0
+                    and PlayersVisibility[player]:IsRevealed(p:GetX(),p:GetY())
+                    and p:GetDistrictType()<0 and not p:IsWater() and not p:IsImpassable() then
+                -- A deposit on this land does not yet supply a Quarter. The
+                -- footprint itself can, however, compete before the next review.
+                snapshot.frontier[#snapshot.frontier+1] = {plot=p,index=p:GetIndex()}
             end
         end
     end
@@ -72,13 +78,15 @@ local function visibleResource(player, id, cache)
 end
 
 local function geometry(site, player, cache)
-    local g = {count={}, materials={}, districts={}, clearCoast=false, known=true}
+    local g = {count={}, materials={}, districts={}, clearCoast=false, known=true, unknown=0, neighbors=0}
     local x, y = site.plot:GetX(), site.plot:GetY()
     local actor, vision = Players[player], PlayersVisibility[player]
     for direction = 0, 5 do
         local near = Map.GetAdjacentPlot(x,y,direction)
+        if near then g.neighbors=g.neighbors+1 end
         if near and not vision:IsRevealed(near:GetX(),near:GetY()) then
             g.known = false
+            g.unknown=g.unknown+1
         elseif near then
             local key = GameInfo.Terrains[near:GetTerrainType()].TerrainType
             g.count[key] = (g.count[key] or 0) + 1
@@ -119,6 +127,23 @@ local function ownedSites(city, player, profile, snapshot)
                 if profile.customers[district] then item.customerRank = 2; break end
             end
             plots[#plots+1] = item
+        end
+    end
+    if pairPolicy and pairPolicy.guardFrontier then
+        -- Unowned footprints only veto an unsafe terrain cue. They never
+        -- nominate a target or trigger a land purchase. Include every revealed
+        -- legal footprint within three even if acquiring it would take time.
+        plots.frontierWeak={}
+        for _,candidate in ipairs(snapshot.frontier) do
+            if candidate.plot:CanHaveDistrict(profile.district.Index,player,city:GetID()) then
+                local g=candidate.geometry or geometry(candidate,player,snapshot.visibleResources)
+                candidate.geometry=g
+                local supplied=false
+                for _,deposit in ipairs(g.materials) do
+                    if profile.resources[deposit.id] then supplied=true; break end
+                end
+                if not supplied then plots.frontierWeak[#plots.frontierWeak+1]=g end
+            end
         end
     end
     return plots

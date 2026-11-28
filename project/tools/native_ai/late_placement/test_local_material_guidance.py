@@ -92,6 +92,20 @@ class LocalMaterialGuidance(unittest.TestCase):
         local first=selectMaterialCue(a,terrainKeys);local second=selectMaterialCue(b,terrainKeys)
         assert(first.cutoff==2 and first.hits==1 and first.customerRank==1 and second.customerRank==0)
         hide=true;assert(#ownedSites(city,2,profiles[1],citySites(city,2))==0)
+        hide=false;pairPolicy={guardFrontier=true}
+        local neutral=plot(7,-1,0,-1)
+        neutral.IsWater=function()return false end;neutral.IsImpassable=function()return false end
+        local original=Map.GetPlotXYWithRangeCheck
+        Map.GetPlotXYWithRangeCheck=function(x,y,dx,dy)
+            if dy==0 and dx==3 then return neutral end
+            return original(x,y,dx,dy)
+        end
+        rings[7]={plot(8,-1,0,0),plot(9,-1,0,-1)}
+        local frontier=ownedSites(city,2,profiles[1],citySites(city,2))
+        assert(#frontier==2 and #frontier.frontierWeak==1)
+        assert(frontier.frontierWeak[1].count.PLAINS==2)
+        neutral.CanHaveDistrict=function()return false end
+        assert(#ownedSites(city,2,profiles[1],citySites(city,2)).frontierWeak==0)
         """)
 
     def test_specialty_breaks_ties_on_the_same_base_and_customer_site(self):
@@ -125,6 +139,21 @@ class LocalMaterialGuidance(unittest.TestCase):
         vm.execute(POLICY)
         vm.execute("assert(not lastRule and scans==0 and not Game:GetProperty('CSC_AI_OriginalHuman_2'))")
         vm.execute("connected=false;turn=55;tick();assert(scans==0 and not fault)")
+
+    def test_acquisition_requests_one_bounded_review(self):
+        vm=LuaRuntime()
+        vm.execute(SETUP+"""
+        pairPolicy={guardFrontier=true,choose=function()end,update=function()end}
+        CityManager={GetCity=function(_,id)return cities[id]end}
+        Events={CityTileOwnershipChanged={Add=function(f)landChange=f end}}
+        """)
+        vm.execute((HERE/'local_material_guidance.lua').read_text())
+        vm.execute("""
+        turn=2;tick();assert(scans==2)
+        landChange(2,1);landChange(2,1);tick();assert(scans==2)
+        turn=3;tick();assert(scans==3)
+        turn=4;tick();assert(scans==3)
+        """)
 
 
 if __name__ == '__main__':

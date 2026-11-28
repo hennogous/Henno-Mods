@@ -94,9 +94,10 @@ def relief_sql(weight):
 
 def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
            city_cue_probe=False,local_material_cues=False,as_installed=False,no_base_city=False,probe_no_base=False,
-           observe_no_base=False,paired_layout=False,river_cue=False,layout_floor=None):
+           observe_no_base=False,paired_layout=False,river_cue=False,layout_floor=None,frontier=False):
     study=load(root/'study.json')
     floor_trial=layout_floor is not None
+    require(not frontier or layout_floor in (6,8,10),'A frontier check needs positive site relief')
     release_trial=no_base_city or paired_layout or river_cue or floor_trial
     if release_trial:
         require(sum(map(bool,(no_base_city,paired_layout,river_cue,floor_trial)))==1,'Test each release overlay independently')
@@ -220,6 +221,8 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         if floor_trial:
             scripts=('city_material_cue_sites.lua','paired_material_layout.lua','layout_floor.lua','local_material_guidance.lua')
         parts=[read(HERE/name) for name in scripts]
+        if frontier:
+            parts.insert(-1,'pairPolicy.guardFrontier=true')
         if floor_trial:
             parts.insert(0,f'local reliefWeight={int(layout_floor)}')
         if observe_no_base:
@@ -229,7 +232,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
-        paired_layout=paired_layout,river_cue=river_cue,layout_floor=layout_floor,as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
+        paired_layout=paired_layout,river_cue=river_cue,layout_floor=layout_floor,frontier=frontier,as_installed=as_installed,no_base_city=no_base_city,probe_no_base=probe_no_base,observe_no_base=observe_no_base,
         gameplay_sha256=hashlib.sha256(script_active).hexdigest() if script_active else None,
         material_hosts_sha256=hashlib.sha256(host_active).hexdigest() if host_active else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
@@ -320,12 +323,13 @@ Events.TurnBegin.Add(function()
  local center=Map.GetPlot(city:GetX(),city:GetY())
  local d=GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER
  local prefix='CSC_AI_PAIR_ACTIVE_'..d.DistrictType
- for _,i in ipairs({675,750}) do
+ for _,i in ipairs({599,675,750}) do
   local plot=Map.GetPlotByIndex(i)
   local owner=Cities.GetPlotPurchaseCity(plot)
-  local legal=plot:GetOwner()==3 and owner and owner:GetID()==65536 and plot:CanHaveDistrict(d.Index,3,65536)
+  local legal=plot:CanHaveDistrict(d.Index,3,65536)
+  local assigned=plot:GetOwner()==3 and owner and owner:GetID()==65536
   print('CSC_PAIR_TENO',t,i,plot:GetOwner(),owner and owner:GetID() or -1,
-        legal==true,legal and plot:GetAdjacencyYield(3,65536,d.Index,GameInfo.Yields.YIELD_CSC_AI_PLACEMENT.Index) or '-',
+        assigned and legal==true or false,legal and plot:GetAdjacencyYield(3,65536,d.Index,GameInfo.Yields.YIELD_CSC_AI_PLACEMENT.Index) or '-',
         center:GetProperty(prefix..1) or '-',center:GetProperty(prefix..2) or '-')
  end
 end)
@@ -382,7 +386,7 @@ end)
         finally:
             if session.closed:
                 shutil.copyfile(user/'Logs/Lua.log',out/'Lua.log')
-                if release_trial:
+                if release_trial or as_installed:
                     for name in ('AI_CityBuild.csv','City_BuildQueue.csv'):
                         path=user/'Logs'/name
                         if path.is_file():
@@ -444,10 +448,11 @@ if __name__=='__main__':
     p.add_argument('--no-base-city',action='store_true',help='Stage the city opportunity trial over the verified ordinary release')
     p.add_argument('--paired-layout',action='store_true',help='Test one or two signed terrain cues per city')
     p.add_argument('--layout-floor',type=int,choices=(0,6,8,10),help='Default penalty with this private terrain relief on distinguishable supplied sites (zero for penalty only)')
+    p.add_argument('--frontier',action='store_true',help='Reject proxies that reward weak legal frontier footprints; refresh after ownership changes')
     p.add_argument('--river-cue',action='store_true',help='Test the fixed private river cue separately')
     p.add_argument('--probe-no-base',action='store_true',help='Toggle and restore one active gate for an intra-turn native readback')
     p.add_argument('--observe-no-base',action='store_true',help='Run the identical opportunity review with its scoring action disabled')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
     a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
                            a.supplier_jobs,a.city_cue_probe,a.local_material_cues,a.as_installed,a.no_base_city,a.probe_no_base,
-                           a.observe_no_base,a.paired_layout,a.river_cue,a.layout_floor)
+                           a.observe_no_base,a.paired_layout,a.river_cue,a.layout_floor,a.frontier)
