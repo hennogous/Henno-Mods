@@ -183,3 +183,22 @@ The advanced game used the same SQL as the lightweight game, with the full CE pl
 The advanced run recorded 26 Bakers and five Tailors foundations. All five Tailors began with at least +3 current Production and Gold adjacency; one had a clear coast tile next door. No completed Tailors had a Harbor at the endpoint. Twelve Bakers still had a working Stage 2 chain at the endpoint.
 
 Only one last deposit was lost in the advanced game. The 22 interruptions to a working supplier included 11 pillaged improvements, nine where the resource remained without its improvement, one mixed loss and one covered by a district. The full planner averaged 1.72 seconds of measured processing across 249 turns and peaked at 3.95 seconds. The advanced and lightweight games ended with 59 and 52 cities, respectively.
+
+### Second matched advanced comparison, seed 171124605
+
+The advanced game reached turn 242, when the observer civilisation was eliminated. We preserved its turn-240 map in the Load Game menu and archived the turn-242 autosave. Turn 225 is the last complete Quarter census shared by all three runs. The two no-CE arms also have their ordinary turn-250 results above. Reproduce the three-way comparison with `lightweight_results.py --through 225` and the three arm directories.
+
+| At turn 225 | Stock CSC | Lightweight CSC | Advanced CSC |
+| --- | ---: | ---: | ---: |
+| Bakers with working Base and completed mapped customer | 0/12 | 2/15 | **22/28** |
+| Tailors with working Base and completed mapped customer | 0/15 | 0/13 | **5/6** |
+| New foundations with usable owned Base | 5/28 | 7/29 | **30/30** |
+| Last viable deposit losses | 4 | 8 | 1 |
+| Storekeeper active link-turns | 0 | 230 | 1,538 |
+| Innkeeper / Sacristan / Stage 4 Tailors active link-turns | 0 / 0 / 0 | 0 / 0 / 0 | 270 / 21 / 76 |
+| Total active Service link-turns | 0 | 230 | **1,905** |
+| Mean / maximum turn, seconds | 5.67 / 17.29 | 5.63 / 15.70 | **7.51 / 24.29** |
+
+All three results cover the same 224 Service observations and 175 popup-free intervals. Three of the six completed advanced Tailors had both material classes. The single lost last deposit had a Wonder on its tile. The advanced planner averaged 1.41 seconds per turn and peaked at 3.00 seconds. The stock, lightweight and advanced empires held 47, 42 and 53 cities respectively.
+
+On this seed's turn-one map, 55 of 889 clearable sites touched both a Tailors Base and a clear coastal tile, using 26 distinct sources. A local terrain threshold distinguished Base sites in 105 of 235 sampled neighborhoods with a Base opportunity. These are possible locations before settlement and border growth. They give the no-CE city-specific experiment a second map with relevant layouts.

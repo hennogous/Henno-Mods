@@ -16,7 +16,8 @@ from driver import (HERE, HeldProcess, NativeSession, launch, load, lua, make_pr
                     native_inventory, read, require, restore_preferences, sha, write_json)
 from economy_factorial import read_opening, select_stack
 from economy_guidance_timing import install_clocks, observed_turns
-from full_game_controller.checkpoint import save_inactive_boundary
+from full_game_controller.checkpoint import archive_autosave_window, save_inactive_boundary
+from full_game_controller.controller import ObserverEliminated
 from full_game_observation import archive_censuses
 from mature_guidance_replay import replace
 from shortlist_pair import prepare
@@ -162,6 +163,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
         gameplay_sha256=hashlib.sha256(script_active).hexdigest() if local_material_cues else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
+    eliminated = False
     try:
         if active!=original:replace(staged_path,active)
         if local_material_cues:replace(script_path,script_active)
@@ -225,6 +227,20 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         ck=save_inactive_boundary(c,turn=end,name=f'CSC_LIGHT_{seed}_{arm_name.upper()}_T{end}',
                                   native_directory=saves,archive=out/'endpoint.Civ6Save')
         write_json(out/'checkpoint.json',ck)
+    except ObserverEliminated as error:
+        # The native game can defeat the observer during a five-turn window.
+        # Preserve a playable lead-in before the next game's autosave rotation.
+        # The last status belongs to the preceding live observer turn.
+        eliminated = True
+        status = out/'live-status.json'
+        live = load(status)['turn'] if status.is_file() else None
+        receipts = []
+        if live is not None:
+            start_ns = int(load(out/'launch-bootstrap.json')['time']*1_000_000_000)
+            receipts = archive_autosave_window(saves,out/'elimination-autosaves',
+                                               max(1,live-1),min(end,live+1),start_ns)
+        write_json(out/'observer-eliminated.json',dict(last_live_turn=live,reason=str(error),autosaves=receipts))
+        raise
     finally:
         try:
             if session.owner is not None and session.owner.poll() is None:
@@ -239,6 +255,8 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
                         current=path.read_bytes()
                         require(current in (staged,prior),'Installed benchmark input changed during replay: '+str(path))
                         if current!=prior:replace(path,prior)
+            if eliminated and (out/'Lua.log').is_file():
+                archive_censuses(read(out/'Lua.log'),out)
     log=read(out/'Lua.log')
     require('CSC_MILESTONE_SERVICE_FAULT' not in log and 'CSC_QUARTER_WATCH_FAULT' not in log,'Observer fault')
     if local_material_cues:

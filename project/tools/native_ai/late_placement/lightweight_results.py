@@ -27,14 +27,18 @@ def supplier_tile_state(row):
     return 'resource_and_improvement_still_there'
 
 
-def read_arm(folder):
+def read_arm(folder, through=None):
     protocol = load(folder/'protocol.json')
-    turn = protocol['turn']
+    turn = protocol['turn'] if through is None else through
+    if not 0 < turn <= protocol['turn']:
+        raise ValueError(f'Comparison turn {turn} outside the run window')
     census = folder/f'full-census-{turn}.json'
     endpoint = summarize(census)
     result = {}
     profiles = {}
     for path in sorted(folder.glob('full-census-*.json')):
+        if int(path.stem.rsplit('-',1)[1]) > turn:
+            continue
         for quarter in quarter_rows(path):
             profiles[quarter['plot']] = quarter['profile']
     for profile, totals in endpoint.items():
@@ -73,14 +77,19 @@ def read_arm(folder):
     for line in (folder/'Lua.log').read_text(encoding='utf-8-sig',errors='replace').splitlines():
         if 'CSC_LOCAL_CUE_LUA_MICROS\t' in line:
             turn_id,micros=map(int,line.split('CSC_LOCAL_CUE_LUA_MICROS\t',1)[1].split())
-            city_cue_time[turn_id] += micros
+            if turn_id <= turn:
+                city_cue_time[turn_id] += micros
         elif 'CSC_LOCAL_CUE_REVIEW\t' in line:
-            _,_,_,evaluated,matched = line.split('CSC_LOCAL_CUE_REVIEW\t',1)[1].split()
+            stamp,_,_,evaluated,matched = line.split('CSC_LOCAL_CUE_REVIEW\t',1)[1].split()
+            if int(stamp) > turn:
+                continue
             city_cue_stats['city_reviews'] += 1
             city_cue_stats['legal_sites_evaluated'] += int(evaluated)
             city_cue_stats['quarter_reviews_with_signal'] += int(matched)
         elif 'CSC_LOCAL_CUE_CHANGE\t' in line:
-            _,pid,cid,quarter,_,rule,_,_,_ = line.split('CSC_LOCAL_CUE_CHANGE\t',1)[1].split()
+            stamp,pid,cid,quarter,_,rule,_,_,_ = line.split('CSC_LOCAL_CUE_CHANGE\t',1)[1].split()
+            if int(stamp) > turn:
+                continue
             key = (int(pid),int(cid),quarter)
             if rule == '-':
                 active_city_rules.pop(key,None)
@@ -92,12 +101,15 @@ def read_arm(folder):
                 city_cue_stats['activations'] += 1
         elif 'CSC_MILESTONE_SERVICE_END\t' in line:
             t, count, unknown = map(int,line.split('CSC_MILESTONE_SERVICE_END\t',1)[1].split())
+            if t > turn:
+                continue
             if t in intervals:
                 raise ValueError(f'Duplicate Service sample on turn {t}')
             intervals[t] = (count,unknown)
         elif 'CSC_MILESTONE_SERVICE_LINK\t' in line:
             t, player, quarter, stage, service, producer, customer = line.split('CSC_MILESTONE_SERVICE_LINK\t',1)[1].split()
-            links[int(t)].add((int(player),quarter,stage,service,producer,customer))
+            if int(t) <= turn:
+                links[int(t)].add((int(player),quarter,stage,service,producer,customer))
         elif 'CSC_QUARTER_WATCH_' in line:
             event, _, tail = line.split('CSC_QUARTER_WATCH_',1)[1].partition('\t')
             if event == 'DISTRICT_INDEX':
@@ -110,6 +122,8 @@ def read_arm(folder):
             if event not in ('SITE','NEIGHBOR','SUPPLIER_LOSS','HARVEST'):
                 continue
             row = dict(field.split('=',1) for field in tail.split('\t') if '=' in field)
+            if int(row['turn']) > turn:
+                continue
             if event == 'NEIGHBOR':
                 # A featureless, resourceless coast tile beside the Quarter
                 # leaves a possible Harbor footprint. Ownership and a city's
@@ -171,8 +185,17 @@ def read_arm(folder):
     receipt = next((folder/'pending-commands').glob('*observe-foundations.lua'),None)
     observer = receipt.read_text(encoding='utf-8-sig') if receipt else ''
     watched = 'local CSC_OBSERVE_SUPPLIER_LOSS=' in observer
-    measured=load(folder/'measured.json')
-    timing = {int(k):v for k,v in measured['clean'].items()}
+    if through is None:
+        measured=load(folder/'measured.json')
+        timing = {int(k):v for k,v in measured['clean'].items()}
+        processing = measured['direct']
+    else:
+        # A defeated observer can end an otherwise healthy game. Use the same
+        # physical census and clock window for every arm, including completed
+        # games. Recalculate the publisher times inside that window too.
+        from economy_guidance_timing import observed_turns
+        timing,_,guidance = observed_turns(folder,turn,2)
+        processing = guidance['publisher_wall']
     placement = {}
     for row in foundations.values():
         names = district_profiles[row['district']]
@@ -225,18 +248,18 @@ def read_arm(folder):
         deposit_losses_with_matching_harvest=len(harvested_losses) if watched and harvest_watched else None,
         losses_by_quarter={k:sum(profiles.get(x[1])==k for x in losses['working']) for k in result} if watched else None,
         unresolved_service_samples=sum(unknown for _,unknown in intervals.values()),
-        planner_processing={k:measured['direct'][k] for k in ('turns','average_ms','max_ms')})
+        planner_processing={k:processing[k] for k in ('turns','average_ms','max_ms')})
     return report, intervals, links, timing
 
 
-def compare(folders):
+def compare(folders, through=None):
     if len({folder.name for folder in folders}) != len(folders):
         raise ValueError('Use one folder per named arm on the same seed')
     opening=load(folders[0]/'source.json')
     for folder in folders[1:]:
         if opening != load(folder/'source.json'):
             raise ValueError('Opening map, roster or starting sites differ')
-    arms = {folder.name:read_arm(folder) for folder in folders}
+    arms = {folder.name:read_arm(folder, through) for folder in folders}
     if len({arm[0]['endpoint_turn'] for arm in arms.values()}) != 1:
         raise ValueError('Endpoint turns differ')
     sample = set.intersection(*(set(intervals) for _,intervals,_,_ in arms.values()))
@@ -262,5 +285,6 @@ def compare(folders):
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arms',type=Path,nargs='+')
+    parser.add_argument('--through',type=int,help='Use the same recorded census turn in every arm')
     args=parser.parse_args()
-    print(json.dumps(compare(args.arms),indent=2))
+    print(json.dumps(compare(args.arms,args.through),indent=2))
