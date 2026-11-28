@@ -1,6 +1,6 @@
 """Compare physical CSC chains, active Service links and elapsed turn time on one seed."""
 import argparse
-from collections import defaultdict
+from collections import Counter, defaultdict
 import json
 from pathlib import Path
 from statistics import mean
@@ -61,10 +61,30 @@ def read_arm(folder):
     foundations = {}
     clear_coast = set()
     observed_terrain = set()
+    active_city_rules = {}
+    founder_rules = {}
+    founder_terrain = defaultdict(Counter)
+    city_cue_stats = Counter()
     district_profiles = defaultdict(set)
     seats = set(load(folder/'source.json')['original_ai'])
     for line in (folder/'Lua.log').read_text(encoding='utf-8-sig',errors='replace').splitlines():
-        if 'CSC_MILESTONE_SERVICE_END\t' in line:
+        if 'CSC_LOCAL_CUE_REVIEW\t' in line:
+            _,_,_,evaluated,matched = line.split('CSC_LOCAL_CUE_REVIEW\t',1)[1].split()
+            city_cue_stats['city_reviews'] += 1
+            city_cue_stats['legal_sites_evaluated'] += int(evaluated)
+            city_cue_stats['quarter_reviews_with_signal'] += int(matched)
+        elif 'CSC_LOCAL_CUE_CHANGE\t' in line:
+            _,pid,cid,quarter,_,rule,_,_,_ = line.split('CSC_LOCAL_CUE_CHANGE\t',1)[1].split()
+            key = (int(pid),int(cid),quarter)
+            if rule == '-':
+                active_city_rules.pop(key,None)
+                city_cue_stats['withdrawals'] += 1
+            else:
+                # Modifier names end in the exact terrain and integer cutoff.
+                terrain,cutoff = rule.rsplit('__',1)[1].rsplit('_',1)
+                active_city_rules[key] = terrain,int(cutoff)
+                city_cue_stats['activations'] += 1
+        elif 'CSC_MILESTONE_SERVICE_END\t' in line:
             t, count, unknown = map(int,line.split('CSC_MILESTONE_SERVICE_END\t',1)[1].split())
             if t in intervals:
                 raise ValueError(f'Duplicate Service sample on turn {t}')
@@ -87,6 +107,8 @@ def read_arm(folder):
                 if row['event'] == 'foundation' and 'terrain' in row and 'feature' in row:
                     site = (int(row['plot']),int(row['turn']))
                     observed_terrain.add(site)
+                    if site in founder_rules:
+                        founder_terrain[site][row['terrain']] += 1
                     if (row['terrain'] == 'TERRAIN_COAST' and row['resource'] == '-'
                             and row['feature'] == '-' and int(row['district']) < 0):
                         clear_coast.add(site)
@@ -109,6 +131,9 @@ def read_arm(folder):
                 if row['event'] == 'foundation':
                     key = (player,int(row['plot']),int(row['turn']))
                     foundations[key] = row
+                    rule = active_city_rules.get((player,int(row['city']),row.get('quarterType')))
+                    if rule:
+                        founder_rules[key[1:]] = rule
                     if int(row['base']) == 0:
                         poor.add(key)
             if event == 'SUPPLIER_LOSS':
@@ -154,6 +179,12 @@ def read_arm(folder):
         coastal = site in clear_coast
         stats['clear_coast_neighbor'] += coastal
         stats['owned_base_and_clear_coast_neighbor'] += base and coastal
+        if site in founder_rules:
+            terrain,cutoff = founder_rules[site]
+            city_cue_stats[profile+'_foundations_with_active_rule'] += 1
+            if founder_terrain[site][terrain] >= cutoff:
+                city_cue_stats[profile+'_foundations_on_rewarded_terrain'] += 1
+                city_cue_stats[profile+'_rewarded_foundations_with_usable_base'] += base
         stats['current_adjacency_3plus'] += float(row['eligibleGold'])+float(row['eligibleProduction'])>=3
     for stats in placement.values():
         if not stats['coast_surveyed_foundations']:
@@ -168,7 +199,7 @@ def read_arm(folder):
             counts[' + '.join(sorted(states))] += 1
         state_counts[kind] = dict(sorted(counts.items()))
     report = dict(quarters=result, economy=economy(census)[0], founded=len(foundations),
-        placement_by_quarter=placement,
+        placement_by_quarter=placement,local_material_guidance=dict(city_cue_stats) if protocol.get('local_material_cues') else None,
         no_usable_owned_base_at_foundation=len(poor), endpoint_turn=turn, start_save=protocol['shared_save'],
         last_supplier_losses={k:len(losses[k]) for k in ('working','working_district_covered','deposit')} if watched else None,
         supplier_tile_states_after_loss=state_counts if watched else None,

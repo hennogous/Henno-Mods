@@ -1,4 +1,4 @@
--- Probe-only policy. Compare the owned legal Quarter sites of one city.
+-- Compare the owned legal Quarter sites of one city.
 -- For each terrain actually carrying local Base, find the smallest neighbor
 -- count that excludes every site without Base. The stock adjacency effect
 -- pays one private yield per complete group of that many neighbors.
@@ -17,14 +17,18 @@ local function selectMaterialCue(sites, terrains)
         end
         if badSite and target and highestTarget > highestBad then
             local cutoff = highestBad + 1
-            local hits = 0
+            local hits, customerRank = 0, 0
             for _, site in ipairs(sites) do
-                if (site.count[terrain] or 0) >= cutoff then hits = hits + 1 end
+                if (site.count[terrain] or 0) >= cutoff then
+                    hits = hits + 1
+                    customerRank = math.max(customerRank,site.customerRank or 0)
+                end
             end
             -- Every hit touches real Base. Prefer the cue that gives Civ the
-            -- most such options. Stable terrain and plot order resolve ties.
-            if not best or hits > best.hits then
-                best = {a=target, b=badSite, terrain=terrain, cutoff=cutoff, hits=hits, total=#sites}
+            -- best customer opportunity, followed by the most Base options.
+            -- Stable terrain and plot order resolve remaining ties.
+            if not best or customerRank > best.customerRank or (customerRank == best.customerRank and hits > best.hits) then
+                best = {a=target, b=badSite, terrain=terrain, cutoff=cutoff, hits=hits, total=#sites, customerRank=customerRank}
             end
         end
     end

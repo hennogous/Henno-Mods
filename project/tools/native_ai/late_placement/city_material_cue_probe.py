@@ -7,7 +7,8 @@ from driver import HERE, lua, read, require, write_json
 def observe_city_cue(controller, folder, seats, turn, allow_fallback):
     setup='local CSC_CUE_SEATS='+lua(list(seats))+'\nlocal CSC_CUE_ALLOW_FALLBACK='+lua(allow_fallback)
     pair = controller.cmd('\n'.join((setup,read(HERE/'city_material_cue_choice.lua'),
-                          read(HERE/'city_material_cue_probe.lua'))),'PlotInfo',f'city-cue-select-{turn}')
+                          read(HERE/'city_material_cue_sites.lua'),read(HERE/'city_material_cue_probe.lua'))),
+                          'PlotInfo',f'city-cue-select-{turn}')
     if 'CSC_NATIVE_CUE_NO_PAIR' in pair:
         return False
     match = re.search(r'CSC_NATIVE_CUE_PAIR\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)'

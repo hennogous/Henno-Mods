@@ -85,7 +85,7 @@ GameEvents.OnGameTurnStarted.Add(function()
 
 
 def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,customer_buildings=False,supplier_jobs=False,
-           city_cue_probe=False):
+           city_cue_probe=False,local_material_cues=False):
     study=load(root/'study.json')
     pins=study['pins'];game=pins['seeds'][str(seed)]
     source=root/str(seed)/'opening'
@@ -103,10 +103,11 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         source=source.parent/'prepare-advanced'
     record=load(source/'checkpoint.json')
     if city_cue_probe:
-        require(mode=='native' and end in (25,50) and not (deposit_cues or customer_buildings or supplier_jobs),
+        require(mode=='native' and end in (25,50) and not (deposit_cues or customer_buildings or supplier_jobs or local_material_cues),
                 'The local cue probe needs its own short no-CE game')
     arm_name=label or (mode+('-deposits' if deposit_cues else '')+('-buildings' if customer_buildings else '')
-                      +('-jobs' if supplier_jobs else '')+('-city-cue-probe' if city_cue_probe else ''))
+                      +('-jobs' if supplier_jobs else '')+('-city-cue-probe' if city_cue_probe else '')
+                      +('-local-materials' if local_material_cues else ''))
     out=source.parent/arm_name
     require(not native_inventory() and not out.exists(),'Game in use or output exists')
     out.mkdir()
@@ -129,7 +130,7 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         require(connectors is not None,'Expected native action')
         actions.remove(connectors)
         active=ET.tostring(doc,encoding='utf-8',xml_declaration=True)
-    if deposit_cues or customer_buildings or supplier_jobs or city_cue_probe:
+    if deposit_cues or customer_buildings or supplier_jobs or city_cue_probe or local_material_cues:
         require(mode in ('native','advanced'),'The stock control must keep ordinary AI')
         staged_path=manifest.parent/'Data/CSC_Q_ALL_AI_Connectors.sql'
         require(sha(staged_path)==load(root/'material-candidate.json')['full'],'Underlying connector revision changed')
@@ -138,17 +139,32 @@ def replay(root,seed,mode,end,label=None,ce_opening=False,deposit_cues=False,cus
         for enabled_overlay,name in [(deposit_cues,'undeveloped_material_candidate.sql'),
                                      (customer_buildings,'customer_building_candidate.sql'),
                                      (supplier_jobs,'supplier_job_candidate.sql'),
-                                     (city_cue_probe,'city_material_cue_candidate.sql')]:
+                                     (city_cue_probe,'city_material_cue_candidate.sql'),
+                                     (local_material_cues,'local_material_rules.sql')]:
             if enabled_overlay:
                 addition=(HERE/name).read_bytes()
                 active+=b'\n'+addition
                 (out/name).write_bytes(addition)
+    script_path=manifest.parent/'Lua_UI/AI/CSC_AI_BakersGameplay.lua'
+    script_before=script_active=None
+    if local_material_cues:
+        require(sha(script_path)==sha(HERE.parents[3]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_BakersGameplay.lua'),
+                'Installed gameplay entry differs from the qualified CSC entry')
+        script_before=script_path.read_bytes()
+        # Load at the normal CSC gameplay entry, including save/reload. This
+        # treatment runs through Workshop Lua and SQL with the Firaxis core.
+        parts=[read(HERE/name) for name in ('city_material_cue_choice.lua','city_material_cue_sites.lua',
+                                            'local_material_guidance.lua')]
+        script_active=('do\n'+'\n'.join(parts)+'\nend\n'+script_before.decode('utf-8-sig')).encode()
+        (out/'local-gameplay.lua').write_bytes(script_active)
     write_json(out/'protocol.json',dict(seed=seed,turn=end,mode=mode,shared_save=record['sha256'],
         opening=source.name,deposit_cues=deposit_cues,customer_buildings=customer_buildings,
-        supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,active_file=staged_path.name,
+        supplier_jobs=supplier_jobs,city_cue_probe=city_cue_probe,local_material_cues=local_material_cues,
+        gameplay_sha256=hashlib.sha256(script_active).hexdigest() if local_material_cues else None,active_file=staged_path.name,
         active_sha256=hashlib.sha256(active).hexdigest()))
     try:
         if active!=original:replace(staged_path,active)
+        if local_material_cues:replace(script_path,script_active)
         session.start(lambda:launch(SimpleNamespace(binary=Path(pins['binary'])),out))
         session.wait_context('MainMenu')
         select_stack(session,out,[pins['packages'][key]['id'] for key in enabled])
@@ -217,11 +233,17 @@ print('CSC_LIGHT_MODE_OK',edges,tostring(GameConfiguration.GetValue('CSC_ADVANCE
         finally:
             if session.closed:
                 shutil.copyfile(user/'Logs/Lua.log',out/'Lua.log')
-            if active!=original and not native_inventory():
-                require(staged_path.read_bytes()==active,'Installed benchmark input changed during replay')
-                replace(staged_path,original)
+            if not native_inventory():
+                for path,staged,prior in ((script_path,script_active,script_before),(staged_path,active,original)):
+                    if staged!=prior:
+                        current=path.read_bytes()
+                        require(current in (staged,prior),'Installed benchmark input changed during replay: '+str(path))
+                        if current!=prior:replace(path,prior)
     log=read(out/'Lua.log')
     require('CSC_MILESTONE_SERVICE_FAULT' not in log and 'CSC_QUARTER_WATCH_FAULT' not in log,'Observer fault')
+    if local_material_cues:
+        require('CSC_LOCAL_CUE_INSTALLED' in log and 'CSC_LOCAL_CUE_REVIEW' in log and
+                'CSC_LOCAL_CUE_FAULT' not in log,'Local material guidance failed or missed every city review')
     require(set(archive_censuses(log,out))==set(range(25,end+1,25)),'Incomplete physical census')
     times,excluded,direct=observed_turns(out,end,2)
     require(bool(direct['published_packets'])==ce,'Unexpected advanced publications')
@@ -238,6 +260,7 @@ if __name__=='__main__':
     p.add_argument('--customer-buildings',action='store_true',help='Test the stock preference for first customer buildings')
     p.add_argument('--supplier-jobs',action='store_true',help='Test stock Builder improvement values next to a Quarter')
     p.add_argument('--city-cue-probe',action='store_true',help='Inspect a city-specific stock adjacency in a disposable replay')
+    p.add_argument('--local-material-cues',action='store_true',help='Run bounded city-specific material guidance from CSC')
     p.add_argument('--end',type=int,default=250);p.add_argument('--label')
     a=p.parse_args();replay(a.root,a.seed,a.mode,a.end,a.label,a.ce_opening,a.deposit_cues,a.customer_buildings,
-                           a.supplier_jobs,a.city_cue_probe)
+                           a.supplier_jobs,a.city_cue_probe,a.local_material_cues)
