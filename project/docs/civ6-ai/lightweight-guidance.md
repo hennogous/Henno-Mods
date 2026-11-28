@@ -292,3 +292,31 @@ This Workshop-compatible experiment checks whether a city has any plausible Quar
 Where the surrounding land is known and no opportunity exists, the city-center property enables a stock negative terrain adjacency for that Quarter. The trial uses −1 private yield per neighboring terrain, ordinarily −6 per footprint. This is a weight in Civ's site comparison. The mod does not issue a production order.
 
 **Seed 171124601, turn 30, Firaxis core only.** In player 2's city 131073, Tailors on plot 1528 read −6 with the natural penalty active, 0 when withdrawn and −6 when restored, all on the same turn. In player 3's supplied city 65536, the legal Tailors site on plot 675 read +3 throughout. This measures the prospective adjacency input. Compare actual foundations, submitted jobs and supplied customer pairs in the matched games to judge the production decision.
+
+Two turn-250 runs started from the same save with the same city review. The control only recorded the classification. Both ran the shipping lightweight rules with CE absent.
+
+| Seed 171124601 | Review only | Review with city penalty |
+| --- | ---: | ---: |
+| Foundations in cities last assessed as lacking any Base opportunity | 5 | 2 |
+| Bakers founded without any mapped Base next door | 5/20 | 4/20 |
+| Tailors founded without any mapped Base next door | 12/18 | 11/16 |
+| Weak foundations in cities where a supplier layout existed elsewhere | 12 | 12 |
+| Completed Bakers with working Base and customer | 4/21 | 3/19 |
+| Completed Tailors with working Base and customer | 1/20 | 1/14 |
+| Storekeeper link-turns | 269 | 285 |
+| Losses of last viable deposit | 10 | 12 |
+| Mean / maximum popup-free turn, seconds | 6.71 / 19.55 | 6.06 / 17.92 |
+
+The penalty reached 204 city/Quarter reviews across this game. The two remaining no-opportunity foundations were Tailors on turns 170 and 178, following active penalties since turns 126 and 165 respectively. Another weak Tailors was in a partly explored city. The counts use 249 common Service observations and 194 common timed turns. On turn 67, Stavanger submitted Tailors for 486 production bid points in the control game and a Preserve for 368 in the treatment game. Its control turn-64 save was retained for a same-state replay.
+
+### Can an unbuilt improvement mark the right deposit?
+
+A disposable improvement for each Quarter accepted the Base resources in the loaded gameplay tags. The stock database registered six valid resource types for Bakers and three for Tailors. A standard Builder could construct the probe improvement. Two cold loads of the same turn-50 save varied one setting, the private yield for placing a Quarter beside that improvement. Player 3 could place Tailors on plot 754 beside owned, unimproved Flax on plot 827. The stock Builder eligibility check accepted the proposed improvement on that Flax.
+
+| State of the same Flax tile | Zero-weight control | +12 private adjacency rule |
+| --- | ---: | ---: |
+| Unimproved, marker legal | +1 | +1 |
+| Marker present | +1 | +13 |
+| Marker removed | +1 | +1 |
+
+The proposed improvement contributes to the prospective district adjacency while it physically occupies the supplier tile. Its resource restrictions alone give the untouched deposit no signal through this rule. A scripted replacement with the ordinary Farm would retire the marker bonus. The probe ran with the Firaxis core and used a diagnostic placement on a disposable save. It measured the input to district siting on an AI-owned plot. Human action hiding, automatic replacement and overall construction outcomes were outside this test. Keep the probe outside the player build. [Probe SQL](../../tools/native_ai/late_placement/possible_supplier.sql) and [matched replay](../../tools/native_ai/late_placement/possible_supplier.py).
